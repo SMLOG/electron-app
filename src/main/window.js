@@ -50,7 +50,9 @@ ipcMain.on("createSuspensionMenu", e => {
       label: "置顶",
       enabled: true,
       click: () => {
-        win.setAlwaysOnTop(!win.isAlwaysOnTop());
+        let isTop = win.isAlwaysOnTop();
+        win.setAlwaysOnTop(!isTop);
+        notifywin.setAlwaysOnTop(!isTop);
       }
     },
     { label: "本次传输完自动关机" },
@@ -100,7 +102,7 @@ function createSuspensionWindow() {
     //resizable: false, //禁止窗口大小缩放
     show: false, //先不让窗口显示
     webPreferences: {
-      devTools: false, //关闭调试工具
+      // devTools: false, //关闭调试工具
       webSecurity: false
     },
     transparent: true, //设置透明
@@ -142,15 +144,15 @@ createSuspensionWindow();
 let notifywin;
 function createNotifyWindow() {
   notifywin = new BrowserWindow({
-    width: 2 * 107, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
-    height: 4 * 27, //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
+    width: 300, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
+    height: 180, //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
     type: "toolbar", //创建的窗口类型为工具栏窗口
     frame: false, //要创建无边框窗口
     autoHideMenuBar: true,
     //resizable: false, //禁止窗口大小缩放
     show: false, //先不让窗口显示
     webPreferences: {
-      devTools: false, //关闭调试工具
+      //  devTools: false, //关闭调试工具
       webSecurity: false
     },
     transparent: true, //设置透明
@@ -161,7 +163,13 @@ function createNotifyWindow() {
 
   //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
   notifywin.setPosition(size.width - winSize[0], size.height - winSize[1]);
-  notifywin.loadURL(winURL);
+
+  const notifyURL =
+    process.env.NODE_ENV === "development"
+      ? `http://localhost:9080/#/notify`
+      : `file://${__dirname}/index.html/#/notify`;
+
+  notifywin.loadURL(notifyURL);
 
   notifywin.once("ready-to-show", () => {
     notifywin.show();

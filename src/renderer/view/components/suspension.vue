@@ -5,8 +5,9 @@
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
       <div class="upload" v-for="item in items" :key="item.code">
-        <span :title="item.name" @click="openItem(item)">{{item.name}}</span>
+        <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
         <span
+          class="content"
           :class="upDown(item.change)"
         >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</span>
       </div>
@@ -43,6 +44,14 @@ export default {
     shrinkW() {
       this.autoShrinkVWhenOut = !this.autoShrinkVWhenOut;
     },
+    notify(item, message) {
+      this.$electron.remote.app.notifywin.webContents.send("message", {
+        id: +new Date(),
+        time: item.time,
+        item: item,
+        message: "hello"
+      });
+    },
     openItem(item) {
       if (this.openwin && this.openwin.code == item.code) {
         try {
@@ -58,6 +67,7 @@ export default {
       }
       let win = this.$electron.remote.getCurrentWindow();
       win.focus();
+      this.notify(item, "test");
     },
     upDown(val) {
       if (val > 0) return "up";
@@ -68,7 +78,6 @@ export default {
       this.items = store.fetch();
     },
     refresh() {
-      //let scripts = ["http://hq.sinajs.cn/list=" + codes.join(",")];
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
           if (cur.code.match(/^(sh)|(sz)/)) {
@@ -191,6 +200,13 @@ export default {
 .down {
   color: green;
 }
+.name {
+  cursor: pointer;
+  display: inline-block;
+}
+.content {
+  display: inline-block;
+}
 .logo {
   width: 40px;
   background: #5b9bfe url("../../assets/img/logo@2x.png") no-repeat 2px 3px;
@@ -204,11 +220,10 @@ export default {
 
 #suspension {
   -webkit-user-select: none;
-  cursor: pointer;
+  position: relative;
 }
 
 #suspension {
-  cursor: pointer !important;
   border-radius: 4px;
   display: flex;
   border: 1px solid #3388fe;
@@ -219,15 +234,15 @@ export default {
   border: 1px solid black;
   border-radius: 8px;
   background: white;
-  position: fixed;
+  position: absolute;
   right: 5px;
   cursor: pointer;
 }
 #rt {
-  top: 5px;
+  top: 10px;
 }
 #rd {
-  bottom: 12px;
+  bottom: 14px;
 }
 #suspension .shrink {
   background: green;

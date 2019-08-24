@@ -78,17 +78,22 @@ export default {
       loadScripts([url]).then(() => {
         let items = window[name].split(";");
         //万科A,11,000002,sz000002,万科A,,万科A,99
-        let options = items.map((eStr, i) => {
-          let item = eStr.split(",");
-          return {
-            id: i,
-            oname: item[0],
-            name: item[4],
-            countryID: item[1],
-            code: item[3]
-          };
-        });
+
+        let options = items
+          .map((eStr, i) => {
+            if (!eStr) return null;
+            let item = eStr.split(",");
+            return {
+              id: i,
+              oname: item[0],
+              name: item[4],
+              countryID: item[1],
+              code: item[3]
+            };
+          })
+          .filter(e => e);
         options.unshift({ id: -1, oname: "选项", name: "名称", code: "代码" });
+
         this.myData = options;
       });
     },
@@ -98,6 +103,7 @@ export default {
       if (ev.keyCode == 38 || ev.keyCode == 40) {
         return;
       }
+      this.now = 1;
       this.onSuggestionsFetchRequested();
       /* this.$http
         .jsonp(
@@ -113,28 +119,23 @@ export default {
       this.now++;
       //到达最后一个时，再按下就回到第一个
       if (this.now == this.myData.length) {
-        this.now = 0;
+        this.now = 1;
       }
-      this.keyword = this.myData[this.now];
+      // this.keyword = this.myData[this.now];
     },
     selectUp: function() {
       this.now--;
       //同上
-      if (this.now == -1) {
+      if (this.now == 0) {
         this.now = this.myData.length - 1;
       }
-      this.keyword = this.myData[this.now];
+      // this.keyword = this.myData[this.now];
     },
     search: function(selectItem, index) {
       if (index != 0) {
-        let datas = store.fetch();
-        console.log(selectItem);
-        if (datas.filter(it => it.code == selectItem.code).length == 0) {
-          datas.push(selectItem);
-          store.save(datas);
-        }
+        if (!selectItem && this.myData.length > 1) selectItem = this.myData[1];
+        this.$emit("select", selectItem);
       }
-      this.$electron.remote.app.minwin.webContents.send("refresh");
 
       this.myData = [];
 

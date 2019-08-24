@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  export default {
-    name: 'windowstest'
-  }
+export default {
+  name: "Test"
+};
 </script>
 
 <style>
-  /* CSS */
+/* CSS */
 </style>

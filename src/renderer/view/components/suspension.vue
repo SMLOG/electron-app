@@ -4,9 +4,11 @@
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
-      <div class="upload" v-for="item in items" :key="item.code">
+      <div class="item" v-for="item in items" :key="item.code">
         <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
         <span
+          @mouseenter="showPK(item)"
+          @mouseleave="hidePK(item)"
           class="content"
           :class="upDown(item.change)"
         >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</span>
@@ -37,7 +39,32 @@ export default {
       return toPercent(val, 2);
     }
   },
+
   methods: {
+    hidePK(item, event) {
+      try {
+        if (this.openwin) this.openwin.close();
+      } catch (e) {}
+    },
+    showPK(item, event) {
+      let url = `${window.location.href.split("#")[0]}#/pank?code=${item.code}`;
+      if (this.openwin) {
+        try {
+          /*if (this.openwin.location.indexOf("#/pank")) {
+            this.openwin.location = url;
+            return;
+          }*/
+          this.openwin.close();
+        } catch (e) {}
+      }
+      let win = this.$electron.remote.getCurrentWindow();
+      let winPos = win.getPosition();
+      this.openwin = window.open(
+        url,
+        "item",
+        `left=${winPos[0] - 253}px,top=${winPos[1]}px,width=250px,height=351px`
+      );
+    },
     shrinkH() {
       this.autoShrinkHWhenOut = !this.autoShrinkHWhenOut;
     },
@@ -61,7 +88,8 @@ export default {
       } else {
         this.openwin = window.open(
           `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
-          "item"
+          "item",
+          "left=0px,top=100px"
         );
         this.openwin.code = item.code;
       }
@@ -118,18 +146,22 @@ export default {
     let that = this;
     let openwin;
 
+    let resizeWin = () => {
+      let winSize = win.getSize();
+      win.setSize(winSize[0], this.items.length * 27);
+    };
     this.loadDatas();
 
     this.$electron.ipcRenderer.on("refresh", () => {
       that.loadDatas();
+      resizeWin();
     });
-
+    resizeWin();
     document.addEventListener("mouseenter", event => {
       let winSize = win.getSize();
 
       if (this.autoShrinkVWhenOut) {
-        this.time = winSize[1];
-        win.setSize(winSize[0], this.items.length * 27);
+        resizeWin();
       }
       if (this.autoShrinkHWhenOut) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -187,7 +219,7 @@ export default {
   padding: 0;
   margin: 0;
 }
-.upload {
+.item {
   height: 25px;
   line-height: 25px;
   font-size: 12px;
@@ -195,7 +227,7 @@ export default {
   color: #74a1fa;
 }
 .up {
-  color: red;
+  color: #c00;
 }
 .down {
   color: green;
@@ -208,13 +240,11 @@ export default {
   display: inline-block;
 }
 .logo {
-  width: 40px;
-  background: #5b9bfe url("../../assets/img/logo@2x.png") no-repeat 2px 3px;
+  width: 3px;
   background-size: 80%;
 }
 
 .content_body {
-  background-color: #eef4fe;
   width: 100%;
 }
 
@@ -224,9 +254,9 @@ export default {
 }
 
 #suspension {
-  border-radius: 4px;
+  border-radius: 3px;
   display: flex;
-  border: 1px solid #3388fe;
+  background-color: #eef4fe;
 }
 .shrink2 {
   width: 8px;

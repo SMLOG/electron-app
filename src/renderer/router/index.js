@@ -12,6 +12,11 @@ export default new Router({
       component: () => import("@/view/components/notify")
     },
     {
+      path: "/pank",
+      name: "pank",
+      component: () => import("@/view/components/pank")
+    },
+    {
       path: "/suspension",
       name: "suspension",
       component: () => import("@/view/components/suspension")

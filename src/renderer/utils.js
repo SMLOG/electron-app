@@ -174,6 +174,22 @@ export function parse(a, b) {
   }
   e.now = e.now || e.preClose;
   e.kcb = d[33] || "";
+
+  let bsPrices = [];
+  let bsVols = [];
+
+  for (let j = 28; j >= 20; j -= 2) {
+    bsVols.push(1 * d[j]);
+    bsPrices.push(d[j + 1]);
+  }
+
+  for (let k = 10; k < 20; k += 2) {
+    bsVols.push(1 * d[k]);
+    bsPrices.push(d[k + 1]);
+  }
+
+  e.bsPrices = bsPrices;
+  e.bsVols = bsVols;
   return e;
 }
 

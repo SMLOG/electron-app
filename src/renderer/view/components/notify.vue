@@ -13,7 +13,7 @@
             :class="upDown(msg.item.change)"
           >{{msg.item.now|fmtValue}}({{msg.item.change|fmtValue}}){{msg.item.changeP|fmtPercent}}</span>
         </div>
-        <div>超过 5% MD5 29.60 MD10 30 MD20 30 MD20 30 MD20 30 MD20 30</div>
+        <div class="content">{{msg.content}}</div>
       </div>
     </div>
     <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>

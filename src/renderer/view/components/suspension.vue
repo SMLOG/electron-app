@@ -59,7 +59,7 @@ export default {
       }
       let win = this.$electron.remote.getCurrentWindow();
       let winPos = win.getPosition();
-      this.openwin = window.open(
+      window.openwin = this.openwin = window.open(
         url,
         "item",
         `left=${winPos[0] - 253}px,top=${winPos[1]}px,width=250px,height=351px`
@@ -76,26 +76,60 @@ export default {
         id: +new Date(),
         time: item.time,
         item: item,
-        message: "hello"
+        content: message
       });
     },
     openItem(item) {
-      if (this.openwin && this.openwin.code == item.code) {
+      if (this.openwin) {
         try {
           this.openwin.close();
           this.openwin = null;
+          return;
         } catch (e) {}
-      } else {
-        this.openwin = window.open(
-          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
-          "item",
-          "left=0px,top=100px"
+        if (this.openwin.code == item.code) return;
+      }
+      {
+        window.openwin = this.openwin = new this.$electron.remote.BrowserWindow(
+          {
+            width: 800,
+            height: 600,
+            webPreferences: {
+              javascript: true,
+              plugins: true,
+              nodeIntegration: true,
+              webSecurity: false,
+              preload: "http://localhost:9080/static/preload.js"
+            }
+          }
         );
+        this.openwin.loadURL(
+          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`
+        );
+        openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
+  return scripts.reduce((currentPromise, scriptUrl) => {
+    return currentPromise.then(() => {
+      return new Promise((resolve, reject) => {
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = scriptUrl;
+        script.onload = () => resolve();
+        document.getElementsByTagName("head")[0].appendChild(script);
+      });
+    });
+  }, Promise.resolve());
+}`);
+        openwin.webContents.executeJavaScript(
+          `loadScripts(['http://localhost:9080/static/preload.js'])`
+        );
+        //openwin.webContents.openDevTools();
+        /* window.openwin = this.openwin = window.open(
+          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
+          "item"
+        );*/
         this.openwin.code = item.code;
       }
-      let win = this.$electron.remote.getCurrentWindow();
-      win.focus();
-      this.notify(item, "test");
+      //let win = this.$electron.remote.getCurrentWindow();
+      // win.focus();
     },
     upDown(val) {
       if (val > 0) return "up";
@@ -115,14 +149,22 @@ export default {
           }
         }, [])
         .join(",");
-      console.log(str);
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
           let hqstr = window[`hq_str_${item.code}`];
           let data = parse(hqstr, item.code);
           Object.assign(item, data);
           this.items.splice(i, 1, item);
-          console.log(item);
+          item.threshold == undefined && (item.threshold = 0);
+          if (Math.abs(item.changeP - item.threshold) >= 0.5) {
+            item.threshold +=
+              parseInt((item.changeP - item.threshold) / 0.5) * 0.5;
+            this.notify(
+              item,
+              `over ${item.threshold}% to ${toFixed(item.changeP, 2)}%.`
+            );
+          }
+
           // vm.items.splice(newLength)
         });
       });

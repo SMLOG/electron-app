@@ -28,7 +28,8 @@ export default {
       time: "world",
       items: [{ code: "sh000001" }],
       autoShrinkVWhenOut: false,
-      autoShrinkHWhenOut: false
+      autoShrinkHWhenOut: false,
+      loadMDate: false
     };
   },
   filters: {
@@ -55,6 +56,8 @@ export default {
             return;
           }*/
           this.openwin.close();
+          delete this.openwin;
+          delete window.openwin;
         } catch (e) {}
       }
       let win = this.$electron.remote.getCurrentWindow();
@@ -83,10 +86,15 @@ export default {
       if (this.openwin) {
         try {
           this.openwin.close();
-          this.openwin = null;
-          return;
+          if (this.openwin.code == item.code) {
+            delete this.openwin;
+            delete window.openwin;
+
+            return;
+          }
+          delete this.openwin;
+          delete window.openwin;
         } catch (e) {}
-        if (this.openwin.code == item.code) return;
       }
       {
         window.openwin = this.openwin = new this.$electron.remote.BrowserWindow(
@@ -138,6 +146,26 @@ export default {
     },
     loadDatas() {
       this.items = store.fetch();
+      this.loadMD();
+    },
+    loadMD() {
+      let that = this;
+      (async function() {
+        for (let i = 0; i < that.items.length; ++i) {
+          let item = that.items[i];
+          let url = `http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/window.var_${item.code}=/CN_MarketData.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60&datalen=1`;
+
+          await loadScripts([url]).then(() => {
+            console.log("loaded" + url);
+          });
+        }
+        that.items.map(item => {
+          console.log(window[`var_${item.code}`]);
+          item.data = window[`var_${item.code}`];
+          delete window[`var_${item.code}`];
+        });
+        that.loadMDate = new Date().getTime();
+      })();
     },
     refresh() {
       let str = this.items
@@ -149,12 +177,18 @@ export default {
           }
         }, [])
         .join(",");
+      let needReloadData = false;
+      //http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/var=/CN_MarketData.getKLineData?symbol=sz000001&scale=240&ma=no&datalen=1
+      //http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh601318&scale=240&ma=5,10,30&datalen=1
+
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
           let hqstr = window[`hq_str_${item.code}`];
           let data = parse(hqstr, item.code);
           Object.assign(item, data);
           this.items.splice(i, 1, item);
+
+          //** 每增涨 0.5 发送通知 */
           item.threshold == undefined && (item.threshold = 0);
           if (Math.abs(item.changeP - item.threshold) >= 0.5) {
             item.threshold +=
@@ -165,8 +199,21 @@ export default {
             );
           }
 
+          //**超过均线后发送通知 */
+          if (item.data && item.data.length > 0) {
+            for (let i in (5, 10, 20, 30, 16)) {
+              if (item.price > item.data[0][`ma_price${i}`]) {
+                this.notify(
+                  item,
+                  `over MD${i} ${item.data[0][`ma_price${i}`]}.`
+                );
+              }
+            }
+          }
+
           // vm.items.splice(newLength)
         });
+        if (new Date().getTime() - this.loadMDate > 86400000) this.loadMD();
       });
     },
     timerFn() {

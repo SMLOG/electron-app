@@ -4,17 +4,19 @@
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
-      <div class="item" v-for="item in items" :key="item.code">
-        <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-        <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
-        <span class="content" :class="upDown(item.change)">
-          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now|fmtValue}}</i>
-          <i
-            @mouseenter="showPK(item,'style2')"
-            @mouseleave="hidePK(item)"
-          >({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</i>
-        </span>
-      </div>
+      <draggable v-model="items" @update="dragEnd">
+        <div class="item" v-for="item in items" :key="item.code">
+          <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
+          <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
+          <span class="content" :class="upDown(item.change)">
+            <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now|fmtValue}}</i>
+            <i
+              @mouseenter="showPK(item,'style2')"
+              @mouseleave="hidePK(item)"
+            >({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</i>
+          </span>
+        </div>
+      </draggable>
     </div>
     <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
   </div>
@@ -22,6 +24,7 @@
 <script>
 import store from "@/localdata";
 import { loadScripts, parse, toFixed, toPercent } from "@/utils";
+import draggable from "vuedraggable";
 
 export default {
   name: "suspension",
@@ -47,6 +50,11 @@ export default {
   },
 
   methods: {
+    dragEnd(e) {
+      e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
+      store.save(this.items);
+      this.sendRefresh();
+    },
     hidePK(item, event) {
       try {
         if (this.openwin) this.openwin.close();

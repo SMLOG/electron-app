@@ -17,15 +17,7 @@ const winURL =
     ? `http://localhost:9080/#/suspension`
     : `file://${__dirname}/index.html/#/suspension`;
 ipcMain.on("showSuspensionWindow", () => {
-  if (win) {
-    if (win.isVisible()) {
-      createSuspensionWindow();
-    } else {
-      win.showInactive();
-    }
-  } else {
-    createSuspensionWindow();
-  }
+
 });
 
 ipcMain.on("createSuspensionMenu", e => {

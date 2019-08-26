@@ -1,6 +1,6 @@
 
 <template>
-  <div id="suspension">
+  <div id="suspension" :class="style">
     <div class="logo"></div>
     <div class="content_body">
       <div v-for="item in items" :key="item.code">
@@ -54,7 +54,8 @@ export default {
   name: "Pank",
   data() {
     return {
-      items: [{ code: "sh000001" }]
+      items: [{ code: "sh000001" }],
+      style: ""
     };
   },
   filters: {
@@ -142,11 +143,31 @@ export default {
   mounted() {
     let code = this.$route.query.code;
     this.items = [{ code: code }];
-
+    this.style = this.$route.query.style;
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;
     let biasX = 0;
     let biasY = 0;
+
+    let resizeWin = () => {
+      setTimeout(() => {
+        let winSize = win.getSize();
+        let body = document.body,
+          html = document.documentElement;
+
+        let height = Math.max(
+          body.scrollHeight,
+          body.offsetHeight,
+          html.clientHeight,
+          html.scrollHeight,
+          html.offsetHeight
+        );
+        win.setSize(winSize[0], height);
+      }, 0);
+    };
+
+    resizeWin();
+
     let that = this;
     document.addEventListener("mouseleave", event => {
       // window.close();
@@ -184,13 +205,6 @@ export default {
   padding: 0;
   margin: 0;
 }
-.upload {
-  height: 25px;
-  line-height: 25px;
-  font-size: 12px;
-  text-align: center;
-  color: #74a1fa;
-}
 .up {
   color: #c00;
 }
@@ -213,7 +227,9 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   width: 100%;
 }
-
+.style2 .content_body {
+  background-color: rgba(255, 255, 255, 0.6);
+}
 #suspension {
   -webkit-user-select: none;
   position: relative;
@@ -223,6 +239,7 @@ export default {
   border-radius: 2px;
   display: flex;
   color: #666;
+  font-size: 12px;
 }
 .shrink2 {
   width: 8px;
@@ -244,10 +261,10 @@ export default {
   background: green;
 }
 .seperate {
-  border-top: 1px dashed #ccc;
+  border-top: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .sepb {
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .price span {
   display: inline-block;
@@ -265,7 +282,7 @@ export default {
   color: #666;
 }
 .now {
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .c2 > * {
   width: 49%;

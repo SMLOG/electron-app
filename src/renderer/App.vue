@@ -12,4 +12,16 @@ export default {
 
 <style>
 /* CSS */
+::-webkit-scrollbar {
+  width: 3px;
+  height:3px;
+}
+ 
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #666; 
+}
 </style>

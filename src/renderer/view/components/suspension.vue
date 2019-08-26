@@ -1,17 +1,19 @@
 
 <template>
-  <div id="suspension">
+  <div id="suspension" ref="box">
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
       <div class="item" v-for="item in items" :key="item.code">
+        <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
-        <span
-          @mouseenter="showPK(item)"
-          @mouseleave="hidePK(item)"
-          class="content"
-          :class="upDown(item.change)"
-        >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</span>
+        <span class="content" :class="upDown(item.change)">
+          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now|fmtValue}}</i>
+          <i
+            @mouseenter="showPK(item,'style2')"
+            @mouseleave="hidePK(item)"
+          >({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</i>
+        </span>
       </div>
     </div>
     <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
@@ -33,6 +35,9 @@ export default {
     };
   },
   filters: {
+    nowPre(item) {
+      return item.now > item.pre ? "↑" : item.now < item.pre ? "↓" : "";
+    },
     fmtValue(val) {
       return toFixed(val, 2);
     },
@@ -47,8 +52,10 @@ export default {
         if (this.openwin) this.openwin.close();
       } catch (e) {}
     },
-    showPK(item, event) {
-      let url = `${window.location.href.split("#")[0]}#/pank?code=${item.code}`;
+    showPK(item, style, event) {
+      let url = `${window.location.href.split("#")[0]}#/pank?code=${
+        item.code
+      }&style=${style}`;
       if (this.openwin) {
         try {
           /*if (this.openwin.location.indexOf("#/pank")) {
@@ -185,7 +192,9 @@ export default {
         this.items.map((item, i) => {
           let hqstr = window[`hq_str_${item.code}`];
           let data = parse(hqstr, item.code);
+          data.pre = item.now;
           Object.assign(item, data);
+
           this.items.splice(i, 1, item);
 
           //** 每增涨 0.5 发送通知 */
@@ -222,7 +231,7 @@ export default {
           this.refresh().then(() => {
             this.timerFn();
           }),
-        2000
+        1000
       );
     }
   },
@@ -236,8 +245,21 @@ export default {
     let openwin;
 
     let resizeWin = () => {
-      let winSize = win.getSize();
-      win.setSize(winSize[0], this.items.length * 27);
+      setTimeout(() => {
+        let winSize = win.getSize();
+        //  win.setSize(winSize[0], this.items.length * 27);
+        let body = document.body,
+          html = document.documentElement;
+
+        let height = Math.max(
+          body.scrollHeight,
+          body.offsetHeight,
+          html.clientHeight,
+          html.scrollHeight,
+          html.offsetHeight
+        );
+        win.setSize(winSize[0], height);
+      }, 0);
     };
     this.loadDatas();
 
@@ -340,6 +362,7 @@ export default {
 #suspension {
   -webkit-user-select: none;
   position: relative;
+  overflow: hidden;
 }
 
 #suspension {
@@ -353,7 +376,7 @@ export default {
   border: 1px solid black;
   border-radius: 8px;
   background: white;
-  position: absolute;
+  position: fixed;
   right: 5px;
   cursor: pointer;
 }
@@ -361,9 +384,24 @@ export default {
   top: 10px;
 }
 #rd {
-  bottom: 14px;
+  bottom: 8px;
 }
 #suspension .shrink {
   background: green;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
+}
+i {
+  font-style: normal;
 }
 </style>

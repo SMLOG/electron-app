@@ -9,6 +9,7 @@
           <tr>
             <th>Code</th>
             <th>Name</th>
+            <th>Type</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -21,6 +22,7 @@
           >
             <td>{{item.code}}</td>
             <td>{{item.name}}</td>
+            <td>{{item.countryID|objectType}}</td>
             <td>
               <a class="action" @click="delItem(item)">Delete</a>
             </td>
@@ -35,7 +37,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
-
+import { ObjectType } from "@/utils";
 export default {
   name: "home",
   data: function() {
@@ -46,6 +48,11 @@ export default {
   components: {
     SearchPanel,
     draggable
+  },
+  filters: {
+    objectType(id) {
+      return ObjectType[id];
+    }
   },
   methods: {},
   mounted() {

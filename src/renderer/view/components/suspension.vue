@@ -56,9 +56,15 @@ export default {
       } catch (e) {}
     },
     showPK(item, style, event) {
-      let url = `${window.location.href.split("#")[0]}#/pank?code=${
-        item.code
-      }&style=${style}`;
+      let url = `${
+        window.location.href.split("#")[0]
+      }#/pank?item=${encodeURIComponent(
+        JSON.stringify({
+          code: item.code,
+          countryID: item.countryID,
+          orgCode: item.orgCode
+        })
+      )}&style=${style}`;
       if (this.openwin) {
         try {
           /*if (this.openwin.location.indexOf("#/pank")) {
@@ -120,8 +126,9 @@ export default {
             }
           }
         );
+
         this.openwin.loadURL(
-          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`
+          `https://quotes.sina.cn/hs/company/quotes/view/${item.orgCode}?from=nbsearchresult`
         );
         openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
   return scripts.reduce((currentPromise, scriptUrl) => {
@@ -194,9 +201,7 @@ export default {
       console.log(`http://hq.sinajs.cn/list=${str}`);
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
-          let hqstr = window[`hq_str_${item.code}`];
-          console.log(hqstr);
-          let data = parse(hqstr, item.code);
+          let data = parse(item);
           data.pre = item.now;
           Object.assign(item, data);
 

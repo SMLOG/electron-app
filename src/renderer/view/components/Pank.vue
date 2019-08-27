@@ -110,9 +110,7 @@ export default {
     refresh() {
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
-          if (cur.code.match(/^(sh)|(sz)/)) {
-            total.push(`${cur.code}_i`);
-          }
+          total.push(`${cur.code}_i`);
           total.push(cur.code);
           return total;
         }, [])
@@ -120,8 +118,8 @@ export default {
       console.log(str);
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
-          let hqstr = window[`hq_str_${item.code}`];
-          let data = parse(hqstr, item.code);
+          let data = parse(item);
+          console.log(data);
           Object.assign(item, data);
           this.items.splice(i, 1, item);
           console.log(item);
@@ -141,8 +139,9 @@ export default {
   },
 
   mounted() {
-    let code = this.$route.query.code;
-    this.items = [{ code: code }];
+    let item = JSON.parse(decodeURIComponent(this.$route.query.item));
+    console.log(item);
+    this.items = [item];
     this.style = this.$route.query.style;
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;

@@ -84,15 +84,24 @@ export default {
             if (!eStr) return null;
             let item = eStr.split(",");
             let code = item[3];
-            if (item[1] == 71) {
-              code = `fx_s${item[3]}`;
+            switch (parseInt(item[1])) {
+              case 41:
+                code = `gb_${item[3].replace(/\./g, "$")}`;
+                break;
+              case 71:
+                code = `fx_s${item[3]}`;
+                break;
+              default:
+                code = item[3];
             }
+
             return {
               id: i,
               oname: item[0],
               name: item[4],
               countryID: item[1],
-              code: code
+              code: code,
+              orgCode: item[3]
             };
           })
           .filter(e => e);

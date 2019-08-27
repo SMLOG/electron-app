@@ -13,15 +13,17 @@ export function loadScripts(scripts) {
 }
 
 export const hqParser = new (function() {
-  function hk(a, b) {
+  function hk(item) {
+    let hqstr = window[`hq_str_${item.code}`];
+    let b = item.name;
     var c, d, e;
-    if (!a) {
+    if (!hqstr) {
       c = {};
       c.enName = c.name = c.open = c.preClose = c.low = c.high = c.now = c.change = c.changeP = c.buy = c.sell = c.volume = c.amount = c.pe = c.income = c.high52 = c.low52 = c.low52 = c.date = c.time = c.swing =
         "--";
       return c;
     }
-    d = a.split(",");
+    d = hqstr.split(",");
     e = {};
     if (b)
       if (b.indexOf("hk") > -1) {
@@ -73,20 +75,22 @@ export const hqParser = new (function() {
 
     return e;
   }
-  function us(a, b) {
+  function us(item) {
+    let hqstr = window[`hq_str_${item.code}`];
+    let b = item.name;
     var c, d, e, f;
-    if (!a) {
+    if (!hqstr) {
       c = {};
       c.enName = c.name = c.open = c.preClose = c.low = c.high = c.now = c.change = c.changeP = c.buy = c.sell = c.volume = c.amount = c.pe = c.income = c.high52 = c.low52 = c.low52 = c.date = c.time = c.swing =
         "--";
       return c;
     }
-    d = a.split(",");
+    d = hqstr.split(",");
     e = {};
     b && (e.sym = b);
     e.name = d[0];
     e.now = 1 * d[1];
-    e.changeP = 1 * d[2];
+    e.changeP = 1 * d[2] + "%";
     e.updateTime = d[3];
     e.change = 1 * d[4];
     e.open = 1 * d[5];
@@ -137,15 +141,17 @@ export const hqParser = new (function() {
     }
     return e;
   }
-  function a(a, b) {
+  function a(item) {
+    let hqstr = window[`hq_str_${item.code}`];
+    let b = item.name;
     var c, d, e, f, g;
-    if (!a) {
+    if (!hqstr) {
       c = {};
       c.enName = c.name = c.open = c.preClose = c.low = c.high = c.now = c.change = c.changeP = c.buy = c.sell = c.volume = c.amount = c.pe = c.income = c.high52 = c.low52 = c.low52 = c.date = c.time = c.swing =
         "--";
       return c;
     }
-    d = a.split(",");
+    d = hqstr.split(",");
     e = {};
     if (b)
       if (b.indexOf("s") > -1) {
@@ -226,15 +232,17 @@ export const hqParser = new (function() {
     e.bsVols = bsVols;
     return e;
   }
-  function b(a) {
+  function b(item) {
+    let hqstr = window[`hq_str_${item.code}`];
+    let b = item.name;
     var c, d, e;
-    if (!a) {
+    if (!hqstr) {
       c = {};
       c.enName = c.name = c.open = c.preClose = c.low = c.high = c.now = c.change = c.changeP = c.buy = c.sell = c.volume = c.amount = c.pe = c.income = c.high52 = c.low52 = c.low52 = c.date = c.time = c.swing =
         "--";
       return c;
     }
-    d = a.split(",");
+    d = hqstr.split(",");
     e = {};
     e.name = d[0];
     e.now = 1 * d[1];
@@ -266,8 +274,10 @@ export const hqParser = new (function() {
     }
     return e;
   }
-  function fx(a, b) {
-    var d = a.split(",");
+  function fx(item) {
+    let hqstr = window[`hq_str_${item.code}`];
+    let b = item.name;
+    var d = hqstr.split(",");
 
     var _data = {};
     var _unit = 4;
@@ -304,12 +314,16 @@ export const hqParser = new (function() {
   return f;
 })();
 
+const handleMap = {
+  "11": "a",
+  "71": "fx",
+  "41": "us"
+};
 //(hqstr, papercode)
-export function parse(a, b) {
-  if (b.match(/^(sh)|(sz)\d+/i)) {
-    return hqParser.a(a, b);
-  }
-  if (b.match(/^fx_/i)) return hqParser.fx(a, b);
+export function parse(item) {
+  if (handleMap[item.countryID])
+    return hqParser[handleMap[item.countryID]](item);
+  else return {};
 }
 
 export function toFixed(value, n) {
@@ -321,3 +335,48 @@ export function toPercent(value, n) {
   let tmp = toFixed(value, n);
   return `${tmp}%`;
 }
+
+export const ObjectType = {
+  "11": "A 股",
+  "12": "B 股",
+  "13": "权证",
+  "14": "期货",
+  "15": "债券",
+  "21": "开基",
+  "22": "ETF",
+  "23": "LOF",
+  "24": "货基",
+  "25": "QDII",
+  "26": "封基",
+  "31": "港股",
+  "32": "窝轮",
+  "33": "港指数",
+  "41": "美股",
+  "42": "外期",
+  "71": "外汇",
+  "72": "基金",
+  "73": "新三板",
+  "74": "板块",
+  "75": "板块",
+  "76": "板块",
+  "77": "板块",
+  "78": "板块",
+  "79": "板块",
+  "80": "板块",
+  "81": "债券",
+  "82": "债券",
+  "85": "期货",
+  "86": "期货",
+  "87": "期货",
+  "88": "期货",
+  "100": "指数",
+  "101": "基金",
+  "102": "指数",
+  "103": "英股",
+  "104": "国债",
+  "105": "ETF",
+  "106": "ETF",
+  "107": "msci",
+  "111": "A股",
+  "120": "债券"
+};

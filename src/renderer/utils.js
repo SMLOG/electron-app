@@ -12,10 +12,8 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-
-
-export const hqParser = new (function () {
-  function a(a, b) {
+export const hqParser = new (function() {
+  function hk(a, b) {
     var c, d, e;
     if (!a) {
       c = {};
@@ -73,26 +71,9 @@ export const hqParser = new (function () {
       e.swing = "--";
     }
 
-    let bsPrices = [];
-    let bsVols = [];
-
-    for (let j = 28; j >= 20; j -= 2) {
-      bsVols.push(1 * d[j]);
-      bsPrices.push(d[j + 1]);
-    }
-
-    for (let k = 10; k < 20; k += 2) {
-      bsVols.push(1 * d[k]);
-      bsPrices.push(d[k + 1]);
-    }
-
-    e.bsPrices = bsPrices;
-    e.bsVols = bsVols;
-
-
     return e;
   }
-  function b(a, b) {
+  function us(a, b) {
     var c, d, e, f;
     if (!a) {
       c = {};
@@ -156,7 +137,7 @@ export const hqParser = new (function () {
     }
     return e;
   }
-  function c(a, b) {
+  function a(a, b) {
     var c, d, e, f, g;
     if (!a) {
       c = {};
@@ -209,6 +190,7 @@ export const hqParser = new (function () {
       (e.stopDay = !0);
     e.change = toFixed(e.now - e.preClose, 2);
     e.changeP = toFixed(100 * (e.change / e.preClose), 2);
+    e.changeP = e.percent = `${e.changeP}%`;
     if (!e.open) {
       e.open = "--";
       e.high = "--";
@@ -226,9 +208,25 @@ export const hqParser = new (function () {
       e.swing = "--";
     }
     e.now = e.now || e.preClose;
+
+    let bsPrices = [];
+    let bsVols = [];
+
+    for (let j = 28; j >= 20; j -= 2) {
+      bsVols.push(1 * d[j]);
+      bsPrices.push(d[j + 1]);
+    }
+
+    for (let k = 10; k < 20; k += 2) {
+      bsVols.push(1 * d[k]);
+      bsPrices.push(d[k + 1]);
+    }
+
+    e.bsPrices = bsPrices;
+    e.bsVols = bsVols;
     return e;
   }
-  function d(a) {
+  function b(a) {
     var c, d, e;
     if (!a) {
       c = {};
@@ -249,7 +247,7 @@ export const hqParser = new (function () {
     }
     return e;
   }
-  function e(a) {
+  function hf(a) {
     var c, d, e;
     if (!a) {
       c = {};
@@ -268,48 +266,49 @@ export const hqParser = new (function () {
     }
     return e;
   }
-  function g(a, b) {
+  function fx(a, b) {
     var d = a.split(",");
 
     var _data = {};
     var _unit = 4;
-    if ((d[3] * 1).toFixed(4) == '0.0000') {
+    if ((d[3] * 1).toFixed(4) == "0.0000") {
       _unit = 6;
     }
-    _data.sym = b
-    _data.name = d[9].replace('\u5373\u671F\u6C47\u7387', '');
+    _data.sym = b;
+    _data.name = d[9].replace("\u5373\u671F\u6C47\u7387", "").substring(0, 4);
     _data.now = (1 * d[8]).toFixed(_unit);
     _data.preClose = (1 * d[3]).toFixed(_unit);
     _data.open = (1 * d[5]).toFixed(_unit);
-    _data.higner = (1 * d[6]).toFixed(_unit);
-    _data.lower = (1 * d[7]).toFixed(_unit);
+    _data.high = (1 * d[6]).toFixed(_unit);
+    _data.low = (1 * d[7]).toFixed(_unit);
     _data.updownCount = (1 * (d[8] - d[3])).toFixed(_unit);
     _data.fullcompany = d[13];
     _data.swing = 1 * (d[6] - d[7]).toFixed(_unit);
-    _data.date = d[17] + ' ' + d[0];
+    _data.date = d[17] + " " + d[0];
     _data.change = _data.updownCount;
-    _data.changeP = _data.percent = ((10000 * (d[8] - d[3]) / d[3]).toFixed(4) / 100).toFixed(4) + "%";
-    console.log(_data)
+    _data.changeP = _data.percent =
+      (((10000 * (d[8] - d[3])) / d[3]).toFixed(4) / 100).toFixed(4) + "%";
+    console.log(_data);
     return _data;
-
   }
   function f(a, b, c) {
     var d = arguments.callee[a];
     return d ? d(a, b, c) : {};
   }
-  f.a = c;
-  f.b = d;
-  f.hk = a;
-  f.us = b;
-  f.hf = e;
-  f.fx = g;
+  f.a = a;
+  f.b = b;
+  f.hk = hk;
+  f.us = us;
+  f.hf = hf;
+  f.fx = fx;
   return f;
 })();
 
 //(hqstr, papercode)
 export function parse(a, b) {
-
-  if (b.match(/^(sh)|(sz)\d+/i)) { return hqParser.a(a, b); }
+  if (b.match(/^(sh)|(sz)\d+/i)) {
+    return hqParser.a(a, b);
+  }
   if (b.match(/^fx_/i)) return hqParser.fx(a, b);
 }
 

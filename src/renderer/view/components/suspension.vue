@@ -9,10 +9,7 @@
         <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
         <span class="content" :class="upDown(item.preClose)">
           <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
-          <i
-            @mouseenter="showPK(item,'style2')"
-            @mouseleave="hidePK(item)"
-          >({{item.change}}){{item.changeP}}</i>
+          <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
         </span>
       </div>
     </div>
@@ -382,7 +379,9 @@ export default {
 #suspension {
   border-radius: 3px;
   display: flex;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: #eef4fe;
+
+  /* background-color: rgba(255, 255, 255, 0.6);*/
 }
 .shrink2 {
   width: 8px;

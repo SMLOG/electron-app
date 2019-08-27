@@ -9,7 +9,7 @@
           <span
             class="content"
             :class="upDown(item.change)"
-          >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</span>
+          >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP}}</span>
         </div>
         <div class="c2">
           <span :class="upDown(item.open-item.preClose)">今开:{{item.open|fmtValue}}</span>
@@ -111,10 +111,10 @@ export default {
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
           if (cur.code.match(/^(sh)|(sz)/)) {
-            total.push(cur.code);
             total.push(`${cur.code}_i`);
-            return total;
           }
+          total.push(cur.code);
+          return total;
         }, [])
         .join(",");
       console.log(str);

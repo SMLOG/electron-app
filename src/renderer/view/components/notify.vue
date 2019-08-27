@@ -2,7 +2,7 @@
 <template>
   <div id="suspension">
     <div class="logo" ref="logo"></div>
-    <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
+    <span id="rt" class="shrink2" @click="toggleAutoShow" :class="{shrink:autoShow}"></span>
     <div class="content_body">
       <div class="item" v-for="msg in messages" :key="msg.id">
         <div>
@@ -16,7 +16,6 @@
         <div class="content">{{msg.content}}</div>
       </div>
     </div>
-    <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
   </div>
 </template>
 <script>
@@ -28,8 +27,7 @@ export default {
   data() {
     return {
       messages: [],
-      autoShrinkVWhenOut: false,
-      autoShrinkHWhenOut: false
+      autoShow: false
     };
   },
   filters: {
@@ -43,11 +41,8 @@ export default {
   methods: {
     hide() {},
     show() {},
-    shrinkH() {
-      this.autoShrinkHWhenOut = !this.autoShrinkHWhenOut;
-    },
-    shrinkW() {
-      this.autoShrinkVWhenOut = !this.autoShrinkVWhenOut;
+    toggleAutoShow() {
+      this.autoShow = !this.autoShow;
     },
     openItem(item) {
       if (this.openwin && this.openwin.code == item.code) {
@@ -95,12 +90,12 @@ export default {
     };
     this.$electron.ipcRenderer.on("message", (event, message) => {
       this.messages.unshift(message);
-      this.messages.splice(0, this.messages.length - 50);
+      this.messages.splice(50, this.messages.length - 50);
       //this.$el.scrollTop = this.$el.scrollHeight;
       if (!ismouseover) {
         window.scrollTo(0, 0);
         timerID && clearTimeout(timerID) && (timerID = 0);
-        show();
+        if (this.autoShow) show();
         timerID = setTimeout(hide, 10000);
       }
     });
@@ -119,7 +114,7 @@ export default {
     ev.initEvent("mouseleave", false, true);
     document.dispatchEvent(ev);
 
-    this.$refs.logo.addEventListener("mousedown", function(e) {
+    window.addEventListener("mousedown", function(e) {
       switch (e.button) {
         case 0:
           biasX = e.x;
@@ -132,7 +127,7 @@ export default {
       }
     });
 
-    this.$refs.logo.addEventListener("mouseup", function() {
+    window.addEventListener("mouseup", function() {
       biasX = 0;
       biasY = 0;
       document.removeEventListener("mousemove", moveEvent);

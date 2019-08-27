@@ -207,9 +207,10 @@ export default {
 
           //** 每增涨 0.5 发送通知 */
           item.threshold == undefined && (item.threshold = 0);
-          if (Math.abs(item.changeP - item.threshold) >= 0.5) {
-            item.threshold +=
-              parseInt((item.changeP - item.threshold) / 0.5) * 0.5;
+
+          let diff = item.changeP - item.threshold;
+          if (Math.abs(diff) >= 0.5) {
+            item.threshold += parseInt(diff / 0.5) * 0.5;
             this.notify(
               item,
               `over ${item.threshold}% to ${toFixed(item.changeP, 2)}%.`

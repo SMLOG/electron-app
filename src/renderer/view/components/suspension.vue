@@ -210,11 +210,15 @@ export default {
 
           let diff = item.changeP - item.threshold;
           if (Math.abs(diff) >= 0.5) {
-            item.threshold += parseInt(diff / 0.5) * 0.5;
+            let incr = parseInt(diff / 0.5) * 0.5;
             this.notify(
               item,
-              `over ${item.threshold}% to ${toFixed(item.changeP, 2)}%.`
+              `increase ${incr} +  ${item.threshold}% to ${toFixed(
+                item.changeP,
+                2
+              )}%.`
             );
+            item.threshold += incr;
           }
 
           //**超过均线后发送通知 */
@@ -267,7 +271,7 @@ export default {
           html.scrollHeight,
           html.offsetHeight
         );
-        win.setSize(winSize[0], height);
+        if (winSize[1] != height) win.setSize(winSize[0], height);
       }, 0);
     };
     this.loadDatas();
@@ -278,14 +282,15 @@ export default {
     });
     resizeWin();
     document.addEventListener("mouseenter", event => {
-      let winSize = win.getSize();
-
       if (this.autoShrinkVWhenOut) {
         resizeWin();
       }
       if (this.autoShrinkHWhenOut) {
-        const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-        win.setPosition(size.width - winSize[0], win.getPosition()[1]);
+        setTimeout(() => {
+          let winSize = win.getSize();
+          const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
+          win.setPosition(size.width - winSize[0], win.getPosition()[1]);
+        }, 1);
       }
     });
 
@@ -344,7 +349,7 @@ export default {
   line-height: 25px;
   font-size: 12px;
   text-align: center;
-  color: #74a1fa;
+  color: #ccc;
 }
 .up {
   color: #c00;
@@ -377,7 +382,7 @@ export default {
 #suspension {
   border-radius: 3px;
   display: flex;
-  background-color: #eef4fe;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .shrink2 {
   width: 8px;

@@ -88,7 +88,7 @@ function createSuspensionWindow() {
   win = new BrowserWindow({
     useContentSize: true,
     width: 2 * 107, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
-    height: 4 * 27, //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
+    height: 27, //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
     type: "toolbar", //创建的窗口类型为工具栏窗口
     frame: false, //要创建无边框窗口
     autoHideMenuBar: true,
@@ -103,7 +103,7 @@ function createSuspensionWindow() {
   });
   const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
   const winSize = win.getSize(); //获取窗口宽高
-
+  win.setMenu(null);
   //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
   win.setPosition(size.width - winSize[0], 100);
   win.loadURL(winURL);

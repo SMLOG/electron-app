@@ -4,19 +4,17 @@
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
-      <draggable v-model="items" @update="dragEnd">
-        <div class="item" v-for="item in items" :key="item.code">
-          <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-          <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
-          <span class="content" :class="upDown(item.change)">
-            <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now|fmtValue}}</i>
-            <i
-              @mouseenter="showPK(item,'style2')"
-              @mouseleave="hidePK(item)"
-            >({{item.change|fmtValue}}){{item.changeP|fmtPercent}}</i>
-          </span>
-        </div>
-      </draggable>
+      <div class="item" v-for="item in items" :key="item.code">
+        <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
+        <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
+        <span class="content" :class="upDown(item.preClose)">
+          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
+          <i
+            @mouseenter="showPK(item,'style2')"
+            @mouseleave="hidePK(item)"
+          >({{item.change}}){{item.changeP}}</i>
+        </span>
+      </div>
     </div>
     <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
   </div>
@@ -186,19 +184,21 @@ export default {
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
           if (cur.code.match(/^(sh)|(sz)/)) {
-            total.push(cur.code);
             total.push(`${cur.code}_i`);
-            return total;
           }
+          total.push(cur.code);
+
+          return total;
         }, [])
         .join(",");
       let needReloadData = false;
       //http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/var=/CN_MarketData.getKLineData?symbol=sz000001&scale=240&ma=no&datalen=1
       //http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh601318&scale=240&ma=5,10,30&datalen=1
-
+      console.log(`http://hq.sinajs.cn/list=${str}`);
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
           let hqstr = window[`hq_str_${item.code}`];
+          console.log(hqstr);
           let data = parse(hqstr, item.code);
           data.pre = item.now;
           Object.assign(item, data);

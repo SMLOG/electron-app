@@ -83,12 +83,16 @@ export default {
           .map((eStr, i) => {
             if (!eStr) return null;
             let item = eStr.split(",");
+            let code = item[3];
+            if (item[1] == 71) {
+              code = `fx_s${item[3]}`;
+            }
             return {
               id: i,
               oname: item[0],
               name: item[4],
               countryID: item[1],
-              code: item[3]
+              code: code
             };
           })
           .filter(e => e);

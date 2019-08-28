@@ -11,7 +11,7 @@
           <span
             class="content"
             :class="upDown(msg.item.change)"
-          >{{msg.item.now|fmtValue}}({{msg.item.change|fmtValue}}){{msg.item.changeP|fmtPercent}}</span>
+          >{{msg.item.now|fmtValue}}({{msg.item.change|fmtValue}}){{msg.item.changeP}}</span>
         </div>
         <div class="content">{{msg.content}}</div>
       </div>
@@ -91,6 +91,7 @@ export default {
     this.$electron.ipcRenderer.on("message", (event, message) => {
       this.messages.unshift(message);
       this.messages.splice(50, this.messages.length - 50);
+      console.log(message);
       //this.$el.scrollTop = this.$el.scrollHeight;
       if (!ismouseover) {
         window.scrollTo(0, 0);

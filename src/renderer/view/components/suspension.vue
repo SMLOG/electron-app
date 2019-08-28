@@ -7,7 +7,7 @@
       <div class="item" v-for="item in items" :key="item.code">
         <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
-        <span class="content" :class="upDown(item.preClose)">
+        <span class="content" :class="upDown(item.now-item.preClose)">
           <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
           <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
         </span>
@@ -210,15 +210,12 @@ export default {
           //** 每增涨 0.5 发送通知 */
           item.threshold == undefined && (item.threshold = 0);
 
-          let diff = item.changeP - item.threshold;
+          let diff = item.changePV - item.threshold;
           if (Math.abs(diff) >= 0.5) {
             let incr = parseInt(diff / 0.5) * 0.5;
             this.notify(
               item,
-              `increase ${incr} +  ${item.threshold}% to ${toFixed(
-                item.changeP,
-                2
-              )}%.`
+              `increase ${incr} +  ${item.threshold}% to ${item.changeP}.`
             );
             item.threshold += incr;
           }
@@ -302,7 +299,7 @@ export default {
       if (this.autoShrinkVWhenOut) {
         this.time = winSize[1];
 
-        win.setSize(winSize[0], 1 * 27);
+        win.setSize(winSize[0], 1 * 18);
       }
       if (this.autoShrinkHWhenOut) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -347,8 +344,8 @@ export default {
   margin: 0;
 }
 .item {
-  height: 25px;
-  line-height: 25px;
+  height: 18px;
+  line-height: 18px;
   font-size: 12px;
   text-align: center;
   color: #ccc;

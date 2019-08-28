@@ -169,7 +169,7 @@ export default {
 
     let that = this;
     document.addEventListener("mouseleave", event => {
-      // window.close();
+      window.close();
     });
 
     document.addEventListener("mousedown", function(e) {

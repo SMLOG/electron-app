@@ -47,7 +47,12 @@ ipcMain.on("createSuspensionMenu", e => {
         notifywin.setAlwaysOnTop(!isTop);
       }
     },
-    { label: "本次传输完自动关机" },
+    {
+      label: "DevTool", click: () => {
+        win.webContents.openDevTools()
+
+      }
+    },
     { type: "separator" },
     {
       label: "隐藏悬浮窗",

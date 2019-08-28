@@ -12,7 +12,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export const hqParser = new (function() {
+export const hqParser = new (function () {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];
     let b = item.name;
@@ -196,6 +196,8 @@ export const hqParser = new (function() {
       (e.stopDay = !0);
     e.change = toFixed(e.now - e.preClose, 2);
     e.changeP = toFixed(100 * (e.change / e.preClose), 2);
+    e.changePV = e.changeP
+
     e.changeP = e.percent = `${e.changeP}%`;
     if (!e.open) {
       e.open = "--";
@@ -213,7 +215,7 @@ export const hqParser = new (function() {
       e.preClose = "--";
       e.swing = "--";
     }
-    e.now = e.now || e.preClose;
+    e.now = e.now;//|| e.preClose;
 
     let bsPrices = [];
     let bsVols = [];
@@ -230,6 +232,28 @@ export const hqParser = new (function() {
 
     e.bsPrices = bsPrices;
     e.bsVols = bsVols;
+
+    if (!e.now) {
+      e.now = d[11];
+    }
+    let once_hq_i = window['hq_str_' + item.code + '_i'];
+    if (once_hq_i) {
+
+      let _data_i = once_hq_i.split(',');
+
+      e.totalcapital = _data_i[7]; //总股本
+      e.zgb = _data_i[7] * 10000; //总股本
+      e.kcbinfo = _data_i[23]; //科创板信息 "C|W|10|16000000|8000000"
+      e.currcapital = _data_i ? _data_i[8] : e.totalcapital;
+      e.turnover = e.volume / e.currcapital / 10000 * 100;
+      e.totalShare = e.now > 0 ? e.now * e.totalcapital * 10000 : '--';
+      e.cvs = e.now > 0 ? e.now * e.currcapital * 10000 : '--';
+      e.ltgb = 1 * e.currcapital * 10000;
+
+
+    }
+
+
     return e;
   }
   function b(item) {
@@ -296,8 +320,9 @@ export const hqParser = new (function() {
     _data.swing = 1 * (d[6] - d[7]).toFixed(_unit);
     _data.date = d[17] + " " + d[0];
     _data.change = _data.updownCount;
-    _data.changeP = _data.percent =
-      (((10000 * (d[8] - d[3])) / d[3]).toFixed(4) / 100).toFixed(4) + "%";
+    _data.changePV = (((10000 * (d[8] - d[3])) / d[3]).toFixed(4) / 100).toFixed(4)
+
+    _data.changeP = _data.percent = _data.changePV + "%";
     console.log(_data);
     return _data;
   }

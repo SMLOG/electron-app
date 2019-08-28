@@ -341,7 +341,8 @@ const handleMap = {
   "11": "a",
   "71": "fx",
   "41": "us",
-  "31": "hk"
+  "31": "hk",
+  "33": "hk"
 };
 //(hqstr, papercode)
 export function parse(item) {

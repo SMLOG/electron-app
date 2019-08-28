@@ -88,6 +88,10 @@ export default {
               case 31:
                 code = `hk${item[3]}`;
                 break;
+              case 33:
+                code = `rt_hk${item[0]}`;
+                break;
+
               case 41:
                 code = `gb_${item[3].replace(/\./g, "$")}`;
                 break;

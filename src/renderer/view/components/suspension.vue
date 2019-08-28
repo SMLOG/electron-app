@@ -18,7 +18,7 @@
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent, getLink } from "@/utils";
 import draggable from "vuedraggable";
 
 export default {
@@ -127,9 +127,7 @@ export default {
           }
         );
 
-        this.openwin.loadURL(
-          `https://quotes.sina.cn/hs/company/quotes/view/${item.orgCode}?from=nbsearchresult`
-        );
+        this.openwin.loadURL(getLink(item));
         openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
   return scripts.reduce((currentPromise, scriptUrl) => {
     return currentPromise.then(() => {

@@ -405,3 +405,52 @@ export const ObjectType = {
   "111": "A股",
   "120": "债券"
 };
+
+
+export function getLink(item) {
+
+  let a, s;
+  switch (item.countryID) {
+    case "11":
+    case "12":
+      a = "\u6caa\u6df1",
+        s = "//quotes.sina.cn/hs/company/quotes/view/" + item.orgCode;
+      break;
+    case "31":
+    case "32":
+    case "33":
+      a = "\u6e2f\u80a1",
+        s = "//quotes.sina.cn/hk/company/quotes/view/" + item.orgCode;
+      break;
+    case "41":
+      a = "\u7f8e\u80a1",
+        s = " http://gu.sina.cn/us/hq/quotes.php?code=" + item.orgCode;
+      break;
+    case "73":
+      a = "\u65b0\u4e09\u677f",
+        s = "//gu.sina.cn/tm/hq/quotes.php?code=" + item.orgCode;
+      break;
+    case "100":
+      a = "\u5168\u7403\u6307\u6570",
+        s = "http://quotes.sina.cn/global/hq/quotes.php?code=" + item.orgCode;
+      break;
+
+    case "21":
+
+    case "22":
+
+    case "23":
+
+    case "24":
+
+    case "25":
+
+    case "26":
+
+      s = "//stocks.sina.cn/fund/?code=" + item.orgCode;
+    default:
+      s = "//gu.sina.cn/fx/hq/quotes.php?code=" + item.orgCode;
+  }
+
+  return "https:" + s;
+}

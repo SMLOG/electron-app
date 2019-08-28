@@ -12,7 +12,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export const hqParser = new (function () {
+export const hqParser = new (function() {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];
     let b = item.name;
@@ -196,7 +196,7 @@ export const hqParser = new (function () {
       (e.stopDay = !0);
     e.change = toFixed(e.now - e.preClose, 2);
     e.changeP = toFixed(100 * (e.change / e.preClose), 2);
-    e.changePV = e.changeP
+    e.changePV = e.changeP;
 
     e.changeP = e.percent = `${e.changeP}%`;
     if (!e.open) {
@@ -215,7 +215,7 @@ export const hqParser = new (function () {
       e.preClose = "--";
       e.swing = "--";
     }
-    e.now = e.now;//|| e.preClose;
+    e.now = e.now; //|| e.preClose;
 
     let bsPrices = [];
     let bsVols = [];
@@ -236,23 +236,19 @@ export const hqParser = new (function () {
     if (!e.now) {
       e.now = d[11];
     }
-    let once_hq_i = window['hq_str_' + item.code + '_i'];
+    let once_hq_i = window["hq_str_" + item.code + "_i"];
     if (once_hq_i) {
-
-      let _data_i = once_hq_i.split(',');
+      let _data_i = once_hq_i.split(",");
 
       e.totalcapital = _data_i[7]; //总股本
       e.zgb = _data_i[7] * 10000; //总股本
       e.kcbinfo = _data_i[23]; //科创板信息 "C|W|10|16000000|8000000"
       e.currcapital = _data_i ? _data_i[8] : e.totalcapital;
-      e.turnover = e.volume / e.currcapital / 10000 * 100;
-      e.totalShare = e.now > 0 ? e.now * e.totalcapital * 10000 : '--';
-      e.cvs = e.now > 0 ? e.now * e.currcapital * 10000 : '--';
+      e.turnover = (e.volume / e.currcapital / 10000) * 100;
+      e.totalShare = e.now > 0 ? e.now * e.totalcapital * 10000 : "--";
+      e.cvs = e.now > 0 ? e.now * e.currcapital * 10000 : "--";
       e.ltgb = 1 * e.currcapital * 10000;
-
-
     }
-
 
     return e;
   }
@@ -320,7 +316,9 @@ export const hqParser = new (function () {
     _data.swing = 1 * (d[6] - d[7]).toFixed(_unit);
     _data.date = d[17] + " " + d[0];
     _data.change = _data.updownCount;
-    _data.changePV = (((10000 * (d[8] - d[3])) / d[3]).toFixed(4) / 100).toFixed(4)
+    _data.changePV = (
+      ((10000 * (d[8] - d[3])) / d[3]).toFixed(4) / 100
+    ).toFixed(4);
 
     _data.changeP = _data.percent = _data.changePV + "%";
     console.log(_data);
@@ -342,7 +340,8 @@ export const hqParser = new (function () {
 const handleMap = {
   "11": "a",
   "71": "fx",
-  "41": "us"
+  "41": "us",
+  "31": "hk"
 };
 //(hqstr, papercode)
 export function parse(item) {
@@ -406,33 +405,31 @@ export const ObjectType = {
   "120": "债券"
 };
 
-
 export function getLink(item) {
-
   let a, s;
   switch (item.countryID) {
     case "11":
     case "12":
-      a = "\u6caa\u6df1",
-        s = "//quotes.sina.cn/hs/company/quotes/view/" + item.orgCode;
+      (a = "\u6caa\u6df1"),
+        (s = "//quotes.sina.cn/hs/company/quotes/view/" + item.orgCode);
       break;
     case "31":
     case "32":
     case "33":
-      a = "\u6e2f\u80a1",
-        s = "//quotes.sina.cn/hk/company/quotes/view/" + item.orgCode;
+      (a = "\u6e2f\u80a1"),
+        (s = "//quotes.sina.cn/hk/company/quotes/view/" + item.orgCode);
       break;
     case "41":
-      a = "\u7f8e\u80a1",
-        s = " http://gu.sina.cn/us/hq/quotes.php?code=" + item.orgCode;
+      (a = "\u7f8e\u80a1"),
+        (s = "//gu.sina.cn/us/hq/quotes.php?code=" + item.orgCode);
       break;
     case "73":
-      a = "\u65b0\u4e09\u677f",
-        s = "//gu.sina.cn/tm/hq/quotes.php?code=" + item.orgCode;
+      (a = "\u65b0\u4e09\u677f"),
+        (s = "//gu.sina.cn/tm/hq/quotes.php?code=" + item.orgCode);
       break;
     case "100":
-      a = "\u5168\u7403\u6307\u6570",
-        s = "http://quotes.sina.cn/global/hq/quotes.php?code=" + item.orgCode;
+      (a = "\u5168\u7403\u6307\u6570"),
+        (s = "//quotes.sina.cn/global/hq/quotes.php?code=" + item.orgCode);
       break;
 
     case "21":
@@ -446,7 +443,6 @@ export function getLink(item) {
     case "25":
 
     case "26":
-
       s = "//stocks.sina.cn/fund/?code=" + item.orgCode;
     default:
       s = "//gu.sina.cn/fx/hq/quotes.php?code=" + item.orgCode;

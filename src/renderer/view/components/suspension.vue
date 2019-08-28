@@ -112,22 +112,22 @@ export default {
           delete window.openwin;
         } catch (e) {}
       }
-      {
-        window.openwin = this.openwin = new this.$electron.remote.BrowserWindow(
-          {
-            width: 800,
-            height: 600,
-            webPreferences: {
-              javascript: true,
-              plugins: true,
-              nodeIntegration: true,
-              webSecurity: false,
-              preload: "http://localhost:9080/static/preload.js"
-            }
-          }
-        );
 
-        this.openwin.loadURL(getLink(item));
+      window.openwin = this.openwin = new this.$electron.remote.BrowserWindow({
+        width: 400,
+        height: 600,
+        webPreferences: {
+          javascript: true,
+          plugins: true,
+          nodeIntegration: true,
+          webSecurity: false,
+          preload: "http://localhost:9080/static/preload.js"
+        }
+      });
+
+      this.openwin.loadURL(getLink(item));
+
+      openwin.webContents.on("dom-ready", e => {
         openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
   return scripts.reduce((currentPromise, scriptUrl) => {
     return currentPromise.then(() => {
@@ -140,17 +140,17 @@ export default {
       });
     });
   }, Promise.resolve());
-}`);
-        openwin.webContents.executeJavaScript(
-          `loadScripts(['http://localhost:9080/static/preload.js'])`
-        );
-        //openwin.webContents.openDevTools();
-        /* window.openwin = this.openwin = window.open(
+}
+loadScripts(['http://localhost:9080/static/preload.js'])`);
+      });
+
+      //openwin.webContents.openDevTools();
+      /* window.openwin = this.openwin = window.open(
           `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
           "item"
         );*/
-        this.openwin.code = item.code;
-      }
+      this.openwin.code = item.code;
+
       //let win = this.$electron.remote.getCurrentWindow();
       // win.focus();
     },
@@ -342,8 +342,8 @@ export default {
   margin: 0;
 }
 .item {
-  height: 18px;
-  line-height: 18px;
+  height: 25px;
+  line-height: 25px;
   font-size: 12px;
   text-align: center;
   color: #ccc;

@@ -33,3 +33,17 @@ document.addEventListener("mouseup", function() {
 function moveEvent(e) {
   win.setPosition(e.screenX - biasX, e.screenY - biasY);
 }
+
+$(document).ready(() => {
+  $(
+    "#tbanner,header,nav,footer,iframe,.hq-news-title,#f_blank,#HQBox_Names_Add,#HQBox_Names"
+  )
+    .hide()
+    .height(0)
+    .width(0);
+
+  $("#HQBox_Main .hqbox-detail-row")
+    .eq(0)
+    .click();
+  //$("#HQBox_Main").css({ "background-color": "white", color: "black" });
+});

@@ -6,7 +6,7 @@
     <div class="content_body">
       <div class="item" v-for="item in items" :key="item.code">
         <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-        <span class="name" :title="item.name" @click="openItem(item)">{{item.name}}</span>
+        <span class="name" :title="title(item)" @click="openItem(item)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
           <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
           <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
@@ -19,7 +19,7 @@
 <script>
 import store from "@/localdata";
 import { loadScripts, parse, toFixed, toPercent, getLink } from "@/utils";
-import draggable from "vuedraggable";
+import { ObjectType } from "@/utils";
 
 export default {
   name: "suspension",
@@ -45,6 +45,9 @@ export default {
   },
 
   methods: {
+    title(item) {
+      return `${item.name}\n${ObjectType[item.countryID]}\n${item.orgCode}`;
+    },
     dragEnd(e) {
       e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
       store.save(this.items);

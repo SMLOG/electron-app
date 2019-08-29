@@ -6,20 +6,17 @@ import {
   shell,
   app,
   webContents,
-  globalShortcut, MenuItem
-
+  globalShortcut,
+  MenuItem
 } from "electron";
 
 var win = null;
-
 
 const winURL =
   process.env.NODE_ENV === "development"
     ? `http://localhost:9080/#/suspension`
     : `file://${__dirname}/index.html/#/suspension`;
-ipcMain.on("showSuspensionWindow", () => {
-
-});
+ipcMain.on("showSuspensionWindow", () => {});
 
 ipcMain.on("createSuspensionMenu", e => {
   const rightM = Menu.buildFromTemplate([
@@ -49,9 +46,9 @@ ipcMain.on("createSuspensionMenu", e => {
       }
     },
     {
-      label: "DevTool", click: () => {
-        win.webContents.openDevTools({ mode: 'bottom' })
-
+      label: "DevTool",
+      click: () => {
+        win.webContents.openDevTools({ mode: "bottom" });
       }
     },
     { type: "separator" },
@@ -181,7 +178,3 @@ function createNotifyWindow() {
 }
 
 createNotifyWindow();
-
-
-
-

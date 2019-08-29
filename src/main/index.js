@@ -1,7 +1,12 @@
 import {
-  app, BrowserWindow, globalShortcut, dialog, Tray, Menu
+  app,
+  BrowserWindow,
+  globalShortcut,
+  dialog,
+  Tray,
+  Menu
 } from "electron";
-import * as  path from 'path';
+import * as path from "path";
 
 /**
  * Set `__static` path to static files in production
@@ -27,6 +32,7 @@ function createWindow() {
     height: 563,
     useContentSize: true,
     width: 1000,
+    icon: "app.ico",
     show: false
   });
   mainWindow.loadURL(winURL);
@@ -46,10 +52,9 @@ function createWindow() {
     mainWindow = null;
   });
 
-  mainWindow.on('blur', (e) => {
+  mainWindow.on("blur", e => {
     mainWindow.hide();
-  })
-
+  });
 }
 
 app.on("ready", () => {
@@ -70,89 +75,80 @@ app.on("ready", () => {
   });
   createWindow();
   // 注册一个'CommandOrControl+X'快捷键的监听。
-  console.log('regist global key');
-  const ret = globalShortcut.register('CommandOrControl+Alt+X', () => {
+  console.log("regist global key");
+  const ret = globalShortcut.register("CommandOrControl+Alt+X", () => {
     toggleShowHide();
-  })
+  });
 
   if (!ret) {
-    console.log('注册失败')
+    console.log("注册失败");
   }
 
   // 检查这个快捷键是否被注册。
-  console.log(globalShortcut.isRegistered('CommandOrControl+X'))
+  console.log(globalShortcut.isRegistered("CommandOrControl+X"));
   var appTray = null;
   //系统托盘图标目录
   //let trayIcon = path.join(__dirname, 'app');//app是选取的目录
   var trayMenuTemplate = [
     {
-      label: '设置',
-      click: function () { } //打开相应页面
+      label: "设置",
+      click: function() {} //打开相应页面
     },
     {
-      label: '帮助',
-      click: function () { }
+      label: "帮助",
+      click: function() {}
     },
     {
-      label: '关于',
-      click: function () { }
+      label: "关于",
+      click: function() {}
     },
     {
-      label: '退出',
-      click: function () {
+      label: "退出",
+      click: function() {
         app.quit();
-        app.quit();//因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
+        app.quit(); //因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
       }
     }
   ];
 
-
-  appTray = new Tray(path.join(__dirname, 'app.png'));//app.ico是app目录下的ico文件
+  appTray = new Tray(path.join(__dirname, "app.png")); //app.ico是app目录下的ico文件
 
   //图标的上下文菜单
   const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
 
   //设置此托盘图标的悬停提示内容
-  appTray.setToolTip('我的托盘图标');
+  appTray.setToolTip("我的托盘图标");
 
   //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
   //单击右下角小图标显示应用
-  appTray.on('click', function () {
-
+  appTray.on("click", function() {
     toggleShowHide();
-
-  })
+  });
 });
 let show = () => {
   app.minwin.show();
   app.notifywin.show();
-}
+};
 let hide = () => {
   app.minwin.hide();
   app.notifywin.hide();
-}
+};
 let toggleShowHide = () => {
   if (app.minwin.isVisible()) {
     hide();
-  }
-
-  else {
+  } else {
     show();
   }
-}
+};
 
-
-
-
-
-app.on('will-quit', () => {
+app.on("will-quit", () => {
   // 注销一个快捷键。
-  globalShortcut.unregister('CommandOrControl+X')
+  globalShortcut.unregister("CommandOrControl+X");
 
   // 注销所有快捷键。
-  globalShortcut.unregisterAll()
-})
+  globalShortcut.unregisterAll();
+});
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();

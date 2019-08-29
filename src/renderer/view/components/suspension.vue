@@ -12,22 +12,30 @@
           <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
         </span>
       </div>
+      <div class="item">{{time}}</div>
     </div>
     <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
   </div>
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent, getLink } from "@/utils";
+import {
+  loadScripts,
+  parse,
+  toFixed,
+  toPercent,
+  getLink,
+  openWin
+} from "@/utils";
 import { ObjectType } from "@/utils";
 
 export default {
   name: "suspension",
   data() {
     return {
-      time: "world",
+      time: "--",
       items: [{ code: "sh000001" }],
-      autoShrinkVWhenOut: false,
+      autoShrinkVWhenOut: true,
       autoShrinkHWhenOut: false,
       loadMDate: false
     };
@@ -102,60 +110,7 @@ export default {
       });
     },
     openItem(item) {
-      if (this.openwin) {
-        try {
-          this.openwin.close();
-          if (this.openwin.code == item.code) {
-            delete this.openwin;
-            delete window.openwin;
-
-            return;
-          }
-          delete this.openwin;
-          delete window.openwin;
-        } catch (e) {}
-      }
-
-      window.openwin = this.openwin = new this.$electron.remote.BrowserWindow({
-        width: 400,
-        height: 600,
-        webPreferences: {
-          javascript: true,
-          plugins: true,
-          nodeIntegration: true,
-          webSecurity: false,
-          preload: "http://localhost:9080/static/preload.js"
-        }
-      });
-
-      this.openwin.loadURL(getLink(item));
-
-      openwin.webContents.on("dom-ready", e => {
-        openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
-  return scripts.reduce((currentPromise, scriptUrl) => {
-    return currentPromise.then(() => {
-      return new Promise((resolve, reject) => {
-        var script = document.createElement("script");
-        script.async = true;
-        script.src = scriptUrl;
-        script.onload = () => resolve();
-        document.getElementsByTagName("head")[0].appendChild(script);
-      });
-    });
-  }, Promise.resolve());
-}
-loadScripts(['http://localhost:9080/static/preload.js'])`);
-      });
-
-      //openwin.webContents.openDevTools();
-      /* window.openwin = this.openwin = window.open(
-          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
-          "item"
-        );*/
-      this.openwin.code = item.code;
-
-      //let win = this.$electron.remote.getCurrentWindow();
-      // win.focus();
+      openWin(this, item);
     },
     upDown(val) {
       if (val > 0) return "up";
@@ -204,6 +159,7 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
         this.items.map((item, i) => {
           let data = parse(item);
           data.pre = item.now;
+          this.time = item.time;
           Object.assign(item, data);
 
           this.items.splice(i, 1, item);
@@ -302,16 +258,18 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
       let winSize = win.getSize();
 
       if (this.autoShrinkVWhenOut) {
-        setSize(win, winSize[0], 1 * 18);
+        setSize(win, winSize[0], 1 * 25);
       }
       if (this.autoShrinkHWhenOut) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
         win.setPosition(size.width - 6, win.getPosition()[1]);
       }
     });
-    let ev = document.createEvent("HTMLEvents");
-    ev.initEvent("mouseleave", false, true);
-    document.dispatchEvent(ev);
+    setTimeout(() => {
+      let ev = document.createEvent("HTMLEvents");
+      ev.initEvent("mouseleave", true, false);
+      document.dispatchEvent(ev);
+    }, 1000);
 
     document.addEventListener("mousedown", function(e) {
       switch (e.button) {

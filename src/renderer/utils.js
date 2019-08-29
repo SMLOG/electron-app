@@ -194,6 +194,10 @@ export const hqParser = new (function() {
       e.buy ||
       e.sell ||
       (e.stopDay = !0);
+
+    if (!e.now) {
+      e.now = d[11];
+    }
     e.change = toFixed(e.now - e.preClose, 2);
     e.changeP = toFixed(100 * (e.change / e.preClose), 2);
     e.changePV = e.changeP;
@@ -215,7 +219,7 @@ export const hqParser = new (function() {
       e.preClose = "--";
       e.swing = "--";
     }
-    e.now = e.now; //|| e.preClose;
+    //e.now = e.now; //|| e.preClose;
 
     let bsPrices = [];
     let bsVols = [];
@@ -233,9 +237,6 @@ export const hqParser = new (function() {
     e.bsPrices = bsPrices;
     e.bsVols = bsVols;
 
-    if (!e.now) {
-      e.now = d[11];
-    }
     let once_hq_i = window["hq_str_" + item.code + "_i"];
     if (once_hq_i) {
       let _data_i = once_hq_i.split(",");
@@ -450,4 +451,60 @@ export function getLink(item) {
   }
 
   return "https:" + s;
+}
+
+export function openWin(target, item) {
+  let app = target.$electron.remote.app;
+  if (app.openwin) {
+    try {
+      app.openwin.close();
+      if (app.openwin.code == item.code) {
+        delete app.openwin;
+
+        return;
+      }
+      delete app.openwin;
+    } catch (e) {}
+  }
+
+  let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
+    width: 400,
+    height: 600,
+    webPreferences: {
+      javascript: true,
+      plugins: true,
+      nodeIntegration: true,
+      webSecurity: false,
+      preload: "http://localhost:9080/static/preload.js"
+    }
+  }));
+
+  openwin.loadURL(getLink(item));
+
+  openwin.webContents.on("dom-ready", e => {
+    openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
+return scripts.reduce((currentPromise, scriptUrl) => {
+return currentPromise.then(() => {
+  return new Promise((resolve, reject) => {
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = scriptUrl;
+    script.onload = () => resolve();
+    document.getElementsByTagName("head")[0].appendChild(script);
+  });
+});
+}, Promise.resolve());
+}
+loadScripts(['http://localhost:9080/static/preload.js'])`);
+  });
+
+  //openwin.webContents.openDevTools();
+  /* window.openwin = this.openwin = window.open(
+      `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
+      "item"
+    );*/
+  openwin.code = item.code;
+
+  //let win = this.$electron.remote.getCurrentWindow();
+  // win.focus();
 }

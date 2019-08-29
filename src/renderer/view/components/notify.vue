@@ -20,7 +20,7 @@
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent, openWin } from "@/utils";
 
 export default {
   name: "notify",
@@ -45,20 +45,7 @@ export default {
       this.autoShow = !this.autoShow;
     },
     openItem(item) {
-      if (this.openwin && this.openwin.code == item.code) {
-        try {
-          this.openwin.close();
-          this.openwin = null;
-        } catch (e) {}
-      } else {
-        this.openwin = window.open(
-          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
-          "item"
-        );
-        this.openwin.code = item.code;
-      }
-      let win = this.$electron.remote.getCurrentWindow();
-      win.focus();
+      openWin(this, item);
     },
     upDown(val) {
       if (val > 0) return "up";

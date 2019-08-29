@@ -256,7 +256,11 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
     let biasY = 0;
     let that = this;
     let openwin;
-
+    let setSize = (win, w, h) => {
+      win.setResizable(true);
+      win.setSize(w, h);
+      win.setResizable(false);
+    };
     let resizeWin = () => {
       setTimeout(() => {
         let winSize = win.getSize();
@@ -271,7 +275,7 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
           html.scrollHeight,
           html.offsetHeight
         );
-        if (winSize[1] != height) win.setSize(winSize[0], height);
+        if (winSize[1] != height) setSize(win, winSize[0], height);
       }, 0);
     };
     this.loadDatas();
@@ -298,13 +302,11 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
       let winSize = win.getSize();
 
       if (this.autoShrinkVWhenOut) {
-        this.time = winSize[1];
-
-        win.setSize(winSize[0], 1 * 18);
+        setSize(win, winSize[0], 1 * 18);
       }
       if (this.autoShrinkHWhenOut) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-        win.setPosition(size.width - 10, win.getPosition()[1]);
+        win.setPosition(size.width - 6, win.getPosition()[1]);
       }
     });
     let ev = document.createEvent("HTMLEvents");

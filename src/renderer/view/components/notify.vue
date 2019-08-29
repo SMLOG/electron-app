@@ -80,7 +80,7 @@ export default {
     let hide = () => {
       let winSize = win.getSize();
       const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-      win.setPosition(size.width - 10, win.getPosition()[1]);
+      win.setPosition(size.width - 6, win.getPosition()[1]);
     };
     let show = () => {
       let winSize = win.getSize();
@@ -92,6 +92,7 @@ export default {
       this.messages.unshift(message);
       this.messages.splice(50, this.messages.length - 50);
       console.log(message);
+      win.setAlwaysOnTop(true, "floating", 1);
       //this.$el.scrollTop = this.$el.scrollHeight;
       if (!ismouseover) {
         window.scrollTo(0, 0);
@@ -166,8 +167,8 @@ export default {
   display: inline-block;
 }
 .logo {
-  width: 40px;
-  background: #5b9bfe url("../../assets/img/logo@2x.png") no-repeat 2px 3px;
+  width: 3px;
+  background: #5b9bfe;
   background-size: 80%;
   cursor: move;
 }

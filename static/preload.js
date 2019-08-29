@@ -11,7 +11,7 @@ document.addEventListener("mouseenter", event => {
   if (timerID) clearTimeout(timerID);
   //console.log(event);
 });
-document.addEventListener("mousedown", function(e) {
+document.addEventListener("mousedown", function (e) {
   switch (e.button) {
     case 0:
       biasX = e.x;
@@ -24,7 +24,7 @@ document.addEventListener("mousedown", function(e) {
   }
 });
 
-document.addEventListener("mouseup", function() {
+document.addEventListener("mouseup", function () {
   biasX = 0;
   biasY = 0;
   document.removeEventListener("mousemove", moveEvent);

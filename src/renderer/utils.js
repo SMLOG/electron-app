@@ -322,7 +322,6 @@ export const hqParser = new (function() {
     ).toFixed(4);
 
     _data.changeP = _data.percent = _data.changePV + "%";
-    console.log(_data);
     return _data;
   }
   function f(a, b, c) {
@@ -452,6 +451,79 @@ export function getLink(item) {
 
   return "https:" + s;
 }
+//
+
+export function openWin2(target, item) {
+  let app = target.$electron.remote.app;
+  if (app.openwin) {
+    try {
+      app.openwin.close();
+      if (app.openwin.code == item.code) {
+        delete app.openwin;
+
+        return;
+      }
+      delete app.openwin;
+    } catch (e) {}
+  }
+
+  let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
+    width: 400,
+    height: 600,
+    webPreferences: {
+      javascript: true,
+      plugins: true,
+      nodeIntegration: true,
+      webSecurity: false,
+      preload: "http://localhost:9080/static/preload.js"
+    }
+  }));
+  openwin.setMenu(null);
+
+  fetch(
+    `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
+      item.name
+    )}`
+  )
+    .then(res => res.json())
+    .then(data => {
+      let i = data.Data.reduce((i, cur, curIndex, arr) => {
+        if (item.code.toLowerCase().indexOf(cur.Code.toLowerCase()) > -1)
+          return curIndex;
+        else return i;
+      }, 0);
+      openwin.loadURL(
+        `https://emwap.eastmoney.com/quota/stock/index/${data.Data[i].ID}`
+      );
+
+      openwin.webContents.on("dom-ready", e => {
+        openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
+    return scripts.reduce((currentPromise, scriptUrl) => {
+    return currentPromise.then(() => {
+      return new Promise((resolve, reject) => {
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = scriptUrl;
+        script.onload = () => resolve();
+        document.getElementsByTagName("head")[0].appendChild(script);
+      });
+    });
+    }, Promise.resolve());
+    }
+    loadScripts(['http://localhost:9080/static/preload.js'])`);
+      });
+
+      //openwin.webContents.openDevTools();
+      /* window.openwin = this.openwin = window.open(
+          `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
+          "item"
+        );*/
+      openwin.code = item.code;
+    });
+
+  //let win = this.$electron.remote.getCurrentWindow();
+  // win.focus();
+}
 
 export function openWin(target, item) {
   let app = target.$electron.remote.app;
@@ -478,6 +550,7 @@ export function openWin(target, item) {
       preload: "http://localhost:9080/static/preload.js"
     }
   }));
+  openwin.setMenu(null);
 
   openwin.loadURL(getLink(item));
 

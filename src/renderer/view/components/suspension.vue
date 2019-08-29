@@ -1,12 +1,12 @@
 
 <template>
-  <div id="suspension" ref="box">
+  <div id="suspension" ref="box" @keydown="checkAltKey(e)">
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
     <div class="content_body">
       <div class="item" v-for="item in items" :key="item.code">
         <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-        <span class="name" :title="title(item)" @click="openItem(item)">{{item.name}}</span>
+        <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
           <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
           <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
@@ -25,7 +25,8 @@ import {
   toFixed,
   toPercent,
   getLink,
-  openWin
+  openWin,
+  openWin2
 } from "@/utils";
 import { ObjectType } from "@/utils";
 
@@ -37,7 +38,8 @@ export default {
       items: [{ code: "sh000001" }],
       autoShrinkVWhenOut: true,
       autoShrinkHWhenOut: false,
-      loadMDate: false
+      loadMDate: false,
+      altKey: false
     };
   },
   filters: {
@@ -53,6 +55,10 @@ export default {
   },
 
   methods: {
+    checkAltKey(e) {
+      this.altKey = e.altKey == 1;
+      alert(this.altKey);
+    },
     title(item) {
       return `${item.name}\n${ObjectType[item.countryID]}\n${item.orgCode}`;
     },
@@ -109,8 +115,9 @@ export default {
         content: message
       });
     },
-    openItem(item) {
-      openWin(this, item);
+    openItem(item, event) {
+      if (event.altKey) openWin2(this, item);
+      else openWin(this, item);
     },
     upDown(val) {
       if (val > 0) return "up";
@@ -128,12 +135,9 @@ export default {
           let item = that.items[i];
           let url = `http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/window.var_${item.code}=/CN_MarketData.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60&datalen=1`;
 
-          await loadScripts([url]).then(() => {
-            console.log("loaded" + url);
-          });
+          await loadScripts([url]).then(() => {});
         }
         that.items.map(item => {
-          console.log(window[`var_${item.code}`]);
           item.data = window[`var_${item.code}`];
           delete window[`var_${item.code}`];
         });
@@ -141,6 +145,8 @@ export default {
       })();
     },
     refresh() {
+      let win = this.$electron.remote.getCurrentWindow();
+      win.setAlwaysOnTop(true, true, 1);
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
           if (cur.code.match(/^(sh)|(sz)/)) {
@@ -154,7 +160,6 @@ export default {
       let needReloadData = false;
       //http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/var=/CN_MarketData.getKLineData?symbol=sz000001&scale=240&ma=no&datalen=1
       //http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh601318&scale=240&ma=5,10,30&datalen=1
-      console.log(`http://hq.sinajs.cn/list=${str}`);
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
           let data = parse(item);

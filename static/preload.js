@@ -1,6 +1,7 @@
 let electron = require("electron");
 let win = electron.remote.getCurrentWindow();
 let timerID;
+
 document.addEventListener("mouseleave", event => {
   timerID = setTimeout(() => {
     window.close();
@@ -11,7 +12,7 @@ document.addEventListener("mouseenter", event => {
   if (timerID) clearTimeout(timerID);
   //console.log(event);
 });
-document.addEventListener("mousedown", function (e) {
+document.addEventListener("mousedown", function(e) {
   switch (e.button) {
     case 0:
       biasX = e.x;
@@ -24,7 +25,7 @@ document.addEventListener("mousedown", function (e) {
   }
 });
 
-document.addEventListener("mouseup", function () {
+document.addEventListener("mouseup", function() {
   biasX = 0;
   biasY = 0;
   document.removeEventListener("mousemove", moveEvent);
@@ -34,16 +35,27 @@ function moveEvent(e) {
   win.setPosition(e.screenX - biasX, e.screenY - biasY);
 }
 
-$(document).ready(() => {
-  $(
-    "#tbanner,header,nav,footer,iframe,.hq-news-title,#f_blank,#HQBox_Names_Add,#HQBox_Names"
-  )
-    .hide()
-    .height(0)
-    .width(0);
+if (location.href.indexOf("eastmoney") > 0) {
+  $(document).ready(() => {
+    $("#adDTT,.stock-footer,.comm-footer")
+      .hide()
+      .height(0)
+      .width(0);
+    $("body").css("padding-top", 0);
+  });
+} else {
+  //sina
+  $(document).ready(() => {
+    $(
+      "#tuiex,.calendar-title,#tbanner,header,nav,footer,iframe,.hq-news-title,#f_blank,#HQBox_Names_Add,#HQBox_Names"
+    )
+      .hide()
+      .height(0)
+      .width(0);
 
-  $("#HQBox_Main .hqbox-detail-row")
-    .eq(0)
-    .click();
-  //$("#HQBox_Main").css({ "background-color": "white", color: "black" });
-});
+    $("#HQBox_Main .hqbox-detail-row")
+      .eq(0)
+      .click();
+    //$("#HQBox_Main").css({ "background-color": "white", color: "black" });
+  });
+}

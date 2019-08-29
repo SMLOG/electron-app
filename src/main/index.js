@@ -37,7 +37,12 @@ function createWindow() {
   });
   mainWindow.loadURL(winURL);
   app.mainWindow = mainWindow;
-
+  mainWindow.webContents.session.on(
+    "will-download",
+    (event, item, webContents) => {
+      event.preventDefault();
+    }
+  );
   mainWindow.on("close", event => {
     //mainWindow = null;
     console.log("close");

@@ -116,8 +116,8 @@ export default {
       });
     },
     openItem(item, event) {
-      if (event.altKey) openWin2(this, item);
-      else openWin(this, item);
+      if (event.altKey) openWin(this, item);
+      else openWin2(this, item);
     },
     upDown(val) {
       if (val > 0) return "up";

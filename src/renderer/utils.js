@@ -482,7 +482,7 @@ export function openWin2(target, item) {
 
   fetch(
     `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
-      item.name
+      item.name.replace(/\s+/g, "")
     )}`
   )
     .then(res => res.json())

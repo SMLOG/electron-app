@@ -2,10 +2,14 @@
 <template>
   <div id="suspension" ref="box" @keydown="checkAltKey(e)">
     <div class="logo"></div>
-    <span id="rt" class="shrink2" @click="shrinkH" :class="{shrink:autoShrinkHWhenOut}"></span>
+    <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div class="item" v-for="item in items" :key="item.code">
-        <span :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
+      <div class="item flex" v-for="(item,i) in items" :key="item.code">
+        <a v-if="i==0" id="arrow" ref="arrow" @mouseenter="show">
+          <i class="arrow right"></i>
+        </a>
+
+        <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
           <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
@@ -14,7 +18,7 @@
       </div>
       <div class="item">{{time}}</div>
     </div>
-    <span id="rd" class="shrink2" @click="shrinkW" :class="{shrink:autoShrinkVWhenOut}"></span>
+    <span id="rd" class="shrink2" @click="toggleShrinkBottom" :class="{shrink:shrinkBottom}"></span>
   </div>
 </template>
 <script>
@@ -36,8 +40,8 @@ export default {
     return {
       time: "--",
       items: [{ code: "sh000001" }],
-      autoShrinkVWhenOut: true,
-      autoShrinkHWhenOut: false,
+      shrinkBottom: true,
+      shrinkTop: false,
       loadMDate: false,
       altKey: false
     };
@@ -101,11 +105,11 @@ export default {
         `left=${winPos[0] - 253}px,top=${winPos[1]}px,width=250px,height=351px`
       );
     },
-    shrinkH() {
-      this.autoShrinkHWhenOut = !this.autoShrinkHWhenOut;
+    toggleShrinkTop() {
+      this.shrinkTop = !this.shrinkTop;
     },
-    shrinkW() {
-      this.autoShrinkVWhenOut = !this.autoShrinkVWhenOut;
+    toggleShrinkBottom() {
+      this.shrinkBottom = !this.shrinkBottom;
     },
     notify(item, message) {
       this.$electron.remote.app.notifywin.webContents.send("message", {
@@ -207,6 +211,45 @@ export default {
           }),
         1000
       );
+    },
+    resizeWin() {
+      let win = this.$electron.remote.getCurrentWindow();
+      let screen = this.$electron.remote.screen;
+      let winSize = win.getSize();
+      //  win.setSize(winSize[0], this.items.length * 27);
+      let body = document.body,
+        html = document.documentElement;
+
+      let height = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      );
+      if (winSize[1] != height) this.setSize(winSize[0], height);
+    },
+    setSize(w, h) {
+      let win = this.$electron.remote.getCurrentWindow();
+      win.setResizable(true);
+      win.setSize(w, h);
+      win.setResizable(false);
+    },
+    show() {
+      if (this.shrinkBottom) {
+        this.resizeWin();
+      }
+
+      if (true || this.shrinkTop) {
+        setTimeout(() => {
+          let win = this.$electron.remote.getCurrentWindow();
+          let winSize = win.getSize();
+          const size = this.$electron.remote.screen.getPrimaryDisplay()
+            .workAreaSize; //获取显示器的宽高
+
+          win.setPosition(size.width - winSize[0], win.getPosition()[1]);
+        }, 1);
+      }
     }
   },
 
@@ -217,59 +260,27 @@ export default {
     let biasY = 0;
     let that = this;
     let openwin;
-    let setSize = (win, w, h) => {
-      win.setResizable(true);
-      win.setSize(w, h);
-      win.setResizable(false);
-    };
-    let resizeWin = () => {
-      setTimeout(() => {
-        let winSize = win.getSize();
-        //  win.setSize(winSize[0], this.items.length * 27);
-        let body = document.body,
-          html = document.documentElement;
 
-        let height = Math.max(
-          body.scrollHeight,
-          body.offsetHeight,
-          html.clientHeight,
-          html.scrollHeight,
-          html.offsetHeight
-        );
-        if (winSize[1] != height) setSize(win, winSize[0], height);
-      }, 0);
-    };
     this.loadDatas();
 
     this.$electron.ipcRenderer.on("refresh", () => {
-      that.loadDatas();
-      resizeWin();
+      this.loadDatas();
+      this.resizeWin();
     });
-    resizeWin();
-    document.addEventListener("mouseenter", event => {
-      if (this.autoShrinkVWhenOut) {
-        resizeWin();
-      }
-      if (this.autoShrinkHWhenOut) {
-        setTimeout(() => {
-          let winSize = win.getSize();
-          const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-          win.setPosition(size.width - winSize[0], win.getPosition()[1]);
-        }, 1);
-      }
-    });
+    this.resizeWin();
 
     document.addEventListener("mouseleave", event => {
       let winSize = win.getSize();
 
-      if (this.autoShrinkVWhenOut) {
-        setSize(win, winSize[0], 1 * 25);
+      if (this.shrinkBottom) {
+        this.setSize(winSize[0], 1 * 25);
       }
-      if (this.autoShrinkHWhenOut) {
+      if (this.shrinkTop) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
         win.setPosition(size.width - 6, win.getPosition()[1]);
       }
     });
+
     setTimeout(() => {
       let ev = document.createEvent("HTMLEvents");
       ev.initEvent("mouseleave", true, false);
@@ -325,6 +336,7 @@ export default {
 .name {
   cursor: pointer;
   display: inline-block;
+  width: 50px;
 }
 .content {
   display: inline-block;
@@ -384,5 +396,41 @@ export default {
 }
 i {
   font-style: normal;
+}
+#arrow {
+  width: 10px;
+  padding-right: 5px;
+  display: inline-block;
+}
+i.arrow {
+  display: inline-block;
+  border-style: solid;
+  border-width: 0 0 8px 8px;
+  border-color: transparent transparent #4c4f52 transparent;
+  flex: 0;
+}
+.arrow.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.arrow.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.arrow.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.arrow.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
 }
 </style>

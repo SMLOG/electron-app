@@ -164,7 +164,7 @@ export default {
         this.items.map((item, i) => {
           let data = parse(item);
           data.pre = item.now;
-          this.time = item.time;
+          if (item.time) this.time = item.time;
           Object.assign(item, data);
 
           this.items.splice(i, 1, item);

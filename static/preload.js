@@ -3,16 +3,37 @@ let win = electron.remote.getCurrentWindow();
 let timerID;
 
 document.addEventListener("mouseleave", event => {
-  timerID = setTimeout(() => {
-    window.close();
-  }, 1000);
+
+  timerID = setInterval(() => {
+    let mousePos = electron.remote.screen.getCursorScreenPoint();
+    let winSize = win.getSize();
+    let winPos = win.getPosition();
+    if (mousePos.x < winPos[0] || mousePos.x > (winPos[0] + winSize[0]) || mousePos.y < winPos[1] || mousePos.y > (winPos[1] + winSize[1])) {
+      clearInterval(timerID);
+      window.close();
+    }
+  }, 500);
+
+
+  /**
+   *  let mousePos = electron.remote.screen.getCursorScreenPoint();
+    let winSize = win.getSize();
+    let winPos = win.getPosition();
+    if (event.clientX > 20 && event.clientX < (winSize[0] - 20) && event.clientY > 20 && event.clientY < (winSize[1] - 20)) {
+  
+    } else {
+      timerID = setTimeout(() => {
+        window.close();
+      }, 1000);
+    }
+   */
   //console.log(event);
 });
 document.addEventListener("mouseenter", event => {
   if (timerID) clearTimeout(timerID);
   //console.log(event);
 });
-document.addEventListener("mousedown", function(e) {
+document.addEventListener("mousedown", function (e) {
   switch (e.button) {
     case 0:
       biasX = e.x;
@@ -25,7 +46,7 @@ document.addEventListener("mousedown", function(e) {
   }
 });
 
-document.addEventListener("mouseup", function() {
+document.addEventListener("mouseup", function () {
   biasX = 0;
   biasY = 0;
   document.removeEventListener("mousemove", moveEvent);
@@ -59,3 +80,15 @@ if (location.href.indexOf("eastmoney") > 0) {
     //$("#HQBox_Main").css({ "background-color": "white", color: "black" });
   });
 }
+
+$('head').append(`<style type="text/css">::-webkit-scrollbar {
+  max-width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
+}</style>`);

@@ -12,7 +12,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export const hqParser = new (function() {
+export const hqParser = new (function () {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];
     let b = item.name;
@@ -198,6 +198,7 @@ export const hqParser = new (function() {
     if (!e.now) {
       e.now = d[11];
     }
+    e.now = toFixed(e.now, 2);
     e.change = toFixed(e.now - e.preClose, 2);
     e.changeP = toFixed(100 * (e.change / e.preClose), 2);
     e.changePV = e.changeP;
@@ -464,7 +465,7 @@ export function openWin2(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
@@ -536,7 +537,7 @@ export function openWin(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({

@@ -88,9 +88,15 @@ app.on("ready", () => {
   if (!ret) {
     console.log("注册失败");
   }
-
+  if (
+    !globalShortcut.register("Alt+Z", () => {
+      app.minwin.webContents.send("keyToggleShow", false);
+    })
+  ) {
+    console.log("Alt+Z失败");
+  }
   // 检查这个快捷键是否被注册。
-  console.log(globalShortcut.isRegistered("CommandOrControl+X"));
+  console.log(globalShortcut.isRegistered("Alt+Z"));
   var appTray = null;
   //系统托盘图标目录
   //let trayIcon = path.join(__dirname, 'app');//app是选取的目录
@@ -149,7 +155,7 @@ let toggleShowHide = () => {
 
 app.on("will-quit", () => {
   // 注销一个快捷键。
-  globalShortcut.unregister("CommandOrControl+X");
+  globalShortcut.unregister("CommandOrControl+Z");
 
   // 注销所有快捷键。
   globalShortcut.unregisterAll();

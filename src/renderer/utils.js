@@ -12,7 +12,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export const hqParser = new (function () {
+export const hqParser = new (function() {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];
     let b = item.name;
@@ -465,12 +465,15 @@ export function openWin2(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) { }
+    } catch (e) {}
   }
-
+  let win = target.$electron.remote.getCurrentWindow();
+  let winPos = win.getPosition();
   let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
     width: 400,
     height: 600,
+    x: winPos[0] - 410,
+    y: winPos[1],
     webPreferences: {
       javascript: true,
       plugins: true,
@@ -537,12 +540,15 @@ export function openWin(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) { }
+    } catch (e) {}
   }
-
+  let win = target.$electron.remote.getCurrentWindow();
+  let winPos = win.getPosition();
   let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
     width: 400,
     height: 600,
+    x: winPos[0] - 410,
+    y: winPos[1],
     webPreferences: {
       javascript: true,
       plugins: true,

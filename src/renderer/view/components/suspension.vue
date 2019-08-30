@@ -1,14 +1,10 @@
 
 <template>
-  <div id="suspension" ref="box" @keydown="checkAltKey(e)">
+  <div id="suspension" ref="box">
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div class="item flex" v-for="(item,i) in items" :key="item.code">
-        <a v-if="i==0" id="arrow" ref="arrow" @mouseenter="show">
-          <i class="arrow right"></i>
-        </a>
-
+      <div class="item flex" v-for="(item) in items" :key="item.code">
         <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
@@ -18,7 +14,13 @@
       </div>
       <div class="item">{{time}}</div>
     </div>
-    <span id="rd" class="shrink2" @click="toggleShrinkBottom" :class="{shrink:shrinkBottom}"></span>
+    <span
+      id="rd"
+      class="shrink2"
+      @mouseenter="show"
+      @click="toggleShrinkBottom"
+      :class="{shrink:shrinkBottom}"
+    ></span>
   </div>
 </template>
 <script>
@@ -61,7 +63,11 @@ export default {
   methods: {
     checkAltKey(e) {
       this.altKey = e.altKey == 1;
-      alert(this.altKey);
+    },
+    altKeyShow(e) {
+      if (e.altKey) {
+        this.show();
+      }
     },
     title(item) {
       return `${item.name}\n${ObjectType[item.countryID]}\n${item.orgCode}`;
@@ -240,7 +246,7 @@ export default {
         this.resizeWin();
       }
 
-      if (true || this.shrinkTop) {
+      if (this.shrinkTop) {
         setTimeout(() => {
           let win = this.$electron.remote.getCurrentWindow();
           let winSize = win.getSize();
@@ -249,6 +255,19 @@ export default {
 
           win.setPosition(size.width - winSize[0], win.getPosition()[1]);
         }, 1);
+      }
+    },
+    collapse() {
+      let win = this.$electron.remote.getCurrentWindow();
+
+      let winSize = win.getSize();
+
+      if (this.shrinkBottom) {
+        this.setSize(winSize[0], 1 * 25);
+      }
+      if (this.shrinkTop) {
+        const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
+        win.setPosition(size.width - 6, win.getPosition()[1]);
       }
     }
   },
@@ -265,20 +284,17 @@ export default {
 
     this.$electron.ipcRenderer.on("refresh", () => {
       this.loadDatas();
-      this.resizeWin();
+      this.show();
+    });
+
+    this.$electron.ipcRenderer.on("keyToggleShow", () => {
+      if (win.getSize()[1] > 30) this.collapse();
+      else this.show();
     });
     this.resizeWin();
 
     document.addEventListener("mouseleave", event => {
-      let winSize = win.getSize();
-
-      if (this.shrinkBottom) {
-        this.setSize(winSize[0], 1 * 25);
-      }
-      if (this.shrinkTop) {
-        const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-        win.setPosition(size.width - 6, win.getPosition()[1]);
-      }
+      this.collapse();
     });
 
     setTimeout(() => {
@@ -337,6 +353,7 @@ export default {
   cursor: pointer;
   display: inline-block;
   width: 50px;
+  text-align: left;
 }
 .content {
   display: inline-block;
@@ -364,8 +381,8 @@ export default {
   /* background-color: rgba(255, 255, 255, 0.6);*/
 }
 .shrink2 {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border: 1px solid black;
   border-radius: 8px;
   background: white;
@@ -377,7 +394,7 @@ export default {
   top: 10px;
 }
 #rd {
-  bottom: 8px;
+  bottom: 6px;
 }
 #suspension .shrink {
   background: green;
@@ -398,15 +415,16 @@ i {
   font-style: normal;
 }
 #arrow {
-  width: 10px;
-  padding-right: 5px;
   display: inline-block;
+  position: absolute;
+  left: -2px;
+  z-index: 0;
 }
 i.arrow {
   display: inline-block;
   border-style: solid;
   border-width: 0 0 8px 8px;
-  border-color: transparent transparent #4c4f52 transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
   flex: 0;
 }
 .arrow.right {

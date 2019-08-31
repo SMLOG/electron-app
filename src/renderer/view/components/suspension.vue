@@ -285,7 +285,11 @@ export default {
       this.resizeWin();
     },
     trade() {
-      openSite(this);
+      window.open(
+        "http://quote.eastmoney.com/zixuan/#",
+        "",
+        "width=1000px,height=600px"
+      );
     }
   },
 

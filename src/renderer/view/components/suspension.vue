@@ -1,6 +1,6 @@
 
 <template>
-  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse">
+  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
@@ -242,7 +242,7 @@ export default {
       win.setSize(w, h);
       win.setResizable(false);
     },
-    unCollapse() {
+    unCollapse(all) {
       if (this.shrinkBottom) {
         this.unCollapseV();
       }
@@ -250,7 +250,7 @@ export default {
         this.unCollapseH();
       }
     },
-    collapse() {
+    collapse(all) {
       let win = this.$electron.remote.getCurrentWindow();
       let screen = this.$electron.remote.screen;
 
@@ -296,8 +296,8 @@ export default {
     });
 
     this.$electron.ipcRenderer.on("keyToggleShow", () => {
-      if (win.getSize()[1] > 30) this.collapse();
-      else this.unCollapse();
+      if (win.getSize()[1] > 30) this.collapse(true);
+      else this.unCollapse(true);
     });
     this.unCollapse();
     this.collapse();

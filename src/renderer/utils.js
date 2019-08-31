@@ -588,3 +588,53 @@ loadScripts(['http://localhost:9080/static/preload.js'])`);
   //let win = this.$electron.remote.getCurrentWindow();
   // win.focus();
 }
+
+export function openSite(target) {
+  let app = target.$electron.remote.app;
+
+  let win = target.$electron.remote.getCurrentWindow();
+  let winPos = win.getPosition();
+  let openwin = (app.openwin = new target.$electron.remote.BrowserWindow({
+    width: 800,
+    height: 600,
+    x: winPos[0] - 410,
+    y: winPos[1],
+    webPreferences: {
+      javascript: true,
+      plugins: true,
+      nodeIntegration: true,
+      webSecurity: false,
+      preload: "http://localhost:9080/static/preload.js"
+    }
+  }));
+  openwin.setMenu(null);
+
+  openwin.loadURL(`https://xtrade.newone.com.cn/ssologin?t=jykstd`);
+
+  openwin.webContents.on("dom-ready", e => {
+    openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
+return scripts.reduce((currentPromise, scriptUrl) => {
+return currentPromise.then(() => {
+  return new Promise((resolve, reject) => {
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = scriptUrl;
+    script.onload = () => resolve();
+    document.getElementsByTagName("head")[0].appendChild(script);
+  });
+});
+}, Promise.resolve());
+}
+loadScripts(['http://localhost:9080/static/preload2.js'])`);
+  });
+
+  //openwin.webContents.openDevTools();
+  /* window.openwin = this.openwin = window.open(
+      `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`,
+      "item"
+    );*/
+  openwin.code = item.code;
+
+  //let win = this.$electron.remote.getCurrentWindow();
+  // win.focus();
+}

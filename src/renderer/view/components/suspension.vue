@@ -1,6 +1,6 @@
 
 <template>
-  <div id="suspension" ref="box">
+  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse">
     <div class="logo"></div>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
@@ -12,12 +12,12 @@
           <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
         </span>
       </div>
-      <div class="item">{{time}}</div>
+      <div class="item" @click="trade()">{{time}}</div>
     </div>
     <span
       id="rd"
       class="shrink2"
-      @mouseenter="show"
+      @mouseenter="unCollapseV"
       @click="toggleShrinkBottom"
       :class="{shrink:shrinkBottom}"
     ></span>
@@ -32,7 +32,8 @@ import {
   toPercent,
   getLink,
   openWin,
-  openWin2
+  openWin2,
+  openSite
 } from "@/utils";
 import { ObjectType } from "@/utils";
 
@@ -66,7 +67,7 @@ export default {
     },
     altKeyShow(e) {
       if (e.altKey) {
-        this.show();
+        this.unCollapse();
       }
     },
     title(item) {
@@ -241,24 +242,17 @@ export default {
       win.setSize(w, h);
       win.setResizable(false);
     },
-    show() {
+    unCollapse() {
       if (this.shrinkBottom) {
-        this.resizeWin();
+        this.unCollapseV();
       }
-
       if (this.shrinkTop) {
-        setTimeout(() => {
-          let win = this.$electron.remote.getCurrentWindow();
-          let winSize = win.getSize();
-          const size = this.$electron.remote.screen.getPrimaryDisplay()
-            .workAreaSize; //获取显示器的宽高
-
-          win.setPosition(size.width - winSize[0], win.getPosition()[1]);
-        }, 1);
+        this.unCollapseH();
       }
     },
     collapse() {
       let win = this.$electron.remote.getCurrentWindow();
+      let screen = this.$electron.remote.screen;
 
       let winSize = win.getSize();
 
@@ -269,6 +263,20 @@ export default {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
         win.setPosition(size.width - 6, win.getPosition()[1]);
       }
+    },
+    unCollapseH() {
+      let win = this.$electron.remote.getCurrentWindow();
+      let winSize = win.getSize();
+      const size = this.$electron.remote.screen.getPrimaryDisplay()
+        .workAreaSize; //获取显示器的宽高
+
+      win.setPosition(size.width - winSize[0] + 3, win.getPosition()[1]);
+    },
+    unCollapseV() {
+      this.resizeWin();
+    },
+    trade() {
+      openSite(this);
     }
   },
 
@@ -284,25 +292,15 @@ export default {
 
     this.$electron.ipcRenderer.on("refresh", () => {
       this.loadDatas();
-      this.show();
+      this.unCollapse();
     });
 
     this.$electron.ipcRenderer.on("keyToggleShow", () => {
       if (win.getSize()[1] > 30) this.collapse();
-      else this.show();
+      else this.unCollapse();
     });
-    this.resizeWin();
-
-    document.addEventListener("mouseleave", event => {
-      this.collapse();
-    });
-
-    setTimeout(() => {
-      let ev = document.createEvent("HTMLEvents");
-      ev.initEvent("mouseleave", true, false);
-      document.dispatchEvent(ev);
-    }, 1000);
-
+    this.unCollapse();
+    this.collapse();
     document.addEventListener("mousedown", function(e) {
       switch (e.button) {
         case 0:

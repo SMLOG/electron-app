@@ -1,7 +1,7 @@
 let electron = require("electron");
 let win = electron.remote.getCurrentWindow();
 let timerID;
-
+/*
 document.addEventListener("mouseleave", event => {
   timerID = setTimeout(() => {
     window.close();
@@ -11,7 +11,7 @@ document.addEventListener("mouseleave", event => {
 document.addEventListener("mouseenter", event => {
   if (timerID) clearTimeout(timerID);
   //console.log(event);
-});
+});*/
 document.addEventListener("mousedown", function(e) {
   switch (e.button) {
     case 0:

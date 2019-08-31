@@ -8,8 +8,11 @@
         <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
-          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item)">{{item.now}}</i>
-          <i @mouseenter="showPK(item,'style2')">({{item.change}}){{item.changeP}}</i>
+          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item,false,$event)">{{item.now}}</i>
+          <i
+            @mouseenter="showPK(item,'style2')"
+            @mouseleave="hidePK(item,true,$event)"
+          >({{item.change}}){{item.changeP}}</i>
         </span>
       </div>
       <div class="item" @click="trade()">{{time}}</div>
@@ -79,39 +82,44 @@ export default {
       store.save(this.items);
       this.sendRefresh();
     },
-    hidePK(item, event) {
+    hidePK(item, isCloseWin, event) {
       try {
-        if (this.openwin) this.openwin.close();
+        if (this.timerID) clearTimeout(this.timerID);
+        if (this.openwin && isCloseWin) this.openwin.close();
       } catch (e) {}
     },
     showPK(item, style, event) {
-      let url = `${
-        window.location.href.split("#")[0]
-      }#/pank?item=${encodeURIComponent(
-        JSON.stringify({
-          code: item.code,
-          countryID: item.countryID,
-          orgCode: item.orgCode
-        })
-      )}&style=${style}`;
-      if (this.openwin) {
-        try {
-          /*if (this.openwin.location.indexOf("#/pank")) {
+      this.timerID = setTimeout(() => {
+        let url = `${
+          window.location.href.split("#")[0]
+        }#/pank?item=${encodeURIComponent(
+          JSON.stringify({
+            code: item.code,
+            countryID: item.countryID,
+            orgCode: item.orgCode
+          })
+        )}&style=${style}`;
+        if (this.openwin) {
+          try {
+            /*if (this.openwin.location.indexOf("#/pank")) {
             this.openwin.location = url;
             return;
           }*/
-          this.openwin.close();
-          delete this.openwin;
-          delete window.openwin;
-        } catch (e) {}
-      }
-      let win = this.$electron.remote.getCurrentWindow();
-      let winPos = win.getPosition();
-      window.openwin = this.openwin = window.open(
-        url,
-        "item",
-        `left=${winPos[0] - 253}px,top=${winPos[1]}px,width=250px,height=351px`
-      );
+            this.openwin.close();
+            delete this.openwin;
+            delete window.openwin;
+          } catch (e) {}
+        }
+        let win = this.$electron.remote.getCurrentWindow();
+        let winPos = win.getPosition();
+        window.openwin = this.openwin = window.open(
+          url,
+          "item",
+          `left=${winPos[0] - 253}px,top=${
+            winPos[1]
+          }px,width=250px,height=351px`
+        );
+      }, 500);
     },
     toggleShrinkTop() {
       this.shrinkTop = !this.shrinkTop;

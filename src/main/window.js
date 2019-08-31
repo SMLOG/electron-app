@@ -21,7 +21,7 @@ ipcMain.on("showSuspensionWindow", () => {});
 ipcMain.on("createSuspensionMenu", e => {
   const rightM = Menu.buildFromTemplate([
     {
-      label: "添加",
+      label: "控制面板",
       enabled: true,
       click: () => {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -33,6 +33,22 @@ ipcMain.on("createSuspensionMenu", e => {
           100
         );
 
+        app.mainWindow.show();
+      }
+    },
+    {
+      label: "选股",
+      enabled: true,
+      click: () => {
+        const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
+        const winSize = win.getSize(); //获取窗口宽高
+        const mainWinSize = app.mainWindow.getSize();
+        //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
+        app.mainWindow.setPosition(
+          size.width - winSize[0] - mainWinSize[0],
+          100
+        );
+        app.mainWindow.loadURL(winURL.replace("suspension", "findstock"));
         app.mainWindow.show();
       }
     },

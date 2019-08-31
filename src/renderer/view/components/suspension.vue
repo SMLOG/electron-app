@@ -25,6 +25,7 @@
 </template>
 <script>
 import store from "@/localdata";
+import jquery from "jquery";
 import {
   loadScripts,
   parse,

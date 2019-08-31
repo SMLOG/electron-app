@@ -638,3 +638,97 @@ loadScripts(['http://localhost:9080/static/preload2.js'])`);
   //let win = this.$electron.remote.getCurrentWindow();
   // win.focus();
 }
+
+export function fmtdig(Data, Mat, F, Unit, AutoF) {
+  var res = Data;
+  if (Data != "" && Data != "--" && Data != "-") {
+    var _temp = Math.abs(parseFloat(Data));
+    var temp = parseFloat(Data);
+    if (AutoF) {
+      if (_temp > 1000000000000) {
+        Mat = 100000000;
+        Unit = "亿";
+        F = "0";
+      } else {
+        if (_temp > 100000000000) {
+          Mat = 100000000;
+          Unit = "亿";
+          F = "0";
+        } else {
+          if (_temp > 10000000000) {
+            Mat = 100000000;
+            Unit = "亿";
+            F = "1";
+          } else {
+            if (_temp > 1000000000) {
+              Mat = 100000000;
+              Unit = "亿";
+              F = "2";
+            } else {
+              if (_temp > 100000000) {
+                Mat = 100000000;
+                Unit = "亿";
+                F = "2";
+              } else {
+                if (_temp > 10000000) {
+                  Mat = 10000;
+                  Unit = "万";
+                  F = "0";
+                } else {
+                  if (_temp > 1000000) {
+                    Mat = 10000;
+                    Unit = "万";
+                    F = "1";
+                  } else {
+                    if (_temp > 100000) {
+                      Mat = 10000;
+                      Unit = "万";
+                      F = "2";
+                    } else {
+                      if (_temp > 10000) {
+                        Mat = 10000;
+                        Unit = "万";
+                        F = "2";
+                      } else {
+                        if (_temp > 1000) {
+                          Mat = 1;
+                          Unit = "";
+                          F = "2";
+                        } else {
+                          if (_temp > 100) {
+                            Mat = 1;
+                            Unit = "";
+                            F = "2";
+                          } else {
+                            if (_temp > 10) {
+                              Mat = 1;
+                              Unit = "";
+                              F = "2";
+                            } else {
+                              Mat = 1;
+                              Unit = "";
+                              F = "3";
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    res = ForDight(temp / Mat, F);
+  }
+  return res + Unit;
+}
+function ForDight(Dight, How) {
+  let rDight = parseFloat(Dight).toFixed(How);
+  if (rDight == "NaN") {
+    rDight = "--";
+  }
+  return rDight;
+}

@@ -20,6 +20,11 @@ export default new Router({
       path: "/suspension",
       name: "suspension",
       component: () => import("@/view/components/suspension")
+    },
+    {
+      path: "/findstock",
+      name: "findstock",
+      component: () => import("@/view/components/findstock")
     }
   ]
 });

@@ -20,6 +20,14 @@
           <span :class="upDown(item.high-item.preClose)">最高:{{item.high|fmtValue}}</span>
         </div>
         <div class="c2">
+          <span>换手率:{{item.turnRate}}</span>
+          <span>市盈(动):{{item.pe}}</span>
+        </div>
+        <div class="c2">
+          <span>总市值:{{item.zsz}}</span>
+          <span>流通市值:{{item.lz}}</span>
+        </div>
+        <div class="c2">
           <span>总量:{{(item.volume/10000/100).toFixed(2)}}万手</span>
           <span>总额:{{(item.amount/100000000).toFixed(2)}}亿</span>
         </div>
@@ -48,8 +56,9 @@
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/utils";
 
+import jquery from "jquery";
 export default {
   name: "Pank",
   data() {
@@ -124,6 +133,29 @@ export default {
           this.items.splice(i, 1, item);
           console.log(item);
           // vm.items.splice(newLength)
+
+          if (!item.pe && item.code.match(/^(sh)|(sz)/)) {
+            let marketId = `${item.code.substring(0, 2) == "sh" ? 1 : 0}.${
+              item.code.match(/\d+/)[0]
+            }`;
+            jquery.ajax({
+              url:
+                "http://push2.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&fltt=2&fields=f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f193,f196,f194,f195,f197,f80,f280,f281,f282,f284,f285,f286,f287&secid=" +
+                marketId,
+              scriptCharset: "utf-8",
+              dataType: "jsonp",
+              jsonp: "cb",
+              success: function(json) {
+                if (json) {
+                  item.turnRate = json.data.f168;
+                  item.pe = json.data.f162;
+                  item.zsz = fmtdig(json.data.f116, 1, 2, "", true);
+                  item.lz = fmtdig(json.data.f117, 1, 2, "", true);
+                  //alert(json);
+                }
+              }
+            });
+          }
         });
       });
     },

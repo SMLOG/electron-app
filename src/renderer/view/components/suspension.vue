@@ -231,9 +231,11 @@ export default {
     timerFn() {
       setTimeout(
         () =>
-          this.refresh().catch(() => {
-            this.timerFn();
-          }),
+          this.refresh()
+            .then(() => this.timerFn())
+            .catch(() => {
+              this.timerFn();
+            }),
         1000
       );
     },

@@ -189,9 +189,9 @@ export default {
   width: 8px;
   height: 8px;
   border: 1px solid black;
-  border-radius: 8px;
+  border-radius: 5px;
   background: white;
-  position: absolute;
+  position: fixed;
   right: 5px;
   cursor: pointer;
 }

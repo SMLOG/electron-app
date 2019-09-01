@@ -24,13 +24,13 @@
           <span>市盈(动):{{item.pe}}</span>
         </div>
         <div class="c2">
-          <span>每股收益:{{item.prof}}</span>
+          <span>每收益:{{item.prof}}</span>
           <span>未分配:{{item.unProf}}</span>
         </div>
 
         <div class="c2">
           <span>总市值:{{item.zsz}}</span>
-          <span>流通市值:{{item.lz}}</span>
+          <span>流值:{{item.lz}}</span>
         </div>
 
         <div class="c2">

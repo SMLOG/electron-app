@@ -279,6 +279,7 @@ export const hqParser = new (function() {
     e.change = 1 * d[2];
     e.changeP = 1 * d[3];
     e.time = d[4];
+
     if (!e.now) {
       e.change = "--";
       e.changeP = "--";
@@ -348,6 +349,7 @@ export const hqParser = new (function() {
 
 const handleMap = {
   "11": "a",
+  "12": "a",
   "71": "fx",
   "41": "us",
   "31": "hk",

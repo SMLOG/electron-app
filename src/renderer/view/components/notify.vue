@@ -63,18 +63,21 @@ export default {
     let openwin;
     let ismouseover = false;
     let timerID;
+    const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
 
     let hide = () => {
       let winSize = win.getSize();
-      const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
       win.setPosition(size.width - 6, win.getPosition()[1]);
     };
     let show = () => {
       let winSize = win.getSize();
-      const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
       win.setPosition(size.width - winSize[0], win.getPosition()[1]);
       console.log(size.width - winSize[0]);
     };
+    this.$electron.ipcRenderer.on("ALT+E", () => {
+      if (win.getPosition()[0] > size.width - 10) show();
+      else hide();
+    });
     this.$electron.ipcRenderer.on("message", (event, message) => {
       this.messages.unshift(message);
       this.messages.splice(50, this.messages.length - 50);

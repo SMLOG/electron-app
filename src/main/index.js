@@ -88,15 +88,20 @@ app.on("ready", () => {
   if (!ret) {
     console.log("注册失败");
   }
-  if (
-    !globalShortcut.register("Alt+Z", () => {
-      app.minwin.webContents.send("keyToggleShow", false);
-    })
-  ) {
-    console.log("Alt+Z失败");
-  }
-  // 检查这个快捷键是否被注册。
-  console.log(globalShortcut.isRegistered("Alt+Z"));
+
+  let keysMap = { "ALT+E": "notifywin", "ALT+Z": "minwin" };
+  Object.keys(keysMap).forEach(k => {
+    console.log(`check key ${k} is regist: ${globalShortcut.isRegistered(k)}`);
+    if (
+      !globalShortcut.register(k, () => {
+        console.log(`${k} key enter`);
+        app[keysMap[k]].webContents.send(k, false);
+      })
+    ) {
+      console.log(`register key ${k} fail.`);
+    } else console.log(`regist key ${k} success`);
+  });
+
   var appTray = null;
   //系统托盘图标目录
   //let trayIcon = path.join(__dirname, 'app');//app是选取的目录

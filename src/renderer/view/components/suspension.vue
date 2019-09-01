@@ -136,8 +136,13 @@ export default {
       });
     },
     openItem(item, event) {
+      console.log(event);
       if (event.altKey) openWin(this, item);
-      else openWin2(this, item);
+      else if (event.ctrlKey || event.metaKey) {
+        this.$electron.shell.openExternal(
+          `http://quote.eastmoney.com/${item.code}.html`
+        );
+      } else openWin2(this, item);
     },
     upDown(val) {
       if (val > 0) return "up";
@@ -288,13 +293,7 @@ export default {
     unCollapseV() {
       this.resizeWin();
     },
-    trade() {
-      window.open(
-        "http://quote.eastmoney.com/zixuan/#",
-        "",
-        "width=1000px,height=600px"
-      );
-    }
+    trade() {}
   },
 
   mounted() {
@@ -312,7 +311,7 @@ export default {
       this.unCollapse();
     });
 
-    this.$electron.ipcRenderer.on("keyToggleShow", () => {
+    this.$electron.ipcRenderer.on("ALT+Z", () => {
       if (win.getSize()[1] > 30) this.collapse(true);
       else this.unCollapse(true);
     });

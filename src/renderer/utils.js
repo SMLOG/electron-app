@@ -6,6 +6,14 @@ export function loadScripts(scripts) {
         script.async = true;
         script.src = scriptUrl;
         script.onload = () => resolve();
+        script.onreadystatechange = script.onerror = function() {
+          if (
+            !this.readyState ||
+            (this.readyState === "loaded" || this.readyState === "complete")
+          ) {
+            reject();
+          }
+        };
         document.getElementsByTagName("head")[0].appendChild(script);
       });
     });

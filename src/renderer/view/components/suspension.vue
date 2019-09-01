@@ -151,6 +151,7 @@ export default {
     loadMD() {
       let that = this;
       (async function() {
+        //获取均线数值
         for (let i = 0; i < that.items.length; ++i) {
           let item = that.items[i];
           let url = `http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/window.var_${item.code}=/CN_MarketData.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60&datalen=1`;
@@ -158,8 +159,11 @@ export default {
           await loadScripts([url]).then(() => {});
         }
         that.items.map(item => {
-          item.data = window[`var_${item.code}`];
-          delete window[`var_${item.code}`];
+          if (window[`var_${item.code}`]) {
+            item.data = window[`var_${item.code}`];
+            delete window[`var_${item.code}`];
+          }
+          return item;
         });
         that.loadMDate = new Date().getTime();
       })();
@@ -222,7 +226,7 @@ export default {
     timerFn() {
       setTimeout(
         () =>
-          this.refresh().then(() => {
+          this.refresh().catch(() => {
             this.timerFn();
           }),
         1000

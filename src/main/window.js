@@ -64,7 +64,7 @@ ipcMain.on("createSuspensionMenu", e => {
     {
       label: "DevTool",
       click: () => {
-        win.webContents.openDevTools({ mode: "bottom" });
+        win.webContents.toggleDevTools({ mode: "bottom" });
       }
     },
     { type: "separator" },

@@ -1,10 +1,9 @@
 
 <template>
   <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
-    <div class="logo"></div>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div class="item flex" v-for="(item) in items" :key="item.code">
+      <div :style="style" class="item flex" v-for="(item) in items" :key="item.code">
         <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
@@ -358,6 +357,9 @@ export default {
   font-size: 12px;
   text-align: center;
   color: #ccc;
+}
+.item:hover {
+  background-color: #eee;
 }
 .up {
   color: #c00;

@@ -493,39 +493,48 @@ export function openWin2(target, item) {
     }
   }));
   openwin.setMenu(null);
-
-  fetch(
-    `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
-      item.name.replace(/\s+/g, "")
-    )}`
-  )
+  let url = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
+    item.name.replace(/\s+/g, "")
+  )}`;
+  let url2 = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
+    item.orgCode.replace(/[^0-9]+/g, "")
+  )}`;
+  fetch(url)
     .then(res => res.json())
+    .then(data => {
+      if (data.TotalCount > 0) return data;
+      else {
+        return fetch(url2).then(res => res.json());
+      }
+    })
     .then(data => {
       let i = data.Data.reduce((i, cur, curIndex, arr) => {
         if (item.code.toLowerCase().indexOf(cur.Code.toLowerCase()) > -1)
           return curIndex;
         else return i;
       }, 0);
-      openwin.loadURL(
-        `https://emwap.eastmoney.com/quota/stock/index/${data.Data[i].ID}`
-      );
+      if (data.TotalCount > 0) {
+        openwin.loadURL(
+          `https://emwap.eastmoney.com/quota/stock/index/${data.Data[i].ID}`
+        );
 
-      openwin.webContents.on("dom-ready", e => {
-        openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
-    return scripts.reduce((currentPromise, scriptUrl) => {
-    return currentPromise.then(() => {
-      return new Promise((resolve, reject) => {
-        var script = document.createElement("script");
-        script.async = true;
-        script.src = scriptUrl;
-        script.onload = () => resolve();
-        document.getElementsByTagName("head")[0].appendChild(script);
+        openwin.webContents.on("dom-ready", e => {
+          openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
+      return scripts.reduce((currentPromise, scriptUrl) => {
+      return currentPromise.then(() => {
+        return new Promise((resolve, reject) => {
+          var script = document.createElement("script");
+          script.async = true;
+          script.src = scriptUrl;
+          script.onload = () => resolve();
+          document.getElementsByTagName("head")[0].appendChild(script);
+        });
       });
-    });
-    }, Promise.resolve());
-    }
-    loadScripts(['http://localhost:9080/static/preload.js'])`);
-      });
+      }, Promise.resolve());
+      }
+      loadScripts(['http://localhost:9080/static/preload.js'])`);
+        });
+      }
 
       //openwin.webContents.openDevTools();
       /* window.openwin = this.openwin = window.open(

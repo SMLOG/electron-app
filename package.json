@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "jquery": "^3.4.1",
     "storejs": "^1.0.20",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",

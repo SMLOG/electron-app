@@ -1,6 +1,6 @@
 
 <template>
-  <div id="suspension">
+  <div id="suspension" :class="{new:hasNew}">
     <div class="logo" ref="logo"></div>
     <span id="rt" class="shrink2" @click="toggleAutoShow" :class="{shrink:autoShow}"></span>
     <div class="content_body">
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       messages: [],
-      autoShow: false
+      autoShow: false,
+      hasNew:false
     };
   },
   filters: {
@@ -73,12 +74,14 @@ export default {
       let winSize = win.getSize();
       win.setPosition(size.width - winSize[0], win.getPosition()[1]);
       console.log(size.width - winSize[0]);
+      this.hasNew = false;
     };
     this.$electron.ipcRenderer.on("ALT+E", () => {
       if (win.getPosition()[0] > size.width - 10) show();
       else hide();
     });
     this.$electron.ipcRenderer.on("message", (event, message) => {
+      this.hasNew = true;
       this.messages.unshift(message);
       this.messages.splice(50, this.messages.length - 50);
       console.log(message);
@@ -88,7 +91,7 @@ export default {
         window.scrollTo(0, 0);
         timerID && clearTimeout(timerID) && (timerID = 0);
         if (this.autoShow) show();
-        timerID = setTimeout(hide, 10000);
+        timerID = setTimeout(hide, 5000);
       }
     });
 
@@ -163,6 +166,9 @@ export default {
   cursor: move;
 }
 
+.new .logo{
+  background-color: green;
+}
 .content_body {
   background-color: #eef4fe;
   width: 100%;

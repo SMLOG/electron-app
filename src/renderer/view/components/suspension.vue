@@ -218,20 +218,15 @@ export default {
             });
           } else {
             let comp = item.volume / item.predays[0].volume;
-            let  estcomp =0;
-            //item.volumeTimes = 
-            if(time().percent>0.4){
-              estcomp = item.volume /time().percent/item.predays[0].volume;
+            let estcomp = 0;
+            //item.volumeTimes =
+            if (time().percent > 0.4) {
+              estcomp = item.volume / time().percent / item.predays[0].volume;
             }
             if (comp > 2)
-              this.notify(
-                item,
-                `volume 放大 ${comp.toFixed(2)} 倍。`
-              );
-              else if(comp>1)  this.notify(
-                item,
-                `volume 增强 ${comp.toFixed(2)} 倍。`
-              );
+              this.notify(item, `volume 放大 ${comp.toFixed(2)} 倍。`);
+            else if (comp > 1)
+              this.notify(item, `volume 增强 ${comp.toFixed(2)} 倍。`);
           }
 
           if (item.code == this.indexCode && item.changePV) {

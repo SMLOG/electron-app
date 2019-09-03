@@ -3,7 +3,13 @@
   <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div :style="style" class="item flex" v-for="(item) in items" :key="item.code">
+      <div class="item flex" v-for="(item,i) in items" :key="item.code" :class="{progress:i==0}">
+        <div
+          class="progress_bar"
+          :class="{up:indexPercent>0,down:indexPercent<0}"
+          v-if="i==0"
+          :style="{width:progressBarWidth+'%'}"
+        ></div>
         <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
         <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
         <span class="content" :class="upDown(item.now-item.preClose)">
@@ -36,7 +42,8 @@ import {
   getLink,
   openWin,
   openWin2,
-  openSite
+  openSite,
+  time
 } from "@/utils";
 import { ObjectType } from "@/utils";
 
@@ -49,7 +56,10 @@ export default {
       shrinkBottom: true,
       shrinkTop: false,
       loadMDate: false,
-      altKey: false
+      altKey: false,
+      indexCode: "sh000001",
+      progressBarWidth: 0,
+      indexPercent: 0
     };
   },
   filters: {
@@ -196,6 +206,38 @@ export default {
           Object.assign(item, data);
 
           this.items.splice(i, 1, item);
+
+          if (!item.predays) {
+            loadScripts([
+              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20_${item.code}_240=/CN_MarketDataService.getKLineData?symbol=sz000001&scale=240&ma=no,&datalen=2`
+            ]).then(() => {
+              if (window[`${item.code}_240`]) {
+                item.predays = window[`${item.code}_240`];
+                delete window[`${item.code}_240`];
+              }
+            });
+          } else {
+            let comp = item.volume / item.predays[0].volume;
+            let  estcomp =0;
+            //item.volumeTimes = 
+            if(time().percent>0.4){
+              estcomp = item.volume /time().percent/item.predays[0].volume;
+            }
+            if (comp > 2)
+              this.notify(
+                item,
+                `volume 放大 ${comp.toFixed(2)} 倍。`
+              );
+              else if(comp>1)  this.notify(
+                item,
+                `volume 增强 ${comp.toFixed(2)} 倍。`
+              );
+          }
+
+          if (item.code == this.indexCode && item.changePV) {
+            this.progressBarWidth = Math.abs(item.changePV / 1) * 100;
+            this.indexPercent = item.changePV;
+          }
 
           //** 每增涨 0.5 发送通知 */
           item.threshold == undefined && (item.threshold = 0);
@@ -468,5 +510,22 @@ i.arrow {
 .flex {
   display: flex;
   flex-direction: row;
+}
+.progress {
+  position: relative;
+}
+.progress_bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  z-index: 0;
+}
+.progress_bar.up {
+  background: rgba(255, 0, 0, 0.2);
+}
+.progress_bar.down {
+  background: rgba(0, 255, 0, 0.2);
 }
 </style>

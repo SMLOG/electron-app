@@ -6,7 +6,7 @@ export function loadScripts(scripts) {
         script.async = true;
         script.src = scriptUrl;
         script.onload = () => resolve();
-        script.onreadystatechange = script.onerror = function() {
+        script.onreadystatechange = script.onerror = function () {
           if (
             !this.readyState ||
             (this.readyState === "loaded" || this.readyState === "complete")
@@ -20,7 +20,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export const hqParser = new (function() {
+export const hqParser = new (function () {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];
     let b = item.name;
@@ -475,7 +475,7 @@ export function openWin2(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) {}
+    } catch (e) { }
   }
   let win = target.$electron.remote.getCurrentWindow();
   let winPos = win.getPosition();
@@ -559,7 +559,7 @@ export function openWin(target, item) {
         return;
       }
       delete app.openwin;
-    } catch (e) {}
+    } catch (e) { }
   }
   let win = target.$electron.remote.getCurrentWindow();
   let winPos = win.getPosition();
@@ -750,4 +750,23 @@ function ForDight(Dight, How) {
     rDight = "--";
   }
   return rDight;
+}
+time = () => {
+  let d = new Date();
+  let getTime = (d, hh, mm, ss) => {
+    d.setHours(hh);
+    d.setMinutes(mm);
+    d.setSeconds(ss);
+    return d.getTime() / 1000;
+  };
+  let t = d.getTime(), t1 = getTime(d, 9, 30, 0), t2 = getTime(d, 11, 30, 0), t3 = getTime(d, 13, 0, 0), t4 = getTime(d, 15, 0, 0);
+  let diff = 0;
+  if (t > t1 && t <= t2) diff = t2 - t;
+  else if (t > t2 && t <= t3) diff = t2 - t1;
+  else if (t > t3 && t <= t4) diff = t - t3 + t2 - t1;
+  else if (t > t4) diff = t4 - t3 + t2 - t1;
+  return {
+    t: diff,
+    percent: diff / 4 * 3600
+  }
 }

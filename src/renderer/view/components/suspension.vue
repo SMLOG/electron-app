@@ -1,24 +1,32 @@
 
 <template>
-  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
+  <div
+    id="suspension"
+    style="-webkit-app-region: drag"
+    ref="box"
+    @mouseenter="unCollapseH"
+    @mouseleave="collapse(false)"
+  >
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div class="item flex" v-for="(item,i) in items" :key="item.code" :class="{progress:i==0}">
+      <div class="item" v-for="(item,i) in items" :key="item.code" :class="{progress:i==0}">
         <div
           class="progress_bar"
           :class="{up:indexPercent>0,down:indexPercent<0}"
           v-if="i==0"
           :style="{width:progressBarWidth+'%'}"
         ></div>
-        <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-        <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
-        <span class="content" :class="upDown(item.now-item.preClose)">
-          <i @mouseenter="showPK(item)" @mouseleave="hidePK(item,false,$event)">{{item.now}}</i>
-          <i
-            @mouseenter="showPK(item,'style2')"
-            @mouseleave="hidePK(item,true,$event)"
-          >({{item.change}}){{item.changeP}}</i>
-        </span>
+        <div class="flex">
+          <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
+          <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
+          <span class="content" :class="upDown(item.now-item.preClose)">
+            <i @mouseenter="showPK(item)" @mouseleave="hidePK(item,false,$event)">{{item.now}}</i>
+            <i
+              @mouseenter="showPK(item,'style2')"
+              @mouseleave="hidePK(item,true,$event)"
+            >({{item.change}}){{item.changeP}}</i>
+          </span>
+        </div>
       </div>
       <div class="item" @click="trade()">{{time}}</div>
     </div>
@@ -319,6 +327,7 @@ export default {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
         win.setPosition(size.width - 6, win.getPosition()[1]);
       }
+      win.setIgnoreMouseEvents(true, { forward: true });
     },
     unCollapseH() {
       let win = this.$electron.remote.getCurrentWindow();
@@ -327,6 +336,8 @@ export default {
         .workAreaSize; //获取显示器的宽高
 
       win.setPosition(size.width - winSize[0] + 3, win.getPosition()[1]);
+
+      win.setIgnoreMouseEvents(false, { forward: true });
     },
     unCollapseV() {
       this.resizeWin();
@@ -393,7 +404,7 @@ export default {
   line-height: 25px;
   font-size: 12px;
   text-align: center;
-  color: #ccc;
+  color: #666;
 }
 .item:hover {
   background-color: #eee;
@@ -444,6 +455,7 @@ export default {
   position: fixed;
   right: 5px;
   cursor: pointer;
+  z-index: 2;
 }
 #rt {
   top: 10px;
@@ -505,6 +517,8 @@ i.arrow {
 .flex {
   display: flex;
   flex-direction: row;
+  position: relative;
+  z-index: 1;
 }
 .progress {
   position: relative;

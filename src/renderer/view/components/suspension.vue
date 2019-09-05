@@ -1,15 +1,14 @@
 
 <template>
-  <div
-    id="suspension"
-    style="-webkit-app-region: drag"
-    ref="box"
-    @mouseenter="unCollapseH"
-    @mouseleave="collapse(false)"
-  >
+  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
-      <div class="item" v-for="(item,i) in items" :key="item.code" :class="{progress:i==0}">
+      <div
+        class="item etmf-void"
+        v-for="(item,i) in items"
+        :key="item.code"
+        :class="{progress:i==0}"
+      >
         <div
           class="progress_bar"
           :class="{up:indexPercent>0,down:indexPercent<0}"
@@ -55,6 +54,11 @@ import {
 } from "@/utils";
 import { ObjectType } from "@/utils";
 
+import TransparencyMouseFix from "electron-transparency-mouse-fix";
+const fix = new TransparencyMouseFix({
+  log: true,
+  fixPointerEvents: "auto"
+});
 export default {
   name: "suspension",
   data() {
@@ -327,7 +331,7 @@ export default {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
         win.setPosition(size.width - 6, win.getPosition()[1]);
       }
-      win.setIgnoreMouseEvents(true, { forward: true });
+      //win.setIgnoreMouseEvents(true, { forward: true });
     },
     unCollapseH() {
       let win = this.$electron.remote.getCurrentWindow();
@@ -337,7 +341,7 @@ export default {
 
       win.setPosition(size.width - winSize[0] + 3, win.getPosition()[1]);
 
-      win.setIgnoreMouseEvents(false, { forward: true });
+      // win.setIgnoreMouseEvents(false, { forward: true });
     },
     unCollapseV() {
       this.resizeWin();
@@ -536,5 +540,11 @@ i.arrow {
 }
 .progress_bar.down {
   background: rgba(0, 255, 0, 0.2);
+}
+.click-on {
+  pointer-events: all;
+}
+.click-through {
+  pointer-events: none;
 }
 </style>

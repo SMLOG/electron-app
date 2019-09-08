@@ -12,8 +12,8 @@ var xh5_define,
       s = a.splice(0, a.length),
       o = s.join("."),
       modName = [o, u].join(".");
-    module.relyCall(
-      modName,
+
+    module.relyCall(modName,
       function() {
         var modsTree = module.modsTree,
           o = void 0;
@@ -21,7 +21,9 @@ var xh5_define,
           var d = s.shift();
           if (((o = o ? o[d] : modsTree[d]), !o))
             return void util.err(callback, [modConfig.MOD_ERR, u].join(":"));
+            
         } while (s.length);
+
         var c = o[u] || {},
           entity = c.entity || {},
           actionMethod = entity[actionName];
@@ -152,7 +154,7 @@ var xh5_define,
     })(),
     modulesArr = ["datas.hq", "datas.k", "datas.t", "utils.util"],
     module = new (function() {
-      function _xh5_define(modName, depends, callback) {
+      function _xh5_define(modName, depends, modfunc) {
         if (3 != arguments.length)
           return void util.trace.error(modConfig.MOD_DEF_ERR, modName);
         var n = parseModName(modName),
@@ -177,7 +179,7 @@ var xh5_define,
             depends = depends.concat(c(h, modName));
             break;
           }
-        recursiveDepends(depends, depends.slice(0), modEntity, callback);
+        recursiveDepends(depends, depends.slice(0), modEntity, modfunc);
       }
       var modsTree = {},
         parseModName = function(modName) {
@@ -220,23 +222,23 @@ var xh5_define,
             e: a
           };
         },
-        recursiveEnd = function(modEntity, callback, dependsArr) {
-          var u = callback.toString(),
+        recursiveEnd = function(modEntity, modfunc, dependsArr) {
+          var u = modfunc.toString(),
             s = 0 == u.indexOf("function");
           if (s) {
             var o = n(dependsArr),
-              moduleFunc = callback.apply(null, o.e.concat(modsTree));
+              moduleFunc = modfunc.apply(null, o.e.concat(modsTree));
             modEntity.entity = util.isFunc(moduleFunc)
               ? new moduleFunc()
               : moduleFunc;
-          } else modEntity.entity = callback;
+          } else modEntity.entity = modfunc;
           forEachModfuncQ(modEntity);
         },
         recursiveDepends = function(
           dependsArr,
           dependsArrCopy,
           modEntity,
-          callback
+          modfunc
         ) {
           dependsArrCopy.length
             ? relyCall(
@@ -247,10 +249,10 @@ var xh5_define,
                   dependsArr,
                   dependsArrCopy,
                   modEntity,
-                  callback
+                  modfunc
                 )
               )
-            : recursiveEnd(modEntity, callback, dependsArr);
+            : recursiveEnd(modEntity, modfunc, dependsArr);
         },
         loadUrlScript = function(module, t, r) {
           (t = t.replace(/\./g, "/")), r && (r += "$moduleName.js");

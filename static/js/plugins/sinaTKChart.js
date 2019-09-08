@@ -3246,9 +3246,9 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
         }
     }
 });
-;xh5_define("plugins.sinaTKChart", ["utils.util"], function(t) {
+;xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
     "use strict";
-    function e(e) {
+    function sinaTKChart(configObj) {
         function n(t) {
             return /^sh000001|sz399001|sz399006|sz399415|sz399416|sz399300|sz000300$/.test(t) ? (x.DKpChart = "dpdk",
             x.DKtChart = "dpdks",
@@ -3797,7 +3797,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                     s.param.k.nfloat = 4;
                     break;
                 case "OTC":
-                    s.menu.tab = a(e.symbol) ? [{
+                    s.menu.tab = a(configObj.symbol) ? [{
                         lab: "\u5e74\u7ebf",
                         v: "kcl",
                         t: "K"
@@ -4210,7 +4210,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 t.appendChild(e)
         }
         function v() {
-            P.dim = {
+            config.dim = {
                 H_T_G: 40,
                 H_T_T: 0,
                 posX: 55
@@ -4282,7 +4282,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                 domain: o,
                                 rangeData: e.info.data,
                                 onclick: function(e) {
-                                    t.suda("go_LHB"),
+                                    utils_util.suda("go_LHB"),
                                     window.open(e.data[0].url)
                                 },
                                 tip: {
@@ -4396,7 +4396,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                             })
                         },
                         oninnerresize: function(t) {
-                            e.paintTool && e.paintTool.resize(t)
+                            configObj.paintTool && configObj.paintTool.resize(t)
                         },
                         onviewprice: function(e) {
                             if (e.data && r(X.range.range_dom_id)) {
@@ -4410,7 +4410,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                     switch (x.market) {
                                     case "US":
                                     case "HK":
-                                        i = x.param && x.param.t && x.param.t.nfloat ? x.param.t.nfloat : t.strUtil.nfloat(a.price);
+                                        i = x.param && x.param.t && x.param.t.nfloat ? x.param.t.nfloat : utils_util.strUtil.nfloat(a.price);
                                         break;
                                     case "LSE":
                                         i = 3
@@ -4418,7 +4418,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                     x.param && x.param.t && x.param.t.ennfloat && (i = x.param.t.nfloat || 2)
                                 }
                                 a.percent = isNaN(a.percent) ? "--" : (100 * a.percent).toFixed(2),
-                                o = 0 == o ? 0 : t.strUtil.vs(o, !0);
+                                o = 0 == o ? 0 : utils_util.strUtil.vs(o, !0);
                                 var s = Number(a.avg_price).toFixed(i)
                                   , l = [n, " \u4ef7:", Number(a.price).toFixed(i), " \u5747:", s, " \u91cf:", o, " \u5e45:", a.percent + "%"];
                                 if (x) {
@@ -4441,7 +4441,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                     }
                                 } else {
                                     var b = e.curname.length > 4 ? e.curname.substring(0, 5) + ".." : e.curname;
-                                    (t.isObj(e.data_array) && e.data_array.length > 1 || e.data_array > 1) && (l[0] = l[0] + " [" + b + "] ");
+                                    (utils_util.isObj(e.data_array) && e.data_array.length > 1 || e.data_array > 1) && (l[0] = l[0] + " [" + b + "] ");
                                     var v, k;
                                     "HF" == x.market ? v = k = "" : (v = '<span style="color:' + W.range.rangeColor[2] + ';" class="' + W.range.rangeLabel + '">\u91cf</span>',
                                     k = '<span class="' + W.range.rangeValue + '">' + o + "</span>");
@@ -4464,8 +4464,8 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                             })
                         },
                         oninnerresize: function(t) {
-                            e.paintTool && e.paintTool.resize(t),
-                            e.dotTool && e.dotTool.update(t)
+                            configObj.paintTool && configObj.paintTool.resize(t),
+                            configObj.dotTool && configObj.dotTool.update(t)
                         },
                         onviewprice: function(e) {
                             if (r(X.range.range_dom_id)) {
@@ -4474,7 +4474,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                 a.percent = isNaN(a.percent) ? "--" : (100 * a.percent).toFixed(2),
                                 a.ampP = isNaN(a.ampP) ? "--" : (100 * a.ampP).toFixed(2);
                                 var o = Number(a.volume);
-                                o = 0 == o ? 0 : t.strUtil.vs(o, !0);
+                                o = 0 == o ? 0 : utils_util.strUtil.vs(o, !0);
                                 var i = "";
                                 if (D && "CN" == x.market && N(x.symbol) || "HK" === x.market) {
                                     var s = 0;
@@ -4515,7 +4515,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                                     "HF" == x.market ? v = k = "" : (k = '<span style="color:' + W.range.rangeColor[4] + ';" class="' + W.range.rangeLabel + '">\u91cf</span>',
                                     v = '<span class="' + W.range.rangeValue + '">' + o + "</span>");
                                     var f = [c[0], '<span style="color:' + W.range.rangeColor[0] + ';" class="' + W.range.rangeLabel + '">\u5f00</span>', '<span style="color:' + p(a.open, n) + ';" class="' + W.range.rangeValue + '">' + a.open.toFixed(2) + "</span>", '<span style="color:' + W.range.rangeColor[1] + ';" class="' + W.range.rangeLabel + '">\u9ad8</span>', '<span style="color:' + p(a.high, n) + ';" class="' + W.range.rangeValue + '">' + a.high.toFixed(2) + "</span>", '<span style="color:' + W.range.rangeColor[2] + ';" class="' + W.range.rangeLabel + '">\u6536</span>', '<span style="color:' + p(a.close, n) + ';" class="' + W.range.rangeValue + '">' + a.close.toFixed(2) + "</span>", '<span style="color:' + W.range.rangeColor[3] + ';" class="' + W.range.rangeLabel + '">\u4f4e</span>', '<span style="color:' + p(a.low, n) + ';" class="' + W.range.rangeValue + '">' + a.low.toFixed(2) + "</span>", k, v, '<span style="color:' + p(a.change) + ';margin-left: 4px;;" class="' + W.range.rangeValue + '">' + a.percent + "%</span>"];
-                                    if ("CN" !== x.market || 23 !== j && 24 !== j && 25 !== j || !t.isCNK(x.symbol) || a.postVol && (f = f.concat(['<span style="color:' + W.range.rangeColor[4] + ';" class="' + W.range.rangeLabel + '">\u76d8\u540e\u91cf|\u989d</span>', '<span class="' + W.range.rangeValue + '">' + (0 === a.postVol ? 0 : t.strUtil.vs(a.postVol, !0)) + " " + (0 === a.postAmt ? 0 : t.strUtil.vs(a.postAmt, !0)) + "</span>"])),
+                                    if ("CN" !== x.market || 23 !== j && 24 !== j && 25 !== j || !utils_util.isCNK(x.symbol) || a.postVol && (f = f.concat(['<span style="color:' + W.range.rangeColor[4] + ';" class="' + W.range.rangeLabel + '">\u76d8\u540e\u91cf|\u989d</span>', '<span class="' + W.range.rangeValue + '">' + (0 === a.postVol ? 0 : utils_util.strUtil.vs(a.postVol, !0)) + " " + (0 === a.postAmt ? 0 : utils_util.strUtil.vs(a.postAmt, !0)) + "</span>"])),
                                     "cntouzi2" != x.mt)
                                         for (u = 0; u < f.length; u++)
                                             f[u] = f[u].replace('" class="', " "),
@@ -4637,8 +4637,8 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 D.setTarget(t.active || 0))
             }
         }
-        t.xh5_EvtDispatcher.call(this);
-        var T, S, D, L = this, x = e;
+        utils_util.xh5_EvtDispatcher.call(this);
+        var T, S, D, L = this, x = configObj;
         this.me = L;
         var I = {}
           , R = function(t) {
@@ -4731,7 +4731,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
         x.EXTEND_PERFIX = "sinatkchart_extendsettingV2",
         x.settingCfg = void 0,
         x.settingRek = void 0,
-        x.market = t.market(x.symbol),
+        x.market = utils_util.market(x.symbol),
         x.DKpChart = "TZY",
         x.DKtChart = "TZYS";
         var N = function(t) {
@@ -4829,7 +4829,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 }
             }]
         }
-        var F, B, M, U, V, H, P, z, X, j, G, W = void 0, $ = function(t, e) {
+        var F, B, M, U, V, H, config, z, X, j, G, W = void 0, $ = function(t, e) {
             KKE.api("plugins.compare.get", W.compare, function(a) {
                 G = a,
                 t.appendChild(e)
@@ -4894,7 +4894,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 t: "K"
             }])
         }, et = function() {
-            var e = t.$C("div");
+            var e = utils_util.$C("div");
             return e.style.width = e.style.height = "100%",
             e.style.position = "relative",
             x.dom_id = e.id = "tkChart_wwy" + x.symbol,
@@ -4906,14 +4906,14 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
             e.style.webkitUserSelect = e.style.userSelect = e.style.MozUserSelect = "none",
             X = g(),
             W = i(X, W || null),
-            W = P = z = i(W, x || null),
+            W = config = z = i(W, x || null),
             W.domid = X.charts_dom_id,
             W.symbol = x.symbol,
             ("forex" == x.market || "forex_yt" == x.market || "BTC" == x.market) && (W.charts_Start = "K"),
             H = u(x.market),
             W = i(W, H),
             W = i(W, x),
-            P = i(W.param.t, P || null),
+            config = i(W.param.t, config || null),
             z = i(W.param.k, z || null),
             z.pcm = 2,
             x.iswap && v(),
@@ -4940,7 +4940,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
             S.setCustom({
                 storage_lv: 2
             }),
-            t.suda("m_bs"),
+            utils_util.suda("m_bs"),
             S.showView("kd"),
             S.setDimension({
                 I_V_O: 0
@@ -5111,11 +5111,11 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 })
             }),
             L.chartUserobj = x,
-            "CN" === t.market(e.symbol) && N(e.symbol) && KKE.api("plugins.dotTool.get", {}, function(e) {
+            "CN" === utils_util.market(configObj.symbol) && N(configObj.symbol) && KKE.api("plugins.dotTool.get", {}, function(e) {
                 x.dotTool = e;
                 var a = new Date;
                 a = a.getFullYear() + "-" + (a.getMonth() + 1) + "-" + a.getDate(),
-                t.load("//finance.sina.com.cn/touzi/lhstockskx/" + x.symbol + ".js?" + a, function() {
+                utils_util.load("//finance.sina.com.cn/touzi/lhstockskx/" + x.symbol + ".js?" + a, function() {
                     x.dotTool.pushData({
                         key: "tzylhb",
                         data: K(window["tzy_lhstock_kx_" + x.symbol]),
@@ -5155,7 +5155,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 })
             }))
         }, ct = function() {
-            KKE.api("chart.h5t.get", P, function(t) {
+            KKE.api("chart.h5t.get", config, function(t) {
                 var e = x.market;
                 L.tChart = T = t;
                 for (var a in F.t)
@@ -5208,7 +5208,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
                 L.re("T_DATA_LOADED", null),
                 D = t,
                 L.menuTab = D,
-                W.iswap || W.menu.menu_wapmore || (e.nocfg || y(),
+                W.iswap || W.menu.menu_wapmore || (configObj.nocfg || y(),
                 w()),
                 "forex" == x.market || "forex_yt" == x.market ? pt ? C(pt) : D.chooseTab = {
                     tye: "K",
@@ -5220,7 +5220,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
             })
         }
           , dt = function(e) {
-            if (t.isStr(e)) {
+            if (utils_util.isStr(e)) {
                 var a = String(e).toLowerCase();
                 switch (a) {
                 case "t":
@@ -5240,7 +5240,7 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
         this.initK = lt,
         this.initT = ct,
         this.compare = function(e, a) {
-            var n = t.market(e.symbol)
+            var n = utils_util.market(e.symbol)
               , o = x.market;
             if (e.linetype || (e.linetype = "line"),
             n === o)
@@ -5353,13 +5353,13 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
     function a(t) {
         return "sb899001" === t || "sb899305" === t || "sb899306" === t || "sb899307" === t || "sb899003" === t
     }
-    function n() {
+    function sinaTKChart$() {
         this.VER = "1.4.2",
         this.get = function(config, callback) {
-            var i = new e(config)
+            var i = new sinaTKChart(config)
               , r = function(e) {
                 i.me.rl(e, r),
-                t.isFunc(callback) && callback(i),
+                utils_util.isFunc(callback) && callback(i),
                 window.sinaTKChartV1 = i,
                 a(config.symbol) && i.showView({
                     view: "kcl",
@@ -5369,15 +5369,15 @@ xh5_define("plugins.indicatortab", ["utils.util"], function(utils_util) {
             i.me.al("T_DATA_LOADED", r, !1)
         }
     }
-    var o = t.$C
-      , i = t.oc
-      , r = t.$DOM
-      , s = t.isFunc
-      , l = t.xh5_EvtUtil
-      , c = t.isArr
-      , m = t.cookieUtil
-      , d = t.bridge;
-    return t.fInherit(e, t.xh5_EvtDispatcher),
-    n
+    var o = utils_util.$C
+      , i = utils_util.oc
+      , r = utils_util.$DOM
+      , s = utils_util.isFunc
+      , l = utils_util.xh5_EvtUtil
+      , c = utils_util.isArr
+      , m = utils_util.cookieUtil
+      , d = utils_util.bridge;
+    return utils_util.fInherit(sinaTKChart, utils_util.xh5_EvtDispatcher),
+    sinaTKChart$
 });
 ;

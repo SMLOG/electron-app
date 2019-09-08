@@ -95,6 +95,30 @@ export default {
           }
         );
       if (true)
+        /* KKE.api(
+          "plugins.techcharts.get",
+          {
+            type: "tech"
+          },
+          function(callbackObj) {
+            console.log(callbackObj);
+            let tChart = callbackObj.tChart;
+            let pChart = callbackObj.pChart;
+            //let t = new tChart({});
+            new pChart({
+                iMgr: iMgr,
+                stockData: stockData,
+                chartArea: G,
+                titleArea: z,
+                cb: he,
+                type: "t",
+                cfg: cfg,
+                usrObj: config
+              }))
+            window.tChart = tChart;
+          }
+        );*/
+        //alert("ok");
         KKE.api(
           "plugins.sinaTKChart.get",
           {

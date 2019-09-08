@@ -1,7 +1,7 @@
-xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i) {
+xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils_util, utils_painter) {
     "use strict";
-    function r(t, i, r) {
-        this.cfg = t,
+    function techchart(cfg, i, r) {
+        this.cfg = cfg,
         this.isSC = !0,
         this.proxyCfg = it({
             iTo: function() {},
@@ -90,7 +90,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             allowrfs: !1,
             h: t.DIMENSION.H_BLK
         };
-        r.call(this, t, i, a),
+        techchart.call(this, t, i, a),
         this.name = "BLANKCTN",
         this.newParam = function() {}
     }
@@ -101,7 +101,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "adl",
             idct: "ADL"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "ADL",
         this.sname = "T_ADL",
         this.disMod = i.datas.tDataLen;
@@ -110,8 +110,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function(i) {
             var r = this.gdsd(i);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var a, s, e = 0, h = r.length; h > e; e++) {
                 a = r[e],
                 s = a.price - (a.avg_price || 0);
@@ -153,7 +153,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "asit",
             idct: "ASIT"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "ASI";
         var s = bt.calcREF
           , e = bt.calcABS
@@ -171,7 +171,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , T = l(S, d);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var N = 0, I = i.length; I > N; N++)
                 this.selfArr[N] = {
                     asi: S[N],
@@ -196,7 +196,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "dwn",
             idct: "DWN"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "BBIBOLL",
         "k" != a.type && (this.sname = "T_" + this.name);
         var s = bt.calcMA
@@ -212,8 +212,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , d = o(c, o(e(c, a), l, "*"), "+")
               , f = o(c, o(e(c, a), l, "*"), "-");
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var u = 0, p = r.length; p > u; u++)
                 this.selfArr[u] = {
                     bbiboll: c[u],
@@ -232,7 +232,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }, {
             color: "#2b55ff"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "BF";
         var s = bt.calcMA
           , e = bt.getArr;
@@ -243,7 +243,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , o = s(h, a);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var l = 0, n = i.length; n > l; l++)
                 this.selfArr[l] = {
                     m: o[l]
@@ -264,7 +264,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.datas) {
                 var e = this.line;
                 e.clear(!0, i.PARAM.getHd());
-                for (var h, o, l, n = bt.calcREF, c = bt.getArr, d = c(this.selfArr, "m"), f = n(d, 1), u = this.viewState.start, p = this.viewState.end, v = t.hex2dec(this.customArr[0].color, .5), A = t.hex2dec(this.customArr[1].color, .5), m = u; p > m; m++) {
+                for (var h, o, l, n = bt.calcREF, c = bt.getArr, d = c(this.selfArr, "m"), f = n(d, 1), u = this.viewState.start, p = this.viewState.end, v = utils_util.hex2dec(this.customArr[0].color, .5), A = utils_util.hex2dec(this.customArr[1].color, .5), m = u; p > m; m++) {
                     if ("undefined" == typeof h && (h = d[m] - f[m] >= 0 ? 1 : -1,
                     o = h,
                     l = m),
@@ -306,7 +306,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "bias3",
             idct: "BIAS3"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "BIAS",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -327,8 +327,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , d = h(h(h(n, s(n, o), "-"), s(n, o), "/"), 100, "*")
               , f = h(h(h(n, s(n, l), "-"), s(n, l), "/"), 100, "*");
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var u = 0, p = r.length; p > u; u++)
                 this.selfArr[u] = {
                     bias1: c[u],
@@ -355,7 +355,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "lower",
             idct: "LOWER"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "BOLL",
         "k" != a.type && (this.sname = "T_" + this.name);
         var s = bt.getArr
@@ -372,8 +372,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , f = o(c, d, "+")
               , u = o(c, d, "-");
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var p = 0, v = r.length; v > p; p++)
                 this.selfArr[p] = {
                     boll: c[p],
@@ -394,7 +394,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "ar",
             idct: "AR"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "BRAR",
         this.vaObj = {
             glv: 150
@@ -416,7 +416,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , v = l(l(s(l(n, d, "-"), a), s(l(d, f, "-"), a), "/"), 100, "*");
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var A = 0, m = i.length; m > A; A++)
                 this.selfArr[A] = {
                     br: p[A],
@@ -431,7 +431,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "cci",
             idct: "CCI"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "CCI",
         this.vaObj = {
             upper: 100,
@@ -452,7 +452,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , f = h(h(d, e(d, a), "-"), h(s(d, a), .015, "*"), "/");
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var u = 0, p = i.length; p > u; u++)
                 this.selfArr[u] = {
                     cci: f[u]
@@ -466,7 +466,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "value",
             idct: "\u7b79\u7801\u6210\u672c"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "CHIPCOST",
         this.lw = 2,
         this.cb = s,
@@ -483,8 +483,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                   , a = this.symbol
                   , s = "_touzi_chip_" + a
                   , e = this.selfDataUrl.replace("$symbol", a).replace("$rn", String((new Date).getDate()));
-                this.proxyCfg.usrObj.ssl && (e = t.getSUrl(e)),
-                t.load(e, function() {
+                this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
+                utils_util.load(e, function() {
                     var t = window[s];
                     r.urlData || (r.urlData = {
                         day: []
@@ -528,8 +528,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , r = this.symbol
               , a = "hq_str_" + e + r
               , s = this.selfDataUrlUpdate.replace("$symbol", r);
-            this.proxyCfg.usrObj.ssl && (s = t.getSUrl(s)),
-            t.load(s, function() {
+            this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+            utils_util.load(s, function() {
                 var t = window[a]
                   , r = i.udf(t);
                 r && i.doUpdate(r)
@@ -571,8 +571,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.urlData && this.toReCalc) {
                 this.toReCalc = !1,
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
-                for (var r, a = this.urlData.day, s = t.kUtil.adbd(a, i, !1, !1), e = 0, h = i.length; h > e; e++)
+                utils_util.ca(this.selfArr);
+                for (var r, a = this.urlData.day, s = utils_util.kUtil.adbd(a, i, !1, !1), e = 0, h = i.length; h > e; e++)
                     r = s[e],
                     this.selfArr.push({
                         value: Number(r.value)
@@ -595,7 +595,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "ditc",
             idct: "DITC"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "DITC",
         this.cb = s;
         var o, l, n = "#c2c2c2", c = !0, d = "https://stock.sina.com.cn/stock/api/openapi.php/StockLevel2Service.getSummarize?symbol=$symbol&type=0&callback=$cb&dpc=1&retcode=0", f = i.DIMENSION.w_t / 2;
@@ -604,7 +604,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 var r = h.symbol
                   , a = "_" + r + lt.ddt(new Date).getFullYear();
                 h.selfDataUrl = d,
-                t.load(h.selfDataUrl.replace("$symbol", r).replace("$cb", "var%20" + a + "="), function() {
+                utils_util.load(h.selfDataUrl.replace("$symbol", r).replace("$cb", "var%20" + a + "="), function() {
                     var t = window[a];
                     t && (h.urlData = h.oriArr = t.result.data,
                     h.toReCalc = !0,
@@ -617,7 +617,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function() {
             if (!c && (this.datas || (e(),
             this.datas = []),
-            t.ca(this.selfArr),
+            utils_util.ca(this.selfArr),
             h.urlData)) {
                 var i, r, a, s = 0, o = h.urlData.length;
                 for (i = 0; o > i; i++)
@@ -685,7 +685,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "difma",
             idct: "DIFMA"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "DMA",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -702,8 +702,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , n = e(o, l, "-")
               , c = s(n, this.customArr[2].v);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var d = 0, f = r.length; f > d; d++)
                 this.selfArr[d] = {
                     dif: n[d],
@@ -734,7 +734,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "adxr",
             idct: "ADXR"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "DMI";
         var s = bt.calcEMA
           , e = bt.calcMAX
@@ -756,7 +756,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , O = s(M, d);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var S = 0, T = i.length; T > S; S++)
                 this.selfArr[S] = {
                     pdi: w[S],
@@ -785,7 +785,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             color: "#66ccff",
             hidecfg: !0
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "DPDK",
         this.alias = "\u5927\u76d8\u591a\u7a7a";
         var o = bt.getArr
@@ -806,7 +806,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }();
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var p = 0, v = i.length; v > p; p++)
                 this.selfArr[p] = {
                     flag: u[p]
@@ -852,7 +852,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 var s = i.DIMENSION.w_k / Math.max(this.datas.length, i.PARAM.minCandleNum)
                   , e = this.line;
                 e.clear(!0, i.PARAM.getHd());
-                for (var h, o, l, n, c, d = this.viewState.start, f = this.viewState.end, u = t.hex2dec(this.customArr[0].color), p = t.hex2dec(this.customArr[1].color), v = 0; 2 > v; v++) {
+                for (var h, o, l, n, c, d = this.viewState.start, f = this.viewState.end, u = utils_util.hex2dec(this.customArr[0].color), p = utils_util.hex2dec(this.customArr[1].color), v = 0; 2 > v; v++) {
                     for (o = this.datas[0].flag ? 0 : 1,
                     e.newStyle([v ? u : p], !0, s / 2 > 3 ? 3 : s / 2),
                     l = d; f > l; l++)
@@ -974,7 +974,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "maemv",
             idct: "MAEMV"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "EMV",
         this.vaObj = {
             glv: 0
@@ -998,7 +998,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , m = s(A, l);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var g = 0, b = i.length; b > g; g++)
                 this.selfArr[g] = {
                     emv: A[g],
@@ -1013,7 +1013,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: e,
             idct: "\u7b49\u6743\u91cd"
         }],
-        r.call(this, i, a);
+        techchart.call(this, i, a);
         var h = "icn_calc_"
           , o = this;
         this.name = "EWI",
@@ -1038,9 +1038,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var i = this.aliasymbol || this.symbol
               , r = "_touziequallyweight_" + i
               , s = this.selfDataUrl.replace("$symbol", i).replace("$cb", "var%20" + r + "=").replace("$rn", String((new Date).getDate()));
-            this.proxyCfg.usrObj.ssl && (s = t.getSUrl(s)),
-            n || (l = t.tUtil.gata(a.usrObj.market),
-            t.load(s, function() {
+            this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+            n || (l = utils_util.tUtil.gata(a.usrObj.market),
+            utils_util.load(s, function() {
                 var t = window[r];
                 window[r] = null,
                 o.urlData = {
@@ -1069,8 +1069,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var i = this.symbol
               , r = "hq_str_" + h + i
               , a = this.selfDataUrlUpdate.replace("$symbol", i);
-            this.proxyCfg.usrObj.ssl && (a = t.getSUrl(a)),
-            t.load(a, function() {
+            this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
+            utils_util.load(a, function() {
                 var t = window[r];
                 window[r] = null;
                 var i = o.udf(t);
@@ -1083,7 +1083,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 var s = r[r.length - 1];
                 if (i = i[0]) {
                     if (s.time <= i.time)
-                        for (var e = t.arrIndexOf(l, i.time), h = t.arrIndexOf(l, s.time), n = h; e >= n; n++)
+                        for (var e = utils_util.arrIndexOf(l, i.time), h = utils_util.arrIndexOf(l, s.time), n = h; e >= n; n++)
                             e - n > 0 ? r[r.length] = r[r.length - 1] : r[r.length - 1] = i;
                     o.cb(o),
                     4 == o.viewState.start && 5 == o.viewState.end && a.cbInDC()
@@ -1102,7 +1102,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.urlData) {
                 this.oriArr = this.gdsd(i),
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r, s = this.urlData.time, e = a.stock.realLen;
                 0 > e && (e = o.disMod);
                 var h = 0;
@@ -1121,7 +1121,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     }
     function EXPMA(i, a) {
         this.storageVer = "v2",
-        r.call(this, i, a);
+        techchart.call(this, i, a);
         var s = this;
         this.name = "EXPMA",
         "k" != a.type && (this.sname = "T_" + this.name);
@@ -1135,7 +1135,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     var a = s.param[i].v;
                     !isNaN(a) && a > 0 && s.customArr.push({
                         v: a,
-                        color: s.param[i].color || e[i] || "#" + t.randomColor(),
+                        color: s.param[i].color || e[i] || "#" + utils_util.randomColor(),
                         prop: o + a,
                         idct: h + a,
                         desc: h
@@ -1162,8 +1162,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function(i) {
             var r = this.gdsd(i);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var a = l(r, this.tkProp.close), s = [], e = 0, h = this.customArr.length; h > e; e++)
                 s.push(n(a, this.customArr[e].v));
             for (var c = r.length, d = 0, f = s.length; f > d; d++)
@@ -1195,7 +1195,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "ss",
             idct: "\u51c0\u5c0f\u5355"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "TECHFLOW",
         this.separate = 1,
         this.selfDataUrl = "http://stock.finance.sina.com.cn/stock/api/jsonp_v2.php/$cb/StockMixService.getNewRateInfo?symbol=$symbol&___qn=3&from=$from&to=$to",
@@ -1206,7 +1206,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (!r && (this.oriArr = i,
             this.urlData)) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var a;
                 switch (this.viewState.viewId) {
                 case 24:
@@ -1218,7 +1218,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 case 720:
                     a = this.urlData.month
                 }
-                for (var s, e = t.kUtil.adbd(a, i, !1, !0), h = 0, o = i.length; o > h; h++)
+                for (var s, e = utils_util.kUtil.adbd(a, i, !1, !0), h = 0, o = i.length; o > h; h++)
                     s = e[h],
                     this.selfArr.push({
                         mb: s ? Number(s.mb) : 0 / 0,
@@ -1325,7 +1325,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "j",
             idct: "J"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "KDJ",
         this.vaObj = {
             glv: 50,
@@ -1351,7 +1351,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , m = o(o(v, 3, "*"), o(A, 2, "*"), "-");
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var g = 0, b = i.length; b > g; g++)
                 this.selfArr[g] = {
                     k: v[g],
@@ -1369,7 +1369,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "\u5927\u5355\u91d1\u989d",
             desc: "\u6587\u5b57\u989c\u8272"
         }],
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "KFLOW",
@@ -1423,7 +1423,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.oriArr = i,
             this.urlData) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r;
                 switch (this.viewState.viewId) {
                 case 364:
@@ -1450,7 +1450,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         date: i[i.length - 1].date
                     }]
                 }
-                o = t.kUtil.adbd(r, i, !1, !0);
+                o = utils_util.kUtil.adbd(r, i, !1, !0);
                 for (var a, s = 0, h = i.length; h > s; s++) {
                     a = o[s];
                     var l = {};
@@ -1548,7 +1548,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "\u5c0f",
             desc: "\u5c0f"
         }],
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "KKFLOW",
@@ -1616,7 +1616,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.oriArr = i,
             this.urlData) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r;
                 switch (this.viewState.viewId) {
                 case 364:
@@ -1647,7 +1647,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         date: i[i.length - 1].date
                     }]
                 }
-                e = t.kUtil.adbd(r, i, !1, !0);
+                e = utils_util.kUtil.adbd(r, i, !1, !0);
                 for (var a, s = 0, h = i.length; h > s; s++) {
                     a = e[s];
                     var o = {
@@ -1751,7 +1751,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
             desc: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1"
         }],
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "KGSTRADE",
@@ -1782,7 +1782,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.oriArr = i,
             this.urlData) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r;
                 switch (this.viewState.viewId) {
                 case 364:
@@ -1810,7 +1810,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         date: i[i.length - 1].date
                     }]
                 }
-                e = t.kUtil.adbd(r, i, !1, !0);
+                e = utils_util.kUtil.adbd(r, i, !1, !0);
                 for (var a, s = 0, h = i.length; h > s; s++)
                     a = e[s],
                     this.selfArr.push({
@@ -1902,7 +1902,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "SUNSPOT",
             desc: "SUNSPOT"
         }],
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "SUNSPOT",
@@ -1921,8 +1921,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                   , a = this.symbol
                   , s = "tzy_sunstock_kx_" + a
                   , e = this.selfDataUrl.replace("$symbol", a);
-                this.proxyCfg.usrObj.ssl && (e = t.getSUrl(e)),
-                t.load(e, function() {
+                this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
+                utils_util.load(e, function() {
                     var t = window[s];
                     r.urlData || (r.urlData = {
                         day: []
@@ -1957,7 +1957,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.oriArr = i,
             this.urlData) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r;
                 switch (this.viewState.viewId) {
                 case 364:
@@ -1975,7 +1975,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         date: i[i.length - 1].date
                     }]
                 }
-                e = t.kUtil.adbd(r, i, !1, !0);
+                e = utils_util.kUtil.adbd(r, i, !1, !0);
                 for (var a, s = 0, h = i.length; h > s; s++)
                     a = e[s],
                     this.selfArr.push({
@@ -2057,14 +2057,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "LB",
             desc: "\u91cf\u6bd4"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "LB",
         this.sname = "T_LB",
         this.alias = "\u91cf\u6bd4",
         this.initAndCalcAll = function(i) {
             this.oriArr = this.gdsd(i),
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var r, a, s = 0, e = i.length, h = 0; e > s; s++) {
                 a = 5e4,
                 r = 0,
@@ -2100,7 +2100,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     function MA(i, a) {
-        r.call(this, i, a);
+        techchart.call(this, i, a);
         var s = this;
         this.name = "MA",
         "k" != a.type && (this.sname = "T_" + this.name);
@@ -2114,7 +2114,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     var a = s.param[i].v;
                     !isNaN(a) && a > 0 && s.customArr.push({
                         v: a,
-                        color: s.param[i].color || e[i] || "#" + t.randomColor(),
+                        color: s.param[i].color || e[i] || "#" + utils_util.randomColor(),
                         prop: o + a,
                         idct: h + a,
                         desc: h
@@ -2151,8 +2151,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function(i) {
             var r = this.gdsd(i);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var a = this.tkProp.close, s = r.length, e = 0, h = this.customArr.length; h > e; e++)
                 for (var l, n = 0, c = Math.floor(this.customArr[e].v), d = 0; s > d; d++) {
                     var f = r[d];
@@ -2185,7 +2185,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "bar",
             idct: "MACD"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "MACD",
         "k" != a.type && (this.sname = "T_" + this.name);
         var s = "#b82c0c"
@@ -2203,8 +2203,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , d = h(c, bar9Day)
               , f = o(o(c, d, "-"), 2, "*");
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var u = 0, p = r.length; p > u; u++)
                 this.selfArr[u] = {
                     dif: c[u],
@@ -2279,13 +2279,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         var s = {
             nu: !0
         };
-        r.call(this, i, a, s),
+        techchart.call(this, i, a, s),
         this.name = "OBV",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.initAndCalcAll = function(i) {
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             var r, a, s, e = this.customArr[0].v, h = i[0];
             s = isNaN(h.prevclose) || h.close > h.prevclose ? h.volume : -h.volume,
             r = h.close == h.prevclose ? 0 : s,
@@ -2323,7 +2323,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "iy",
             idct: "Position"
         }],
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "POSITION",
@@ -2333,7 +2333,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var r = this.gdsd(i);
             this.oriArr = r,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var a = 0, s = r.length; s > a; a++) {
                 var e = r[a].inventory || r[a].holdPosition;
                 this.selfArr.push({
@@ -2349,7 +2349,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "ss",
             idct: "\u51c0\u5c0f\u5355"
         }],
-        r.call(this, t, i);
+        techchart.call(this, t, i);
         var s = this;
         this.name = "Press",
         this.separate = 1,
@@ -2444,7 +2444,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "psyma",
             idct: "PSYMA"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "PSY",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -2456,7 +2456,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function(i) {
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             var r = this.customArr[0].v
               , a = this.customArr[1].v
               , s = i[0]
@@ -2491,7 +2491,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: e,
             idct: "\u7ea2\u7eff\u89d2\u7ebf"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "RGL",
         this.sname = "T_RGL",
         this.alias = "\u7ea2\u7eff\u89d2\u7ebf",
@@ -2517,9 +2517,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var i = this.aliasymbol || this.symbol
               , r = "_touziredgreenline_" + i
               , s = this.selfDataUrl.replace("$symbol", i).replace("$cb", "var%20" + r + "=").replace("$rn", String((new Date).getDate()));
-            this.proxyCfg.usrObj.ssl && (s = t.getSUrl(s)),
-            n || (l = t.tUtil.gata(a.usrObj.market),
-            t.load(s, function() {
+            this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+            n || (l = utils_util.tUtil.gata(a.usrObj.market),
+            utils_util.load(s, function() {
                 var t = window[r];
                 o.urlData = {
                     time: []
@@ -2547,8 +2547,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var i = this.symbol
               , r = "hq_str_" + h + i
               , a = this.selfDataUrlUpdate.replace("$symbol", i);
-            this.proxyCfg.usrObj.ssl && (a = t.getSUrl(a)),
-            t.load(a, function() {
+            this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
+            utils_util.load(a, function() {
                 var t = window[r];
                 window[r] = null;
                 var i = o.udf(t);
@@ -2561,7 +2561,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 var s = r[r.length - 1];
                 if (i = i[0]) {
                     if (s.time < i.time)
-                        for (var e = t.arrIndexOf(l, i.time), h = t.arrIndexOf(l, s.time), n = h; e >= n; n++)
+                        for (var e = utils_util.arrIndexOf(l, i.time), h = utils_util.arrIndexOf(l, s.time), n = h; e >= n; n++)
                             e - n > 0 ? (r[r.length] = r[r.length - 1],
                             console.log(e, n, a.stock.realLen)) : r[r.length - 1] = i;
                     else
@@ -2577,7 +2577,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.urlData) {
                 this.oriArr = this.gdsd(i),
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r, s = this.urlData.time, e = a.stock.realLen;
                 for (0 > e && (e = o.disMod),
                 r = 0; r < o.disMod && !(r > e); r++)
@@ -2643,7 +2643,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "maroc",
             idct: "MAROC"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "ROC",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -2661,8 +2661,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , c = o(o(o(n, e(n, a), "-"), 100, "*"), e(n, a), "/")
               , d = s(c, l);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var f = 0, u = r.length; u > f; f++)
                 this.selfArr[f] = {
                     roc: c[f],
@@ -2688,7 +2688,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "rsi3",
             idct: "RSI3"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "RSI",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -2717,8 +2717,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , g = l(l(h(v, c, 1), h(A, c, 1), "/"), 100, "*")
               , b = l(l(h(v, d, 1), h(A, d, 1), "/"), 100, "*");
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var y = 0, _ = r.length; _ > y; y++)
                 this.selfArr[y] = {
                     rsi1: m[y],
@@ -2754,7 +2754,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "\u533a\u95f4\u80a1\u4ef7\u6536\u76ca",
             prop: e
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "SAR";
         var h = bt.calcSAR;
         this.initAndCalcAll = function(i) {
@@ -2762,7 +2762,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , a = h(i, r[0].v, r[1].v, r[2].v);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var s = 0, e = i.length; e > s; s++)
                 this.selfArr[s] = {
                     ignore_minmax: a.direction[s],
@@ -2850,7 +2850,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             h
         }
         var h = this;
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "TTopTrade",
@@ -2875,14 +2875,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             idct: "\u5356\u51fa"
         }]
           , l = "top_trade_"
-          , n = t.tUtil;
+          , n = utils_util.tUtil;
         this.generateSettings = function() {
             if (h.param && h.param.length > 0) {
                 h.customArr = [];
                 for (var i = 0, r = h.param.length; r > i; i++)
                     h.customArr.push({
                         vol: 0 / 0,
-                        color: h.param[i].color || o[i].color || "#" + t.randomColor(),
+                        color: h.param[i].color || o[i].color || "#" + utils_util.randomColor(),
                         prop: o[i].prop,
                         idct: o[i].idct
                     })
@@ -2913,9 +2913,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 var i = this.aliasymbol || this.symbol
                   , r = "_touziTopTrade_" + i
                   , s = this.selfDataUrl.replace("$symbol", i).replace("$cb", "var%20" + r + "=").replace("$rn", String((new Date).getDate()));
-                this.proxyCfg.usrObj.ssl && (s = t.getSUrl(s)),
-                d || (c = t.tUtil.gata(a.usrObj.market),
-                t.load(s, function() {
+                this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+                d || (c = utils_util.tUtil.gata(a.usrObj.market),
+                utils_util.load(s, function() {
                     var t = window[r];
                     h.urlData = {
                         time: []
@@ -2954,8 +2954,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var i = this.symbol
               , r = "hq_str_" + l + i
               , a = this.selfDataUrlUpdate.replace("$symbol", i).replace("$cb", "var " + r + "=").replace("$rn", String((new Date).getDate()));
-            this.proxyCfg.usrObj.ssl && (a = t.getSUrl(a)),
-            t.load(a, function() {
+            this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
+            utils_util.load(a, function() {
                 var t = window[r];
                 window[r] = null;
                 var i = h.udf(t);
@@ -2974,7 +2974,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (this.urlData) {
                 this.oriArr = this.gdsd(i),
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r, s, e, o, l = this.urlData.time, n = a.stock.realLen;
                 for (0 > n && (n = h.disMod),
                 r = 0; r < l.length; r++)
@@ -3027,7 +3027,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     function TFLOW(i, a, s) {
         var e = this
           , h = 2e4;
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "TFLOW",
@@ -3066,13 +3066,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
           , d = null;
         this.generateSettings = function() {
             for (var i in e.urls)
-                e.urls.hasOwnProperty(i) && (e.urls[i] = t.getSUrl(e.urls[i]));
+                e.urls.hasOwnProperty(i) && (e.urls[i] = utils_util.getSUrl(e.urls[i]));
             if (e.param && e.param.length > 0) {
                 e.customArr = [];
                 for (var r = 0, a = e.param.length; a > r; r++)
                     e.customArr.push({
                         v: 0 / 0,
-                        color: e.param[r].color || c[r].color || "#" + t.randomColor(),
+                        color: e.param[r].color || c[r].color || "#" + utils_util.randomColor(),
                         prop: c[r].prop,
                         idct: c[r].idct
                     })
@@ -3123,7 +3123,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 e.selfDataUrl = o ? a.stock.dp ? e.urls.oned : e.urls.onec : a.stock.dp ? e.urls.d : e.urls.c,
                 a.stock.hq.isUpdateTime || (clearInterval(this.updateId),
                 this.updateId = null),
-                t.load(e.selfDataUrl.replace("$symbol", r).replace("$cb", "var%20" + s + "="), function() {
+                utils_util.load(e.selfDataUrl.replace("$symbol", r).replace("$cb", "var%20" + s + "="), function() {
                     var t = window[s];
                     return t && t.__ERROR ? (e.urlData[4] = d,
                     void (n = 1)) : void (t && (o ? e.urlData[4] = f(t) : e.urlData = e.df(t),
@@ -3144,11 +3144,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.oriArr = this.gdsd(i),
             1 != n && this.urlData) {
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 var r, s, h = i.length, o = [], c = this.urlData.length, d = 0;
                 for (r = 0; h > r; r++)
                     for (s = d; c > s; s++)
-                        i[r][0] && i[r][0].date && this.urlData[r][0] && t.dateUtil.ds(i[r][0].date, "-") == this.urlData[r][0].date ? (d++,
+                        i[r][0] && i[r][0].date && this.urlData[r][0] && utils_util.dateUtil.ds(i[r][0].date, "-") == this.urlData[r][0].date ? (d++,
                         o.push(this.urlData[s])) : s >= c - 1 && o.push([]);
                 for (r = 0; h > r; r++)
                     for (var f, u, p = r >= h - 1 ? 1e-7 : 1e-6, v = 0; v < this.disMod; v++) {
@@ -3223,7 +3223,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "tor",
             idct: "TOR"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "TOR",
         this.alias = "\u6362\u624b\u7387";
         var s = !1
@@ -3232,7 +3232,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             if (e) {
                 this.oriArr = i,
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
+                utils_util.ca(this.selfArr);
                 for (var r, h, o = 0, l = i.length; l > o; o++) {
                     r = i[o];
                     for (var n = 0, c = e.length; c > n; n++)
@@ -3267,7 +3267,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "matrix",
             idct: "MATRIX"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "TRIX",
         "k" != a.type && (this.sname = "T_" + this.name);
         var s = bt.calcMA
@@ -3285,8 +3285,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , u = o(o(o(d, f, "-"), f, "/"), 100, "*")
               , p = s(u, n);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var v = 0, A = r.length; A > v; v++)
                 this.selfArr[v] = {
                     trix: u[v],
@@ -3320,7 +3320,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: h,
             idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "TZY",
         this.separate = 1,
         this.selfDataUrl = "http://finance.sina.com.cn/finance/hq/$symbol.js?_=$rn";
@@ -3352,8 +3352,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                   , e = this.symbol
                   , h = "_touzibullbear_" + e
                   , o = this.selfDataUrl.replace("$symbol", e).replace("$cb", "var%20" + h + "=").replace("$from", r).replace("$to", a).replace("$rn", String((new Date).getDate()));
-                this.proxyCfg.usrObj.ssl && (o = t.getSUrl(o)),
-                t.load(o, function() {
+                this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o)),
+                utils_util.load(o, function() {
                     var t = window[h];
                     s.urlData || (s.urlData = {
                         day: []
@@ -3395,8 +3395,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , r = this.symbol
               , a = "hq_str_" + o + r
               , s = this.selfDataUrlUpdate.replace("$symbol", r);
-            this.proxyCfg.usrObj.ssl && (s = t.getSUrl(s)),
-            t.load(s, function() {
+            this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+            utils_util.load(s, function() {
                 var t = window[a]
                   , r = i.udf(t);
                 r && i.doUpdate(r)
@@ -3421,8 +3421,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.urlData && this.toReCalc) {
                 this.toReCalc = !1,
                 !this.datas && (this.datas = []),
-                t.ca(this.selfArr);
-                for (var r, a = this.urlData.day, s = t.kUtil.adbd(a, i, !1, !1), e = 0, h = i.length; h > e; e++)
+                utils_util.ca(this.selfArr);
+                for (var r, a = this.urlData.day, s = utils_util.kUtil.adbd(a, i, !1, !1), e = 0, h = i.length; h > e; e++)
                     r = s[e],
                     this.selfArr.push({
                         flag: r ? Number(r.flag) : 1,
@@ -3489,7 +3489,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.datas) {
                 var o = this.line;
                 o.clear(!0, i.PARAM.getHd());
-                var l, n, c, d = this.viewState.start, f = this.viewState.end, u = t.hex2dec(this.customArr[0].color, .5), p = t.hex2dec(this.customArr[1].color, .5);
+                var l, n, c, d = this.viewState.start, f = this.viewState.end, u = utils_util.hex2dec(this.customArr[0].color, .5), p = utils_util.hex2dec(this.customArr[1].color, .5);
                 c = d,
                 n = this.datas[0].flag;
                 for (var v = d; f > v; v++)
@@ -3661,7 +3661,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "mavr",
             idct: "MAVR"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "VR",
         "k" != a.type && (this.sname = "T_" + this.name),
         this.vaObj = {
@@ -3685,8 +3685,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var g = l(l(l(l(u, 2, "*"), v, "+"), 100, "*"), l(l(p, 2, "*"), v, "+"), "/")
               , b = s(g, n);
             this.oriArr = r,
-            this.datas ? t.ca(this.datas) : this.datas = [],
-            t.ca(this.selfArr);
+            this.datas ? utils_util.ca(this.datas) : this.datas = [],
+            utils_util.ca(this.selfArr);
             for (var y = 0, _ = r.length; _ > y; y++)
                 this.selfArr[y] = {
                     vr: g[y],
@@ -3707,7 +3707,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "wr2",
             idct: "WR2"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "WR",
         this.vaObj = {
             min: 0,
@@ -3730,7 +3730,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , u = o(o(o(s(c, l), n, "-"), 100, "*"), o(s(c, l), e(d, l), "-"), "/");
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var p = 0, v = i.length; v > p; p++)
                 this.selfArr[p] = {
                     wr1: f[p],
@@ -3750,7 +3750,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             prop: "wvadma",
             idct: "WVADMA"
         }],
-        r.call(this, i, a),
+        techchart.call(this, i, a),
         this.name = "WVAD",
         this.vaObj = {
             glv: 0
@@ -3772,7 +3772,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , v = e(p, l);
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var A = 0, m = i.length; m > A; A++)
                 this.selfArr[A] = {
                     wvad: p[A],
@@ -3782,7 +3782,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     }
     function VOLUME(i, a) {
         this.storageVer = "v3",
-        r.call(this, i, a, {
+        techchart.call(this, i, a, {
             nu: !0
         }),
         this.name = "VOLUME",
@@ -3826,7 +3826,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     var c = s.param[l].v;
                     !isNaN(c) && c > 0 && s.customArr.push({
                         v: c,
-                        color: s.param[l].color || "#" + t.randomColor(),
+                        color: s.param[l].color || "#" + utils_util.randomColor(),
                         prop: i + c,
                         idct: r + c,
                         desc: h
@@ -3846,7 +3846,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.initAndCalcAll = function(i) {
             this.oriArr = i,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var r = s.name.toLowerCase(), a = i.length, h = 0, o = this.customArr.length; o > h; h++)
                 for (var l, n = 0, c = this.customArr[h].v, d = 0; c && a > d; d++) {
                     var f = i[d];
@@ -3878,7 +3878,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         e[l] > h && (h = e[l]))
                 }
                 0 > h && (h = 0);
-                var n = t.xh5_ADJUST_HIGH_LOW.c(h, o, 0, !0);
+                var n = utils_util.xh5_ADJUST_HIGH_LOW.c(h, o, 0, !0);
                 h = n[0];
                 var c = h - o;
                 for (s = i; r > s; s++) {
@@ -3927,9 +3927,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function TVOL(i, a) {
+    function TVOL(cfg, at) {
         this.storageVer = "v2",
-        r.call(this, i, a, {
+        techchart.call(this, cfg, at, {
             nu: !0
         }),
         this.name = "TVOL",
@@ -3971,7 +3971,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     var c = s.param[l].v;
                     !isNaN(c) && c > 0 && s.customArr.push({
                         v: c,
-                        color: s.param[l].color || "#" + t.randomColor(),
+                        color: s.param[l].color || "#" + utils_util.randomColor(),
                         prop: i + c,
                         idct: r + c,
                         desc: h
@@ -3992,7 +3992,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var r = this.gdsd(i);
             this.oriArr = r,
             !this.datas && (this.datas = []),
-            t.ca(this.selfArr);
+            utils_util.ca(this.selfArr);
             for (var a = s.name.toLowerCase(), h = r.length, o = 0, l = this.customArr.length; l > o; o++)
                 for (var n, c = 0, d = this.customArr[o].v, f = 0; d && h > f; f++) {
                     var u = r[f];
@@ -4024,7 +4024,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         e[o] > h && (h = e[o]))
                 }
                 0 > h && (h = 0);
-                var l = t.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
+                var l = utils_util.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
                 h = l[0];
                 var n;
                 for (s = i; r > s; s++) {
@@ -4050,17 +4050,17 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.draw = function() {
             if (this.datas) {
                 var t = this.line;
-                t.clear(!0, i.PARAM.getHd());
-                for (var r, a, s, e, h = this.datas.length, o = i.DIMENSION.w_t / h, l = this.h, n = o * gt, c = -1, d = 0; 3 > d; d++) {
+                t.clear(!0, cfg.PARAM.getHd());
+                for (var r, a, s, e, h = this.datas.length, o = cfg.DIMENSION.w_t / h, l = this.h, n = o * gt, c = -1, d = 0; 3 > d; d++) {
                     switch (c) {
                     case -1:
-                        e = i.COLOR.T_FALL;
+                        e = cfg.COLOR.T_FALL;
                         break;
                     case 0:
-                        e = i.COLOR.T_N;
+                        e = cfg.COLOR.T_N;
                         break;
                     case 1:
-                        e = i.COLOR.T_RISE
+                        e = cfg.COLOR.T_RISE
                     }
                     r = 0,
                     t.beginPath();
@@ -4137,7 +4137,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                                 break
                             }
                         if (!h) {
-                            if (!t.isFunc(i[s]))
+                            if (!utils_util.isFunc(i[s]))
                                 return;
                             h = new i[s](d,D,o),
                             h.asPChart = !0,
@@ -4249,7 +4249,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
             ,
             this.createChart = function(i, r) {
-                !t.isArr(i) && (i = [i]);
+                !utils_util.isArr(i) && (i = [i]);
                 for (var a = 0, s = i.length; s > a; a++)
                     l(i[a]);
                 c(!0, r)
@@ -4263,7 +4263,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                             name: r[a].name
                         })
                 }
-                !t.isArr(i) && (i = [i]);
+                !utils_util.isArr(i) && (i = [i]);
                 for (var s = 0, e = i.length; e > s; s++)
                     p(i[s]);
                 c()
@@ -4290,11 +4290,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         data: i.customArr,
                         defaultData: i.DEFAULT_ARR
                     }, g),
-                    t.sudaLog(),
+                    utils_util.sudaLog(),
                     tt.show(r);
                 else {
                     var a = d.custom.indicatorpanel_url;
-                    v.ssl && (a = t.getSUrl(a, !0)),
+                    v.ssl && (a = utils_util.getSUrl(a, !0)),
                     tt = new Q({
                         url: a,
                         z: 10001
@@ -4322,8 +4322,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         return a = new r
     }
     function tChart(i) {
+        console.log(i);
         function tChart_instance() {
-            var i = {
+            var allAvailableChartsMap = {
                 ASI: ASI,
                 BBIBOLL: BBIBOLL,
                 BIAS: BIAS,
@@ -4366,7 +4367,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 TTOPTRADE: TTOPTRADE,
                 BLANKCTN: BLANKCTN
             };
-            yt.auth(i);
+            yt.auth(allAvailableChartsMap);
             var r;
             techChartList = [];
             var o = function() {
@@ -4386,9 +4387,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 t.drawCalc(),
                 t.draw(!0))
             }
-              , b = function(t) {
+              , getExistTechChart = function(techName) {
                 for (var i, r = techChartList.length; r--; )
-                    if (techChartList[r].name == t) {
+                    if (techChartList[r].name == techName) {
                         i = techChartList[r];
                         break
                     }
@@ -4396,18 +4397,18 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
               , E = function(s) {
                 if (s) {
-                    var e = s.name;
-                    if (e) {
-                        e = e.toUpperCase(),
-                        "BLANKCTN" != e && (ot = e);
-                        var h = b(e);
+                    var techName = s.name;
+                    if (techName) {
+                        techName = techName.toUpperCase(),
+                        "BLANKCTN" != techName && (ot = techName);
+                        var h = getExistTechChart(techName);
                         if (!h) {
-                            var l = i[e];
-                            if (!t.isFunc(l))
+                            var chartf = allAvailableChartsMap[techName];
+                            if (!utils_util.isFunc(chartf))
                                 return;
-                            l === BLANKCTN && r ? (h = r,
-                            h.wrap.style.display = "") : (h = new l(cfg,At,f),
-                            l === BLANKCTN && (r = h)),
+                            chartf === BLANKCTN && r ? (h = r,
+                            h.wrap.style.display = "") : (h = new chartf(cfg,At,f),
+                            chartf === BLANKCTN && (r = h)),
                             techChartList.push(h),
                             subArea.appendChild(h.wrap)
                         }
@@ -4490,7 +4491,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
             ,
             this.createChart = function(i, r) {
-                !t.isArr(i) && (i = [i]);
+                !utils_util.isArr(i) && (i = [i]);
                 for (var a = 0, s = i.length; s > a; a++)
                     E(i[a]);
                 cb(!0, r, i)
@@ -4504,7 +4505,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                             name: techChartList[r].name
                         })
                 }
-                !t.isArr(i) && (i = [i]);
+                !utils_util.isArr(i) && (i = [i]);
                 for (var a = 0, s = i.length; s > a; a++)
                     J(i[a]);
                 cb(!0)
@@ -4512,11 +4513,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
         var o, f, stockData = i.stockData, iMgr = i.iMgr, subArea = i.subArea, cb = i.cb, type = i.type, cfg = i.cfg, usrObj = i.usrObj, initMgr = i.initMgr, rt = [], 
         st = function(i, div, offsetX, offsetY, event) {
-            if (!t.$CONTAINS(div, iMgr.iHLineO.body) && div.appendChild(iMgr.iHLineO.body),
+            if (!utils_util.$CONTAINS(div, iMgr.iHLineO.body) && div.appendChild(iMgr.iHLineO.body),
             i.datas) {
                 var h = i.labelMaxP - offsetY / i.h * (i.labelMaxP - i.labelMinP);
                 if (i.nu) {
-                    var o = t.strUtil.nu(i.labelMaxP);
+                    var o = utils_util.strUtil.nu(i.labelMaxP);
                     h /= o[0]
                 }
                 iMgr.iToD({
@@ -4589,10 +4590,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         defaultData: i.DEFAULT_ARR
                     }, pt),
                     tt.show(r),
-                    t.sudaLog();
+                    utils_util.sudaLog();
                 else {
                     var a = cfg.custom.indicatorpanel_url;
-                    usrObj.ssl && (a = t.getSUrl(a, !0)),
+                    usrObj.ssl && (a = utils_util.getSUrl(a, !0)),
                     tt = new Q({
                         url: a,
                         z: 10001
@@ -4679,7 +4680,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
           , m = function() {
-            o || (o = t.iframer({
+            o || (o = utils_util.iframer({
                 attribute: {
                     id: s,
                     src: i.url
@@ -4711,7 +4712,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     cmd: h.OPEN,
                     data: i
                 }), "*"),
-                t.stc(["inc", i.name].join("_"))
+                utils_util.stc(["inc", i.name].join("_"))
             }
         }
         ,
@@ -4728,14 +4729,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 o.style.left = r + "px",
                 o.style.top = (document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop) + a + "px",
                 o.style.display = "",
-                t.suda("show_indicator_param")
+                utils_util.suda("show_indicator_param")
             }
         }
         ,
         m()
     }
-    var tt, it = t.oc, rt = t.$C, at = t.fBind, st = t.xh5_EvtUtil, et = i.xh5_ibPainter, ht = i.xh5_Canvas, ot = t.xh5_PosUtil, lt = t.dateUtil, nt = t.bridge, ct = t.colorPicker, dt = t.HQ_DOMAIN, ft = ["VOLUME", "MACD", "KDJ", "RSI", "BOLL", "WR", "BBIBOLL", "SAR", "DMI", "EMV", "ROC", "PSY", "OBV", "WVAD", "CCI", "TRIX", "DMA", "EXPMA", "BIAS", "ASI", "VR", "BRAR"], ut = ["TVOL", "LB", "MACD", "BOLL", "RSI", "BBIBOLL", "ROC", "TRIX", "DMA", "EXPMA", "BIAS", "VR"], pt = {}, vt = "ignore_", At = vt + "istpre", mt = .4, gt = .5;
-    r.prototype = {
+    var tt, it = utils_util.oc, rt = utils_util.$C, at = utils_util.fBind, st = utils_util.xh5_EvtUtil, et = utils_painter.xh5_ibPainter, ht = utils_painter.xh5_Canvas, ot = utils_util.xh5_PosUtil, lt = utils_util.dateUtil, nt = utils_util.bridge, ct = utils_util.colorPicker, dt = utils_util.HQ_DOMAIN, ft = ["VOLUME", "MACD", "KDJ", "RSI", "BOLL", "WR", "BBIBOLL", "SAR", "DMI", "EMV", "ROC", "PSY", "OBV", "WVAD", "CCI", "TRIX", "DMA", "EXPMA", "BIAS", "ASI", "VR", "BRAR"], ut = ["TVOL", "LB", "MACD", "BOLL", "RSI", "BBIBOLL", "ROC", "TRIX", "DMA", "EXPMA", "BIAS", "VR"], pt = {}, vt = "ignore_", At = vt + "istpre", mt = .4, gt = .5;
+    techchart.prototype = {
         storageVer: "v1",
         STORAGE_PREFIX: "sinatkchart_indicators~",
         loadGlobalSetting: function() {
@@ -4776,7 +4777,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             return i
         }
     },
-    r.prototype.mr = function() {
+    techchart.prototype.mr = function() {
         function i(t) {
             var i = s.h - t;
             if (i >= 0) {
@@ -4809,13 +4810,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             st.removeHandler(window, "mouseup", c),
             st.removeHandler(l, "touchmove", n),
             st.removeHandler(l, "touchend", c),
-            t.suda("indicator_reheight")
+            utils_util.suda("indicator_reheight")
         }, d = function(i) {
             a = isNaN(i.pageY) ? i.offsetY : i.pageY,
-            t.xh5_deviceUtil.istd ? (st.addHandler(l, "touchend", c),
+            utils_util.xh5_deviceUtil.istd ? (st.addHandler(l, "touchend", c),
             st.addHandler(l, "touchmove", n)) : (st.addHandler(window, "mouseup", c),
             st.addHandler(window, "mousemove", n),
-            t.xh5_deviceUtil.allowt && (st.addHandler(l, "touchend", c),
+            utils_util.xh5_deviceUtil.allowt && (st.addHandler(l, "touchend", c),
             st.addHandler(l, "touchmove", n)))
         }, f = function() {
             l = rt("div"),
@@ -4825,8 +4826,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             l.style.opacity = h,
             l.style.zIndex = s.cfg.PARAM.I_Z_INDEX + 2,
             l.style.paddingTop = "3px",
-            t.xh5_deviceUtil.istd ? st.addHandler(l, "touchstart", d) : (st.addHandler(l, "mousedown", d),
-            t.xh5_deviceUtil.allowt && st.addHandler(l, "touchstart", d),
+            utils_util.xh5_deviceUtil.istd ? st.addHandler(l, "touchstart", d) : (st.addHandler(l, "mousedown", d),
+            utils_util.xh5_deviceUtil.allowt && st.addHandler(l, "touchstart", d),
             st.addHandler(l, "mouseover", function() {
                 l.style.opacity = 1
             }),
@@ -4842,7 +4843,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         l
     }
     ,
-    r.prototype.rab = function() {
+    techchart.prototype.rab = function() {
         function i(t) {
             var i = a.wrap
               , r = a.wrap.parentNode
@@ -4875,8 +4876,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             e.style.color = "#000",
             e.style.opacity = s,
             e.style.zIndex = a.cfg.PARAM.I_Z_INDEX + 2,
-            t.xh5_deviceUtil.istd ? st.addHandler(e, "touchend", h) : (st.addHandler(e, "click", h),
-            t.xh5_deviceUtil.allowt && st.addHandler(e, "touchend", h),
+            utils_util.xh5_deviceUtil.istd ? st.addHandler(e, "touchend", h) : (st.addHandler(e, "click", h),
+            utils_util.xh5_deviceUtil.allowt && st.addHandler(e, "touchend", h),
             st.addHandler(e, "mouseover", function() {
                 e.style.opacity = 1
             }),
@@ -4901,10 +4902,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         e
     }
     ,
-    r.prototype.ic = function(i) {
+    techchart.prototype.ic = function(i) {
         var r = this.proxyCfg.iTo;
         this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h,
-        this.customArr = t.clone(this.DEFAULT_ARR, null),
+        this.customArr = utils_util.clone(this.DEFAULT_ARR, null),
         this.wrap = rt("div"),
         this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
         this.wrap.style.fontSize = this.wrap.style.lineHeight = this.cfg.STYLE.FONT_SIZE + "px";
@@ -4953,9 +4954,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.proxyCfg.ctn && this.proxyCfg.ctn.appendChild(this.wrap)
     }
     ,
-    r.prototype.initAndCalcAll = function() {}
+    techchart.prototype.initAndCalcAll = function() {}
     ,
-    r.prototype.resize = function(t) {
+    techchart.prototype.resize = function(t) {
         this.h = t.h,
         this.mh = t.mh,
         this.eh = t.eh,
@@ -4966,7 +4967,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         })
     }
     ,
-    r.prototype.getFromToM = new function() {
+    techchart.prototype.getFromToM = new function() {
         this.reset = function(t) {
             var i = t.loadedFlag;
             if (i)
@@ -5001,7 +5002,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.loadUrlData = function() {
+    techchart.prototype.loadUrlData = function() {
         var i = this.getFromToM.get(this);
         if (i) {
             var r = i[0]
@@ -5009,9 +5010,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , s = this.aliasymbol || this.symbol
               , e = "_" + s + "_" + (new Date).getDate()
               , h = this.selfDataUrl.replace("$symbol", s).replace("$cb", "var%20" + e + "=").replace("$from", r).replace("$to", a);
-            this.proxyCfg.usrObj.ssl && (h = t.getSUrl(h, !0));
+            this.proxyCfg.usrObj.ssl && (h = utils_util.getSUrl(h, !0));
             var o = this;
-            t.load(h, function() {
+            utils_util.load(h, function() {
                 var i = window[e];
                 window[e] = null,
                 o.urlData || (o.urlData = {
@@ -5032,7 +5033,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     A[o.customArr[l].prop] = void 0;
                 A.date = void 0;
                 for (n in A)
-                    A.hasOwnProperty(n) && (t.isDate(u[n]) ? (p[n] = u[n],
+                    A.hasOwnProperty(n) && (utils_util.isDate(u[n]) ? (p[n] = u[n],
                     v[n] = u[n]) : (p[n] = 1 * u[n],
                     v[n] = 1 * u[n]));
                 if (1 == f)
@@ -5044,11 +5045,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                         lt.gw(a[l - 1].date, u.date) || (c.push(p),
                         p = {});
                         for (n in A)
-                            A.hasOwnProperty(n) && (p[n] = t.isDate(u[n]) ? u[n] : (1 * p[n] || 0) + 1 * u[n]);
+                            A.hasOwnProperty(n) && (p[n] = utils_util.isDate(u[n]) ? u[n] : (1 * p[n] || 0) + 1 * u[n]);
                         lt.gm(a[l - 1].date, u.date) || (d.push(v),
                         v = {});
                         for (n in A)
-                            A.hasOwnProperty(n) && (v[n] = t.isDate(u[n]) ? u[n] : (1 * v[n] || 0) + 1 * u[n])
+                            A.hasOwnProperty(n) && (v[n] = utils_util.isDate(u[n]) ? u[n] : (1 * v[n] || 0) + 1 * u[n])
                     }
                     c.push(p),
                     d.push(v)
@@ -5061,7 +5062,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.newData = function(t, i, r) {
+    techchart.prototype.newData = function(t, i, r) {
         if (t && !(t.length < 1)) {
             var a = t[t.length - 1];
             if (168 == r && lt.gw(a.date, i.date) || 720 == r && lt.gm(a.date, i.date))
@@ -5074,13 +5075,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.updateData = function(i, r, a, s) {
+    techchart.prototype.updateData = function(i, r, a, s) {
         if (r && !(r.length < 1)) {
             var e = r[r.length - 1];
             if (s) {
                 if (!lt.stbd(e.date, i.date))
                     return i.date > e.date ? void this.newData(r, i, a) : void 0;
-                if (!t.kUtil.spk(e.time, i.time, "00:00", a))
+                if (!utils_util.kUtil.spk(e.time, i.time, "00:00", a))
                     return void this.newData(r, i, a)
             } else if (!lt.stbd(i.date, e.date))
                 return i.date > e.date ? void this.newData(r, i, a) : void 0;
@@ -5088,7 +5089,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             for (var h, o = this.customArr.length; o--; ) {
                 h = this.customArr[o].prop;
                 var l = Number(i[h]);
-                if (t.isNum(i[h]))
+                if (utils_util.isNum(i[h]))
                     switch (a) {
                     case 167:
                     case 168:
@@ -5105,7 +5106,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.doUpdate = function(t) {
+    techchart.prototype.doUpdate = function(t) {
         t && this.urlData && (this.urlData.day && this.updateData(t, this.urlData.day, 24),
         this.urlData.week && this.updateData(t, this.urlData.week, 168),
         this.urlData.month && this.updateData(t, this.urlData.month, 720),
@@ -5113,11 +5114,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.cb(this))
     }
     ,
-    r.prototype.udf = function(t) {
+    techchart.prototype.udf = function(t) {
         return t
     }
     ,
-    r.prototype.update = function() {
+    techchart.prototype.update = function() {
         if (this.selfDataUrlUpdate && !(++this.updateCount < this.UPDATE_THRESHOLD)) {
             this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
             var i = lt.ddt(this.viewState.startDate).getFullYear()
@@ -5127,9 +5128,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , e = this.aliasymbol || this.symbol
               , h = "_" + e + (new Date).getTime()
               , o = this.selfDataUrlUpdate.replace("$symbol", e).replace("$cb", "var%20" + h + "=").replace("$from", a).replace("$to", s);
-            this.proxyCfg.usrObj.ssl && (o = t.getSUrl(o, !0));
+            this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o, !0));
             var l = this;
-            t.load(o, function() {
+            utils_util.load(o, function() {
                 var t = window[h];
                 window[h] = null;
                 var i = l.udf(t);
@@ -5138,7 +5139,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.createPlayingData = function() {
+    techchart.prototype.createPlayingData = function() {
         if (this.datas)
             for (var t, i = this.labelMaxP - this.labelMinP, r = 0, a = this.datas.length; a > r; r++) {
                 t = this.datas[r];
@@ -5149,7 +5150,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
     }
     ,
-    r.prototype.setPricePos = function(t) {
+    techchart.prototype.setPricePos = function(t) {
         !t || this.separate > 0 ? (this.labelMinP = this.minPrice,
         this.labelMaxP = this.maxPrice) : (this.labelMaxP = t[0],
         this.labelMinP = t[1],
@@ -5157,21 +5158,21 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.createPlayingData()
     }
     ,
-    r.prototype.generateSettings = function() {
+    techchart.prototype.generateSettings = function() {
         if (this.param && this.param.length > 0)
             for (var i = 0, r = Math.min(this.param.length, this.DEFAULT_ARR.length); r > i; i++) {
                 var a = this.param[i]
                   , s = Number(a.v);
                 this.customArr[i].v = s > 0 ? s : this.DEFAULT_ARR[i].v,
-                this.customArr[i].color = t.isColor(a.color) ? a.color : this.DEFAULT_ARR[i].color
+                this.customArr[i].color = utils_util.isColor(a.color) ? a.color : this.DEFAULT_ARR[i].color
             }
     }
     ,
-    r.prototype.newParam = function(i, r) {
+    techchart.prototype.newParam = function(i, r) {
         var a = this.sname || this.name
           , s = !1;
         if (i ? (pt[a] = i,
-        t.stc("np_" + a, i)) : (s = !0,
+        utils_util.stc("np_" + a, i)) : (s = !0,
         i = pt[a]),
         this.param = i,
         this.generateSettings(),
@@ -5191,7 +5192,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.loadGlobalSetting()
     }
     ,
-    r.prototype.syncI = function() {
+    techchart.prototype.syncI = function() {
         if (this.datas && this.proxyCfg.iMgr)
             if (this.proxyCfg.iMgr.isIng())
                 this.proxyCfg.iMgr.isMoving() && this.indicatorI(this.datas[this.datas.length - 1]);
@@ -5207,7 +5208,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     this.indicatorI(this.datas[this.datas.length - 1])
     }
     ,
-    r.prototype.setRange = function() {
+    techchart.prototype.setRange = function() {
         if (this.datas) {
             for (var t = this.viewState.start * this.disMod, i = this.viewState.end * this.disMod, r = i - t; this.datas.length > r; )
                 this.datas.length--;
@@ -5232,7 +5233,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.drawCalc = function() {
+    techchart.prototype.drawCalc = function() {
         if (this.datas) {
             for (var t = this.viewState.start * this.disMod, i = this.viewState.end * this.disMod, r = i - t; this.datas.length > r; )
                 this.datas.length--;
@@ -5295,12 +5296,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.clearDraw = function() {
+    techchart.prototype.clearDraw = function() {
         this.line.clear(!1),
         this.interact(0 / 0)
     }
     ,
-    r.prototype.draw = function(t, i) {
+    techchart.prototype.draw = function(t, i) {
         if (this.__iOffsetX = isNaN(i) ? this.__iOffsetX : i,
         this.datas) {
             this.line.clear(!0, this.cfg.PARAM.getHd());
@@ -5322,7 +5323,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.drawValueRange = function() {
+    techchart.prototype.drawValueRange = function() {
         var i = this.line.getG();
         i.globalCompositeOperation = "destination-over";
         var r = this.vaObj.min
@@ -5334,7 +5335,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
               , o = this.h * (a - e) / s
               , l = this.h * (a - h) / s
               , n = l - o;
-            i.fillStyle = t.hex2dec(this.customArr[0].color, .2),
+            i.fillStyle = utils_util.hex2dec(this.customArr[0].color, .2),
             i.fillRect(0, o, this.cfg.DIMENSION.w_k, n)
         }
         var c = this.h * (isNaN(this.vaObj.glv) ? a / 2 : a - this.vaObj.glv) / s;
@@ -5345,7 +5346,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         i.stroke()
     }
     ,
-    r.prototype.genIdctParam = function(t) {
+    techchart.prototype.genIdctParam = function(t) {
         t = t || {};
         var i = isNaN(t.width) ? this.proxyCfg.titleW || this.cfg.DIMENSION.getStageW() : t.width
           , r = isNaN(t.height) ? this.cfg.DIMENSION.H_T_T || 14 : t.height;
@@ -5356,14 +5357,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.genTitleCanvas = function(i) {
+    techchart.prototype.genTitleCanvas = function(i) {
         function r() {
             var r = new ht
               , a = r.g
               , o = s.cfg.datas.isT;
             if (this.canvas = r.canvas,
-            t.isFunc(s.proxyCfg.onClkTT)) {
-                var l = t.xh5_deviceUtil.istd ? "touchend" : "click";
+            utils_util.isFunc(s.proxyCfg.onClkTT)) {
+                var l = utils_util.xh5_deviceUtil.istd ? "touchend" : "click";
                 st.addHandler(this.canvas, l, at(s.proxyCfg.onClkTT, null, s));
                 var n = this.canvas.style;
                 n.cursor = "pointer",
@@ -5396,7 +5397,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     for (var _, w, D, M = l + (v > 0 ? d : 0), O = [], S = r.length, T = 0; S > T; T++)
                         if (_ = r[T],
                         _.t || !isNaN(_.n)) {
-                            switch (w = (_.t ? _.t + ": " : "") + (isNaN(_.n) ? "--" : t.strUtil.ps(_.n, h.nfloat)),
+                            switch (w = (_.t ? _.t + ": " : "") + (isNaN(_.n) ? "--" : utils_util.strUtil.ps(_.n, h.nfloat)),
                             s.name) {
                             case "TFLOW":
                                 T == r.length - 1 && (w += "\u5143");
@@ -5457,8 +5458,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             r.appendChild(a),
             r.appendChild(e);
             var o = r.style;
-            t.isFunc(s.proxyCfg.onClkTT) && (t.xh5_deviceUtil.istd ? st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s)) : (st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s)),
-            t.xh5_deviceUtil.allowt && st.addHandler(r, "touchend", at(s.proxyCfg.onClkTT, null, s))),
+            utils_util.isFunc(s.proxyCfg.onClkTT) && (utils_util.xh5_deviceUtil.istd ? st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s)) : (st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s)),
+            utils_util.xh5_deviceUtil.allowt && st.addHandler(r, "touchend", at(s.proxyCfg.onClkTT, null, s))),
             o.cursor = "pointer",
             o.position = "relative",
             o.zIndex = s.cfg.PARAM.I_Z_INDEX + 1);
@@ -5502,7 +5503,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                                 }
                                 if (A = (v.t ? v.t + ": " : "") + b,
                                 !isNaN(v.n)) {
-                                    A = A.replace("--", t.strUtil.ps(v.n, h.nfloat));
+                                    A = A.replace("--", utils_util.strUtil.ps(v.n, h.nfloat));
                                     var y;
                                     y = "DPDK" == s.name || "SAR" == v.t ? v.c : v.n > 0 ? s.cfg.COLOR.K_RISE : v.n < 0 ? s.cfg.COLOR.K_FALL : s.cfg.COLOR.K_N,
                                     A = A.replace("#000", y)
@@ -5514,10 +5515,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                                 A = (v.t ? v.t + ": " : "") + (isNaN(v.n) ? 0 : v.n.toFixed(h.nfloat));
                                 break;
                             case "SUNSPOT":
-                                A = "SUNSPOT" === v.t ? v.n ? (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : t.strUtil.ps(v.n, 0)) + "\u7ea7" : "" : (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : t.strUtil.ps(v.n, h.nfloat));
+                                A = "SUNSPOT" === v.t ? v.n ? (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, 0)) + "\u7ea7" : "" : (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, h.nfloat));
                                 break;
                             default:
-                                A = (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : t.strUtil.ps(v.n, h.nfloat)),
+                                A = (v.t ? v.t + ": " : "") + (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, h.nfloat)),
                                 "TFLOW" == s.name && m == r.length - 1 && (A += "\u5143")
                             }
                             p = 11,
@@ -5536,7 +5537,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         return s.cfg.custom.indicator_cvs_title ? new r : new a
     }
     ,
-    r.prototype.genIndicator = function(t, i) {
+    techchart.prototype.genIndicator = function(t, i) {
         if (t) {
             this.indicatorArr = [];
             for (var r = 0, a = t.length; a > r; r++)
@@ -5546,7 +5547,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.indicatorI = function(t) {
+    techchart.prototype.indicatorI = function(t) {
         if (this.indicatorArr) {
             for (var i, r, a = [], s = 0, e = this.indicatorArr.length; e > s; s++)
                 i = this.indicatorArr[s],
@@ -5562,15 +5563,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         }
     }
     ,
-    r.prototype.interact = function(t) {
+    techchart.prototype.interact = function(t) {
         return !isNaN(t) && this.datas && this.datas.length ? (t >= this.datas.length && (t = this.datas.length - 1),
         this.indicatorI(this.datas[t])) : (this.titleO && this.titleO.setTxt(null),
         null)
     }
     ,
-    r.prototype.rfs = function() {
-        this.selfCfg.allowrfs ? (this.titleO && t.domGc(this.titleO.canvas),
-        t.domGc(this.wrap),
+    techchart.prototype.rfs = function() {
+        this.selfCfg.allowrfs ? (this.titleO && utils_util.domGc(this.titleO.canvas),
+        utils_util.domGc(this.wrap),
         clearInterval(this.updateId)) : this.wrap.style.display = "none"
     }
     ;
@@ -5822,54 +5823,54 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             operateArr: D
         }
     }();
-    t.fInherit(BLANKCTN, r),
-    t.fInherit(ADL, r),
-    t.fInherit(ASI, r),
-    t.fInherit(BBIBOLL, r),
-    t.fInherit(o, r),
-    t.fInherit(BIAS, r),
-    t.fInherit(BOLL, r),
-    t.fInherit(BRAR, r),
-    t.fInherit(CCI, r),
-    t.fInherit(f, r),
-    t.fInherit(u, r),
-    t.fInherit(DMA, r),
-    t.fInherit(DMI, r),
-    t.fInherit(DPDK, r),
-    t.fInherit(DPDKS, DPDK),
-    t.fInherit(EMV, r),
-    t.fInherit(b, r),
-    t.fInherit(EXPMA, r),
-    t.fInherit(_, r),
-    t.fInherit(KDJ, r),
-    t.fInherit(KFLOW, r),
-    t.fInherit(KKFLOW, r),
-    t.fInherit(KGSTRADE, r),
-    t.fInherit(SUNSPOT, r),
-    t.fInherit(LB, r),
-    t.fInherit(MA, r),
-    t.fInherit(MACD, r),
-    t.fInherit(OBV, r),
-    t.fInherit(PKFLOW, KFLOW),
-    t.fInherit(POSITION, r),
-    t.fInherit(P, r),
-    t.fInherit(PSY, r),
-    t.fInherit(E, r),
-    t.fInherit(ROC, r),
-    t.fInherit(RSI, r),
-    t.fInherit(SAR, r),
-    t.fInherit(TTOPTRADE, r),
-    t.fInherit(TFLOW, r),
-    t.fInherit(TOR, r),
-    t.fInherit(TRIX, r),
-    t.fInherit(TTFLOW, TFLOW),
-    t.fInherit(TZY, r),
-    t.fInherit(TZYS, TZY),
-    t.fInherit(VR, r),
-    t.fInherit(WR, r),
-    t.fInherit(WVAD, r),
-    t.fInherit(VOLUME, r),
-    t.fInherit(TVOL, r);
+    utils_util.fInherit(BLANKCTN, techchart),
+    utils_util.fInherit(ADL, techchart),
+    utils_util.fInherit(ASI, techchart),
+    utils_util.fInherit(BBIBOLL, techchart),
+    utils_util.fInherit(o, techchart),
+    utils_util.fInherit(BIAS, techchart),
+    utils_util.fInherit(BOLL, techchart),
+    utils_util.fInherit(BRAR, techchart),
+    utils_util.fInherit(CCI, techchart),
+    utils_util.fInherit(f, techchart),
+    utils_util.fInherit(u, techchart),
+    utils_util.fInherit(DMA, techchart),
+    utils_util.fInherit(DMI, techchart),
+    utils_util.fInherit(DPDK, techchart),
+    utils_util.fInherit(DPDKS, DPDK),
+    utils_util.fInherit(EMV, techchart),
+    utils_util.fInherit(b, techchart),
+    utils_util.fInherit(EXPMA, techchart),
+    utils_util.fInherit(_, techchart),
+    utils_util.fInherit(KDJ, techchart),
+    utils_util.fInherit(KFLOW, techchart),
+    utils_util.fInherit(KKFLOW, techchart),
+    utils_util.fInherit(KGSTRADE, techchart),
+    utils_util.fInherit(SUNSPOT, techchart),
+    utils_util.fInherit(LB, techchart),
+    utils_util.fInherit(MA, techchart),
+    utils_util.fInherit(MACD, techchart),
+    utils_util.fInherit(OBV, techchart),
+    utils_util.fInherit(PKFLOW, KFLOW),
+    utils_util.fInherit(POSITION, techchart),
+    utils_util.fInherit(P, techchart),
+    utils_util.fInherit(PSY, techchart),
+    utils_util.fInherit(E, techchart),
+    utils_util.fInherit(ROC, techchart),
+    utils_util.fInherit(RSI, techchart),
+    utils_util.fInherit(SAR, techchart),
+    utils_util.fInherit(TTOPTRADE, techchart),
+    utils_util.fInherit(TFLOW, techchart),
+    utils_util.fInherit(TOR, techchart),
+    utils_util.fInherit(TRIX, techchart),
+    utils_util.fInherit(TTFLOW, TFLOW),
+    utils_util.fInherit(TZY, techchart),
+    utils_util.fInherit(TZYS, TZY),
+    utils_util.fInherit(VR, techchart),
+    utils_util.fInherit(WR, techchart),
+    utils_util.fInherit(WVAD, techchart),
+    utils_util.fInherit(VOLUME, techchart),
+    utils_util.fInherit(TVOL, techchart);
     var yt = function() {
         var i = function(t) {
             var i = function() {
@@ -5916,7 +5917,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var a = i.name
               , s = i.param
               , e = r ? "r_" : "s_";
-            t.stc(e + a, s)
+            utils_util.stc(e + a, s)
         };
         return {
             doStc: r,
@@ -5926,7 +5927,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     return new function() {
         this.VER = "6.6.5",
         this.get = function(config, callback) {
-            t.isFunc(callback) && callback({
+            utils_util.isFunc(callback) && callback({
                 tChart: tChart,
                 pChart: pChart
             })

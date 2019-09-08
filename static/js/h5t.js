@@ -2142,7 +2142,7 @@ xh5_define(
   ["cfgs.settinger", "utils.util", "utils.painter"],
   function(cfgs_settinger, utils_util, utils_painter) {
     "use strict";
-    function i(i) {
+    function chart_h5t(config) {
       console.log("hello");
       function chart_h51(e, a) {
         function onViewChange(e) {
@@ -2156,7 +2156,7 @@ xh5_define(
             me.update(null, !0),
             "CN" === marketCode && !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol);
         }
-        e = u(
+        e = utils_util_oc(
           {
             symbol: void 0,
             datas: {
@@ -2174,8 +2174,10 @@ xh5_define(
           },
           e || {}
         );
+        console.log('stockData');
+        console.log(this);
         var d,
-          m = this,
+          stockData = this,
           marketCode = utils_util.market(e.symbol),
           marketCodeToID = function(e) {
             switch (e) {
@@ -2214,8 +2216,8 @@ xh5_define(
           (this.labelPriceCount = void 0),
           (this.isTotalRedraw = !0),
           (this.realLen = 0),
-          (this.nfloat = 0 === i.nfloat ? i.nfloat : i.nfloat || 2),
-          (this.ennfloat = i.ennfloat),
+          (this.nfloat = 0 === config.nfloat ? config.nfloat : config.nfloat || 2),
+          (this.ennfloat = config.ennfloat),
           (this.market = marketCode),
           (this.date = null),
           (this.hq = null),
@@ -2230,28 +2232,28 @@ xh5_define(
             var a,
               i = [],
               r = e;
-            if (((H = A.tcd(I)), marketCodeToID(m.needMarket) != marketCodeToID(I))) {
+            if (((H = A.tcd(I)), marketCodeToID(stockData.needMarket) != marketCodeToID(I))) {
               (a = tDb.get()), (d = utils_util.tUtil.gata(I));
               for (var n = 0; n < a.length; n++)
-                marketCodeToID(m.needMarket) < marketCodeToID(I)
-                  ? (i.push(A.aduk(a[n], m.market, I, curDate, a[n][0].date)),
-                    (m.realLen = utils_util.arrIndexOf(
+                marketCodeToID(stockData.needMarket) < marketCodeToID(I)
+                  ? (i.push(A.aduk(a[n], stockData.market, I, curDate, a[n][0].date)),
+                    (stockData.realLen = utils_util.arrIndexOf(
                       d,
                       curDate.getHours() +
                         ":" +
                         utils_util.strUtil.zp(curDate.getMinutes())
                     )),
-                    m.realLen < 0 && (m.realLen = H))
+                    stockData.realLen < 0 && (stockData.realLen = H))
                   : (i.push(A.rmuk(a[n], I, r)),
-                    (m.realLen = utils_util.arrIndexOf(
+                    (stockData.realLen = utils_util.arrIndexOf(
                       d,
                       curDate.getHours() +
                         ":" +
                         utils_util.strUtil.zp(curDate.getMinutes())
                     )));
-              (m.needMarket = I),
+              (stockData.needMarket = I),
                 tDb.initTState(i),
-                (m.datas = i[4]),
+                (stockData.datas = i[4]),
                 $.setDataRange(),
                 $.createPlayingData();
             }
@@ -2267,7 +2269,7 @@ xh5_define(
         }),
           (this.getStockType = function() {
             var e;
-            return m.hq && (e = m.hq.type), e || "";
+            return stockData.hq && (e = stockData.hq.type), e || "";
           }),
           (this.viewState = ee);
         var tDb = new (function() {
@@ -2281,10 +2283,10 @@ xh5_define(
                     n = e.length,
                     o = [];
                   if ((utils_util.clone(e, o), o.length > 5)) {
-                    if (i.date) {
+                    if (config.date) {
                       for (
                         var s,
-                          l = Number(i.date.split("-")[2]),
+                          l = Number(config.date.split("-")[2]),
                           c = 0,
                           d = 0,
                           m = 0,
@@ -2307,7 +2309,7 @@ xh5_define(
                         (a.tv = ee.start),
                         (a.tb = ee.end);
                     }
-                  } else (r = o), (a.tv = i.date ? 0 : 4), (a.tb = n);
+                  } else (r = o), (a.tv = config.date ? 0 : 4), (a.tb = n);
                   a.t = r;
                 }
               };
@@ -2323,7 +2325,7 @@ xh5_define(
               }),
               (this.extraDataObj = r),
               (this.initExtraData = function() {
-                var a = i.ssl ? "https" : "http",
+                var a = config.ssl ? "https" : "http",
                   n =
                     a +
                     "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
@@ -2340,7 +2342,7 @@ xh5_define(
                         (t = e[i]),
                           a.push({
                             amount: Number(t.amount),
-                            date: v.sd(t.date)
+                            date: dateUtil.sd(t.date)
                           });
                       a.length && (r.rsAmount = a);
                     }
@@ -2354,228 +2356,228 @@ xh5_define(
           $ = new (function() {
             var e, t, createPlayingData;
             (e = function() {
-              (m.minPrice = Number.MAX_VALUE),
-                (m.maxPrice = 0),
-                (m.minPercent = Number.MAX_VALUE),
-                (m.maxPercent = -Number.MAX_VALUE),
-                (m.minavgPrice = Number.MAX_VALUE),
-                (m.maxavgPrice = 0),
-                (m.maxVolume = 0);
+              (stockData.minPrice = Number.MAX_VALUE),
+                (stockData.maxPrice = 0),
+                (stockData.minPercent = Number.MAX_VALUE),
+                (stockData.maxPercent = -Number.MAX_VALUE),
+                (stockData.minavgPrice = Number.MAX_VALUE),
+                (stockData.maxavgPrice = 0),
+                (stockData.maxVolume = 0);
             }),
               (t = function() {
                 function e(e) {
                   var t = Math.max(
-                      Math.abs(e - m.maxPrice),
-                      Math.abs(e - m.minPrice)
+                      Math.abs(e - stockData.maxPrice),
+                      Math.abs(e - stockData.minPrice)
                     ),
                     a = Math.max(
-                      Math.abs(e - m.maxavgPrice),
-                      Math.abs(e - m.minavgPrice)
+                      Math.abs(e - stockData.maxavgPrice),
+                      Math.abs(e - stockData.minavgPrice)
                     );
                   switch (
-                    (t / e > 0.45 && "US" != I && (U.datas.scaleType = "price"),
+                    (t / e > 0.45 && "US" != I && (cfg.datas.scaleType = "price"),
                     t / e > 0.1 &&
-                      "newstock" == U.datas.scaleType &&
-                      (U.datas.scaleType = "price"),
-                    U.datas.scaleType)
+                      "newstock" == cfg.datas.scaleType &&
+                      (cfg.datas.scaleType = "price"),
+                    cfg.datas.scaleType)
                   ) {
                     case "newstock":
-                      (m.minPrice = Number(e) - 0.45 * e),
-                        (m.maxPrice = Number(e) + 0.45 * e);
+                      (stockData.minPrice = Number(e) - 0.45 * e),
+                        (stockData.maxPrice = Number(e) + 0.45 * e);
                       break;
                     case "tpct":
-                      (m.minPrice =
-                        m.minPrice < Number(e) - 0.1 * e
-                          ? m.minPrice
+                      (stockData.minPrice =
+                        stockData.minPrice < Number(e) - 0.1 * e
+                          ? stockData.minPrice
                           : Number(e) - 0.1 * e),
-                        (m.maxPrice =
-                          m.maxPrice > Number(e) + 0.1 * e
-                            ? m.maxPrice
+                        (stockData.maxPrice =
+                          stockData.maxPrice > Number(e) + 0.1 * e
+                            ? stockData.maxPrice
                             : Number(e) + 0.1 * e);
                       break;
                     case "pct":
-                      var i = m.maxPrice - m.minPrice;
-                      (m.minPrice -= 0.05 * i), (m.maxPrice += 0.05 * i);
+                      var i = stockData.maxPrice - stockData.minPrice;
+                      (stockData.minPrice -= 0.05 * i), (stockData.maxPrice += 0.05 * i);
                       break;
                     case "price":
                     default:
-                      (m.minPrice = Number(e) - Number(t)),
-                        (m.maxPrice = Number(e) + Number(t)),
-                        (m.minavgPrice = Number(e) - Number(a)),
-                        (m.maxavgPrice = Number(e) + Number(a));
+                      (stockData.minPrice = Number(e) - Number(t)),
+                        (stockData.maxPrice = Number(e) + Number(t)),
+                        (stockData.minavgPrice = Number(e) - Number(a)),
+                        (stockData.maxavgPrice = Number(e) + Number(a));
                   }
-                  (m.maxPercent = Math.max((m.maxPrice - e) / e, 0)),
-                    (m.minPercent = Math.min((m.minPrice - e) / e, 0)),
-                    (m.maxavgPercent = Math.max((m.maxavgPrice - e) / e, 0)),
-                    (m.minavgPercent = Math.min((m.minavgPrice - e) / e, 0));
+                  (stockData.maxPercent = Math.max((stockData.maxPrice - e) / e, 0)),
+                    (stockData.minPercent = Math.min((stockData.minPrice - e) / e, 0)),
+                    (stockData.maxavgPercent = Math.max((stockData.maxavgPrice - e) / e, 0)),
+                    (stockData.minavgPercent = Math.min((stockData.minavgPrice - e) / e, 0));
                 }
-                (m.isCompare = X.getAllStock().length > 1), (m.dAdd = X.dAdd);
+                (stockData.isCompare = X.getAllStock().length > 1), (stockData.dAdd = X.dAdd);
                 var t;
-                m.datas &&
-                  0 == m.datas[0][0].volume &&
-                  m.hq.time > "09:30" &&
-                  "CN" == m.market &&
-                  (t = m.datas[0][0].price),
-                  (m.preData.data = m.hq.preopen
+                stockData.datas &&
+                  0 == stockData.datas[0][0].volume &&
+                  stockData.hq.time > "09:30" &&
+                  "CN" == stockData.market &&
+                  (t = stockData.datas[0][0].price),
+                  (stockData.preData.data = stockData.hq.preopen
                     ? t
                       ? t
-                      : m.hq.preopen
-                    : m.preData.data);
-                for (var a = 0, r = m.datas.length; r > a; a++) {
+                      : stockData.hq.preopen
+                    : stockData.preData.data);
+                for (var a = 0, r = stockData.datas.length; r > a; a++) {
                   for (
                     var n,
-                      o = Number(m.datas[0][0].prevclose),
+                      o = Number(stockData.datas[0][0].prevclose),
                       s = 0,
-                      l = m.dataLen;
+                      l = stockData.dataLen;
                     l > s;
                     s++
                   ) {
                     if (
-                      ((n = m.datas[a][s]),
-                      "LSE" === m.market || "MSCI" === m.market)
+                      ((n = stockData.datas[a][s]),
+                      "LSE" === stockData.market || "MSCI" === stockData.market)
                     ) {
                       if (n.price <= 0) continue;
                     } else if (n.price <= 0 || n.avg_price <= 0) continue;
-                    ("HK" == m.market && m.hq && "indx" == m.hq.type) ||
-                    "LSE" == m.market ||
-                    "MSCI" === m.market
-                      ? ((m.maxPrice = Math.max(m.maxPrice, n.price, o)),
-                        (m.minPrice = Math.min(m.minPrice, n.price, o)))
-                      : f(m.datas[a][0].date, m.hq.date) && "CN" == m.market
-                      ? ((m.maxPrice = Math.max(
-                          m.maxPrice,
+                    ("HK" == stockData.market && stockData.hq && "indx" == stockData.hq.type) ||
+                    "LSE" == stockData.market ||
+                    "MSCI" === stockData.market
+                      ? ((stockData.maxPrice = Math.max(stockData.maxPrice, n.price, o)),
+                        (stockData.minPrice = Math.min(stockData.minPrice, n.price, o)))
+                      : stbd(stockData.datas[a][0].date, stockData.hq.date) && "CN" == stockData.market
+                      ? ((stockData.maxPrice = Math.max(
+                          stockData.maxPrice,
                           n.price,
                           n.avg_price,
                           o,
-                          m.preData.data
+                          stockData.preData.data
                         )),
-                        (m.minPrice = Math.min(
-                          m.minPrice,
+                        (stockData.minPrice = Math.min(
+                          stockData.minPrice,
                           n.price,
                           n.avg_price,
                           o,
-                          m.preData.data
+                          stockData.preData.data
                         )))
-                      : ((m.maxPrice = Math.max(
-                          m.maxPrice,
+                      : ((stockData.maxPrice = Math.max(
+                          stockData.maxPrice,
                           n.price,
                           n.avg_price,
                           o
                         )),
-                        (m.minPrice = Math.min(
-                          m.minPrice,
+                        (stockData.minPrice = Math.min(
+                          stockData.minPrice,
                           n.price,
                           n.avg_price,
                           o
                         ))),
-                      f(m.datas[a][0].date, m.hq.date) && "CN" == m.market
-                        ? ((m.maxavgPrice = Math.max(
-                            m.maxavgPrice,
+                      stbd(stockData.datas[a][0].date, stockData.hq.date) && "CN" == stockData.market
+                        ? ((stockData.maxavgPrice = Math.max(
+                            stockData.maxavgPrice,
                             n.price,
                             o,
-                            m.preData.data
+                            stockData.preData.data
                           )),
-                          (m.minavgPrice = Math.min(
-                            m.minavgPrice,
+                          (stockData.minavgPrice = Math.min(
+                            stockData.minavgPrice,
                             n.price,
                             o,
-                            m.preData.data
+                            stockData.preData.data
                           )))
-                        : ((m.maxavgPrice = Math.max(
-                            m.maxavgPrice,
+                        : ((stockData.maxavgPrice = Math.max(
+                            stockData.maxavgPrice,
                             n.price,
                             o
                           )),
-                          (m.minavgPrice = Math.min(
-                            m.minavgPrice,
+                          (stockData.minavgPrice = Math.min(
+                            stockData.minavgPrice,
                             n.price,
                             o
                           ))),
-                      (m.labelMaxVol = m.maxVolume = Math.max(
-                        m.maxVolume,
+                      (stockData.labelMaxVol = stockData.maxVolume = Math.max(
+                        stockData.maxVolume,
                         0,
                         n.volume
                       ));
                   }
                   e(o);
                 }
-                (m.minPrice < -1e8 || m.maxPrice - m.minPrice < 1e-6) &&
-                  (v.stbd(m.datas[0][0].date, m.hq.date) &&
-                    ((m.datas[0][0].price = m.hq.price),
-                    (m.datas[0][0].avg_price = m.hq.price),
-                    (m.datas[0][0].prevclose = m.hq.prevclose),
-                    (m.datas[0][0].volume = m.hq.totalVolume)),
-                  (m.minPrice = o - 0.01 * o),
-                  (m.maxPrice = o + 0.01 * o),
-                  (m.maxPercent = 0.01),
-                  (m.minPercent = -0.01),
-                  m.hq.totalVolume > 0 &&
-                    v.stbd(m.datas[0][0].date, m.hq.date) &&
-                    !isNaN(m.hq.totalAmount) &&
-                    (m.datas[0][0].volume =
-                      m.hq.totalAmount / m.hq.totalVolume));
-                var c = g(m.maxVolume, 0, 0, !0);
-                m.labelMaxVol = c[0];
+                (stockData.minPrice < -1e8 || stockData.maxPrice - stockData.minPrice < 1e-6) &&
+                  (dateUtil.stbd(stockData.datas[0][0].date, stockData.hq.date) &&
+                    ((stockData.datas[0][0].price = stockData.hq.price),
+                    (stockData.datas[0][0].avg_price = stockData.hq.price),
+                    (stockData.datas[0][0].prevclose = stockData.hq.prevclose),
+                    (stockData.datas[0][0].volume = stockData.hq.totalVolume)),
+                  (stockData.minPrice = o - 0.01 * o),
+                  (stockData.maxPrice = o + 0.01 * o),
+                  (stockData.maxPercent = 0.01),
+                  (stockData.minPercent = -0.01),
+                  stockData.hq.totalVolume > 0 &&
+                    dateUtil.stbd(stockData.datas[0][0].date, stockData.hq.date) &&
+                    !isNaN(stockData.hq.totalAmount) &&
+                    (stockData.datas[0][0].volume =
+                      stockData.hq.totalAmount / stockData.hq.totalVolume));
+                var c = g(stockData.maxVolume, 0, 0, !0);
+                stockData.labelMaxVol = c[0];
                 var d = 0.005;
-                m.maxPercent < d &&
-                  ("US" !== m.market || "LSE" !== m.market) &&
-                  "pct" !== U.datas.scaleType &&
-                  ((m.minPrice = m.maxavgPrice = o - o * d),
-                  (m.maxPrice = m.minavgPrice = o + o * d),
-                  (m.maxPercent = m.maxavgPercent = d),
-                  (m.minPercent = m.minavgPercent = -d));
+                stockData.maxPercent < d &&
+                  ("US" !== stockData.market || "LSE" !== stockData.market) &&
+                  "pct" !== cfg.datas.scaleType &&
+                  ((stockData.minPrice = stockData.maxavgPrice = o - o * d),
+                  (stockData.maxPrice = stockData.minavgPrice = o + o * d),
+                  (stockData.maxPercent = stockData.maxavgPercent = d),
+                  (stockData.minPercent = stockData.minavgPercent = -d));
                 var p;
-                /^s[hz]51\d{4}$/.test(i.symbol) && (p = "fund"),
+                /^s[hz]51\d{4}$/.test(config.symbol) && (p = "fund"),
                   p &&
                     "fund" === p &&
-                    "pct" !== U.datas.scaleType &&
-                    d > Math.abs(m.minPercent) &&
-                    ((d = Math.abs(m.minPercent)), (i.nfloat = m.nfloat = 3)),
-                  ("gb_brk$a" === m.symbol || "usr_brk$a" === m.symbol) &&
-                    (i.nfloat = m.nfloat = 1);
+                    "pct" !== cfg.datas.scaleType &&
+                    d > Math.abs(stockData.minPercent) &&
+                    ((d = Math.abs(stockData.minPercent)), (config.nfloat = stockData.nfloat = 3)),
+                  ("gb_brk$a" === stockData.symbol || "usr_brk$a" === stockData.symbol) &&
+                    (config.nfloat = stockData.nfloat = 1);
               }),
               (createPlayingData = function() {
                 var e,
                   t,
                   a,
-                  i = U.DIMENSION.h_t,
-                  r = i * U.DIMENSION.P_HV,
-                  n = i * (1 - U.DIMENSION.P_HV);
-                (t = m.labelMinP), (a = m.labelMaxP);
+                  i = cfg.DIMENSION.h_t,
+                  r = i * cfg.DIMENSION.P_HV,
+                  n = i * (1 - cfg.DIMENSION.P_HV);
+                (t = stockData.labelMinP), (a = stockData.labelMaxP);
                 var o,
-                  s = m.labelMaxVol;
-                if (m.datas) {
-                  var l = m.datas.length;
+                  s = stockData.labelMaxVol;
+                if (stockData.datas) {
+                  var l = stockData.datas.length;
                   for (e = 0; l > e; e++) {
-                    o = m.datas[0][0].prevclose;
+                    o = stockData.datas[0][0].prevclose;
                     for (
                       var c,
-                        d = U.custom.show_underlay_vol,
-                        h = m.isCompare ? "ppp" : "pp",
-                        u = m.dataLen,
+                        d = cfg.custom.show_underlay_vol,
+                        h = stockData.isCompare ? "ppp" : "pp",
+                        u = stockData.dataLen,
                         v = 0;
                       u > v;
                       v++
                     ) {
-                      if (((c = m.datas[e][v]), !c)) return;
+                      if (((c = stockData.datas[e][v]), !c)) return;
                       c.price <= 0 &&
-                        m.realLen >= v &&
+                        stockData.realLen >= v &&
                         v > 0 &&
-                        ((c.price = m.hq.price),
-                        (c.avg_price = m.datas[e][v - 1].avg_price),
+                        ((c.price = stockData.hq.price),
+                        (c.avg_price = stockData.datas[e][v - 1].avg_price),
                         (c.volume = 0)),
                         (c.change = c.price - o),
                         (c.percent = c.change / o),
-                        (c.py = p[h](c.price, t, a, i, o)),
-                        (c.ay = p[h](c.avg_price, t, a, i, o)),
-                        d && (c.vy = p.vp(c.volume, s, r) + n);
+                        (c.py = xh5_PosUtil[h](c.price, t, a, i, o)),
+                        (c.ay = xh5_PosUtil[h](c.avg_price, t, a, i, o)),
+                        d && (c.vy = xh5_PosUtil.vp(c.volume, s, r) + n);
                     }
                   }
-                  m.preData.vPos =
-                    "CN" == m.market &&
+                  stockData.preData.vPos =
+                    "CN" == stockData.market &&
                     1 == l &&
-                    f(m.hq.date, m.datas[0][0].date)
-                      ? p[h](m.preData.data, t, a, i, o)
+                    stbd(stockData.hq.date, stockData.datas[0][0].date)
+                      ? xh5_PosUtil[h](stockData.preData.data, t, a, i, o)
                       : null;
                 }
               }),
@@ -2603,9 +2605,9 @@ xh5_define(
                   else
                     for (var l = r; n > l; l++)
                       (s = s.concat(i[l])), o.push(i[l]);
-                  (m.datas = o),
-                    (m.lineDatas = s),
-                    (m.dataLen = o[0].length),
+                  (stockData.datas = o),
+                    (stockData.lineDatas = s),
+                    (stockData.dataLen = o[0].length),
                     e(),
                     t();
                 }
@@ -2640,7 +2642,7 @@ xh5_define(
               }
             e.index = utils_util.arrIndexOf(d, e.time);
             var a = e.index;
-            switch (m.market) {
+            switch (stockData.market) {
               case "CN":
               case "REPO":
               case "option_cn":
@@ -2652,7 +2654,7 @@ xh5_define(
                   (e.time >= "11:30" &&
                     e.time < "13:00" &&
                     (a = utils_util.arrIndexOf(d, "11:29")),
-                  "NF" == m.market &&
+                  "NF" == stockData.market &&
                     ("21:00" == x.time[0][0]
                       ? e.time < "09:00" &&
                         e.time >= "02:30" &&
@@ -2665,26 +2667,26 @@ xh5_define(
                   e.time >= "16:00" && e.time < "16:10" && (a = d.length - 1);
                 break;
               case "HF":
-                "hf_CHA50CFD" == m.symbol &&
+                "hf_CHA50CFD" == stockData.symbol &&
                   e.time > "16:35" &&
                   e.time < "17:00" &&
                   (a = 455);
             }
             if (
               ((e.index = a),
-              (m.realLen = a),
-              (m.hq.open == m.hq.prevclose &&
-                m.hq.high == m.hq.prevclose &&
-                m.hq.low == m.hq.prevclose &&
+              (stockData.realLen = a),
+              (stockData.hq.open == stockData.hq.prevclose &&
+                stockData.hq.high == stockData.hq.prevclose &&
+                stockData.hq.low == stockData.hq.prevclose &&
                 0 > a) ||
-                m.hq.time < "09:30")
+                stockData.hq.time < "09:30")
             )
-              switch (m.market) {
+              switch (stockData.market) {
                 case "CN":
-                  m.realLen = m.hq.time >= "15:00" ? H - 1 : 0;
+                  stockData.realLen = stockData.hq.time >= "15:00" ? H - 1 : 0;
                   break;
                 case "REPO":
-                  m.realLen = m.hq.time >= "15:30" ? H - 1 : 0;
+                  stockData.realLen = stockData.hq.time >= "15:30" ? H - 1 : 0;
                   break;
                 case "NF":
                 case "HF":
@@ -2694,7 +2696,7 @@ xh5_define(
                 case "MSCI":
                   break;
                 default:
-                  m.realLen = 0;
+                  stockData.realLen = 0;
               }
           },
           de = function(e, t) {
@@ -2724,14 +2726,14 @@ xh5_define(
                   1,
                   e.price,
                   !0,
-                  m.needMarket,
+                  stockData.needMarket,
                   [e.date],
                   a
                 );
                 "NF" == I && e.time >= "21:00"
-                  ? ((i[0].date = v.dd(e.date)),
+                  ? ((i[0].date = dateUtil.dd(e.date)),
                     i[0].date.setDate(e.date.getDate() + 1))
-                  : (i[0].date = v.dd(e.date)),
+                  : (i[0].date = dateUtil.dd(e.date)),
                   (i[0].prevclose = e.price),
                   (i[0].price = e.price),
                   (i[0].volume = 0);
@@ -2743,21 +2745,21 @@ xh5_define(
                   o[s][0].totalVolume &&
                     ((n += Number(o[s][0].totalVolume)), r++);
                 (i[0].lastfive = n / r / 390 || 0),
-                  f(o[4][0].date, e.date)
+                  stbd(o[4][0].date, e.date)
                     ? "NF" == I && e.time >= "21:00"
                       ? (o.shift(), o.push(i))
                       : (o[4] = i)
                     : (o.shift(), o.push(i)),
                   tDb.initTState(o),
-                  (m.datas = [o[4]]),
-                  (m.date = v.ds(e.date)),
-                  (m.realLen = 0);
+                  (stockData.datas = [o[4]]),
+                  (stockData.date = dateUtil.ds(e.date)),
+                  (stockData.realLen = 0);
               },
               s = 0,
               l = function(e, a, l) {
                 function c() {
                   switch (
-                    (o(m.hq), onViewChange(), $.createPlayingData(), m.market)
+                    (o(stockData.hq), onViewChange(), $.createPlayingData(), stockData.market)
                   ) {
                     case "US":
                       $.extValues();
@@ -2772,32 +2774,32 @@ xh5_define(
                   return !isNaN(te) &&
                     te > 0 &&
                     e >= 1e3 * Number(te) &&
-                    0 != m.realLen &&
-                    m.hq.isUpdateTime
-                    ? ((curTime = new Date().getTime()), g(b, m.hq, a), !0)
+                    0 != stockData.realLen &&
+                    stockData.hq.isUpdateTime
+                    ? ((curTime = new Date().getTime()), g(b, stockData.hq, a), !0)
                     : !1;
                 }
                 function h() {
                   function i() {
-                    f(m.hq.date, y[4][0].date) &&
-                      m.hq.time > "16:00" &&
+                    stbd(stockData.hq.date, y[4][0].date) &&
+                      stockData.hq.time > "16:00" &&
                       o.price < 0 &&
-                      ((o.price = m.hq.price),
+                      ((o.price = stockData.hq.price),
                       (o.avg_price = y[4][y[4].length - 2].avg_price),
                       (o.volume = 0));
                   }
                   function n() {
-                    f(m.hq.date, y[4][0].date) &&
-                      m.hq.time > "16:00" &&
-                      ((o.price = m.hq.price),
+                    stbd(stockData.hq.date, y[4][0].date) &&
+                      stockData.hq.time > "16:00" &&
+                      ((o.price = stockData.hq.price),
                       (o.avg_price = y[4][y[4].length - 2].avg_price),
                       (o.volume = 0),
-                      (o.time = m.hq.time),
-                      o.avg_price < 0 && (o.avg_price = m.hq.price));
+                      (o.time = stockData.hq.time),
+                      o.avg_price < 0 && (o.avg_price = stockData.hq.price));
                   }
-                  if (!m.hq.isUpdateTime) {
+                  if (!stockData.hq.isUpdateTime) {
                     var o = y[4][y[4].length - 1];
-                    switch (m.market) {
+                    switch (stockData.market) {
                       case "US":
                         i();
                         break;
@@ -2805,7 +2807,7 @@ xh5_define(
                         n();
                     }
                     return (
-                      ce(m.hq),
+                      ce(stockData.hq),
                       onViewChange(!0),
                       $.createPlayingData(),
                       utils_util.isFunc(a) && a(),
@@ -2813,85 +2815,85 @@ xh5_define(
                     );
                   }
                   return (
-                    "HK" == m.market && l && g(b, e, a),
-                    (m.date =
-                      "NF" == m.market && m.hq.time >= "21:00"
-                        ? v.ds(y[4][0].date)
-                        : m.hq.today),
+                    "HK" == stockData.market && l && g(b, e, a),
+                    (stockData.date =
+                      "NF" == stockData.market && stockData.hq.time >= "21:00"
+                        ? dateUtil.ds(y[4][0].date)
+                        : stockData.hq.today),
                     !1
                   );
                 }
                 var b,
                   y = tDb.get();
-                switch (m.needMarket) {
+                switch (stockData.needMarket) {
                   case "HF":
-                    d = utils_util.tUtil.gata(m.needMarket, w.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, w.time);
                     break;
                   case "NF":
-                    d = utils_util.tUtil.gata(m.needMarket, x.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, x.time);
                     break;
                   case "global_index":
-                    d = utils_util.tUtil.gata(m.needMarket, T.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, T.time);
                     break;
                   default:
-                    d = utils_util.tUtil.gata(m.needMarket);
+                    d = utils_util.tUtil.gata(stockData.needMarket);
                 }
-                if (e && e.date && m.datas && !i.date) {
-                  if (((n = !1), (b = y[4]), m.hq.isDateChange)) {
+                if (e && e.date && stockData.datas && !config.date) {
+                  if (((n = !1), (b = y[4]), stockData.hq.isDateChange)) {
                     if (
-                      ("NF" == m.market && x && x.time[0][0] < "21:00") ||
-                      "NF" != m.market
+                      ("NF" == stockData.market && x && x.time[0][0] < "21:00") ||
+                      "NF" != stockData.market
                     )
                       return void c();
                   } else if (
-                    ("CN" == m.market &&
-                      !f(m.hq.date, y[4][0].date) &&
-                      m.hq.time < "09:05") ||
-                    ("NF" == m.market &&
-                      f(m.hq.date, y[4][0].date) &&
+                    ("CN" == stockData.market &&
+                      !stbd(stockData.hq.date, y[4][0].date) &&
+                      stockData.hq.time < "09:05") ||
+                    ("NF" == stockData.market &&
+                      stbd(stockData.hq.date, y[4][0].date) &&
                       x &&
                       "21:00" == x.time[0][0] &&
-                      m.hq.time >= x.time[0][0]) ||
-                    ("HF" == m.market &&
-                      !f(m.hq.date, y[4][0].date) &&
-                      0 != m.hq.date.getDay() &&
-                      6 != m.hq.date.getDay() &&
-                      m.hq.time >= w.time[0][0])
+                      stockData.hq.time >= x.time[0][0]) ||
+                    ("HF" == stockData.market &&
+                      !stbd(stockData.hq.date, y[4][0].date) &&
+                      0 != stockData.hq.date.getDay() &&
+                      6 != stockData.hq.date.getDay() &&
+                      stockData.hq.time >= w.time[0][0])
                   )
                     return void c();
                   if (!p() && !h()) {
-                    if ((m.datas && (K = y[4][0]), de(e.date, y[4][0].date)))
-                      return void (m.realLen = H);
-                    (L = e.name || ""), (m.hq = e);
+                    if ((stockData.datas && (K = y[4][0]), de(e.date, y[4][0].date)))
+                      return void (stockData.realLen = H);
+                    (L = e.name || ""), (stockData.hq = e);
                     var _ =
                       e.date.getHours() < 10
                         ? "0" + e.date.getHours()
                         : e.date.getHours();
                     if (
-                      ((m.time =
+                      ((stockData.time =
                         _ + ":" + utils_util.strUtil.zp(e.date.getMinutes())),
                       0 == e.index && u(b, e),
-                      utils_util.arrIndexOf(d, m.time) &&
+                      utils_util.arrIndexOf(d, stockData.time) &&
                         e.index > 0 &&
-                        (utils_util.arrIndexOf(d, m.time) - m.realLen <= 1
+                        (utils_util.arrIndexOf(d, stockData.time) - stockData.realLen <= 1
                           ? u(b, e)
                           : g(b, e, a),
                         1 == e.index && 0 == s))
                     )
                       return (s = 1), void g(b, e, a);
-                    R(m.market) &&
-                      ((m.hq.open == m.hq.prevclose &&
-                        m.hq.high == m.hq.prevclose &&
-                        m.hq.low == m.hq.prevclose &&
-                        m.hq.index < 0) ||
+                    R(stockData.market) &&
+                      ((stockData.hq.open == stockData.hq.prevclose &&
+                        stockData.hq.high == stockData.hq.prevclose &&
+                        stockData.hq.low == stockData.hq.prevclose &&
+                        stockData.hq.index < 0) ||
                         e.time < "09:30") &&
-                      ("CN" == m.market
+                      ("CN" == stockData.market
                         ? ((b[0].avg_price = e.price),
                           (b[0].volume = e.totalVolume))
-                        : "option_cn" == m.market
+                        : "option_cn" == stockData.market
                         ? ((b[0].inventory = e.position || e.holdingAmount),
                           (b[0].holdPosition = e.position || e.holdingAmount))
-                        : "HK" == m.market &&
+                        : "HK" == stockData.market &&
                           (b[0].avg_price =
                             e.totalAmount / e.totalVolume || e.price)),
                       5 == ee.end && (onViewChange(!0), $.createPlayingData()),
@@ -2905,7 +2907,7 @@ xh5_define(
               u = function(e, t) {
                 var i = e;
                 ce(t);
-                var r = i[m.realLen];
+                var r = i[stockData.realLen];
                 r &&
                   (K && !a
                     ? (B
@@ -2926,10 +2928,10 @@ xh5_define(
                         ? (t.volume = t.totalVolume - ie.totalVolume || 0)
                         : ((t.volume = 0), (ae = !0)),
                       (ie.totalVolume = t.totalVolume)),
-                  ("option_cn" == m.market || "NF" == m.market) &&
+                  ("option_cn" == stockData.market || "NF" == stockData.market) &&
                     ((r.inventory = t.position || t.holdingAmount),
                     (r.holdPosition = t.position || t.holdingAmount)),
-                  "CN" == m.market
+                  "CN" == stockData.market
                     ? (r.avg_price = t.avg_price || r.price)
                     : (t.index > 1
                         ? (r.avg_price =
@@ -2937,15 +2939,15 @@ xh5_define(
                             (i[t.index - 1].avg_price * t.index + t.price) /
                               (t.index + 1) ||
                             r.price)
-                        : "fund" == m.market ||
+                        : "fund" == stockData.market ||
                           (r.avg_price = r.price || t.price),
                       0 == t.index &&
                         (r.avg_price =
                           t.totalAmount / t.totalVolume || t.price),
                       (r.volume = r.volume || 0)),
                   isNaN(t.volume) && (t.volume = 0),
-                  "HK" != m.market &&
-                    "NF" != m.market &&
+                  "HK" != stockData.market &&
+                    "NF" != stockData.market &&
                     (r.volume += t.volume),
                   (r.price = t.price),
                   r.volume <= 0 && (r.volume = 0));
@@ -2958,33 +2960,33 @@ xh5_define(
                   withI: !1,
                   faker: "",
                   dataformatter: e.datas.t1.dataformatter,
-                  ssl: i.ssl,
-                  assisthq: i.assisthq
+                  ssl: config.ssl,
+                  assisthq: config.assisthq
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (s.symbol = i.rawsymbol),
+                  "LSE" == stockData.market && (s.symbol = config.rawsymbol),
                   KKE.api("datas.t.get", s, function(e) {
-                    (a = e.data.td1), ce(m.hq);
+                    (a = e.data.td1), ce(stockData.hq);
                     var i = tDb.get();
-                    ("NF" == m.market &&
+                    ("NF" == stockData.market &&
                       ("21:00" == x.time[0][0] &&
-                        m.hq.time >= x.time[0][0] &&
-                        0 != m.hq.date.getDay() &&
-                        6 != m.hq.date.getDay() &&
+                        stockData.hq.time >= x.time[0][0] &&
+                        0 != stockData.hq.date.getDay() &&
+                        6 != stockData.hq.date.getDay() &&
                         (a[0].date = i[4][0].date),
                       ("09:30" == x.time[0][0] || "09:15" == x.time[0][0]) &&
-                        f(i[4][0].date, m.hq.date) &&
-                        m.hq.time <= x.time[0][0])) ||
-                      ("HF" == m.market &&
-                        m.hq.time > w.time[0][0] &&
-                        0 != m.hq.date.getDay() &&
-                        6 != m.hq.date.getDay() &&
-                        (a[0].date = m.hq.date),
+                        stbd(i[4][0].date, stockData.hq.date) &&
+                        stockData.hq.time <= x.time[0][0])) ||
+                      ("HF" == stockData.market &&
+                        stockData.hq.time > w.time[0][0] &&
+                        0 != stockData.hq.date.getDay() &&
+                        6 != stockData.hq.date.getDay() &&
+                        (a[0].date = stockData.hq.date),
                       (i[4] = a),
                       tDb.initTState(i),
-                      "CN" == m.market &&
-                        "HK" == m.needMarket &&
-                        ((m.needMarket = "CN"), X.changeData(m)),
+                      "CN" == stockData.market &&
+                        "HK" == stockData.needMarket &&
+                        ((stockData.needMarket = "CN"), X.changeData(stockData)),
                       5 == ee.end && (onViewChange(!0), $.createPlayingData()),
                       utils_util.isFunc(o) && o());
                   });
@@ -2998,14 +3000,14 @@ xh5_define(
                   withI: !1,
                   faker: "",
                   dataformatter: e.datas.t1.dataformatter,
-                  ssl: i.ssl
+                  ssl: config.ssl
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (o.symbol = i.rawsymbol),
+                  "LSE" == stockData.market && (o.symbol = config.rawsymbol),
                   KKE.api("datas.t.get", o, function(e) {
                     (a = e.data.td1),
                       tDb.initTState(e.data.td5),
-                      ce(m.hq),
+                      ce(stockData.hq),
                       utils_util.isFunc(n) && n(),
                       X.moving(ee.start, ee.end, "T5"),
                       J.hide();
@@ -3020,22 +3022,22 @@ xh5_define(
                   u = "";
                 (p = s ? s : utils_util.market(e.symbol)),
                   "US" === p
-                    ? (h = 1 === i.assisthq ? ",gb_ixic" : u)
-                    : "HK" === p && (h = 1 === i.assisthq ? ",rt_hkHSI" : u),
+                    ? (h = 1 === config.assisthq ? ",gb_ixic" : u)
+                    : "HK" === p && (h = 1 === config.assisthq ? ",rt_hkHSI" : u),
                   o
                     ? ((d = "datas.hq.parse"),
                       (m = {
                         symbol: e.symbol + h,
                         hqStr: o,
                         market: p,
-                        ssl: i.ssl
+                        ssl: config.ssl
                       }))
                     : ((d = "datas.hq.get"),
                       (m = {
                         symbol: e.symbol + h,
                         delay: !0,
                         cancelEtag: n,
-                        ssl: i.ssl
+                        ssl: config.ssl
                       })),
                   KKE.api(d, m, function(t) {
                     l(t.dataObj[e.symbol], a, c);
@@ -3047,7 +3049,7 @@ xh5_define(
               o = 1,
               s = function(e) {
                 o > 2 ||
-                  (E.re(N.e.T_DATA_LOADED), utils_util.isFunc(e) && e(), o++);
+                  (E.re(globalCfg.e.T_DATA_LOADED), utils_util.isFunc(e) && e(), o++);
               },
               l = function(e) {
                 var t = e,
@@ -3081,7 +3083,7 @@ xh5_define(
                   1,
                   o.hq.price,
                   !0,
-                  m.market,
+                  stockData.market,
                   [o.hq.date],
                   n
                 );
@@ -3091,39 +3093,39 @@ xh5_define(
                   (s[0].today = utils_util.dateUtil.ds(o.hq.date, "-")),
                   (r = i),
                   (r[4] = s),
-                  (m.realLen = 0),
+                  (stockData.realLen = 0),
                   r
                 );
               };
             this.initData = function(o) {
               var p = ee.viewId;
               if (r != p) {
-                (r = p), null != m.datas && tDb.initTState(p, m.tDb.get());
+                (r = p), null != stockData.datas && tDb.initTState(p, stockData.tDb.get());
                 var h = {
-                  assisthq: i.assisthq,
-                  ssl: i.ssl,
+                  assisthq: config.assisthq,
+                  ssl: config.ssl,
                   symbol: e.symbol,
-                  date: i.date,
+                  date: config.date,
                   withT5: 1,
-                  dist5: i.dist5,
+                  dist5: config.dist5,
                   withI: !0,
-                  faker: m.needMarket,
+                  faker: stockData.needMarket,
                   dataformatter: e.datas.t1.dataformatter
                 };
-                switch (m.needMarket) {
+                switch (stockData.needMarket) {
                   case "HF":
-                    d = utils_util.tUtil.gata(m.needMarket, w.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, w.time);
                     break;
                   case "NF":
-                    d = utils_util.tUtil.gata(m.needMarket, x.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, x.time);
                     break;
                   case "global_index":
-                    d = utils_util.tUtil.gata(m.needMarket, T.time);
+                    d = utils_util.tUtil.gata(stockData.needMarket, T.time);
                     break;
                   case "LSE":
-                    h.symbol = i.rawsymbol;
+                    h.symbol = config.rawsymbol;
                   default:
-                    d = utils_util.tUtil.gata(m.needMarket);
+                    d = utils_util.tUtil.gata(stockData.needMarket);
                 }
                 J.show(),
                   KKE.api("datas.t.get", h, function(e) {
@@ -3132,10 +3134,10 @@ xh5_define(
                       p = "",
                       u = Number(e.data.hq.state);
                     if ("empty" == e.msg)
-                      switch (m.market) {
+                      switch (stockData.market) {
                         case "CN":
                           3 == d &&
-                            ((p = N.delisted),
+                            ((p = globalCfg.delisted),
                             q.showTip({
                               txt: p,
                               parent: V,
@@ -3149,37 +3151,37 @@ xh5_define(
                           ((M = 0),
                           X.hasHistory && X.hasHistory(M),
                           q.showTip({
-                            txt: N.nohistoryt,
+                            txt: globalCfg.nohistoryt,
                             parent: V,
                             noBtn: !0
                           })),
-                        (m.isErr = !0),
+                        (stockData.isErr = !0),
                         a && e.data && e.data.hq)
                       ) {
                         if (d)
-                          switch (m.market) {
+                          switch (stockData.market) {
                             case "CN":
                               switch (d) {
                                 case 2:
-                                  p = N.notlisted;
+                                  p = globalCfg.notlisted;
                                   break;
                                 case 3:
-                                  p = N.delisted;
+                                  p = globalCfg.delisted;
                                   break;
                                 case 0:
-                                  p = N.norecord;
+                                  p = globalCfg.norecord;
                               }
                               break;
                             case "HK":
                               switch (d) {
                                 case 5:
-                                  p = N.notlisted;
+                                  p = globalCfg.notlisted;
                                   break;
                                 case 0:
-                                  p = N.delisted;
+                                  p = globalCfg.delisted;
                               }
                           }
-                        else p = N.norecord;
+                        else p = globalCfg.norecord;
                         if (p && 0 != u) {
                           var v,
                             g = {
@@ -3187,7 +3189,7 @@ xh5_define(
                               parent: V,
                               noBtn: !0
                             };
-                          if (!(U.DIMENSION.getStageW() < 200))
+                          if (!(cfg.DIMENSION.getStageW() < 200))
                             return (
                               q.showTip({
                                 txt: p,
@@ -3201,49 +3203,49 @@ xh5_define(
                             top: "0px"
                           }),
                             v ||
-                              ((v = new utils_util.TipM(U.COLOR)), v.genTip(g));
+                              ((v = new utils_util.TipM(cfg.COLOR)), v.genTip(g));
                         }
                       }
                       if (0 != u && 7 != u) {
                         if ((X.onResize(), 1 != d))
                           return void X.removeCompare([h.symbol]);
-                        m.isErr = !1;
-                      } else m.isErr = !1;
+                        stockData.isErr = !1;
+                      } else stockData.isErr = !1;
                     }
-                    (m.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
+                    (stockData.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
                     var b;
                     curDate = new Date();
                     var y = 60 * curDate.getTimezoneOffset() * 1e3;
                     if (
                       (curDate.setTime(curDate.getTime() + y),
                       curDate.setHours(curDate.getHours() + 8),
-                      (L = m.hq.name || ""),
-                      ce(m.hq),
-                      l(m.hq, e.data.td5) && R(m.market)
+                      (L = stockData.hq.name || ""),
+                      ce(stockData.hq),
+                      l(stockData.hq, e.data.td5) && R(stockData.market)
                         ? "history" == e.msg
                           ? ((b = e.data.td5),
-                            b[4][0].date || (b[4][0].date = m.hq.date))
-                          : (b = c(m, e.data.td5))
+                            b[4][0].date || (b[4][0].date = stockData.hq.date))
+                          : (b = c(stockData, e.data.td5))
                         : ((b = e.data.td5),
-                          "NF" != m.market ||
+                          "NF" != stockData.market ||
                             !x ||
                             ("09:30" != x.time[0][0] &&
                               "09:15" != x.time[0][0]) ||
-                            (f(b[4][0].date, m.hq.date) &&
-                              m.hq.time <= x.time[0][0] &&
-                              (b = c(m, e.data.td5))),
-                          b && !b[4][0].date && (b[4][0].date = m.hq.date)),
+                            (stbd(b[4][0].date, stockData.hq.date) &&
+                              stockData.hq.time <= x.time[0][0] &&
+                              (b = c(stockData, e.data.td5))),
+                          b && !b[4][0].date && (b[4][0].date = stockData.hq.date)),
                       (X.historyData = b),
-                      (m.date =
-                        (e.data.td1 && e.data.td1[0].today) || m.hq.date),
+                      (stockData.date =
+                        (e.data.td1 && e.data.td1[0].today) || stockData.hq.date),
                       tDb.initTState(b),
                       s(o),
-                      1 == O && (n.dateTo(i.historytime, i.historycb), (O = 0)),
+                      1 == O && (n.dateTo(config.historytime, config.historycb), (O = 0)),
                       J.hide(),
-                      i.loadedChart)
+                      config.loadedChart)
                     )
-                      if (utils_util.isFunc(i.loadedChart)) i.loadedChart();
-                      else if (window[i.loadedChart]) window[i.loadedChart]();
+                      if (utils_util.isFunc(config.loadedChart)) config.loadedChart();
+                      else if (window[config.loadedChart]) window[config.loadedChart]();
                       else
                         try {
                           window.h5chart.loadedChart();
@@ -3258,10 +3260,10 @@ xh5_define(
           (this.doUpdate = me.update),
           (this.onViewChange = onViewChange),
           (this.setPricePos = function(e, t) {
-            (m.labelMaxP = e[0]),
-              (m.labelMinP = e[1]),
-              (m.labelPriceCount = e[2]),
-              (m.isCompare = t),
+            (stockData.labelMaxP = e[0]),
+              (stockData.labelMinP = e[1]),
+              (stockData.labelPriceCount = e[2]),
+              (stockData.isCompare = t),
               $.createPlayingData(),
               k && k.setPricePos(e);
           }),
@@ -3296,17 +3298,17 @@ xh5_define(
               !utils_util.isArr(e) && (e = [e]);
               for (var a = e.length; a--; )
                 if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
-                  e.splice(a, 1), (U.custom.show_underlay_vol = !1);
+                  e.splice(a, 1), (cfg.custom.show_underlay_vol = !1);
                   break;
                 }
-            } else U.custom.show_underlay_vol = !1;
+            } else cfg.custom.show_underlay_vol = !1;
             k && k.removeChart(e);
           }),
           (this.togglePt = function(e) {
             k && (y = k.showHide(e));
           });
         var he = function(e, a, i) {
-          e && re.resizeAll(!0),
+          e && initMgr.resizeAll(!0),
             X.onChangeView(),
             a && utils_util.isFunc(a.callback) && a.callback(),
             i && ne.onTechChanged(i[0]);
@@ -3316,19 +3318,19 @@ xh5_define(
             !utils_util.isArr(e) && (e = [e]);
             for (var n = e.length; n--; )
               if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
-                e.splice(n, 1), (U.custom.show_underlay_vol = !0);
+                e.splice(n, 1), (cfg.custom.show_underlay_vol = !0);
                 break;
               }
             k ||
               ((k = new pChart({
-                iMgr: oe,
-                stockData: m,
+                iMgr: iMgr,
+                stockData: stockData,
                 chartArea: G,
                 titleArea: z,
                 cb: he,
                 type: "t",
-                cfg: U,
-                usrObj: i
+                cfg: cfg,
+                usrObj: config
               })),
               a && (Z = k)),
               k.createChart(e, r);
@@ -3337,14 +3339,14 @@ xh5_define(
           (this.initTc = function(e, t) {
             whatis1 ||
               ((whatis1 = new tChart({
-                stockData: m,
-                iMgr: oe,
-                subArea: W,
+                stockData: stockData,
+                iMgr: iMgr,
+                subArea: subArea,
                 cb: he,
-                cfg: U,
+                cfg: cfg,
                 type: "option_cn" == I ? "p" : "t",
-                usrObj: i,
-                initMgr: re
+                usrObj: config,
+                initMgr: initMgr
               })),
               a && (Y = whatis1)),
               whatis1.createChart(e, t);
@@ -3355,8 +3357,8 @@ xh5_define(
           (this.initRs = function() {
             D ||
               ((D = new o({
-                stockData: m,
-                setting: U,
+                stockData: stockData,
+                setting: cfg,
                 state: ee,
                 rc: X.moving,
                 witht5: 1
@@ -3370,24 +3372,24 @@ xh5_define(
       function S(e, r) {
         function n() {
           var r = e.isMain;
-          if (r) (l = U.COLOR.T_P), (c = U.COLOR.T_AVG);
+          if (r) (l = cfg.COLOR.T_P), (c = cfg.COLOR.T_AVG);
           else {
-            2 != X.dAdd || o.linecolor || (o.linecolor = i.overlaycolor);
+            2 != X.dAdd || o.linecolor || (o.linecolor = config.overlaycolor);
             var n = o.linecolor || "#cccccc";
             l = n.K_N || n.T_N || "#" + utils_util.randomColor();
           }
           s = new utils_painter.xh5_ibPainter({
-            setting: U,
+            setting: cfg,
             sd: e,
             withHBg: r,
             ctn: K,
-            iMgr: oe,
+            iMgr: iMgr,
             reO: {
-              mh: U.DIMENSION.H_MA4K
+              mh: cfg.DIMENSION.H_MA4K
             },
             iTo: function(t, a, i, r) {
               if (
-                (!m(t, oe.iHLineO.body) && t.appendChild(oe.iHLineO.body),
+                (!fCONTAINS(t, iMgr.iHLineO.body) && t.appendChild(iMgr.iHLineO.body),
                 e && e.datas)
               ) {
                 var n,
@@ -3397,20 +3399,20 @@ xh5_define(
                   ? (n =
                       e.labelMaxP * s +
                       s -
-                      (i / U.DIMENSION.h_t) *
+                      (i / cfg.DIMENSION.h_t) *
                         (e.labelMaxP * s + s - (e.labelMinP * s + s)))
                   : ((n =
                       e.labelMaxP -
-                      (i / U.DIMENSION.h_t) * (e.labelMaxP - e.labelMinP)),
+                      (i / cfg.DIMENSION.h_t) * (e.labelMaxP - e.labelMinP)),
                     (o = Number((100 * (n - s)) / s).toFixed(2) + "%")),
-                  oe.iToD(
+                  iMgr.iToD(
                     {
                       mark: n,
                       rmark: o,
                       x: a,
                       y: i,
-                      oy: U.DIMENSION.H_MA4K,
-                      ox: U.DIMENSION.posX,
+                      oy: cfg.DIMENSION.H_MA4K,
+                      ox: cfg.DIMENSION.posX,
                       e: r
                     },
                     !0,
@@ -3428,7 +3430,7 @@ xh5_define(
           h = {},
           v = 1,
           f = function(e) {
-            o = u(
+            o = utils_util_oc(
               {
                 linetype: "line_" + v,
                 linecolor: o ? o.linecolor || {} : {}
@@ -3443,17 +3445,17 @@ xh5_define(
                 ("line" == t[0] || "mountain" == t[0]) &&
                 (v = Number(t[1]) || 1)),
               (h = o.linecolor || {}),
-              (l = h.K_N || h.T_N || U.COLOR.T_P),
-              (c = h.T_AVG || U.COLOR.T_AVG),
-              (d = h.T_PREV || U.COLOR.T_PREV);
+              (l = h.K_N || h.T_N || cfg.COLOR.T_P),
+              (c = h.T_AVG || cfg.COLOR.T_AVG),
+              (d = h.T_PREV || cfg.COLOR.T_PREV);
           },
           g = function() {
             function a() {
-              if (e.isMain && U.custom.show_underlay_vol) {
-                for (var t, a = U.COLOR.V_SD, i = D; N > i; i++)
+              if (e.isMain && cfg.custom.show_underlay_vol) {
+                for (var t, a = cfg.COLOR.V_SD, i = D; N > i; i++)
                   (S = y[i]),
                     (t = S.vy),
-                    s.drawVStickC(M, t, I, U.DIMENSION.h_t, a),
+                    s.drawVStickC(M, t, I, cfg.DIMENSION.h_t, a),
                     (M += T);
                 s.stroke(), (s.getG().lineWidth = 1);
               }
@@ -3507,13 +3509,13 @@ xh5_define(
                 (e = S.py),
                   k == D || k % H == 0
                     ? s.moveTo(M, e)
-                    : k % i.modulo == 0 && s.lineTo(M, e),
+                    : k % config.modulo == 0 && s.lineTo(M, e),
                   (S.ix = M),
                   (M += T);
               (O = M),
                 (L = e),
                 s.stroke(),
-                i.business &&
+                config.business &&
                   h({
                     xPos: M,
                     yPos: e
@@ -3522,18 +3524,18 @@ xh5_define(
             function h(e) {
               s.newStyle(l, !0, 0.5),
                 s.drawDot(e.xPos, e.yPos, 3, !0),
-                s.newFillStyle_rgba(U.COLOR.M_ARR, 3, 1),
+                s.newFillStyle_rgba(cfg.COLOR.M_ARR, 3, 1),
                 s.fill(),
                 s.stroke();
             }
             function u() {
               function t() {
-                s.lineTo(M, U.DIMENSION.h_t),
-                  s.lineTo(0.5 * T, U.DIMENSION.h_t),
+                s.lineTo(M, cfg.DIMENSION.h_t),
+                  s.lineTo(0.5 * T, cfg.DIMENSION.h_t),
                   s.newFillStyle_rgba(
-                    U.COLOR.M_ARR,
-                    U.DIMENSION.h_t,
-                    U.COLOR.M_ARR_A
+                    cfg.COLOR.M_ARR,
+                    cfg.DIMENSION.h_t,
+                    cfg.COLOR.M_ARR_A
                   ),
                   s.fill();
               }
@@ -3554,31 +3556,31 @@ xh5_define(
                 }
             }
             function f() {
-              (d = U.COLOR.T_PREV), s.newStyle(d, !0, 1);
+              (d = cfg.COLOR.T_PREV), s.newStyle(d, !0, 1);
               var t,
                 a = 0,
                 r = 5;
               for (
                 t =
-                  e.isCompare && e.isMain && "pct" === U.datas.scaleType
-                    ? p.pp(0, e.labelMinP, e.labelMaxP, U.DIMENSION.h_t)
-                    : p.pp(
+                  e.isCompare && e.isMain && "pct" === cfg.datas.scaleType
+                    ? xh5_PosUtil.pp(0, e.labelMinP, e.labelMaxP, cfg.DIMENSION.h_t)
+                    : xh5_PosUtil.pp(
                         e.datas[0][0].prevclose,
                         e.minPrice,
                         e.maxPrice,
-                        U.DIMENSION.h_t
+                        cfg.DIMENSION.h_t
                       ),
                   t = ~~(t + 0.5),
                   t -= 0.5;
-                a < U.DIMENSION.w_t;
+                a < cfg.DIMENSION.w_t;
 
               )
                 s.moveTo(a, t), (a += r), s.lineTo(a, t), (a += r);
-              if ((e.isMain && s.stroke(), i.business)) {
+              if ((e.isMain && s.stroke(), config.business)) {
                 var n = e.hq.price.toFixed(2),
                   o = s.getG(),
                   l = o.measureText(n).width,
-                  c = U.DIMENSION.w_t - l,
+                  c = cfg.DIMENSION.w_t - l,
                   m = l + 10;
                 O > c && (O = c),
                   10 > O && (O = 20),
@@ -3615,7 +3617,7 @@ xh5_define(
                 a.stroke(),
                 a.fill();
             }
-            if (!(U.DIMENSION.getStageH() < 0)) {
+            if (!(cfg.DIMENSION.getStageH() < 0)) {
               e.isMain && s.drawBg("T");
               var y = [];
               if (e.datas) {
@@ -3628,11 +3630,11 @@ xh5_define(
                     D,
                     w = o.linetype && 0 == o.linetype.indexOf("mountain"),
                     x = e.datas.length * H,
-                    T = U.DIMENSION.w_t / Math.max(x, U.PARAM.minCandleNum),
+                    T = cfg.DIMENSION.w_t / Math.max(x, cfg.PARAM.minCandleNum),
                     I = 0.5 * T,
                     M = 0;
                   e.isTotalRedraw
-                    ? ((D = 0), s.clear(!0, U.PARAM.getHd()))
+                    ? ((D = 0), s.clear(!0, cfg.PARAM.getHd()))
                     : ((D = x - 2),
                       0 > D && (D = 0),
                       (M += T * D),
@@ -3648,8 +3650,8 @@ xh5_define(
                   a(),
                     "sh000012" != e.symbol &&
                       "sh000013" != e.symbol &&
-                      (i.business ||
-                        i.simple ||
+                      (config.business ||
+                        config.simple ||
                         utils_util.isRepos(e.symbol) ||
                         r()),
                     n(),
@@ -3666,7 +3668,7 @@ xh5_define(
           }),
           (this.resize = function() {
             s.resize({
-              mh: U.DIMENSION.H_MA4K
+              mh: cfg.DIMENSION.H_MA4K
             }),
               g();
           }),
@@ -3691,10 +3693,10 @@ xh5_define(
           });
         var c = function() {
             var e,
-              t = U.DIMENSION.h_t;
-            return i.business
+              t = cfg.DIMENSION.h_t;
+            return config.business
               ? (e = 0)
-              : i.appMode
+              : config.appMode
               ? 2
               : (e = 100 > t ? 2 : 180 > t ? 4 : 300 > t ? 6 : 8);
           },
@@ -3740,7 +3742,7 @@ xh5_define(
           },
           p = function(t) {
             1 == ee.viewId || 0 == ee.viewId
-              ? i.date
+              ? config.date
                 ? a.moving(ee.start, ee.end)
                 : a.moving(4, 5, !1)
               : a.moving(ee.start, ee.end, !1),
@@ -3772,7 +3774,7 @@ xh5_define(
                 return (
                   utils_util.trace.error("err main symbol"), void (mainStock.isErr = !1)
                 );
-              oe.patcher.switchFloater();
+              iMgr.patcher.switchFloater();
               for (var r, o = !0, s = allStocks.length; s--; )
                 (r = allStocks[s]), r == mainStock || v(r) || (o = !1);
               if (o) {
@@ -3794,7 +3796,7 @@ xh5_define(
           };
         (this.getExtraData = function(a) {
           if (
-            ((a = u(
+            ((a = utils_util_oc(
               {
                 symbol: mainStock.symbol,
                 name: null,
@@ -3819,7 +3821,7 @@ xh5_define(
           return r;
         }),
           (this.shareTo = function(e) {
-            e = u(
+            e = utils_util_oc(
               {
                 type: "weibo",
                 url: window.location.href,
@@ -3854,18 +3856,18 @@ xh5_define(
               default:
                 utils_util.grabM.shareTo({
                   ctn: V,
-                  w: U.DIMENSION.getStageW(),
-                  h: U.DIMENSION.getStageH() - (B.clientHeight || 0),
-                  ignoreZIdxArr: [U.PARAM.I_Z_INDEX],
-                  ignoreIdArr: [U.PARAM.LOGO_ID],
-                  priorZIdx: U.PARAM.G_Z_INDEX,
+                  w: cfg.DIMENSION.getStageW(),
+                  h: cfg.DIMENSION.getStageH() - (B.clientHeight || 0),
+                  ignoreZIdxArr: [cfg.PARAM.I_Z_INDEX],
+                  ignoreIdArr: [cfg.PARAM.LOGO_ID],
+                  priorZIdx: cfg.PARAM.G_Z_INDEX,
                   nologo: !1,
-                  top: U.DIMENSION.posY + U.DIMENSION.H_MA4K + 17,
-                  right: U.DIMENSION.RIGHT_W + U.DIMENSION.K_RIGHT_W,
-                  LOGO_W: U.DIMENSION.LOGO_W,
-                  LOGO_H: U.DIMENSION.LOGO_H,
-                  color: U.COLOR.LOGO,
-                  bgColor: U.COLOR.BG,
+                  top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
+                  right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
+                  LOGO_W: cfg.DIMENSION.LOGO_W,
+                  LOGO_H: cfg.DIMENSION.LOGO_H,
+                  color: cfg.COLOR.LOGO,
+                  bgColor: cfg.COLOR.BG,
                   txt: e.wbtext,
                   url: e.url,
                   extra: e.extra
@@ -3875,7 +3877,7 @@ xh5_define(
         var N,
           k,
           S = function() {
-            oe.update(), d(), m(), _(), oe.isIng() || ne.onViewPrice();
+            iMgr.update(), d(), m(), _(), iMgr.isIng() || ne.onViewPrice();
           },
           D = function() {
             clearTimeout(k),
@@ -3885,8 +3887,8 @@ xh5_define(
                 (k = setTimeout(S, 200));
           },
           w = function(e) {
-            if ((clearInterval(N), !isNaN(i.rate))) {
-              var t = 1e3 * i.rate;
+            if ((clearInterval(N), !isNaN(config.rate))) {
+              var t = 1e3 * config.rate;
               t > 0 && (N = setTimeout(w, t));
             }
             for (var a, r = allStocks.length; r--; )
@@ -3960,12 +3962,12 @@ xh5_define(
                 break;
               case 37:
               case 39:
-                oe.iToKb(37 == t ? -1 : 1);
+                iMgr.iToKb(37 == t ? -1 : 1);
                 break;
               default:
                 return;
             }
-            h.preventDefault(e);
+            xh5_EvtUtil.preventDefault(e);
           }),
           (this.zoomApi = function(e) {
             var t = R(e ? 1 : -1);
@@ -4023,7 +4025,7 @@ xh5_define(
               (e = allStocks.splice(t, 1)[0]), e.clear(), (e = null);
           }),
           (this.setScale = function(e) {
-            U.datas.scaleType = e;
+            cfg.datas.scaleType = e;
           }),
           (this.setTLineStyle = function(a) {
             if (a) {
@@ -4042,7 +4044,7 @@ xh5_define(
           });
         var E,
           P = function(e) {
-            e ? S() : oe.update();
+            e ? S() : iMgr.update();
           },
           H = !1,
           F = 0,
@@ -4069,7 +4071,7 @@ xh5_define(
           for (var i = e.length; i--; )
             for (var r = allStocks.length; r--; )
               if (allStocks[r].symbol == e[i].symbol && e[i].data) {
-                F++, allStocks[r].doUpdate(y(P, null, a), !1, e[i].data, e[i].market);
+                F++, allStocks[r].doUpdate(fBind(P, null, a), !1, e[i].data, e[i].market);
                 break;
               }
         }),
@@ -4077,25 +4079,26 @@ xh5_define(
             T(e, !0), w();
           }),
           (this.mM = new (function() {
-            var t = function(a, i, r) {
-                var n, o;
-                switch (i) {
+            var t = function(a, type, r) {
+                console.log(a);
+                var chart, method;
+                switch (type) {
                   case "price":
-                    (n = pChart), (o = "initPt");
+                    (chart = pChart), (method = "initPt");
                     break;
                   case "tech":
-                    (n = tChart), (o = "initTc");
+                    (chart = tChart), (method = "initTc");
                 }
-                o &&
-                  (n
-                    ? mainStock[o](a, r)
+                method &&
+                  (chart
+                    ? mainStock[method](a, r)
                     : KKE.api(
                         "plugins.techcharts.get",
                         {
-                          type: i
+                          type: type
                         },
                         function(e) {
-                          (tChart = e.tChart), (pChart = e.pChart), t(a, i, r);
+                          (tChart = e.tChart), (pChart = e.pChart), t(a, type, r);
                         }
                       ));
               },
@@ -4115,7 +4118,7 @@ xh5_define(
                   ? (Q
                       ? Q.sh(t)
                       : (mainStock.initRs(), i(t), B.appendChild(Q.getBody())),
-                    void re.resizeAll(!0))
+                    void initMgr.resizeAll(!0))
                   : void KKE.api("plugins.rangeselector.get", null, function(
                       e
                     ) {
@@ -4138,7 +4141,7 @@ xh5_define(
         O = 0,
         L = "\u624b",
         C = 0;
-      (x = i._nf_window_var), (w = i._hf_window_var), (T = i._gbi_window_var);
+      (x = config._nf_window_var), (w = config._hf_window_var), (T = config._gbi_window_var);
       var R = function(e) {
           return (
             "CN" === e ||
@@ -4170,8 +4173,8 @@ xh5_define(
                 break;
               case "CN":
                 (a = 241),
-                  utils_util.isRepos(i.symbol) && (L = ""),
-                  utils_util.isCNK(i.symbol) && (L = "\u80a1");
+                  utils_util.isRepos(config.symbol) && (L = ""),
+                  utils_util.isCNK(config.symbol) && (L = "\u80a1");
                 break;
               case "option_cn":
               case "op_m":
@@ -4218,7 +4221,7 @@ xh5_define(
               f = [],
               g = r.getHours() + ":" + utils_util.strUtil.zp(r.getMinutes()),
               b = utils_util.tUtil.gata(i),
-              y = v.stbd(r, n) ? utils_util.arrIndexOf(b, g) : 0;
+              y = dateUtil.stbd(r, n) ? utils_util.arrIndexOf(b, g) : 0;
             "HK" == p &&
               "US" == i &&
               ((s = [["12:01", "12:59"]]),
@@ -4292,7 +4295,7 @@ xh5_define(
         };
       utils_util.xh5_EvtDispatcher.call(this);
       var E = this;
-      (i = u(
+      (config = utils_util_oc(
         {
           symbol: "sh000001",
           ssl: !0,
@@ -4341,61 +4344,61 @@ xh5_define(
             k: void 0
           }
         },
-        i || {
+        config || {
           YANGWEN: "yangwen@staff.sina.com.cn",
           VER: "2.6.0"
         }
       )),
-        !i.symbol && (i.symbol = "sh000001"),
-        (i.symbol = String(i.symbol)),
-        (i.rawsymbol = String(i.symbol)),
-        (i.symbol =
-          "LSE" === utils_util.market(i.symbol)
-            ? utils_util.strUtil.replaceStr(i.symbol)
-            : i.symbol.replace(".", "$")),
-        0 == location.protocol.indexOf("https:") && (i.ssl = !0);
+        !config.symbol && (config.symbol = "sh000001"),
+        (config.symbol = String(config.symbol)),
+        (config.rawsymbol = String(config.symbol)),
+        (config.symbol =
+          "LSE" === utils_util.market(config.symbol)
+            ? utils_util.strUtil.replaceStr(config.symbol)
+            : config.symbol.replace(".", "$")),
+        0 == location.protocol.indexOf("https:") && (config.ssl = !0);
       var P =
           "_" +
-          i.symbol +
+          config.symbol +
           "_" +
           Math.floor(1234567890 * Math.random() + 1) +
           Math.floor(9876543210 * Math.random() + 1),
-        U = cfgs_settinger.getSetting(P);
-      (U.datas.isT = !0),
-        i.reorder || (U.custom.indicator_reorder = !1),
-        i.reheight || (U.custom.indicator_reheight = !1),
-        (I = utils_util.market(i.symbol)),
-        (U.datas.tDataLen = A.tcd(I));
-      var H = U.datas.tDataLen,
+        cfg = cfgs_settinger.getSetting(P);
+      (cfg.datas.isT = !0),
+        config.reorder || (cfg.custom.indicator_reorder = !1),
+        config.reheight || (cfg.custom.indicator_reheight = !1),
+        (I = utils_util.market(config.symbol)),
+        (cfg.datas.tDataLen = A.tcd(I));
+      var H = cfg.datas.tDataLen,
         q = new (function() {
           var e;
           (this.showTip = function(a) {
-            e || (e = new utils_util.TipM(U.COLOR)), e.genTip(a);
+            e || (e = new utils_util.TipM(cfg.COLOR)), e.genTip(a);
           }),
             (this.hideTip = function() {
               e && e.hide();
             });
         })();
-      if (b.noH5) {
-        if ("undefined" == typeof FlashCanvas || i.fh5)
-          return void (utils_util.isFunc(i.noh5) && i.noh5(i));
-        U.PARAM.isFlash = !0;
+      if (xh5_BrowserUtil.noH5) {
+        if ("undefined" == typeof FlashCanvas || config.fh5)
+          return void (utils_util.isFunc(config.noh5) && config.noh5(config));
+        cfg.PARAM.isFlash = !0;
       }
       if (
-        (U.PARAM.isFlash &&
-          ((U.COLOR.K_EXT_BG = "#fff"), (U.COLOR.F_BG = "#fff")),
-        i.dim)
+        (cfg.PARAM.isFlash &&
+          ((cfg.COLOR.K_EXT_BG = "#fff"), (cfg.COLOR.F_BG = "#fff")),
+        config.dim)
       )
-        for (var F in i.dim)
-          i.dim.hasOwnProperty(F) &&
-            utils_util.isNum(U.DIMENSION[F]) &&
-            (U.DIMENSION[F] = i.dim[F]);
+        for (var F in config.dim)
+          config.dim.hasOwnProperty(F) &&
+            utils_util.isNum(cfg.DIMENSION[F]) &&
+            (cfg.DIMENSION[F] = config.dim[F]);
       var $,
         V,
         K,
         G,
         z,
-        W,
+        subArea,
         B,
         X,
         j,
@@ -4404,29 +4407,29 @@ xh5_define(
         Q,
         J,
         ee = {
-          viewId: N.URLHASH.vi(i.view || "ts"),
+          viewId: globalCfg.URLHASH.vi(config.view || "ts"),
           dataLength: void 0,
           start: void 0,
           end: void 0,
           startDate: void 0,
           endDate: void 0
         },
-        te = isNaN(i.t_rate) ? U.PARAM.T_RATE : i.t_rate,
+        te = isNaN(config.t_rate) ? cfg.PARAM.T_RATE : config.t_rate,
         ae = !1,
         ie = 0,
-        re = new (function() {
+        initMgr = new (function() {
           var e,
             a = function(e, t, a) {
               var r = !1;
-              isNaN(e) && (e = i.w || $.offsetWidth),
-                isNaN(t) && (t = i.h || $.offsetHeight - i.mh);
+              isNaN(e) && (e = config.w || $.offsetWidth),
+                isNaN(t) && (t = config.h || $.offsetHeight - config.mh);
               for (
                 var n,
                   o = B.clientHeight || 0,
-                  s = W.clientHeight || 0,
-                  l = U.DIMENSION.getOneWholeTH(),
+                  s = subArea.clientHeight || 0,
+                  l = cfg.DIMENSION.getOneWholeTH(),
                   c = 0,
-                  d = W.childNodes,
+                  d = subArea.childNodes,
                   m = d.length,
                   p = 0,
                   h = d.length;
@@ -4440,16 +4443,16 @@ xh5_define(
               return (
                 !isNaN(a) && (s -= a),
                 s / (t - o) > 1 && ((s = p), (r = !0)),
-                U.DIMENSION.setStageW(e),
+                cfg.DIMENSION.setStageW(e),
                 1 == ie
                   ? m > 0 &&
-                    (U.DIMENSION.setStageH(t, m * l + c + o),
+                    (cfg.DIMENSION.setStageH(t, m * l + c + o),
                     (r = !0),
                     (ie = 0))
-                  : U.DIMENSION.setStageH(t, s + o),
+                  : cfg.DIMENSION.setStageH(t, s + o),
                 0 > t &&
-                  ((U.DIMENSION.H_T_G = U.DIMENSION.H_T_G - U.DIMENSION.H_T_T),
-                  (U.DIMENSION.H_T_B = U.DIMENSION.H_TIME_PART)),
+                  ((cfg.DIMENSION.H_T_G = cfg.DIMENSION.H_T_G - cfg.DIMENSION.H_T_T),
+                  (cfg.DIMENSION.H_T_B = cfg.DIMENSION.H_TIME_PART)),
                 r
               );
             },
@@ -4457,47 +4460,47 @@ xh5_define(
               J.setPosition();
             },
             n = function() {
-              e && (e.style.display = U.custom.show_logo ? "" : "none");
+              e && (e.style.display = cfg.custom.show_logo ? "" : "none");
             },
             o = function(e, i, o) {
               var s = a(i, o, 0 / 0);
               if (e || (i && o)) {
                 if (!X) return;
-                X.onResize(s), oe.onResize();
+                X.onResize(s), iMgr.onResize();
               }
               r(),
                 n(),
                 utils_util.stc("t_wh", [
-                  U.DIMENSION.getStageW(),
-                  U.DIMENSION.getStageH()
+                  cfg.DIMENSION.getStageW(),
+                  cfg.DIMENSION.getStageH()
                 ]);
             },
             s = function() {
-              ($ = c(i.domid) || i.dom),
+              ($ = f$DOM(config.domid) || config.dom),
                 $ ||
-                  (($ = d("div")),
+                  (($ = utils_util_$C("div")),
                   document.body.appendChild($),
                   utils_util.trace.error("missing of dom id")),
-                (V = d("div")),
+                (V = utils_util_$C("div")),
                 (V.style.position = "relative"),
                 (V.style.outlineStyle = "none"),
                 (V.style.webkitUserSelect = V.style.userSelect = V.style.MozUserSelect =
                   "none"),
-                (K = d("div", "mainarea_" + U.uid)),
-                (G = d("div")),
+                (K = utils_util_$C("div", "mainarea_" + cfg.uid)),
+                (G = utils_util_$C("div")),
                 K.appendChild(G),
-                (z = d("div")),
+                (z = utils_util_$C("div")),
                 (z.style.position = "absolute"),
-                (z.style.fontSize = U.STYLE.FONT_SIZE + "px"),
+                (z.style.fontSize = cfg.STYLE.FONT_SIZE + "px"),
                 K.appendChild(z),
                 V.appendChild(K),
-                (W = d("div")),
-                V.appendChild(W),
-                (B = d("div")),
+                (subArea = utils_util_$C("div")),
+                V.appendChild(subArea),
+                (B = utils_util_$C("div")),
                 V.appendChild(B),
                 $.appendChild(V),
                 (J = new utils_util.LoadingSign()),
-                J.appendto(K, U);
+                J.appendto(K, cfg);
             },
             l = function(a) {
               var i = !1;
@@ -4505,62 +4508,62 @@ xh5_define(
                 Q && (i = Q.setTheme(a));
                 for (var r in a)
                   a.hasOwnProperty(r) &&
-                    U.COLOR.hasOwnProperty(r) &&
-                    U.COLOR[r] !== a[r] &&
-                    ((U.COLOR[r] = a[r]), (i = !0));
+                    cfg.COLOR.hasOwnProperty(r) &&
+                    cfg.COLOR[r] !== a[r] &&
+                    ((cfg.COLOR[r] = a[r]), (i = !0));
                 utils_util.stc("t_thm", a);
               }
               return (
                 i &&
-                  k.styleLogo({
+                  logoM.styleLogo({
                     logo: e,
-                    color: U.COLOR.LOGO
+                    color: cfg.COLOR.LOGO
                   }),
                 i
               );
             },
             m = function(e) {
-              !U.custom.mousewheel_zoom ||
+              !cfg.custom.mousewheel_zoom ||
                 (document.activeElement !== V &&
                   document.activeElement.parentNode !== V) ||
-                (X && X.onWheel(e), h.preventDefault(e), h.stopPropagation(e));
+                (X && X.onWheel(e), xh5_EvtUtil.preventDefault(e), xh5_EvtUtil.stopPropagation(e));
             },
             p = function(e) {
-              U.custom.keyboard && X && X.onKb(e);
+              cfg.custom.keyboard && X && X.onKb(e);
             },
             u = function() {
               utils_util.xh5_deviceUtil.istd ||
-                (b.info.name.match(/firefox/i)
-                  ? h.addHandler(V, "DOMMouseScroll", m)
-                  : h.addHandler(V, "mousewheel", m),
+                (xh5_BrowserUtil.info.name.match(/firefox/i)
+                  ? xh5_EvtUtil.addHandler(V, "DOMMouseScroll", m)
+                  : xh5_EvtUtil.addHandler(V, "mousewheel", m),
                 (V.tabIndex = 0),
-                h.addHandler(V, "keydown", p));
+                xh5_EvtUtil.addHandler(V, "keydown", p));
             },
             v = function(t) {
               (e = t), V.appendChild(t);
             },
             f = function() {
               s(),
-                l(i.theme),
+                l(config.theme),
                 o(),
                 u(),
-                U.DIMENSION.h_t < 0 &&
+                cfg.DIMENSION.h_t < 0 &&
                   ((K.style.display = "none"),
-                  (U.custom.indicator_reorder = !1),
-                  (U.custom.indicator_reheight = !1)),
-                k.getLogo({
+                  (cfg.custom.indicator_reorder = !1),
+                  (cfg.custom.indicator_reheight = !1)),
+                logoM.getLogo({
                   cb: v,
-                  id: U.PARAM.LOGO_ID,
+                  id: cfg.PARAM.LOGO_ID,
                   isShare: !1,
-                  top: U.DIMENSION.posY + U.DIMENSION.H_MA4K + 17,
-                  right: U.DIMENSION.RIGHT_W + U.DIMENSION.K_RIGHT_W,
-                  LOGO_W: U.DIMENSION.LOGO_W,
-                  LOGO_H: U.DIMENSION.LOGO_H,
-                  color: U.COLOR.LOGO
+                  top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
+                  right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
+                  LOGO_W: cfg.DIMENSION.LOGO_W,
+                  LOGO_H: cfg.DIMENSION.LOGO_H,
+                  color: cfg.COLOR.LOGO
                 }),
-                b.noH5 &&
+                xh5_BrowserUtil.noH5 &&
                   (q.showTip({
-                    txt: i.nohtml5info || N.nohtml5info,
+                    txt: config.nohtml5info || globalCfg.nohtml5info,
                     parent: V
                   }),
                   utils_util.stc("t_nh5"));
@@ -4571,10 +4574,10 @@ xh5_define(
               X &&
                 (a(0 / 0, 0 / 0, e),
                 X.onResize(),
-                oe.onResize(),
+                iMgr.onResize(),
                 r(),
                 ne.onInnerResize({
-                  height: U.DIMENSION.h_t
+                  height: cfg.DIMENSION.h_t
                 }));
             }),
             (this.initTheme = l);
@@ -4587,7 +4590,7 @@ xh5_define(
               if (
                 o &&
                 o.datas &&
-                (f(o.datas[o.datas.length - 1][0].date, o.hq.date)
+                (stbd(o.datas[o.datas.length - 1][0].date, o.hq.date)
                   ? (r = o.realLen < 0 || o.realLen > n ? n : (n = o.realLen))
                   : "NF" == I && x && "21:00" == x.time[0][0]
                   ? (r = n = o.realLen)
@@ -4606,7 +4609,7 @@ xh5_define(
                       s > a.time
                         ? ((s = o.datas[o.datas.length - 1][0].date),
                           (l = new Date(s)),
-                          "hf_CHA50CFD" !== i.symbol &&
+                          "hf_CHA50CFD" !== config.symbol &&
                             l.setDate(l.getDate() + 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
                     : "NF" == I
@@ -4643,105 +4646,105 @@ xh5_define(
             };
           (this.currentData = a),
             (this.onDataUpdate = function() {
-              if (utils_util.isFunc(i.ondataupdate)) {
+              if (utils_util.isFunc(config.ondataupdate)) {
                 var e = a();
                 e &&
-                  i.ondataupdate({
+                  config.ondataupdate({
                     data: utils_util.clone(e),
                     idx: ee.currentLength - 1,
-                    left: U.DIMENSION.posX,
-                    top: U.DIMENSION.H_MA4K
+                    left: cfg.DIMENSION.posX,
+                    top: cfg.DIMENSION.H_MA4K
                   });
               }
             }),
             (this.onInnerResize = function(e) {
-              utils_util.isFunc(i.oninnerresize) && i.oninnerresize(e);
+              utils_util.isFunc(config.oninnerresize) && config.oninnerresize(e);
             }),
             (this.onRange = function(e) {
               !ae &&
-                utils_util.isFunc(i.onrange) &&
+                utils_util.isFunc(config.onrange) &&
                 e &&
-                i.onrange({
+                config.onrange({
                   isCompare: e.isCompare,
                   data: utils_util.clone(e.datas),
-                  width: U.DIMENSION.w_t,
-                  height: U.DIMENSION.h_t,
+                  width: cfg.DIMENSION.w_t,
+                  height: cfg.DIMENSION.h_t,
                   viewRangeState: utils_util.clone(ee),
                   range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
-                  left: U.DIMENSION.posX,
-                  top: U.DIMENSION.H_MA4K
+                  left: cfg.DIMENSION.posX,
+                  top: cfg.DIMENSION.H_MA4K
                 });
             }),
             (this.onViewChanged = function() {
-              utils_util.isFunc(i.onviewchanged) &&
-                i.onviewchanged({
+              utils_util.isFunc(config.onviewchanged) &&
+                config.onviewchanged({
                   viewRangeState: utils_util.clone(ee)
                 });
             }),
             (this.onViewPrice = function(r, n, o, s) {
-              if (!ae && utils_util.isFunc(i.onviewprice)) {
+              if (!ae && utils_util.isFunc(config.onviewprice)) {
                 if ((r || (r = a(r, n)), !r)) return;
                 o || (o = X.getMainStock().getName());
                 var l,
                   c,
                   d = utils_util.clone(r);
-                i.ennfloat
-                  ? ((l = i.nfloat), (c = i.nfloat))
+                config.ennfloat
+                  ? ((l = config.nfloat), (c = config.nfloat))
                   : ((l = utils_util.strUtil.nfloat(d.price)),
                     (c = utils_util.strUtil.nfloat(d.avg_price))),
                   (d.price = Number(d.price.toFixed(l))),
                   (d.avg_price = Number(d.avg_price.toFixed(c)));
-                var m = i.symbol.length;
+                var m = config.symbol.length;
                 "HK" == I &&
-                  i.symbol.substring(m - 1, m) >= "A" &&
+                  config.symbol.substring(m - 1, m) >= "A" &&
                   (d.avg_price = 0 / 0),
                   d.volume && d.volume < 0 && (d.volume = 0),
-                  i.onviewprice({
+                  config.onviewprice({
                     curname: o || "",
                     data_array: X.getAllStock().length,
                     data: d,
                     idx: e,
-                    left: U.DIMENSION.posX,
-                    top: U.DIMENSION.H_MA4K,
+                    left: cfg.DIMENSION.posX,
+                    top: cfg.DIMENSION.H_MA4K,
                     interacting: !!s
                   });
               }
             }),
             (this.onTechChanged = function(e) {
-              utils_util.isFunc(i.ontechchanged) &&
-                i.ontechchanged({
+              utils_util.isFunc(config.ontechchanged) &&
+                config.ontechchanged({
                   Indicator: e
                 });
             }),
             (this.shortClickHandler = function() {
-              utils_util.isFunc(i.onshortclickmain) && i.onshortclickmain();
+              utils_util.isFunc(config.onshortclickmain) && config.onshortclickmain();
             });
         })(),
-        oe = new (function() {
+        iMgr = new (function() {
           var e,
             a,
             r,
             n,
             o,
-            s = i.nfloat,
+            s = config.nfloat,
             l = 137,
             c = new (function() {
               var t = function(t) {
                 var a = e.body.style;
-                t && U.custom.show_floater
-                  ? ((a.backgroundColor = U.COLOR.F_BG),
-                    (a.color = U.COLOR.F_T),
-                    (a.border = "1px solid " + U.COLOR.F_BR),
+                t && cfg.custom.show_floater
+                  ? ((a.backgroundColor = cfg.COLOR.F_BG),
+                    (a.color = cfg.COLOR.F_T),
+                    (a.border = "1px solid " + cfg.COLOR.F_BR),
                     (a.display = ""))
                   : (a.display = "none");
               };
               (this.pv = function(a) {
                 var i = e.body.style,
-                  r = Math.max(U.DIMENSION.posX, 55) + 9,
-                  n = U.DIMENSION.posX < 55 ? 9 : 0,
-                  o = U.DIMENSION.getStageW() - l - 9 - U.DIMENSION.RIGHT_W - n;
+                  r = Math.max(cfg.DIMENSION.posX, 55) + 9,
+                  n = cfg.DIMENSION.posX < 55 ? 9 : 0,
+                  o = cfg.DIMENSION.getStageW() - l - 9 - cfg.DIMENSION.RIGHT_W - n;
                 (i.left =
-                  (a.x > (U.DIMENSION.getStageW() - U.DIMENSION.RIGHT_W) >> 1
+                  (a.x > (cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W) >> 1
                     ? r
                     : o) + "px"),
                   (i.top = (a.y || 0) + "px"),
@@ -4769,9 +4772,9 @@ xh5_define(
                   m =
                     "text-align:left;font-weight:normal;border:0;height:16px;",
                   p = "text-align:right;border:0;height:16px;",
-                  h = d("div");
+                  h = utils_util_$C("div");
                 (h.style.position = "absolute"),
-                  (h.style.zIndex = U.PARAM.I_Z_INDEX + 2),
+                  (h.style.zIndex = cfg.PARAM.I_Z_INDEX + 2),
                   (h.style.padding = "2px"),
                   (h.style.width = l + "px"),
                   (h.style.lineHeight = "16px"),
@@ -4781,35 +4784,35 @@ xh5_define(
                   v,
                   f,
                   g,
-                  b = d("table"),
-                  y = d("thead"),
-                  N = d("tbody");
+                  b = utils_util_$C("table"),
+                  y = utils_util_$C("thead"),
+                  N = utils_util_$C("tbody");
                 (b.style.cssText = o),
-                  (u = d("tr")),
-                  (v = d("th")),
+                  (u = utils_util_$C("tr")),
+                  (v = utils_util_$C("th")),
                   v.setAttribute("colspan", "2"),
                   (v.style.cssText = c);
-                var k = d("span");
+                var k = utils_util_$C("span");
                 v.appendChild(k),
                   u.appendChild(v),
                   y.appendChild(u),
-                  (u = d("tr")),
+                  (u = utils_util_$C("tr")),
                   (u.style.textAlign = "center"),
-                  (v = d("th")),
+                  (v = utils_util_$C("th")),
                   v.setAttribute("colspan", "2"),
                   (v.style.cssText = c);
-                var S = d("span");
+                var S = utils_util_$C("span");
                 v.appendChild(S),
                   u.appendChild(v),
                   N.appendChild(u),
-                  (u = d("tr")),
-                  (v = d("th")),
+                  (u = utils_util_$C("tr")),
+                  (v = utils_util_$C("th")),
                   (v.style.cssText = m),
-                  (f = d("td")),
+                  (f = utils_util_$C("td")),
                   (v.style.fontWeight = "normal"),
-                  (g = d("span")),
+                  (g = utils_util_$C("span")),
                   (g.innerHTML = "\u4ef7\u683c");
-                var D = d("span");
+                var D = utils_util_$C("span");
                 (f.style.cssText = p),
                   v.appendChild(g),
                   f.appendChild(D),
@@ -4817,14 +4820,14 @@ xh5_define(
                   u.appendChild(v),
                   u.appendChild(f),
                   N.appendChild(u),
-                  (u = d("tr")),
-                  (v = d("th")),
+                  (u = utils_util_$C("tr")),
+                  (v = utils_util_$C("th")),
                   (v.style.cssText = m),
                   (v.style.fontWeight = "normal"),
-                  (f = d("td")),
-                  (g = d("span")),
+                  (f = utils_util_$C("td")),
+                  (g = utils_util_$C("span")),
                   (g.innerHTML = "\u5747\u4ef7");
-                var w = d("span");
+                var w = utils_util_$C("span");
                 (f.style.cssText = p),
                   v.appendChild(g),
                   (v.style.fontWeight = "normal"),
@@ -4832,28 +4835,28 @@ xh5_define(
                   u.appendChild(v),
                   u.appendChild(f),
                   N.appendChild(u),
-                  (u = d("tr")),
-                  (v = d("th")),
+                  (u = utils_util_$C("tr")),
+                  (v = utils_util_$C("th")),
                   (v.style.cssText = m),
-                  (f = d("td")),
+                  (f = utils_util_$C("td")),
                   (v.style.fontWeight = "normal"),
-                  (g = d("span")),
+                  (g = utils_util_$C("span")),
                   (g.innerHTML = "\u6da8\u8dcc");
-                var x = d("span");
+                var x = utils_util_$C("span");
                 (f.style.cssText = p),
                   v.appendChild(g),
                   f.appendChild(x),
                   u.appendChild(v),
                   u.appendChild(f),
                   N.appendChild(u),
-                  (u = d("tr")),
-                  (v = d("th")),
+                  (u = utils_util_$C("tr")),
+                  (v = utils_util_$C("th")),
                   (v.style.cssText = m),
-                  (f = d("td")),
+                  (f = utils_util_$C("td")),
                   (v.style.fontWeight = "normal"),
-                  (g = d("span")),
+                  (g = utils_util_$C("span")),
                   (g.innerHTML = "\u6210\u4ea4");
-                var T = d("span");
+                var T = utils_util_$C("span");
                 (f.style.cssText = p),
                   "HF" != I &&
                     (v.appendChild(g),
@@ -4866,11 +4869,11 @@ xh5_define(
                   (b.style.width = "100%"),
                   h.appendChild(b);
                 var M = function(e, t) {
-                  var a = U.COLOR.F_N;
+                  var a = cfg.COLOR.F_N;
                   return (
                     e > t
-                      ? (a = U.COLOR.F_RISE)
-                      : t > e && (a = U.COLOR.F_FALL),
+                      ? (a = cfg.COLOR.F_RISE)
+                      : t > e && (a = cfg.COLOR.F_FALL),
                     a
                   );
                 };
@@ -4892,14 +4895,14 @@ xh5_define(
                     "HK" == I || "US" == I || "HF" == I
                       ? (u = utils_util.strUtil.nfloat(d))
                       : "LSE" === I && (u = 3),
-                      i.ennfloat && (u = i.nfloat),
+                      config.ennfloat && (u = config.nfloat),
                       (c = isNaN(c) ? "--" : (100 * c).toFixed(2)),
                       (D.innerHTML = d.toFixed(u)),
                       (w.innerHTML = r() ? "--" : p.toFixed(u)),
                       (x.innerHTML = h.toFixed(u) + "(" + c + "%)");
                     var v = 2;
-                    utils_util.isCNK(i.symbol) && (v = 0),
-                      (T.innerHTML = _(l.volume < 0 ? 0 : l.volume, v) + L),
+                    utils_util.isCNK(config.symbol) && (v = 0),
+                      (T.innerHTML = strUtil_ps(l.volume < 0 ? 0 : l.volume, v) + L),
                       (x.style.color = M(c, 0)),
                       (w.style.color = M(p - m, 0)),
                       (D.style.color = M(c, 0));
@@ -4911,62 +4914,62 @@ xh5_define(
             },
             h = function() {
               function e(e) {
-                var t = d("div"),
-                  a = d("div"),
-                  i = d("span"),
-                  r = d("span"),
+                var t = utils_util_$C("div"),
+                  a = utils_util_$C("div"),
+                  i = utils_util_$C("span"),
+                  r = utils_util_$C("span"),
                   n = e.isH,
                   o = 12,
                   s = function() {
                     if (
                       ((a.style.borderStyle = "dashed"),
-                      (a.style.borderColor = U.COLOR.IVH_LINE),
+                      (a.style.borderColor = cfg.COLOR.IVH_LINE),
                       (i.style.backgroundColor = r.style.backgroundColor =
-                        U.COLOR[e.txtBgCN]),
-                      (i.style.color = r.style.color = U.COLOR[e.txtCN]),
+                        cfg.COLOR[e.txtBgCN]),
+                      (i.style.color = r.style.color = cfg.COLOR[e.txtCN]),
                       n)
                     )
                       (a.style.borderWidth = "1px 0 0 0"),
                         (t.style.width = a.style.width =
-                          U.DIMENSION.getStageW() - U.DIMENSION.RIGHT_W + "px"),
-                        (i.style.top = -(0.6 * U.STYLE.FONT_SIZE) + "px"),
-                        (r.style.top = -(0.6 * U.STYLE.FONT_SIZE) + "px"),
+                          cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W + "px"),
+                        (i.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
+                        (r.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
                         (i.style.left = 0),
-                        (r.style.left = U.DIMENSION.extend_draw
+                        (r.style.left = cfg.DIMENSION.extend_draw
                           ? ""
-                          : U.DIMENSION.getStageW() -
-                            U.DIMENSION.RIGHT_W +
+                          : cfg.DIMENSION.getStageW() -
+                            cfg.DIMENSION.RIGHT_W +
                             "px"),
                         (r.style.right = 0),
-                        (i.style.width = r.style.width = U.DIMENSION.extend_draw
+                        (i.style.width = r.style.width = cfg.DIMENSION.extend_draw
                           ? ""
-                          : U.DIMENSION.posX + "px"),
+                          : cfg.DIMENSION.posX + "px"),
                         (i.style.padding = "1px 0"),
                         (r.style.padding = "1px 0");
                     else {
                       a.style.borderWidth = "0 1px 0 0";
                       var o,
                         s,
-                        l = U.DIMENSION.H_MA4K + U.DIMENSION.H_T_B;
-                      U.DIMENSION.getStageH() < 0
-                        ? ((o = W.clientHeight), (s = o - l))
-                        : ((o = U.DIMENSION.getStageH() - B.clientHeight || 0),
-                          (s = U.DIMENSION.h_t)),
+                        l = cfg.DIMENSION.H_MA4K + cfg.DIMENSION.H_T_B;
+                      cfg.DIMENSION.getStageH() < 0
+                        ? ((o = subArea.clientHeight), (s = o - l))
+                        : ((o = cfg.DIMENSION.getStageH() - B.clientHeight || 0),
+                          (s = cfg.DIMENSION.h_t)),
                         (o -= l),
-                        (o += U.DIMENSION.I_V_O),
+                        (o += cfg.DIMENSION.I_V_O),
                         (t.style.height = a.style.height = o + "px"),
                         (i.style.top = s + "px"),
                         (i.style.padding = "2px 2px 1px");
                     }
                   };
                 (t.style.position = "absolute"),
-                  (t.style.zIndex = U.PARAM.I_Z_INDEX - 2),
+                  (t.style.zIndex = cfg.PARAM.I_Z_INDEX - 2),
                   (i.style.position = r.style.position = a.style.position =
                     "absolute"),
                   (a.style.zIndex = 0),
                   (i.style.zIndex = r.style.zIndex = 1),
                   (i.style.font = r.style.font =
-                    U.STYLE.FONT_SIZE + "px " + U.STYLE.FONT_FAMILY),
+                    cfg.STYLE.FONT_SIZE + "px " + cfg.STYLE.FONT_FAMILY),
                   (i.style.whiteSpace = r.style.whiteSpace = "nowrap"),
                   (i.style.lineHeight = o + "px"),
                   (r.style.lineHeight = o + "px"),
@@ -4974,8 +4977,8 @@ xh5_define(
                     (i.style.textAlign = e.txtA) &&
                     (r.style.textAlign = "left"),
                   e.txtBgCN &&
-                    (i.style.backgroundColor = U.COLOR[e.txtBgCN]) &&
-                    (r.style.backgroundColor = U.COLOR[e.txtBgCN]),
+                    (i.style.backgroundColor = cfg.COLOR[e.txtBgCN]) &&
+                    (r.style.backgroundColor = cfg.COLOR[e.txtBgCN]),
                   s(),
                   t.appendChild(i),
                   n && t.appendChild(r),
@@ -4998,15 +5001,15 @@ xh5_define(
                     !isNaN(e.x))
                   ) {
                     var a = e.x + (e.ox || 0),
-                      n = U.DIMENSION.getStageW();
+                      n = cfg.DIMENSION.getStageW();
                     t.style.left = a + "px";
                     var o = i.offsetWidth;
                     if ((0 >= o && (o = 112), o > 0)) {
                       var s = o >> 1;
                       e.x < s
                         ? (s = e.x)
-                        : a + s > n - U.DIMENSION.posX &&
-                          (s = a + o - n + U.DIMENSION.posX),
+                        : a + s > n - cfg.DIMENSION.posX &&
+                          (s = a + o - n + cfg.DIMENSION.posX),
                         (i.style.left = -s + "px");
                     }
                   }
@@ -5042,8 +5045,8 @@ xh5_define(
                 e[0].realLen >= 0 &&
                   (a =
                     5 == ee.end
-                      ? e[0].realLen + U.datas.tDataLen * (t - 1)
-                      : U.datas.tDataLen * (t - 1)),
+                      ? e[0].realLen + cfg.datas.tDataLen * (t - 1)
+                      : cfg.datas.tDataLen * (t - 1)),
                 a
               );
             },
@@ -5082,9 +5085,9 @@ xh5_define(
               q = A > 1,
               F = C[0].datas.length,
               $ = P * F,
-              V = Math.floor((d * $) / U.DIMENSION.w_t);
+              V = Math.floor((d * $) / cfg.DIMENSION.w_t);
             if (isNaN(d) && isNaN(p)) {
-              if (((k = !0), u(), f(C[0].datas[F - 1][0].date, C[0].hq.date))) {
+              if (((k = !0), u(), stbd(C[0].datas[F - 1][0].date, C[0].hq.date))) {
                 var K;
                 (K =
                   C[0].realLen >= 0
@@ -5140,11 +5143,11 @@ xh5_define(
                     case "HK":
                     case "US":
                     case "HF":
-                      (Y = i.ennfloat ? s : utils_util.strUtil.nfloat(g)),
+                      (Y = config.ennfloat ? s : utils_util.strUtil.nfloat(g)),
                         (G = g.toFixed(Y));
                       break;
                     case "LSE":
-                      (Y = i.ennfloat ? s : 3), (G = g.toFixed(Y));
+                      (Y = config.ennfloat ? s : 3), (G = g.toFixed(Y));
                       break;
                     default:
                       G = g.toFixed(
@@ -5157,13 +5160,13 @@ xh5_define(
               }
             var se = Q && Q.date;
             S = 0 == C[0].realLen ? 0 : C[0].realLen - 1;
-            var le = "string" != typeof C[0].date ? v.ds(C[0].date) : C[0].date;
+            var le = "string" != typeof C[0].date ? dateUtil.ds(C[0].date) : C[0].date;
             if (F > 1) {
               W.realLen < 0 && (W.realLen = H);
               var ce = $ - P + W.realLen;
               5 == ee.end && V >= ce && ((V = ce), (L = te[re][V % H]));
             } else {
-              if (v.stbd(se, v.sd(le)))
+              if (dateUtil.stbd(se, dateUtil.sd(le)))
                 -1 === W.realLen && (W.realLen = H),
                   V >= W.realLen && (V = W.realLen);
               else
@@ -5176,7 +5179,7 @@ xh5_define(
                     S = H - 1;
                 }
               R(I) &&
-              v.stbd(se, v.sd(le)) &&
+              dateUtil.stbd(se, dateUtil.sd(le)) &&
               W.hq &&
               W.hq.time >= "09:00" &&
               W.hq.time < "09:30"
@@ -5195,7 +5198,7 @@ xh5_define(
             }
             if (L && (L.date || (L.date = se), !L || L.date)) {
               var de = d;
-              U.custom.stick && (d = L.ix || d);
+              cfg.custom.stick && (d = L.ix || d);
               var me, pe;
               "HF" == I
                 ? ((me = w.time[0][0]),
@@ -5220,7 +5223,7 @@ xh5_define(
                 "/" +
                 utils_util.dateUtil.nw(pe.getDay()) +
                 (L.time || "");
-              ("GOODS" === I || "hf_CHA50CFD" === i.symbol || "HF" === I) &&
+              ("GOODS" === I || "hf_CHA50CFD" === config.symbol || "HF" === I) &&
                 (he = L.time || "--"),
                 (L.day = he),
                 e &&
@@ -5232,7 +5235,7 @@ xh5_define(
                   }),
                   c.pv({
                     x: de,
-                    y: U.DIMENSION.T_F_T
+                    y: cfg.DIMENSION.T_F_T
                   })),
                 r.pv({
                   y: p,
@@ -5244,15 +5247,15 @@ xh5_define(
                   v: he,
                   x: d,
                   ox: m,
-                  y: U.DIMENSION.H_MA4K
+                  y: cfg.DIMENSION.H_MA4K
                 }),
                 b(V),
                 ne.onViewPrice(L, V, B, !k),
-                E.re(N.e.I_EVT, a.e);
+                E.re(globalCfg.e.I_EVT, a.e);
             }
           }),
             (this.globalDragHandler = function(e, t, a, i, r) {
-              isNaN(e) && isNaN(t) && E.re(N.e.I_EVT, r);
+              isNaN(e) && isNaN(t) && E.re(globalCfg.e.I_EVT, r);
             }),
             (this.shortClickHandler = function() {
               ne.shortClickHandler();
@@ -5272,24 +5275,24 @@ xh5_define(
                 i = t[0].datas[0][D],
                 r = t.length,
                 n = t[0].realLen,
-                o = "string" != typeof t[0].date ? v.ds(t[0].date) : t[0].date;
+                o = "string" != typeof t[0].date ? dateUtil.ds(t[0].date) : t[0].date;
               1 >= a
-                ? v.stbd(t[0].datas[0][0].date, v.sd(o))
+                ? dateUtil.stbd(t[0].datas[0][0].date, dateUtil.sd(o))
                   ? 0 > n && (n = H)
                   : (n = H)
-                : v.stbd(t[0].datas[a - 1][0].date, v.sd(o)) || (n = H);
+                : dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) || (n = H);
               var s = H > n ? n + 1 : n;
               if (0 > D) {
                 var l = H > n ? n : n - 1;
                 (S = D = (a - 1) * H + l), (i = t[0].datas[a - 1][l]);
               } else if (D >= s + (a - 1) * H)
-                if (v.stbd(t[0].datas[a - 1][0].date, v.sd(o)) && 0 > e) {
+                if (dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) && 0 > e) {
                   var c = 0;
                   (c = a > 1 ? n - 1 + H * (a - 1) : n - 1),
                     (S = D = c),
                     (i = t[0].datas[0][S]);
                 } else (S = D = 0), (i = t[0].datas[0][0]);
-              !m(K, oe.iHLineO.body) && K.appendChild(oe.iHLineO.body);
+              !fCONTAINS(K, iMgr.iHLineO.body) && K.appendChild(iMgr.iHLineO.body);
               var d = Math.floor(S / H);
               D >= H && (i = t[0].datas[d][S - d * H]),
                 (i.date = t[0].datas[d][0].date);
@@ -5302,8 +5305,8 @@ xh5_define(
                   data: i,
                   x: i.ix,
                   y: i.py,
-                  oy: U.DIMENSION.H_MA4K,
-                  ox: U.DIMENSION.posX
+                  oy: cfg.DIMENSION.H_MA4K,
+                  ox: cfg.DIMENSION.posX
                 };
               this.iToD(h, !0, !0);
             }),
@@ -5326,7 +5329,7 @@ xh5_define(
                       (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
                     } else e = a;
                   } else e = a;
-                  !m(V, e.body) && V.appendChild(e.body);
+                  !fCONTAINS(V, e.body) && V.appendChild(e.body);
                 };
               (this.customFloater = function(e) {
                 (i = e), n(), utils_util.stc("t_fl", e);
@@ -5349,7 +5352,7 @@ xh5_define(
                   ) {
                     var l = D - H * i;
                     s =
-                      f(r.datas[i][0].date, r.hq.date) && l > S ? r.realLen : l;
+                      stbd(r.datas[i][0].date, r.hq.date) && l > S ? r.realLen : l;
                   } else s = 1 == n && 0 == i && D > S ? r.realLen : D;
                   if (
                     ((i = 0 > i ? 0 : i),
@@ -5365,7 +5368,7 @@ xh5_define(
                       e && e.setFloaterData({}),
                       k)
                     )
-                      if (f(r.datas[n - 1][0].date, r.hq.date))
+                      if (stbd(r.datas[n - 1][0].date, r.hq.date))
                         (s = r.realLen >= 0 ? r.realLen : H - 1),
                           (s += (n - 1) * H),
                           (s = 0 > s ? Number.MAX_VALUE : s),
@@ -5410,20 +5413,20 @@ xh5_define(
         (n = new (function() {
           var e = this,
             a = function(a, i) {
-              if (U.hasOwnProperty(a)) {
+              if (cfg.hasOwnProperty(a)) {
                 for (var r in i)
                   if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
                     return void utils_util.trace.error("illegal operation:", r);
                 "DIMENSION" == a && (ie = 1),
-                  u(U[a], i),
+                  utils_util_oc(cfg[a], i),
                   utils_util.stc(a, i),
                   e.resize();
               } else utils_util.trace.error("not exist param:", a);
             },
             r = function(e, a) {
               var i;
-              if (U.hasOwnProperty(e)) {
-                i = utils_util.clone(U[e]);
+              if (cfg.hasOwnProperty(e)) {
+                i = utils_util.clone(cfg[e]);
                 for (var r in i)
                   if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
                     (i[r] = null), delete i[r];
@@ -5434,7 +5437,7 @@ xh5_define(
               return i;
             },
             n = function(e, t, a) {
-              (a = u(
+              (a = utils_util_oc(
                 {
                   toremove: !1,
                   isexclusive: !1,
@@ -5476,9 +5479,9 @@ xh5_define(
             });
           var l = !0;
           this.showView = function(e, a) {
-            oe.hideIUis(), l ? (l = !1) : J.hide();
-            var r = N.URLHASH.vi(e);
-            if (i.date) return (i.date = ""), o(r), void this.newSymbol(i);
+            iMgr.hideIUis(), l ? (l = !1) : J.hide();
+            var r = globalCfg.URLHASH.vi(e);
+            if (config.date) return (config.date = ""), o(r), void this.newSymbol(config);
             var n = X.getAllStock()[0];
             if (
               (ne.onRange(n),
@@ -5506,7 +5509,7 @@ xh5_define(
                   e.symbol == m[a] && m.splice(a, 1);
                 X.getAllStock().length <= 1 && (X.dAdd = 0);
               } else
-                (i.overlaycolor = e.linecolor || {
+                (config.overlaycolor = e.linecolor || {
                   K_N: "#cccccc"
                 }),
                   (X.dAdd = 2),
@@ -5564,7 +5567,7 @@ xh5_define(
             });
           var f;
           (this.showRangeSelector = function(e) {
-            (f = u(
+            (f = utils_util_oc(
               {
                 dispaly: !0,
                 from: void 0,
@@ -5578,11 +5581,11 @@ xh5_define(
             (this.setLineStyle = function(e) {
               X && X.setTLineStyle(e), utils_util.stc("t_style", e);
             }),
-            (this.setCustom = y(a, this, "custom")),
-            (this.setDimension = y(a, this, "DIMENSION")),
-            (this.getDimension = y(r, null, "DIMENSION", ["boolean"])),
+            (this.setCustom = fBind(a, this, "custom")),
+            (this.setDimension = fBind(a, this, "DIMENSION")),
+            (this.getDimension = fBind(r, null, "DIMENSION", ["boolean"])),
             (this.setTheme = function(e) {
-              var t = re.initTheme(e);
+              var t = initMgr.initTheme(e);
               t &&
                 (this.setLineStyle({
                   linecolor: e
@@ -5591,12 +5594,12 @@ xh5_define(
             }),
             (this.newSymbol = function(e) {
               if (
-                ((i.symbol = e.symbol),
-                (i.date = e.date),
-                oe.hideIUis(),
-                oe.iReset(),
+                ((config.symbol = e.symbol),
+                (config.date = e.date),
+                iMgr.hideIUis(),
+                iMgr.iReset(),
                 X.dcReset(),
-                X.dcInit(i),
+                X.dcInit(config),
                 q.hideTip(),
                 Y)
               ) {
@@ -5611,19 +5614,19 @@ xh5_define(
                 utils_util.stc("t_ns", e);
             }),
             (this.resize = function(e, t) {
-              re.resizeAll(!0, e, t);
+              initMgr.resizeAll(!0, e, t);
             }),
             (this.hide = function(e) {
               (ae = !0),
-                oe.hideIUis(),
+                iMgr.hideIUis(),
                 utils_util.$CONTAINS($, V) && $.removeChild(V),
                 e && X.dcReset();
             }),
             (this.show = function(e) {
               (ae = !1),
-                e && (utils_util.isStr(e) && (e = c(e)), ($ = e)),
+                e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
                 utils_util.$CONTAINS($, V) ||
-                  ($.appendChild(V), re.resizeAll(!0)),
+                  ($.appendChild(V), initMgr.resizeAll(!0)),
                 ne && ne.onViewPrice();
             }),
             (this.shareTo = function(e) {
@@ -5632,39 +5635,39 @@ xh5_define(
               utils_util.suda("share", a);
             }),
             (this.getChartId = function() {
-              return U.uid;
+              return cfg.uid;
             }),
             (this.dateTo = function(e, a) {
-              (i.historytime = e), (i.historycb = a);
+              (config.historytime = e), (config.historycb = a);
               var r = e;
-              "object" == typeof e ? (r = v.ds(e, "-")) : (e = v.sd(e));
+              "object" == typeof e ? (r = dateUtil.ds(e, "-")) : (e = dateUtil.sd(e));
               var n = j.get();
               if (null == n) return void (O = 1);
               for (var o = n.length, s = 0; o > s; s++)
-                if (v.stbd(e, n[s][0].date))
+                if (dateUtil.stbd(e, n[s][0].date))
                   return void X.moving(s, s + 1, "dateTo");
-              (i.date = r),
+              (config.date = r),
                 (X.hasHistory = a),
                 utils_util.stc("t_ft", r),
-                this.newSymbol(i);
+                this.newSymbol(config);
             }),
             (this.showScale = function(e) {
               X && X.setScale(e);
             }),
             (this.resize = function(e, t) {
-              re.resizeAll(!0, e, t);
+              initMgr.resizeAll(!0, e, t);
             }),
             (this.showCompatibleTip = function(e) {
-              re.showCompatibleTip(e);
+              initMgr.showCompatibleTip(e);
             }),
             (this.toggleExtend = function(e) {
               var t,
-                i = U.DIMENSION.posX;
-              (t = e ? "on" == !e : U.DIMENSION.extend_draw),
+                i = cfg.DIMENSION.posX;
+              (t = e ? "on" == !e : cfg.DIMENSION.extend_draw),
                 a.call(this, "DIMENSION", {
                   extend_draw: !t,
-                  posX: i > 9 ? U.DIMENSION.extend_padding : 55,
-                  RIGHT_W: i > 9 ? U.DIMENSION.extend_padding : 55
+                  posX: i > 9 ? cfg.DIMENSION.extend_padding : 55,
+                  RIGHT_W: i > 9 ? cfg.DIMENSION.extend_padding : 55
                 }),
                 this.resize();
             }),
@@ -5675,7 +5678,7 @@ xh5_define(
               return X.getExtraData(e);
             }),
             (this.patcher = {
-              iMgr: oe.patcher
+              iMgr: iMgr.patcher
             }),
             (this.zoom = function(e) {
               X.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
@@ -5698,17 +5701,18 @@ xh5_define(
             (this.type = "h5t");
         })()),
         (X = new D()),
-        X.dcInit(i),
+        X.dcInit(config),
         n
       );
     }
-    function r() {
-      function e(e, a) {
-        var r = new i(e),
+    function chart_h5t$() {
+        console.log('test');
+      function e(config, callback) {
+        var r = new chart_h5t(config),
           n = function(e) {
             r.me.rl(e, n);
           };
-        r.me.al(N.e.T_DATA_LOADED, n), utils_util.isFunc(a) && a(r);
+        r.me.al(globalCfg.e.T_DATA_LOADED, n), utils_util.isFunc(callback) && callback(r);
       }
       this.get = function(config, callback) {
         utils_util.stc("h5t_get"),
@@ -5797,20 +5801,20 @@ xh5_define(
       o,
       pChart,
       tChart,
-      c = utils_util.$DOM,
-      d = utils_util.$C,
-      m = utils_util.$CONTAINS,
-      p = utils_util.xh5_PosUtil,
-      h = utils_util.xh5_EvtUtil,
-      u = utils_util.oc,
-      v = utils_util.dateUtil,
-      f = utils_util.dateUtil.stbd,
+      f$DOM = utils_util.$DOM,
+      utils_util_$C = utils_util.$C,
+      fCONTAINS = utils_util.$CONTAINS,
+      xh5_PosUtil = utils_util.xh5_PosUtil,
+      xh5_EvtUtil = utils_util.xh5_EvtUtil,
+      utils_util_oc = utils_util.oc,
+      dateUtil = utils_util.dateUtil,
+      stbd = utils_util.dateUtil.stbd,
       g = utils_util.xh5_ADJUST_HIGH_LOW.c,
-      b = utils_util.xh5_BrowserUtil,
-      y = utils_util.fBind,
-      _ = utils_util.strUtil.ps,
-      N = cfgs_settinger.globalCfg,
-      k = utils_util.logoM;
-    return utils_util.fInherit(i, utils_util.xh5_EvtDispatcher), r;
+      xh5_BrowserUtil = utils_util.xh5_BrowserUtil,
+      fBind = utils_util.fBind,
+      strUtil_ps = utils_util.strUtil.ps,
+      globalCfg = cfgs_settinger.globalCfg,
+      logoM = utils_util.logoM;
+    return utils_util.fInherit(chart_h5t, utils_util.xh5_EvtDispatcher), chart_h5t$;
   }
 );

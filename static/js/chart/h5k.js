@@ -1,6 +1,6 @@
 xh5_define("datas.k", ["utils.util"], function(e) {
   "use strict";
-  var t = e.load,
+  var getScript = e.load,
     n = e.dateUtil,
     a = e.kUtil,
     deCompress = e.xh5_S_KLC_D,
@@ -106,7 +106,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
       }
     };
     r.REPO = r.CN;
-    var l = function() {
+    var defaultCallbackObj = function() {
         return {
           msg: "",
           data: null
@@ -742,8 +742,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           m = "_" + o.kSb.replace(/\W/g, "") + "_" + c + "_" + r.getTime(),
           b = function(r) {
             var b = r ? r.dataObj : void 0,
-              h = l();
-            t(
+              h = defaultCallbackObj();
+            getScript(
               o.kUrl
                 .replace("$symbol", o.kSb)
                 .replace(u, c)
@@ -793,15 +793,19 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             )
           : b();
       },
-      L = function(n, a) {
-        var o = R(n),
-          r = function(r) {
+      L = function(config, callback) {
+        var o = R(config),
+          onSuccess = function(r) {
             var hq = r ? r.data[0] : void 0,
-              u = l(),
-              p = new Date(),
-              m = [p.getFullYear(), p.getMonth() + 1, p.getDate()].join("_"),
+              callbackObj = defaultCallbackObj(),
+              curDate = new Date(),
+              m = [
+                curDate.getFullYear(),
+                curDate.getMonth() + 1,
+                curDate.getDate()
+              ].join("_"),
               h = "_" + o.kSb.replace(/\W/g, "") + m;
-            t(
+            getScript(
               o.kUrl
                 .replace("$symbol", o.kSb)
                 .replace("$rn", m)
@@ -814,12 +818,13 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     (strDatas = deCompress(strDatas));
                 } else {
                   strDatas = window[h];
-                  var dataformatter = n.dataformatter || o.dayDataHandler || b;
+                  var dataformatter =
+                    config.dataformatter || o.dayDataHandler || b;
                   strDatas = dataformatter(strDatas);
                 }
-                var p = i(strDatas, hq, n);
+                var p = i(strDatas, hq, config);
                 p
-                  ? (u.data = {
+                  ? (callbackObj.data = {
                       hq: hq,
                       day: p[0],
                       week: p[1],
@@ -827,14 +832,14 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                       ytd: p[3] || null,
                       year: p[4]
                     })
-                  : (u.msg = "error"),
-                  e.isFunc(a) && a(u);
+                  : (callbackObj.msg = "error"),
+                  e.isFunc(callback) && callback(callbackObj);
               },
               function() {
                 if (hq) {
-                  var t = i(null, hq, n);
+                  var t = i(null, hq, config);
                   t
-                    ? (u.data = {
+                    ? (callbackObj.data = {
                         hq: hq,
                         day: t[0],
                         week: t[1],
@@ -842,14 +847,14 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                         ytd: t[3] || null,
                         year: t[4]
                       })
-                    : (u.msg = "error"),
-                    e.isFunc(a) && a(u);
+                    : (callbackObj.msg = "error"),
+                    e.isFunc(callback) && callback(callbackObj);
                 } else
-                  (u.msg = "error"),
-                    (u.data = {
+                  (callbackObj.msg = "error"),
+                    (callbackObj.data = {
                       hq: hq
                     }),
-                    e.isFunc(a) && a(u);
+                    e.isFunc(callback) && callback(callbackObj);
               },
               {
                 market: o.market,
@@ -859,21 +864,21 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             );
           };
         "undefined" == typeof o.market || "UNKNOWN" === o.market
-          ? r()
+          ? onSuccess()
           : KKE.api(
               "datas.hq.get",
               {
                 symbol: o.hqSb,
                 cancelEtag: !0,
                 withI: !0,
-                ssl: n.ssl
+                ssl: config.ssl
               },
-              r
+              onSuccess
             );
       },
       U = function(t, n) {
         var s = t.staticdata,
-          o = l();
+          o = defaultCallbackObj();
         if (t.ismink) a.pd(s, null), (o.data = s);
         else {
           var r = i(s, null, t);
@@ -887,14 +892,16 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         }
         e.isFunc(n) && n(o);
       };
-    (this.get = function(t, n) {
-      t.staticdata
-        ? U(t, n)
-        : (t.wfn && e.isFunc(m[t.wfn]) && (window[t.wfn] = m[t.wfn]),
-          t.ismink ? S(t, n) : L(t, n));
+    (this.get = function(config, callback) {
+      config.staticdata
+        ? U(config, callback)
+        : (config.wfn &&
+            e.isFunc(m[config.wfn]) &&
+            (window[config.wfn] = m[config.wfn]),
+          config.ismink ? S(config, callback) : L(config, callback));
     }),
       (this.loadReData = function(n, a) {
-        var s = l(),
+        var s = defaultCallbackObj(),
           o =
             "HK" === n.market.toUpperCase()
               ? n.symbol.replace("rt_hk", "")
@@ -908,7 +915,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           "HK" === n.market && (p = "hk" + p);
         var m = new Date(),
           b = m.getHours();
-        t(
+        getScript(
           i
             .replace("$symbol", o)
             .replace("$dir", c)
@@ -930,7 +937,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         );
       }),
       (this.loadHFInit = function(n, a) {
-        var s = l(),
+        var s = defaultCallbackObj(),
           o = n.symbol,
           r = p(o, n.ssl),
           i = r.url,
@@ -940,7 +947,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         m
           ? ((s.data = m), e.isFunc(a) && a(s))
           : ((o = o.split("hf_")[1]),
-            t(
+            getScript(
               i.replace("$cb", "var%20" + u + "=").replace("$symbol", o),
               function() {
                 (m = window[u]),
@@ -960,7 +967,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             ));
       }),
       (this.loadNFInit = function(n, a) {
-        var s = l(),
+        var s = defaultCallbackObj(),
           o = n.symbol,
           r = p(o, n.ssl),
           i = r.url,
@@ -970,7 +977,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         m
           ? ((s.data = m), e.isFunc(a) && a(s))
           : ((o = o.match(/^nf_([a-zA-Z]+)\d+$/)[1]),
-            t(
+            getScript(
               i.replace("$cb", "var%20" + u + "=").replace("$symbol", o),
               function() {
                 (m = window[u]),
@@ -990,7 +997,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             ));
       }),
       (this.loadGBInit = function(n, a) {
-        var s = l(),
+        var s = defaultCallbackObj(),
           o = n.symbol,
           r = p(o, n.ssl),
           i = r.url,
@@ -1000,7 +1007,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         m
           ? ((s.data = m), e.isFunc(a) && a(s))
           : ((o = o.split("znb_")[1]),
-            t(
+            getScript(
               i.replace("$cb", "var%20" + u + "=").replace("$symbol", o),
               function() {
                 (m = window[u]),
@@ -1024,13 +1031,13 @@ xh5_define("datas.k", ["utils.util"], function(e) {
 xh5_define(
   "chart.h5k",
   ["cfgs.settinger", "utils.util", "utils.painter"],
-  function(e, t, n) {
+  function(cfgs_settinger, utils_util, utils_painter) {
     "use strict";
-    function a(a) {
+    function h5k(a) {
       function i(e, n) {
-        function i(e) {
+        function onViewChange(e) {
           O.setDataRange(e),
-            y && (y.linkData(e), y.setDataRange()),
+            tchartObj && (tchartObj.linkData(e), tchartObj.setDataRange()),
             N && (N.linkData(e), N.setDataRange()),
             w && (w.linkData(e), w.setDataRange());
         }
@@ -1078,7 +1085,7 @@ xh5_define(
           e || {}
         );
         var h = this,
-          u = t.market(e.symbol),
+          u = utils_util.market(e.symbol),
           g = !0;
         (this.isErr = !1), (this.symbol = e.symbol), (this.market = u);
         var b;
@@ -1117,7 +1124,7 @@ xh5_define(
           (this.isTotalRedraw = !0),
           (this.hq = void 0),
           (this.nco = void 0);
-        var y,
+        var tchartObj,
           N,
           w,
           S = new k(this, e),
@@ -1136,16 +1143,16 @@ xh5_define(
                 if (a) {
                   if (n) {
                     if (
-                      (e == _.URLHASH.KD && (i = t.clone(a, null)),
+                      (e == _.URLHASH.KD && (i = utils_util.clone(a, null)),
                       r && window.datelist && h.hq)
                     ) {
-                      var c = t.xh5_S_KLC_D(window.datelist);
-                      a = t.kUtil.ayd(a, c, !1, a[0].date, h.hq.date);
+                      var c = utils_util.xh5_S_KLC_D(window.datelist);
+                      a = utils_util.kUtil.ayd(a, c, !1, a[0].date, h.hq.date);
                     }
                   } else
                     l ||
-                      (e == _.URLHASH.KD && (i = t.clone(a, null)),
-                      (a = t.kUtil.adbd(a, K.get(e), s, !1)));
+                      (e == _.URLHASH.KD && (i = utils_util.clone(a, null)),
+                      (a = utils_util.kUtil.adbd(a, K.get(e), s, !1)));
                   o["k" + e] = a;
                   var d = a.length,
                     u = r ? L.PARAM.K_CL_NUM : L.PARAM.defaultCandleNum;
@@ -1179,7 +1186,7 @@ xh5_define(
                 return e;
               };
             (this.get = function(e) {
-              if (t.isStr(e)) {
+              if (utils_util.isStr(e)) {
                 var n = l();
                 return o["k" + n + e];
               }
@@ -1195,7 +1202,7 @@ xh5_define(
               }),
               (this.initState = r),
               (this.initDWMState = function(e, n) {
-                var a = t.clone(n.day, null);
+                var a = utils_util.clone(n.day, null);
                 r(_.URLHASH.KD, n.day),
                   r(_.URLHASH.KW, n.week),
                   r(_.URLHASH.KM, n.month),
@@ -1206,9 +1213,9 @@ xh5_define(
               (this.initExtraData = function() {
                 var n =
                   "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
-                a.ssl && (n = t.getSUrl(n));
+                a.ssl && (n = utils_util.getSUrl(n));
                 var i = "KKE_ShareAmount_" + e.symbol;
-                t.load(
+                utils_util.load(
                   n
                     .replace("$symbol", e.symbol)
                     .replace("$rn", String(new Date().getDate()))
@@ -1360,10 +1367,10 @@ xh5_define(
                     if (1 == a) {
                       if (
                         s.time &&
-                        !t.kUtil.spk(s.time, e.time, b, n, h.market)
+                        !utils_util.kUtil.spk(s.time, e.time, b, n, h.market)
                       ) {
                         if (
-                          (t.kUtil.nc(i, e, n, {
+                          (utils_util.kUtil.nc(i, e, n, {
                             price: e.price,
                             volume: e.volume
                           }),
@@ -1375,7 +1382,7 @@ xh5_define(
                             (s.change = e.price - e.prevclose),
                             (s.percent = s.change / e.prevclose));
                         else if ("NF" == h.market);
-                        else if (t.kUtil.spk("09:35", e.time, b, n)) {
+                        else if (utils_util.kUtil.spk("09:35", e.time, b, n)) {
                           if (n == _.URLHASH.K60) {
                             var l = e.time.split(":"),
                               c = l[0],
@@ -1391,7 +1398,7 @@ xh5_define(
                       }
                     } else if (2 == a) {
                       if (!e.trstr) return;
-                      t.kUtil.nc(i, e, n, {
+                      utils_util.kUtil.nc(i, e, n, {
                         price: e.price,
                         volume: 0
                       });
@@ -1401,17 +1408,18 @@ xh5_define(
                           ? m.dst(s.date) < h.nco.open &&
                             e.time >= h.nco.open &&
                             e.time > h.nco.close &&
-                            t.kUtil.nc(i, e, n, null)
+                            utils_util.kUtil.nc(i, e, n, null)
                           : r &&
                             e.time >= h.nco.open &&
-                            ((r = !1), t.kUtil.nc(i, e, n, null)));
+                            ((r = !1), utils_util.kUtil.nc(i, e, n, null)));
                     else {
                       if (!(e.date > s.date)) return;
                       h.nco
                         ? "NF" == h.market
-                          ? e.time >= h.nco.open && t.kUtil.nc(i, e, n, null)
+                          ? e.time >= h.nco.open &&
+                            utils_util.kUtil.nc(i, e, n, null)
                           : e.time <= h.nco.close && (r = !0)
-                        : t.kUtil.nc(i, e, n, null);
+                        : utils_util.kUtil.nc(i, e, n, null);
                     }
                     (s = i[i.length - 1]),
                       (s.close = e.price),
@@ -1447,7 +1455,7 @@ xh5_define(
                       (s.amplitude = s.high - s.low),
                       (s.ampP = s.amplitude / u),
                       (s.time = e.time),
-                      t.isCNK(e.symbol) &&
+                      utils_util.isCNK(e.symbol) &&
                         ((s.postVol = e.postVolume),
                         (s.postAmt = e.postAmount));
                   }
@@ -1481,7 +1489,15 @@ xh5_define(
                   var o = i[i.length - 1];
                   if (e.date > o.date)
                     if ("mink" == _.URLHASH.gt(V.viewId).type) {
-                      if (!t.kUtil.spk(o.time, e.time, "00:00", a, h.market))
+                      if (
+                        !utils_util.kUtil.spk(
+                          o.time,
+                          e.time,
+                          "00:00",
+                          a,
+                          h.market
+                        )
+                      )
                         return !1;
                     } else if (!f(e.date, o.date)) return !1;
                   return !0;
@@ -1500,7 +1516,7 @@ xh5_define(
                   var o = a.dataObj[e.symbol];
                   if (o && o.date && s(o)) {
                     if (((A = A || o.name || ""), !d.check(o))) return;
-                    (h.hq = o), c(o), i(!0), t.isFunc(n) && n();
+                    (h.hq = o), c(o), onViewChange(!0), utils_util.isFunc(n) && n();
                   }
                 });
             };
@@ -1508,7 +1524,7 @@ xh5_define(
           $ = new (function() {
             var i,
               o = function(e, n) {
-                M.re(_.e.K_DATA_LOADED, n), t.isFunc(e) && e();
+                M.re(_.e.K_DATA_LOADED, n), utils_util.isFunc(e) && e();
               },
               s = function(e) {
                 if (!h.hq || !h.hq.date) return null;
@@ -1536,7 +1552,7 @@ xh5_define(
                     w = 0;
                   if (
                     ((r = "q" === i ? _.URLHASH.KDF : _.URLHASH.KDB),
-                    C.initState(r, t.clone(N, null), !1, !1, !0),
+                    C.initState(r, utils_util.clone(N, null), !1, !1, !0),
                     (s = C.get(r)),
                     (b = s.length),
                     y)
@@ -1601,17 +1617,17 @@ xh5_define(
                       totalVolume: p.volume,
                       date: m.dd(p.date)
                     })),
-                    (l = t.kUtil.mw(s, S, null, null, 0 / 0)),
+                    (l = utils_util.kUtil.mw(s, S, null, null, 0 / 0)),
                     (h = l[0]),
                     (c = l[1]),
                     (u = l[2]),
-                    t.kUtil.pd(h, null),
-                    t.kUtil.pd(c, null),
-                    t.kUtil.pd(u, null),
+                    utils_util.kUtil.pd(h, null),
+                    utils_util.kUtil.pd(c, null),
+                    utils_util.kUtil.pd(u, null),
                     C.initState(_.URLHASH["q" == i ? "KWF" : "KWB"], h),
                     C.initState(_.URLHASH["q" == i ? "KMF" : "KMB"], c),
                     C.initState(_.URLHASH["q" == i ? "KYF" : "KYB"], u);
-                  var M = t.clone(s, null);
+                  var M = utils_util.clone(s, null);
                   C.initState(_.URLHASH["q" == i ? "KCLF" : "KCLB"], M, !1, !0),
                     n || C.initState(r, s);
                 }
@@ -1870,7 +1886,7 @@ xh5_define(
           }),
           (this.initData = $.iInit),
           (this.doUpdate = P.uUpdate),
-          (this.onViewChange = i),
+          (this.onViewChange = onViewChange),
           (this.setPricePos = function(e, t) {
             (h.labelMaxP = e[0]),
               (h.labelMinP = e[1]),
@@ -1881,23 +1897,25 @@ xh5_define(
           }),
           (this.setRange = function(e) {
             O.setDataRange(),
-              y && y.setDataRange(),
+              tchartObj && tchartObj.setDataRange(),
               N && N.setDataRange(),
               w && w.setDataRange(e);
           }),
           (this.draw = function() {
-            S.draw(), y && y.allDraw(z.x), N && N.allDraw(z.x);
+            S.draw(),
+              tchartObj && tchartObj.allDraw(z.x),
+              N && N.allDraw(z.x);
           }),
           (this.resize = function(e) {
             O.createPlayingData(),
               S.resize(),
-              y && y.onResize(e),
+              tchartObj && tchartObj.onResize(e),
               N && N.onResize(),
               w && w.onResize();
           }),
           (this.clear = function(e) {
             S.clear(e),
-              y && (y.clear(), (y = null)),
+              tchartObj && (tchartObj.clear(), (tchartObj = null)),
               N && (N.clear(), (N = null)),
               w && (w.clear(), (w = null)),
               n && (E = null);
@@ -1908,20 +1926,20 @@ xh5_define(
         var W = function(e, n, a) {
             e && j.resizeAll(!0),
               I.onChangeView(),
-              n && t.isFunc(n.callback) && n.callback(),
+              n && utils_util.isFunc(n.callback) && n.callback(),
               a && q.onTechChanged(a[0]);
           },
           G = void 0;
         (this.initPt = function(e, i) {
           if (e) {
-            !t.isArr(e) && (e = [e]);
+            !utils_util.isArr(e) && (e = [e]);
             for (var o = e.length; o--; )
               if (e[o].name && "VOLUME" === e[o].name.toUpperCase()) {
                 e.splice(o, 1), (L.custom.show_underlay_vol = !0);
                 break;
               }
             N ||
-              ((N = new s({
+              ((N = new pChart({
                 iMgr: B,
                 stockData: h,
                 chartArea: R,
@@ -1938,7 +1956,7 @@ xh5_define(
         }),
           (this.removePt = function(e) {
             if (e) {
-              !t.isArr(e) && (e = [e]);
+              !utils_util.isArr(e) && (e = [e]);
               for (var n = e.length; n--; )
                 if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
                   e.splice(n, 1), (L.custom.show_underlay_vol = !1);
@@ -1951,8 +1969,8 @@ xh5_define(
             N ? (g = N.showHide(e)) : !t && (G = e);
           }),
           (this.initTc = function(e, t) {
-            y ||
-              ((y = new r({
+            tchartObj ||
+              ((tchartObj = new tChart({
                 stockData: h,
                 iMgr: B,
                 cb: W,
@@ -1962,11 +1980,11 @@ xh5_define(
                 usrObj: a,
                 initMgr: j
               })),
-              n && (T = y)),
-              y.createChart(e, t);
+              n && (T = tchartObj)),
+              tchartObj.createChart(e, t);
           }),
           (this.removeTc = function(e) {
-            y && y.removeChart(e);
+            tchartObj && tchartObj.removeChart(e);
           }),
           (this.initRs = function() {
             (w = new o({
@@ -1990,7 +2008,7 @@ xh5_define(
               (c = L.COLOR.K_CL);
           else {
             var a = o.linecolor,
-              i = a.K_N || "#" + t.randomColor();
+              i = a.K_N || "#" + utils_util.randomColor();
             (r = i),
               (s = a.K_FALL || i),
               (l = a.K_RISE || i),
@@ -2000,7 +2018,7 @@ xh5_define(
             (m.K_FALL = s),
             (m.K_RISE = l),
             (m.K_CL = c),
-            (d = new n.xh5_ibPainter({
+            (d = new utils_painter.xh5_ibPainter({
               setting: L,
               sd: e,
               ctn: C,
@@ -2384,7 +2402,7 @@ xh5_define(
               : (t.initData(R), !1);
           },
           A = function(e) {
-            if (e && t.isFunc(e.callback)) {
+            if (e && utils_util.isFunc(e.callback)) {
               for (var n = !1, a = S.length; a--; )
                 if (e.callback === S[a]) {
                   n = !0;
@@ -2441,11 +2459,11 @@ xh5_define(
               var l, c;
               switch (i) {
                 case "price":
-                  if (((l = s), (c = "initPt"), t.isObj(a)))
+                  if (((l = pChart), (c = "initPt"), utils_util.isObj(a)))
                     a.name &&
                       "TZY" === String(a.name).toUpperCase() &&
                       (g = 0.2);
-                  else if (t.isArr(a))
+                  else if (utils_util.isArr(a))
                     for (var h, d = a.length; d--; )
                       if (
                         ((h = a[d]),
@@ -2456,7 +2474,7 @@ xh5_define(
                       }
                   break;
                 case "tech":
-                  (l = r), (c = "initTc");
+                  (l = tChart), (c = "initTc");
               }
               c &&
                 (l
@@ -2466,8 +2484,11 @@ xh5_define(
                       {
                         type: i
                       },
-                      function(e) {
-                        (r = e.tChart), (s = e.pChart), n(a, i, o);
+                      function(callbackObj) {
+                        console.log(callbackObj);
+                        (tChart = callbackObj.tChart),
+                          (pChart = callbackObj.pChart),
+                          n(a, i, o);
                       }
                     ));
             },
@@ -2553,7 +2574,9 @@ xh5_define(
                   top: "2%"
                 }
               };
-              return o || (o = new t.TipM(L.COLOR)), (a.content = i), a;
+              return (
+                o || (o = new utils_util.TipM(L.COLOR)), (a.content = i), a
+              );
             },
             v = function(t) {
               var s = f(t);
@@ -2581,7 +2604,7 @@ xh5_define(
               return l;
             }),
             (this.historyT = function() {
-              if ("CN" === t.market(e.symbol)) {
+              if ("CN" === utils_util.market(e.symbol)) {
                 s = B.getInteractiveIdx();
                 var n = e.datas[s];
                 if (n) {
@@ -2670,8 +2693,8 @@ xh5_define(
           },
           X = function(n) {
             if ("mink" == _.URLHASH.gt(V.viewId).type) {
-              var a = t.market(n.symbol),
-                i = t.market(e.symbol);
+              var a = utils_util.market(n.symbol),
+                i = utils_util.market(e.symbol);
               if (a != i && ("US" == a || "US" == i)) return !1;
             }
             return !0;
@@ -2680,7 +2703,7 @@ xh5_define(
           for (var n = e.callback, a = f.length; a--; )
             if (f[a].symbol == e.symbol)
               return void (
-                t.isFunc(n) &&
+                utils_util.isFunc(n) &&
                 n({
                   code: 1,
                   msg: "comparing same symbol"
@@ -2688,7 +2711,7 @@ xh5_define(
               );
           X(e)
             ? G(e, !1)
-            : t.isFunc(n) &&
+            : utils_util.isFunc(n) &&
               n({
                 code: 2,
                 msg: "invalid comparing market or period"
@@ -2743,7 +2766,7 @@ xh5_define(
           }),
           (this.setLineStyle = function(n) {
             if (n) {
-              !t.isArr(n) && (n = [n]);
+              !utils_util.isArr(n) && (n = [n]);
               for (var a = n.length; a--; ) {
                 var i = n[a];
                 if (i.hasOwnProperty("symbol")) {
@@ -2860,7 +2883,7 @@ xh5_define(
                 );
                 break;
               default:
-                t.grabM.shareTo({
+                utils_util.grabM.shareTo({
                   ctn: x,
                   w: L.DIMENSION.getStageW(),
                   h: L.DIMENSION.getStageH() - (O.clientHeight || 0),
@@ -2901,9 +2924,10 @@ xh5_define(
             if (a) {
               var s;
               "currentK" == n.name
-                ? ((s = a.kDb.get()), (i = n.clone ? t.clone(s, null) : s))
+                ? ((s = a.kDb.get()),
+                  (i = n.clone ? utils_util.clone(s, null) : s))
                 : ((s = a.extraDataObj[n.name]),
-                  (i = n.clone ? t.clone(s, null) : s));
+                  (i = n.clone ? utils_util.clone(s, null) : s));
             }
             return i;
           }),
@@ -2918,7 +2942,7 @@ xh5_define(
             G(e, !0), U();
           });
       }
-      t.xh5_EvtDispatcher.call(this);
+      utils_util.xh5_EvtDispatcher.call(this);
       var M = this;
       a = p(
         {
@@ -2985,10 +3009,10 @@ xh5_define(
           (a.symbol = String(a.symbol)),
           (a.rawSymbol = String(a.symbol)),
           (a.symbol =
-            "LSE" === t.market(a.symbol)
-              ? t.strUtil.replaceStr(a.symbol)
+            "LSE" === utils_util.market(a.symbol)
+              ? utils_util.strUtil.replaceStr(a.symbol)
               : a.symbol.replace(".", "$")),
-          (L = e.getSetting(
+          (L = cfgs_settinger.getSetting(
             [
               "_",
               a.symbol,
@@ -3015,7 +3039,7 @@ xh5_define(
           g.noH5)
         ) {
           if ("undefined" == typeof FlashCanvas || a.fh5)
-            return void (t.isFunc(a.noh5) && a.noh5(a));
+            return void (utils_util.isFunc(a.noh5) && a.noh5(a));
           L.PARAM.isFlash = !0;
         }
         if (
@@ -3026,7 +3050,7 @@ xh5_define(
         )
           for (var n in a.dim)
             a.dim.hasOwnProperty(n) &&
-              t.isNum(L.DIMENSION[n]) &&
+              utils_util.isNum(L.DIMENSION[n]) &&
               (L.DIMENSION[n] = a.dim[n]);
       })();
       var I,
@@ -3066,7 +3090,7 @@ xh5_define(
         Y = new (function() {
           var e;
           (this.showTip = function(n) {
-            e || (e = new t.TipM(L.COLOR)), e.genTip(n);
+            e || (e = new utils_util.TipM(L.COLOR)), e.genTip(n);
           }),
             (this.hideTip = function() {
               e && e.hide();
@@ -3079,11 +3103,11 @@ xh5_define(
           };
           this.onRange = function(e, n) {
             !P &&
-              t.isFunc(a.onrange) &&
+              utils_util.isFunc(a.onrange) &&
               a.onrange({
                 isCompare: n,
                 data: e.datas,
-                viewRangeState: t.clone(V, null),
+                viewRangeState: utils_util.clone(V, null),
                 width: L.DIMENSION.w_k,
                 height: L.DIMENSION.h_k,
                 left: L.DIMENSION.posX,
@@ -3094,7 +3118,7 @@ xh5_define(
           };
           var n = [];
           (this.onViewPrice = function(i, o, s, r, l, c) {
-            if (!P && t.isFunc(a.onviewprice)) {
+            if (!P && utils_util.isFunc(a.onviewprice)) {
               if (!i) {
                 if (((i = e()), !i)) return;
                 o = V.currentLength - 1;
@@ -3124,7 +3148,7 @@ xh5_define(
               }
               l || (l = I.getMainStock().getName()),
                 a.onviewprice({
-                  data: t.clone(i, null),
+                  data: utils_util.clone(i, null),
                   rangedata: r,
                   idx: o,
                   left: L.DIMENSION.posX,
@@ -3136,11 +3160,11 @@ xh5_define(
             }
           }),
             (this.onDataUpdate = function() {
-              if (t.isFunc(a.ondataupdate)) {
+              if (utils_util.isFunc(a.ondataupdate)) {
                 var n = e();
                 n &&
                   a.ondataupdate({
-                    data: t.clone(n, null),
+                    data: utils_util.clone(n, null),
                     idx: V.currentLength - 1,
                     left: L.DIMENSION.posX,
                     top: L.DIMENSION.H_MA4K
@@ -3148,22 +3172,22 @@ xh5_define(
               }
             }),
             (this.onViewChanged = function() {
-              t.isFunc(a.onviewchanged) &&
+              utils_util.isFunc(a.onviewchanged) &&
                 a.onviewchanged({
-                  viewRangeState: t.clone(V, null)
+                  viewRangeState: utils_util.clone(V, null)
                 });
             }),
             (this.onInnerResize = function(e) {
-              t.isFunc(a.oninnerresize) && a.oninnerresize(e);
+              utils_util.isFunc(a.oninnerresize) && a.oninnerresize(e);
             }),
             (this.onTechChanged = function(e) {
-              t.isFunc(a.ontechchanged) &&
+              utils_util.isFunc(a.ontechchanged) &&
                 a.ontechchanged({
                   Indicator: e
                 });
             }),
             (this.shortClickHandler = function() {
-              t.isFunc(a.onshortclickmain) && a.onshortclickmain();
+              utils_util.isFunc(a.onshortclickmain) && a.onshortclickmain();
             });
         })(),
         j = new (function() {
@@ -3209,7 +3233,7 @@ xh5_define(
               s && (s.style.display = L.custom.show_logo ? "" : "none");
             },
             p = function() {
-              (F = new t.LoadingSign()), F.appendto(C);
+              (F = new utils_util.LoadingSign()), F.appendto(C);
             },
             m = function() {
               F.setPosition();
@@ -3224,7 +3248,7 @@ xh5_define(
                 (i.style.top = L.DIMENSION.h_k + L.DIMENSION.H_MA4K + "px"),
                 d(),
                 m(),
-                t.stc("k_wh", [
+                utils_util.stc("k_wh", [
                   L.DIMENSION.getStageW(),
                   L.DIMENSION.getStageH()
                 ]);
@@ -3270,7 +3294,7 @@ xh5_define(
                     L.COLOR.hasOwnProperty(a) &&
                     L.COLOR[a] !== e[a] &&
                     ((L.COLOR[a] = e[a]), (n = !0));
-                t.stc("k_thm", e);
+                utils_util.stc("k_thm", e);
               }
               return (
                 n &&
@@ -3291,7 +3315,7 @@ xh5_define(
               L.custom.keyboard && I && I.onKb(e);
             },
             S = function() {
-              t.xh5_deviceUtil.istd ||
+              utils_util.xh5_deviceUtil.istd ||
                 (g.info.name.match(/firefox/i)
                   ? u.addHandler(x, "DOMMouseScroll", y)
                   : u.addHandler(x, "mousewheel", y),
@@ -3322,7 +3346,7 @@ xh5_define(
                 txt: a.nohtml5info || _.nohtml5info,
                 parent: x
               }),
-              t.stc("k_nh5")),
+              utils_util.stc("k_nh5")),
             (this.resizeAll = f),
             (this.innerResize = function(e) {
               I &&
@@ -3359,7 +3383,7 @@ xh5_define(
             n,
             i,
             o,
-            s = t.market(a.symbol),
+            s = utils_util.market(a.symbol),
             r = /^forex|^HF/.test(s),
             d = isNaN(a.nfloat) ? 2 : a.nfloat,
             u = 150,
@@ -3602,7 +3626,7 @@ xh5_define(
                       case "CN":
                       case "OTC":
                       case "REPO":
-                        o = t.isCNK(U.symbol) ? "\u80a1" : "\u624b";
+                        o = utils_util.isCNK(U.symbol) ? "\u80a1" : "\u624b";
                         break;
                       case "US":
                       case "HK":
@@ -4023,7 +4047,7 @@ xh5_define(
                   !h(x, e.body) && x.appendChild(e.body);
                 };
               (this.customFloater = function(e) {
-                (a = e), o(), t.stc("k_fl", e);
+                (a = e), o(), utils_util.stc("k_fl", e);
               }),
                 (this.switchFloater = o);
             })());
@@ -4038,17 +4062,20 @@ xh5_define(
           a = function(n, a) {
             if (L.hasOwnProperty(n)) {
               for (var i in a)
-                if (a.hasOwnProperty(i) && t.isFunc(a[i])) return;
-              "DIMENSION" == n && ($ = 1), p(L[n], a), t.stc(n, a), e.resize();
+                if (a.hasOwnProperty(i) && utils_util.isFunc(a[i])) return;
+              "DIMENSION" == n && ($ = 1),
+                p(L[n], a),
+                utils_util.stc(n, a),
+                e.resize();
             }
           },
           i = function(e, n) {
             var a;
             if (L.hasOwnProperty(e)) {
-              a = t.clone(L[e], null);
+              a = utils_util.clone(L[e], null);
               for (var i in a)
                 if (a.hasOwnProperty(i))
-                  if (t.isFunc(a[i])) (a[i] = null), delete a[i];
+                  if (utils_util.isFunc(a[i])) (a[i] = null), delete a[i];
                   else if (n)
                     for (var o = n.length; o--; )
                       typeof a[i] === n[o] && ((a[i] = null), delete a[i]);
@@ -4072,13 +4099,13 @@ xh5_define(
                 : I.mM.newAC(t, e, n);
           };
         (this.setLineStyle = function(e, a) {
-          a || (n = e), I.setLineStyle(e), t.stc("k_style", e);
+          a || (n = e), I.setLineStyle(e), utils_util.stc("k_style", e);
         }),
           (this.showScale = function(e) {
-            I.setScale(e), t.stc("k_scale", e);
+            I.setScale(e), utils_util.stc("k_scale", e);
           }),
           (this.pushData = function(e, n) {
-            !t.isArr(e) && (e = [e]), I.pushData(e, n);
+            !utils_util.isArr(e) && (e = [e]), I.pushData(e, n);
           });
         var s,
           r,
@@ -4116,13 +4143,13 @@ xh5_define(
           (this.hide = function(e) {
             (P = !0),
               B.hideIUis(),
-              t.$CONTAINS(A, x) && A.removeChild(x),
+              utils_util.$CONTAINS(A, x) && A.removeChild(x),
               e && I.dcReset();
           }),
           (this.show = function(e) {
             (P = !1),
-              e && (t.isStr(e) && (e = l(e)), (A = e)),
-              t.$CONTAINS(A, x) || (A.appendChild(x), j.resizeAll(!0)),
+              e && (utils_util.isStr(e) && (e = l(e)), (A = e)),
+              utils_util.$CONTAINS(A, x) || (A.appendChild(x), j.resizeAll(!0)),
               I.outputNewRange(!0),
               q.onViewPrice();
           });
@@ -4225,7 +4252,7 @@ xh5_define(
                   C = !1;
                 }, 99)
               : F.hide();
-          var i = t.isNum(e) ? _.URLHASH.vn(e) : _.URLHASH.vi(e);
+          var i = utils_util.isNum(e) ? _.URLHASH.vn(e) : _.URLHASH.vi(e);
           if (i) {
             if ((m && w(), i == _.URLHASH.KCL)) S.enterClMode();
             else {
@@ -4237,7 +4264,10 @@ xh5_define(
                   v: !1
                 });
             }
-            k(i), I.onChangeView(!1, n), t.stc("k_v", e), !a && t.suda("vw", e);
+            k(i),
+              I.onChangeView(!1, n),
+              utils_util.stc("k_v", e),
+              !a && utils_util.suda("vw", e);
           }
         };
         var R = !1;
@@ -4262,8 +4292,8 @@ xh5_define(
               })),
             f(u),
             I.showYTD(u, R),
-            t.stc("k_v", _.URLHASH.NYTD),
-            !n && t.suda("vw", _.URLHASH.NYTD);
+            utils_util.stc("k_v", _.URLHASH.NYTD),
+            !n && utils_util.suda("vw", _.URLHASH.NYTD);
         }),
           (this.showYear = function() {
             this.showYTD(!0);
@@ -4272,10 +4302,10 @@ xh5_define(
             if (((e = parseInt(e)), !(isNaN(e) || Math.abs(e) > 1))) {
               u = e;
               var n = _.URLHASH.gt(V.viewId);
-              t.stc("k_re", e);
+              utils_util.stc("k_re", e);
               var a = e;
               "-1" == a && (a = "_1"),
-                t.suda("k_re", "k_re" + a),
+                utils_util.suda("k_re", "k_re" + a),
                 "mink" != n.type &&
                   (m
                     ? this.showYTD(R, !0)
@@ -4284,7 +4314,7 @@ xh5_define(
           });
         var H = function(e) {
           var n;
-          return (n = t.isStr(e) ? e.split(",") : [e.symbol]);
+          return (n = utils_util.isStr(e) ? e.split(",") : [e.symbol]);
         };
         this.compare = function(e, n) {
           if (n) {
@@ -4295,22 +4325,24 @@ xh5_define(
                   break;
                 }
             I.removeCompare(H(e));
-          } else I.compare(e), t.suda("k_comp");
-          t.stc("k_comp", {
+          } else I.compare(e), utils_util.suda("k_comp");
+          utils_util.stc("k_comp", {
             rm: n,
             o: e
           });
         };
         var D = 0;
         this.tCharts = function(e, n) {
-          o("tech", e, n), n && !n.noLog && (0 == D ? (D = 1) : t.sudaLog());
+          o("tech", e, n),
+            n && !n.noLog && (0 == D ? (D = 1) : utils_util.sudaLog());
         };
         var O = 0;
         (this.pCharts = function(e, n) {
-          o("price", e, n), n && !n.noLog && (0 == O ? (O = 1) : t.sudaLog());
+          o("price", e, n),
+            n && !n.noLog && (0 == O ? (O = 1) : utils_util.sudaLog());
         }),
           (this.showPCharts = function(e) {
-            e && (I.mM.togglePt(e), t.stc("k_sp", e));
+            e && (I.mM.togglePt(e), utils_util.stc("k_sp", e));
           }),
           (this.getIndicators = function() {
             var e = T ? T.getLog() : null,
@@ -4339,10 +4371,10 @@ xh5_define(
             e || {}
           )),
             I.mM.showRs(z),
-            t.stc("k_rs", e);
+            utils_util.stc("k_rs", e);
         }),
           (this.dateFromTo = function(e, n, a) {
-            E && (E.dateFromTo(e, n, a), t.stc("k_ft", [e, n, a]));
+            E && (E.dateFromTo(e, n, a), utils_util.stc("k_ft", [e, n, a]));
           }),
           (this.setCustom = b(a, this, "custom")),
           (this.setTheme = function(e) {
@@ -4373,7 +4405,7 @@ xh5_define(
             }
             z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z)),
               I.h5tM.resetHisT(),
-              t.stc("k_ns", e);
+              utils_util.stc("k_ns", e);
           }),
           (this.toggleExtend = function() {
             var e = L.DIMENSION.extend_draw,
@@ -4385,9 +4417,9 @@ xh5_define(
               this.resize();
           }),
           (this.shareTo = function(e) {
-            I.shareTo(e), t.stc("k_share", e);
+            I.shareTo(e), utils_util.stc("k_share", e);
             var n = e && e.type ? e.type : "weibo";
-            t.suda("share", n);
+            utils_util.suda("share", n);
           }),
           (this.getChartId = function() {
             return L.uid;
@@ -4403,7 +4435,7 @@ xh5_define(
           }),
           (this.getCurrentData = function() {
             var e = K.get(V.viewId);
-            return e && (e = e[e.length - 1]), t.clone(e, null);
+            return e && (e = e[e.length - 1]), utils_util.clone(e, null);
           }),
           (this.getCurrentRange = function() {
             for (
@@ -4422,32 +4454,33 @@ xh5_define(
             return a;
           }),
           (this.zoom = function(e) {
-            I.zoomApi(e), t.stc("k_zoom", e, 9e3);
+            I.zoomApi(e), utils_util.stc("k_zoom", e, 9e3);
           }),
           (this.rangeMove = function(e, t) {
             I.moving(e, t);
           }),
           (this.move = function(e) {
             (e = parseInt(e)),
-              isNaN(e) || (I.moveApi(e), t.stc("k_move", e, 9e3));
+              isNaN(e) || (I.moveApi(e), utils_util.stc("k_move", e, 9e3));
           }),
           (this.update = function() {
-            I.updateDataAll(), t.stc("k_up", 9e3);
+            I.updateDataAll(), utils_util.stc("k_up", 9e3);
           }),
           (this.type = "h5k"),
           (this.me = M);
       })();
       return I.dcInit(a), W;
     }
-    function i() {
-      (this.get = function(e, n) {
-        t.stc("h5k_get");
-        var i = new a(e);
-        t.isFunc(n) && n(i), t.suda("h5k_" + t.market(e.symbol));
+    function init() {
+      (this.get = function(config, callback) {
+        utils_util.stc("h5k_get");
+        var i = new h5k(config);
+        utils_util.isFunc(callback) && callback(i),
+          utils_util.suda("h5k_" + utils_util.market(config.symbol));
       }),
         (this.dual = function(e, n) {
-          t.stc("h5k_dual"), (e.linetype = "line");
-          var i = new a(e);
+          utils_util.stc("h5k_dual"), (e.linetype = "line");
+          var i = new h5k(e);
           i.setCustom({
             k_overlay: !0
           });
@@ -4463,17 +4496,17 @@ xh5_define(
             });
           };
           i.me.al(_.e.K_DATA_LOADED, o, !1),
-            t.isFunc(n) && n(i),
-            t.suda("dual_" + t.market(e.symbol));
+            utils_util.isFunc(n) && n(i),
+            utils_util.suda("dual_" + utils_util.market(e.symbol));
         }),
         (this.tick = function(e, n) {
-          t.stc("h5k_tick"),
+          utils_util.stc("h5k_tick"),
             (e.pcm = 1),
             (e.view = _.URLHASH.NKMS),
             (e.rate = 600),
             (e.linetype = "line");
-          var i = new a(e, !0);
-          t.isFunc(n) && n(i),
+          var i = new h5k(e, !0);
+          utils_util.isFunc(n) && n(i),
             KKE.api(
               "patch.atick.customfloater",
               {
@@ -4486,27 +4519,27 @@ xh5_define(
             i.setCustom({
               smooth: !1
             }),
-            t.suda("tick_" + t.market(e.symbol));
+            utils_util.suda("tick_" + utils_util.market(e.symbol));
         });
     }
     var o,
-      s,
-      r,
-      l = t.$DOM,
-      c = t.$C,
-      h = t.$CONTAINS,
-      d = t.xh5_PosUtil,
-      u = t.xh5_EvtUtil,
-      p = t.oc,
-      m = t.dateUtil,
+      pChart,
+      tChart,
+      l = utils_util.$DOM,
+      c = utils_util.$C,
+      h = utils_util.$CONTAINS,
+      d = utils_util.xh5_PosUtil,
+      u = utils_util.xh5_EvtUtil,
+      p = utils_util.oc,
+      m = utils_util.dateUtil,
       f = m.stbd,
-      v = t.xh5_ADJUST_HIGH_LOW.c,
-      g = t.xh5_BrowserUtil,
-      b = t.fBind,
-      y = t.strUtil.ps,
-      N = n.xh5_Canvas,
-      _ = e.globalCfg,
-      w = t.logoM;
-    return t.fInherit(a, t.xh5_EvtDispatcher), i;
+      v = utils_util.xh5_ADJUST_HIGH_LOW.c,
+      g = utils_util.xh5_BrowserUtil,
+      b = utils_util.fBind,
+      y = utils_util.strUtil.ps,
+      N = utils_painter.xh5_Canvas,
+      _ = cfgs_settinger.globalCfg,
+      w = utils_util.logoM;
+    return utils_util.fInherit(h5k, utils_util.xh5_EvtDispatcher), init;
   }
 );

@@ -4086,7 +4086,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function Z(i) {
+    function pChart(i) {
         function r() {
             var i = {
                 BBIBOLL: h,
@@ -4321,7 +4321,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         };
         return a = new r
     }
-    function J(i) {
+    function tChart(i) {
         function r() {
             var i = {
                 ASI: e,
@@ -4368,12 +4368,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             };
             yt.auth(i);
             var r;
-            lt = [];
+            techChartList = [];
             var o = function() {
                 for (; rt.length; )
                     rt.length--;
-                for (var t = lt.length; t--; ) {
-                    var i = lt[t];
+                for (var t = techChartList.length; t--; ) {
+                    var i = techChartList[t];
                     rt.push({
                         name: i.name,
                         param: i.param
@@ -4387,9 +4387,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 t.draw(!0))
             }
               , b = function(t) {
-                for (var i, r = lt.length; r--; )
-                    if (lt[r].name == t) {
-                        i = lt[r];
+                for (var i, r = techChartList.length; r--; )
+                    if (techChartList[r].name == t) {
+                        i = techChartList[r];
                         break
                     }
                 return i
@@ -4408,7 +4408,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                             l === a && r ? (h = r,
                             h.wrap.style.display = "") : (h = new l(cfg,At,f),
                             l === a && (r = h)),
-                            lt.push(h),
+                            techChartList.push(h),
                             subArea.appendChild(h.wrap)
                         }
                         h.newParam(s.param),
@@ -4422,9 +4422,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                     var r = t.name;
                     if (r) {
                         r = r.toUpperCase();
-                        for (var a = lt.length; a--; )
-                            if (lt[a].name == r) {
-                                var s = lt.splice(a, 1)[0];
+                        for (var a = techChartList.length; a--; )
+                            if (techChartList[a].name == r) {
+                                var s = techChartList.splice(a, 1)[0];
                                 return s.rfs(),
                                 s.getFromToM.reset(s),
                                 !i && o(),
@@ -4436,28 +4436,31 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.linkData = function(t) {
                 var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
                 if (i)
-                    for (var r, a = lt.length; a--; )
-                        r = lt[a],
-                        r.initAndCalcAll(i),
-                        t && r.update()
+                    for (var chart, a = techChartList.length; a--; ){
+                        chart = techChartList[a],
+                        chart.initAndCalcAll(i),
+                        t && chart.update()
+                        console.log(chart);
+                    }
+
             }
             ,
             this.setDataRange = function() {
-                for (var t, i = lt.length; i--; )
-                    t = lt[i],
+                for (var t, i = techChartList.length; i--; )
+                    t = techChartList[i],
                     t.drawCalc(),
                     t.selfDataUrl && t.loadUrlData()
             }
             ,
             this.allDraw = function(t) {
-                for (var i, r = lt.length; r--; )
-                    i = lt[r],
+                for (var i, r = techChartList.length; r--; )
+                    i = techChartList[r],
                     i.draw(!0, t)
             }
             ,
             this.onResize = function(t) {
-                for (var i, r, a = lt.length; a--; )
-                    r = lt[a],
+                for (var i, r, a = techChartList.length; a--; )
+                    r = techChartList[a],
                     i = t ? cfg.DIMENSION.H_T_G : r.h,
                     r.resize({
                         h: i,
@@ -4468,8 +4471,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
             ,
             this.indirectI = function(t, i, r) {
-                for (var a, s = lt.length; s--; )
-                    a = lt[s],
+                for (var a, s = techChartList.length; s--; )
+                    a = techChartList[s],
                     a.interact(t, i, r)
             }
             ,
@@ -4478,12 +4481,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
             ,
             this.getExistingCharts = function() {
-                return lt
+                return techChartList
             }
             ,
             this.clear = function() {
-                for (var t = lt.length; t--; )
-                    J(lt[t], !0)
+                for (var t = techChartList.length; t--; )
+                    J(techChartList[t], !0)
             }
             ,
             this.createChart = function(i, r) {
@@ -4496,9 +4499,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             this.removeChart = function(i) {
                 if (!i) {
                     i = [];
-                    for (var r = lt.length; r--; )
+                    for (var r = techChartList.length; r--; )
                         i.push({
-                            name: lt[r].name
+                            name: techChartList[r].name
                         })
                 }
                 !t.isArr(i) && (i = [i]);
@@ -4538,12 +4541,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             var ht = usrObj.tchartobject.k;
             f = ht || ft
         }
-        var ot, lt, nt, ct = "BLANKCTN", dt = function() {
-            if (cfg.custom.tchart_tap && lt && ot) {
-                var t = lt.length;
+        var ot, techChartList, nt, ct = "BLANKCTN", dt = function() {
+            if (cfg.custom.tchart_tap && techChartList && ot) {
+                var t = techChartList.length;
                 if (!(t > 2)) {
                     for (var i = t; i--; )
-                        if (ct == String(lt[i].name)) {
+                        if (ct == String(techChartList[i].name)) {
                             nt = i;
                             break
                         }
@@ -5922,10 +5925,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     }();
     return new function() {
         this.VER = "6.6.5",
-        this.get = function(i, r) {
-            t.isFunc(r) && r({
-                tChart: J,
-                pChart: Z
+        this.get = function(config, callback) {
+            t.isFunc(callback) && callback({
+                tChart: tChart,
+                pChart: pChart
             })
         }
     }

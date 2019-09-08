@@ -71,30 +71,54 @@ export default {
       let papercode = "sh601318";
       let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
       console.log("KEE");
-      KKE.api(
-        "plugins.sinaTKChart.get",
-        {
-          compare: {
-            color: _compareColor
+
+      if (false)
+        KKE.api(
+          "chart.h5k.get",
+          {
+            symbol: papercode //证券代码
           },
-          symbol: papercode, //证券代码
-          mt: "cnlv1",
-          dom_id: "h5Figure" //放置图形的dom容器id
-        },
-        function(chart_) {
-          _cnChart = chart_;
-          // alert("hello");
-          //多空
-          if (window.location.search.indexOf("showBBI") != -1) {
-            _cnChart.showView({
-              view: "kdd",
-              active: 3
-            });
-            $(document.body).scrollTop(480);
+          function(h5k) {
+            console.log(h5k);
+            console.log("ok");
+
+            if (true)
+              KKE.api(
+                "datas.k.get",
+                {
+                  symbol: papercode //证券代码
+                },
+                function(res) {
+                  console.log(res);
+                }
+              );
           }
-          compareH5.init();
-        }
-      );
+        );
+      if (true)
+        KKE.api(
+          "plugins.sinaTKChart.get",
+          {
+            compare: {
+              color: _compareColor
+            },
+            symbol: papercode, //证券代码
+            mt: "cnlv1",
+            dom_id: "h5Figure" //放置图形的dom容器id
+          },
+          function(chart_) {
+            _cnChart = chart_;
+            // alert("hello");
+            //多空
+            if (window.location.search.indexOf("showBBI") != -1) {
+              _cnChart.showView({
+                view: "kdd",
+                active: 3
+              });
+              $(document.body).scrollTop(480);
+            }
+            compareH5.init();
+          }
+        );
     });
   },
   computed: {

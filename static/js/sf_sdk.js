@@ -168,10 +168,10 @@ var xh5_define,
               entity: void 0
             }),
           util.isStr(depends) && (depends = [depends]);
-        for (var l, b = depends.length; b--; )
-          if (((l = depends[b]), l.indexOf("*") > -1)) {
-            depends.splice(b, 1);
-            var p = l.split(".");
+        for (var item, len = depends.length; len--; )
+          if (((item = depends[len]), item.indexOf("*") > -1)) {
+            depends.splice(len, 1);
+            var p = item.split(".");
             p.splice(p.length - 1, p.length);
             var h = p.join(".");
             depends = depends.concat(c(h, modName));
@@ -323,7 +323,8 @@ xh5_define("utils.util", [], function() {
         (i = t.charCodeAt(r)), (n ^= (n << 5) + i + (n >> 2));
       return 2147483647 & n;
     }
-    function a(t, e, i, n) {
+    function getScript(url, e, i, n) {
+      console.log(url);
       var r = !1,
         a = document.createElement("script"),
         o = document.getElementsByTagName("script")[0],
@@ -335,7 +336,7 @@ xh5_define("utils.util", [], function() {
       n = n || {};
       var u;
       (a.charset = n.charset || "gb18030"),
-        (a.src = t),
+        (a.src = url),
         (a.async = !0),
         (a.onload = a.onreadystatechange = function() {
           if (!r && (!a.readyState || /loaded|complete/.test(a.readyState))) {
@@ -353,6 +354,7 @@ xh5_define("utils.util", [], function() {
                 type: n.type
               });
             }
+            console.log(url);
             (r = !0),
               (a.onload = a.onreadystatechange = a.onerror = null),
               a.parentNode.removeChild(a),
@@ -1131,7 +1133,7 @@ xh5_define("utils.util", [], function() {
             }
         }
       }),
-      (this.load = a);
+      (this.load = getScript);
     var _,
       T = new (function() {
         var t = _ || {};
@@ -1153,7 +1155,7 @@ xh5_define("utils.util", [], function() {
             cbArr: [o],
             errCbArr: [s]
           }),
-            a(n, fbind(e, this, u), fbind(e, this, u, !0), l);
+            getScript(n, fbind(e, this, u), fbind(e, this, u, !0), l);
         };
       })();
     (this.relyLoader = T),
@@ -1290,7 +1292,7 @@ xh5_define("utils.util", [], function() {
       });
     var k = new (function() {
       function t(e) {
-        a(
+        getScript(
           e.url,
           function() {
             for (var t = e.f(); t && e.q.length; ) {
@@ -1375,7 +1377,7 @@ xh5_define("utils.util", [], function() {
             }
           }
         };
-      this.s = function(t, e, i) {
+      this.stc = function(t, e, i) {
         if (t) {
           (isNaN(i) || 0 > i) && (i = 3e3),
             (e = JSON.stringify(e)),
@@ -1416,7 +1418,7 @@ xh5_define("utils.util", [], function() {
         });
     })();
     (this.sudaLog = k.log),
-      (this.stc = k.s),
+      (this.stc = k.stc),
       (this.suda = k.s2),
       (this.xh5_PosUtil = {
         pp: function(t, e, i, n) {
@@ -4230,40 +4232,41 @@ xh5_define("datas.hq", ["utils.util"], function(utils_util) {
           ? "CFF"
           : "NF";
       }
-      function b(t, r, i, n) {
+      function b(paperCodesStr, callback, i, n) {
         if (n && --n.count > 0) return null;
         for (
-          var m,
-            u,
+          var paperCode,
+            marketCode,
             s,
-            o,
-            d,
-            b,
+            hqStr,
+            hqStr_i,
+            hqStrDataArr,
             p,
-            N = t.split(","),
-            h = [],
-            c = {},
+            paperCodeArr = paperCodesStr.split(","),
+            data = [],
+            dataObj = {},
             f = 0,
-            v = N.length;
-          v > f;
+            length = paperCodeArr.length;
+          length > f;
           f++
         ) {
           if (
-            ((m = N[f]),
-            (s = g[m]),
+            ((paperCode = paperCodeArr[f]),
+            (s = g[paperCode]),
             s ||
               ((s = {
-                symbol: m
+                symbol: paperCode
               }),
-              (g[m] = s)),
-            (u = a(m)),
+              (g[paperCode] = s)),
+            (marketCode = a(paperCode)),
             i)
           )
-            o = i;
+            hqStr = i;
           else
-            switch (((o = window["hq_str_" + m]), u)) {
+            switch (((hqStr = window["hq_str_" + paperCode]), marketCode)) {
               case "HK":
-                (d = window["hq_str_" + m.replace("rt_", "") + "_i"]),
+                (hqStr_i =
+                  window["hq_str_" + paperCode.replace("rt_", "") + "_i"]),
                   (p = window.hq_str_rt_hkHSI);
                 break;
               case "US":
@@ -4274,11 +4277,11 @@ xh5_define("datas.hq", ["utils.util"], function(utils_util) {
                   window.hq_str_gb_dji;
                 break;
               default:
-                d = window["hq_str_" + m + "_i"];
+                hqStr_i = window["hq_str_" + paperCode + "_i"];
             }
-          b = o && o.length > 0 ? o.split(",") : void 0;
+          hqStrDataArr = hqStr && hqStr.length > 0 ? hqStr.split(",") : void 0;
           var P;
-          switch (u) {
+          switch (marketCode) {
             case "REPO":
               P = _;
               break;
@@ -4304,7 +4307,7 @@ xh5_define("datas.hq", ["utils.util"], function(utils_util) {
               P = q;
               break;
             case "NF":
-              P = "CFF" == l(m) ? D : C;
+              P = "CFF" == l(paperCode) ? D : C;
               break;
             case "global_index":
               P = O;
@@ -4336,17 +4339,17 @@ xh5_define("datas.hq", ["utils.util"], function(utils_util) {
               P = void 0;
           }
           var w = !0;
-          P && (w = P.update(b, s, d, p)),
-            w && (s.hqstr = o),
-            h.push(s),
-            (c[m] = s);
+          P && (w = P.update(hqStrDataArr, s, hqStr_i, p)),
+            w && (s.hqstr = hqStr),
+            data.push(s),
+            (dataObj[paperCode] = s);
         }
         var H = {
           msg: "",
-          data: h,
-          dataObj: c
+          data: data,
+          dataObj: dataObj
         };
-        return utils_util.isFunc(r) && r(H), H;
+        return utils_util.isFunc(callback) && callback(H), H;
       }
       function p(t) {
         var r = 40,
@@ -4704,9 +4707,9 @@ xh5_define("datas.hq", ["utils.util"], function(utils_util) {
           (this.trHandler = function(e, t) {
             return u(e, t);
           }),
-            (this.update = function(e, t, r) {
+            (this.update = function(hqStrDataArr, stockObj, hqStr_i) {
               var n = !0;
-              return r && i(r, t), e && (n = a(e, t)), n;
+              return hqStr_i && i(hqStr_i, stockObj), hqStrDataArr && (n = a(hqStrDataArr, stockObj)), n;
             });
         })(),
         D = new (function() {

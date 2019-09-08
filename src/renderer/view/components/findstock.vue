@@ -1,15 +1,13 @@
 <template>
   <div>
     <div>
-      <search-panel @select="addItem"></search-panel>
-    </div>
-    <div>
       <table>
         <thead>
           <tr>
             <th>Code</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Price</th>
+            <th>PE</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -22,7 +20,8 @@
           >
             <td>{{item.code}}</td>
             <td>{{item.name}}</td>
-            <td>{{item.countryID|objectType}}</td>
+            <td>{{item.now}}</td>
+            <td>{{item.pe}}</td>
             <td>
               <a class="action" @click="delItem(item)">Delete</a>
             </td>
@@ -30,8 +29,6 @@
         </draggable>
       </table>
     </div>
-    <div id="tkChart_wwysh601318"></div>
-    <div id="h5Figure" style="height:490px"></div>
   </div>
 </template>
 
@@ -40,6 +37,8 @@ import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { ObjectType, loadScripts } from "@/utils";
+import { FieldHead } from "@/fieldhead";
+
 export default {
   name: "home",
   data: function() {
@@ -66,36 +65,6 @@ export default {
     this.$electron.ipcRenderer.on("hideSuspension", (e, data) => {
       this.$store.dispatch("hideSuspension");
     });
-
-    loadScripts(["/static/js/sf_sdk.js", "/static/js/h5t.js"]).then(() => {
-      let papercode = "sh601318";
-      let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
-      console.log("KEE");
-      KKE.api(
-        "plugins.sinaTKChart.get",
-        {
-          compare: {
-            color: _compareColor
-          },
-          symbol: papercode, //证券代码
-          mt: "cnlv1",
-          dom_id: "h5Figure" //放置图形的dom容器id
-        },
-        function(chart_) {
-          _cnChart = chart_;
-          // alert("hello");
-          //多空
-          if (window.location.search.indexOf("showBBI") != -1) {
-            _cnChart.showView({
-              view: "kdd",
-              active: 3
-            });
-            $(document.body).scrollTop(480);
-          }
-          compareH5.init();
-        }
-      );
-    });
   },
   computed: {
     createSuspension() {
@@ -109,7 +78,39 @@ export default {
       this.sendRefresh();
     },
     reloadData() {
-      this.items = store.fetch();
+      //this.items = store.fetch();
+      window["jQuery11240971039677606834_1567225044287"] = res => {
+        console.log(res.data.diff);
+        this.items = res.data.diff.map(e => {
+          e.now = e.f2;
+          e.changeP = e.f3;
+          e.change = e.f4;
+          e.vol = e.f5;
+          e.amount = e.f6;
+          e.zf = e.f7;
+          e.turnRate = e.f8;
+          e.pe = e.f9;
+          e.lb = e.f10;
+          e.zs5m = e.f11; //5分钟涨跌
+          e.code = e.f12;
+          e.name = e.f14;
+          e.high = e.f15;
+          e.low = e.f16;
+          e.open = e.f17;
+          e.preClose = e.f18;
+          e.totalValue = e.f20;
+          e.ltValue = e.f21;
+          e.zs = e.f22; //涨速
+          e.pb = e.f23;
+          e.change60d = e.f24;
+          e.change52w = e.f25;
+
+          return e;
+        });
+      };
+      loadScripts([
+        "http://7.push2.eastmoney.com/api/qt/clist/get?cb=jQuery11240971039677606834_1567225044287&pn=1&pz=2&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152&_=1567225044356"
+      ]).then(() => {});
     },
     addItem(selectItem) {
       let datas = store.fetch();

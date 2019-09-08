@@ -1,13 +1,11 @@
 import {
-  BrowserWindow,
-  ipcMain,
-  screen,
-  Menu,
-  shell,
   app,
-  webContents,
+  BrowserWindow,
   globalShortcut,
-  MenuItem
+  ipcMain,
+  Menu,
+  screen,
+  shell
 } from "electron";
 
 var win = null;
@@ -16,7 +14,7 @@ const winURL =
   process.env.NODE_ENV === "development"
     ? `http://localhost:9080/#/suspension`
     : `file://${__dirname}/index.html/#/suspension`;
-ipcMain.on("showSuspensionWindow", () => { });
+ipcMain.on("showSuspensionWindow", () => {});
 
 ipcMain.on("createSuspensionMenu", e => {
   const rightM = Menu.buildFromTemplate([
@@ -65,9 +63,7 @@ ipcMain.on("createSuspensionMenu", e => {
       label: "DevTool",
       click: () => {
         // win.webContents.toggleDevTools({ mode: "bottom" });
-        if (e.sender)
-          e.sender.webContents.toggleDevTools({ mode: 'undocked' })
-
+        if (e.sender) e.sender.webContents.toggleDevTools({ mode: "undocked" });
       }
     },
     { type: "separator" },

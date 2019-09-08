@@ -58,7 +58,7 @@ function createWindow() {
   });
 
   mainWindow.on("blur", e => {
-    mainWindow.hide();
+    // mainWindow.hide();
   });
 }
 

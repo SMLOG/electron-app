@@ -434,15 +434,15 @@ xh5_define("utils.util", [], function() {
           }
         }
       }
-      function n() {
-        clearTimeout(o),
-          (o = setTimeout(function() {
+      function timeoutHide() {
+        clearTimeout(timerID),
+          (timerID = setTimeout(function() {
             "none" != r.style.display && (r.style.display = "none");
           }, 9e3));
       }
       var r,
         a,
-        o,
+        timerID,
         s,
         l = {
           ctn: {
@@ -486,10 +486,10 @@ xh5_define("utils.util", [], function() {
               (r.style.left = (s.DIMENSION._w - v(l.ctn.width)) / 2 + "px"));
         }),
         (this.show = function() {
-          n(), (r.style.display = "");
+          timeoutHide(), (r.style.display = "");
         }),
         (this.hide = function() {
-          clearTimeout(o), (r.style.display = "none");
+          clearTimeout(timerID), (r.style.display = "none");
         });
     }
     function s(t) {

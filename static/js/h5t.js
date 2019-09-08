@@ -2144,17 +2144,17 @@ xh5_define(
     "use strict";
     function i(i) {
       console.log("hello");
-      function r(e, a) {
+      function chart_h51(e, a) {
         function onViewChange(e) {
           $.setDataRange(e),
-            _ && (_.linkData(e), _.setDataRange()),
+            whatis1 && (whatis1.linkData(e), whatis1.setDataRange()),
             k && (k.linkData(e), k.setDataRange()),
             D && (D.linkData(e), D.setDataRange());
         }
         function c() {
           a && (j = tDb),
             me.update(null, !0),
-            "CN" === h && !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol);
+            "CN" === marketCode && !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol);
         }
         e = u(
           {
@@ -2176,8 +2176,8 @@ xh5_define(
         );
         var d,
           m = this,
-          h = utils_util.market(e.symbol),
-          b = function(e) {
+          marketCode = utils_util.market(e.symbol),
+          marketCodeToID = function(e) {
             switch (e) {
               case "CN":
                 return 1;
@@ -2191,7 +2191,7 @@ xh5_define(
         (this.business = e.business), (this.simple = e.simple);
         var y = !0;
         (this.dp = e.dp),
-          (this.marketNum = b),
+          (this.marketNum = marketCodeToID),
           (this.isErr = !1),
           (this.witht5 = !0),
           (this.symbol = e.symbol),
@@ -2216,7 +2216,7 @@ xh5_define(
           (this.realLen = 0),
           (this.nfloat = 0 === i.nfloat ? i.nfloat : i.nfloat || 2),
           (this.ennfloat = i.ennfloat),
-          (this.market = h),
+          (this.market = marketCode),
           (this.date = null),
           (this.hq = null),
           (this.futureTime = x || w || T),
@@ -2225,15 +2225,15 @@ xh5_define(
             data: 0,
             vPos: null
           }),
-          (this.needMarket = h),
+          (this.needMarket = marketCode),
           (this.changeMarket = function(e) {
             var a,
               i = [],
               r = e;
-            if (((H = A.tcd(I)), b(m.needMarket) != b(I))) {
+            if (((H = A.tcd(I)), marketCodeToID(m.needMarket) != marketCodeToID(I))) {
               (a = tDb.get()), (d = utils_util.tUtil.gata(I));
               for (var n = 0; n < a.length; n++)
-                b(m.needMarket) < b(I)
+                marketCodeToID(m.needMarket) < marketCodeToID(I)
                   ? (i.push(A.aduk(a[n], m.market, I, curDate, a[n][0].date)),
                     (m.realLen = utils_util.arrIndexOf(
                       d,
@@ -2256,7 +2256,7 @@ xh5_define(
                 $.createPlayingData();
             }
           });
-        var _,
+        var whatis1,
           k,
           D,
           L,
@@ -3267,23 +3267,23 @@ xh5_define(
           }),
           (this.setRange = function() {
             $.setDataRange(),
-              _ && _.setDataRange(),
+              whatis1 && whatis1.setDataRange(),
               k && k.setDataRange(),
               D && D.setDataRange();
           }),
           (this.draw = function() {
-            P.draw(), _ && _.allDraw(), k && k.allDraw();
+            P.draw(), whatis1 && whatis1.allDraw(), k && k.allDraw();
           }),
           (this.resize = function(e) {
             $.createPlayingData(),
               P.resize(),
-              _ && _.onResize(e),
+              whatis1 && whatis1.onResize(e),
               k && k.onResize(),
               D && D.onResize();
           }),
           (this.clear = function() {
             P.clear(),
-              _ && (_.clear(), (_ = null)),
+              whatis1 && (whatis1.clear(), (whatis1 = null)),
               k && (k.clear(), (k = null)),
               D && (D.clear(), (D = null)),
               a && (Q = null);
@@ -3320,7 +3320,7 @@ xh5_define(
                 break;
               }
             k ||
-              ((k = new s({
+              ((k = new pChart({
                 iMgr: oe,
                 stockData: m,
                 chartArea: G,
@@ -3335,8 +3335,8 @@ xh5_define(
           }
         }),
           (this.initTc = function(e, t) {
-            _ ||
-              ((_ = new l({
+            whatis1 ||
+              ((whatis1 = new tChart({
                 stockData: m,
                 iMgr: oe,
                 subArea: W,
@@ -3346,11 +3346,11 @@ xh5_define(
                 usrObj: i,
                 initMgr: re
               })),
-              a && (Y = _)),
-              _.createChart(e, t);
+              a && (Y = whatis1)),
+              whatis1.createChart(e, t);
           }),
           (this.removeTc = function(e) {
-            _ && _.removeChart(e);
+            whatis1 && whatis1.removeChart(e);
           }),
           (this.initRs = function() {
             D ||
@@ -3675,18 +3675,18 @@ xh5_define(
           n();
       }
       function D() {
-        var e,
+        var mainStock,
           a = this,
-          n = [];
+          allStocks = [];
         (this.getAllStock = function() {
-          return n;
+          return allStocks;
         }),
           (this.getMainStock = function() {
-            return e;
+            return mainStock;
           }),
           (this.getAllSymbols = function() {
-            for (var e = [], t = 0, a = n.length; a > t; t++)
-              e.push(n[t].symbol);
+            for (var e = [], t = 0, a = allStocks.length; a > t; t++)
+              e.push(allStocks[t].symbol);
             return e;
           });
         var c = function() {
@@ -3705,14 +3705,14 @@ xh5_define(
                 a,
                 i = Number.MAX_VALUE,
                 r = -Number.MAX_VALUE,
-                o = n.length,
+                o = allStocks.length,
                 s = o > 1,
                 l = s ? "avgPercent" : "Price",
                 d = o;
               d--;
 
             )
-              (e = n[d]),
+              (e = allStocks[d]),
                 (a = e.getPriceTech()),
                 a &&
                   !s &&
@@ -3726,17 +3726,17 @@ xh5_define(
                 p = m.length;
               for (d = 0; p > d; d++)
                 if ("EWI" == m[d].name || "MA" == m[d].name) {
-                  var h = n[0].datas[0][0].prevclose,
+                  var h = allStocks[0].datas[0][0].prevclose,
                     u = Math.max(Math.abs(h - r), Math.abs(h - i));
                   (r = h + u), (i = h - u);
                 }
             }
             for (var v = c(), f = o; f--; )
-              (e = n[f]), e.setPricePos([r, i, v], s);
+              (e = allStocks[f]), e.setPricePos([r, i, v], s);
           },
           m = function(e) {
             if (e) e.draw();
-            else for (var t = n.length; t--; ) n[t].draw();
+            else for (var t = allStocks.length; t--; ) allStocks[t].draw();
           },
           p = function(t) {
             1 == ee.viewId || 0 == ee.viewId
@@ -3744,7 +3744,7 @@ xh5_define(
                 ? a.moving(ee.start, ee.end)
                 : a.moving(4, 5, !1)
               : a.moving(ee.start, ee.end, !1),
-              t || ne.onRange(e);
+              t || ne.onRange(mainStock);
           },
           v = function(e) {
             return e.isErr
@@ -3767,19 +3767,19 @@ xh5_define(
             }
           },
           b = function(a, i) {
-            if ((g(i), v(e))) {
-              if (e.isErr)
+            if ((g(i), v(mainStock))) {
+              if (mainStock.isErr)
                 return (
-                  utils_util.trace.error("err main symbol"), void (e.isErr = !1)
+                  utils_util.trace.error("err main symbol"), void (mainStock.isErr = !1)
                 );
               oe.patcher.switchFloater();
-              for (var r, o = !0, s = n.length; s--; )
-                (r = n[s]), r == e || v(r) || (o = !1);
+              for (var r, o = !0, s = allStocks.length; s--; )
+                (r = allStocks[s]), r == mainStock || v(r) || (o = !1);
               if (o) {
-                for (s = n.length; s--; )
-                  n[s].marketNum(n[s].needMarket) > n[s].marketNum(I) &&
-                    (I = n[s].needMarket);
-                for (s = n.length; s--; ) O(n[s]);
+                for (s = allStocks.length; s--; )
+                  allStocks[s].marketNum(allStocks[s].needMarket) > allStocks[s].marketNum(I) &&
+                    (I = allStocks[s].needMarket);
+                for (s = allStocks.length; s--; ) O(allStocks[s]);
                 for (p(a); f.length; ) {
                   var l = f.shift();
                   l();
@@ -3790,13 +3790,13 @@ xh5_define(
             }
           },
           _ = function() {
-            ne.onRange(e);
+            ne.onRange(mainStock);
           };
         (this.getExtraData = function(a) {
           if (
             ((a = u(
               {
-                symbol: e.symbol,
+                symbol: mainStock.symbol,
                 name: null,
                 clone: !0
               },
@@ -3805,9 +3805,9 @@ xh5_define(
             !a.name)
           )
             return null;
-          for (var i, r, o = n.length; o--; )
-            if (n[o].symbol === a.symbol) {
-              i = n[o];
+          for (var i, r, o = allStocks.length; o--; )
+            if (allStocks[o].symbol === a.symbol) {
+              i = allStocks[o];
               break;
             }
           if (i) {
@@ -3889,22 +3889,22 @@ xh5_define(
               var t = 1e3 * i.rate;
               t > 0 && (N = setTimeout(w, t));
             }
-            for (var a, r = n.length; r--; )
-              (a = n[r]), a.doUpdate(D, null, null, null, e);
+            for (var a, r = allStocks.length; r--; )
+              (a = allStocks[r]), a.doUpdate(D, null, null, null, e);
           },
           x = function() {
             ee.viewId = 2;
-            for (var e, t = n.length; t--; )
-              (e = n[t]), e.initT5Data(e.datas, e.hq, b);
+            for (var e, t = allStocks.length; t--; )
+              (e = allStocks[t]), e.initT5Data(e.datas, e.hq, b);
           };
         (this.updateDataAll = w), (this.update5Data = x);
         var T = function(t, a) {
-            var i = new r(t, a);
-            a && (e = i), (n[n.length] = i), L(), b();
+            var i = new chart_h51(t, a);
+            a && (mainStock = i), (allStocks[allStocks.length] = i), L(), b();
           },
           M = function(e) {
-            for (var t, a, i = e, r = 0, o = 0; r < n.length; r++)
-              (a = n[r]),
+            for (var t, a, i = e, r = 0, o = 0; r < allStocks.length; r++)
+              (a = allStocks[r]),
                 a.marketNum(a.market) == a.marketNum(i)
                   ? o++
                   : (t = t
@@ -3912,20 +3912,20 @@ xh5_define(
                         ? a.market
                         : t
                       : a.market),
-                r == n.length - 1 && 0 == o && (I = t);
-            for (r = n.length; r--; ) O(n[r], i);
+                r == allStocks.length - 1 && 0 == o && (I = t);
+            for (r = allStocks.length; r--; ) O(allStocks[r], i);
           },
           O = function(e, t) {
             e.changeMarket(t);
           };
         this.changeData = O;
         var L = function() {
-            if (n.length > 1)
+            if (allStocks.length > 1)
               a.mM.togglePt({
                 v: !1
               });
             else {
-              if (n.length <= 0) return;
+              if (allStocks.length <= 0) return;
               a.mM.togglePt({
                 v: !0
               });
@@ -3992,35 +3992,35 @@ xh5_define(
               0 == C &&
               i &&
               (J.show(), x("t5"), (C = 1), (A = 2));
-          for (var o, s = n.length; s--; )
-            (o = n[s]), o.setRange(), o.onViewChange();
-          d(), m(), ne.onRange(e);
+          for (var o, s = allStocks.length; s--; )
+            (o = allStocks[s]), o.setRange(), o.onViewChange();
+          d(), m(), ne.onRange(mainStock);
         }),
           (this.dAdd = 0),
           (this.compare = function(e) {
-            for (var t = n.length; t--; ) if (n[t].symbol == e.symbol) return;
+            for (var t = allStocks.length; t--; ) if (allStocks[t].symbol == e.symbol) return;
             T(e, !1);
           }),
           (this.removeCompare = function(e) {
             for (var t, a, i = "CN", r = e.length; r--; ) {
               a = e[r];
-              for (var o = n.length; o--; )
-                if (a == n[o].symbol) {
-                  (t = n.splice(o, 1)[0]),
+              for (var o = allStocks.length; o--; )
+                if (a == allStocks[o].symbol) {
+                  (t = allStocks.splice(o, 1)[0]),
                     (i = t.market),
                     t.clear(),
                     (t = null);
                   break;
                 }
             }
-            M(i), L(), d(), m(), ne.onRange(n[0]);
+            M(i), L(), d(), m(), ne.onRange(allStocks[0]);
           }),
           (this.onResize = function(e) {
-            for (var t = n.length; t--; ) n[t].resize(e);
+            for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
           }),
           (this.dcReset = function() {
-            for (var e, t = n.length; t--; )
-              (e = n.splice(t, 1)[0]), e.clear(), (e = null);
+            for (var e, t = allStocks.length; t--; )
+              (e = allStocks.splice(t, 1)[0]), e.clear(), (e = null);
           }),
           (this.setScale = function(e) {
             U.datas.scaleType = e;
@@ -4031,14 +4031,14 @@ xh5_define(
               for (var i = a.length; i--; ) {
                 var r = a[i];
                 if (r.hasOwnProperty("symbol")) {
-                  for (var o = r.symbol, s = n.length; s--; )
-                    if (n[s].symbol == o) {
-                      n[s].setTLineStyle(r), n[s].draw();
+                  for (var o = r.symbol, s = allStocks.length; s--; )
+                    if (allStocks[s].symbol == o) {
+                      allStocks[s].setTLineStyle(r), allStocks[s].draw();
                       break;
                     }
-                } else e.setTLineStyle(r), e.draw();
+                } else mainStock.setTLineStyle(r), mainStock.draw();
               }
-            } else e.setTLineStyle(), e.draw();
+            } else mainStock.setTLineStyle(), mainStock.draw();
           });
         var E,
           P = function(e) {
@@ -4067,9 +4067,9 @@ xh5_define(
               $();
           }
           for (var i = e.length; i--; )
-            for (var r = n.length; r--; )
-              if (n[r].symbol == e[i].symbol && e[i].data) {
-                F++, n[r].doUpdate(y(P, null, a), !1, e[i].data, e[i].market);
+            for (var r = allStocks.length; r--; )
+              if (allStocks[r].symbol == e[i].symbol && e[i].data) {
+                F++, allStocks[r].doUpdate(y(P, null, a), !1, e[i].data, e[i].market);
                 break;
               }
         }),
@@ -4081,21 +4081,21 @@ xh5_define(
                 var n, o;
                 switch (i) {
                   case "price":
-                    (n = s), (o = "initPt");
+                    (n = pChart), (o = "initPt");
                     break;
                   case "tech":
-                    (n = l), (o = "initTc");
+                    (n = tChart), (o = "initTc");
                 }
                 o &&
                   (n
-                    ? e[o](a, r)
+                    ? mainStock[o](a, r)
                     : KKE.api(
                         "plugins.techcharts.get",
                         {
                           type: i
                         },
                         function(e) {
-                          (l = e.tChart), (s = e.pChart), t(a, i, r);
+                          (tChart = e.tChart), (pChart = e.pChart), t(a, i, r);
                         }
                       ));
               },
@@ -4108,13 +4108,13 @@ xh5_define(
                   case "tech":
                     i = "removeTc";
                 }
-                i && e && (e[i](t), b());
+                i && mainStock && (mainStock[i](t), b());
               },
               i = function(t) {
                 return o
                   ? (Q
                       ? Q.sh(t)
-                      : (e.initRs(), i(t), B.appendChild(Q.getBody())),
+                      : (mainStock.initRs(), i(t), B.appendChild(Q.getBody())),
                     void re.resizeAll(!0))
                   : void KKE.api("plugins.rangeselector.get", null, function(
                       e
@@ -4126,7 +4126,7 @@ xh5_define(
               (this.newAC = t),
               (this.removeAC = a),
               (this.togglePt = function(t) {
-                e && (e.togglePt(t), b());
+                mainStock && (mainStock.togglePt(t), b());
               });
           })());
       }
@@ -5795,8 +5795,8 @@ xh5_define(
     }
     var n,
       o,
-      s,
-      l,
+      pChart,
+      tChart,
       c = utils_util.$DOM,
       d = utils_util.$C,
       m = utils_util.$CONTAINS,

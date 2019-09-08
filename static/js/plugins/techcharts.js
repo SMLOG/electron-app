@@ -83,7 +83,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             h: this.h
         })
     }
-    function a(t, i) {
+    function BLANKCTN(t, i) {
         var a = {
             isBlank: !0,
             ctnId: "blankctn_" + t.uid,
@@ -94,7 +94,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.name = "BLANKCTN",
         this.newParam = function() {}
     }
-    function s(i, a) {
+    function ADL(i, a) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#007cc8",
@@ -141,7 +141,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function e(i, a) {
+    function ASI(i, a) {
         this.DEFAULT_ARR = [{
             v: 26,
             color: "#75B2A3",
@@ -179,7 +179,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function h(i, a) {
+    function BBIBOLL(i, a) {
         this.DEFAULT_ARR = [{
             v: 11,
             color: "#999999",
@@ -289,7 +289,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function l(i, a) {
+    function BIAS(i, a) {
         this.DEFAULT_ARR = [{
             v: 6,
             color: "#FD9C35",
@@ -338,7 +338,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[u][At] = r[u].volume < 0
         }
     }
-    function n(i, a) {
+    function BOLL(i, a) {
         this.DEFAULT_ARR = [{
             v: 20,
             color: "#999999",
@@ -383,7 +383,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[p][At] = r[p].volume < 0
         }
     }
-    function c(i, a) {
+    function BRAR(i, a) {
         this.DEFAULT_ARR = [{
             v: 26,
             color: "#E297FF",
@@ -424,7 +424,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function d(i, a) {
+    function CCI(i, a) {
         this.DEFAULT_ARR = [{
             v: 14,
             color: "#FFAC03",
@@ -670,7 +670,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         h.loadUrlData(!0)
     }
-    function p(i, a) {
+    function DMA(i, a) {
         this.DEFAULT_ARR = [{
             v: 10,
             desc: "\u5feb\u7ebf\u79fb\u52a8\u5e73\u5747"
@@ -712,7 +712,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[d][At] = r[d].volume < 0
         }
     }
-    function v(i, a) {
+    function DMI(i, a) {
         this.DEFAULT_ARR = [{
             v: 14,
             color: "#999999",
@@ -766,7 +766,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function A(i, a) {
+    function DPDK(i, a) {
         var s = "pct"
           , e = "oripct"
           , h = "mn";
@@ -912,8 +912,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function m(t, i, r) {
-        A.call(this, t, i),
+    function DPDKS(t, i, r) {
+        DPDK.call(this, t, i),
         this.name = "DPDKS",
         this.alias = "\u5927\u76d8\u591a\u7a7a",
         this.cb = r;
@@ -962,7 +962,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function g(i, a) {
+    function EMV(i, a) {
         this.DEFAULT_ARR = [{
             v: 14,
             color: "#D96FF0",
@@ -1119,7 +1119,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function y(i, a) {
+    function EXPMA(i, a) {
         this.storageVer = "v2",
         r.call(this, i, a);
         var s = this;
@@ -1308,7 +1308,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function w(i, a) {
+    function KDJ(i, a) {
         this.DEFAULT_ARR = [{
             v: 9,
             color: "#888888",
@@ -1360,7 +1360,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function D(i, a, s) {
+    function KFLOW(i, a, s) {
         var e = "bar";
         this.DEFAULT_ARR = [{
             v: 0 / 0,
@@ -1516,7 +1516,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function M(i, a, s) {
+    function KKFLOW(i, a, s) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#888887",
@@ -1731,7 +1731,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function O(i, a, s) {
+    function KGSTRADE(i, a, s) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#FE6C6A",
@@ -1888,7 +1888,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function S(i, a, s) {
+    function SUNSPOT(i, a, s) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#7d8087",
@@ -2049,7 +2049,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function T(i, a) {
+    function LB(i, a) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#007cc8",
@@ -2099,7 +2099,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function N(i, a) {
+    function MA(i, a) {
         r.call(this, i, a);
         var s = this;
         this.name = "MA",
@@ -2168,7 +2168,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function I(i, a) {
+    function MACD(i, a) {
         this.DEFAULT_ARR = [{
             v: 12,
             color: "#5465ff",
@@ -2264,7 +2264,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function C(i, a) {
+    function OBV(i, a) {
         this.DEFAULT_ARR = [{
             v: 30,
             color: "#99cf17",
@@ -2307,8 +2307,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function R(t, i, r) {
-        D.call(this, t, i, {
+    function PKFLOW(t, i, r) {
+        KFLOW.call(this, t, i, {
             nu: !0
         }),
         this.selfDataUrl = "https://touzi.sina.com.cn/api/openapi.php/TouziFreeService.getAllMoneyFlow?symbol=$symbol&callback=$cb&from=$from&to=$to",
@@ -2316,7 +2316,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.cb = r,
         this.loadUrlData()
     }
-    function k(i, a) {
+    function POSITION(i, a) {
         this.DEFAULT_ARR = [{
             v: 0 / 0,
             color: "#12BDD9",
@@ -2432,7 +2432,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function x(i, a) {
+    function PSY(i, a) {
         this.DEFAULT_ARR = [{
             v: 12,
             color: "#EE2F72",
@@ -2631,7 +2631,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function L(i, a) {
+    function ROC(i, a) {
         this.DEFAULT_ARR = [{
             v: 12,
             color: "#F17147",
@@ -2671,7 +2671,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[f][At] = r[f].volume < 0
         }
     }
-    function U(i, a) {
+    function RSI(i, a) {
         this.DEFAULT_ARR = [{
             v: 6,
             color: "#999999",
@@ -2728,7 +2728,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[y][At] = r[y].volume < 0
         }
     }
-    function F(i, a) {
+    function SAR(i, a) {
         var s = "ignore_pct"
           , e = "ignore_oripct";
         this.DEFAULT_ARR = [{
@@ -2822,7 +2822,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function H(i, a, s) {
+    function TTOPTRADE(i, a, s) {
         function e(t, i, r) {
             if (typeof t.length < 1)
                 return [];
@@ -3024,7 +3024,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function X(i, a, s) {
+    function TFLOW(i, a, s) {
         var e = this
           , h = 2e4;
         r.call(this, i, a, {
@@ -3217,7 +3217,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.updateId = setInterval(e.loadUrlData, h, !0),
         a.stock.hq || this.loadUrlData(!0)
     }
-    function B(i, a) {
+    function TOR(i, a) {
         this.DEFAULT_ARR = [{
             color: "#007cc8",
             prop: "tor",
@@ -3255,7 +3255,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function V(i, a) {
+    function TRIX(i, a) {
         this.DEFAULT_ARR = [{
             v: 12,
             color: "#d6c84b",
@@ -3295,8 +3295,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[v][At] = r[v].volume < 0
         }
     }
-    function j(t, i, r) {
-        X.call(this, t, i, {
+    function TTFLOW(t, i, r) {
+        TFLOW.call(this, t, i, {
             nu: !0
         }),
         this.urls = {
@@ -3308,7 +3308,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         this.cb = r,
         i.stock.hq || this.loadUrlData(!0)
     }
-    function $(i, a, s) {
+    function TZY(i, a, s) {
         var e = "pct"
           , h = "oripct";
         this.DEFAULT_ARR = [{
@@ -3601,8 +3601,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         ,
         this.loadUrlData()
     }
-    function z(t, i, r) {
-        $.call(this, t, i),
+    function TZYS(t, i, r) {
+        TZY.call(this, t, i),
         this.name = "TZYS",
         this.alias = "\u591a\u7a7a\u53cd\u8f6c",
         this.cb = r,
@@ -3649,7 +3649,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function W(i, a) {
+    function VR(i, a) {
         this.DEFAULT_ARR = [{
             v: 26,
             color: "#75B2A3",
@@ -3695,7 +3695,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 this.selfArr[y][At] = r[y].volume < 0
         }
     }
-    function K(i, a) {
+    function WR(i, a) {
         this.DEFAULT_ARR = [{
             v: 10,
             color: "#3D85C6",
@@ -3738,7 +3738,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function G(i, a) {
+    function WVAD(i, a) {
         this.DEFAULT_ARR = [{
             v: 24,
             color: "#fe6623",
@@ -3780,7 +3780,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                 }
         }
     }
-    function Y(i, a) {
+    function VOLUME(i, a) {
         this.storageVer = "v3",
         r.call(this, i, a, {
             nu: !0
@@ -3927,7 +3927,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             }
         }
     }
-    function q(i, a) {
+    function TVOL(i, a) {
         this.storageVer = "v2",
         r.call(this, i, a, {
             nu: !0
@@ -4089,16 +4089,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
     function pChart(i) {
         function r() {
             var i = {
-                BBIBOLL: h,
-                BOLL: n,
+                BBIBOLL: BBIBOLL,
+                BOLL: BOLL,
                 CHIPCOST: f,
                 DITC: u,
-                EXPMA: y,
-                MA: N,
+                EXPMA: EXPMA,
+                MA: MA,
                 PRESS: P,
-                SAR: F,
-                TZY: $,
-                DPDK: A,
+                SAR: SAR,
+                TZY: TZY,
+                DPDK: DPDK,
                 EWI: b,
                 RGL: E,
                 TECHFLOW: _
@@ -4322,49 +4322,49 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
         return a = new r
     }
     function tChart(i) {
-        function r() {
+        function tChart_instance() {
             var i = {
-                ASI: e,
-                BBIBOLL: h,
-                BIAS: l,
-                BOLL: n,
-                BRAR: c,
-                CCI: d,
-                DMA: p,
-                DMI: v,
-                DPDK: A,
-                DPDKS: m,
-                EMV: g,
-                EXPMA: y,
-                KDJ: w,
-                KFLOW: D,
-                KKFLOW: M,
-                KGSTRADE: O,
-                SUNSPOT: S,
-                MA: N,
-                MACD: I,
-                OBV: C,
-                PKFLOW: R,
-                PSY: x,
-                ROC: L,
-                RSI: U,
-                SAR: F,
-                TRIX: V,
-                TZY: $,
-                TZYS: z,
-                VR: W,
-                VOLUME: Y,
-                WR: K,
-                WVAD: G,
-                TOR: B,
-                ADL: s,
-                LB: T,
-                POSITION: k,
-                TFLOW: X,
-                TTFLOW: j,
-                TVOL: q,
-                TTOPTRADE: H,
-                BLANKCTN: a
+                ASI: ASI,
+                BBIBOLL: BBIBOLL,
+                BIAS: BIAS,
+                BOLL: BOLL,
+                BRAR: BRAR,
+                CCI: CCI,
+                DMA: DMA,
+                DMI: DMI,
+                DPDK: DPDK,
+                DPDKS: DPDKS,
+                EMV: EMV,
+                EXPMA: EXPMA,
+                KDJ: KDJ,
+                KFLOW: KFLOW,
+                KKFLOW: KKFLOW,
+                KGSTRADE: KGSTRADE,
+                SUNSPOT: SUNSPOT,
+                MA: MA,
+                MACD: MACD,
+                OBV: OBV,
+                PKFLOW: PKFLOW,
+                PSY: PSY,
+                ROC: ROC,
+                RSI: RSI,
+                SAR: SAR,
+                TRIX: TRIX,
+                TZY: TZY,
+                TZYS: TZYS,
+                VR: VR,
+                VOLUME: VOLUME,
+                WR: WR,
+                WVAD: WVAD,
+                TOR: TOR,
+                ADL: ADL,
+                LB: LB,
+                POSITION: POSITION,
+                TFLOW: TFLOW,
+                TTFLOW: TTFLOW,
+                TVOL: TVOL,
+                TTOPTRADE: TTOPTRADE,
+                BLANKCTN: BLANKCTN
             };
             yt.auth(i);
             var r;
@@ -4405,9 +4405,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
                             var l = i[e];
                             if (!t.isFunc(l))
                                 return;
-                            l === a && r ? (h = r,
+                            l === BLANKCTN && r ? (h = r,
                             h.wrap.style.display = "") : (h = new l(cfg,At,f),
-                            l === a && (r = h)),
+                            l === BLANKCTN && (r = h)),
                             techChartList.push(h),
                             subArea.appendChild(h.wrap)
                         }
@@ -4612,7 +4612,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             type: type,
             initMgr: initMgr
         };
-        return o = new r
+        return o = new tChart_instance
     }
     function Q(i, r) {
         function a(t, i) {
@@ -5822,54 +5822,54 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(t, i)
             operateArr: D
         }
     }();
-    t.fInherit(a, r),
-    t.fInherit(s, r),
-    t.fInherit(e, r),
-    t.fInherit(h, r),
+    t.fInherit(BLANKCTN, r),
+    t.fInherit(ADL, r),
+    t.fInherit(ASI, r),
+    t.fInherit(BBIBOLL, r),
     t.fInherit(o, r),
-    t.fInherit(l, r),
-    t.fInherit(n, r),
-    t.fInherit(c, r),
-    t.fInherit(d, r),
+    t.fInherit(BIAS, r),
+    t.fInherit(BOLL, r),
+    t.fInherit(BRAR, r),
+    t.fInherit(CCI, r),
     t.fInherit(f, r),
     t.fInherit(u, r),
-    t.fInherit(p, r),
-    t.fInherit(v, r),
-    t.fInherit(A, r),
-    t.fInherit(m, A),
-    t.fInherit(g, r),
+    t.fInherit(DMA, r),
+    t.fInherit(DMI, r),
+    t.fInherit(DPDK, r),
+    t.fInherit(DPDKS, DPDK),
+    t.fInherit(EMV, r),
     t.fInherit(b, r),
-    t.fInherit(y, r),
+    t.fInherit(EXPMA, r),
     t.fInherit(_, r),
-    t.fInherit(w, r),
-    t.fInherit(D, r),
-    t.fInherit(M, r),
-    t.fInherit(O, r),
-    t.fInherit(S, r),
-    t.fInherit(T, r),
-    t.fInherit(N, r),
-    t.fInherit(I, r),
-    t.fInherit(C, r),
-    t.fInherit(R, D),
-    t.fInherit(k, r),
+    t.fInherit(KDJ, r),
+    t.fInherit(KFLOW, r),
+    t.fInherit(KKFLOW, r),
+    t.fInherit(KGSTRADE, r),
+    t.fInherit(SUNSPOT, r),
+    t.fInherit(LB, r),
+    t.fInherit(MA, r),
+    t.fInherit(MACD, r),
+    t.fInherit(OBV, r),
+    t.fInherit(PKFLOW, KFLOW),
+    t.fInherit(POSITION, r),
     t.fInherit(P, r),
-    t.fInherit(x, r),
+    t.fInherit(PSY, r),
     t.fInherit(E, r),
-    t.fInherit(L, r),
-    t.fInherit(U, r),
-    t.fInherit(F, r),
-    t.fInherit(H, r),
-    t.fInherit(X, r),
-    t.fInherit(B, r),
-    t.fInherit(V, r),
-    t.fInherit(j, X),
-    t.fInherit($, r),
-    t.fInherit(z, $),
-    t.fInherit(W, r),
-    t.fInherit(K, r),
-    t.fInherit(G, r),
-    t.fInherit(Y, r),
-    t.fInherit(q, r);
+    t.fInherit(ROC, r),
+    t.fInherit(RSI, r),
+    t.fInherit(SAR, r),
+    t.fInherit(TTOPTRADE, r),
+    t.fInherit(TFLOW, r),
+    t.fInherit(TOR, r),
+    t.fInherit(TRIX, r),
+    t.fInherit(TTFLOW, TFLOW),
+    t.fInherit(TZY, r),
+    t.fInherit(TZYS, TZY),
+    t.fInherit(VR, r),
+    t.fInherit(WR, r),
+    t.fInherit(WVAD, r),
+    t.fInherit(VOLUME, r),
+    t.fInherit(TVOL, r);
     var yt = function() {
         var i = function(t) {
             var i = function() {

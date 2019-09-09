@@ -2147,7 +2147,7 @@ xh5_define(
       function chart_h51(e, a) {
         function onViewChange(e) {
           $.setDataRange(e),
-            whatis1 && (whatis1.linkData(e), whatis1.setDataRange()),
+            tChartObj && (tChartObj.linkData(e), tChartObj.setDataRange()),
             k && (k.linkData(e), k.setDataRange()),
             D && (D.linkData(e), D.setDataRange());
         }
@@ -2258,7 +2258,7 @@ xh5_define(
                 $.createPlayingData();
             }
           });
-        var whatis1,
+        var tChartObj,
           k,
           D,
           L,
@@ -3049,7 +3049,7 @@ xh5_define(
               o = 1,
               s = function(e) {
                 o > 2 ||
-                  (E.re(globalCfg.e.T_DATA_LOADED), utils_util.isFunc(e) && e(), o++);
+                  (chart_h5tObj.re(globalCfg.e.T_DATA_LOADED), utils_util.isFunc(e) && e(), o++);
               },
               l = function(e) {
                 var t = e,
@@ -3269,23 +3269,23 @@ xh5_define(
           }),
           (this.setRange = function() {
             $.setDataRange(),
-              whatis1 && whatis1.setDataRange(),
+              tChartObj && tChartObj.setDataRange(),
               k && k.setDataRange(),
               D && D.setDataRange();
           }),
           (this.draw = function() {
-            P.draw(), whatis1 && whatis1.allDraw(), k && k.allDraw();
+            P.draw(), tChartObj && tChartObj.allDraw(), k && k.allDraw();
           }),
           (this.resize = function(e) {
             $.createPlayingData(),
               P.resize(),
-              whatis1 && whatis1.onResize(e),
+              tChartObj && tChartObj.onResize(e),
               k && k.onResize(),
               D && D.onResize();
           }),
           (this.clear = function() {
             P.clear(),
-              whatis1 && (whatis1.clear(), (whatis1 = null)),
+              tChartObj && (tChartObj.clear(), (tChartObj = null)),
               k && (k.clear(), (k = null)),
               D && (D.clear(), (D = null)),
               a && (Q = null);
@@ -3336,9 +3336,9 @@ xh5_define(
               k.createChart(e, r);
           }
         }),
-          (this.initTc = function(e, t) {
-            whatis1 ||
-              ((whatis1 = new tChart({
+          (this.initTc = function(chartlist, options) {
+            tChartObj ||
+              ((tChartObj = new tChart({
                 stockData: stockData,
                 iMgr: iMgr,
                 subArea: subArea,
@@ -3348,11 +3348,11 @@ xh5_define(
                 usrObj: config,
                 initMgr: initMgr
               })),
-              a && (Y = whatis1)),
-              whatis1.createChart(e, t);
+              a && (Y = tChartObj)),
+              tChartObj.createChart(chartlist, options);
           }),
           (this.removeTc = function(e) {
-            whatis1 && whatis1.removeChart(e);
+            tChartObj && tChartObj.removeChart(e);
           }),
           (this.initRs = function() {
             D ||
@@ -3429,7 +3429,7 @@ xh5_define(
           d,
           h = {},
           v = 1,
-          f = function(e) {
+          setTLineStyle = function(e) {
             o = utils_util_oc(
               {
                 linetype: "line_" + v,
@@ -3449,7 +3449,7 @@ xh5_define(
               (c = h.T_AVG || cfg.COLOR.T_AVG),
               (d = h.T_PREV || cfg.COLOR.T_PREV);
           },
-          g = function() {
+          draw = function() {
             function a() {
               if (e.isMain && cfg.custom.show_underlay_vol) {
                 for (var t, a = cfg.COLOR.V_SD, i = D; N > i; i++)
@@ -3662,7 +3662,7 @@ xh5_define(
               }
             }
           };
-        (this.draw = g),
+        (this.draw = draw),
           (this.clear = function() {
             s.remove(), (s = null);
           }),
@@ -3670,10 +3670,10 @@ xh5_define(
             s.resize({
               mh: cfg.DIMENSION.H_MA4K
             }),
-              g();
+              draw();
           }),
-          (this.setTLineStyle = f),
-          f(r),
+          (this.setTLineStyle = setTLineStyle),
+          setTLineStyle(r),
           n();
       }
       function D() {
@@ -4079,7 +4079,7 @@ xh5_define(
             T(e, !0), w();
           }),
           (this.mM = new (function() {
-            var t = function(a, type, r) {
+            var whoareyou = function(a, type, r) {
                 console.log(a);
                 var chart, method;
                 switch (type) {
@@ -4098,7 +4098,8 @@ xh5_define(
                           type: type
                         },
                         function(e) {
-                          (tChart = e.tChart), (pChart = e.pChart), t(a, type, r);
+                          (tChart = e.tChart), (pChart = e.pChart);
+                           whoareyou(a, type, r);
                         }
                       ));
               },
@@ -4126,7 +4127,7 @@ xh5_define(
                     });
               };
             (this.showRs = i),
-              (this.newAC = t),
+              (this.newAC = whoareyou),
               (this.removeAC = a),
               (this.togglePt = function(t) {
                 mainStock && (mainStock.togglePt(t), b());
@@ -4294,7 +4295,7 @@ xh5_define(
           }
         };
       utils_util.xh5_EvtDispatcher.call(this);
-      var E = this;
+      var chart_h5tObj = this;
       (config = utils_util_oc(
         {
           symbol: "sh000001",
@@ -5251,11 +5252,11 @@ xh5_define(
                 }),
                 b(V),
                 ne.onViewPrice(L, V, B, !k),
-                E.re(globalCfg.e.I_EVT, a.e);
+                chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
             }
           }),
             (this.globalDragHandler = function(e, t, a, i, r) {
-              isNaN(e) && isNaN(t) && E.re(globalCfg.e.I_EVT, r);
+              isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
             }),
             (this.shortClickHandler = function() {
               ne.shortClickHandler();
@@ -5697,7 +5698,7 @@ xh5_define(
               return ne.currentData();
             }),
             (this.viewState = ee),
-            (this.me = E),
+            (this.me = chart_h5tObj),
             (this.type = "h5t");
         })()),
         (X = new D()),

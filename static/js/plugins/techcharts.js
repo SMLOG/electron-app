@@ -4087,6 +4087,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function (util
             }
     }
     function pChart(i) {
+        console.log(i);
         function r() {
             var PCHART_MAP = {
                 BBIBOLL: BBIBOLL,
@@ -4321,8 +4322,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function (util
         };
         return a = new r
     }
-    function tChart(i) {
-        console.log(i);
+    function tChart(options) {
+        console.log(options);
         function tChart_instance() {
             var allAvailableChartsMap = {
                 ASI: ASI,
@@ -4511,7 +4512,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function (util
                     cb(!0)
                 }
         }
-        var o, f, stockData = i.stockData, iMgr = i.iMgr, subArea = i.subArea, cb = i.cb, type = i.type, cfg = i.cfg, usrObj = i.usrObj, initMgr = i.initMgr, rt = [],
+        var o, f, stockData = options.stockData, iMgr = options.iMgr, subArea = options.subArea, cb = options.cb, type = options.type, cfg = options.cfg, usrObj = options.usrObj, initMgr = options.initMgr, rt = [],
             st = function (i, div, offsetX, offsetY, event) {
                 if (!utils_util.$CONTAINS(div, iMgr.iHLineO.body) && div.appendChild(iMgr.iHLineO.body),
                     i.datas) {

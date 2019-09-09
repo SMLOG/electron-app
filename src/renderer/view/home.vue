@@ -72,9 +72,9 @@ export default {
       let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
       console.log("KEE");
 
-      if (false)
+      if (true)
         KKE.api(
-          "chart.h5k.get",
+          "chart.h5t.get",
           {
             symbol: papercode //证券代码
           },
@@ -84,17 +84,24 @@ export default {
 
             if (true)
               KKE.api(
-                "datas.k.get",
+                "plugins.techcharts.get",
                 {
-                  symbol: papercode //证券代码
+                  type: "tech" //证券代码
                 },
                 function(res) {
                   console.log(res);
+
+                  let tChart = res.tChart;
+                  new tChart({
+                    stockData: h5k,
+                    cfg: { DIMENSION: {}, datas: {} },
+                    usrObj: { tchartobject: {} }
+                  }).linkData();
                 }
               );
           }
         );
-      if (true)
+      if (false)
         /* KKE.api(
           "plugins.techcharts.get",
           {

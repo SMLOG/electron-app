@@ -21,17 +21,22 @@ var xh5_define,
           var d = s.shift();
           if (((o = o ? o[d] : modsTree[d]), !o))
             return void util.err(callback, [modConfig.MOD_ERR, u].join(":"));
-            
+
         } while (s.length);
 
-        var c = o[u] || {},
-          entity = c.entity || {},
-          actionMethod = entity[actionName];
-        "undefined" == typeof actionMethod
-          ? util.err(callback, [modConfig.CMD_UNEXIST, name].join(":"))
-          : util.isFunc(actionMethod)
-          ? actionMethod(config, callback)
-          : util.isFunc(callback) && callback(actionMethod);
+        var c = o[u] || {};
+        var entity = c.entity || {};
+        var actionMethod = entity[actionName];
+
+        if("undefined" == typeof actionMethod)
+          util.err(callback, [modConfig.CMD_UNEXIST, name].join(":"))
+          else{
+            if(util.isFunc(actionMethod))
+            actionMethod(config, callback)
+            else
+             util.isFunc(callback) && callback(actionMethod);
+          }
+
       },
       config.modUrl || null
     );
@@ -808,7 +813,7 @@ xh5_define("utils.util", [], function() {
           allowt: "ontouchend" in window
         };
       })());
-    var S = (function() {
+    var localdb = (function() {
       function t(t) {
         return (
           (t = JSON.stringify(t)), t || (t = ""), (t = encodeURIComponent(t))
@@ -923,18 +928,18 @@ xh5_define("utils.util", [], function() {
           else i(t, e, n);
         },
         load: function(t, e) {
-          var i;
+          var peristConfig;
           if (("Object" == u(e) && (e = e.mode), e))
             switch (e) {
               case "localStorage":
                 if (!c) return;
-                i = o(t);
+                peristConfig = o(t);
                 break;
               case "cookie":
-                i = n(t);
+                peristConfig = n(t);
             }
-          else c && (i = o(t)), !i && (i = n(t));
-          return i;
+          else c && (peristConfig = o(t)), !peristConfig && (peristConfig = n(t));
+          return peristConfig;
         },
         remove: function(t, e) {
           if (("Object" == u(e) && (e = e.mode), e))
@@ -953,7 +958,7 @@ xh5_define("utils.util", [], function() {
         }
       };
     })();
-    (this.localSL = S),
+    (this.localSL = localdb),
       (this.xh5_EvtUtil = {
         addHandler: function(t, e, i) {
           t &&
@@ -2909,16 +2914,16 @@ xh5_define("utils.util", [], function() {
               i = e.key,
               n = e.options,
               r = e.value;
-            S.save(i, r, n);
+            localdb.save(i, r, n);
           },
           h = function(t) {
             n || i || l.push([t]);
           },
-          d = function(t) {
-            var e = t,
-              i = e.key,
-              n = e.options;
-            return S.load(i, n);
+          d = function(item) {
+            var e = item,
+              key = e.key,
+              options = e.options;
+            return localdb.load(key, options);
           },
           f = function(t, e) {
             return n ? void 0 : i ? void (s[t.uid] = e) : void o.push([t, e]);

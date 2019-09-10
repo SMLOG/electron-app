@@ -2232,7 +2232,7 @@ xh5_define(
             var a,
               i = [],
               r = e;
-            if (((H = A.tcd(marketCode)), marketCodeToID(stockData.needMarket) != marketCodeToID(marketCode))) {
+            if (((tDataLen = A.tcd(marketCode)), marketCodeToID(stockData.needMarket) != marketCodeToID(marketCode))) {
               (a = tDb.get()), (d = utils_util.tUtil.gata(marketCode));
               for (var n = 0; n < a.length; n++)
                 marketCodeToID(stockData.needMarket) < marketCodeToID(marketCode)
@@ -2243,7 +2243,7 @@ xh5_define(
                       ":" +
                       utils_util.strUtil.zp(curDate.getMinutes())
                     )),
-                    stockData.realLen < 0 && (stockData.realLen = H))
+                    stockData.realLen < 0 && (stockData.realLen = tDataLen))
                   : (i.push(A.rmuk(a[n], marketCode, r)),
                     (stockData.realLen = utils_util.arrIndexOf(
                       d,
@@ -2683,10 +2683,10 @@ xh5_define(
             )
               switch (stockData.market) {
                 case "CN":
-                  stockData.realLen = stockData.hq.time >= "15:00" ? H - 1 : 0;
+                  stockData.realLen = stockData.hq.time >= "15:00" ? tDataLen - 1 : 0;
                   break;
                 case "REPO":
-                  stockData.realLen = stockData.hq.time >= "15:30" ? H - 1 : 0;
+                  stockData.realLen = stockData.hq.time >= "15:30" ? tDataLen - 1 : 0;
                   break;
                 case "NF":
                 case "HF":
@@ -2771,9 +2771,9 @@ xh5_define(
                 }
                 function p() {
                   var e = new Date().getTime() - curTime;
-                  return !isNaN(te) &&
-                    te > 0 &&
-                    e >= 1e3 * Number(te) &&
+                  return !isNaN(t_rate) &&
+                    t_rate > 0 &&
+                    e >= 1e3 * Number(t_rate) &&
                     0 != stockData.realLen &&
                     stockData.hq.isUpdateTime
                     ? ((curTime = new Date().getTime()), g(b, stockData.hq, a), !0)
@@ -2863,7 +2863,7 @@ xh5_define(
                     return void c();
                   if (!p() && !h()) {
                     if ((stockData.datas && (K = y[4][0]), de(e.date, y[4][0].date)))
-                      return void (stockData.realLen = H);
+                      return void (stockData.realLen = tDataLen);
                     (L = e.name || ""), (stockData.hq = e);
                     var _ =
                       e.date.getHours() < 10
@@ -3138,7 +3138,7 @@ xh5_define(
                         case "CN":
                           3 == d &&
                             ((p = globalCfg.delisted),
-                              q.showTip({
+                              tipObj.showTip({
                                 txt: p,
                                 parent: V,
                                 noBtn: !0
@@ -3150,7 +3150,7 @@ xh5_define(
                           "nohistory" == e.msg &&
                           ((M = 0),
                             X.hasHistory && X.hasHistory(M),
-                            q.showTip({
+                            tipObj.showTip({
                               txt: globalCfg.nohistoryt,
                               parent: V,
                               noBtn: !0
@@ -3191,7 +3191,7 @@ xh5_define(
                             };
                           if (!(cfg.DIMENSION.getStageW() < 200))
                             return (
-                              q.showTip({
+                              tipObj.showTip({
                                 txt: p,
                                 parent: V,
                                 noBtn: !0
@@ -3477,9 +3477,9 @@ xh5_define(
                 ) {
                   if (5 == ee.end && "CN" == e.market && Z)
                     for (var t = Z.getLog(), a = 0; a < t.length; a++)
-                      if ("EWI" == t[a].name && k > (N / H - 1) * H)
+                      if ("EWI" == t[a].name && k > (N / tDataLen - 1) * tDataLen)
                         return void s.stroke();
-                  k == D || k % H == 0
+                  k == D || k % tDataLen == 0
                     ? s.moveTo(M, y[k].ay)
                     : s.lineTo(M, y[k].ay),
                     (M += T);
@@ -3507,7 +3507,7 @@ xh5_define(
               var e;
               for (k = D; N > k && ((S = y[k]), !(S.price <= 0)); k++)
                 (e = S.py),
-                  k == D || k % H == 0
+                  k == D || k % tDataLen == 0
                     ? s.moveTo(M, e)
                     : k % config.modulo == 0 && s.lineTo(M, e),
                   (S.ix = M),
@@ -3629,7 +3629,7 @@ xh5_define(
                     S,
                     D,
                     w = o.linetype && 0 == o.linetype.indexOf("mountain"),
-                    x = e.datas.length * H,
+                    x = e.datas.length * tDataLen,
                     T = cfg.DIMENSION.w_t / Math.max(x, cfg.PARAM.minCandleNum),
                     I = 0.5 * T,
                     M = 0;
@@ -3843,7 +3843,7 @@ xh5_define(
                     height: e.qrheight
                   },
                   function (e) {
-                    q.showTip({
+                    tipObj.showTip({
                       content: e,
                       txt:
                         '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
@@ -4042,21 +4042,21 @@ xh5_define(
               }
             } else mainStock.setTLineStyle(), mainStock.draw();
           });
-        var E,
-          P = function (e) {
-            e ? S() : iMgr.update();
-          },
-          H = !1,
-          F = 0,
-          $ = function () {
-            clearTimeout(E), (H = !1), (F = 0);
-          },
-          K = function () {
-            E = setTimeout(function () {
-              F > 0 && S(), $();
-            }, 500);
-          };
-        (this.pushData = function (e, t) {
+        var E;
+        var P = function (e) {
+          e ? S() : iMgr.update();
+        };
+        var H = !1;
+        var F = 0;
+        var $ = function () {
+          clearTimeout(E), (H = !1), (F = 0);
+        };
+        var K = function () {
+          E = setTimeout(function () {
+            F > 0 && S(), $();
+          }, 500);
+        };
+        this.pushData = function (e, t) {
           var a = !1;
           switch (Number(t)) {
             case 1:
@@ -4074,65 +4074,71 @@ xh5_define(
                 F++ , allStocks[r].doUpdate(fBind(P, null, a), !1, e[i].data, e[i].market);
                 break;
               }
-        }),
-          (this.dcInit = function (e) {
-            T(e, !0), w();
-          }),
-          (this.mM = new (function () {
-            var newAC = function (a, type, r) {
-              console.log(a);
-              var chart, method;
-              switch (type) {
-                case "price":
-                  (chart = pChart), (method = "initPt");
-                  break;
-                case "tech":
-                  (chart = tChart), (method = "initTc");
-              }
-              method &&
-                (chart
-                  ? mainStock[method](a, r)
-                  : KKE.api(
-                    "plugins.techcharts.get",
-                    {
-                      type: type
-                    },
-                    function (e) {
-                      (tChart = e.tChart), (pChart = e.pChart);
-                      newAC(a, type, r);
-                    }
-                  ));
-            };
-            var removeAC = function (t, a) {
-              var i;
-              switch (a) {
-                case "price":
-                  i = "removePt";
-                  break;
-                case "tech":
-                  i = "removeTc";
-              }
-              i && mainStock && (mainStock[i](t), b());
-            };
-            var showRs = function (t) {
-              return o
-                ? (Q
-                  ? Q.sh(t)
-                  : (mainStock.initRs(), showRs(t), B.appendChild(Q.getBody())),
-                  void initMgr.resizeAll(!0))
-                : void KKE.api("plugins.rangeselector.get", null, function (
-                  e
-                ) {
-                  (o = e), showRs(t);
-                });
-            };
-            this.showRs = showRs;
-            this.newAC = newAC;
-            this.removeAC = removeAC;
-            this.togglePt = function (t) {
-              mainStock && (mainStock.togglePt(t), b());
-            };
-          })());
+        };
+        this.dcInit = function (e) {
+          T(e, !0), w();
+        };
+        this.mM = new (function () {
+
+          var newAC = function (a, type, r) {
+            console.log(a);
+            var chart, method;
+            switch (type) {
+              case "price":
+                (chart = pChart), (method = "initPt");
+                break;
+              case "tech":
+                (chart = tChart), (method = "initTc");
+            }
+
+            if (method) {
+              if (chart)
+                mainStock[method](a, r)
+              else KKE.api(
+                "plugins.techcharts.get",
+                {
+                  type: type
+                },
+                function (e) {
+                  tChart = e.tChart;
+                  pChart = e.pChart;
+                  newAC(a, type, r);
+                }
+              );
+            }
+
+          };
+          var removeAC = function (t, a) {
+            var i;
+            switch (a) {
+              case "price":
+                i = "removePt";
+                break;
+              case "tech":
+                i = "removeTc";
+            }
+            i && mainStock && (mainStock[i](t), b());
+          };
+          var showRs = function (t) {
+            return o
+              ? (Q
+                ? Q.sh(t)
+                : (mainStock.initRs(), showRs(t), B.appendChild(Q.getBody())),
+                void initMgr.resizeAll(!0))
+              : void KKE.api("plugins.rangeselector.get", null, function (
+                e
+              ) {
+                (o = e), showRs(t);
+              });
+          };
+          this.showRs = showRs;
+          this.newAC = newAC;
+          this.removeAC = removeAC;
+          this.togglePt = function (t) {
+            mainStock && (mainStock.togglePt(t), b());
+          };
+        }
+        )();
       }
       var _hf_window_var,
         _nf_window_var,
@@ -4351,36 +4357,44 @@ xh5_define(
           VER: "2.6.0"
         }
       );
-      !config.symbol && (config.symbol = "sh000001"),
-        (config.symbol = String(config.symbol)),
-        (config.rawsymbol = String(config.symbol)),
-        (config.symbol =
-          "LSE" === utils_util.market(config.symbol)
-            ? utils_util.strUtil.replaceStr(config.symbol)
-            : config.symbol.replace(".", "$")),
-        0 == location.protocol.indexOf("https:") && (config.ssl = !0);
-      var P =
+
+      if (!config.symbol) config.symbol = "sh000001";
+
+      config.symbol = String(config.symbol);
+
+      config.rawsymbol = String(config.symbol);
+      config.symbol =
+        "LSE" === utils_util.market(config.symbol)
+          ? utils_util.strUtil.replaceStr(config.symbol)
+          : config.symbol.replace(".", "$");
+
+      if (0 == location.protocol.indexOf("https:"))
+        config.ssl = !0;
+      var randomKey =
         "_" +
         config.symbol +
         "_" +
         Math.floor(1234567890 * Math.random() + 1) +
-        Math.floor(9876543210 * Math.random() + 1),
-        cfg = cfgs_settinger.getSetting(P);
-      (cfg.datas.isT = !0),
-        config.reorder || (cfg.custom.indicator_reorder = !1),
-        config.reheight || (cfg.custom.indicator_reheight = !1),
-        (marketCode = utils_util.market(config.symbol)),
-        (cfg.datas.tDataLen = A.tcd(marketCode));
-      var H = cfg.datas.tDataLen,
-        q = new (function () {
-          var e;
-          (this.showTip = function (a) {
-            e || (e = new utils_util.TipM(cfg.COLOR)), e.genTip(a);
-          }),
-            (this.hideTip = function () {
-              e && e.hide();
-            });
-        })();
+        Math.floor(9876543210 * Math.random() + 1);
+
+      var cfg = cfgs_settinger.getSetting(randomKey);
+
+      cfg.datas.isT = !0;
+      config.reorder || (cfg.custom.indicator_reorder = !1);
+      config.reheight || (cfg.custom.indicator_reheight = !1);
+      marketCode = utils_util.market(config.symbol);
+      cfg.datas.tDataLen = A.tcd(marketCode);
+      var tDataLen = cfg.datas.tDataLen;
+      var tipObj = new (function () {
+        var e;
+        this.showTip = function (a) {
+          e || (e = new utils_util.TipM(cfg.COLOR)), e.genTip(a);
+        };
+        this.hideTip = function () {
+          e && e.hide();
+        };
+      })();
+
       if (xh5_BrowserUtil.noH5) {
         if ("undefined" == typeof FlashCanvas || config.fh5)
           return void (utils_util.isFunc(config.noh5) && config.noh5(config));
@@ -4391,10 +4405,13 @@ xh5_define(
           ((cfg.COLOR.K_EXT_BG = "#fff"), (cfg.COLOR.F_BG = "#fff")),
           config.dim)
       )
-        for (var F in config.dim)
-          config.dim.hasOwnProperty(F) &&
-            utils_util.isNum(cfg.DIMENSION[F]) &&
-            (cfg.DIMENSION[F] = config.dim[F]);
+        for (var F in config.dim) {
+          if (config.dim.hasOwnProperty(F) &&
+            utils_util.isNum(cfg.DIMENSION[F]))
+            cfg.DIMENSION[F] = config.dim[F];
+        }
+
+
       var $,
         V,
         K,
@@ -4416,1296 +4433,1297 @@ xh5_define(
           startDate: void 0,
           endDate: void 0
         },
-        te = isNaN(config.t_rate) ? cfg.PARAM.T_RATE : config.t_rate,
+        t_rate = isNaN(config.t_rate) ? cfg.PARAM.T_RATE : config.t_rate,
         ae = !1,
-        ie = 0,
-        initMgr = new (function () {
-          var e,
-            a = function (e, t, a) {
-              var r = !1;
-              isNaN(e) && (e = config.w || $.offsetWidth),
-                isNaN(t) && (t = config.h || $.offsetHeight - config.mh);
-              for (
-                var n,
-                o = B.clientHeight || 0,
-                s = subArea.clientHeight || 0,
-                l = cfg.DIMENSION.getOneWholeTH(),
-                c = 0,
-                d = subArea.childNodes,
-                m = d.length,
-                p = 0,
-                h = d.length;
-                h--;
+        ie = 0;
+      var initMgr = new (function () {
+        var e;
+        var a = function (e, t, a) {
+          var r = !1;
+          isNaN(e) && (e = config.w || $.offsetWidth),
+            isNaN(t) && (t = config.h || $.offsetHeight - config.mh);
+          for (
+            var n,
+            o = B.clientHeight || 0,
+            s = subArea.clientHeight || 0,
+            l = cfg.DIMENSION.getOneWholeTH(),
+            c = 0,
+            d = subArea.childNodes,
+            m = d.length,
+            p = 0,
+            h = d.length;
+            h--;
 
-              )
-                (n = d[h]),
-                  n.id.indexOf("blankctn") >= 0
-                    ? ((c = n.offsetHeight), m-- , (p += c))
-                    : (p += l);
-              return (
-                !isNaN(a) && (s -= a),
-                s / (t - o) > 1 && ((s = p), (r = !0)),
-                cfg.DIMENSION.setStageW(e),
-                1 == ie
-                  ? m > 0 &&
-                  (cfg.DIMENSION.setStageH(t, m * l + c + o),
-                    (r = !0),
-                    (ie = 0))
-                  : cfg.DIMENSION.setStageH(t, s + o),
-                0 > t &&
-                ((cfg.DIMENSION.H_T_G = cfg.DIMENSION.H_T_G - cfg.DIMENSION.H_T_T),
-                  (cfg.DIMENSION.H_T_B = cfg.DIMENSION.H_TIME_PART)),
-                r
-              );
-            },
-            r = function () {
-              J.setPosition();
-            },
-            n = function () {
-              e && (e.style.display = cfg.custom.show_logo ? "" : "none");
-            },
-            o = function (e, i, o) {
-              var s = a(i, o, 0 / 0);
-              if (e || (i && o)) {
-                if (!X) return;
-                X.onResize(s), iMgr.onResize();
-              }
-              r(),
-                n(),
-                utils_util.stc("t_wh", [
-                  cfg.DIMENSION.getStageW(),
-                  cfg.DIMENSION.getStageH()
-                ]);
-            },
-            s = function () {
-              ($ = f$DOM(config.domid) || config.dom),
-                $ ||
-                (($ = utils_util_$C("div")),
-                  document.body.appendChild($),
-                  utils_util.trace.error("missing of dom id")),
-                (V = utils_util_$C("div")),
-                (V.style.position = "relative"),
-                (V.style.outlineStyle = "none"),
-                (V.style.webkitUserSelect = V.style.userSelect = V.style.MozUserSelect =
-                  "none"),
-                (K = utils_util_$C("div", "mainarea_" + cfg.uid)),
-                (G = utils_util_$C("div")),
-                K.appendChild(G),
-                (z = utils_util_$C("div")),
-                (z.style.position = "absolute"),
-                (z.style.fontSize = cfg.STYLE.FONT_SIZE + "px"),
-                K.appendChild(z),
-                V.appendChild(K),
-                (subArea = utils_util_$C("div")),
-                V.appendChild(subArea),
-                (B = utils_util_$C("div")),
-                V.appendChild(B),
-                $.appendChild(V),
-                (J = new utils_util.LoadingSign()),
-                J.appendto(K, cfg);
-            },
-            l = function (a) {
-              var i = !1;
-              if (a) {
-                Q && (i = Q.setTheme(a));
-                for (var r in a)
-                  a.hasOwnProperty(r) &&
-                    cfg.COLOR.hasOwnProperty(r) &&
-                    cfg.COLOR[r] !== a[r] &&
-                    ((cfg.COLOR[r] = a[r]), (i = !0));
-                utils_util.stc("t_thm", a);
-              }
-              return (
-                i &&
-                logoM.styleLogo({
-                  logo: e,
-                  color: cfg.COLOR.LOGO
-                }),
-                i
-              );
-            },
-            m = function (e) {
-              !cfg.custom.mousewheel_zoom ||
-                (document.activeElement !== V &&
-                  document.activeElement.parentNode !== V) ||
-                (X && X.onWheel(e), xh5_EvtUtil.preventDefault(e), xh5_EvtUtil.stopPropagation(e));
-            },
-            p = function (e) {
-              cfg.custom.keyboard && X && X.onKb(e);
-            },
-            u = function () {
-              utils_util.xh5_deviceUtil.istd ||
-                (xh5_BrowserUtil.info.name.match(/firefox/i)
-                  ? xh5_EvtUtil.addHandler(V, "DOMMouseScroll", m)
-                  : xh5_EvtUtil.addHandler(V, "mousewheel", m),
-                  (V.tabIndex = 0),
-                  xh5_EvtUtil.addHandler(V, "keydown", p));
-            },
-            v = function (t) {
-              (e = t), V.appendChild(t);
-            },
-            f = function () {
-              s(),
-                l(config.theme),
-                o(),
-                u(),
-                cfg.DIMENSION.h_t < 0 &&
-                ((K.style.display = "none"),
-                  (cfg.custom.indicator_reorder = !1),
-                  (cfg.custom.indicator_reheight = !1)),
-                logoM.getLogo({
-                  cb: v,
-                  id: cfg.PARAM.LOGO_ID,
-                  isShare: !1,
-                  top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
-                  right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
-                  LOGO_W: cfg.DIMENSION.LOGO_W,
-                  LOGO_H: cfg.DIMENSION.LOGO_H,
-                  color: cfg.COLOR.LOGO
-                }),
-                xh5_BrowserUtil.noH5 &&
-                (q.showTip({
-                  txt: config.nohtml5info || globalCfg.nohtml5info,
-                  parent: V
-                }),
-                  utils_util.stc("t_nh5"));
-            };
-          f(),
-            (this.resizeAll = o),
-            (this.innerResize = function (e) {
-              X &&
-                (a(0 / 0, 0 / 0, e),
-                  X.onResize(),
-                  iMgr.onResize(),
-                  r(),
-                  ne.onInnerResize({
-                    height: cfg.DIMENSION.h_t
-                  }));
+          )
+            (n = d[h]),
+              n.id.indexOf("blankctn") >= 0
+                ? ((c = n.offsetHeight), m-- , (p += c))
+                : (p += l);
+          return (
+            !isNaN(a) && (s -= a),
+            s / (t - o) > 1 && ((s = p), (r = !0)),
+            cfg.DIMENSION.setStageW(e),
+            1 == ie
+              ? m > 0 &&
+              (cfg.DIMENSION.setStageH(t, m * l + c + o),
+                (r = !0),
+                (ie = 0))
+              : cfg.DIMENSION.setStageH(t, s + o),
+            0 > t &&
+            ((cfg.DIMENSION.H_T_G = cfg.DIMENSION.H_T_G - cfg.DIMENSION.H_T_T),
+              (cfg.DIMENSION.H_T_B = cfg.DIMENSION.H_TIME_PART)),
+            r
+          );
+        };
+        var r = function () {
+          J.setPosition();
+        };
+        var n = function () {
+          e && (e.style.display = cfg.custom.show_logo ? "" : "none");
+        };
+        var o = function (e, i, o) {
+          var s = a(i, o, 0 / 0);
+          if (e || (i && o)) {
+            if (!X) return;
+            X.onResize(s), iMgr.onResize();
+          }
+          r(),
+            n(),
+            utils_util.stc("t_wh", [
+              cfg.DIMENSION.getStageW(),
+              cfg.DIMENSION.getStageH()
+            ]);
+        };
+        var s = function () {
+          ($ = f$DOM(config.domid) || config.dom),
+            $ ||
+            (($ = utils_util_$C("div")),
+              document.body.appendChild($),
+              utils_util.trace.error("missing of dom id")),
+            (V = utils_util_$C("div")),
+            (V.style.position = "relative"),
+            (V.style.outlineStyle = "none"),
+            (V.style.webkitUserSelect = V.style.userSelect = V.style.MozUserSelect =
+              "none"),
+            (K = utils_util_$C("div", "mainarea_" + cfg.uid)),
+            (G = utils_util_$C("div")),
+            K.appendChild(G),
+            (z = utils_util_$C("div")),
+            (z.style.position = "absolute"),
+            (z.style.fontSize = cfg.STYLE.FONT_SIZE + "px"),
+            K.appendChild(z),
+            V.appendChild(K),
+            (subArea = utils_util_$C("div")),
+            V.appendChild(subArea),
+            (B = utils_util_$C("div")),
+            V.appendChild(B),
+            $.appendChild(V),
+            (J = new utils_util.LoadingSign()),
+            J.appendto(K, cfg);
+        };
+        var l = function (a) {
+          var i = !1;
+          if (a) {
+            Q && (i = Q.setTheme(a));
+            for (var r in a)
+              a.hasOwnProperty(r) &&
+                cfg.COLOR.hasOwnProperty(r) &&
+                cfg.COLOR[r] !== a[r] &&
+                ((cfg.COLOR[r] = a[r]), (i = !0));
+            utils_util.stc("t_thm", a);
+          }
+          return (
+            i &&
+            logoM.styleLogo({
+              logo: e,
+              color: cfg.COLOR.LOGO
             }),
-            (this.initTheme = l);
-        })(),
-        ne = new (function () {
-          var e = 0,
-            a = function (a, r) {
-              var n = H - 1,
-                o = X.getAllStock()[0];
+            i
+          );
+        };
+        var m = function (e) {
+          !cfg.custom.mousewheel_zoom ||
+            (document.activeElement !== V &&
+              document.activeElement.parentNode !== V) ||
+            (X && X.onWheel(e), xh5_EvtUtil.preventDefault(e), xh5_EvtUtil.stopPropagation(e));
+        };
+        var p = function (e) {
+          cfg.custom.keyboard && X && X.onKb(e);
+        };
+        var u = function () {
+          utils_util.xh5_deviceUtil.istd ||
+            (xh5_BrowserUtil.info.name.match(/firefox/i)
+              ? xh5_EvtUtil.addHandler(V, "DOMMouseScroll", m)
+              : xh5_EvtUtil.addHandler(V, "mousewheel", m),
+              (V.tabIndex = 0),
+              xh5_EvtUtil.addHandler(V, "keydown", p));
+        };
+        var v = function (t) {
+          (e = t), V.appendChild(t);
+        };
+        var f = function () {
+          s(),
+            l(config.theme),
+            o(),
+            u(),
+            cfg.DIMENSION.h_t < 0 &&
+            ((K.style.display = "none"),
+              (cfg.custom.indicator_reorder = !1),
+              (cfg.custom.indicator_reheight = !1)),
+            logoM.getLogo({
+              cb: v,
+              id: cfg.PARAM.LOGO_ID,
+              isShare: !1,
+              top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
+              right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
+              LOGO_W: cfg.DIMENSION.LOGO_W,
+              LOGO_H: cfg.DIMENSION.LOGO_H,
+              color: cfg.COLOR.LOGO
+            }),
+            xh5_BrowserUtil.noH5 &&
+            (tipObj.showTip({
+              txt: config.nohtml5info || globalCfg.nohtml5info,
+              parent: V
+            }),
+              utils_util.stc("t_nh5"));
+        };
+
+        f();
+        this.resizeAll = o;
+        this.innerResize = function (e) {
+          X &&
+            (a(0 / 0, 0 / 0, e),
+              X.onResize(),
+              iMgr.onResize(),
+              r(),
+              ne.onInnerResize({
+                height: cfg.DIMENSION.h_t
+              }));
+        };
+        this.initTheme = l;
+      })();
+      var ne = new (function () {
+        var e = 0,
+          a = function (a, r) {
+            var n = tDataLen - 1,
+              o = X.getAllStock()[0];
+            if (
+              o &&
+              o.datas &&
+              (stbd(o.datas[o.datas.length - 1][0].date, o.hq.date)
+                ? (r = o.realLen < 0 || o.realLen > n ? n : (n = o.realLen))
+                : "NF" == marketCode && _nf_window_var && "21:00" == _nf_window_var.time[0][0]
+                  ? (r = n = o.realLen)
+                  : o.realLen < 0 || o.realLen > n
+                    ? (r = n)
+                    : ((r = n),
+                      o.datas[o.datas.length - 1][r].price < 0 &&
+                      (r = o.realLen)),
+                (a = o.datas[o.datas.length - 1][r]),
+                a && a.time)
+            ) {
+              var s, l;
               if (
-                o &&
-                o.datas &&
-                (stbd(o.datas[o.datas.length - 1][0].date, o.hq.date)
-                  ? (r = o.realLen < 0 || o.realLen > n ? n : (n = o.realLen))
-                  : "NF" == marketCode && _nf_window_var && "21:00" == _nf_window_var.time[0][0]
-                    ? (r = n = o.realLen)
-                    : o.realLen < 0 || o.realLen > n
-                      ? (r = n)
-                      : ((r = n),
-                        o.datas[o.datas.length - 1][r].price < 0 &&
-                        (r = o.realLen)),
-                  (a = o.datas[o.datas.length - 1][r]),
-                  a && a.time)
-              ) {
-                var s, l;
-                if (
-                  ("HF" == marketCode
-                    ? ((s = _hf_window_var.time[0][0]),
-                      s > a.time
+                ("HF" == marketCode
+                  ? ((s = _hf_window_var.time[0][0]),
+                    s > a.time
+                      ? ((s = o.datas[o.datas.length - 1][0].date),
+                        (l = new Date(s)),
+                        "hf_CHA50CFD" !== config.symbol &&
+                        l.setDate(l.getDate() + 1))
+                      : (l = o.datas[o.datas.length - 1][0].date))
+                  : "NF" == marketCode
+                    ? ((s = _nf_window_var.time[0][0]),
+                      s < a.time && "21:00" == s
                         ? ((s = o.datas[o.datas.length - 1][0].date),
                           (l = new Date(s)),
-                          "hf_CHA50CFD" !== config.symbol &&
-                          l.setDate(l.getDate() + 1))
+                          l.setDate(l.getDate() - 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
-                    : "NF" == marketCode
-                      ? ((s = _nf_window_var.time[0][0]),
-                        s < a.time && "21:00" == s
-                          ? ((s = o.datas[o.datas.length - 1][0].date),
-                            (l = new Date(s)),
-                            l.setDate(l.getDate() - 1))
-                          : (l = o.datas[o.datas.length - 1][0].date))
-                      : (l = o.datas[o.datas.length - 1][0].date),
-                    "US" == marketCode &&
-                    o.hq &&
-                    o.datas &&
-                    o.datas.length > 0 &&
-                    o.hq.today === o.datas[o.datas.length - 1][0].today)
-                ) {
-                  var c = o.datas[o.datas.length - 1][r];
-                  -1 == c.price &&
-                    ((c.price = c.avg_price = o.hq.price),
-                      (c.change = o.hq.price - o.hq.prevclose),
-                      (c.percent =
-                        (o.hq.price - o.hq.prevclose) / o.hq.prevclose));
-                }
-                return (
-                  (a.day =
-                    utils_util.dateUtil.ds(l, "/", !1) +
-                    "/" +
-                    utils_util.dateUtil.nw(l.getDay()) +
-                    (a.time || "")),
-                  (e = r),
-                  utils_util.clone(a)
-                );
+                    : (l = o.datas[o.datas.length - 1][0].date),
+                  "US" == marketCode &&
+                  o.hq &&
+                  o.datas &&
+                  o.datas.length > 0 &&
+                  o.hq.today === o.datas[o.datas.length - 1][0].today)
+              ) {
+                var c = o.datas[o.datas.length - 1][r];
+                -1 == c.price &&
+                  ((c.price = c.avg_price = o.hq.price),
+                    (c.change = o.hq.price - o.hq.prevclose),
+                    (c.percent =
+                      (o.hq.price - o.hq.prevclose) / o.hq.prevclose));
               }
-            };
-          (this.currentData = a),
-            (this.onDataUpdate = function () {
-              if (utils_util.isFunc(config.ondataupdate)) {
-                var e = a();
-                e &&
-                  config.ondataupdate({
-                    data: utils_util.clone(e),
-                    idx: ee.currentLength - 1,
-                    left: cfg.DIMENSION.posX,
-                    top: cfg.DIMENSION.H_MA4K
-                  });
-              }
-            }),
-            (this.onInnerResize = function (e) {
-              utils_util.isFunc(config.oninnerresize) && config.oninnerresize(e);
-            }),
-            (this.onRange = function (e) {
-              !ae &&
-                utils_util.isFunc(config.onrange) &&
-                e &&
-                config.onrange({
-                  isCompare: e.isCompare,
-                  data: utils_util.clone(e.datas),
-                  width: cfg.DIMENSION.w_t,
-                  height: cfg.DIMENSION.h_t,
-                  viewRangeState: utils_util.clone(ee),
-                  range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
+              return (
+                (a.day =
+                  utils_util.dateUtil.ds(l, "/", !1) +
+                  "/" +
+                  utils_util.dateUtil.nw(l.getDay()) +
+                  (a.time || "")),
+                (e = r),
+                utils_util.clone(a)
+              );
+            }
+          };
+        (this.currentData = a),
+          (this.onDataUpdate = function () {
+            if (utils_util.isFunc(config.ondataupdate)) {
+              var e = a();
+              e &&
+                config.ondataupdate({
+                  data: utils_util.clone(e),
+                  idx: ee.currentLength - 1,
                   left: cfg.DIMENSION.posX,
                   top: cfg.DIMENSION.H_MA4K
                 });
-            }),
-            (this.onViewChanged = function () {
-              utils_util.isFunc(config.onviewchanged) &&
-                config.onviewchanged({
-                  viewRangeState: utils_util.clone(ee)
+            }
+          }),
+          (this.onInnerResize = function (e) {
+            utils_util.isFunc(config.oninnerresize) && config.oninnerresize(e);
+          }),
+          (this.onRange = function (e) {
+            !ae &&
+              utils_util.isFunc(config.onrange) &&
+              e &&
+              config.onrange({
+                isCompare: e.isCompare,
+                data: utils_util.clone(e.datas),
+                width: cfg.DIMENSION.w_t,
+                height: cfg.DIMENSION.h_t,
+                viewRangeState: utils_util.clone(ee),
+                range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
+                left: cfg.DIMENSION.posX,
+                top: cfg.DIMENSION.H_MA4K
+              });
+          }),
+          (this.onViewChanged = function () {
+            utils_util.isFunc(config.onviewchanged) &&
+              config.onviewchanged({
+                viewRangeState: utils_util.clone(ee)
+              });
+          }),
+          (this.onViewPrice = function (r, n, o, s) {
+            if (!ae && utils_util.isFunc(config.onviewprice)) {
+              if ((r || (r = a(r, n)), !r)) return;
+              o || (o = X.getMainStock().getName());
+              var l,
+                c,
+                d = utils_util.clone(r);
+              config.ennfloat
+                ? ((l = config.nfloat), (c = config.nfloat))
+                : ((l = utils_util.strUtil.nfloat(d.price)),
+                  (c = utils_util.strUtil.nfloat(d.avg_price))),
+                (d.price = Number(d.price.toFixed(l))),
+                (d.avg_price = Number(d.avg_price.toFixed(c)));
+              var m = config.symbol.length;
+              "HK" == marketCode &&
+                config.symbol.substring(m - 1, m) >= "A" &&
+                (d.avg_price = 0 / 0),
+                d.volume && d.volume < 0 && (d.volume = 0),
+                config.onviewprice({
+                  curname: o || "",
+                  data_array: X.getAllStock().length,
+                  data: d,
+                  idx: e,
+                  left: cfg.DIMENSION.posX,
+                  top: cfg.DIMENSION.H_MA4K,
+                  interacting: !!s
                 });
+            }
+          }),
+          (this.onTechChanged = function (e) {
+            utils_util.isFunc(config.ontechchanged) &&
+              config.ontechchanged({
+                Indicator: e
+              });
+          }),
+          (this.shortClickHandler = function () {
+            utils_util.isFunc(config.onshortclickmain) && config.onshortclickmain();
+          });
+      })();
+      var iMgr = new (function () {
+        var e,
+          a,
+          r,
+          n,
+          o,
+          s = config.nfloat,
+          l = 137,
+          c = new (function () {
+            var t = function (t) {
+              var a = e.body.style;
+              t && cfg.custom.show_floater
+                ? ((a.backgroundColor = cfg.COLOR.F_BG),
+                  (a.color = cfg.COLOR.F_T),
+                  (a.border = "1px solid " + cfg.COLOR.F_BR),
+                  (a.display = ""))
+                : (a.display = "none");
+            };
+            (this.pv = function (a) {
+              var i = e.body.style,
+                r = Math.max(cfg.DIMENSION.posX, 55) + 9,
+                n = cfg.DIMENSION.posX < 55 ? 9 : 0,
+                o = cfg.DIMENSION.getStageW() - l - 9 - cfg.DIMENSION.RIGHT_W - n;
+              (i.left =
+                (a.x > (cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W) >> 1
+                  ? r
+                  : o) + "px"),
+                (i.top = (a.y || 0) + "px"),
+                t(!0);
             }),
-            (this.onViewPrice = function (r, n, o, s) {
-              if (!ae && utils_util.isFunc(config.onviewprice)) {
-                if ((r || (r = a(r, n)), !r)) return;
-                o || (o = X.getMainStock().getName());
-                var l,
-                  c,
-                  d = utils_util.clone(r);
-                config.ennfloat
-                  ? ((l = config.nfloat), (c = config.nfloat))
-                  : ((l = utils_util.strUtil.nfloat(d.price)),
-                    (c = utils_util.strUtil.nfloat(d.avg_price))),
-                  (d.price = Number(d.price.toFixed(l))),
-                  (d.avg_price = Number(d.avg_price.toFixed(c)));
-                var m = config.symbol.length;
-                "HK" == marketCode &&
-                  config.symbol.substring(m - 1, m) >= "A" &&
-                  (d.avg_price = 0 / 0),
-                  d.volume && d.volume < 0 && (d.volume = 0),
-                  config.onviewprice({
-                    curname: o || "",
-                    data_array: X.getAllStock().length,
-                    data: d,
-                    idx: e,
-                    left: cfg.DIMENSION.posX,
-                    top: cfg.DIMENSION.H_MA4K,
-                    interacting: !!s
-                  });
-              }
-            }),
-            (this.onTechChanged = function (e) {
-              utils_util.isFunc(config.ontechchanged) &&
-                config.ontechchanged({
-                  Indicator: e
-                });
-            }),
-            (this.shortClickHandler = function () {
-              utils_util.isFunc(config.onshortclickmain) && config.onshortclickmain();
-            });
-        })(),
-        iMgr = new (function () {
-          var e,
-            a,
-            r,
-            n,
-            o,
-            s = config.nfloat,
-            l = 137,
-            c = new (function () {
-              var t = function (t) {
-                var a = e.body.style;
-                t && cfg.custom.show_floater
-                  ? ((a.backgroundColor = cfg.COLOR.F_BG),
-                    (a.color = cfg.COLOR.F_T),
-                    (a.border = "1px solid " + cfg.COLOR.F_BR),
-                    (a.display = ""))
-                  : (a.display = "none");
-              };
-              (this.pv = function (a) {
-                var i = e.body.style,
-                  r = Math.max(cfg.DIMENSION.posX, 55) + 9,
-                  n = cfg.DIMENSION.posX < 55 ? 9 : 0,
-                  o = cfg.DIMENSION.getStageW() - l - 9 - cfg.DIMENSION.RIGHT_W - n;
-                (i.left =
-                  (a.x > (cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W) >> 1
-                    ? r
-                    : o) + "px"),
-                  (i.top = (a.y || 0) + "px"),
-                  t(!0);
-              }),
-                (this.showFloater = t);
-            })(),
-            p = function () {
-              function r() {
-                var e = X.getAllStock()[0];
-                return (
-                  !("HK" != e.market || "indx" != e.hq.type) ||
-                  "LSE" === e.market ||
-                  "MSCI" === e.market
-                );
-              }
-              function n() {
-                var e,
-                  a,
-                  n,
-                  o =
-                    "border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0;border-collapse:collapse;border-spacing:0;text-align:center;",
-                  c =
-                    "font-weight:normal;border:0;height:16px;text-align:center;",
-                  m =
-                    "text-align:left;font-weight:normal;border:0;height:16px;",
-                  p = "text-align:right;border:0;height:16px;",
-                  h = utils_util_$C("div");
-                (h.style.position = "absolute"),
-                  (h.style.zIndex = cfg.PARAM.I_Z_INDEX + 2),
-                  (h.style.padding = "2px"),
-                  (h.style.width = l + "px"),
-                  (h.style.lineHeight = "16px"),
-                  (h.style.display = "none"),
-                  (h.style.fontSize = "12px");
-                var u,
-                  v,
-                  f,
-                  g,
-                  b = utils_util_$C("table"),
-                  y = utils_util_$C("thead"),
-                  N = utils_util_$C("tbody");
-                (b.style.cssText = o),
-                  (u = utils_util_$C("tr")),
-                  (v = utils_util_$C("th")),
-                  v.setAttribute("colspan", "2"),
-                  (v.style.cssText = c);
-                var k = utils_util_$C("span");
-                v.appendChild(k),
-                  u.appendChild(v),
-                  y.appendChild(u),
-                  (u = utils_util_$C("tr")),
-                  (u.style.textAlign = "center"),
-                  (v = utils_util_$C("th")),
-                  v.setAttribute("colspan", "2"),
-                  (v.style.cssText = c);
-                var S = utils_util_$C("span");
-                v.appendChild(S),
-                  u.appendChild(v),
-                  N.appendChild(u),
-                  (u = utils_util_$C("tr")),
-                  (v = utils_util_$C("th")),
-                  (v.style.cssText = m),
-                  (f = utils_util_$C("td")),
-                  (v.style.fontWeight = "normal"),
-                  (g = utils_util_$C("span")),
-                  (g.innerHTML = "\u4ef7\u683c");
-                var D = utils_util_$C("span");
-                (f.style.cssText = p),
-                  v.appendChild(g),
-                  f.appendChild(D),
-                  (v.style.fontWeight = "normal"),
-                  u.appendChild(v),
-                  u.appendChild(f),
-                  N.appendChild(u),
-                  (u = utils_util_$C("tr")),
-                  (v = utils_util_$C("th")),
-                  (v.style.cssText = m),
-                  (v.style.fontWeight = "normal"),
-                  (f = utils_util_$C("td")),
-                  (g = utils_util_$C("span")),
-                  (g.innerHTML = "\u5747\u4ef7");
-                var w = utils_util_$C("span");
-                (f.style.cssText = p),
-                  v.appendChild(g),
-                  (v.style.fontWeight = "normal"),
-                  f.appendChild(w),
-                  u.appendChild(v),
-                  u.appendChild(f),
-                  N.appendChild(u),
-                  (u = utils_util_$C("tr")),
-                  (v = utils_util_$C("th")),
-                  (v.style.cssText = m),
-                  (f = utils_util_$C("td")),
-                  (v.style.fontWeight = "normal"),
-                  (g = utils_util_$C("span")),
-                  (g.innerHTML = "\u6da8\u8dcc");
-                var x = utils_util_$C("span");
-                (f.style.cssText = p),
-                  v.appendChild(g),
-                  f.appendChild(x),
-                  u.appendChild(v),
-                  u.appendChild(f),
-                  N.appendChild(u),
-                  (u = utils_util_$C("tr")),
-                  (v = utils_util_$C("th")),
-                  (v.style.cssText = m),
-                  (f = utils_util_$C("td")),
-                  (v.style.fontWeight = "normal"),
-                  (g = utils_util_$C("span")),
-                  (g.innerHTML = "\u6210\u4ea4");
-                var T = utils_util_$C("span");
-                (f.style.cssText = p),
-                  "HF" != marketCode &&
-                  (v.appendChild(g),
-                    f.appendChild(T),
-                    u.appendChild(v),
-                    u.appendChild(f),
-                    N.appendChild(u)),
-                  b.appendChild(y),
-                  b.appendChild(N),
-                  (b.style.width = "100%"),
-                  h.appendChild(b);
-                var M = function (e, t) {
-                  var a = cfg.COLOR.F_N;
-                  return (
-                    e > t
-                      ? (a = cfg.COLOR.F_RISE)
-                      : t > e && (a = cfg.COLOR.F_FALL),
-                    a
-                  );
-                };
-                (this.setFloaterData = function (o) {
-                  if (
-                    ((e = o.name || e || ""),
-                      (k.innerHTML = e),
-                      (n = o.time || n),
-                      (a = o.data || a))
-                  ) {
-                    S.innerHTML = n;
-                    var l = a,
-                      c = Number(l.percent),
-                      d = Number(l.price),
-                      m = Number(l.prevclose),
-                      p = Number(l.avg_price),
-                      h = l.change,
-                      u = 1 > d || 1 > p ? 4 : s;
-                    "HK" == marketCode || "US" == marketCode || "HF" == marketCode
-                      ? (u = utils_util.strUtil.nfloat(d))
-                      : "LSE" === marketCode && (u = 3),
-                      config.ennfloat && (u = config.nfloat),
-                      (c = isNaN(c) ? "--" : (100 * c).toFixed(2)),
-                      (D.innerHTML = d.toFixed(u)),
-                      (w.innerHTML = r() ? "--" : p.toFixed(u)),
-                      (x.innerHTML = h.toFixed(u) + "(" + c + "%)");
-                    var v = 2;
-                    utils_util.isCNK(config.symbol) && (v = 0),
-                      (T.innerHTML = strUtil_ps(l.volume < 0 ? 0 : l.volume, v) + unitShou),
-                      (x.style.color = M(c, 0)),
-                      (w.style.color = M(p - m, 0)),
-                      (D.style.color = M(c, 0));
-                  }
-                }),
-                  (this.body = h);
-              }
-              (a = new n()), (e = a);
-            },
-            h = function () {
-              function e(e) {
-                var t = utils_util_$C("div"),
-                  a = utils_util_$C("div"),
-                  i = utils_util_$C("span"),
-                  r = utils_util_$C("span"),
-                  n = e.isH,
-                  o = 12,
-                  s = function () {
-                    if (
-                      ((a.style.borderStyle = "dashed"),
-                        (a.style.borderColor = cfg.COLOR.IVH_LINE),
-                        (i.style.backgroundColor = r.style.backgroundColor =
-                          cfg.COLOR[e.txtBgCN]),
-                        (i.style.color = r.style.color = cfg.COLOR[e.txtCN]),
-                        n)
-                    )
-                      (a.style.borderWidth = "1px 0 0 0"),
-                        (t.style.width = a.style.width =
-                          cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W + "px"),
-                        (i.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
-                        (r.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
-                        (i.style.left = 0),
-                        (r.style.left = cfg.DIMENSION.extend_draw
-                          ? ""
-                          : cfg.DIMENSION.getStageW() -
-                          cfg.DIMENSION.RIGHT_W +
-                          "px"),
-                        (r.style.right = 0),
-                        (i.style.width = r.style.width = cfg.DIMENSION.extend_draw
-                          ? ""
-                          : cfg.DIMENSION.posX + "px"),
-                        (i.style.padding = "1px 0"),
-                        (r.style.padding = "1px 0");
-                    else {
-                      a.style.borderWidth = "0 1px 0 0";
-                      var o,
-                        s,
-                        l = cfg.DIMENSION.H_MA4K + cfg.DIMENSION.H_T_B;
-                      cfg.DIMENSION.getStageH() < 0
-                        ? ((o = subArea.clientHeight), (s = o - l))
-                        : ((o = cfg.DIMENSION.getStageH() - B.clientHeight || 0),
-                          (s = cfg.DIMENSION.h_t)),
-                        (o -= l),
-                        (o += cfg.DIMENSION.I_V_O),
-                        (t.style.height = a.style.height = o + "px"),
-                        (i.style.top = s + "px"),
-                        (i.style.padding = "2px 2px 1px");
-                    }
-                  };
-                (t.style.position = "absolute"),
-                  (t.style.zIndex = cfg.PARAM.I_Z_INDEX - 2),
-                  (i.style.position = r.style.position = a.style.position =
-                    "absolute"),
-                  (a.style.zIndex = 0),
-                  (i.style.zIndex = r.style.zIndex = 1),
-                  (i.style.font = r.style.font =
-                    cfg.STYLE.FONT_SIZE + "px " + cfg.STYLE.FONT_FAMILY),
-                  (i.style.whiteSpace = r.style.whiteSpace = "nowrap"),
-                  (i.style.lineHeight = o + "px"),
-                  (r.style.lineHeight = o + "px"),
-                  e.txtA &&
-                  (i.style.textAlign = e.txtA) &&
-                  (r.style.textAlign = "left"),
-                  e.txtBgCN &&
-                  (i.style.backgroundColor = cfg.COLOR[e.txtBgCN]) &&
-                  (r.style.backgroundColor = cfg.COLOR[e.txtBgCN]),
-                  s(),
-                  t.appendChild(i),
-                  n && t.appendChild(r),
-                  t.appendChild(a);
-                var l = function (e) {
-                  e
-                    ? "" != t.style.display && (t.style.display = "")
-                    : "none" != t.style.display && (t.style.display = "none");
-                };
-                (this.pv = function (e) {
-                  if (
-                    (!isNaN(e.y) && (t.style.top = e.y + (e.oy || 0) + "px"),
-                      (i.innerHTML = e.v || ""),
-                      e.p
-                        ? ((r.innerHTML = isNaN(Number(e.p.replace("%", "")))
-                          ? "0.00%"
-                          : e.p),
-                          (r.style.display = ""))
-                        : (r.style.display = "none"),
-                      !isNaN(e.x))
-                  ) {
-                    var a = e.x + (e.ox || 0),
-                      n = cfg.DIMENSION.getStageW();
-                    t.style.left = a + "px";
-                    var o = i.offsetWidth;
-                    if ((0 >= o && (o = 112), o > 0)) {
-                      var s = o >> 1;
-                      e.x < s
-                        ? (s = e.x)
-                        : a + s > n - cfg.DIMENSION.posX &&
-                        (s = a + o - n + cfg.DIMENSION.posX),
-                        (i.style.left = -s + "px");
-                    }
-                  }
-                  l(!0);
-                }),
-                  (this.display = l),
-                  (this.body = t),
-                  (this.resize = s),
-                  l(!1);
-              }
-              (r = new e({
-                isH: !0,
-                txtCN: "P_TC",
-                txtBgCN: "P_BG",
-                txtA: "right"
-              })),
-                (n = new e({
-                  isH: !1,
-                  txtCN: "T_TC",
-                  txtBgCN: "T_BG",
-                  txtA: "center"
-                })),
-                V.appendChild(n.body);
-            },
-            u = function () {
-              r.display(!1), n.display(!1), c.showFloater(!1);
-            },
-            g = function () {
-              var e = X.getAllStock(),
-                t = e[0].datas.length,
-                a = 0;
+              (this.showFloater = t);
+          })(),
+          p = function () {
+            function r() {
+              var e = X.getAllStock()[0];
               return (
-                e[0].realLen >= 0 &&
-                (a =
-                  5 == ee.end
-                    ? e[0].realLen + cfg.datas.tDataLen * (t - 1)
-                    : cfg.datas.tDataLen * (t - 1)),
-                a
+                !("HK" != e.market || "indx" != e.hq.type) ||
+                "LSE" === e.market ||
+                "MSCI" === e.market
               );
-            },
-            b = function (e) {
-              e > 2e3 && (e = g()),
-                0 > e || (Y && Y.indirectI(e), Z && Z.indirectI(e));
-            },
-            y = function () {
-              b(g()), Y && Y.allDraw();
-            },
-            k = !0,
-            S = 0,
-            D = 0,
-            T = 0 / 0,
-            M = 0 / 0;
-          (this.iToD = function (a, o, l) {
-            var d = a.x,
-              m = a.ox || 0,
-              p = a.y,
-              h = a.oy || 0,
-              g = a.mark,
-              y = a.rmark,
-              _ = a.e ? a.e.target : null;
-            if (!l) {
-              if (T == d && M == p) return;
-              (T = d), (M = p);
             }
-            if (_) {
-              var O = _.style.height.split("px")[0];
-              (0 > p || p > Number(O)) && ((d = 0 / 0), (p = 0 / 0));
-            }
-            var L,
-              C = X.getAllStock(),
-              A = C.length,
-              P = H,
-              q = A > 1,
-              F = C[0].datas.length,
-              $ = P * F,
-              V = Math.floor((d * $) / cfg.DIMENSION.w_t);
-            if (isNaN(d) && isNaN(p)) {
-              if (((k = !0), u(), stbd(C[0].datas[F - 1][0].date, C[0].hq.date))) {
-                var K;
-                (K =
-                  C[0].realLen >= 0
-                    ? (P - 1) * (F - 1) + C[0].realLen
-                    : Number.MAX_VALUE),
-                  b(K);
-              } else b(Number.MAX_VALUE);
-              return void ne.onViewPrice();
-            }
-            (k = !1), (D = V);
-            for (
-              var G,
-              z,
-              W,
-              B,
-              j,
-              Y,
-              Z,
-              Q,
-              J,
-              te = [],
-              ae = Number.MAX_VALUE,
-              ie = A;
-              ie--;
-
-            )
-              if (((Z = C[ie].datas), (te = te.concat(Z)), Z)) {
-                var re = Math.floor(V / P),
-                  oe = V % P;
-                if (!Z[re]) return;
+            function n() {
+              var e,
+                a,
+                n,
+                o =
+                  "border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0;border-collapse:collapse;border-spacing:0;text-align:center;",
+                c =
+                  "font-weight:normal;border:0;height:16px;text-align:center;",
+                m =
+                  "text-align:left;font-weight:normal;border:0;height:16px;",
+                p = "text-align:right;border:0;height:16px;",
+                h = utils_util_$C("div");
+              (h.style.position = "absolute"),
+                (h.style.zIndex = cfg.PARAM.I_Z_INDEX + 2),
+                (h.style.padding = "2px"),
+                (h.style.width = l + "px"),
+                (h.style.lineHeight = "16px"),
+                (h.style.display = "none"),
+                (h.style.fontSize = "12px");
+              var u,
+                v,
+                f,
+                g,
+                b = utils_util_$C("table"),
+                y = utils_util_$C("thead"),
+                N = utils_util_$C("tbody");
+              (b.style.cssText = o),
+                (u = utils_util_$C("tr")),
+                (v = utils_util_$C("th")),
+                v.setAttribute("colspan", "2"),
+                (v.style.cssText = c);
+              var k = utils_util_$C("span");
+              v.appendChild(k),
+                u.appendChild(v),
+                y.appendChild(u),
+                (u = utils_util_$C("tr")),
+                (u.style.textAlign = "center"),
+                (v = utils_util_$C("th")),
+                v.setAttribute("colspan", "2"),
+                (v.style.cssText = c);
+              var S = utils_util_$C("span");
+              v.appendChild(S),
+                u.appendChild(v),
+                N.appendChild(u),
+                (u = utils_util_$C("tr")),
+                (v = utils_util_$C("th")),
+                (v.style.cssText = m),
+                (f = utils_util_$C("td")),
+                (v.style.fontWeight = "normal"),
+                (g = utils_util_$C("span")),
+                (g.innerHTML = "\u4ef7\u683c");
+              var D = utils_util_$C("span");
+              (f.style.cssText = p),
+                v.appendChild(g),
+                f.appendChild(D),
+                (v.style.fontWeight = "normal"),
+                u.appendChild(v),
+                u.appendChild(f),
+                N.appendChild(u),
+                (u = utils_util_$C("tr")),
+                (v = utils_util_$C("th")),
+                (v.style.cssText = m),
+                (v.style.fontWeight = "normal"),
+                (f = utils_util_$C("td")),
+                (g = utils_util_$C("span")),
+                (g.innerHTML = "\u5747\u4ef7");
+              var w = utils_util_$C("span");
+              (f.style.cssText = p),
+                v.appendChild(g),
+                (v.style.fontWeight = "normal"),
+                f.appendChild(w),
+                u.appendChild(v),
+                u.appendChild(f),
+                N.appendChild(u),
+                (u = utils_util_$C("tr")),
+                (v = utils_util_$C("th")),
+                (v.style.cssText = m),
+                (f = utils_util_$C("td")),
+                (v.style.fontWeight = "normal"),
+                (g = utils_util_$C("span")),
+                (g.innerHTML = "\u6da8\u8dcc");
+              var x = utils_util_$C("span");
+              (f.style.cssText = p),
+                v.appendChild(g),
+                f.appendChild(x),
+                u.appendChild(v),
+                u.appendChild(f),
+                N.appendChild(u),
+                (u = utils_util_$C("tr")),
+                (v = utils_util_$C("th")),
+                (v.style.cssText = m),
+                (f = utils_util_$C("td")),
+                (v.style.fontWeight = "normal"),
+                (g = utils_util_$C("span")),
+                (g.innerHTML = "\u6210\u4ea4");
+              var T = utils_util_$C("span");
+              (f.style.cssText = p),
+                "HF" != marketCode &&
+                (v.appendChild(g),
+                  f.appendChild(T),
+                  u.appendChild(v),
+                  u.appendChild(f),
+                  N.appendChild(u)),
+                b.appendChild(y),
+                b.appendChild(N),
+                (b.style.width = "100%"),
+                h.appendChild(b);
+              var M = function (e, t) {
+                var a = cfg.COLOR.F_N;
+                return (
+                  e > t
+                    ? (a = cfg.COLOR.F_RISE)
+                    : t > e && (a = cfg.COLOR.F_FALL),
+                  a
+                );
+              };
+              (this.setFloaterData = function (o) {
                 if (
-                  ((Q = Z[re][oe]),
-                    (Q.date = Z[re][0].date),
-                    q && C[ie].dAdd <= 1)
-                )
-                  (J = Math.abs(Q.py - p)),
-                    ae > J &&
-                    ((z = ie),
-                      (ae = J),
-                      (L = Q),
-                      (W = C[ie]),
-                      (B = C[ie].getName()),
-                      (j = C[ie].getStockType())),
-                    (y = G = o ? (100 * g).toFixed(2) + "%" : g.toFixed(s));
-                else {
-                  switch (
+                  ((e = o.name || e || ""),
+                    (k.innerHTML = e),
+                    (n = o.time || n),
+                    (a = o.data || a))
+                ) {
+                  S.innerHTML = n;
+                  var l = a,
+                    c = Number(l.percent),
+                    d = Number(l.price),
+                    m = Number(l.prevclose),
+                    p = Number(l.avg_price),
+                    h = l.change,
+                    u = 1 > d || 1 > p ? 4 : s;
+                  "HK" == marketCode || "US" == marketCode || "HF" == marketCode
+                    ? (u = utils_util.strUtil.nfloat(d))
+                    : "LSE" === marketCode && (u = 3),
+                    config.ennfloat && (u = config.nfloat),
+                    (c = isNaN(c) ? "--" : (100 * c).toFixed(2)),
+                    (D.innerHTML = d.toFixed(u)),
+                    (w.innerHTML = r() ? "--" : p.toFixed(u)),
+                    (x.innerHTML = h.toFixed(u) + "(" + c + "%)");
+                  var v = 2;
+                  utils_util.isCNK(config.symbol) && (v = 0),
+                    (T.innerHTML = strUtil_ps(l.volume < 0 ? 0 : l.volume, v) + unitShou),
+                    (x.style.color = M(c, 0)),
+                    (w.style.color = M(p - m, 0)),
+                    (D.style.color = M(c, 0));
+                }
+              }),
+                (this.body = h);
+            }
+            (a = new n()), (e = a);
+          },
+          h = function () {
+            function e(e) {
+              var t = utils_util_$C("div"),
+                a = utils_util_$C("div"),
+                i = utils_util_$C("span"),
+                r = utils_util_$C("span"),
+                n = e.isH,
+                o = 12,
+                s = function () {
+                  if (
+                    ((a.style.borderStyle = "dashed"),
+                      (a.style.borderColor = cfg.COLOR.IVH_LINE),
+                      (i.style.backgroundColor = r.style.backgroundColor =
+                        cfg.COLOR[e.txtBgCN]),
+                      (i.style.color = r.style.color = cfg.COLOR[e.txtCN]),
+                      n)
+                  )
+                    (a.style.borderWidth = "1px 0 0 0"),
+                      (t.style.width = a.style.width =
+                        cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W + "px"),
+                      (i.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
+                      (r.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
+                      (i.style.left = 0),
+                      (r.style.left = cfg.DIMENSION.extend_draw
+                        ? ""
+                        : cfg.DIMENSION.getStageW() -
+                        cfg.DIMENSION.RIGHT_W +
+                        "px"),
+                      (r.style.right = 0),
+                      (i.style.width = r.style.width = cfg.DIMENSION.extend_draw
+                        ? ""
+                        : cfg.DIMENSION.posX + "px"),
+                      (i.style.padding = "1px 0"),
+                      (r.style.padding = "1px 0");
+                  else {
+                    a.style.borderWidth = "0 1px 0 0";
+                    var o,
+                      s,
+                      l = cfg.DIMENSION.H_MA4K + cfg.DIMENSION.H_T_B;
+                    cfg.DIMENSION.getStageH() < 0
+                      ? ((o = subArea.clientHeight), (s = o - l))
+                      : ((o = cfg.DIMENSION.getStageH() - B.clientHeight || 0),
+                        (s = cfg.DIMENSION.h_t)),
+                      (o -= l),
+                      (o += cfg.DIMENSION.I_V_O),
+                      (t.style.height = a.style.height = o + "px"),
+                      (i.style.top = s + "px"),
+                      (i.style.padding = "2px 2px 1px");
+                  }
+                };
+              (t.style.position = "absolute"),
+                (t.style.zIndex = cfg.PARAM.I_Z_INDEX - 2),
+                (i.style.position = r.style.position = a.style.position =
+                  "absolute"),
+                (a.style.zIndex = 0),
+                (i.style.zIndex = r.style.zIndex = 1),
+                (i.style.font = r.style.font =
+                  cfg.STYLE.FONT_SIZE + "px " + cfg.STYLE.FONT_FAMILY),
+                (i.style.whiteSpace = r.style.whiteSpace = "nowrap"),
+                (i.style.lineHeight = o + "px"),
+                (r.style.lineHeight = o + "px"),
+                e.txtA &&
+                (i.style.textAlign = e.txtA) &&
+                (r.style.textAlign = "left"),
+                e.txtBgCN &&
+                (i.style.backgroundColor = cfg.COLOR[e.txtBgCN]) &&
+                (r.style.backgroundColor = cfg.COLOR[e.txtBgCN]),
+                s(),
+                t.appendChild(i),
+                n && t.appendChild(r),
+                t.appendChild(a);
+              var l = function (e) {
+                e
+                  ? "" != t.style.display && (t.style.display = "")
+                  : "none" != t.style.display && (t.style.display = "none");
+              };
+              (this.pv = function (e) {
+                if (
+                  (!isNaN(e.y) && (t.style.top = e.y + (e.oy || 0) + "px"),
+                    (i.innerHTML = e.v || ""),
+                    e.p
+                      ? ((r.innerHTML = isNaN(Number(e.p.replace("%", "")))
+                        ? "0.00%"
+                        : e.p),
+                        (r.style.display = ""))
+                      : (r.style.display = "none"),
+                    !isNaN(e.x))
+                ) {
+                  var a = e.x + (e.ox || 0),
+                    n = cfg.DIMENSION.getStageW();
+                  t.style.left = a + "px";
+                  var o = i.offsetWidth;
+                  if ((0 >= o && (o = 112), o > 0)) {
+                    var s = o >> 1;
+                    e.x < s
+                      ? (s = e.x)
+                      : a + s > n - cfg.DIMENSION.posX &&
+                      (s = a + o - n + cfg.DIMENSION.posX),
+                      (i.style.left = -s + "px");
+                  }
+                }
+                l(!0);
+              }),
+                (this.display = l),
+                (this.body = t),
+                (this.resize = s),
+                l(!1);
+            }
+            (r = new e({
+              isH: !0,
+              txtCN: "P_TC",
+              txtBgCN: "P_BG",
+              txtA: "right"
+            })),
+              (n = new e({
+                isH: !1,
+                txtCN: "T_TC",
+                txtBgCN: "T_BG",
+                txtA: "center"
+              })),
+              V.appendChild(n.body);
+          },
+          u = function () {
+            r.display(!1), n.display(!1), c.showFloater(!1);
+          },
+          g = function () {
+            var e = X.getAllStock(),
+              t = e[0].datas.length,
+              a = 0;
+            return (
+              e[0].realLen >= 0 &&
+              (a =
+                5 == ee.end
+                  ? e[0].realLen + cfg.datas.tDataLen * (t - 1)
+                  : cfg.datas.tDataLen * (t - 1)),
+              a
+            );
+          },
+          b = function (e) {
+            e > 2e3 && (e = g()),
+              0 > e || (Y && Y.indirectI(e), Z && Z.indirectI(e));
+          },
+          y = function () {
+            b(g()), Y && Y.allDraw();
+          },
+          k = !0,
+          S = 0,
+          D = 0,
+          T = 0 / 0,
+          M = 0 / 0;
+        (this.iToD = function (a, o, l) {
+          var d = a.x,
+            m = a.ox || 0,
+            p = a.y,
+            h = a.oy || 0,
+            g = a.mark,
+            y = a.rmark,
+            _ = a.e ? a.e.target : null;
+          if (!l) {
+            if (T == d && M == p) return;
+            (T = d), (M = p);
+          }
+          if (_) {
+            var O = _.style.height.split("px")[0];
+            (0 > p || p > Number(O)) && ((d = 0 / 0), (p = 0 / 0));
+          }
+          var L,
+            C = X.getAllStock(),
+            A = C.length,
+            P = tDataLen,
+            q = A > 1,
+            F = C[0].datas.length,
+            $ = P * F,
+            V = Math.floor((d * $) / cfg.DIMENSION.w_t);
+          if (isNaN(d) && isNaN(p)) {
+            if (((k = !0), u(), stbd(C[0].datas[F - 1][0].date, C[0].hq.date))) {
+              var K;
+              (K =
+                C[0].realLen >= 0
+                  ? (P - 1) * (F - 1) + C[0].realLen
+                  : Number.MAX_VALUE),
+                b(K);
+            } else b(Number.MAX_VALUE);
+            return void ne.onViewPrice();
+          }
+          (k = !1), (D = V);
+          for (
+            var G,
+            z,
+            W,
+            B,
+            j,
+            Y,
+            Z,
+            Q,
+            J,
+            te = [],
+            ae = Number.MAX_VALUE,
+            ie = A;
+            ie--;
+
+          )
+            if (((Z = C[ie].datas), (te = te.concat(Z)), Z)) {
+              var re = Math.floor(V / P),
+                oe = V % P;
+              if (!Z[re]) return;
+              if (
+                ((Q = Z[re][oe]),
+                  (Q.date = Z[re][0].date),
+                  q && C[ie].dAdd <= 1)
+              )
+                (J = Math.abs(Q.py - p)),
+                  ae > J &&
                   ((z = ie),
+                    (ae = J),
+                    (L = Q),
                     (W = C[ie]),
                     (B = C[ie].getName()),
-                    (j = C[ie].getStockType()),
-                    marketCode)
-                  ) {
-                    case "HK":
-                    case "US":
-                    case "HF":
-                      (Y = config.ennfloat ? s : utils_util.strUtil.nfloat(g)),
-                        (G = g.toFixed(Y));
-                      break;
-                    case "LSE":
-                      (Y = config.ennfloat ? s : 3), (G = g.toFixed(Y));
-                      break;
-                    default:
-                      G = g.toFixed(
-                        (1 > g && g > 0) || (g > -1 && 0 > g) ? 4 : s
-                      );
-                  }
-                  (G = g > 99999 ? Math.floor(g) : g > 9999 ? g.toFixed(1) : G),
-                    (L = Q);
-                }
-              }
-            var se = Q && Q.date;
-            S = 0 == C[0].realLen ? 0 : C[0].realLen - 1;
-            var le = "string" != typeof C[0].date ? dateUtil.ds(C[0].date) : C[0].date;
-            if (F > 1) {
-              W.realLen < 0 && (W.realLen = H);
-              var ce = $ - P + W.realLen;
-              5 == ee.end && V >= ce && ((V = ce), (L = te[re][V % H]));
-            } else {
-              if (dateUtil.stbd(se, dateUtil.sd(le)))
-                -1 === W.realLen && (W.realLen = H),
-                  V >= W.realLen && (V = W.realLen);
-              else
-                switch (marketCode) {
+                    (j = C[ie].getStockType())),
+                  (y = G = o ? (100 * g).toFixed(2) + "%" : g.toFixed(s));
+              else {
+                switch (
+                ((z = ie),
+                  (W = C[ie]),
+                  (B = C[ie].getName()),
+                  (j = C[ie].getStockType()),
+                  marketCode)
+                ) {
+                  case "HK":
+                  case "US":
                   case "HF":
-                  case "NF":
-                    V >= W.realLen && 4 == ee.start && (V = W.realLen);
+                    (Y = config.ennfloat ? s : utils_util.strUtil.nfloat(g)),
+                      (G = g.toFixed(Y));
+                    break;
+                  case "LSE":
+                    (Y = config.ennfloat ? s : 3), (G = g.toFixed(Y));
                     break;
                   default:
-                    S = H - 1;
+                    G = g.toFixed(
+                      (1 > g && g > 0) || (g > -1 && 0 > g) ? 4 : s
+                    );
                 }
-              R(marketCode) &&
-                dateUtil.stbd(se, dateUtil.sd(le)) &&
-                W.hq &&
-                W.hq.time >= "09:00" &&
-                W.hq.time < "09:30"
-                ? (L = {
-                  price: W.hq.preopen,
-                  avg_price: W.hq.preopen,
-                  prevclose: W.hq.prevclose,
-                  percent: (W.hq.open - W.hq.prevclose) / W.hq.prevclose,
-                  change: W.hq.preopen - W.hq.price,
-                  volume: W.hq.totalVolume,
-                  ix: 0.1,
-                  time: W.hq.time
-                })
-                : ((L = W.datas[0][V]),
-                  (L.prevclose = W.datas[0][0].prevclose));
+                (G = g > 99999 ? Math.floor(g) : g > 9999 ? g.toFixed(1) : G),
+                  (L = Q);
+              }
             }
-            if (L && (L.date || (L.date = se), !L || L.date)) {
-              var de = d;
-              cfg.custom.stick && (d = L.ix || d);
-              var me, pe;
-              "HF" == marketCode
-                ? ((me = _hf_window_var.time[0][0]),
-                  me > L.time
+          var se = Q && Q.date;
+          S = 0 == C[0].realLen ? 0 : C[0].realLen - 1;
+          var le = "string" != typeof C[0].date ? dateUtil.ds(C[0].date) : C[0].date;
+          if (F > 1) {
+            W.realLen < 0 && (W.realLen = tDataLen);
+            var ce = $ - P + W.realLen;
+            5 == ee.end && V >= ce && ((V = ce), (L = te[re][V % tDataLen]));
+          } else {
+            if (dateUtil.stbd(se, dateUtil.sd(le)))
+              -1 === W.realLen && (W.realLen = tDataLen),
+                V >= W.realLen && (V = W.realLen);
+            else
+              switch (marketCode) {
+                case "HF":
+                case "NF":
+                  V >= W.realLen && 4 == ee.start && (V = W.realLen);
+                  break;
+                default:
+                  S = tDataLen - 1;
+              }
+            R(marketCode) &&
+              dateUtil.stbd(se, dateUtil.sd(le)) &&
+              W.hq &&
+              W.hq.time >= "09:00" &&
+              W.hq.time < "09:30"
+              ? (L = {
+                price: W.hq.preopen,
+                avg_price: W.hq.preopen,
+                prevclose: W.hq.prevclose,
+                percent: (W.hq.open - W.hq.prevclose) / W.hq.prevclose,
+                change: W.hq.preopen - W.hq.price,
+                volume: W.hq.totalVolume,
+                ix: 0.1,
+                time: W.hq.time
+              })
+              : ((L = W.datas[0][V]),
+                (L.prevclose = W.datas[0][0].prevclose));
+          }
+          if (L && (L.date || (L.date = se), !L || L.date)) {
+            var de = d;
+            cfg.custom.stick && (d = L.ix || d);
+            var me, pe;
+            "HF" == marketCode
+              ? ((me = _hf_window_var.time[0][0]),
+                me > L.time
+                  ? ((me = L.date),
+                    (pe = new Date(me)),
+                    pe.setDate(pe.getDate() + 1))
+                  : (pe = L.date))
+              : "NF" == marketCode
+                ? ((me = _nf_window_var.time[0][0]),
+                  me <= L.time && "21:00" == me
                     ? ((me = L.date),
                       (pe = new Date(me)),
-                      pe.setDate(pe.getDate() + 1))
-                    : (pe = L.date))
-                : "NF" == marketCode
-                  ? ((me = _nf_window_var.time[0][0]),
-                    me <= L.time && "21:00" == me
-                      ? ((me = L.date),
-                        (pe = new Date(me)),
-                        pe.setDate(pe.getDate() - 1),
-                        0 == pe.getDay() && pe.setDate(pe.getDate() - 2))
-                      : L.time < "03:00" && 1 == L.date.getDay()
-                        ? ((pe = new Date(L.date)), pe.setDate(pe.getDate() - 2))
-                        : (pe = L.date))
-                  : (pe = L.date);
-              var he =
-                utils_util.dateUtil.ds(pe, "/", !1) +
-                "/" +
-                utils_util.dateUtil.nw(pe.getDay()) +
-                (L.time || "");
-              ("GOODS" === marketCode || "hf_CHA50CFD" === config.symbol || "HF" === marketCode) &&
-                (he = L.time || "--"),
-                (L.day = he),
-                e &&
-                (e.setFloaterData({
-                  stocktype: j,
-                  name: B,
-                  time: he,
-                  data: L
-                }),
-                  c.pv({
-                    x: de,
-                    y: cfg.DIMENSION.T_F_T
-                  })),
-                r.pv({
-                  y: p,
-                  oy: h,
-                  v: G,
-                  p: y
-                }),
-                n.pv({
-                  v: he,
-                  x: d,
-                  ox: m,
-                  y: cfg.DIMENSION.H_MA4K
-                }),
-                b(V),
-                ne.onViewPrice(L, V, B, !k),
-                chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
-            }
-          }),
-            (this.globalDragHandler = function (e, t, a, i, r) {
-              isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
-            }),
-            (this.shortClickHandler = function () {
-              ne.shortClickHandler();
-            }),
-            (this.zoomView = function () { }),
-            p(),
-            h(),
-            (this.onResize = function () {
-              r.resize(), n.resize();
-            }),
-            (this.iHLineO = r),
-            (this.hideIUis = u),
-            (this.iToKb = function (e) {
-              (D += e), (S = D);
-              var t = X.getAllStock(),
-                a = t[0].datas.length,
-                i = t[0].datas[0][D],
-                r = t.length,
-                n = t[0].realLen,
-                o = "string" != typeof t[0].date ? dateUtil.ds(t[0].date) : t[0].date;
-              1 >= a
-                ? dateUtil.stbd(t[0].datas[0][0].date, dateUtil.sd(o))
-                  ? 0 > n && (n = H)
-                  : (n = H)
-                : dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) || (n = H);
-              var s = H > n ? n + 1 : n;
-              if (0 > D) {
-                var l = H > n ? n : n - 1;
-                (S = D = (a - 1) * H + l), (i = t[0].datas[a - 1][l]);
-              } else if (D >= s + (a - 1) * H)
-                if (dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) && 0 > e) {
-                  var c = 0;
-                  (c = a > 1 ? n - 1 + H * (a - 1) : n - 1),
-                    (S = D = c),
-                    (i = t[0].datas[0][S]);
-                } else (S = D = 0), (i = t[0].datas[0][0]);
-              !fCONTAINS(K, iMgr.iHLineO.body) && K.appendChild(iMgr.iHLineO.body);
-              var d = Math.floor(S / H);
-              D >= H && (i = t[0].datas[d][S - d * H]),
-                (i.date = t[0].datas[d][0].date);
-              var p = r > 1 ? i.percent : i.price,
-                h = {
-                  idx: D,
-                  name: t[0].getName(),
-                  mark: p,
-                  datas: t[0].datas,
-                  data: i,
-                  x: i.ix,
-                  y: i.py,
-                  oy: cfg.DIMENSION.H_MA4K,
-                  ox: cfg.DIMENSION.posX
-                };
-              this.iToD(h, !0, !0);
-            }),
-            (this.isIng = function () {
-              return !k;
-            }),
-            (this.isMoving = function () {
-              return !1;
-            }),
-            (this.iReset = function () { }),
-            (this.patcher = new (function () {
-              var i,
-                r = {},
-                n = function () {
-                  if (i) {
-                    e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                    var t = "vid_" + ee.viewId;
-                    if (i[t]) {
-                      var n;
-                      (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
-                    } else e = a;
-                  } else e = a;
-                  !fCONTAINS(V, e.body) && V.appendChild(e.body);
-                };
-              (this.customFloater = function (e) {
-                (i = e), n(), utils_util.stc("t_fl", e);
+                      pe.setDate(pe.getDate() - 1),
+                      0 == pe.getDay() && pe.setDate(pe.getDate() - 2))
+                    : L.time < "03:00" && 1 == L.date.getDay()
+                      ? ((pe = new Date(L.date)), pe.setDate(pe.getDate() - 2))
+                      : (pe = L.date))
+                : (pe = L.date);
+            var he =
+              utils_util.dateUtil.ds(pe, "/", !1) +
+              "/" +
+              utils_util.dateUtil.nw(pe.getDay()) +
+              (L.time || "");
+            ("GOODS" === marketCode || "hf_CHA50CFD" === config.symbol || "HF" === marketCode) &&
+              (he = L.time || "--"),
+              (L.day = he),
+              e &&
+              (e.setFloaterData({
+                stocktype: j,
+                name: B,
+                time: he,
+                data: L
               }),
-                (this.switchFloater = n);
-            })()),
-            (this.update = function () {
-              var a = X.getAllStock();
-              if (a) {
-                var i,
-                  r = a[0],
-                  n = r.datas.length,
-                  s = 0;
-                if (r) {
-                  if (
-                    (D > n * (H - 1) && (D = 0),
-                      (i = Math.floor(D / (H - 1))),
-                      n == i && (i -= 1),
-                      D > H - 1)
-                  ) {
-                    var l = D - H * i;
-                    s =
-                      stbd(r.datas[i][0].date, r.hq.date) && l > S ? r.realLen : l;
-                  } else s = 1 == n && 0 == i && D > S ? r.realLen : D;
-                  if (
-                    ((i = 0 > i ? 0 : i),
-                      (s = 0 > s ? 0 : s),
-                      (o = r.datas[i][s]))
-                  )
-                    if (
-                      ((o.day =
-                        utils_util.dateUtil.ds(r.datas[i][0].date, "/", !1) +
-                        "/" +
-                        utils_util.dateUtil.nw(r.datas[i][0].date.getDay()) +
-                        (o.time || "")),
-                        e && e.setFloaterData({}),
-                        k)
-                    )
-                      if (stbd(r.datas[n - 1][0].date, r.hq.date))
-                        (s = r.realLen >= 0 ? r.realLen : H - 1),
-                          (s += (n - 1) * H),
-                          (s = 0 > s ? Number.MAX_VALUE : s),
-                          b(s);
-                      else {
-                        if ("NF" == marketCode && r.hq.time >= "21:00")
-                          return (
-                            r.realLen >= 0 && (s = r.realLen),
-                            void (
-                              4 == ee.start &&
-                              5 == ee.end &&
-                              ne.onViewPrice(o, s, void 0, !k)
-                            )
-                          );
-                        y();
-                      }
-                    else if ("HF" == marketCode)
-                      4 == ee.start &&
-                        5 == ee.end &&
-                        ne.onViewPrice(o, s, void 0, !k);
-                    else if ("NF" == marketCode) {
-                      var c = new Date(o.date);
-                      o.date &&
-                        o.time >= "21:00" &&
-                        (c.setDate(
-                          1 == o.date.getDay()
-                            ? c.getDate() - 3
-                            : c.getDate() - 1
-                        ),
-                          (o.day =
-                            utils_util.dateUtil.ds(c, "/", !1) +
-                            "/" +
-                            utils_util.dateUtil.nw(c.getDay()) +
-                            (o.time || ""))),
-                        ne.onViewPrice(o, s, void 0, !k);
-                    } else ne.onViewPrice(o, s, void 0, !k);
-                }
-              }
-            });
-        })();
-      return (
-        (n = new (function () {
-          var e = this,
-            a = function (a, i) {
-              if (cfg.hasOwnProperty(a)) {
-                for (var r in i)
-                  if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
-                    return void utils_util.trace.error("illegal operation:", r);
-                "DIMENSION" == a && (ie = 1),
-                  copyProperties(cfg[a], i),
-                  utils_util.stc(a, i),
-                  e.resize();
-              } else utils_util.trace.error("not exist param:", a);
-            },
-            r = function (e, a) {
-              var i;
-              if (cfg.hasOwnProperty(e)) {
-                i = utils_util.clone(cfg[e]);
-                for (var r in i)
-                  if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
-                    (i[r] = null), delete i[r];
-                  else if (a)
-                    for (var n = a.length; n--;)
-                      typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
-              }
-              return i;
-            },
-            n = function (e, t, a) {
-              (a = copyProperties(
-                {
-                  toremove: !1,
-                  isexclusive: !1,
-                  callback: void 0
-                },
-                a
-              )),
-                a.toremove
-                  ? X.mM.removeAC(t, e)
-                  : a.isexclusive
-                    ? (X.mM.removeAC(null, e), X.mM.newAC(t, e, a))
-                    : X.mM.newAC(t, e, a);
-            },
-            o = function (e) {
-              (ee.viewId = e), (ee.start = 1 == e ? 4 : 0), (ee.end = 5);
-            };
-          this.pushData = function (e, a) {
-            !utils_util.isArr(e) && (e = [e]), X.pushData(e, a);
-          };
-          var s;
-          (this.pushTr = function (e) {
-            e &&
-              e.data &&
-              (clearTimeout(s),
-                (s = setTimeout(function () {
-                  var t = e.data.split(","),
-                    a = e.symbol,
-                    i = e.market,
-                    r = {
-                      symbol: a,
-                      data: t[t.length - 1],
-                      market: i
-                    };
-                  X.pushData([r], 1);
-                }, 20)));
+                c.pv({
+                  x: de,
+                  y: cfg.DIMENSION.T_F_T
+                })),
+              r.pv({
+                y: p,
+                oy: h,
+                v: G,
+                p: y
+              }),
+              n.pv({
+                v: he,
+                x: d,
+                ox: m,
+                y: cfg.DIMENSION.H_MA4K
+              }),
+              b(V),
+              ne.onViewPrice(L, V, B, !k),
+              chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
+          }
+        }),
+          (this.globalDragHandler = function (e, t, a, i, r) {
+            isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
           }),
-            (this.setScale = function (e) {
-              X.setScale(e), utils_util.stc("t_scale", e);
-            });
-          var l = !0;
-          this.showView = function (e, a) {
-            iMgr.hideIUis(), l ? (l = !1) : J.hide();
-            var r = globalCfg.URLHASH.vi(e);
-            if (config.date) return (config.date = ""), o(r), void this.newSymbol(config);
-            var n = X.getAllStock()[0];
-            if (
-              (ne.onRange(n),
-                utils_util.stc("t_v", e),
-                utils_util.suda("vw", e),
-                ee.viewId != r)
-            ) {
-              if ((o(r), ("HF" == marketCode || "NF" == marketCode) && "t5" == e && 0 == C))
-                return J.show(), (C = 1), void X.update5Data(e);
-              X.onChangeView(!1, a), ne && ne.onViewPrice();
-            }
-          };
-          var d = function (e) {
-            var a;
-            return (a = utils_util.isStr(e.symbol)
-              ? e.symbol.split(",")
-              : [e.symbol]);
-          },
-            m = [];
-          (this.overlay = function (e, t) {
-            if (X && 1 != X.dAdd)
-              if (t) {
-                X.removeCompare(d(e));
-                for (var a = 0; a < m.length; a++)
-                  e.symbol == m[a] && m.splice(a, 1);
-                X.getAllStock().length <= 1 && (X.dAdd = 0);
-              } else
-                (config.overlaycolor = e.linecolor || {
-                  K_N: "#cccccc"
-                }),
-                  (X.dAdd = 2),
-                  X.compare(e),
-                  m.push(e.symbol);
+          (this.shortClickHandler = function () {
+            ne.shortClickHandler();
           }),
-            (this.compare = function (e, a) {
-              if (X) {
-                var i,
-                  r = 0;
-                if (a) {
-                  if (
-                    ((i = utils_util.isStr(e) ? e.split(",") : [e.symbol]),
-                      1 == X.dAdd && X.removeCompare(i),
-                      X.getAllStock().length <= 1)
-                  ) {
-                    for (r = 0; r < m.length; r++)
-                      (X.dAdd = 2),
-                        X.compare({
-                          symbol: m[r]
-                        });
-                    m.length < 1 && (X.dAdd = 0);
-                  }
-                } else
-                  2 == X.dAdd && X.removeCompare(m),
-                    (X.dAdd = 1),
-                    X.compare(e),
-                    utils_util.suda("t_comp");
-                utils_util.stc("t_comp", {
-                  rm: a,
-                  o: e
-                });
-              }
-            });
-          var p = 0;
-          this.tCharts = function (e, a) {
-            n("tech", e, a),
-              a && !a.noLog && (0 == p ? (p = 1) : utils_util.sudaLog());
-          };
-          var h = 0;
-          (this.pCharts = function (e, a) {
-            n("price", e, a),
-              a && !a.noLog && (0 == h ? (h = 1) : utils_util.sudaLog());
+          (this.zoomView = function () { }),
+          p(),
+          h(),
+          (this.onResize = function () {
+            r.resize(), n.resize();
           }),
-            (this.showPCharts = function (e) {
-              e && (X.mM.togglePt(e), utils_util.stc("t_sp", e));
-            }),
-            (this.getIndicators = function () {
-              var e = Y ? Y.getLog() : null,
-                t = Z ? Z.getLog() : null;
-              return {
-                tCharts: e,
-                pCharts: t
+          (this.iHLineO = r),
+          (this.hideIUis = u),
+          (this.iToKb = function (e) {
+            (D += e), (S = D);
+            var t = X.getAllStock(),
+              a = t[0].datas.length,
+              i = t[0].datas[0][D],
+              r = t.length,
+              n = t[0].realLen,
+              o = "string" != typeof t[0].date ? dateUtil.ds(t[0].date) : t[0].date;
+            1 >= a
+              ? dateUtil.stbd(t[0].datas[0][0].date, dateUtil.sd(o))
+                ? 0 > n && (n = tDataLen)
+                : (n = tDataLen)
+              : dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) || (n = tDataLen);
+            var s = tDataLen > n ? n + 1 : n;
+            if (0 > D) {
+              var l = tDataLen > n ? n : n - 1;
+              (S = D = (a - 1) * tDataLen + l), (i = t[0].datas[a - 1][l]);
+            } else if (D >= s + (a - 1) * tDataLen)
+              if (dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) && 0 > e) {
+                var c = 0;
+                (c = a > 1 ? n - 1 + tDataLen * (a - 1) : n - 1),
+                  (S = D = c),
+                  (i = t[0].datas[0][S]);
+              } else (S = D = 0), (i = t[0].datas[0][0]);
+            !fCONTAINS(K, iMgr.iHLineO.body) && K.appendChild(iMgr.iHLineO.body);
+            var d = Math.floor(S / tDataLen);
+            D >= tDataLen && (i = t[0].datas[d][S - d * tDataLen]),
+              (i.date = t[0].datas[d][0].date);
+            var p = r > 1 ? i.percent : i.price,
+              h = {
+                idx: D,
+                name: t[0].getName(),
+                mark: p,
+                datas: t[0].datas,
+                data: i,
+                x: i.ix,
+                y: i.py,
+                oy: cfg.DIMENSION.H_MA4K,
+                ox: cfg.DIMENSION.posX
               };
-            });
-          var f;
-          (this.showRangeSelector = function (e) {
-            (f = copyProperties(
-              {
-                dispaly: !0,
-                from: void 0,
-                to: void 0
-              },
-              e
-            )),
-              X.mM.showRs(f),
-              utils_util.stc("t_rs", e);
+            this.iToD(h, !0, !0);
           }),
-            (this.setLineStyle = function (e) {
-              X && X.setTLineStyle(e), utils_util.stc("t_style", e);
+          (this.isIng = function () {
+            return !k;
+          }),
+          (this.isMoving = function () {
+            return !1;
+          }),
+          (this.iReset = function () { }),
+          (this.patcher = new (function () {
+            var i,
+              r = {},
+              n = function () {
+                if (i) {
+                  e.body.parentNode && e.body.parentNode.removeChild(e.body);
+                  var t = "vid_" + ee.viewId;
+                  if (i[t]) {
+                    var n;
+                    (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
+                  } else e = a;
+                } else e = a;
+                !fCONTAINS(V, e.body) && V.appendChild(e.body);
+              };
+            (this.customFloater = function (e) {
+              (i = e), n(), utils_util.stc("t_fl", e);
             }),
-            (this.setCustom = fBind(a, this, "custom")),
-            (this.setDimension = fBind(a, this, "DIMENSION")),
-            (this.getDimension = fBind(r, null, "DIMENSION", ["boolean"])),
-            (this.setTheme = function (e) {
-              var t = initMgr.initTheme(e);
-              t &&
-                (this.setLineStyle({
-                  linecolor: e
-                }),
-                  this.resize());
-            }),
-            (this.newSymbol = function (e) {
-              if (
-                ((config.symbol = e.symbol),
-                  (config.date = e.date),
-                  iMgr.hideIUis(),
-                  iMgr.iReset(),
-                  X.dcReset(),
-                  X.dcInit(config),
-                  q.hideTip(),
-                  Y)
-              ) {
-                var a = Y.getLog();
-                (Y = null), a && this.tCharts(a);
+              (this.switchFloater = n);
+          })()),
+          (this.update = function () {
+            var a = X.getAllStock();
+            if (a) {
+              var i,
+                r = a[0],
+                n = r.datas.length,
+                s = 0;
+              if (r) {
+                if (
+                  (D > n * (tDataLen - 1) && (D = 0),
+                    (i = Math.floor(D / (tDataLen - 1))),
+                    n == i && (i -= 1),
+                    D > tDataLen - 1)
+                ) {
+                  var l = D - tDataLen * i;
+                  s =
+                    stbd(r.datas[i][0].date, r.hq.date) && l > S ? r.realLen : l;
+                } else s = 1 == n && 0 == i && D > S ? r.realLen : D;
+                if (
+                  ((i = 0 > i ? 0 : i),
+                    (s = 0 > s ? 0 : s),
+                    (o = r.datas[i][s]))
+                )
+                  if (
+                    ((o.day =
+                      utils_util.dateUtil.ds(r.datas[i][0].date, "/", !1) +
+                      "/" +
+                      utils_util.dateUtil.nw(r.datas[i][0].date.getDay()) +
+                      (o.time || "")),
+                      e && e.setFloaterData({}),
+                      k)
+                  )
+                    if (stbd(r.datas[n - 1][0].date, r.hq.date))
+                      (s = r.realLen >= 0 ? r.realLen : tDataLen - 1),
+                        (s += (n - 1) * tDataLen),
+                        (s = 0 > s ? Number.MAX_VALUE : s),
+                        b(s);
+                    else {
+                      if ("NF" == marketCode && r.hq.time >= "21:00")
+                        return (
+                          r.realLen >= 0 && (s = r.realLen),
+                          void (
+                            4 == ee.start &&
+                            5 == ee.end &&
+                            ne.onViewPrice(o, s, void 0, !k)
+                          )
+                        );
+                      y();
+                    }
+                  else if ("HF" == marketCode)
+                    4 == ee.start &&
+                      5 == ee.end &&
+                      ne.onViewPrice(o, s, void 0, !k);
+                  else if ("NF" == marketCode) {
+                    var c = new Date(o.date);
+                    o.date &&
+                      o.time >= "21:00" &&
+                      (c.setDate(
+                        1 == o.date.getDay()
+                          ? c.getDate() - 3
+                          : c.getDate() - 1
+                      ),
+                        (o.day =
+                          utils_util.dateUtil.ds(c, "/", !1) +
+                          "/" +
+                          utils_util.dateUtil.nw(c.getDay()) +
+                          (o.time || ""))),
+                      ne.onViewPrice(o, s, void 0, !k);
+                  } else ne.onViewPrice(o, s, void 0, !k);
               }
-              if (Z) {
-                var r = Z.getLog();
-                (Z = null), r && this.pCharts(r);
-              }
-              f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
-                utils_util.stc("t_ns", e);
-            }),
-            (this.resize = function (e, t) {
-              initMgr.resizeAll(!0, e, t);
-            }),
-            (this.hide = function (e) {
-              (ae = !0),
+            }
+          });
+      })();
+
+
+      n = new (function () {
+        var e = this,
+          a = function (a, i) {
+            if (cfg.hasOwnProperty(a)) {
+              for (var r in i)
+                if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
+                  return void utils_util.trace.error("illegal operation:", r);
+              "DIMENSION" == a && (ie = 1),
+                copyProperties(cfg[a], i),
+                utils_util.stc(a, i),
+                e.resize();
+            } else utils_util.trace.error("not exist param:", a);
+          },
+          r = function (e, a) {
+            var i;
+            if (cfg.hasOwnProperty(e)) {
+              i = utils_util.clone(cfg[e]);
+              for (var r in i)
+                if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
+                  (i[r] = null), delete i[r];
+                else if (a)
+                  for (var n = a.length; n--;)
+                    typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
+            }
+            return i;
+          },
+          n = function (e, t, a) {
+            (a = copyProperties(
+              {
+                toremove: !1,
+                isexclusive: !1,
+                callback: void 0
+              },
+              a
+            )),
+              a.toremove
+                ? X.mM.removeAC(t, e)
+                : a.isexclusive
+                  ? (X.mM.removeAC(null, e), X.mM.newAC(t, e, a))
+                  : X.mM.newAC(t, e, a);
+          },
+          o = function (e) {
+            (ee.viewId = e), (ee.start = 1 == e ? 4 : 0), (ee.end = 5);
+          };
+        this.pushData = function (e, a) {
+          !utils_util.isArr(e) && (e = [e]), X.pushData(e, a);
+        };
+        var s;
+        (this.pushTr = function (e) {
+          e &&
+            e.data &&
+            (clearTimeout(s),
+              (s = setTimeout(function () {
+                var t = e.data.split(","),
+                  a = e.symbol,
+                  i = e.market,
+                  r = {
+                    symbol: a,
+                    data: t[t.length - 1],
+                    market: i
+                  };
+                X.pushData([r], 1);
+              }, 20)));
+        }),
+          (this.setScale = function (e) {
+            X.setScale(e), utils_util.stc("t_scale", e);
+          });
+        var l = !0;
+        this.showView = function (e, a) {
+          iMgr.hideIUis(), l ? (l = !1) : J.hide();
+          var r = globalCfg.URLHASH.vi(e);
+          if (config.date) return (config.date = ""), o(r), void this.newSymbol(config);
+          var n = X.getAllStock()[0];
+          if (
+            (ne.onRange(n),
+              utils_util.stc("t_v", e),
+              utils_util.suda("vw", e),
+              ee.viewId != r)
+          ) {
+            if ((o(r), ("HF" == marketCode || "NF" == marketCode) && "t5" == e && 0 == C))
+              return J.show(), (C = 1), void X.update5Data(e);
+            X.onChangeView(!1, a), ne && ne.onViewPrice();
+          }
+        };
+        var d = function (e) {
+          var a;
+          return (a = utils_util.isStr(e.symbol)
+            ? e.symbol.split(",")
+            : [e.symbol]);
+        },
+          m = [];
+        (this.overlay = function (e, t) {
+          if (X && 1 != X.dAdd)
+            if (t) {
+              X.removeCompare(d(e));
+              for (var a = 0; a < m.length; a++)
+                e.symbol == m[a] && m.splice(a, 1);
+              X.getAllStock().length <= 1 && (X.dAdd = 0);
+            } else
+              (config.overlaycolor = e.linecolor || {
+                K_N: "#cccccc"
+              }),
+                (X.dAdd = 2),
+                X.compare(e),
+                m.push(e.symbol);
+        }),
+          (this.compare = function (e, a) {
+            if (X) {
+              var i,
+                r = 0;
+              if (a) {
+                if (
+                  ((i = utils_util.isStr(e) ? e.split(",") : [e.symbol]),
+                    1 == X.dAdd && X.removeCompare(i),
+                    X.getAllStock().length <= 1)
+                ) {
+                  for (r = 0; r < m.length; r++)
+                    (X.dAdd = 2),
+                      X.compare({
+                        symbol: m[r]
+                      });
+                  m.length < 1 && (X.dAdd = 0);
+                }
+              } else
+                2 == X.dAdd && X.removeCompare(m),
+                  (X.dAdd = 1),
+                  X.compare(e),
+                  utils_util.suda("t_comp");
+              utils_util.stc("t_comp", {
+                rm: a,
+                o: e
+              });
+            }
+          });
+        var p = 0;
+        this.tCharts = function (e, a) {
+          n("tech", e, a),
+            a && !a.noLog && (0 == p ? (p = 1) : utils_util.sudaLog());
+        };
+        var h = 0;
+        this.pCharts = function (e, a) {
+          n("price", e, a),
+            a && !a.noLog && (0 == h ? (h = 1) : utils_util.sudaLog());
+        };
+        (this.showPCharts = function (e) {
+          e && (X.mM.togglePt(e), utils_util.stc("t_sp", e));
+        }),
+          (this.getIndicators = function () {
+            var e = Y ? Y.getLog() : null,
+              t = Z ? Z.getLog() : null;
+            return {
+              tCharts: e,
+              pCharts: t
+            };
+          });
+        var f;
+        (this.showRangeSelector = function (e) {
+          (f = copyProperties(
+            {
+              dispaly: !0,
+              from: void 0,
+              to: void 0
+            },
+            e
+          )),
+            X.mM.showRs(f),
+            utils_util.stc("t_rs", e);
+        }),
+          (this.setLineStyle = function (e) {
+            X && X.setTLineStyle(e), utils_util.stc("t_style", e);
+          }),
+          (this.setCustom = fBind(a, this, "custom")),
+          (this.setDimension = fBind(a, this, "DIMENSION")),
+          (this.getDimension = fBind(r, null, "DIMENSION", ["boolean"])),
+          (this.setTheme = function (e) {
+            var t = initMgr.initTheme(e);
+            t &&
+              (this.setLineStyle({
+                linecolor: e
+              }),
+                this.resize());
+          }),
+          (this.newSymbol = function (e) {
+            if (
+              ((config.symbol = e.symbol),
+                (config.date = e.date),
                 iMgr.hideIUis(),
-                utils_util.$CONTAINS($, V) && $.removeChild(V),
-                e && X.dcReset();
-            }),
-            (this.show = function (e) {
-              (ae = !1),
-                e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
-                utils_util.$CONTAINS($, V) ||
-                ($.appendChild(V), initMgr.resizeAll(!0)),
-                ne && ne.onViewPrice();
-            }),
-            (this.shareTo = function (e) {
-              X.shareTo(e), utils_util.stc("t_share", e);
-              var a = e && e.type ? e.type : "weibo";
-              utils_util.suda("share", a);
-            }),
-            (this.getChartId = function () {
-              return cfg.uid;
-            }),
-            (this.dateTo = function (e, a) {
-              (config.historytime = e), (config.historycb = a);
-              var r = e;
-              "object" == typeof e ? (r = dateUtil.ds(e, "-")) : (e = dateUtil.sd(e));
-              var n = j.get();
-              if (null == n) return void (O = 1);
-              for (var o = n.length, s = 0; o > s; s++)
-                if (dateUtil.stbd(e, n[s][0].date))
-                  return void X.moving(s, s + 1, "dateTo");
-              (config.date = r),
-                (X.hasHistory = a),
-                utils_util.stc("t_ft", r),
-                this.newSymbol(config);
-            }),
-            (this.showScale = function (e) {
-              X && X.setScale(e);
-            }),
-            (this.resize = function (e, t) {
-              initMgr.resizeAll(!0, e, t);
-            }),
-            (this.showCompatibleTip = function (e) {
-              initMgr.showCompatibleTip(e);
-            }),
-            (this.toggleExtend = function (e) {
-              var t,
-                i = cfg.DIMENSION.posX;
-              (t = e ? "on" == !e : cfg.DIMENSION.extend_draw),
-                a.call(this, "DIMENSION", {
-                  extend_draw: !t,
-                  posX: i > 9 ? cfg.DIMENSION.extend_padding : 55,
-                  RIGHT_W: i > 9 ? cfg.DIMENSION.extend_padding : 55
-                }),
-                this.resize();
-            }),
-            (this.historyData = function () {
-              return X.historyData;
-            }),
-            (this.getExtraData = function (e) {
-              return X.getExtraData(e);
-            }),
-            (this.patcher = {
-              iMgr: iMgr.patcher
-            }),
-            (this.zoom = function (e) {
-              X.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
-            }),
-            (this.move = function (e) {
-              (e = parseInt(e)),
-                isNaN(e) || (X.moveApi(e), utils_util.stc("t_move", e, 9e3));
-            }),
-            (this.getSymbols = function () {
-              return X.getAllSymbols();
-            }),
-            (this.update = function () {
-              X.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
-            }),
-            (this.getCurrentData = function () {
-              return ne.currentData();
-            }),
-            (this.viewState = ee),
-            (this.me = chart_h5tObj),
-            (this.type = "h5t");
-        })()),
-        (X = new D()),
-        X.dcInit(config),
-        n
-      );
+                iMgr.iReset(),
+                X.dcReset(),
+                X.dcInit(config),
+                tipObj.hideTip(),
+                Y)
+            ) {
+              var a = Y.getLog();
+              (Y = null), a && this.tCharts(a);
+            }
+            if (Z) {
+              var r = Z.getLog();
+              (Z = null), r && this.pCharts(r);
+            }
+            f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
+              utils_util.stc("t_ns", e);
+          }),
+          (this.resize = function (e, t) {
+            initMgr.resizeAll(!0, e, t);
+          }),
+          (this.hide = function (e) {
+            (ae = !0),
+              iMgr.hideIUis(),
+              utils_util.$CONTAINS($, V) && $.removeChild(V),
+              e && X.dcReset();
+          }),
+          (this.show = function (e) {
+            (ae = !1),
+              e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
+              utils_util.$CONTAINS($, V) ||
+              ($.appendChild(V), initMgr.resizeAll(!0)),
+              ne && ne.onViewPrice();
+          }),
+          (this.shareTo = function (e) {
+            X.shareTo(e), utils_util.stc("t_share", e);
+            var a = e && e.type ? e.type : "weibo";
+            utils_util.suda("share", a);
+          }),
+          (this.getChartId = function () {
+            return cfg.uid;
+          }),
+          (this.dateTo = function (e, a) {
+            (config.historytime = e), (config.historycb = a);
+            var r = e;
+            "object" == typeof e ? (r = dateUtil.ds(e, "-")) : (e = dateUtil.sd(e));
+            var n = j.get();
+            if (null == n) return void (O = 1);
+            for (var o = n.length, s = 0; o > s; s++)
+              if (dateUtil.stbd(e, n[s][0].date))
+                return void X.moving(s, s + 1, "dateTo");
+            (config.date = r),
+              (X.hasHistory = a),
+              utils_util.stc("t_ft", r),
+              this.newSymbol(config);
+          }),
+          (this.showScale = function (e) {
+            X && X.setScale(e);
+          }),
+          (this.resize = function (e, t) {
+            initMgr.resizeAll(!0, e, t);
+          }),
+          (this.showCompatibleTip = function (e) {
+            initMgr.showCompatibleTip(e);
+          }),
+          (this.toggleExtend = function (e) {
+            var t,
+              i = cfg.DIMENSION.posX;
+            (t = e ? "on" == !e : cfg.DIMENSION.extend_draw),
+              a.call(this, "DIMENSION", {
+                extend_draw: !t,
+                posX: i > 9 ? cfg.DIMENSION.extend_padding : 55,
+                RIGHT_W: i > 9 ? cfg.DIMENSION.extend_padding : 55
+              }),
+              this.resize();
+          }),
+          (this.historyData = function () {
+            return X.historyData;
+          }),
+          (this.getExtraData = function (e) {
+            return X.getExtraData(e);
+          }),
+          (this.patcher = {
+            iMgr: iMgr.patcher
+          }),
+          (this.zoom = function (e) {
+            X.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
+          }),
+          (this.move = function (e) {
+            (e = parseInt(e)),
+              isNaN(e) || (X.moveApi(e), utils_util.stc("t_move", e, 9e3));
+          }),
+          (this.getSymbols = function () {
+            return X.getAllSymbols();
+          }),
+          (this.update = function () {
+            X.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
+          }),
+          (this.getCurrentData = function () {
+            return ne.currentData();
+          }),
+          (this.viewState = ee),
+          (this.me = chart_h5tObj),
+          (this.type = "h5t");
+      })();
+      X = new D();
+      X.dcInit(config);
+      return n;
     }
     function chart_h5t$() {
       console.log('test');

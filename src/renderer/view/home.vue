@@ -76,17 +76,18 @@ export default {
         KKE.api(
           "chart.h5t.get",
           {
-            symbol: papercode //证券代码
+            symbol: papercode
           },
-          function(h5k) {
-            console.log(h5k);
+          function(tChart) {
+            console.log(tChart);
+            tChart.tCharts.apply(null, [[{ name: "TVOL" }]]);
             console.log("ok");
 
-            if (true)
+            if (false)
               KKE.api(
                 "plugins.techcharts.get",
                 {
-                  type: "tech" //证券代码
+                  type: "tech"
                 },
                 function(res) {
                   console.log(res);

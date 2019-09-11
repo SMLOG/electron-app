@@ -2284,11 +2284,11 @@ xh5_define(
     function ViewManger(viewManangerConfig) {
       function STData(stdDataOptions, isMain) {
         function onViewChange(e) {
-          _stData_$_obj.setDataRange(e),
-            _stData_tChartObj &&
-              (_stData_tChartObj.linkData(e), _stData_tChartObj.setDataRange()),
-            _stDatak && (_stDatak.linkData(e), _stDatak.setDataRange()),
-            _stDataD && (_stDataD.linkData(e), _stDataD.setDataRange());
+          _stData_$_obj.setDataRange(e);
+          _stData_tChartObj &&
+            (_stData_tChartObj.linkData(e), _stData_tChartObj.setDataRange());
+          _stDatak && (_stDatak.linkData(e), _stDatak.setDataRange());
+          _stDataD && (_stDataD.linkData(e), _stDataD.setDataRange());
         }
         function funcBool() {
           if (isMain) whatJ = _stData_tDb_obj;
@@ -2733,7 +2733,7 @@ xh5_define(
                 (_stDataMe.datas[0][0].volume =
                   _stDataMe.hq.totalAmount / _stDataMe.hq.totalVolume));
 
-            var c = g(_stDataMe.maxVolume, 0, 0, !0);
+            var c = ht5_c(_stDataMe.maxVolume, 0, 0, !0);
             _stDataMe.labelMaxVol = c[0];
             var d = 0.005;
 
@@ -3570,7 +3570,7 @@ xh5_define(
                     _stData_tDb_obj.initTState(b),
                     s(o),
                     1 == O &&
-                      (viewHelper.dateTo(
+                      (ht5_viewHelper.dateTo(
                         viewManangerConfig.historytime,
                         viewManangerConfig.historycb
                       ),
@@ -3671,7 +3671,7 @@ xh5_define(
               }
 
             if (!_stDatak) {
-              _stDatak = new pChart({
+              _stDatak = new ht5_pChart({
                 iMgr: iMgr,
                 stockData: _stDataMe,
                 chartArea: G,
@@ -3689,7 +3689,7 @@ xh5_define(
         };
         this.initTc = function(chartlist, options) {
           if (!_stData_tChartObj) {
-            _stData_tChartObj = new tChart({
+            _stData_tChartObj = new ht5_tChart({
               stockData: _stDataMe,
               iMgr: iMgr,
               subArea: subArea,
@@ -3709,7 +3709,7 @@ xh5_define(
         };
         this.initRs = function() {
           if (!_stDataD) {
-            _stDataD = new o({
+            _stDataD = new ht5_o({
               stockData: _stDataMe,
               setting: cfg,
               state: viewState,
@@ -4481,10 +4481,10 @@ xh5_define(
             var chart, method;
             switch (type) {
               case "price":
-                (chart = pChart), (method = "initPt");
+                (chart = ht5_pChart), (method = "initPt");
                 break;
               case "tech":
-                (chart = tChart), (method = "initTc");
+                (chart = ht5_tChart), (method = "initTc");
             }
 
             if (method) {
@@ -4496,8 +4496,8 @@ xh5_define(
                     type: type
                   },
                   function(e) {
-                    tChart = e.tChart;
-                    pChart = e.pChart;
+                    ht5_tChart = e.tChart;
+                    ht5_pChart = e.pChart;
                     newAC(chartlist, type, options);
                   }
                 );
@@ -4515,7 +4515,7 @@ xh5_define(
             i && view_mainStock && (view_mainStock[i](t), b());
           };
           var showRs = function(t) {
-            return o
+            return ht5_o
               ? (_stDataQ
                   ? _stDataQ.sh(t)
                   : (view_mainStock.initRs(),
@@ -4523,7 +4523,7 @@ xh5_define(
                     B.appendChild(_stDataQ.getBody())),
                 void initMgr.resizeAll(!0))
               : void KKE.api("plugins.rangeselector.get", null, function(e) {
-                  (o = e), showRs(t);
+                  (ht5_o = e), showRs(t);
                 });
           };
           this.showRs = showRs;
@@ -5863,7 +5863,7 @@ xh5_define(
           });
       })();
 
-      viewHelper = new (function() {
+      ht5_viewHelper = new (function() {
         var me = this,
           a = function(a, i) {
             if (cfg.hasOwnProperty(a)) {
@@ -6173,11 +6173,10 @@ xh5_define(
       })();
       view = new View();
       view.dcInit(viewManangerConfig);
-      return viewHelper;
+      return ht5_viewHelper;
     }
     function entityFun() {
-      console.log("test");
-      function createChartH5tAndInvokeCallBack(config, callback) {
+      function createViewMangerAndInvokeCallBack(config, callback) {
         var viewManager = new ViewManger(config);
         var n = function(e) {
           viewManager.me.rl(e, n);
@@ -6208,7 +6207,7 @@ xh5_define(
                   time: [["06:00", "23:59"], ["00:00", "05:00"]]
                 }),
                   (config._hf_window_var = l),
-                  createChartH5tAndInvokeCallBack(config, callback);
+                  createViewMangerAndInvokeCallBack(config, callback);
               },
               null,
               {
@@ -6232,7 +6231,7 @@ xh5_define(
                 }),
                   (c.inited = 0),
                   (config._nf_window_var = c),
-                  createChartH5tAndInvokeCallBack(config, callback);
+                  createViewMangerAndInvokeCallBack(config, callback);
               },
               null,
               {
@@ -6253,7 +6252,7 @@ xh5_define(
                   time: [["06:00", "23:59"], ["00:00", "05:00"]]
                 }),
                   (config._gbi_window_var = m),
-                  createChartH5tAndInvokeCallBack(config, callback);
+                  createViewMangerAndInvokeCallBack(config, callback);
               },
               null,
               {
@@ -6264,14 +6263,14 @@ xh5_define(
             );
             break;
           default:
-            createChartH5tAndInvokeCallBack(config, callback);
+            createViewMangerAndInvokeCallBack(config, callback);
         }
       };
     }
-    var viewHelper,
-      o,
-      pChart,
-      tChart,
+    var ht5_viewHelper,
+      ht5_o,
+      ht5_pChart,
+      ht5_tChart,
       f$DOM = utils_util.$DOM,
       utils_util_$C = utils_util.$C,
       fCONTAINS = utils_util.$CONTAINS,
@@ -6280,14 +6279,13 @@ xh5_define(
       copyProperties = utils_util.oc,
       dateUtil = utils_util.dateUtil,
       stbd = utils_util.dateUtil.stbd,
-      g = utils_util.xh5_ADJUST_HIGH_LOW.c,
+      ht5_c = utils_util.xh5_ADJUST_HIGH_LOW.c,
       xh5_BrowserUtil = utils_util.xh5_BrowserUtil,
       fBind = utils_util.fBind,
       strUtil_ps = utils_util.strUtil.ps,
       globalCfg = cfgs_settinger.globalCfg,
       logoM = utils_util.logoM;
-    return (
-      utils_util.fInherit(ViewManger, utils_util.xh5_EvtDispatcher), entityFun
-    );
+    utils_util.fInherit(ViewManger, utils_util.xh5_EvtDispatcher);
+    return entityFun;
   }
 );

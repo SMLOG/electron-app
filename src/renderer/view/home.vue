@@ -30,8 +30,7 @@
         </draggable>
       </table>
     </div>
-    <div id="tkChart_wwysh601318"></div>
-    <div id="h5Figure" style="height:490px"></div>
+    <div id="h5Figure" style="height:100px"></div>
   </div>
 </template>
 

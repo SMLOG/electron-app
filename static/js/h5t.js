@@ -2291,7 +2291,7 @@ xh5_define(
           _stDataD && (_stDataD.linkData(e), _stDataD.setDataRange());
         }
         function funcBool() {
-          if (isMain) whatJ = _stData_tDb_obj;
+          if (isMain) _view_manager_whatJ = _stData_tDb_obj;
 
           _stData_me_obj.update(null, !0);
 
@@ -2609,8 +2609,8 @@ xh5_define(
             }
             //
 
-            _stDataMe.isCompare = view.getAllStock().length > 1;
-            _stDataMe.dAdd = view.dAdd;
+            _stDataMe.isCompare = _view_manager_view.getAllStock().length > 1;
+            _stDataMe.dAdd = _view_manager_view.dAdd;
 
             var t;
             _stDataMe.datas &&
@@ -3293,7 +3293,7 @@ xh5_define(
                     "CN" == _stDataMe.market &&
                       "HK" == _stDataMe.needMarket &&
                       ((_stDataMe.needMarket = "CN"),
-                      view.changeData(_stDataMe)),
+                      _view_manager_view.changeData(_stDataMe)),
                     5 == viewState.end &&
                       (onViewChange(!0), _stData_$_obj.createPlayingData()),
                     utils_util.isFunc(o) && o());
@@ -3318,7 +3318,7 @@ xh5_define(
                     _stData_tDb_obj.initTState(e.data.td5),
                     ce(_stDataMe.hq),
                     utils_util.isFunc(n) && n(),
-                    view.moving(viewState.start, viewState.end, "T5"),
+                    _view_manager_view.moving(viewState.start, viewState.end, "T5"),
                     J.hide();
                 });
             };
@@ -3454,7 +3454,7 @@ xh5_define(
               }
               J.show(),
                 KKE.api("datas.t.get", h, function(e) {
-                  view.hasHistory && "history" == e.msg && view.hasHistory(M);
+                  _view_manager_view.hasHistory && "history" == e.msg && _view_manager_view.hasHistory(M);
                   var d = e.data.hq.status,
                     p = "",
                     u = Number(e.data.hq.state);
@@ -3474,7 +3474,7 @@ xh5_define(
                       (isMain &&
                         "nohistory" == e.msg &&
                         ((M = 0),
-                        view.hasHistory && view.hasHistory(M),
+                        _view_manager_view.hasHistory && _view_manager_view.hasHistory(M),
                         tipObj.showTip({
                           txt: globalCfg.nohistoryt,
                           parent: V,
@@ -3532,8 +3532,8 @@ xh5_define(
                       }
                     }
                     if (0 != u && 7 != u) {
-                      if ((view.onResize(), 1 != d))
-                        return void view.removeCompare([h.symbol]);
+                      if ((_view_manager_view.onResize(), 1 != d))
+                        return void _view_manager_view.removeCompare([h.symbol]);
                       _stDataMe.isErr = !1;
                     } else _stDataMe.isErr = !1;
                   }
@@ -3564,7 +3564,7 @@ xh5_define(
                         b &&
                           !b[4][0].date &&
                           (b[4][0].date = _stDataMe.hq.date)),
-                    (view.historyData = b),
+                    (_view_manager_view.historyData = b),
                     (_stDataMe.date =
                       (e.data.td1 && e.data.td1[0].today) || _stDataMe.hq.date),
                     _stData_tDb_obj.initTState(b),
@@ -3628,7 +3628,7 @@ xh5_define(
             _stData_tChartObj.clear()((_stData_tChartObj = null));
           _stDatak && (_stDatak.clear(), (_stDatak = null));
           _stDataD && (_stDataD.clear(), (_stDataD = null));
-          isMain && (_stDataQ = null);
+          isMain && (_view_manager_Q = null);
         };
         this.getPriceTech = function() {
           return _stDatak || null;
@@ -3657,9 +3657,9 @@ xh5_define(
 
         var he = function(e, a, i) {
           e && initMgr.resizeAll(!0);
-          view.onChangeView();
+          _view_manager_view.onChangeView();
           a && utils_util.isFunc(a.callback) && a.callback();
-          i && _stDatane.onTechChanged(i[0]);
+          i && _view_manager_ne.onTechChanged(i[0]);
         };
         this.initPt = function(e, r) {
           if (e) {
@@ -3713,10 +3713,10 @@ xh5_define(
               stockData: _stDataMe,
               setting: cfg,
               state: viewState,
-              rc: view.moving,
+              rc: _view_manager_view.moving,
               witht5: 1
             });
-            _stDataQ = _stDataD;
+            _view_manager_Q = _stDataD;
           }
 
           _stDataD.linkData();
@@ -3732,7 +3732,7 @@ xh5_define(
           var r = stockData.isMain;
           if (r) (l = cfg.COLOR.T_P), (c = cfg.COLOR.T_AVG);
           else {
-            2 != view.dAdd ||
+            2 != _view_manager_view.dAdd ||
               o.linecolor ||
               (o.linecolor = viewManangerConfig.overlaycolor);
             var n = o.linecolor || "#cccccc";
@@ -4126,7 +4126,7 @@ xh5_define(
                 ? viewMe.moving(viewState.start, viewState.end)
                 : viewMe.moving(4, 5, !1)
               : viewMe.moving(viewState.start, viewState.end, !1),
-              t || _stDatane.onRange(view_mainStock);
+              t || _view_manager_ne.onRange(view_mainStock);
           },
           v = function(e) {
             return e.isErr
@@ -4169,12 +4169,12 @@ xh5_define(
                   l();
                 }
               }
-              if ((_stDatane.onViewChanged(), a)) return;
-              _stDatane.onViewPrice(), _stDatane.onDataUpdate();
+              if ((_view_manager_ne.onViewChanged(), a)) return;
+              _view_manager_ne.onViewPrice(), _view_manager_ne.onDataUpdate();
             }
           },
           _ = function() {
-            _stDatane.onRange(view_mainStock);
+            _view_manager_ne.onRange(view_mainStock);
           };
         (this.getExtraData = function(a) {
           if (
@@ -4263,7 +4263,7 @@ xh5_define(
               d(),
               m(),
               _(),
-              iMgr.isIng() || _stDatane.onViewPrice();
+              iMgr.isIng() || _view_manager_ne.onViewPrice();
           },
           D = function() {
             clearTimeout(k),
@@ -4386,7 +4386,7 @@ xh5_define(
               (J.show(), x("t5"), (C = 1), (A = 2));
           for (var o, s = allStocks.length; s--; )
             (o = allStocks[s]), o.setRange(), o.onViewChange();
-          d(), m(), _stDatane.onRange(view_mainStock);
+          d(), m(), _view_manager_ne.onRange(view_mainStock);
         }),
           (this.dAdd = 0),
           (this.compare = function(e) {
@@ -4406,7 +4406,7 @@ xh5_define(
                   break;
                 }
             }
-            M(i), toggleP(), d(), m(), _stDatane.onRange(allStocks[0]);
+            M(i), toggleP(), d(), m(), _view_manager_ne.onRange(allStocks[0]);
           }),
           (this.onResize = function(e) {
             for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
@@ -4516,11 +4516,11 @@ xh5_define(
           };
           var showRs = function(t) {
             return ht5_o
-              ? (_stDataQ
-                  ? _stDataQ.sh(t)
+              ? (_view_manager_Q
+                  ? _view_manager_Q.sh(t)
                   : (view_mainStock.initRs(),
                     showRs(t),
-                    B.appendChild(_stDataQ.getBody())),
+                    B.appendChild(_view_manager_Q.getBody())),
                 void initMgr.resizeAll(!0))
               : void KKE.api("plugins.rangeselector.get", null, function(e) {
                   (ht5_o = e), showRs(t);
@@ -4823,11 +4823,11 @@ xh5_define(
         z,
         subArea,
         B,
-        view,
-        whatJ,
+        _view_manager_view,
+        _view_manager_whatJ,
         Y,
         Z,
-        _stDataQ,
+        _view_manager_Q,
         J,
         viewState = {
           viewId: globalCfg.URLHASH.vi(viewManangerConfig.view || "ts"),
@@ -4891,8 +4891,8 @@ xh5_define(
         var o = function(e, i, o) {
           var s = a(i, o, 0 / 0);
           if (e || (i && o)) {
-            if (!view) return;
-            view.onResize(s), iMgr.onResize();
+            if (!_view_manager_view) return;
+            _view_manager_view.onResize(s), iMgr.onResize();
           }
           r(),
             n(),
@@ -4931,7 +4931,7 @@ xh5_define(
         var l = function(a) {
           var i = !1;
           if (a) {
-            _stDataQ && (i = _stDataQ.setTheme(a));
+            _view_manager_Q && (i = _view_manager_Q.setTheme(a));
             for (var r in a)
               a.hasOwnProperty(r) &&
                 cfg.COLOR.hasOwnProperty(r) &&
@@ -4952,12 +4952,12 @@ xh5_define(
           !cfg.custom.mousewheel_zoom ||
             (document.activeElement !== V &&
               document.activeElement.parentNode !== V) ||
-            (view && view.onWheel(e),
+            (_view_manager_view && _view_manager_view.onWheel(e),
             xh5_EvtUtil.preventDefault(e),
             xh5_EvtUtil.stopPropagation(e));
         };
         var p = function(e) {
-          cfg.custom.keyboard && view && view.onKb(e);
+          cfg.custom.keyboard && _view_manager_view && _view_manager_view.onKb(e);
         };
         var u = function() {
           utils_util.xh5_deviceUtil.istd ||
@@ -5000,22 +5000,22 @@ xh5_define(
         f();
         this.resizeAll = o;
         this.innerResize = function(e) {
-          view &&
+          _view_manager_view &&
             (a(0 / 0, 0 / 0, e),
-            view.onResize(),
+            _view_manager_view.onResize(),
             iMgr.onResize(),
             r(),
-            _stDatane.onInnerResize({
+            _view_manager_ne.onInnerResize({
               height: cfg.DIMENSION.h_t
             }));
         };
         this.initTheme = l;
       })();
-      var _stDatane = new (function() {
+      var _view_manager_ne = new (function() {
         var e = 0,
           a = function(a, r) {
             var n = tDataLen - 1,
-              o = view.getAllStock()[0];
+              o = _view_manager_view.getAllStock()[0];
             if (
               o &&
               o.datas &&
@@ -5114,7 +5114,7 @@ xh5_define(
           (this.onViewPrice = function(r, n, o, s) {
             if (!ae && utils_util.isFunc(viewManangerConfig.onviewprice)) {
               if ((r || (r = a(r, n)), !r)) return;
-              o || (o = view.getMainStock().getName());
+              o || (o = _view_manager_view.getMainStock().getName());
               var l,
                 c,
                 d = utils_util.clone(r);
@@ -5132,7 +5132,7 @@ xh5_define(
                 d.volume && d.volume < 0 && (d.volume = 0),
                 viewManangerConfig.onviewprice({
                   curname: o || "",
-                  data_array: view.getAllStock().length,
+                  data_array: _view_manager_view.getAllStock().length,
                   data: d,
                   idx: e,
                   left: cfg.DIMENSION.posX,
@@ -5187,7 +5187,7 @@ xh5_define(
           })(),
           p = function() {
             function r() {
-              var e = view.getAllStock()[0];
+              var e = _view_manager_view.getAllStock()[0];
               return (
                 !("HK" != e.market || "indx" != e.hq.type) ||
                 "LSE" === e.market ||
@@ -5474,7 +5474,7 @@ xh5_define(
             r.display(!1), n.display(!1), c.showFloater(!1);
           },
           g = function() {
-            var e = view.getAllStock(),
+            var e = _view_manager_view.getAllStock(),
               t = e[0].datas.length,
               a = 0;
             return (
@@ -5515,7 +5515,7 @@ xh5_define(
             (0 > p || p > Number(O)) && ((d = 0 / 0), (p = 0 / 0));
           }
           var L,
-            C = view.getAllStock(),
+            C = _view_manager_view.getAllStock(),
             A = C.length,
             P = tDataLen,
             q = A > 1,
@@ -5533,7 +5533,7 @@ xh5_define(
                   : Number.MAX_VALUE),
                 b(K);
             } else b(Number.MAX_VALUE);
-            return void _stDatane.onViewPrice();
+            return void _view_manager_ne.onViewPrice();
           }
           (k = !1), (D = V);
           for (
@@ -5695,7 +5695,7 @@ xh5_define(
                 y: cfg.DIMENSION.H_MA4K
               }),
               b(V),
-              _stDatane.onViewPrice(L, V, B, !k),
+              _view_manager_ne.onViewPrice(L, V, B, !k),
               chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
           }
         }),
@@ -5703,7 +5703,7 @@ xh5_define(
             isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
           }),
           (this.shortClickHandler = function() {
-            _stDatane.shortClickHandler();
+            _view_manager_ne.shortClickHandler();
           }),
           (this.zoomView = function() {}),
           p(),
@@ -5715,7 +5715,7 @@ xh5_define(
           (this.hideIUis = u),
           (this.iToKb = function(e) {
             (D += e), (S = D);
-            var t = view.getAllStock(),
+            var t = _view_manager_view.getAllStock(),
               a = t[0].datas.length,
               i = t[0].datas[0][D],
               r = t.length,
@@ -5790,7 +5790,7 @@ xh5_define(
               (this.switchFloater = n);
           })()),
           (this.update = function() {
-            var a = view.getAllStock();
+            var a = _view_manager_view.getAllStock();
             if (a) {
               var i,
                 r = a[0],
@@ -5835,7 +5835,7 @@ xh5_define(
                           void (
                             4 == viewState.start &&
                             5 == viewState.end &&
-                            _stDatane.onViewPrice(o, s, void 0, !k)
+                            _view_manager_ne.onViewPrice(o, s, void 0, !k)
                           )
                         );
                       y();
@@ -5843,7 +5843,7 @@ xh5_define(
                   else if ("HF" == marketCode)
                     4 == viewState.start &&
                       5 == viewState.end &&
-                      _stDatane.onViewPrice(o, s, void 0, !k);
+                      _view_manager_ne.onViewPrice(o, s, void 0, !k);
                   else if ("NF" == marketCode) {
                     var c = new Date(o.date);
                     o.date &&
@@ -5856,8 +5856,8 @@ xh5_define(
                         "/" +
                         utils_util.dateUtil.nw(c.getDay()) +
                         (o.time || ""))),
-                      _stDatane.onViewPrice(o, s, void 0, !k);
-                  } else _stDatane.onViewPrice(o, s, void 0, !k);
+                      _view_manager_ne.onViewPrice(o, s, void 0, !k);
+                  } else _view_manager_ne.onViewPrice(o, s, void 0, !k);
               }
             }
           });
@@ -5899,13 +5899,13 @@ xh5_define(
               options
             );
             if (options.toremove) {
-              view.mM.removeAC(techType, chartList);
+              _view_manager_view.mM.removeAC(techType, chartList);
             } else {
               if (options.isexclusive) {
-                view.mM.removeAC(null, chartList);
-                view.mM.newAC(techType, chartList, options);
+                _view_manager_view.mM.removeAC(null, chartList);
+                _view_manager_view.mM.newAC(techType, chartList, options);
               } else {
-                view.mM.newAC(techType, chartList, options);
+                _view_manager_view.mM.newAC(techType, chartList, options);
               }
             }
           },
@@ -5915,7 +5915,7 @@ xh5_define(
               (viewState.end = 5);
           };
         this.pushData = function(e, a) {
-          !utils_util.isArr(e) && (e = [e]), view.pushData(e, a);
+          !utils_util.isArr(e) && (e = [e]), _view_manager_view.pushData(e, a);
         };
         var s;
         (this.pushTr = function(e) {
@@ -5931,11 +5931,11 @@ xh5_define(
                   data: t[t.length - 1],
                   market: i
                 };
-              view.pushData([r], 1);
+              _view_manager_view.pushData([r], 1);
             }, 20)));
         }),
           (this.setScale = function(e) {
-            view.setScale(e), utils_util.stc("t_scale", e);
+            _view_manager_view.setScale(e), utils_util.stc("t_scale", e);
           });
         var l = !0;
         this.showView = function(e, a) {
@@ -5947,9 +5947,9 @@ xh5_define(
               updateViewId(r),
               void this.newSymbol(viewManangerConfig)
             );
-          var n = view.getAllStock()[0];
+          var n = _view_manager_view.getAllStock()[0];
           if (
-            (_stDatane.onRange(n),
+            (_view_manager_ne.onRange(n),
             utils_util.stc("t_v", e),
             utils_util.suda("vw", e),
             viewState.viewId != r)
@@ -5958,8 +5958,8 @@ xh5_define(
               (updateViewId(r),
               ("HF" == marketCode || "NF" == marketCode) && "t5" == e && 0 == C)
             )
-              return J.show(), (C = 1), void view.update5Data(e);
-            view.onChangeView(!1, a), _stDatane && _stDatane.onViewPrice();
+              return J.show(), (C = 1), void _view_manager_view.update5Data(e);
+            _view_manager_view.onChangeView(!1, a), _view_manager_ne && _view_manager_ne.onViewPrice();
           }
         };
         var d = function(e) {
@@ -5970,41 +5970,41 @@ xh5_define(
           },
           m = [];
         (this.overlay = function(e, t) {
-          if (view && 1 != view.dAdd)
+          if (_view_manager_view && 1 != _view_manager_view.dAdd)
             if (t) {
-              view.removeCompare(d(e));
+              _view_manager_view.removeCompare(d(e));
               for (var a = 0; a < m.length; a++)
                 e.symbol == m[a] && m.splice(a, 1);
-              view.getAllStock().length <= 1 && (view.dAdd = 0);
+              _view_manager_view.getAllStock().length <= 1 && (_view_manager_view.dAdd = 0);
             } else
               (viewManangerConfig.overlaycolor = e.linecolor || {
                 K_N: "#cccccc"
               }),
-                (view.dAdd = 2),
-                view.compare(e),
+                (_view_manager_view.dAdd = 2),
+                _view_manager_view.compare(e),
                 m.push(e.symbol);
         }),
           (this.compare = function(e, a) {
-            if (view) {
+            if (_view_manager_view) {
               var i,
                 r = 0;
               if (a) {
                 if (
                   ((i = utils_util.isStr(e) ? e.split(",") : [e.symbol]),
-                  1 == view.dAdd && view.removeCompare(i),
-                  view.getAllStock().length <= 1)
+                  1 == _view_manager_view.dAdd && _view_manager_view.removeCompare(i),
+                  _view_manager_view.getAllStock().length <= 1)
                 ) {
                   for (r = 0; r < m.length; r++)
-                    (view.dAdd = 2),
-                      view.compare({
+                    (_view_manager_view.dAdd = 2),
+                      _view_manager_view.compare({
                         symbol: m[r]
                       });
-                  m.length < 1 && (view.dAdd = 0);
+                  m.length < 1 && (_view_manager_view.dAdd = 0);
                 }
               } else
-                2 == view.dAdd && view.removeCompare(m),
-                  (view.dAdd = 1),
-                  view.compare(e),
+                2 == _view_manager_view.dAdd && _view_manager_view.removeCompare(m),
+                  (_view_manager_view.dAdd = 1),
+                  _view_manager_view.compare(e),
                   utils_util.suda("t_comp");
               utils_util.stc("t_comp", {
                 rm: a,
@@ -6023,7 +6023,7 @@ xh5_define(
             a && !a.noLog && (0 == h ? (h = 1) : utils_util.sudaLog());
         };
         (this.showPCharts = function(e) {
-          e && (view.mM.togglePt(e), utils_util.stc("t_sp", e));
+          e && (_view_manager_view.mM.togglePt(e), utils_util.stc("t_sp", e));
         }),
           (this.getIndicators = function() {
             var e = Y ? Y.getLog() : null,
@@ -6043,11 +6043,11 @@ xh5_define(
             },
             e
           )),
-            view.mM.showRs(f),
+            _view_manager_view.mM.showRs(f),
             utils_util.stc("t_rs", e);
         }),
           (this.setLineStyle = function(e) {
-            view && view.setTLineStyle(e), utils_util.stc("t_style", e);
+            _view_manager_view && _view_manager_view.setTLineStyle(e), utils_util.stc("t_style", e);
           }),
           (this.setCustom = fBind(a, this, "custom")),
           (this.setDimension = fBind(a, this, "DIMENSION")),
@@ -6066,8 +6066,8 @@ xh5_define(
               (viewManangerConfig.date = e.date),
               iMgr.hideIUis(),
               iMgr.iReset(),
-              view.dcReset(),
-              view.dcInit(viewManangerConfig),
+              _view_manager_view.dcReset(),
+              _view_manager_view.dcInit(viewManangerConfig),
               tipObj.hideTip(),
               Y)
             ) {
@@ -6078,7 +6078,7 @@ xh5_define(
               var r = Z.getLog();
               (Z = null), r && this.pCharts(r);
             }
-            f && ((f.from = void 0), (f.to = void 0), view.mM.showRs(f)),
+            f && ((f.from = void 0), (f.to = void 0), _view_manager_view.mM.showRs(f)),
               utils_util.stc("t_ns", e);
           }),
           (this.resize = function(e, t) {
@@ -6088,17 +6088,17 @@ xh5_define(
             (ae = !0),
               iMgr.hideIUis(),
               utils_util.$CONTAINS($, V) && $.removeChild(V),
-              e && view.dcReset();
+              e && _view_manager_view.dcReset();
           }),
           (this.show = function(e) {
             (ae = !1),
               e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
               utils_util.$CONTAINS($, V) ||
                 ($.appendChild(V), initMgr.resizeAll(!0)),
-              _stDatane && _stDatane.onViewPrice();
+              _view_manager_ne && _view_manager_ne.onViewPrice();
           }),
           (this.shareTo = function(e) {
-            view.shareTo(e), utils_util.stc("t_share", e);
+            _view_manager_view.shareTo(e), utils_util.stc("t_share", e);
             var a = e && e.type ? e.type : "weibo";
             utils_util.suda("share", a);
           }),
@@ -6112,18 +6112,18 @@ xh5_define(
             "object" == typeof e
               ? (r = dateUtil.ds(e, "-"))
               : (e = dateUtil.sd(e));
-            var n = whatJ.get();
+            var n = _view_manager_whatJ.get();
             if (null == n) return void (O = 1);
             for (var o = n.length, s = 0; o > s; s++)
               if (dateUtil.stbd(e, n[s][0].date))
-                return void view.moving(s, s + 1, "dateTo");
+                return void _view_manager_view.moving(s, s + 1, "dateTo");
             (viewManangerConfig.date = r),
-              (view.hasHistory = a),
+              (_view_manager_view.hasHistory = a),
               utils_util.stc("t_ft", r),
               this.newSymbol(viewManangerConfig);
           }),
           (this.showScale = function(e) {
-            view && view.setScale(e);
+            _view_manager_view && _view_manager_view.setScale(e);
           }),
           (this.resize = function(e, t) {
             initMgr.resizeAll(!0, e, t);
@@ -6143,36 +6143,36 @@ xh5_define(
               this.resize();
           }),
           (this.historyData = function() {
-            return view.historyData;
+            return _view_manager_view.historyData;
           }),
           (this.getExtraData = function(e) {
-            return view.getExtraData(e);
+            return _view_manager_view.getExtraData(e);
           }),
           (this.patcher = {
             iMgr: iMgr.patcher
           }),
           (this.zoom = function(e) {
-            view.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
+            _view_manager_view.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
           }),
           (this.move = function(e) {
             (e = parseInt(e)),
-              isNaN(e) || (view.moveApi(e), utils_util.stc("t_move", e, 9e3));
+              isNaN(e) || (_view_manager_view.moveApi(e), utils_util.stc("t_move", e, 9e3));
           }),
           (this.getSymbols = function() {
-            return view.getAllSymbols();
+            return _view_manager_view.getAllSymbols();
           }),
           (this.update = function() {
-            view.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
+            _view_manager_view.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
           }),
           (this.getCurrentData = function() {
-            return _stDatane.currentData();
+            return _view_manager_ne.currentData();
           }),
           (this.viewState = viewState),
           (this.me = chart_h5tObj),
           (this.type = "h5t");
       })();
-      view = new View();
-      view.dcInit(viewManangerConfig);
+      _view_manager_view = new View();
+      _view_manager_view.dcInit(viewManangerConfig);
       return ht5_viewHelper;
     }
     function entityFun() {

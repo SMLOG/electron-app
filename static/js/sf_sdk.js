@@ -167,9 +167,9 @@ var xh5_define,
           childName = n[1],
           modEntity = modTreeNode[childName];
         modEntity
-          ? (modEntity.init = !0)
+          ? (modEntity.init = true)
           : (modEntity = modTreeNode[childName] = {
-            init: !0,
+            init: true,
             name: modName,
             funcQ: [],
             entity: void 0
@@ -227,16 +227,16 @@ var xh5_define,
             e: a
           };
         },
-        recursiveEnd = function (modEntity, modfunc, dependsArr) {
-          var u = modfunc.toString(),
+        recursiveEnd = function (modEntity, modEntityOrEntityFun, dependsArr) {
+          var u = modEntityOrEntityFun.toString(),
             s = 0 == u.indexOf("function");
           if (s) {
             var o = n(dependsArr),
-              moduleFunc = modfunc.apply(null, o.e.concat(modsTree));
-            modEntity.entity = util.isFunc(moduleFunc)
-              ? new moduleFunc()
-              : moduleFunc;
-          } else modEntity.entity = modfunc;
+              entifyOrfunc = modEntityOrEntityFun.apply(null, o.e.concat(modsTree));
+            modEntity.entity = util.isFunc(entifyOrfunc)
+              ? new entifyOrfunc()
+              : entifyOrfunc;
+          } else modEntity.entity = modEntityOrEntityFun;
           forEachModfuncQ(modEntity);
         },
         recursiveDepends = function (

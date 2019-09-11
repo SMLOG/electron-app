@@ -2287,15 +2287,20 @@ xh5_define(
           _stData_$_obj.setDataRange(e),
             _stData_tChartObj &&
               (_stData_tChartObj.linkData(e), _stData_tChartObj.setDataRange()),
-            k && (k.linkData(e), k.setDataRange()),
-            D && (D.linkData(e), D.setDataRange());
+            _stDatak && (_stDatak.linkData(e), _stDatak.setDataRange()),
+            _stDataD && (_stDataD.linkData(e), _stDataD.setDataRange());
         }
-        function c() {
-          isMain && (whatJ = _stData_tDb_obj),
-            _stData_me_obj.update(null, !0),
+        function funcBool() {
+          if (isMain) whatJ = _stData_tDb_obj;
+
+          _stData_me_obj.update(null, !0);
+
+          return (
             "CN" === marketCode &&
-              !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(stdDataOptions.symbol);
+            !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(stdDataOptions.symbol)
+          );
         }
+
         stdDataOptions = copyProperties(
           {
             symbol: void 0,
@@ -2315,7 +2320,7 @@ xh5_define(
           stdDataOptions || {}
         ); //stdDataOptions
 
-        var d;
+        var _stDataArrA;
         var _stDataMe = this;
         var marketCode = utils_util.market(stdDataOptions.symbol);
         var marketCodeToID = function(code) {
@@ -2332,7 +2337,7 @@ xh5_define(
 
         this.business = stdDataOptions.business;
         this.simple = stdDataOptions.simple;
-        var y = !0;
+        var _stDatay = !0;
         this.dp = stdDataOptions.dp;
         this.marketNum = marketCodeToID;
         this.isErr = !1;
@@ -2374,51 +2379,59 @@ xh5_define(
         this.needMarket = marketCode;
 
         this.changeMarket = function(e) {
-          var a,
-            i = [],
+          var _arr,
+            _arrB = [],
             r = e;
           if (
             ((tDataLen = ObjectA.tcd(marketCode)),
             marketCodeToID(_stDataMe.needMarket) != marketCodeToID(marketCode))
           ) {
-            a = _stData_tDb_obj.get();
-            d = utils_util.tUtil.gata(marketCode);
-            for (var n = 0; n < a.length; n++)
-              marketCodeToID(_stDataMe.needMarket) < marketCodeToID(marketCode)
-                ? (i.push(
-                    ObjectA.aduk(
-                      a[n],
-                      _stDataMe.market,
-                      marketCode,
-                      curDate,
-                      a[n][0].date
-                    )
-                  ),
+            _arr = _stData_tDb_obj.get();
+            _stDataArrA = utils_util.tUtil.gata(marketCode);
+            for (var n = 0; n < _arr.length; n++)
+              if (
+                marketCodeToID(_stDataMe.needMarket) <
+                marketCodeToID(marketCode)
+              ) {
+                _arrB.push(
+                  ObjectA.aduk(
+                    _arr[n],
+                    _stDataMe.market,
+                    marketCode,
+                    curDate,
+                    _arr[n][0].date
+                  )
+                );
+
+                _stDataMe.realLen = utils_util.arrIndexOf(
+                  _stDataArrA,
+                  curDate.getHours() +
+                    ":" +
+                    utils_util.strUtil.zp(curDate.getMinutes())
+                );
+
+                _stDataMe.realLen < 0 && (_stDataMe.realLen = tDataLen);
+              } else {
+                _arrB.push(ObjectA.rmuk(_arr[n], marketCode, r)),
                   (_stDataMe.realLen = utils_util.arrIndexOf(
-                    d,
+                    _stDataArrA,
                     curDate.getHours() +
                       ":" +
                       utils_util.strUtil.zp(curDate.getMinutes())
-                  )),
-                  _stDataMe.realLen < 0 && (_stDataMe.realLen = tDataLen))
-                : (i.push(ObjectA.rmuk(a[n], marketCode, r)),
-                  (_stDataMe.realLen = utils_util.arrIndexOf(
-                    d,
-                    curDate.getHours() +
-                      ":" +
-                      utils_util.strUtil.zp(curDate.getMinutes())
-                  )));
+                  ));
+              }
+
             (_stDataMe.needMarket = marketCode),
-              _stData_tDb_obj.initTState(i),
-              (_stDataMe.datas = i[4]),
+              _stData_tDb_obj.initTState(_arrB),
+              (_stDataMe.datas = _arrB[4]),
               _stData_$_obj.setDataRange(),
               _stData_$_obj.createPlayingData();
           }
         }; //
 
         var _stData_tChartObj,
-          k,
-          D,
+          _stDatak,
+          _stDataD,
           L,
           curDate,
           stockUI = new StockUI(this, stdDataOptions);
@@ -2433,16 +2446,17 @@ xh5_define(
         this.viewState = viewState;
 
         var _stData_tDb_obj = new (function() {
-          var a = {};
-          var r = {
+          var cacheData = {};
+          var extraDataObj = {
             rsAmount: void 0
           };
-          var n = function(e) {
-            if (e) {
+          var initState = function(arr) {
+            if (arr) {
               var r,
-                n = e.length,
+                len = arr.length,
                 o = [];
-              if ((utils_util.clone(e, o), o.length > 5)) {
+              utils_util.clone(arr, o);
+              if (o.length > 5) {
                 if (viewManangerConfig.date) {
                   for (
                     var s,
@@ -2453,12 +2467,13 @@ xh5_define(
                       p = o.length;
                     p > m;
                     m++
-                  )
-                    (s = o[m][0].date.getDate()),
-                      0 == m
-                        ? (c = Math.abs(s - l))
-                        : c > Math.abs(s - l) &&
-                          ((c = Math.abs(s - l)), (d = m));
+                  ) {
+                    s = o[m][0].date.getDate();
+                    0 == m
+                      ? (c = Math.abs(s - l))
+                      : c > Math.abs(s - l) && ((c = Math.abs(s - l)), (d = m));
+                  }
+
                   d >= 5
                     ? ((r = o.splice(d - 4, 5)),
                       (viewState.start = 4),
@@ -2466,381 +2481,439 @@ xh5_define(
                     : ((r = o.splice(0, 5)),
                       (viewState.start = d),
                       (viewState.end = d + 1)),
-                    (a.tv = viewState.start),
-                    (a.tb = viewState.end);
+                    (cacheData.tv = viewState.start),
+                    (cacheData.tb = viewState.end);
                 }
-              } else
-                (r = o), (a.tv = viewManangerConfig.date ? 0 : 4), (a.tb = n);
-              a.t = r;
+              } else {
+                r = o;
+                cacheData.tv = viewManangerConfig.date ? 0 : 4;
+                cacheData.tb = len;
+              }
+              cacheData.t = r;
             }
           };
-          this.get = function(e) {
-            return e ? a[e] : a.t;
+          //
+          this.get = function(key) {
+            return key ? cacheData[key] : cacheData.t;
           };
-          this.set = function(e, t) {
-            "undefined" != typeof a[e] && (a[e] = t);
+          this.set = function(key, data) {
+            "undefined" != typeof cacheData[key] && (cacheData[key] = data);
           };
-          this.initState = n;
+          this.initState = initState;
           this.initTState = function(e) {
-            n(e);
+            initState(e);
           };
-          this.extraDataObj = r;
+          this.extraDataObj = extraDataObj;
           this.initExtraData = function() {
             var http = viewManangerConfig.ssl ? "https" : "http",
-              n =
+              url =
                 http +
                 "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
-              o = "KKE_ShareAmount_" + stdDataOptions.symbol;
+              window_var_key = "KKE_ShareAmount_" + stdDataOptions.symbol;
             utils_util.load(
-              n
+              url
                 .replace("$symbol", stdDataOptions.symbol)
                 .replace("$rn", String(new Date().getDate()))
-                .replace("$cb", "var%20" + o + "="),
+                .replace("$cb", "var%20" + window_var_key + "="),
               function() {
-                var e = window[o];
-                if (e) {
-                  for (var t, a = [], i = e.length; i--; )
-                    (t = e[i]),
-                      a.push({
-                        amount: Number(t.amount),
-                        date: dateUtil.sd(t.date)
-                      });
-                  a.length && (r.rsAmount = a);
+                var arr = window[window_var_key];
+                if (arr) {
+                  for (var t, a = [], i = arr.length; i--; ) {
+                    t = arr[i];
+                    a.push({
+                      amount: Number(t.amount),
+                      date: dateUtil.sd(t.date)
+                    });
+                  }
+
+                  a.length && (extraDataObj.rsAmount = a);
                 }
               }
             );
           };
+
           this.gc = function() {
-            a = null;
-            r = null;
+            cacheData = null;
+            extraDataObj = null;
           };
         })();
 
         var _stData_$_obj = new (function() {
-            var set_stDataMeDefaultVal;
-            set_stDataMeDefaultVal = function() {
-              (_stDataMe.minPrice = Number.MAX_VALUE),
-                (_stDataMe.maxPrice = 0),
-                (_stDataMe.minPercent = Number.MAX_VALUE),
-                (_stDataMe.maxPercent = -Number.MAX_VALUE),
-                (_stDataMe.minavgPrice = Number.MAX_VALUE),
-                (_stDataMe.maxavgPrice = 0),
-                (_stDataMe.maxVolume = 0);
-            };
-            var t = function() {
-              function e(e) {
-                var t = Math.max(
-                    Math.abs(e - _stDataMe.maxPrice),
-                    Math.abs(e - _stDataMe.minPrice)
-                  ),
-                  a = Math.max(
-                    Math.abs(e - _stDataMe.maxavgPrice),
-                    Math.abs(e - _stDataMe.minavgPrice)
-                  );
-                switch (
-                  (t / e > 0.45 &&
-                    "US" != marketCode &&
-                    (cfg.datas.scaleType = "price"),
-                  t / e > 0.1 &&
-                    "newstock" == cfg.datas.scaleType &&
-                    (cfg.datas.scaleType = "price"),
-                  cfg.datas.scaleType)
-                ) {
-                  case "newstock":
-                    (_stDataMe.minPrice = Number(e) - 0.45 * e),
-                      (_stDataMe.maxPrice = Number(e) + 0.45 * e);
-                    break;
-                  case "tpct":
-                    (_stDataMe.minPrice =
-                      _stDataMe.minPrice < Number(e) - 0.1 * e
-                        ? _stDataMe.minPrice
-                        : Number(e) - 0.1 * e),
-                      (_stDataMe.maxPrice =
-                        _stDataMe.maxPrice > Number(e) + 0.1 * e
-                          ? _stDataMe.maxPrice
-                          : Number(e) + 0.1 * e);
-                    break;
-                  case "pct":
-                    var i = _stDataMe.maxPrice - _stDataMe.minPrice;
-                    (_stDataMe.minPrice -= 0.05 * i),
-                      (_stDataMe.maxPrice += 0.05 * i);
-                    break;
-                  case "price":
-                  default:
-                    (_stDataMe.minPrice = Number(e) - Number(t)),
-                      (_stDataMe.maxPrice = Number(e) + Number(t)),
-                      (_stDataMe.minavgPrice = Number(e) - Number(a)),
-                      (_stDataMe.maxavgPrice = Number(e) + Number(a));
-                }
-                (_stDataMe.maxPercent = Math.max(
-                  (_stDataMe.maxPrice - e) / e,
-                  0
-                )),
-                  (_stDataMe.minPercent = Math.min(
-                    (_stDataMe.minPrice - e) / e,
-                    0
-                  )),
-                  (_stDataMe.maxavgPercent = Math.max(
-                    (_stDataMe.maxavgPrice - e) / e,
-                    0
-                  )),
-                  (_stDataMe.minavgPercent = Math.min(
-                    (_stDataMe.minavgPrice - e) / e,
-                    0
-                  ));
+          var _stData_$_obj_setDef = function() {
+            (_stDataMe.minPrice = Number.MAX_VALUE),
+              (_stDataMe.maxPrice = 0),
+              (_stDataMe.minPercent = Number.MAX_VALUE),
+              (_stDataMe.maxPercent = -Number.MAX_VALUE),
+              (_stDataMe.minavgPrice = Number.MAX_VALUE),
+              (_stDataMe.maxavgPrice = 0),
+              (_stDataMe.maxVolume = 0);
+          };
+
+          var _stData_$_obj_fuca = function() {
+            function setting(e) {
+              var t = Math.max(
+                Math.abs(e - _stDataMe.maxPrice),
+                Math.abs(e - _stDataMe.minPrice)
+              );
+              var a = Math.max(
+                Math.abs(e - _stDataMe.maxavgPrice),
+                Math.abs(e - _stDataMe.minavgPrice)
+              );
+
+              switch (
+                (t / e > 0.45 &&
+                  "US" != marketCode &&
+                  (cfg.datas.scaleType = "price"),
+                t / e > 0.1 &&
+                  "newstock" == cfg.datas.scaleType &&
+                  (cfg.datas.scaleType = "price"),
+                cfg.datas.scaleType)
+              ) {
+                case "newstock":
+                  (_stDataMe.minPrice = Number(e) - 0.45 * e),
+                    (_stDataMe.maxPrice = Number(e) + 0.45 * e);
+                  break;
+                case "tpct":
+                  (_stDataMe.minPrice =
+                    _stDataMe.minPrice < Number(e) - 0.1 * e
+                      ? _stDataMe.minPrice
+                      : Number(e) - 0.1 * e),
+                    (_stDataMe.maxPrice =
+                      _stDataMe.maxPrice > Number(e) + 0.1 * e
+                        ? _stDataMe.maxPrice
+                        : Number(e) + 0.1 * e);
+                  break;
+                case "pct":
+                  var i = _stDataMe.maxPrice - _stDataMe.minPrice;
+                  (_stDataMe.minPrice -= 0.05 * i),
+                    (_stDataMe.maxPrice += 0.05 * i);
+                  break;
+                case "price":
+                default:
+                  (_stDataMe.minPrice = Number(e) - Number(t)),
+                    (_stDataMe.maxPrice = Number(e) + Number(t)),
+                    (_stDataMe.minavgPrice = Number(e) - Number(a)),
+                    (_stDataMe.maxavgPrice = Number(e) + Number(a));
               }
-              (_stDataMe.isCompare = view.getAllStock().length > 1),
-                (_stDataMe.dAdd = view.dAdd);
-              var t;
-              _stDataMe.datas &&
-                0 == _stDataMe.datas[0][0].volume &&
-                _stDataMe.hq.time > "09:30" &&
-                "CN" == _stDataMe.market &&
-                (t = _stDataMe.datas[0][0].price),
-                (_stDataMe.preData.data = _stDataMe.hq.preopen
-                  ? t
-                    ? t
-                    : _stDataMe.hq.preopen
-                  : _stDataMe.preData.data);
-              for (var a = 0, r = _stDataMe.datas.length; r > a; a++) {
-                for (
-                  var n,
-                    o = Number(_stDataMe.datas[0][0].prevclose),
-                    s = 0,
-                    l = _stDataMe.dataLen;
-                  l > s;
-                  s++
+
+              _stDataMe.maxPercent = Math.max((_stDataMe.maxPrice - e) / e, 0);
+              _stDataMe.minPercent = Math.min((_stDataMe.minPrice - e) / e, 0);
+              _stDataMe.maxavgPercent = Math.max(
+                (_stDataMe.maxavgPrice - e) / e,
+                0
+              );
+              _stDataMe.minavgPercent = Math.min(
+                (_stDataMe.minavgPrice - e) / e,
+                0
+              );
+            }
+            //
+
+            _stDataMe.isCompare = view.getAllStock().length > 1;
+            _stDataMe.dAdd = view.dAdd;
+
+            var t;
+            _stDataMe.datas &&
+              0 == _stDataMe.datas[0][0].volume &&
+              _stDataMe.hq.time > "09:30" &&
+              "CN" == _stDataMe.market &&
+              (t = _stDataMe.datas[0][0].price);
+
+            _stDataMe.preData.data = _stDataMe.hq.preopen
+              ? t
+                ? t
+                : _stDataMe.hq.preopen
+              : _stDataMe.preData.data;
+
+            for (var a = 0, len = _stDataMe.datas.length; len > a; a++) {
+              for (
+                var n,
+                  o = Number(_stDataMe.datas[0][0].prevclose),
+                  s = 0,
+                  l = _stDataMe.dataLen;
+                l > s;
+                s++
+              ) {
+                if (
+                  ((n = _stDataMe.datas[a][s]),
+                  "LSE" === _stDataMe.market || "MSCI" === _stDataMe.market)
                 ) {
-                  if (
-                    ((n = _stDataMe.datas[a][s]),
-                    "LSE" === _stDataMe.market || "MSCI" === _stDataMe.market)
-                  ) {
-                    if (n.price <= 0) continue;
-                  } else if (n.price <= 0 || n.avg_price <= 0) continue;
-                  ("HK" == _stDataMe.market &&
-                    _stDataMe.hq &&
-                    "indx" == _stDataMe.hq.type) ||
-                  "LSE" == _stDataMe.market ||
-                  "MSCI" === _stDataMe.market
-                    ? ((_stDataMe.maxPrice = Math.max(
-                        _stDataMe.maxPrice,
-                        n.price,
-                        o
-                      )),
-                      (_stDataMe.minPrice = Math.min(
-                        _stDataMe.minPrice,
-                        n.price,
-                        o
-                      )))
-                    : stbd(_stDataMe.datas[a][0].date, _stDataMe.hq.date) &&
-                      "CN" == _stDataMe.market
-                    ? ((_stDataMe.maxPrice = Math.max(
-                        _stDataMe.maxPrice,
-                        n.price,
-                        n.avg_price,
-                        o,
-                        _stDataMe.preData.data
-                      )),
-                      (_stDataMe.minPrice = Math.min(
-                        _stDataMe.minPrice,
-                        n.price,
-                        n.avg_price,
-                        o,
-                        _stDataMe.preData.data
-                      )))
-                    : ((_stDataMe.maxPrice = Math.max(
-                        _stDataMe.maxPrice,
-                        n.price,
-                        n.avg_price,
-                        o
-                      )),
-                      (_stDataMe.minPrice = Math.min(
-                        _stDataMe.minPrice,
-                        n.price,
-                        n.avg_price,
-                        o
-                      ))),
-                    stbd(_stDataMe.datas[a][0].date, _stDataMe.hq.date) &&
+                  if (n.price <= 0) continue;
+                } else if (n.price <= 0 || n.avg_price <= 0) continue;
+                ("HK" == _stDataMe.market &&
+                  _stDataMe.hq &&
+                  "indx" == _stDataMe.hq.type) ||
+                "LSE" == _stDataMe.market ||
+                "MSCI" === _stDataMe.market
+                  ? ((_stDataMe.maxPrice = Math.max(
+                      _stDataMe.maxPrice,
+                      n.price,
+                      o
+                    )),
+                    (_stDataMe.minPrice = Math.min(
+                      _stDataMe.minPrice,
+                      n.price,
+                      o
+                    )))
+                  : stbd(_stDataMe.datas[a][0].date, _stDataMe.hq.date) &&
                     "CN" == _stDataMe.market
-                      ? ((_stDataMe.maxavgPrice = Math.max(
-                          _stDataMe.maxavgPrice,
-                          n.price,
-                          o,
-                          _stDataMe.preData.data
-                        )),
-                        (_stDataMe.minavgPrice = Math.min(
-                          _stDataMe.minavgPrice,
-                          n.price,
-                          o,
-                          _stDataMe.preData.data
-                        )))
-                      : ((_stDataMe.maxavgPrice = Math.max(
-                          _stDataMe.maxavgPrice,
-                          n.price,
-                          o
-                        )),
-                        (_stDataMe.minavgPrice = Math.min(
-                          _stDataMe.minavgPrice,
-                          n.price,
-                          o
-                        ))),
-                    (_stDataMe.labelMaxVol = _stDataMe.maxVolume = Math.max(
-                      _stDataMe.maxVolume,
-                      0,
-                      n.volume
-                    ));
-                }
-                e(o);
+                  ? ((_stDataMe.maxPrice = Math.max(
+                      _stDataMe.maxPrice,
+                      n.price,
+                      n.avg_price,
+                      o,
+                      _stDataMe.preData.data
+                    )),
+                    (_stDataMe.minPrice = Math.min(
+                      _stDataMe.minPrice,
+                      n.price,
+                      n.avg_price,
+                      o,
+                      _stDataMe.preData.data
+                    )))
+                  : ((_stDataMe.maxPrice = Math.max(
+                      _stDataMe.maxPrice,
+                      n.price,
+                      n.avg_price,
+                      o
+                    )),
+                    (_stDataMe.minPrice = Math.min(
+                      _stDataMe.minPrice,
+                      n.price,
+                      n.avg_price,
+                      o
+                    ))),
+                  stbd(_stDataMe.datas[a][0].date, _stDataMe.hq.date) &&
+                  "CN" == _stDataMe.market
+                    ? ((_stDataMe.maxavgPrice = Math.max(
+                        _stDataMe.maxavgPrice,
+                        n.price,
+                        o,
+                        _stDataMe.preData.data
+                      )),
+                      (_stDataMe.minavgPrice = Math.min(
+                        _stDataMe.minavgPrice,
+                        n.price,
+                        o,
+                        _stDataMe.preData.data
+                      )))
+                    : ((_stDataMe.maxavgPrice = Math.max(
+                        _stDataMe.maxavgPrice,
+                        n.price,
+                        o
+                      )),
+                      (_stDataMe.minavgPrice = Math.min(
+                        _stDataMe.minavgPrice,
+                        n.price,
+                        o
+                      )));
+                _stDataMe.labelMaxVol = _stDataMe.maxVolume = Math.max(
+                  _stDataMe.maxVolume,
+                  0,
+                  n.volume
+                );
               }
-              (_stDataMe.minPrice < -1e8 ||
-                _stDataMe.maxPrice - _stDataMe.minPrice < 1e-6) &&
-                (dateUtil.stbd(_stDataMe.datas[0][0].date, _stDataMe.hq.date) &&
-                  ((_stDataMe.datas[0][0].price = _stDataMe.hq.price),
-                  (_stDataMe.datas[0][0].avg_price = _stDataMe.hq.price),
-                  (_stDataMe.datas[0][0].prevclose = _stDataMe.hq.prevclose),
-                  (_stDataMe.datas[0][0].volume = _stDataMe.hq.totalVolume)),
-                (_stDataMe.minPrice = o - 0.01 * o),
-                (_stDataMe.maxPrice = o + 0.01 * o),
-                (_stDataMe.maxPercent = 0.01),
-                (_stDataMe.minPercent = -0.01),
-                _stDataMe.hq.totalVolume > 0 &&
-                  dateUtil.stbd(
-                    _stDataMe.datas[0][0].date,
-                    _stDataMe.hq.date
-                  ) &&
-                  !isNaN(_stDataMe.hq.totalAmount) &&
-                  (_stDataMe.datas[0][0].volume =
-                    _stDataMe.hq.totalAmount / _stDataMe.hq.totalVolume));
-              var c = g(_stDataMe.maxVolume, 0, 0, !0);
-              _stDataMe.labelMaxVol = c[0];
-              var d = 0.005;
-              _stDataMe.maxPercent < d &&
-                ("US" !== _stDataMe.market || "LSE" !== _stDataMe.market) &&
+              setting(o);
+            }
+
+            (_stDataMe.minPrice < -1e8 ||
+              _stDataMe.maxPrice - _stDataMe.minPrice < 1e-6) &&
+              (dateUtil.stbd(_stDataMe.datas[0][0].date, _stDataMe.hq.date) &&
+                ((_stDataMe.datas[0][0].price = _stDataMe.hq.price),
+                (_stDataMe.datas[0][0].avg_price = _stDataMe.hq.price),
+                (_stDataMe.datas[0][0].prevclose = _stDataMe.hq.prevclose),
+                (_stDataMe.datas[0][0].volume = _stDataMe.hq.totalVolume)),
+              (_stDataMe.minPrice = o - 0.01 * o),
+              (_stDataMe.maxPrice = o + 0.01 * o),
+              (_stDataMe.maxPercent = 0.01),
+              (_stDataMe.minPercent = -0.01),
+              _stDataMe.hq.totalVolume > 0 &&
+                dateUtil.stbd(_stDataMe.datas[0][0].date, _stDataMe.hq.date) &&
+                !isNaN(_stDataMe.hq.totalAmount) &&
+                (_stDataMe.datas[0][0].volume =
+                  _stDataMe.hq.totalAmount / _stDataMe.hq.totalVolume));
+
+            var c = g(_stDataMe.maxVolume, 0, 0, !0);
+            _stDataMe.labelMaxVol = c[0];
+            var d = 0.005;
+
+            _stDataMe.maxPercent < d &&
+              ("US" !== _stDataMe.market || "LSE" !== _stDataMe.market) &&
+              "pct" !== cfg.datas.scaleType &&
+              ((_stDataMe.minPrice = _stDataMe.maxavgPrice = o - o * d),
+              (_stDataMe.maxPrice = _stDataMe.minavgPrice = o + o * d),
+              (_stDataMe.maxPercent = _stDataMe.maxavgPercent = d),
+              (_stDataMe.minPercent = _stDataMe.minavgPercent = -d));
+
+            var p;
+            /^s[hz]51\d{4}$/.test(viewManangerConfig.symbol) && (p = "fund"),
+              p &&
+                "fund" === p &&
                 "pct" !== cfg.datas.scaleType &&
-                ((_stDataMe.minPrice = _stDataMe.maxavgPrice = o - o * d),
-                (_stDataMe.maxPrice = _stDataMe.minavgPrice = o + o * d),
-                (_stDataMe.maxPercent = _stDataMe.maxavgPercent = d),
-                (_stDataMe.minPercent = _stDataMe.minavgPercent = -d));
-              var p;
-              /^s[hz]51\d{4}$/.test(viewManangerConfig.symbol) && (p = "fund"),
-                p &&
-                  "fund" === p &&
-                  "pct" !== cfg.datas.scaleType &&
-                  d > Math.abs(_stDataMe.minPercent) &&
-                  ((d = Math.abs(_stDataMe.minPercent)),
-                  (viewManangerConfig.nfloat = _stDataMe.nfloat = 3)),
-                ("gb_brk$a" === _stDataMe.symbol ||
-                  "usr_brk$a" === _stDataMe.symbol) &&
-                  (viewManangerConfig.nfloat = _stDataMe.nfloat = 1);
-            };
-            var createPlayingData = function() {
-              var e,
-                t,
-                a,
-                i = cfg.DIMENSION.h_t,
-                r = i * cfg.DIMENSION.P_HV,
-                n = i * (1 - cfg.DIMENSION.P_HV);
-              (t = _stDataMe.labelMinP), (a = _stDataMe.labelMaxP);
-              var o,
-                s = _stDataMe.labelMaxVol;
-              if (_stDataMe.datas) {
-                var l = _stDataMe.datas.length;
-                for (e = 0; l > e; e++) {
-                  o = _stDataMe.datas[0][0].prevclose;
-                  for (
-                    var c,
-                      d = cfg.custom.show_underlay_vol,
-                      h = _stDataMe.isCompare ? "ppp" : "pp",
-                      u = _stDataMe.dataLen,
-                      v = 0;
-                    u > v;
-                    v++
+                d > Math.abs(_stDataMe.minPercent) &&
+                ((d = Math.abs(_stDataMe.minPercent)),
+                (viewManangerConfig.nfloat = _stDataMe.nfloat = 3)),
+              ("gb_brk$a" === _stDataMe.symbol ||
+                "usr_brk$a" === _stDataMe.symbol) &&
+                (viewManangerConfig.nfloat = _stDataMe.nfloat = 1);
+          };
+          // end funca
+
+          var _stData_$_obj_createPlayingData = function() {
+            var rowindex,
+              t,
+              a,
+              i = cfg.DIMENSION.h_t,
+              r = i * cfg.DIMENSION.P_HV,
+              n = i * (1 - cfg.DIMENSION.P_HV);
+            t = _stDataMe.labelMinP;
+            a = _stDataMe.labelMaxP;
+            var prevclose,
+              s = _stDataMe.labelMaxVol;
+            if (_stDataMe.datas) {
+              var datasLen = _stDataMe.datas.length;
+              for (rowindex = 0; datasLen > rowindex; rowindex++) {
+                prevclose = _stDataMe.datas[0][0].prevclose;
+                for (
+                  var data,
+                    show_underlay_vol = cfg.custom.show_underlay_vol,
+                    p2p3 = _stDataMe.isCompare ? "ppp" : "pp",
+                    dataLen = _stDataMe.dataLen,
+                    colIndex = 0;
+                  dataLen > colIndex;
+                  colIndex++
+                ) {
+                  data = _stDataMe.datas[rowindex][colIndex];
+                  if (!data) return;
+
+                  if (
+                    data.price <= 0 &&
+                    _stDataMe.realLen >= colIndex &&
+                    colIndex > 0
                   ) {
-                    if (((c = _stDataMe.datas[e][v]), !c)) return;
-                    c.price <= 0 &&
-                      _stDataMe.realLen >= v &&
-                      v > 0 &&
-                      ((c.price = _stDataMe.hq.price),
-                      (c.avg_price = _stDataMe.datas[e][v - 1].avg_price),
-                      (c.volume = 0)),
-                      (c.change = c.price - o),
-                      (c.percent = c.change / o),
-                      (c.py = xh5_PosUtil[h](c.price, t, a, i, o)),
-                      (c.ay = xh5_PosUtil[h](c.avg_price, t, a, i, o)),
-                      d && (c.vy = xh5_PosUtil.vp(c.volume, s, r) + n);
+                    data.price = _stDataMe.hq.price;
+                    data.avg_price =
+                      _stDataMe.datas[rowindex][colIndex - 1].avg_price;
+                    data.volume = 0;
+
+                    data.change = data.price - prevclose;
+                    data.percent = data.change / prevclose;
+                    data.py = xh5_PosUtil[p2p3](data.price, t, a, i, prevclose);
+                    data.ay = xh5_PosUtil[p2p3](
+                      data.avg_price,
+                      t,
+                      a,
+                      i,
+                      prevclose
+                    );
+                    show_underlay_vol &&
+                      (data.vy = xh5_PosUtil.vp(data.volume, s, r) + n);
                   }
                 }
-                _stDataMe.preData.vPos =
-                  "CN" == _stDataMe.market &&
-                  1 == l &&
-                  stbd(_stDataMe.hq.date, _stDataMe.datas[0][0].date)
-                    ? xh5_PosUtil[h](_stDataMe.preData.data, t, a, i, o)
-                    : null;
               }
-            };
-            this.createPlayingData = createPlayingData;
-            this.extValues = function() {
-              set_stDataMeDefaultVal(), t();
-            };
-            this.setDataRange = function(a) {
-              var i = _stData_tDb_obj.get();
-              if (i) {
-                viewState.dataLength = i.length;
-                var r = viewState.start,
-                  n = viewState.end;
-                isNaN(r) || isNaN(n)
-                  ? ((n = _stData_tDb_obj.get("tb") || 5),
-                    (r = _stData_tDb_obj.get("tv") || 4),
-                    (viewState.start = r),
-                    (viewState.end = n))
-                  : (a && n + 1 > i.length && (viewState.end = n = i.length),
-                    _stData_tDb_obj.set("tv", r),
-                    _stData_tDb_obj.set("tb", n));
-                var o = [],
-                  s = [];
-                if (i.length < 2) (s = i), o.push(i);
-                else
-                  for (var l = r; n > l; l++)
-                    (s = s.concat(i[l])), o.push(i[l]);
-                (_stDataMe.datas = o),
-                  (_stDataMe.lineDatas = s),
-                  (_stDataMe.dataLen = o[0].length),
-                  set_stDataMeDefaultVal(),
-                  t();
-              }
-            };
-          })();
-          //_stData_$_obj
 
-          var K = {},
+              _stDataMe.preData.vPos =
+                "CN" == _stDataMe.market &&
+                1 == datasLen &&
+                stbd(_stDataMe.hq.date, _stDataMe.datas[0][0].date)
+                  ? xh5_PosUtil[p2p3](
+                      _stDataMe.preData.data,
+                      t,
+                      a,
+                      i,
+                      prevclose
+                    )
+                  : null;
+            }
+          };
+
+          this.createPlayingData = _stData_$_obj_createPlayingData;
+
+          this.extValues = function() {
+            _stData_$_obj_setDef();
+            _stData_$_obj_fuca();
+          };
+
+          this.setDataRange = function(a) {
+            var arr = _stData_tDb_obj.get();
+            if (arr) {
+              viewState.dataLength = arr.length;
+              var start = viewState.start,
+                end = viewState.end;
+
+              isNaN(start) || isNaN(end)
+                ? ((end = _stData_tDb_obj.get("tb") || 5),
+                  (start = _stData_tDb_obj.get("tv") || 4),
+                  (viewState.start = start),
+                  (viewState.end = end))
+                : (a &&
+                    end + 1 > arr.length &&
+                    (viewState.end = end = arr.length),
+                  _stData_tDb_obj.set("tv", start),
+                  _stData_tDb_obj.set("tb", end));
+
+              var o = [],
+                s = [];
+
+              if (arr.length < 2) {
+                s = arr;
+                o.push(arr);
+              } else
+                for (var l = start; end > l; l++) {
+                  s = s.concat(arr[l]);
+                  o.push(arr[l]);
+                }
+              _stDataMe.datas = o;
+              _stDataMe.lineDatas = s;
+              _stDataMe.dataLen = o[0].length;
+              _stData_$_obj_setDef();
+              _stData_$_obj_fuca();
+            }
+          };
+        })();
+        //_stData_$_obj
+
+        var K = {},
           B = !1,
           ae = !1,
           ie = {},
           curTime = new Date().getTime(),
-          le = function() {
+          updateCurDate = function() {
             var e;
-            (curDate = new Date()),
-              (e = 60 * curDate.getTimezoneOffset() * 1e3),
-              curDate.setTime(curDate.getTime() + e),
-              curDate.setHours(curDate.getHours() + 8);
+            curDate = new Date();
+            e = 60 * curDate.getTimezoneOffset() * 1e3;
+            curDate.setTime(curDate.getTime() + e);
+            curDate.setHours(curDate.getHours() + 8);
           },
           ce = function(e) {
-            if ((le(), !d))
+            updateCurDate();
+
+            if (!_stDataArrA)
               switch (marketCode) {
                 case "HF":
-                  d = utils_util.tUtil.gata(marketCode, _hf_window_var.time);
+                  _stDataArrA = utils_util.tUtil.gata(
+                    marketCode,
+                    _hf_window_var.time
+                  );
                   break;
                 case "NF":
-                  d = utils_util.tUtil.gata(marketCode, _nf_window_var.time);
+                  _stDataArrA = utils_util.tUtil.gata(
+                    marketCode,
+                    _nf_window_var.time
+                  );
                   break;
                 case "global_index":
-                  d = utils_util.tUtil.gata(marketCode, _gbi_window_var.time);
+                  _stDataArrA = utils_util.tUtil.gata(
+                    marketCode,
+                    _gbi_window_var.time
+                  );
                   break;
                 default:
-                  d = utils_util.tUtil.gata(marketCode);
+                  _stDataArrA = utils_util.tUtil.gata(marketCode);
               }
-            e.index = utils_util.arrIndexOf(d, e.time);
-            var a = e.index;
+
+            e.index = utils_util.arrIndexOf(_stDataArrA, e.time);
+            var index = e.index;
             switch (_stDataMe.market) {
               case "CN":
               case "REPO":
@@ -2852,36 +2925,38 @@ xh5_define(
                 e.index < 0 &&
                   (e.time >= "11:30" &&
                     e.time < "13:00" &&
-                    (a = utils_util.arrIndexOf(d, "11:29")),
+                    (index = utils_util.arrIndexOf(_stDataArrA, "11:29")),
                   "NF" == _stDataMe.market &&
                     ("21:00" == _nf_window_var.time[0][0]
                       ? e.time < "09:00" &&
                         e.time >= "02:30" &&
-                        (a = utils_util.arrIndexOf(d, "09:00"))
+                        (index = utils_util.arrIndexOf(_stDataArrA, "09:00"))
                       : e.time <= _nf_window_var.time[0][0] &&
-                        (a = utils_util.arrIndexOf(
-                          d,
+                        (index = utils_util.arrIndexOf(
+                          _stDataArrA,
                           _nf_window_var.time[0][0]
                         ))));
                 break;
               case "HK":
-                e.time >= "12:00" && e.time < "13:00" && (a = 150),
-                  e.time >= "16:00" && e.time < "16:10" && (a = d.length - 1);
+                e.time >= "12:00" && e.time < "13:00" && (index = 150),
+                  e.time >= "16:00" &&
+                    e.time < "16:10" &&
+                    (index = _stDataArrA.length - 1);
                 break;
               case "HF":
                 "hf_CHA50CFD" == _stDataMe.symbol &&
                   e.time > "16:35" &&
                   e.time < "17:00" &&
-                  (a = 455);
+                  (index = 455);
             }
+            e.index = index;
+            _stDataMe.realLen = index;
             if (
-              ((e.index = a),
-              (_stDataMe.realLen = a),
               (_stDataMe.hq.open == _stDataMe.hq.prevclose &&
                 _stDataMe.hq.high == _stDataMe.hq.prevclose &&
                 _stDataMe.hq.low == _stDataMe.hq.prevclose &&
-                0 > a) ||
-                _stDataMe.hq.time < "09:30")
+                0 > index) ||
+              _stDataMe.hq.time < "09:30"
             )
               switch (_stDataMe.market) {
                 case "CN":
@@ -2902,692 +2977,691 @@ xh5_define(
                 default:
                   _stDataMe.realLen = 0;
               }
-          }
-          //
-          var de = function(e, t) {
-            var a = e.getTime(),
-              i = t.getTime();
-            return Math.floor((a - i) / 864e5) > 5;
-          }
-          var _stData_me_obj = new (function() {
-            var a,
-              n = !0,
-              o = function(e) {
-                var a;
-                switch (marketCode) {
-                  case "HF":
-                    a = _hf_window_var.time;
+          };
+        //
+        var de = function(e, t) {
+          var a = e.getTime(),
+            i = t.getTime();
+          return Math.floor((a - i) / 864e5) > 5;
+        };
+        var _stData_me_obj = new (function() {
+          var a,
+            n = !0,
+            o = function(e) {
+              var a;
+              switch (marketCode) {
+                case "HF":
+                  a = _hf_window_var.time;
+                  break;
+                case "NF":
+                  a = _nf_window_var.time;
+                  break;
+                case "global_index":
+                  a = _gbi_window_var.time;
+                  break;
+                default:
+                  a = [];
+              }
+              var i = utils_util.tUtil.gltbt(
+                1,
+                e.price,
+                !0,
+                _stDataMe.needMarket,
+                [e.date],
+                a
+              );
+
+              "NF" == marketCode && e.time >= "21:00"
+                ? ((i[0].date = dateUtil.dd(e.date)),
+                  i[0].date.setDate(e.date.getDate() + 1))
+                : (i[0].date = dateUtil.dd(e.date)),
+                (i[0].prevclose = e.price),
+                (i[0].price = e.price),
+                (i[0].volume = 0);
+              for (
+                var r = 0,
+                  n = 0,
+                  o = _stData_tDb_obj.get(),
+                  s = 0,
+                  l = o.length;
+                l > s;
+                s++
+              )
+                o[s][0].totalVolume &&
+                  ((n += Number(o[s][0].totalVolume)), r++);
+              (i[0].lastfive = n / r / 390 || 0),
+                stbd(o[4][0].date, e.date)
+                  ? "NF" == marketCode && e.time >= "21:00"
+                    ? (o.shift(), o.push(i))
+                    : (o[4] = i)
+                  : (o.shift(), o.push(i)),
+                _stData_tDb_obj.initTState(o),
+                (_stDataMe.datas = [o[4]]),
+                (_stDataMe.date = dateUtil.ds(e.date)),
+                (_stDataMe.realLen = 0);
+            };
+          var s = 0,
+            l = function(e, a, l) {
+              function c() {
+                switch (
+                  (o(_stDataMe.hq),
+                  onViewChange(),
+                  _stData_$_obj.createPlayingData(),
+                  _stDataMe.market)
+                ) {
+                  case "US":
+                    _stData_$_obj.extValues();
                     break;
                   case "NF":
-                    a = _nf_window_var.time;
-                    break;
-                  case "global_index":
-                    a = _gbi_window_var.time;
-                    break;
-                  default:
-                    a = [];
+                    _nf_window_var.inited = 1;
                 }
-                var i = utils_util.tUtil.gltbt(
-                  1,
-                  e.price,
-                  !0,
-                  _stDataMe.needMarket,
-                  [e.date],
-                  a
-                );
-                "NF" == marketCode && e.time >= "21:00"
-                  ? ((i[0].date = dateUtil.dd(e.date)),
-                    i[0].date.setDate(e.date.getDate() + 1))
-                  : (i[0].date = dateUtil.dd(e.date)),
-                  (i[0].prevclose = e.price),
-                  (i[0].price = e.price),
-                  (i[0].volume = 0);
-                for (
-                  var r = 0,
-                    n = 0,
-                    o = _stData_tDb_obj.get(),
-                    s = 0,
-                    l = o.length;
-                  l > s;
-                  s++
-                )
-                  o[s][0].totalVolume &&
-                    ((n += Number(o[s][0].totalVolume)), r++);
-                (i[0].lastfive = n / r / 390 || 0),
-                  stbd(o[4][0].date, e.date)
-                    ? "NF" == marketCode && e.time >= "21:00"
-                      ? (o.shift(), o.push(i))
-                      : (o[4] = i)
-                    : (o.shift(), o.push(i)),
-                  _stData_tDb_obj.initTState(o),
-                  (_stDataMe.datas = [o[4]]),
-                  (_stDataMe.date = dateUtil.ds(e.date)),
-                  (_stDataMe.realLen = 0);
-              },
-              s = 0,
-              l = function(e, a, l) {
-                function c() {
-                  switch (
-                    (o(_stDataMe.hq),
-                    onViewChange(),
-                    _stData_$_obj.createPlayingData(),
-                    _stDataMe.market)
-                  ) {
+                utils_util.isFunc(a) && a();
+              }
+              function p() {
+                var e = new Date().getTime() - curTime;
+                return !isNaN(t_rate) &&
+                  t_rate > 0 &&
+                  e >= 1e3 * Number(t_rate) &&
+                  0 != _stDataMe.realLen &&
+                  _stDataMe.hq.isUpdateTime
+                  ? ((curTime = new Date().getTime()),
+                    g(b, _stDataMe.hq, a),
+                    !0)
+                  : !1;
+              }
+              function h() {
+                function i() {
+                  stbd(_stDataMe.hq.date, y[4][0].date) &&
+                    _stDataMe.hq.time > "16:00" &&
+                    o.price < 0 &&
+                    ((o.price = _stDataMe.hq.price),
+                    (o.avg_price = y[4][y[4].length - 2].avg_price),
+                    (o.volume = 0));
+                }
+                function n() {
+                  stbd(_stDataMe.hq.date, y[4][0].date) &&
+                    _stDataMe.hq.time > "16:00" &&
+                    ((o.price = _stDataMe.hq.price),
+                    (o.avg_price = y[4][y[4].length - 2].avg_price),
+                    (o.volume = 0),
+                    (o.time = _stDataMe.hq.time),
+                    o.avg_price < 0 && (o.avg_price = _stDataMe.hq.price));
+                }
+                if (!_stDataMe.hq.isUpdateTime) {
+                  var o = y[4][y[4].length - 1];
+                  switch (_stDataMe.market) {
                     case "US":
-                      _stData_$_obj.extValues();
+                      i();
                       break;
-                    case "NF":
-                      _nf_window_var.inited = 1;
-                  }
-                  utils_util.isFunc(a) && a();
-                }
-                function p() {
-                  var e = new Date().getTime() - curTime;
-                  return !isNaN(t_rate) &&
-                    t_rate > 0 &&
-                    e >= 1e3 * Number(t_rate) &&
-                    0 != _stDataMe.realLen &&
-                    _stDataMe.hq.isUpdateTime
-                    ? ((curTime = new Date().getTime()),
-                      g(b, _stDataMe.hq, a),
-                      !0)
-                    : !1;
-                }
-                function h() {
-                  function i() {
-                    stbd(_stDataMe.hq.date, y[4][0].date) &&
-                      _stDataMe.hq.time > "16:00" &&
-                      o.price < 0 &&
-                      ((o.price = _stDataMe.hq.price),
-                      (o.avg_price = y[4][y[4].length - 2].avg_price),
-                      (o.volume = 0));
-                  }
-                  function n() {
-                    stbd(_stDataMe.hq.date, y[4][0].date) &&
-                      _stDataMe.hq.time > "16:00" &&
-                      ((o.price = _stDataMe.hq.price),
-                      (o.avg_price = y[4][y[4].length - 2].avg_price),
-                      (o.volume = 0),
-                      (o.time = _stDataMe.hq.time),
-                      o.avg_price < 0 && (o.avg_price = _stDataMe.hq.price));
-                  }
-                  if (!_stDataMe.hq.isUpdateTime) {
-                    var o = y[4][y[4].length - 1];
-                    switch (_stDataMe.market) {
-                      case "US":
-                        i();
-                        break;
-                      case "HK":
-                        n();
-                    }
-                    return (
-                      ce(_stDataMe.hq),
-                      onViewChange(!0),
-                      _stData_$_obj.createPlayingData(),
-                      utils_util.isFunc(a) && a(),
-                      !0
-                    );
+                    case "HK":
+                      n();
                   }
                   return (
-                    "HK" == _stDataMe.market && l && g(b, e, a),
-                    (_stDataMe.date =
-                      "NF" == _stDataMe.market && _stDataMe.hq.time >= "21:00"
-                        ? dateUtil.ds(y[4][0].date)
-                        : _stDataMe.hq.today),
-                    !1
+                    ce(_stDataMe.hq),
+                    onViewChange(!0),
+                    _stData_$_obj.createPlayingData(),
+                    utils_util.isFunc(a) && a(),
+                    !0
                   );
                 }
-                var b,
-                  y = _stData_tDb_obj.get();
-                switch (_stDataMe.needMarket) {
-                  case "HF":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _hf_window_var.time
-                    );
-                    break;
-                  case "NF":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _nf_window_var.time
-                    );
-                    break;
-                  case "global_index":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _gbi_window_var.time
-                    );
-                    break;
-                  default:
-                    d = utils_util.tUtil.gata(_stDataMe.needMarket);
-                }
-                if (
-                  e &&
-                  e.date &&
-                  _stDataMe.datas &&
-                  !viewManangerConfig.date
-                ) {
-                  if (((n = !1), (b = y[4]), _stDataMe.hq.isDateChange)) {
-                    if (
-                      ("NF" == _stDataMe.market &&
-                        _nf_window_var &&
-                        _nf_window_var.time[0][0] < "21:00") ||
-                      "NF" != _stDataMe.market
-                    )
-                      return void c();
-                  } else if (
-                    ("CN" == _stDataMe.market &&
-                      !stbd(_stDataMe.hq.date, y[4][0].date) &&
-                      _stDataMe.hq.time < "09:05") ||
+                return (
+                  "HK" == _stDataMe.market && l && g(b, e, a),
+                  (_stDataMe.date =
+                    "NF" == _stDataMe.market && _stDataMe.hq.time >= "21:00"
+                      ? dateUtil.ds(y[4][0].date)
+                      : _stDataMe.hq.today),
+                  !1
+                );
+              }
+              var b,
+                y = _stData_tDb_obj.get();
+              switch (_stDataMe.needMarket) {
+                case "HF":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _hf_window_var.time
+                  );
+                  break;
+                case "NF":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _nf_window_var.time
+                  );
+                  break;
+                case "global_index":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _gbi_window_var.time
+                  );
+                  break;
+                default:
+                  _stDataArrA = utils_util.tUtil.gata(_stDataMe.needMarket);
+              }
+              if (e && e.date && _stDataMe.datas && !viewManangerConfig.date) {
+                if (((n = !1), (b = y[4]), _stDataMe.hq.isDateChange)) {
+                  if (
                     ("NF" == _stDataMe.market &&
-                      stbd(_stDataMe.hq.date, y[4][0].date) &&
                       _nf_window_var &&
-                      "21:00" == _nf_window_var.time[0][0] &&
-                      _stDataMe.hq.time >= _nf_window_var.time[0][0]) ||
-                    ("HF" == _stDataMe.market &&
-                      !stbd(_stDataMe.hq.date, y[4][0].date) &&
-                      0 != _stDataMe.hq.date.getDay() &&
-                      6 != _stDataMe.hq.date.getDay() &&
-                      _stDataMe.hq.time >= _hf_window_var.time[0][0])
+                      _nf_window_var.time[0][0] < "21:00") ||
+                    "NF" != _stDataMe.market
                   )
                     return void c();
-                  if (!p() && !h()) {
-                    if (
-                      (_stDataMe.datas && (K = y[4][0]),
-                      de(e.date, y[4][0].date))
-                    )
-                      return void (_stDataMe.realLen = tDataLen);
-                    (L = e.name || ""), (_stDataMe.hq = e);
-                    var _ =
-                      e.date.getHours() < 10
-                        ? "0" + e.date.getHours()
-                        : e.date.getHours();
-                    if (
-                      ((_stDataMe.time =
-                        _ + ":" + utils_util.strUtil.zp(e.date.getMinutes())),
-                      0 == e.index && u(b, e),
-                      utils_util.arrIndexOf(d, _stDataMe.time) &&
-                        e.index > 0 &&
-                        (utils_util.arrIndexOf(d, _stDataMe.time) -
-                          _stDataMe.realLen <=
-                        1
-                          ? u(b, e)
-                          : g(b, e, a),
-                        1 == e.index && 0 == s))
-                    )
-                      return (s = 1), void g(b, e, a);
-                    R(_stDataMe.market) &&
-                      ((_stDataMe.hq.open == _stDataMe.hq.prevclose &&
-                        _stDataMe.hq.high == _stDataMe.hq.prevclose &&
-                        _stDataMe.hq.low == _stDataMe.hq.prevclose &&
-                        _stDataMe.hq.index < 0) ||
-                        e.time < "09:30") &&
-                      ("CN" == _stDataMe.market
-                        ? ((b[0].avg_price = e.price),
-                          (b[0].volume = e.totalVolume))
-                        : "option_cn" == _stDataMe.market
-                        ? ((b[0].inventory = e.position || e.holdingAmount),
-                          (b[0].holdPosition = e.position || e.holdingAmount))
-                        : "HK" == _stDataMe.market &&
-                          (b[0].avg_price =
-                            e.totalAmount / e.totalVolume || e.price)),
-                      5 == viewState.end &&
-                        (onViewChange(!0), _stData_$_obj.createPlayingData()),
-                      utils_util.isFunc(a) && a();
-                  }
+                } else if (
+                  ("CN" == _stDataMe.market &&
+                    !stbd(_stDataMe.hq.date, y[4][0].date) &&
+                    _stDataMe.hq.time < "09:05") ||
+                  ("NF" == _stDataMe.market &&
+                    stbd(_stDataMe.hq.date, y[4][0].date) &&
+                    _nf_window_var &&
+                    "21:00" == _nf_window_var.time[0][0] &&
+                    _stDataMe.hq.time >= _nf_window_var.time[0][0]) ||
+                  ("HF" == _stDataMe.market &&
+                    !stbd(_stDataMe.hq.date, y[4][0].date) &&
+                    0 != _stDataMe.hq.date.getDay() &&
+                    6 != _stDataMe.hq.date.getDay() &&
+                    _stDataMe.hq.time >= _hf_window_var.time[0][0])
+                )
+                  return void c();
+                if (!p() && !h()) {
+                  if (
+                    (_stDataMe.datas && (K = y[4][0]), de(e.date, y[4][0].date))
+                  )
+                    return void (_stDataMe.realLen = tDataLen);
+                  (L = e.name || ""), (_stDataMe.hq = e);
+                  var _ =
+                    e.date.getHours() < 10
+                      ? "0" + e.date.getHours()
+                      : e.date.getHours();
+                  if (
+                    ((_stDataMe.time =
+                      _ + ":" + utils_util.strUtil.zp(e.date.getMinutes())),
+                    0 == e.index && u(b, e),
+                    utils_util.arrIndexOf(_stDataArrA, _stDataMe.time) &&
+                      e.index > 0 &&
+                      (utils_util.arrIndexOf(_stDataArrA, _stDataMe.time) -
+                        _stDataMe.realLen <=
+                      1
+                        ? u(b, e)
+                        : g(b, e, a),
+                      1 == e.index && 0 == s))
+                  )
+                    return (s = 1), void g(b, e, a);
+                  R(_stDataMe.market) &&
+                    ((_stDataMe.hq.open == _stDataMe.hq.prevclose &&
+                      _stDataMe.hq.high == _stDataMe.hq.prevclose &&
+                      _stDataMe.hq.low == _stDataMe.hq.prevclose &&
+                      _stDataMe.hq.index < 0) ||
+                      e.time < "09:30") &&
+                    ("CN" == _stDataMe.market
+                      ? ((b[0].avg_price = e.price),
+                        (b[0].volume = e.totalVolume))
+                      : "option_cn" == _stDataMe.market
+                      ? ((b[0].inventory = e.position || e.holdingAmount),
+                        (b[0].holdPosition = e.position || e.holdingAmount))
+                      : "HK" == _stDataMe.market &&
+                        (b[0].avg_price =
+                          e.totalAmount / e.totalVolume || e.price)),
+                    5 == viewState.end &&
+                      (onViewChange(!0), _stData_$_obj.createPlayingData()),
+                    utils_util.isFunc(a) && a();
                 }
-              },
-              c = -1,
-              p = -1,
-              h = -1,
-              u = function(e, t) {
-                var i = e;
-                ce(t);
-                var r = i[_stDataMe.realLen];
-                r &&
-                  (K && !a
-                    ? (B
-                        ? ((t.volume = c =
-                            t.totalVolume - (K.totalVolume || 0)),
-                          (t.amount = p = t.volume * t.price),
-                          (t.totalAmount = t.amount + K.totalAmount),
-                          (t.avg_price = h =
-                            t.totalAmount / t.totalVolume || t.price))
-                        : ((t.volume = 0),
-                          (t.avg_price = h =
-                            K.totalAmount / K.totalVolume || t.price),
-                          (t.totalAmount = t.totalVolume * t.avg_price),
-                          (B = !0)),
-                      (K.totalVolume = t.totalVolume),
-                      (K.totalAmount = t.totalAmount))
-                    : (ae
-                        ? (t.volume = t.totalVolume - ie.totalVolume || 0)
-                        : ((t.volume = 0), (ae = !0)),
-                      (ie.totalVolume = t.totalVolume)),
-                  ("option_cn" == _stDataMe.market ||
-                    "NF" == _stDataMe.market) &&
-                    ((r.inventory = t.position || t.holdingAmount),
-                    (r.holdPosition = t.position || t.holdingAmount)),
-                  "CN" == _stDataMe.market
-                    ? (r.avg_price = t.avg_price || r.price)
-                    : (t.index > 1
-                        ? (r.avg_price =
-                            (r.avg_price > 0 && r.avg_price) ||
-                            (i[t.index - 1].avg_price * t.index + t.price) /
-                              (t.index + 1) ||
-                            r.price)
-                        : "fund" == _stDataMe.market ||
-                          (r.avg_price = r.price || t.price),
-                      0 == t.index &&
-                        (r.avg_price =
-                          t.totalAmount / t.totalVolume || t.price),
-                      (r.volume = r.volume || 0)),
-                  isNaN(t.volume) && (t.volume = 0),
-                  "HK" != _stDataMe.market &&
-                    "NF" != _stDataMe.market &&
-                    (r.volume += t.volume),
-                  (r.price = t.price),
-                  r.volume <= 0 && (r.volume = 0));
-              },
-              g = function(a, n, o) {
-                var s = {
-                  symbol: n.symbol,
-                  date: n.today,
-                  withT5: 0,
-                  withI: !1,
-                  faker: "",
-                  dataformatter: stdDataOptions.datas.t1.dataformatter,
-                  ssl: viewManangerConfig.ssl,
-                  assisthq: viewManangerConfig.assisthq
-                };
-                (B = ae = !1),
-                  "LSE" == _stDataMe.market &&
-                    (s.symbol = viewManangerConfig.rawsymbol),
-                  KKE.api("datas.t.get", s, function(e) {
-                    (a = e.data.td1), ce(_stDataMe.hq);
-                    var i = _stData_tDb_obj.get();
-                    ("NF" == _stDataMe.market &&
-                      ("21:00" == _nf_window_var.time[0][0] &&
-                        _stDataMe.hq.time >= _nf_window_var.time[0][0] &&
-                        0 != _stDataMe.hq.date.getDay() &&
-                        6 != _stDataMe.hq.date.getDay() &&
-                        (a[0].date = i[4][0].date),
-                      ("09:30" == _nf_window_var.time[0][0] ||
-                        "09:15" == _nf_window_var.time[0][0]) &&
-                        stbd(i[4][0].date, _stDataMe.hq.date) &&
-                        _stDataMe.hq.time <= _nf_window_var.time[0][0])) ||
-                      ("HF" == _stDataMe.market &&
-                        _stDataMe.hq.time > _hf_window_var.time[0][0] &&
-                        0 != _stDataMe.hq.date.getDay() &&
-                        6 != _stDataMe.hq.date.getDay() &&
-                        (a[0].date = _stDataMe.hq.date),
-                      (i[4] = a),
-                      _stData_tDb_obj.initTState(i),
-                      "CN" == _stDataMe.market &&
-                        "HK" == _stDataMe.needMarket &&
-                        ((_stDataMe.needMarket = "CN"),
-                        view.changeData(_stDataMe)),
-                      5 == viewState.end &&
-                        (onViewChange(!0), _stData_$_obj.createPlayingData()),
-                      utils_util.isFunc(o) && o());
-                  });
-              },
-              updateT5Data = function(a, r, n) {
-                var o = {
-                  symbol: r.symbol,
-                  date: r.today,
-                  withT5: 1,
-                  dist5: 1,
-                  withI: !1,
-                  faker: "",
-                  dataformatter: stdDataOptions.datas.t1.dataformatter,
-                  ssl: viewManangerConfig.ssl
-                };
-                (B = ae = !1),
-                  "LSE" == _stDataMe.market &&
-                    (o.symbol = viewManangerConfig.rawsymbol),
-                  KKE.api("datas.t.get", o, function(e) {
-                    (a = e.data.td1),
-                      _stData_tDb_obj.initTState(e.data.td5),
-                      ce(_stDataMe.hq),
-                      utils_util.isFunc(n) && n(),
-                      view.moving(viewState.start, viewState.end, "T5"),
-                      J.hide();
-                  });
+              }
+            },
+            c = -1,
+            p = -1,
+            h = -1,
+            u = function(e, t) {
+              var i = e;
+              ce(t);
+              var r = i[_stDataMe.realLen];
+              r &&
+                (K && !a
+                  ? (B
+                      ? ((t.volume = c = t.totalVolume - (K.totalVolume || 0)),
+                        (t.amount = p = t.volume * t.price),
+                        (t.totalAmount = t.amount + K.totalAmount),
+                        (t.avg_price = h =
+                          t.totalAmount / t.totalVolume || t.price))
+                      : ((t.volume = 0),
+                        (t.avg_price = h =
+                          K.totalAmount / K.totalVolume || t.price),
+                        (t.totalAmount = t.totalVolume * t.avg_price),
+                        (B = !0)),
+                    (K.totalVolume = t.totalVolume),
+                    (K.totalAmount = t.totalAmount))
+                  : (ae
+                      ? (t.volume = t.totalVolume - ie.totalVolume || 0)
+                      : ((t.volume = 0), (ae = !0)),
+                    (ie.totalVolume = t.totalVolume)),
+                ("option_cn" == _stDataMe.market || "NF" == _stDataMe.market) &&
+                  ((r.inventory = t.position || t.holdingAmount),
+                  (r.holdPosition = t.position || t.holdingAmount)),
+                "CN" == _stDataMe.market
+                  ? (r.avg_price = t.avg_price || r.price)
+                  : (t.index > 1
+                      ? (r.avg_price =
+                          (r.avg_price > 0 && r.avg_price) ||
+                          (i[t.index - 1].avg_price * t.index + t.price) /
+                            (t.index + 1) ||
+                          r.price)
+                      : "fund" == _stDataMe.market ||
+                        (r.avg_price = r.price || t.price),
+                    0 == t.index &&
+                      (r.avg_price = t.totalAmount / t.totalVolume || t.price),
+                    (r.volume = r.volume || 0)),
+                isNaN(t.volume) && (t.volume = 0),
+                "HK" != _stDataMe.market &&
+                  "NF" != _stDataMe.market &&
+                  (r.volume += t.volume),
+                (r.price = t.price),
+                r.volume <= 0 && (r.volume = 0));
+            },
+            g = function(a, n, o) {
+              var s = {
+                symbol: n.symbol,
+                date: n.today,
+                withT5: 0,
+                withI: !1,
+                faker: "",
+                dataformatter: stdDataOptions.datas.t1.dataformatter,
+                ssl: viewManangerConfig.ssl,
+                assisthq: viewManangerConfig.assisthq
               };
-            (this.updateT5Data = updateT5Data),
-              (this.update = function(a, r, o, s, c) {
-                var apiname,
-                  apiOptions,
-                  p,
-                  h = "",
-                  u = "";
-                (p = s ? s : utils_util.market(stdDataOptions.symbol)),
-                  "US" === p
-                    ? (h = 1 === viewManangerConfig.assisthq ? ",gb_ixic" : u)
-                    : "HK" === p &&
-                      (h = 1 === viewManangerConfig.assisthq ? ",rt_hkHSI" : u),
-                  o
-                    ? ((apiname = "datas.hq.parse"),
-                      (apiOptions = {
-                        symbol: stdDataOptions.symbol + h,
-                        hqStr: o,
-                        market: p,
-                        ssl: viewManangerConfig.ssl
-                      }))
-                    : ((apiname = "datas.hq.get"),
-                      (apiOptions = {
-                        symbol: stdDataOptions.symbol + h,
-                        delay: !0,
-                        cancelEtag: n,
-                        ssl: viewManangerConfig.ssl
-                      })),
-                  KKE.api(apiname, apiOptions, function(t) {
-                    l(t.dataObj[stdDataOptions.symbol], a, c);
-                  });
-              });
-          })();
-          //_stData_me_obj
-         var pe = new (function() {
-            var r = void 0,
-              o = 1,
-              s = function(e) {
-                o > 2 ||
-                  (chart_h5tObj.re(globalCfg.e.T_DATA_LOADED),
-                  utils_util.isFunc(e) && e(),
-                  o++);
-              },
-              l = function(e) {
-                var t = e,
-                  a = !1;
-                return (a =
-                  t.open == t.prevclose &&
-                  t.high == t.prevclose &&
-                  t.low == t.prevclose &&
-                  t.index < 0
-                    ? !0
-                    : t.time < "09:30");
-              },
-              c = function(a, i) {
-                var r,
-                  n,
-                  o = a;
-                switch (marketCode) {
-                  case "HF":
-                    n = _hf_window_var.time;
-                    break;
-                  case "NF":
-                    n = _nf_window_var.time;
-                    break;
-                  case "global_index":
-                    n = _gbi_window_var.time;
-                    break;
-                  default:
-                    n = [];
-                }
-                var s = utils_util.tUtil.gltbt(
-                  1,
-                  o.hq.price,
-                  !0,
-                  _stDataMe.market,
-                  [o.hq.date],
-                  n
-                );
-                return (
-                  (s[0].name = o.hq.name),
-                  (s[0].symbol = stdDataOptions.symbol),
-                  (s[0].today = utils_util.dateUtil.ds(o.hq.date, "-")),
-                  (r = i),
-                  (r[4] = s),
-                  (_stDataMe.realLen = 0),
-                  r
-                );
+              (B = ae = !1),
+                "LSE" == _stDataMe.market &&
+                  (s.symbol = viewManangerConfig.rawsymbol),
+                KKE.api("datas.t.get", s, function(e) {
+                  (a = e.data.td1), ce(_stDataMe.hq);
+                  var i = _stData_tDb_obj.get();
+                  ("NF" == _stDataMe.market &&
+                    ("21:00" == _nf_window_var.time[0][0] &&
+                      _stDataMe.hq.time >= _nf_window_var.time[0][0] &&
+                      0 != _stDataMe.hq.date.getDay() &&
+                      6 != _stDataMe.hq.date.getDay() &&
+                      (a[0].date = i[4][0].date),
+                    ("09:30" == _nf_window_var.time[0][0] ||
+                      "09:15" == _nf_window_var.time[0][0]) &&
+                      stbd(i[4][0].date, _stDataMe.hq.date) &&
+                      _stDataMe.hq.time <= _nf_window_var.time[0][0])) ||
+                    ("HF" == _stDataMe.market &&
+                      _stDataMe.hq.time > _hf_window_var.time[0][0] &&
+                      0 != _stDataMe.hq.date.getDay() &&
+                      6 != _stDataMe.hq.date.getDay() &&
+                      (a[0].date = _stDataMe.hq.date),
+                    (i[4] = a),
+                    _stData_tDb_obj.initTState(i),
+                    "CN" == _stDataMe.market &&
+                      "HK" == _stDataMe.needMarket &&
+                      ((_stDataMe.needMarket = "CN"),
+                      view.changeData(_stDataMe)),
+                    5 == viewState.end &&
+                      (onViewChange(!0), _stData_$_obj.createPlayingData()),
+                    utils_util.isFunc(o) && o());
+                });
+            },
+            updateT5Data = function(a, r, n) {
+              var o = {
+                symbol: r.symbol,
+                date: r.today,
+                withT5: 1,
+                dist5: 1,
+                withI: !1,
+                faker: "",
+                dataformatter: stdDataOptions.datas.t1.dataformatter,
+                ssl: viewManangerConfig.ssl
               };
-            this.initData = function(o) {
-              var p = viewState.viewId;
-              if (r != p) {
-                (r = p),
-                  null != _stDataMe.datas &&
-                    _stData_tDb_obj.initTState(p, _stDataMe.tDb.get());
-                var h = {
-                  assisthq: viewManangerConfig.assisthq,
-                  ssl: viewManangerConfig.ssl,
-                  symbol: stdDataOptions.symbol,
-                  date: viewManangerConfig.date,
-                  withT5: 1,
-                  dist5: viewManangerConfig.dist5,
-                  withI: !0,
-                  faker: _stDataMe.needMarket,
-                  dataformatter: stdDataOptions.datas.t1.dataformatter
-                };
-                switch (_stDataMe.needMarket) {
-                  case "HF":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _hf_window_var.time
-                    );
-                    break;
-                  case "NF":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _nf_window_var.time
-                    );
-                    break;
-                  case "global_index":
-                    d = utils_util.tUtil.gata(
-                      _stDataMe.needMarket,
-                      _gbi_window_var.time
-                    );
-                    break;
-                  case "LSE":
-                    h.symbol = viewManangerConfig.rawsymbol;
-                  default:
-                    d = utils_util.tUtil.gata(_stDataMe.needMarket);
-                }
-                J.show(),
-                  KKE.api("datas.t.get", h, function(e) {
-                    view.hasHistory && "history" == e.msg && view.hasHistory(M);
-                    var d = e.data.hq.status,
-                      p = "",
-                      u = Number(e.data.hq.state);
-                    if ("empty" == e.msg)
-                      switch (_stDataMe.market) {
-                        case "CN":
-                          3 == d &&
-                            ((p = globalCfg.delisted),
+              (B = ae = !1),
+                "LSE" == _stDataMe.market &&
+                  (o.symbol = viewManangerConfig.rawsymbol),
+                KKE.api("datas.t.get", o, function(e) {
+                  (a = e.data.td1),
+                    _stData_tDb_obj.initTState(e.data.td5),
+                    ce(_stDataMe.hq),
+                    utils_util.isFunc(n) && n(),
+                    view.moving(viewState.start, viewState.end, "T5"),
+                    J.hide();
+                });
+            };
+          (this.updateT5Data = updateT5Data),
+            (this.update = function(a, r, o, s, c) {
+              var apiname,
+                apiOptions,
+                p,
+                h = "",
+                u = "";
+              (p = s ? s : utils_util.market(stdDataOptions.symbol)),
+                "US" === p
+                  ? (h = 1 === viewManangerConfig.assisthq ? ",gb_ixic" : u)
+                  : "HK" === p &&
+                    (h = 1 === viewManangerConfig.assisthq ? ",rt_hkHSI" : u),
+                o
+                  ? ((apiname = "datas.hq.parse"),
+                    (apiOptions = {
+                      symbol: stdDataOptions.symbol + h,
+                      hqStr: o,
+                      market: p,
+                      ssl: viewManangerConfig.ssl
+                    }))
+                  : ((apiname = "datas.hq.get"),
+                    (apiOptions = {
+                      symbol: stdDataOptions.symbol + h,
+                      delay: !0,
+                      cancelEtag: n,
+                      ssl: viewManangerConfig.ssl
+                    })),
+                KKE.api(apiname, apiOptions, function(t) {
+                  l(t.dataObj[stdDataOptions.symbol], a, c);
+                });
+            });
+        })();
+        //_stData_me_obj
+
+        var pe = new (function() {
+          var r = void 0,
+            o = 1,
+            s = function(e) {
+              o > 2 ||
+                (chart_h5tObj.re(globalCfg.e.T_DATA_LOADED),
+                utils_util.isFunc(e) && e(),
+                o++);
+            },
+            l = function(e) {
+              var t = e,
+                a = !1;
+              return (a =
+                t.open == t.prevclose &&
+                t.high == t.prevclose &&
+                t.low == t.prevclose &&
+                t.index < 0
+                  ? !0
+                  : t.time < "09:30");
+            },
+            c = function(a, i) {
+              var r,
+                n,
+                o = a;
+              switch (marketCode) {
+                case "HF":
+                  n = _hf_window_var.time;
+                  break;
+                case "NF":
+                  n = _nf_window_var.time;
+                  break;
+                case "global_index":
+                  n = _gbi_window_var.time;
+                  break;
+                default:
+                  n = [];
+              }
+              var s = utils_util.tUtil.gltbt(
+                1,
+                o.hq.price,
+                !0,
+                _stDataMe.market,
+                [o.hq.date],
+                n
+              );
+              return (
+                (s[0].name = o.hq.name),
+                (s[0].symbol = stdDataOptions.symbol),
+                (s[0].today = utils_util.dateUtil.ds(o.hq.date, "-")),
+                (r = i),
+                (r[4] = s),
+                (_stDataMe.realLen = 0),
+                r
+              );
+            };
+          this.initData = function(o) {
+            var p = viewState.viewId;
+            if (r != p) {
+              (r = p),
+                null != _stDataMe.datas &&
+                  _stData_tDb_obj.initTState(p, _stDataMe.tDb.get());
+              var h = {
+                assisthq: viewManangerConfig.assisthq,
+                ssl: viewManangerConfig.ssl,
+                symbol: stdDataOptions.symbol,
+                date: viewManangerConfig.date,
+                withT5: 1,
+                dist5: viewManangerConfig.dist5,
+                withI: !0,
+                faker: _stDataMe.needMarket,
+                dataformatter: stdDataOptions.datas.t1.dataformatter
+              };
+              switch (_stDataMe.needMarket) {
+                case "HF":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _hf_window_var.time
+                  );
+                  break;
+                case "NF":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _nf_window_var.time
+                  );
+                  break;
+                case "global_index":
+                  _stDataArrA = utils_util.tUtil.gata(
+                    _stDataMe.needMarket,
+                    _gbi_window_var.time
+                  );
+                  break;
+                case "LSE":
+                  h.symbol = viewManangerConfig.rawsymbol;
+                default:
+                  _stDataArrA = utils_util.tUtil.gata(_stDataMe.needMarket);
+              }
+              J.show(),
+                KKE.api("datas.t.get", h, function(e) {
+                  view.hasHistory && "history" == e.msg && view.hasHistory(M);
+                  var d = e.data.hq.status,
+                    p = "",
+                    u = Number(e.data.hq.state);
+                  if ("empty" == e.msg)
+                    switch (_stDataMe.market) {
+                      case "CN":
+                        3 == d &&
+                          ((p = globalCfg.delisted),
+                          tipObj.showTip({
+                            txt: p,
+                            parent: V,
+                            noBtn: !0
+                          }));
+                    }
+                  if ("error" == e.msg || "nohistory" == e.msg) {
+                    if (
+                      (isMain &&
+                        "nohistory" == e.msg &&
+                        ((M = 0),
+                        view.hasHistory && view.hasHistory(M),
+                        tipObj.showTip({
+                          txt: globalCfg.nohistoryt,
+                          parent: V,
+                          noBtn: !0
+                        })),
+                      (_stDataMe.isErr = !0),
+                      isMain && e.data && e.data.hq)
+                    ) {
+                      if (d)
+                        switch (_stDataMe.market) {
+                          case "CN":
+                            switch (d) {
+                              case 2:
+                                p = globalCfg.notlisted;
+                                break;
+                              case 3:
+                                p = globalCfg.delisted;
+                                break;
+                              case 0:
+                                p = globalCfg.norecord;
+                            }
+                            break;
+                          case "HK":
+                            switch (d) {
+                              case 5:
+                                p = globalCfg.notlisted;
+                                break;
+                              case 0:
+                                p = globalCfg.delisted;
+                            }
+                        }
+                      else p = globalCfg.norecord;
+                      if (p && 0 != u) {
+                        var v,
+                          g = {
+                            txt: p,
+                            parent: V,
+                            noBtn: !0
+                          };
+                        if (!(cfg.DIMENSION.getStageW() < 200))
+                          return (
                             tipObj.showTip({
                               txt: p,
                               parent: V,
                               noBtn: !0
-                            }));
+                            }),
+                            void J.hide()
+                          );
+                        (g.bgStyle = {
+                          padding: 0,
+                          top: "0px"
+                        }),
+                          v ||
+                            ((v = new utils_util.TipM(cfg.COLOR)), v.genTip(g));
                       }
-                    if ("error" == e.msg || "nohistory" == e.msg) {
-                      if (
-                        (isMain &&
-                          "nohistory" == e.msg &&
-                          ((M = 0),
-                          view.hasHistory && view.hasHistory(M),
-                          tipObj.showTip({
-                            txt: globalCfg.nohistoryt,
-                            parent: V,
-                            noBtn: !0
-                          })),
-                        (_stDataMe.isErr = !0),
-                        isMain && e.data && e.data.hq)
-                      ) {
-                        if (d)
-                          switch (_stDataMe.market) {
-                            case "CN":
-                              switch (d) {
-                                case 2:
-                                  p = globalCfg.notlisted;
-                                  break;
-                                case 3:
-                                  p = globalCfg.delisted;
-                                  break;
-                                case 0:
-                                  p = globalCfg.norecord;
-                              }
-                              break;
-                            case "HK":
-                              switch (d) {
-                                case 5:
-                                  p = globalCfg.notlisted;
-                                  break;
-                                case 0:
-                                  p = globalCfg.delisted;
-                              }
-                          }
-                        else p = globalCfg.norecord;
-                        if (p && 0 != u) {
-                          var v,
-                            g = {
-                              txt: p,
-                              parent: V,
-                              noBtn: !0
-                            };
-                          if (!(cfg.DIMENSION.getStageW() < 200))
-                            return (
-                              tipObj.showTip({
-                                txt: p,
-                                parent: V,
-                                noBtn: !0
-                              }),
-                              void J.hide()
-                            );
-                          (g.bgStyle = {
-                            padding: 0,
-                            top: "0px"
-                          }),
-                            v ||
-                              ((v = new utils_util.TipM(cfg.COLOR)),
-                              v.genTip(g));
-                        }
-                      }
-                      if (0 != u && 7 != u) {
-                        if ((view.onResize(), 1 != d))
-                          return void view.removeCompare([h.symbol]);
-                        _stDataMe.isErr = !1;
-                      } else _stDataMe.isErr = !1;
                     }
-                    (_stDataMe.hq = e.data.hq),
-                      (r = void 0),
-                      (h.td1 = e.data.td1);
-                    var b;
-                    curDate = new Date();
-                    var y = 60 * curDate.getTimezoneOffset() * 1e3;
-                    if (
-                      (curDate.setTime(curDate.getTime() + y),
-                      curDate.setHours(curDate.getHours() + 8),
-                      (L = _stDataMe.hq.name || ""),
-                      ce(_stDataMe.hq),
-                      l(_stDataMe.hq, e.data.td5) && R(_stDataMe.market)
-                        ? "history" == e.msg
-                          ? ((b = e.data.td5),
-                            b[4][0].date || (b[4][0].date = _stDataMe.hq.date))
-                          : (b = c(_stDataMe, e.data.td5))
-                        : ((b = e.data.td5),
-                          "NF" != _stDataMe.market ||
-                            !_nf_window_var ||
-                            ("09:30" != _nf_window_var.time[0][0] &&
-                              "09:15" != _nf_window_var.time[0][0]) ||
-                            (stbd(b[4][0].date, _stDataMe.hq.date) &&
-                              _stDataMe.hq.time <= _nf_window_var.time[0][0] &&
-                              (b = c(_stDataMe, e.data.td5))),
-                          b &&
-                            !b[4][0].date &&
-                            (b[4][0].date = _stDataMe.hq.date)),
-                      (view.historyData = b),
-                      (_stDataMe.date =
-                        (e.data.td1 && e.data.td1[0].today) ||
-                        _stDataMe.hq.date),
-                      _stData_tDb_obj.initTState(b),
-                      s(o),
-                      1 == O &&
-                        (viewHelper.dateTo(
-                          viewManangerConfig.historytime,
-                          viewManangerConfig.historycb
-                        ),
-                        (O = 0)),
-                      J.hide(),
-                      viewManangerConfig.loadedChart)
-                    )
-                      if (utils_util.isFunc(viewManangerConfig.loadedChart))
-                        viewManangerConfig.loadedChart();
-                      else if (window[viewManangerConfig.loadedChart])
-                        window[viewManangerConfig.loadedChart]();
-                      else
-                        try {
-                          window.h5chart.loadedChart();
-                        } catch (_) {}
-                  });
-              }
-            };
-          })();
-          //
-        (this.tDb = _stData_tDb_obj),
-          (this.initData = pe.initData),
-          (this.initT5Data = _stData_me_obj.updateT5Data),
-          (this.doUpdate = _stData_me_obj.update),
-          (this.onViewChange = onViewChange),
-          (this.setPricePos = function(e, t) {
-            (_stDataMe.labelMaxP = e[0]),
-              (_stDataMe.labelMinP = e[1]),
-              (_stDataMe.labelPriceCount = e[2]),
-              (_stDataMe.isCompare = t),
-              _stData_$_obj.createPlayingData(),
-              k && k.setPricePos(e);
-          }),
-          (this.setRange = function() {
-            _stData_$_obj.setDataRange(),
-              _stData_tChartObj && _stData_tChartObj.setDataRange(),
-              k && k.setDataRange(),
-              D && D.setDataRange();
-          }),
-          (this.draw = function() {
-            stockUI.draw(),
-              _stData_tChartObj && _stData_tChartObj.allDraw(),
-              k && k.allDraw();
-          }),
-          (this.resize = function(e) {
+                    if (0 != u && 7 != u) {
+                      if ((view.onResize(), 1 != d))
+                        return void view.removeCompare([h.symbol]);
+                      _stDataMe.isErr = !1;
+                    } else _stDataMe.isErr = !1;
+                  }
+                  (_stDataMe.hq = e.data.hq),
+                    (r = void 0),
+                    (h.td1 = e.data.td1);
+                  var b;
+                  curDate = new Date();
+                  var y = 60 * curDate.getTimezoneOffset() * 1e3;
+                  if (
+                    (curDate.setTime(curDate.getTime() + y),
+                    curDate.setHours(curDate.getHours() + 8),
+                    (L = _stDataMe.hq.name || ""),
+                    ce(_stDataMe.hq),
+                    l(_stDataMe.hq, e.data.td5) && R(_stDataMe.market)
+                      ? "history" == e.msg
+                        ? ((b = e.data.td5),
+                          b[4][0].date || (b[4][0].date = _stDataMe.hq.date))
+                        : (b = c(_stDataMe, e.data.td5))
+                      : ((b = e.data.td5),
+                        "NF" != _stDataMe.market ||
+                          !_nf_window_var ||
+                          ("09:30" != _nf_window_var.time[0][0] &&
+                            "09:15" != _nf_window_var.time[0][0]) ||
+                          (stbd(b[4][0].date, _stDataMe.hq.date) &&
+                            _stDataMe.hq.time <= _nf_window_var.time[0][0] &&
+                            (b = c(_stDataMe, e.data.td5))),
+                        b &&
+                          !b[4][0].date &&
+                          (b[4][0].date = _stDataMe.hq.date)),
+                    (view.historyData = b),
+                    (_stDataMe.date =
+                      (e.data.td1 && e.data.td1[0].today) || _stDataMe.hq.date),
+                    _stData_tDb_obj.initTState(b),
+                    s(o),
+                    1 == O &&
+                      (viewHelper.dateTo(
+                        viewManangerConfig.historytime,
+                        viewManangerConfig.historycb
+                      ),
+                      (O = 0)),
+                    J.hide(),
+                    viewManangerConfig.loadedChart)
+                  )
+                    if (utils_util.isFunc(viewManangerConfig.loadedChart))
+                      viewManangerConfig.loadedChart();
+                    else if (window[viewManangerConfig.loadedChart])
+                      window[viewManangerConfig.loadedChart]();
+                    else
+                      try {
+                        window.h5chart.loadedChart();
+                      } catch (_) {}
+                });
+            }
+          };
+        })();
+        //
+        this.tDb = _stData_tDb_obj;
+        this.initData = pe.initData;
+        this.initT5Data = _stData_me_obj.updateT5Data;
+        this.doUpdate = _stData_me_obj.update;
+        this.onViewChange = onViewChange;
+        this.setPricePos = function(e, t) {
+          (_stDataMe.labelMaxP = e[0]),
+            (_stDataMe.labelMinP = e[1]),
+            (_stDataMe.labelPriceCount = e[2]),
+            (_stDataMe.isCompare = t),
             _stData_$_obj.createPlayingData(),
-              stockUI.resize(),
-              _stData_tChartObj && _stData_tChartObj.onResize(e),
-              k && k.onResize(),
-              D && D.onResize();
-          }),
-          (this.clear = function() {
-            stockUI.clear(),
-              _stData_tChartObj &&
-                (_stData_tChartObj.clear(), (_stData_tChartObj = null)),
-              k && (k.clear(), (k = null)),
-              D && (D.clear(), (D = null)),
-              isMain && (Q = null);
-          }),
-          (this.getPriceTech = function() {
-            return k || null;
-          }),
-          (this.removePt = function(e) {
-            if (e) {
-              !utils_util.isArr(e) && (e = [e]);
-              for (var a = e.length; a--; )
-                if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
-                  e.splice(a, 1), (cfg.custom.show_underlay_vol = !1);
-                  break;
-                }
-            } else cfg.custom.show_underlay_vol = !1;
-            k && k.removeChart(e);
-          }),
-          (this.togglePt = function(e) {
-            k && (y = k.showHide(e));
-          });
-        var he = function(e, a, i) {
-          e && initMgr.resizeAll(!0),
-            view.onChangeView(),
-            a && utils_util.isFunc(a.callback) && a.callback(),
-            i && ne.onTechChanged(i[0]);
+            _stDatak && _stDatak.setPricePos(e);
         };
-        (this.initPt = function(e, r) {
+        this.setRange = function() {
+          _stData_$_obj.setDataRange(),
+            _stData_tChartObj && _stData_tChartObj.setDataRange(),
+            _stDatak && _stDatak.setDataRange(),
+            _stDataD && _stDataD.setDataRange();
+        };
+        this.draw = function() {
+          stockUI.draw(),
+            _stData_tChartObj && _stData_tChartObj.allDraw(),
+            _stDatak && _stDatak.allDraw();
+        };
+        this.resize = function(e) {
+          _stData_$_obj.createPlayingData(),
+            stockUI.resize(),
+            _stData_tChartObj && _stData_tChartObj.onResize(e),
+            _stDatak && _stDatak.onResize(),
+            _stDataD && _stDataD.onResize();
+        };
+        this.clear = function() {
+          stockUI.clear();
+          _stData_tChartObj &&
+            _stData_tChartObj.clear()((_stData_tChartObj = null));
+          _stDatak && (_stDatak.clear(), (_stDatak = null));
+          _stDataD && (_stDataD.clear(), (_stDataD = null));
+          isMain && (_stDataQ = null);
+        };
+        this.getPriceTech = function() {
+          return _stDatak || null;
+        };
+        this.removePt = function(arr) {
+          if (arr) {
+            !utils_util.isArr(arr) && (arr = [arr]);
+
+            for (var index = arr.length; index--; )
+              if (
+                arr[index].name &&
+                "VOLUME" === arr[index].name.toUpperCase()
+              ) {
+                arr.splice(index, 1);
+                cfg.custom.show_underlay_vol = !1;
+                break;
+              }
+          } else cfg.custom.show_underlay_vol = !1;
+
+          _stDatak && _stDatak.removeChart(arr);
+        };
+
+        this.togglePt = function(e) {
+          _stDatak && (_stDatay = _stDatak.showHide(e));
+        };
+
+        var he = function(e, a, i) {
+          e && initMgr.resizeAll(!0);
+          view.onChangeView();
+          a && utils_util.isFunc(a.callback) && a.callback();
+          i && _stDatane.onTechChanged(i[0]);
+        };
+        this.initPt = function(e, r) {
           if (e) {
             !utils_util.isArr(e) && (e = [e]);
             for (var n = e.length; n--; )
@@ -3595,8 +3669,9 @@ xh5_define(
                 e.splice(n, 1), (cfg.custom.show_underlay_vol = !0);
                 break;
               }
-            k ||
-              ((k = new pChart({
+
+            if (!_stDatak) {
+              _stDatak = new pChart({
                 iMgr: iMgr,
                 stockData: _stDataMe,
                 chartArea: G,
@@ -3605,43 +3680,49 @@ xh5_define(
                 type: "t",
                 cfg: cfg,
                 usrObj: viewManangerConfig
-              })),
-              isMain && (Z = k)),
-              k.createChart(e, r);
+              });
+              isMain && (Z = _stDatak);
+            }
+
+            _stDatak.createChart(e, r);
           }
-        }),
-          (this.initTc = function(chartlist, options) {
-            _stData_tChartObj ||
-              ((_stData_tChartObj = new tChart({
-                stockData: _stDataMe,
-                iMgr: iMgr,
-                subArea: subArea,
-                cb: he,
-                cfg: cfg,
-                type: "option_cn" == marketCode ? "p" : "t",
-                usrObj: viewManangerConfig,
-                initMgr: initMgr
-              })),
-              isMain && (Y = _stData_tChartObj)),
-              _stData_tChartObj.createChart(chartlist, options);
-          }),
-          (this.removeTc = function(e) {
-            _stData_tChartObj && _stData_tChartObj.removeChart(e);
-          }),
-          (this.initRs = function() {
-            D ||
-              ((D = new o({
-                stockData: _stDataMe,
-                setting: cfg,
-                state: viewState,
-                rc: view.moving,
-                witht5: 1
-              })),
-              (Q = D)),
-              D.linkData();
-          }),
-          (this.setTLineStyle = stockUI.setTLineStyle),
-          c();
+        };
+        this.initTc = function(chartlist, options) {
+          if (!_stData_tChartObj) {
+            _stData_tChartObj = new tChart({
+              stockData: _stDataMe,
+              iMgr: iMgr,
+              subArea: subArea,
+              cb: he,
+              cfg: cfg,
+              type: "option_cn" == marketCode ? "p" : "t",
+              usrObj: viewManangerConfig,
+              initMgr: initMgr
+            });
+            isMain && (Y = _stData_tChartObj);
+          }
+
+          _stData_tChartObj.createChart(chartlist, options);
+        };
+        this.removeTc = function(e) {
+          _stData_tChartObj && _stData_tChartObj.removeChart(e);
+        };
+        this.initRs = function() {
+          if (!_stDataD) {
+            _stDataD = new o({
+              stockData: _stDataMe,
+              setting: cfg,
+              state: viewState,
+              rc: view.moving,
+              witht5: 1
+            });
+            _stDataQ = _stDataD;
+          }
+
+          _stDataD.linkData();
+        };
+        this.setTLineStyle = stockUI.setTLineStyle;
+        funcBool();
       }
 
       //end STDATA
@@ -4045,7 +4126,7 @@ xh5_define(
                 ? viewMe.moving(viewState.start, viewState.end)
                 : viewMe.moving(4, 5, !1)
               : viewMe.moving(viewState.start, viewState.end, !1),
-              t || ne.onRange(view_mainStock);
+              t || _stDatane.onRange(view_mainStock);
           },
           v = function(e) {
             return e.isErr
@@ -4088,12 +4169,12 @@ xh5_define(
                   l();
                 }
               }
-              if ((ne.onViewChanged(), a)) return;
-              ne.onViewPrice(), ne.onDataUpdate();
+              if ((_stDatane.onViewChanged(), a)) return;
+              _stDatane.onViewPrice(), _stDatane.onDataUpdate();
             }
           },
           _ = function() {
-            ne.onRange(view_mainStock);
+            _stDatane.onRange(view_mainStock);
           };
         (this.getExtraData = function(a) {
           if (
@@ -4178,7 +4259,11 @@ xh5_define(
         var N,
           k,
           S = function() {
-            iMgr.update(), d(), m(), _(), iMgr.isIng() || ne.onViewPrice();
+            iMgr.update(),
+              d(),
+              m(),
+              _(),
+              iMgr.isIng() || _stDatane.onViewPrice();
           },
           D = function() {
             clearTimeout(k),
@@ -4301,7 +4386,7 @@ xh5_define(
               (J.show(), x("t5"), (C = 1), (A = 2));
           for (var o, s = allStocks.length; s--; )
             (o = allStocks[s]), o.setRange(), o.onViewChange();
-          d(), m(), ne.onRange(view_mainStock);
+          d(), m(), _stDatane.onRange(view_mainStock);
         }),
           (this.dAdd = 0),
           (this.compare = function(e) {
@@ -4321,7 +4406,7 @@ xh5_define(
                   break;
                 }
             }
-            M(i), toggleP(), d(), m(), ne.onRange(allStocks[0]);
+            M(i), toggleP(), d(), m(), _stDatane.onRange(allStocks[0]);
           }),
           (this.onResize = function(e) {
             for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
@@ -4431,11 +4516,11 @@ xh5_define(
           };
           var showRs = function(t) {
             return o
-              ? (Q
-                  ? Q.sh(t)
+              ? (_stDataQ
+                  ? _stDataQ.sh(t)
                   : (view_mainStock.initRs(),
                     showRs(t),
-                    B.appendChild(Q.getBody())),
+                    B.appendChild(_stDataQ.getBody())),
                 void initMgr.resizeAll(!0))
               : void KKE.api("plugins.rangeselector.get", null, function(e) {
                   (o = e), showRs(t);
@@ -4742,7 +4827,7 @@ xh5_define(
         whatJ,
         Y,
         Z,
-        Q,
+        _stDataQ,
         J,
         viewState = {
           viewId: globalCfg.URLHASH.vi(viewManangerConfig.view || "ts"),
@@ -4846,7 +4931,7 @@ xh5_define(
         var l = function(a) {
           var i = !1;
           if (a) {
-            Q && (i = Q.setTheme(a));
+            _stDataQ && (i = _stDataQ.setTheme(a));
             for (var r in a)
               a.hasOwnProperty(r) &&
                 cfg.COLOR.hasOwnProperty(r) &&
@@ -4920,13 +5005,13 @@ xh5_define(
             view.onResize(),
             iMgr.onResize(),
             r(),
-            ne.onInnerResize({
+            _stDatane.onInnerResize({
               height: cfg.DIMENSION.h_t
             }));
         };
         this.initTheme = l;
       })();
-      var ne = new (function() {
+      var _stDatane = new (function() {
         var e = 0,
           a = function(a, r) {
             var n = tDataLen - 1,
@@ -5448,7 +5533,7 @@ xh5_define(
                   : Number.MAX_VALUE),
                 b(K);
             } else b(Number.MAX_VALUE);
-            return void ne.onViewPrice();
+            return void _stDatane.onViewPrice();
           }
           (k = !1), (D = V);
           for (
@@ -5610,7 +5695,7 @@ xh5_define(
                 y: cfg.DIMENSION.H_MA4K
               }),
               b(V),
-              ne.onViewPrice(L, V, B, !k),
+              _stDatane.onViewPrice(L, V, B, !k),
               chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
           }
         }),
@@ -5618,7 +5703,7 @@ xh5_define(
             isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
           }),
           (this.shortClickHandler = function() {
-            ne.shortClickHandler();
+            _stDatane.shortClickHandler();
           }),
           (this.zoomView = function() {}),
           p(),
@@ -5750,7 +5835,7 @@ xh5_define(
                           void (
                             4 == viewState.start &&
                             5 == viewState.end &&
-                            ne.onViewPrice(o, s, void 0, !k)
+                            _stDatane.onViewPrice(o, s, void 0, !k)
                           )
                         );
                       y();
@@ -5758,7 +5843,7 @@ xh5_define(
                   else if ("HF" == marketCode)
                     4 == viewState.start &&
                       5 == viewState.end &&
-                      ne.onViewPrice(o, s, void 0, !k);
+                      _stDatane.onViewPrice(o, s, void 0, !k);
                   else if ("NF" == marketCode) {
                     var c = new Date(o.date);
                     o.date &&
@@ -5771,8 +5856,8 @@ xh5_define(
                         "/" +
                         utils_util.dateUtil.nw(c.getDay()) +
                         (o.time || ""))),
-                      ne.onViewPrice(o, s, void 0, !k);
-                  } else ne.onViewPrice(o, s, void 0, !k);
+                      _stDatane.onViewPrice(o, s, void 0, !k);
+                  } else _stDatane.onViewPrice(o, s, void 0, !k);
               }
             }
           });
@@ -5864,7 +5949,7 @@ xh5_define(
             );
           var n = view.getAllStock()[0];
           if (
-            (ne.onRange(n),
+            (_stDatane.onRange(n),
             utils_util.stc("t_v", e),
             utils_util.suda("vw", e),
             viewState.viewId != r)
@@ -5874,7 +5959,7 @@ xh5_define(
               ("HF" == marketCode || "NF" == marketCode) && "t5" == e && 0 == C)
             )
               return J.show(), (C = 1), void view.update5Data(e);
-            view.onChangeView(!1, a), ne && ne.onViewPrice();
+            view.onChangeView(!1, a), _stDatane && _stDatane.onViewPrice();
           }
         };
         var d = function(e) {
@@ -6010,7 +6095,7 @@ xh5_define(
               e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
               utils_util.$CONTAINS($, V) ||
                 ($.appendChild(V), initMgr.resizeAll(!0)),
-              ne && ne.onViewPrice();
+              _stDatane && _stDatane.onViewPrice();
           }),
           (this.shareTo = function(e) {
             view.shareTo(e), utils_util.stc("t_share", e);
@@ -6080,7 +6165,7 @@ xh5_define(
             view.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
           }),
           (this.getCurrentData = function() {
-            return ne.currentData();
+            return _stDatane.currentData();
           }),
           (this.viewState = viewState),
           (this.me = chart_h5tObj),

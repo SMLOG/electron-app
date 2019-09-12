@@ -139,7 +139,7 @@ export default {
             type: "tech"
           },
           function(chart_) {
-            _cnChart = chart_;
+            let _cnChart = chart_;
             //多空
             if (window.location.search.indexOf("showBBI") != -1) {
               _cnChart.showView({
@@ -148,7 +148,7 @@ export default {
               });
               $(document.body).scrollTop(480);
             }
-            compareH5.init();
+            //compareH5.init();
           }
         );
     });

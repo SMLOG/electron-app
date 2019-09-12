@@ -30,7 +30,8 @@
         </draggable>
       </table>
     </div>
-    <div id="h5Figure" style="height:100px"></div>
+    <div id="tkChart_wwysh601318"></div>
+    <div id="h5Figure" style="height:600px"></div>
   </div>
 </template>
 
@@ -134,9 +135,21 @@ export default {
             },
             symbol: papercode, //证券代码
             mt: "cnlv1",
-            dom_id: "h5Figure" //放置图形的dom容器id
+            dom_id: "h5Figure", //放置图形的dom容器id
+            type: "tech"
           },
-          function(chart_) {}
+          function(chart_) {
+            _cnChart = chart_;
+            //多空
+            if (window.location.search.indexOf("showBBI") != -1) {
+              _cnChart.showView({
+                view: "kdd",
+                active: 3
+              });
+              $(document.body).scrollTop(480);
+            }
+            compareH5.init();
+          }
         );
     });
   },

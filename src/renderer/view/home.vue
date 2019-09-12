@@ -66,14 +66,14 @@ export default {
       this.$store.dispatch("hideSuspension");
     });
 
-    loadScripts(["/static/js/sf_sdk.js", "/static/js/h5t.js"]).then(() => {
+    loadScripts(["/static/js/sf_sdk.js"]).then(() => {
       let papercode = "sh601318";
       let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
       console.log("KEE");
 
-      if (true)
+      if (false)
         KKE.api(
-          "chart.h5t.get",
+          "chart.h5k.get",
           {
             symbol: papercode
           },
@@ -101,7 +101,7 @@ export default {
               );
           }
         );
-      if (false)
+      if (true)
         /* KKE.api(
           "plugins.techcharts.get",
           {
@@ -136,19 +136,7 @@ export default {
             mt: "cnlv1",
             dom_id: "h5Figure" //放置图形的dom容器id
           },
-          function(chart_) {
-            _cnChart = chart_;
-            // alert("hello");
-            //多空
-            if (window.location.search.indexOf("showBBI") != -1) {
-              _cnChart.showView({
-                view: "kdd",
-                active: 3
-              });
-              $(document.body).scrollTop(480);
-            }
-            compareH5.init();
-          }
+          function(chart_) {}
         );
     });
   },

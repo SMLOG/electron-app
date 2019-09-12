@@ -391,10 +391,10 @@ var __Utils = {
     gb: void 0,
     custom: void 0
   },
-  produceAvg: function(e) {
+  produceAvg: function(arr) {
     for (
       var t, r = 0, i = 0;
-      i < e.length && ((t = e[i]), !(t.price <= 0));
+      i < arr.length && ((t = arr[i]), !(t.price <= 0));
       i++
     )
       (r += t.price), (t.avg_price = r / (i + 1));
@@ -2285,15 +2285,17 @@ xh5_define(
       function STData(stdDataOptions, isMain) {
         function onViewChange(e) {
           _stData_$_obj.setDataRange(e);
+          
           _stData_tChartObj &&
             (_stData_tChartObj.linkData(e), _stData_tChartObj.setDataRange());
+            
           _stDatak && (_stDatak.linkData(e), _stDatak.setDataRange());
           _stDataD && (_stDataD.linkData(e), _stDataD.setDataRange());
         }
         function funcBool() {
-          if (isMain) _view_manager_whatJ = _stData_tDb_obj;
+          if (isMain) _view_manager_whatJ = _stData_tDb;
 
-          _stData_me_obj.update(null, !0);
+          _stData_A_obj.update(null, !0);
 
           return (
             "CN" === marketCode &&
@@ -2320,7 +2322,7 @@ xh5_define(
           stdDataOptions || {}
         ); //stdDataOptions
 
-        var _stDataArrA;
+        var _stData_minusArr;
         var _stDataMe = this;
         var marketCode = utils_util.market(stdDataOptions.symbol);
         var marketCodeToID = function(code) {
@@ -2335,6 +2337,7 @@ xh5_define(
           return 1;
         };
 
+        //STDATA
         this.business = stdDataOptions.business;
         this.simple = stdDataOptions.simple;
         var _stDatay = !0;
@@ -2377,75 +2380,76 @@ xh5_define(
           vPos: null
         };
         this.needMarket = marketCode;
-
+        //STDATA
         this.changeMarket = function(e) {
           var _arr,
             _arrB = [],
             r = e;
+            tDataLen = _ViewManager_ObjectA.tcd(marketCode);
           if (
-            ((tDataLen = ObjectA.tcd(marketCode)),
-            marketCodeToID(_stDataMe.needMarket) != marketCodeToID(marketCode))
+            
+            marketCodeToID(_stDataMe.needMarket) != marketCodeToID(marketCode)
           ) {
-            _arr = _stData_tDb_obj.get();
-            _stDataArrA = utils_util.tUtil.gata(marketCode);
+            _arr = _stData_tDb.get();
+            _stData_minusArr = utils_util.tUtil.gata(marketCode);
             for (var n = 0; n < _arr.length; n++)
               if (
                 marketCodeToID(_stDataMe.needMarket) <
                 marketCodeToID(marketCode)
               ) {
                 _arrB.push(
-                  ObjectA.aduk(
+                  _ViewManager_ObjectA.aduk(
                     _arr[n],
                     _stDataMe.market,
                     marketCode,
-                    curDate,
+                    _stData_curDate,
                     _arr[n][0].date
                   )
                 );
 
                 _stDataMe.realLen = utils_util.arrIndexOf(
-                  _stDataArrA,
-                  curDate.getHours() +
+                  _stData_minusArr,
+                  _stData_curDate.getHours() +
                     ":" +
-                    utils_util.strUtil.zp(curDate.getMinutes())
+                    utils_util.strUtil.zp(_stData_curDate.getMinutes())
                 );
 
                 _stDataMe.realLen < 0 && (_stDataMe.realLen = tDataLen);
               } else {
-                _arrB.push(ObjectA.rmuk(_arr[n], marketCode, r)),
+                _arrB.push(_ViewManager_ObjectA.rmuk(_arr[n], marketCode, r)),
                   (_stDataMe.realLen = utils_util.arrIndexOf(
-                    _stDataArrA,
-                    curDate.getHours() +
+                    _stData_minusArr,
+                    _stData_curDate.getHours() +
                       ":" +
-                      utils_util.strUtil.zp(curDate.getMinutes())
+                      utils_util.strUtil.zp(_stData_curDate.getMinutes())
                   ));
               }
 
             (_stDataMe.needMarket = marketCode),
-              _stData_tDb_obj.initTState(_arrB),
+              _stData_tDb.initTState(_arrB),
               (_stDataMe.datas = _arrB[4]),
               _stData_$_obj.setDataRange(),
               _stData_$_obj.createPlayingData();
           }
         }; //
-
+        //STDATA
         var _stData_tChartObj,
           _stDatak,
           _stDataD,
-          L,
-          curDate,
+          name,
+          _stData_curDate,
           stockUI = new StockUI(this, stdDataOptions);
         this.getName = function() {
-          return L || "";
+          return name || "";
         };
         this.getStockType = function() {
           var e;
           return _stDataMe.hq && (e = _stDataMe.hq.type), e || "";
         };
-
+        //STDATA
         this.viewState = viewState;
 
-        var _stData_tDb_obj = new (function() {
+        var _stData_tDb = new (function() {
           var cacheData = {};
           var extraDataObj = {
             rsAmount: void 0
@@ -2459,30 +2463,31 @@ xh5_define(
               if (o.length > 5) {
                 if (viewManangerConfig.date) {
                   for (
-                    var s,
-                      l = Number(viewManangerConfig.date.split("-")[2]),
-                      c = 0,
+                    var gdate,
+                      dy = Number(viewManangerConfig.date.split("-")[2]),
+                      diff = 0,
                       d = 0,
-                      m = 0,
-                      p = o.length;
-                    p > m;
-                    m++
+                      index = 0,
+                      len = o.length;
+                    len > index;
+                    index++
                   ) {
-                    s = o[m][0].date.getDate();
-                    0 == m
-                      ? (c = Math.abs(s - l))
-                      : c > Math.abs(s - l) && ((c = Math.abs(s - l)), (d = m));
-                  }
+                    gdate = o[index][0].date.getDate();
+                    0 == index
+                      ? (diff = Math.abs(gdate - dy))
+                      : diff > Math.abs(gdate - dy) && ((diff = Math.abs(gdate - dy)), (d = index));
+                      d >= 5
+                      ? ((r = o.splice(d - 4, 5)),
+                        (viewState.start = 4),
+                        (viewState.end = 5))
+                      : ((r = o.splice(0, 5)),
+                        (viewState.start = d),
+                        (viewState.end = d + 1)),
+                      (cacheData.tv = viewState.start),
+                      (cacheData.tb = viewState.end);
+                    }
 
-                  d >= 5
-                    ? ((r = o.splice(d - 4, 5)),
-                      (viewState.start = 4),
-                      (viewState.end = 5))
-                    : ((r = o.splice(0, 5)),
-                      (viewState.start = d),
-                      (viewState.end = d + 1)),
-                    (cacheData.tv = viewState.start),
-                    (cacheData.tb = viewState.end);
+
                 }
               } else {
                 r = o;
@@ -2500,8 +2505,8 @@ xh5_define(
             "undefined" != typeof cacheData[key] && (cacheData[key] = data);
           };
           this.initState = initState;
-          this.initTState = function(e) {
-            initState(e);
+          this.initTState = function(dataArr) {
+            initState(dataArr);
           };
           this.extraDataObj = extraDataObj;
           this.initExtraData = function() {
@@ -2563,11 +2568,11 @@ xh5_define(
               switch (
                 (t / e > 0.45 &&
                   "US" != marketCode &&
-                  (cfg.datas.scaleType = "price"),
+                  (_viem_manager_cfg.datas.scaleType = "price"),
                 t / e > 0.1 &&
-                  "newstock" == cfg.datas.scaleType &&
-                  (cfg.datas.scaleType = "price"),
-                cfg.datas.scaleType)
+                  "newstock" == _viem_manager_cfg.datas.scaleType &&
+                  (_viem_manager_cfg.datas.scaleType = "price"),
+                _viem_manager_cfg.datas.scaleType)
               ) {
                 case "newstock":
                   (_stDataMe.minPrice = Number(e) - 0.45 * e),
@@ -2739,7 +2744,7 @@ xh5_define(
 
             _stDataMe.maxPercent < d &&
               ("US" !== _stDataMe.market || "LSE" !== _stDataMe.market) &&
-              "pct" !== cfg.datas.scaleType &&
+              "pct" !== _viem_manager_cfg.datas.scaleType &&
               ((_stDataMe.minPrice = _stDataMe.maxavgPrice = o - o * d),
               (_stDataMe.maxPrice = _stDataMe.minavgPrice = o + o * d),
               (_stDataMe.maxPercent = _stDataMe.maxavgPercent = d),
@@ -2749,7 +2754,7 @@ xh5_define(
             /^s[hz]51\d{4}$/.test(viewManangerConfig.symbol) && (p = "fund"),
               p &&
                 "fund" === p &&
-                "pct" !== cfg.datas.scaleType &&
+                "pct" !== _viem_manager_cfg.datas.scaleType &&
                 d > Math.abs(_stDataMe.minPercent) &&
                 ((d = Math.abs(_stDataMe.minPercent)),
                 (viewManangerConfig.nfloat = _stDataMe.nfloat = 3)),
@@ -2763,9 +2768,9 @@ xh5_define(
             var rowindex,
               t,
               a,
-              i = cfg.DIMENSION.h_t,
-              r = i * cfg.DIMENSION.P_HV,
-              n = i * (1 - cfg.DIMENSION.P_HV);
+              i = _viem_manager_cfg.DIMENSION.h_t,
+              r = i * _viem_manager_cfg.DIMENSION.P_HV,
+              n = i * (1 - _viem_manager_cfg.DIMENSION.P_HV);
             t = _stDataMe.labelMinP;
             a = _stDataMe.labelMaxP;
             var prevclose,
@@ -2776,7 +2781,8 @@ xh5_define(
                 prevclose = _stDataMe.datas[0][0].prevclose;
                 for (
                   var data,
-                    show_underlay_vol = cfg.custom.show_underlay_vol,
+                    show_underlay_vol =
+                      _viem_manager_cfg.custom.show_underlay_vol,
                     p2p3 = _stDataMe.isCompare ? "ppp" : "pp",
                     dataLen = _stDataMe.dataLen,
                     colIndex = 0;
@@ -2835,22 +2841,22 @@ xh5_define(
           };
 
           this.setDataRange = function(a) {
-            var arr = _stData_tDb_obj.get();
+            var arr = _stData_tDb.get();
             if (arr) {
               viewState.dataLength = arr.length;
               var start = viewState.start,
                 end = viewState.end;
 
               isNaN(start) || isNaN(end)
-                ? ((end = _stData_tDb_obj.get("tb") || 5),
-                  (start = _stData_tDb_obj.get("tv") || 4),
+                ? ((end = _stData_tDb.get("tb") || 5),
+                  (start = _stData_tDb.get("tv") || 4),
                   (viewState.start = start),
                   (viewState.end = end))
                 : (a &&
                     end + 1 > arr.length &&
                     (viewState.end = end = arr.length),
-                  _stData_tDb_obj.set("tv", start),
-                  _stData_tDb_obj.set("tb", end));
+                  _stData_tDb.set("tv", start),
+                  _stData_tDb.set("tb", end));
 
               var o = [],
                 s = [];
@@ -2880,39 +2886,39 @@ xh5_define(
           curTime = new Date().getTime(),
           updateCurDate = function() {
             var e;
-            curDate = new Date();
-            e = 60 * curDate.getTimezoneOffset() * 1e3;
-            curDate.setTime(curDate.getTime() + e);
-            curDate.setHours(curDate.getHours() + 8);
+            _stData_curDate = new Date();
+            e = 60 * _stData_curDate.getTimezoneOffset() * 1e3;
+            _stData_curDate.setTime(_stData_curDate.getTime() + e);
+            _stData_curDate.setHours(_stData_curDate.getHours() + 8);
           },
           ce = function(e) {
             updateCurDate();
 
-            if (!_stDataArrA)
+            if (!_stData_minusArr)
               switch (marketCode) {
                 case "HF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     marketCode,
                     _hf_window_var.time
                   );
                   break;
                 case "NF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     marketCode,
                     _nf_window_var.time
                   );
                   break;
                 case "global_index":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     marketCode,
                     _gbi_window_var.time
                   );
                   break;
                 default:
-                  _stDataArrA = utils_util.tUtil.gata(marketCode);
+                  _stData_minusArr = utils_util.tUtil.gata(marketCode);
               }
 
-            e.index = utils_util.arrIndexOf(_stDataArrA, e.time);
+            e.index = utils_util.arrIndexOf(_stData_minusArr, e.time);
             var index = e.index;
             switch (_stDataMe.market) {
               case "CN":
@@ -2925,15 +2931,18 @@ xh5_define(
                 e.index < 0 &&
                   (e.time >= "11:30" &&
                     e.time < "13:00" &&
-                    (index = utils_util.arrIndexOf(_stDataArrA, "11:29")),
+                    (index = utils_util.arrIndexOf(_stData_minusArr, "11:29")),
                   "NF" == _stDataMe.market &&
                     ("21:00" == _nf_window_var.time[0][0]
                       ? e.time < "09:00" &&
                         e.time >= "02:30" &&
-                        (index = utils_util.arrIndexOf(_stDataArrA, "09:00"))
+                        (index = utils_util.arrIndexOf(
+                          _stData_minusArr,
+                          "09:00"
+                        ))
                       : e.time <= _nf_window_var.time[0][0] &&
                         (index = utils_util.arrIndexOf(
-                          _stDataArrA,
+                          _stData_minusArr,
                           _nf_window_var.time[0][0]
                         ))));
                 break;
@@ -2941,7 +2950,7 @@ xh5_define(
                 e.time >= "12:00" && e.time < "13:00" && (index = 150),
                   e.time >= "16:00" &&
                     e.time < "16:10" &&
-                    (index = _stDataArrA.length - 1);
+                    (index = _stData_minusArr.length - 1);
                 break;
               case "HF":
                 "hf_CHA50CFD" == _stDataMe.symbol &&
@@ -2979,28 +2988,28 @@ xh5_define(
               }
           };
         //
-        var de = function(e, t) {
-          var a = e.getTime(),
-            i = t.getTime();
-          return Math.floor((a - i) / 864e5) > 5;
+        var before5Days = function(d1, d2) {
+          var t1 = d1.getTime(),
+            t2 = d2.getTime();
+          return Math.floor((t1 - t2) / 864e5) > 5;
         };
-        var _stData_me_obj = new (function() {
+        var _stData_A_obj = new (function() {
           var a,
             n = !0,
             o = function(e) {
-              var a;
+              var times;
               switch (marketCode) {
                 case "HF":
-                  a = _hf_window_var.time;
+                  times = _hf_window_var.time;
                   break;
                 case "NF":
-                  a = _nf_window_var.time;
+                  times = _nf_window_var.time;
                   break;
                 case "global_index":
-                  a = _gbi_window_var.time;
+                  times = _gbi_window_var.time;
                   break;
                 default:
-                  a = [];
+                  times = [];
               }
               var i = utils_util.tUtil.gltbt(
                 1,
@@ -3008,7 +3017,7 @@ xh5_define(
                 !0,
                 _stDataMe.needMarket,
                 [e.date],
-                a
+                times
               );
 
               "NF" == marketCode && e.time >= "21:00"
@@ -3021,27 +3030,27 @@ xh5_define(
               for (
                 var r = 0,
                   n = 0,
-                  o = _stData_tDb_obj.get(),
-                  s = 0,
-                  l = o.length;
-                l > s;
-                s++
+                  datas = _stData_tDb.get(),
+                  index = 0,
+                  len = datas.length;
+                len > index;
+                index++
               )
-                o[s][0].totalVolume &&
-                  ((n += Number(o[s][0].totalVolume)), r++);
+                datas[index][0].totalVolume &&
+                  ((n += Number(datas[index][0].totalVolume)), r++);
               (i[0].lastfive = n / r / 390 || 0),
-                stbd(o[4][0].date, e.date)
+                stbd(datas[4][0].date, e.date)
                   ? "NF" == marketCode && e.time >= "21:00"
-                    ? (o.shift(), o.push(i))
-                    : (o[4] = i)
-                  : (o.shift(), o.push(i)),
-                _stData_tDb_obj.initTState(o),
-                (_stDataMe.datas = [o[4]]),
+                    ? (datas.shift(), datas.push(i))
+                    : (datas[4] = i)
+                  : (datas.shift(), datas.push(i)),
+                _stData_tDb.initTState(datas),
+                (_stDataMe.datas = [datas[4]]),
                 (_stDataMe.date = dateUtil.ds(e.date)),
                 (_stDataMe.realLen = 0);
             };
           var s = 0,
-            l = function(e, a, l) {
+            _stData_funL = function(e, a, l) {
               function c() {
                 switch (
                   (o(_stDataMe.hq),
@@ -3059,9 +3068,9 @@ xh5_define(
               }
               function p() {
                 var e = new Date().getTime() - curTime;
-                return !isNaN(t_rate) &&
-                  t_rate > 0 &&
-                  e >= 1e3 * Number(t_rate) &&
+                return !isNaN(_view_manager_t_rate) &&
+                  _view_manager_t_rate > 0 &&
+                  e >= 1e3 * Number(_view_manager_t_rate) &&
                   0 != _stDataMe.realLen &&
                   _stDataMe.hq.isUpdateTime
                   ? ((curTime = new Date().getTime()),
@@ -3114,28 +3123,30 @@ xh5_define(
                 );
               }
               var b,
-                y = _stData_tDb_obj.get();
+                y = _stData_tDb.get();
               switch (_stDataMe.needMarket) {
                 case "HF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _hf_window_var.time
                   );
                   break;
                 case "NF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _nf_window_var.time
                   );
                   break;
                 case "global_index":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _gbi_window_var.time
                   );
                   break;
                 default:
-                  _stDataArrA = utils_util.tUtil.gata(_stDataMe.needMarket);
+                  _stData_minusArr = utils_util.tUtil.gata(
+                    _stDataMe.needMarket
+                  );
               }
               if (e && e.date && _stDataMe.datas && !viewManangerConfig.date) {
                 if (((n = !1), (b = y[4]), _stDataMe.hq.isDateChange)) {
@@ -3164,10 +3175,10 @@ xh5_define(
                   return void c();
                 if (!p() && !h()) {
                   if (
-                    (_stDataMe.datas && (K = y[4][0]), de(e.date, y[4][0].date))
+                    (_stDataMe.datas && (K = y[4][0]), before5Days(e.date, y[4][0].date))
                   )
                     return void (_stDataMe.realLen = tDataLen);
-                  (L = e.name || ""), (_stDataMe.hq = e);
+                  (name = e.name || ""), (_stDataMe.hq = e);
                   var _ =
                     e.date.getHours() < 10
                       ? "0" + e.date.getHours()
@@ -3176,9 +3187,9 @@ xh5_define(
                     ((_stDataMe.time =
                       _ + ":" + utils_util.strUtil.zp(e.date.getMinutes())),
                     0 == e.index && u(b, e),
-                    utils_util.arrIndexOf(_stDataArrA, _stDataMe.time) &&
+                    utils_util.arrIndexOf(_stData_minusArr, _stDataMe.time) &&
                       e.index > 0 &&
-                      (utils_util.arrIndexOf(_stDataArrA, _stDataMe.time) -
+                      (utils_util.arrIndexOf(_stData_minusArr, _stDataMe.time) -
                         _stDataMe.realLen <=
                       1
                         ? u(b, e)
@@ -3186,7 +3197,7 @@ xh5_define(
                       1 == e.index && 0 == s))
                   )
                     return (s = 1), void g(b, e, a);
-                  R(_stDataMe.market) &&
+                  _ViewManager_funcA(_stDataMe.market) &&
                     ((_stDataMe.hq.open == _stDataMe.hq.prevclose &&
                       _stDataMe.hq.high == _stDataMe.hq.prevclose &&
                       _stDataMe.hq.low == _stDataMe.hq.prevclose &&
@@ -3272,7 +3283,7 @@ xh5_define(
                   (s.symbol = viewManangerConfig.rawsymbol),
                 KKE.api("datas.t.get", s, function(e) {
                   (a = e.data.td1), ce(_stDataMe.hq);
-                  var i = _stData_tDb_obj.get();
+                  var i = _stData_tDb.get();
                   ("NF" == _stDataMe.market &&
                     ("21:00" == _nf_window_var.time[0][0] &&
                       _stDataMe.hq.time >= _nf_window_var.time[0][0] &&
@@ -3289,7 +3300,7 @@ xh5_define(
                       6 != _stDataMe.hq.date.getDay() &&
                       (a[0].date = _stDataMe.hq.date),
                     (i[4] = a),
-                    _stData_tDb_obj.initTState(i),
+                    _stData_tDb.initTState(i),
                     "CN" == _stDataMe.market &&
                       "HK" == _stDataMe.needMarket &&
                       ((_stDataMe.needMarket = "CN"),
@@ -3315,54 +3326,62 @@ xh5_define(
                   (o.symbol = viewManangerConfig.rawsymbol),
                 KKE.api("datas.t.get", o, function(e) {
                   (a = e.data.td1),
-                    _stData_tDb_obj.initTState(e.data.td5),
+                    _stData_tDb.initTState(e.data.td5),
                     ce(_stDataMe.hq),
                     utils_util.isFunc(n) && n(),
-                    _view_manager_view.moving(viewState.start, viewState.end, "T5"),
-                    J.hide();
+                    _view_manager_view.moving(
+                      viewState.start,
+                      viewState.end,
+                      "T5"
+                    ),
+                    loading.hide();
                 });
             };
-          (this.updateT5Data = updateT5Data),
-            (this.update = function(a, r, o, s, c) {
-              var apiname,
-                apiOptions,
-                p,
-                h = "",
-                u = "";
-              (p = s ? s : utils_util.market(stdDataOptions.symbol)),
-                "US" === p
-                  ? (h = 1 === viewManangerConfig.assisthq ? ",gb_ixic" : u)
-                  : "HK" === p &&
-                    (h = 1 === viewManangerConfig.assisthq ? ",rt_hkHSI" : u),
-                o
-                  ? ((apiname = "datas.hq.parse"),
-                    (apiOptions = {
-                      symbol: stdDataOptions.symbol + h,
-                      hqStr: o,
-                      market: p,
-                      ssl: viewManangerConfig.ssl
-                    }))
-                  : ((apiname = "datas.hq.get"),
-                    (apiOptions = {
-                      symbol: stdDataOptions.symbol + h,
-                      delay: !0,
-                      cancelEtag: n,
-                      ssl: viewManangerConfig.ssl
-                    })),
-                KKE.api(apiname, apiOptions, function(t) {
-                  l(t.dataObj[stdDataOptions.symbol], a, c);
-                });
+          this.updateT5Data = updateT5Data;
+          this.update = function(funca, r, o, marketCode, c) {
+            var apiname,
+              apiOptions,
+              _market,
+              h = "",
+              u = "";
+
+            _market = marketCode
+              ? marketCode
+              : utils_util.market(stdDataOptions.symbol);
+
+            "US" === _market
+              ? (h = 1 === viewManangerConfig.assisthq ? ",gb_ixic" : u)
+              : "HK" === _market &&
+                (h = 1 === viewManangerConfig.assisthq ? ",rt_hkHSI" : u);
+            o
+              ? ((apiname = "datas.hq.parse"),
+                (apiOptions = {
+                  symbol: stdDataOptions.symbol + h,
+                  hqStr: o,
+                  market: _market,
+                  ssl: viewManangerConfig.ssl
+                }))
+              : ((apiname = "datas.hq.get"),
+                (apiOptions = {
+                  symbol: stdDataOptions.symbol + h,
+                  delay: !0,
+                  cancelEtag: n,
+                  ssl: viewManangerConfig.ssl
+                }));
+            KKE.api(apiname, apiOptions, function(t) {
+              _stData_funL(t.dataObj[stdDataOptions.symbol], funca, c);
             });
+          };
         })();
         //_stData_me_obj
 
         var pe = new (function() {
           var r = void 0,
             o = 1,
-            s = function(e) {
+            s = function(func) {
               o > 2 ||
-                (chart_h5tObj.re(globalCfg.e.T_DATA_LOADED),
-                utils_util.isFunc(e) && e(),
+                (_ViewManager_me.re(globalCfg.e.T_DATA_LOADED),
+                utils_util.isFunc(func) && func(),
                 o++);
             },
             l = function(e) {
@@ -3411,12 +3430,12 @@ xh5_define(
                 r
               );
             };
-          this.initData = function(o) {
-            var p = viewState.viewId;
-            if (r != p) {
-              (r = p),
+          this.initData = function(onChangeView) {
+            var viewId = viewState.viewId;
+            if (r != viewId) {
+              (r = viewId),
                 null != _stDataMe.datas &&
-                  _stData_tDb_obj.initTState(p, _stDataMe.tDb.get());
+                  _stData_tDb.initTState(viewId, _stDataMe.tDb.get());
               var h = {
                 assisthq: viewManangerConfig.assisthq,
                 ssl: viewManangerConfig.ssl,
@@ -3430,19 +3449,19 @@ xh5_define(
               };
               switch (_stDataMe.needMarket) {
                 case "HF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _hf_window_var.time
                   );
                   break;
                 case "NF":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _nf_window_var.time
                   );
                   break;
                 case "global_index":
-                  _stDataArrA = utils_util.tUtil.gata(
+                  _stData_minusArr = utils_util.tUtil.gata(
                     _stDataMe.needMarket,
                     _gbi_window_var.time
                   );
@@ -3450,151 +3469,170 @@ xh5_define(
                 case "LSE":
                   h.symbol = viewManangerConfig.rawsymbol;
                 default:
-                  _stDataArrA = utils_util.tUtil.gata(_stDataMe.needMarket);
+                  _stData_minusArr = utils_util.tUtil.gata(
+                    _stDataMe.needMarket
+                  );
               }
-              J.show(),
-                KKE.api("datas.t.get", h, function(e) {
-                  _view_manager_view.hasHistory && "history" == e.msg && _view_manager_view.hasHistory(M);
-                  var d = e.data.hq.status,
-                    p = "",
-                    u = Number(e.data.hq.state);
-                  if ("empty" == e.msg)
-                    switch (_stDataMe.market) {
-                      case "CN":
-                        3 == d &&
-                          ((p = globalCfg.delisted),
-                          tipObj.showTip({
-                            txt: p,
-                            parent: V,
-                            noBtn: !0
-                          }));
-                    }
-                  if ("error" == e.msg || "nohistory" == e.msg) {
-                    if (
-                      (isMain &&
-                        "nohistory" == e.msg &&
-                        ((M = 0),
-                        _view_manager_view.hasHistory && _view_manager_view.hasHistory(M),
-                        tipObj.showTip({
-                          txt: globalCfg.nohistoryt,
-                          parent: V,
+              loading.show();
+              KKE.api("datas.t.get", h, function(e) {
+                _view_manager_view.hasHistory &&
+                  "history" == e.msg &&
+                  _view_manager_view.hasHistory(M);
+
+                var d = e.data.hq.status,
+                  p = "",
+                  u = Number(e.data.hq.state);
+
+                if ("empty" == e.msg)
+                  switch (_stDataMe.market) {
+                    case "CN":
+                      3 == d &&
+                        ((p = globalCfg.delisted),
+                        _viem_manager_tipObj.showTip({
+                          txt: p,
+                          parent: dom_elA,
                           noBtn: !0
-                        })),
-                      (_stDataMe.isErr = !0),
-                      isMain && e.data && e.data.hq)
-                    ) {
-                      if (d)
-                        switch (_stDataMe.market) {
-                          case "CN":
-                            switch (d) {
-                              case 2:
-                                p = globalCfg.notlisted;
-                                break;
-                              case 3:
-                                p = globalCfg.delisted;
-                                break;
-                              case 0:
-                                p = globalCfg.norecord;
-                            }
-                            break;
-                          case "HK":
-                            switch (d) {
-                              case 5:
-                                p = globalCfg.notlisted;
-                                break;
-                              case 0:
-                                p = globalCfg.delisted;
-                            }
-                        }
-                      else p = globalCfg.norecord;
-                      if (p && 0 != u) {
-                        var v,
-                          g = {
-                            txt: p,
-                            parent: V,
-                            noBtn: !0
-                          };
-                        if (!(cfg.DIMENSION.getStageW() < 200))
-                          return (
-                            tipObj.showTip({
-                              txt: p,
-                              parent: V,
-                              noBtn: !0
-                            }),
-                            void J.hide()
-                          );
-                        (g.bgStyle = {
-                          padding: 0,
-                          top: "0px"
-                        }),
-                          v ||
-                            ((v = new utils_util.TipM(cfg.COLOR)), v.genTip(g));
-                      }
-                    }
-                    if (0 != u && 7 != u) {
-                      if ((_view_manager_view.onResize(), 1 != d))
-                        return void _view_manager_view.removeCompare([h.symbol]);
-                      _stDataMe.isErr = !1;
-                    } else _stDataMe.isErr = !1;
+                        }));
                   }
-                  (_stDataMe.hq = e.data.hq),
-                    (r = void 0),
-                    (h.td1 = e.data.td1);
-                  var b;
-                  curDate = new Date();
-                  var y = 60 * curDate.getTimezoneOffset() * 1e3;
+                if ("error" == e.msg || "nohistory" == e.msg) {
                   if (
-                    (curDate.setTime(curDate.getTime() + y),
-                    curDate.setHours(curDate.getHours() + 8),
-                    (L = _stDataMe.hq.name || ""),
-                    ce(_stDataMe.hq),
-                    l(_stDataMe.hq, e.data.td5) && R(_stDataMe.market)
-                      ? "history" == e.msg
-                        ? ((b = e.data.td5),
-                          b[4][0].date || (b[4][0].date = _stDataMe.hq.date))
-                        : (b = c(_stDataMe, e.data.td5))
-                      : ((b = e.data.td5),
-                        "NF" != _stDataMe.market ||
-                          !_nf_window_var ||
-                          ("09:30" != _nf_window_var.time[0][0] &&
-                            "09:15" != _nf_window_var.time[0][0]) ||
-                          (stbd(b[4][0].date, _stDataMe.hq.date) &&
-                            _stDataMe.hq.time <= _nf_window_var.time[0][0] &&
-                            (b = c(_stDataMe, e.data.td5))),
-                        b &&
-                          !b[4][0].date &&
-                          (b[4][0].date = _stDataMe.hq.date)),
-                    (_view_manager_view.historyData = b),
-                    (_stDataMe.date =
-                      (e.data.td1 && e.data.td1[0].today) || _stDataMe.hq.date),
-                    _stData_tDb_obj.initTState(b),
-                    s(o),
-                    1 == O &&
-                      (ht5_viewHelper.dateTo(
-                        viewManangerConfig.historytime,
-                        viewManangerConfig.historycb
-                      ),
-                      (O = 0)),
-                    J.hide(),
-                    viewManangerConfig.loadedChart)
-                  )
-                    if (utils_util.isFunc(viewManangerConfig.loadedChart))
-                      viewManangerConfig.loadedChart();
-                    else if (window[viewManangerConfig.loadedChart])
-                      window[viewManangerConfig.loadedChart]();
-                    else
-                      try {
-                        window.h5chart.loadedChart();
-                      } catch (_) {}
-                });
+                    (isMain &&
+                      "nohistory" == e.msg &&
+                      ((M = 0),
+                      _view_manager_view.hasHistory &&
+                        _view_manager_view.hasHistory(M),
+                      _viem_manager_tipObj.showTip({
+                        txt: globalCfg.nohistoryt,
+                        parent: dom_elA,
+                        noBtn: !0
+                      })),
+                    (_stDataMe.isErr = !0),
+                    isMain && e.data && e.data.hq)
+                  ) {
+                    if (d)
+                      switch (_stDataMe.market) {
+                        case "CN":
+                          switch (d) {
+                            case 2:
+                              p = globalCfg.notlisted;
+                              break;
+                            case 3:
+                              p = globalCfg.delisted;
+                              break;
+                            case 0:
+                              p = globalCfg.norecord;
+                          }
+                          break;
+                        case "HK":
+                          switch (d) {
+                            case 5:
+                              p = globalCfg.notlisted;
+                              break;
+                            case 0:
+                              p = globalCfg.delisted;
+                          }
+                      }
+                    else p = globalCfg.norecord;
+                    if (p && 0 != u) {
+                      var v,
+                        g = {
+                          txt: p,
+                          parent: dom_elA,
+                          noBtn: !0
+                        };
+                      if (!(_viem_manager_cfg.DIMENSION.getStageW() < 200))
+                        return (
+                          _viem_manager_tipObj.showTip({
+                            txt: p,
+                            parent: dom_elA,
+                            noBtn: !0
+                          }),
+                          void loading.hide()
+                        );
+                      (g.bgStyle = {
+                        padding: 0,
+                        top: "0px"
+                      }),
+                        v ||
+                          ((v = new utils_util.TipM(_viem_manager_cfg.COLOR)),
+                          v.genTip(g));
+                    }
+                  }
+                  if (0 != u && 7 != u) {
+                    if ((_view_manager_view.onResize(), 1 != d))
+                      return void _view_manager_view.removeCompare([h.symbol]);
+                    _stDataMe.isErr = !1;
+                  } else _stDataMe.isErr = !1;
+                }
+
+                _stDataMe.hq = e.data.hq;
+                r = void 0;
+                h.td1 = e.data.td1;
+                var historyData;
+                _stData_curDate = new Date();
+                var y = 60 * _stData_curDate.getTimezoneOffset() * 1e3;
+                _stData_curDate.setTime(_stData_curDate.getTime() + y);
+                _stData_curDate.setHours(_stData_curDate.getHours() + 8);
+                name = _stDataMe.hq.name || "";
+                ce(_stDataMe.hq);
+                if (
+                  l(_stDataMe.hq, e.data.td5) &&
+                  _ViewManager_funcA(_stDataMe.market)
+                ) {
+                  "history" == e.msg
+                    ? ((historyData = e.data.td5),
+                      historyData[4][0].date ||
+                        (historyData[4][0].date = _stDataMe.hq.date))
+                    : (historyData = c(_stDataMe, e.data.td5));
+                } else {
+                  historyData = e.data.td5;
+                  "NF" != _stDataMe.market ||
+                    !_nf_window_var ||
+                    ("09:30" != _nf_window_var.time[0][0] &&
+                      "09:15" != _nf_window_var.time[0][0]) ||
+                    (stbd(historyData[4][0].date, _stDataMe.hq.date) &&
+                      _stDataMe.hq.time <= _nf_window_var.time[0][0] &&
+                      (historyData = c(_stDataMe, e.data.td5)));
+                  historyData &&
+                    !historyData[4][0].date &&
+                    (historyData[4][0].date = _stDataMe.hq.date);
+                }
+
+                _view_manager_view.historyData = historyData;
+                _stDataMe.date =
+                  (e.data.td1 && e.data.td1[0].today) || _stDataMe.hq.date;
+
+                _stData_tDb.initTState(historyData);
+                s(onChangeView);
+                if (1 == O) {
+                  ht5_viewHelper.dateTo(
+                    viewManangerConfig.historytime,
+                    viewManangerConfig.historycb
+                  );
+                  O = 0;
+                }
+
+                loading.hide();
+
+                if (viewManangerConfig.loadedChart) {
+                  if (utils_util.isFunc(viewManangerConfig.loadedChart))
+                    viewManangerConfig.loadedChart();
+                  else if (window[viewManangerConfig.loadedChart])
+                    window[viewManangerConfig.loadedChart]();
+                  else
+                    try {
+                      window.h5chart.loadedChart();
+                    } catch (_) {}
+                }
+              });
             }
           };
         })();
         //
-        this.tDb = _stData_tDb_obj;
+        this.tDb = _stData_tDb;
         this.initData = pe.initData;
-        this.initT5Data = _stData_me_obj.updateT5Data;
-        this.doUpdate = _stData_me_obj.update;
+        this.initT5Data = _stData_A_obj.updateT5Data;
+        this.doUpdate = _stData_A_obj.update;
         this.onViewChange = onViewChange;
         this.setPricePos = function(e, t) {
           (_stDataMe.labelMaxP = e[0]),
@@ -3643,10 +3681,10 @@ xh5_define(
                 "VOLUME" === arr[index].name.toUpperCase()
               ) {
                 arr.splice(index, 1);
-                cfg.custom.show_underlay_vol = !1;
+                _viem_manager_cfg.custom.show_underlay_vol = !1;
                 break;
               }
-          } else cfg.custom.show_underlay_vol = !1;
+          } else _viem_manager_cfg.custom.show_underlay_vol = !1;
 
           _stDatak && _stDatak.removeChart(arr);
         };
@@ -3655,33 +3693,34 @@ xh5_define(
           _stDatak && (_stDatay = _stDatak.showHide(e));
         };
 
-        var he = function(e, a, i) {
-          e && initMgr.resizeAll(!0);
+        var he = function(isResize, options, chartlist) {
+          isResize && _view_manager_initMgr_ojb.resizeAll(!0);
           _view_manager_view.onChangeView();
-          a && utils_util.isFunc(a.callback) && a.callback();
-          i && _view_manager_ne.onTechChanged(i[0]);
+          options && utils_util.isFunc(options.callback) && options.callback();
+          chartlist && _view_manager_ne.onTechChanged(chartlist[0]);
         };
         this.initPt = function(e, r) {
           if (e) {
             !utils_util.isArr(e) && (e = [e]);
             for (var n = e.length; n--; )
               if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
-                e.splice(n, 1), (cfg.custom.show_underlay_vol = !0);
+                e.splice(n, 1),
+                  (_viem_manager_cfg.custom.show_underlay_vol = !0);
                 break;
               }
 
             if (!_stDatak) {
               _stDatak = new ht5_pChart({
-                iMgr: iMgr,
+                iMgr: _view_manager_iMgr_obj,
                 stockData: _stDataMe,
                 chartArea: G,
                 titleArea: z,
                 cb: he,
                 type: "t",
-                cfg: cfg,
+                cfg: _viem_manager_cfg,
                 usrObj: viewManangerConfig
               });
-              isMain && (Z = _stDatak);
+              isMain && (obj_Z = _stDatak);
             }
 
             _stDatak.createChart(e, r);
@@ -3691,13 +3730,13 @@ xh5_define(
           if (!_stData_tChartObj) {
             _stData_tChartObj = new ht5_tChart({
               stockData: _stDataMe,
-              iMgr: iMgr,
+              iMgr: _view_manager_iMgr_obj,
               subArea: subArea,
               cb: he,
-              cfg: cfg,
+              cfg: _viem_manager_cfg,
               type: "option_cn" == marketCode ? "p" : "t",
               usrObj: viewManangerConfig,
-              initMgr: initMgr
+              initMgr: _view_manager_initMgr_ojb
             });
             isMain && (Y = _stData_tChartObj);
           }
@@ -3711,7 +3750,7 @@ xh5_define(
           if (!_stDataD) {
             _stDataD = new ht5_o({
               stockData: _stDataMe,
-              setting: cfg,
+              setting: _viem_manager_cfg,
               state: viewState,
               rc: _view_manager_view.moving,
               witht5: 1
@@ -3730,7 +3769,9 @@ xh5_define(
       function StockUI(stockData, options) {
         function n() {
           var r = stockData.isMain;
-          if (r) (l = cfg.COLOR.T_P), (c = cfg.COLOR.T_AVG);
+          if (r)
+            (l = _viem_manager_cfg.COLOR.T_P),
+              (c = _viem_manager_cfg.COLOR.T_AVG);
           else {
             2 != _view_manager_view.dAdd ||
               o.linecolor ||
@@ -3739,18 +3780,18 @@ xh5_define(
             l = n.K_N || n.T_N || "#" + utils_util.randomColor();
           }
           s = new utils_painter.xh5_ibPainter({
-            setting: cfg,
+            setting: _viem_manager_cfg,
             sd: stockData,
             withHBg: r,
-            ctn: K,
-            iMgr: iMgr,
+            ctn: mainareaDom,
+            iMgr: _view_manager_iMgr_obj,
             reO: {
-              mh: cfg.DIMENSION.H_MA4K
+              mh: _viem_manager_cfg.DIMENSION.H_MA4K
             },
             iTo: function(t, a, i, r) {
               if (
-                (!fCONTAINS(t, iMgr.iHLineO.body) &&
-                  t.appendChild(iMgr.iHLineO.body),
+                (!fCONTAINS(t, _view_manager_iMgr_obj.iHLineO.body) &&
+                  t.appendChild(_view_manager_iMgr_obj.iHLineO.body),
                 stockData && stockData.datas)
               ) {
                 var n,
@@ -3760,23 +3801,23 @@ xh5_define(
                   ? (n =
                       stockData.labelMaxP * s +
                       s -
-                      (i / cfg.DIMENSION.h_t) *
+                      (i / _viem_manager_cfg.DIMENSION.h_t) *
                         (stockData.labelMaxP * s +
                           s -
                           (stockData.labelMinP * s + s)))
                   : ((n =
                       stockData.labelMaxP -
-                      (i / cfg.DIMENSION.h_t) *
+                      (i / _viem_manager_cfg.DIMENSION.h_t) *
                         (stockData.labelMaxP - stockData.labelMinP)),
                     (o = Number((100 * (n - s)) / s).toFixed(2) + "%")),
-                  iMgr.iToD(
+                  _view_manager_iMgr_obj.iToD(
                     {
                       mark: n,
                       rmark: o,
                       x: a,
                       y: i,
-                      oy: cfg.DIMENSION.H_MA4K,
-                      ox: cfg.DIMENSION.posX,
+                      oy: _viem_manager_cfg.DIMENSION.H_MA4K,
+                      ox: _viem_manager_cfg.DIMENSION.posX,
                       e: r
                     },
                     !0,
@@ -3809,17 +3850,20 @@ xh5_define(
                 ("line" == t[0] || "mountain" == t[0]) &&
                 (v = Number(t[1]) || 1)),
               (h = o.linecolor || {}),
-              (l = h.K_N || h.T_N || cfg.COLOR.T_P),
-              (c = h.T_AVG || cfg.COLOR.T_AVG),
-              (d = h.T_PREV || cfg.COLOR.T_PREV);
+              (l = h.K_N || h.T_N || _viem_manager_cfg.COLOR.T_P),
+              (c = h.T_AVG || _viem_manager_cfg.COLOR.T_AVG),
+              (d = h.T_PREV || _viem_manager_cfg.COLOR.T_PREV);
           },
           draw = function() {
             function a() {
-              if (stockData.isMain && cfg.custom.show_underlay_vol) {
-                for (var t, a = cfg.COLOR.V_SD, i = D; N > i; i++)
+              if (
+                stockData.isMain &&
+                _viem_manager_cfg.custom.show_underlay_vol
+              ) {
+                for (var t, a = _viem_manager_cfg.COLOR.V_SD, i = D; N > i; i++)
                   (S = y[i]),
                     (t = S.vy),
-                    s.drawVStickC(M, t, I, cfg.DIMENSION.h_t, a),
+                    s.drawVStickC(M, t, I, _viem_manager_cfg.DIMENSION.h_t, a),
                     (M += T);
                 s.stroke(), (s.getG().lineWidth = 1);
               }
@@ -3842,8 +3886,8 @@ xh5_define(
                   N > k && ((S = y[k]), !(S.price <= 0));
                   k++
                 ) {
-                  if (5 == viewState.end && "CN" == stockData.market && Z)
-                    for (var t = Z.getLog(), a = 0; a < t.length; a++)
+                  if (5 == viewState.end && "CN" == stockData.market && obj_Z)
+                    for (var t = obj_Z.getLog(), a = 0; a < t.length; a++)
                       if (
                         "EWI" == t[a].name &&
                         k > (N / tDataLen - 1) * tDataLen
@@ -3894,18 +3938,18 @@ xh5_define(
             function h(e) {
               s.newStyle(l, !0, 0.5),
                 s.drawDot(e.xPos, e.yPos, 3, !0),
-                s.newFillStyle_rgba(cfg.COLOR.M_ARR, 3, 1),
+                s.newFillStyle_rgba(_viem_manager_cfg.COLOR.M_ARR, 3, 1),
                 s.fill(),
                 s.stroke();
             }
             function u() {
               function t() {
-                s.lineTo(M, cfg.DIMENSION.h_t),
-                  s.lineTo(0.5 * T, cfg.DIMENSION.h_t),
+                s.lineTo(M, _viem_manager_cfg.DIMENSION.h_t),
+                  s.lineTo(0.5 * T, _viem_manager_cfg.DIMENSION.h_t),
                   s.newFillStyle_rgba(
-                    cfg.COLOR.M_ARR,
-                    cfg.DIMENSION.h_t,
-                    cfg.COLOR.M_ARR_A
+                    _viem_manager_cfg.COLOR.M_ARR,
+                    _viem_manager_cfg.DIMENSION.h_t,
+                    _viem_manager_cfg.COLOR.M_ARR_A
                   ),
                   s.fill();
               }
@@ -3926,7 +3970,7 @@ xh5_define(
                 }
             }
             function f() {
-              (d = cfg.COLOR.T_PREV), s.newStyle(d, !0, 1);
+              (d = _viem_manager_cfg.COLOR.T_PREV), s.newStyle(d, !0, 1);
               var t,
                 a = 0,
                 r = 5;
@@ -3934,22 +3978,22 @@ xh5_define(
                 t =
                   stockData.isCompare &&
                   stockData.isMain &&
-                  "pct" === cfg.datas.scaleType
+                  "pct" === _viem_manager_cfg.datas.scaleType
                     ? xh5_PosUtil.pp(
                         0,
                         stockData.labelMinP,
                         stockData.labelMaxP,
-                        cfg.DIMENSION.h_t
+                        _viem_manager_cfg.DIMENSION.h_t
                       )
                     : xh5_PosUtil.pp(
                         stockData.datas[0][0].prevclose,
                         stockData.minPrice,
                         stockData.maxPrice,
-                        cfg.DIMENSION.h_t
+                        _viem_manager_cfg.DIMENSION.h_t
                       ),
                   t = ~~(t + 0.5),
                   t -= 0.5;
-                a < cfg.DIMENSION.w_t;
+                a < _viem_manager_cfg.DIMENSION.w_t;
 
               )
                 s.moveTo(a, t), (a += r), s.lineTo(a, t), (a += r);
@@ -3959,7 +4003,7 @@ xh5_define(
                 var n = stockData.hq.price.toFixed(2),
                   o = s.getG(),
                   l = o.measureText(n).width,
-                  c = cfg.DIMENSION.w_t - l,
+                  c = _viem_manager_cfg.DIMENSION.w_t - l,
                   m = l + 10;
                 O > c && (O = c),
                   10 > O && (O = 20),
@@ -3996,7 +4040,7 @@ xh5_define(
                 a.stroke(),
                 a.fill();
             }
-            if (!(cfg.DIMENSION.getStageH() < 0)) {
+            if (!(_viem_manager_cfg.DIMENSION.getStageH() < 0)) {
               stockData.isMain && s.drawBg("T");
               var y = [];
               if (stockData.datas) {
@@ -4009,11 +4053,13 @@ xh5_define(
                     D,
                     w = o.linetype && 0 == o.linetype.indexOf("mountain"),
                     x = stockData.datas.length * tDataLen,
-                    T = cfg.DIMENSION.w_t / Math.max(x, cfg.PARAM.minCandleNum),
+                    T =
+                      _viem_manager_cfg.DIMENSION.w_t /
+                      Math.max(x, _viem_manager_cfg.PARAM.minCandleNum),
                     I = 0.5 * T,
                     M = 0;
                   stockData.isTotalRedraw
-                    ? ((D = 0), s.clear(!0, cfg.PARAM.getHd()))
+                    ? ((D = 0), s.clear(!0, _viem_manager_cfg.PARAM.getHd()))
                     : ((D = x - 2),
                       0 > D && (D = 0),
                       (M += T * D),
@@ -4047,7 +4093,7 @@ xh5_define(
           }),
           (this.resize = function() {
             s.resize({
-              mh: cfg.DIMENSION.H_MA4K
+              mh: _viem_manager_cfg.DIMENSION.H_MA4K
             }),
               draw();
           }),
@@ -4058,84 +4104,91 @@ xh5_define(
       // END STOCKUI
       function View() {
         var view_mainStock,
-          viewMe = this,
+          view_Me = this,
           allStocks = [];
-        (this.getAllStock = function() {
+        this.getAllStock = function() {
           return allStocks;
-        }),
-          (this.getMainStock = function() {
-            return view_mainStock;
-          }),
-          (this.getAllSymbols = function() {
-            for (var e = [], t = 0, a = allStocks.length; a > t; t++)
-              e.push(allStocks[t].symbol);
-            return e;
-          });
-        var c = function() {
+        };
+        this.getMainStock = function() {
+          return view_mainStock;
+        };
+        this.getAllSymbols = function() {
+          for (var e = [], t = 0, a = allStocks.length; a > t; t++)
+            e.push(allStocks[t].symbol);
+          return e;
+        };
+        var funcC = function() {
             var e,
-              t = cfg.DIMENSION.h_t;
+              t = _viem_manager_cfg.DIMENSION.h_t;
             return viewManangerConfig.business
               ? (e = 0)
               : viewManangerConfig.appMode
               ? 2
               : (e = 100 > t ? 2 : 180 > t ? 4 : 300 > t ? 6 : 8);
           },
-          d = function() {
+          funD = function() {
             for (
-              var e,
+              var st,
                 t,
                 a,
                 i = Number.MAX_VALUE,
                 r = -Number.MAX_VALUE,
-                o = allStocks.length,
-                s = o > 1,
+                len = allStocks.length,
+                s = len > 1,
                 l = s ? "avgPercent" : "Price",
-                d = o;
-              d--;
+                index = len;
+              index--;
 
-            )
-              (e = allStocks[d]),
-                (a = e.getPriceTech()),
-                a &&
-                  !s &&
-                  a.getMaxMin()[0] &&
-                  ((r = a.getMaxMin()[0]), (i = a.getMaxMin()[1])),
-                (t = [r, i]),
-                (i = Math.min(i, e["min" + l], t[1])),
-                (r = Math.max(r, e["max" + l], t[0]));
-            if (Z) {
-              var m = Z.getLog(),
+            ) {
+              st = allStocks[index];
+              a = st.getPriceTech();
+              a &&
+                !s &&
+                a.getMaxMin()[0] &&
+                ((r = a.getMaxMin()[0]), (i = a.getMaxMin()[1]));
+              t = [r, i];
+              i = Math.min(i, st["min" + l], t[1]);
+              r = Math.max(r, st["max" + l], t[0]);
+            }
+
+            if (obj_Z) {
+              var m = obj_Z.getLog(),
                 p = m.length;
-              for (d = 0; p > d; d++)
-                if ("EWI" == m[d].name || "MA" == m[d].name) {
+              for (index = 0; p > index; index++)
+                if ("EWI" == m[index].name || "MA" == m[index].name) {
                   var h = allStocks[0].datas[0][0].prevclose,
                     u = Math.max(Math.abs(h - r), Math.abs(h - i));
-                  (r = h + u), (i = h - u);
+                  r = h + u;
+                  i = h - u;
                 }
             }
-            for (var v = c(), f = o; f--; )
-              (e = allStocks[f]), e.setPricePos([r, i, v], s);
+            for (var v = funcC(), f = len; f--; ) {
+              st = allStocks[f];
+              st.setPricePos([r, i, v], s);
+            }
           },
-          m = function(e) {
+          funcM = function(e) {
             if (e) e.draw();
             else for (var t = allStocks.length; t--; ) allStocks[t].draw();
           },
-          p = function(t) {
+          setViewData = function(t) {
             1 == viewState.viewId || 0 == viewState.viewId
               ? viewManangerConfig.date
-                ? viewMe.moving(viewState.start, viewState.end)
-                : viewMe.moving(4, 5, !1)
-              : viewMe.moving(viewState.start, viewState.end, !1),
+                ? view_Me.moving(viewState.start, viewState.end)
+                : view_Me.moving(4, 5, !1)
+              : view_Me.moving(viewState.start, viewState.end, !1),
               t || _view_manager_ne.onRange(view_mainStock);
           },
-          v = function(e) {
-            return e.isErr
-              ? (utils_util.trace.error("err symbol data"),
-                viewMe.removeCompare([e.symbol]),
-                !0)
-              : e.tDb.get()
-              ? !0
-              : (e.initData(b), !1);
+          funcV = function(stdata) {
+            if (stdata.isErr) {
+              utils_util.trace.error("err symbol data");
+              view_Me.removeCompare([stdata.symbol]);
+              return !0;
+            } else {
+              return stdata.tDb.get()
+                ? !0
+                : (stdata.initData(onChangeView), !1);
+            }
           },
           f = [],
           g = function(e) {
@@ -4148,23 +4201,23 @@ xh5_define(
               !a && f.push(e.callback);
             }
           },
-          b = function(a, i) {
-            if ((g(i), v(view_mainStock))) {
+          onChangeView = function(a, i) {
+            if ((g(i), funcV(view_mainStock))) {
               if (view_mainStock.isErr)
                 return (
                   utils_util.trace.error("err main symbol"),
                   void (view_mainStock.isErr = !1)
                 );
-              iMgr.patcher.switchFloater();
+              _view_manager_iMgr_obj.patcher.switchFloater();
               for (var r, o = !0, s = allStocks.length; s--; )
-                (r = allStocks[s]), r == view_mainStock || v(r) || (o = !1);
+                (r = allStocks[s]), r == view_mainStock || funcV(r) || (o = !1);
               if (o) {
                 for (s = allStocks.length; s--; )
                   allStocks[s].marketNum(allStocks[s].needMarket) >
                     allStocks[s].marketNum(marketCode) &&
                     (marketCode = allStocks[s].needMarket);
                 for (s = allStocks.length; s--; ) changeData(allStocks[s]);
-                for (p(a); f.length; ) {
+                for (setViewData(a); f.length; ) {
                   var l = f.shift();
                   l();
                 }
@@ -4173,10 +4226,10 @@ xh5_define(
               _view_manager_ne.onViewPrice(), _view_manager_ne.onDataUpdate();
             }
           },
-          _ = function() {
+          func_ = function() {
             _view_manager_ne.onRange(view_mainStock);
           };
-        (this.getExtraData = function(a) {
+        this.getExtraData = function(a) {
           if (
             ((a = copyProperties(
               {
@@ -4201,99 +4254,112 @@ xh5_define(
               : (r = null);
           }
           return r;
-        }),
-          (this.shareTo = function(e) {
-            e = copyProperties(
-              {
-                type: "weibo",
-                url: window.location.href,
-                wbtext: "",
-                qrwidth: 100,
-                qrheight: 100,
-                extra: void 0
-              },
-              e
-            );
-            var a = String(e.type).toLowerCase();
-            switch (a) {
-              case "qrcode":
-                KKE.api(
-                  "utils.qrcode.createcanvas",
-                  {
-                    text: e.url,
-                    width: e.qrwidth,
-                    height: e.qrheight
-                  },
-                  function(e) {
-                    tipObj.showTip({
-                      content: e,
-                      txt:
-                        '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
-                      parent: V,
-                      btnLb: "\u5173\u95ed"
-                    });
-                  }
-                );
-                break;
-              default:
-                utils_util.grabM.shareTo({
-                  ctn: V,
-                  w: cfg.DIMENSION.getStageW(),
-                  h: cfg.DIMENSION.getStageH() - (B.clientHeight || 0),
-                  ignoreZIdxArr: [cfg.PARAM.I_Z_INDEX],
-                  ignoreIdArr: [cfg.PARAM.LOGO_ID],
-                  priorZIdx: cfg.PARAM.G_Z_INDEX,
-                  nologo: !1,
-                  top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
-                  right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
-                  LOGO_W: cfg.DIMENSION.LOGO_W,
-                  LOGO_H: cfg.DIMENSION.LOGO_H,
-                  color: cfg.COLOR.LOGO,
-                  bgColor: cfg.COLOR.BG,
-                  txt: e.wbtext,
-                  url: e.url,
-                  extra: e.extra
-                });
+        };
+        this.shareTo = function(e) {
+          e = copyProperties(
+            {
+              type: "weibo",
+              url: window.location.href,
+              wbtext: "",
+              qrwidth: 100,
+              qrheight: 100,
+              extra: void 0
+            },
+            e
+          );
+          var a = String(e.type).toLowerCase();
+          switch (a) {
+            case "qrcode":
+              KKE.api(
+                "utils.qrcode.createcanvas",
+                {
+                  text: e.url,
+                  width: e.qrwidth,
+                  height: e.qrheight
+                },
+                function(e) {
+                  _viem_manager_tipObj.showTip({
+                    content: e,
+                    txt:
+                      '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
+                    parent: dom_elA,
+                    btnLb: "\u5173\u95ed"
+                  });
+                }
+              );
+              break;
+            default:
+              utils_util.grabM.shareTo({
+                ctn: dom_elA,
+                w: _viem_manager_cfg.DIMENSION.getStageW(),
+                h:
+                  _viem_manager_cfg.DIMENSION.getStageH() -
+                  (domB.clientHeight || 0),
+                ignoreZIdxArr: [_viem_manager_cfg.PARAM.I_Z_INDEX],
+                ignoreIdArr: [_viem_manager_cfg.PARAM.LOGO_ID],
+                priorZIdx: _viem_manager_cfg.PARAM.G_Z_INDEX,
+                nologo: !1,
+                top:
+                  _viem_manager_cfg.DIMENSION.posY +
+                  _viem_manager_cfg.DIMENSION.H_MA4K +
+                  17,
+                right:
+                  _viem_manager_cfg.DIMENSION.RIGHT_W +
+                  _viem_manager_cfg.DIMENSION.K_RIGHT_W,
+                LOGO_W: _viem_manager_cfg.DIMENSION.LOGO_W,
+                LOGO_H: _viem_manager_cfg.DIMENSION.LOGO_H,
+                color: _viem_manager_cfg.COLOR.LOGO,
+                bgColor: _viem_manager_cfg.COLOR.BG,
+                txt: e.wbtext,
+                url: e.url,
+                extra: e.extra
+              });
+          }
+        };
+        var timerID,
+          timerID_K,
+          funcS = function() {
+            _view_manager_iMgr_obj.update(),
+              funD(),
+              funcM(),
+              func_(),
+              _view_manager_iMgr_obj.isIng() || _view_manager_ne.onViewPrice();
+          },
+          funcD = function() {
+            clearTimeout(timerID_K);
+            !ae &&
+              dom_elA.parentNode &&
+              "none" != dom_elA.style.display &&
+              (timerID_K = setTimeout(funcS, 200));
+          },
+          _view_updateDataAll = function(e) {
+            clearInterval(timerID);
+            if (!isNaN(viewManangerConfig.rate)) {
+              var times = 1e3 * viewManangerConfig.rate;
+              times > 0 && (timerID = setTimeout(_view_updateDataAll, times));
             }
-          });
-        var N,
-          k,
-          S = function() {
-            iMgr.update(),
-              d(),
-              m(),
-              _(),
-              iMgr.isIng() || _view_manager_ne.onViewPrice();
-          },
-          D = function() {
-            clearTimeout(k),
-              !ae &&
-                V.parentNode &&
-                "none" != V.style.display &&
-                (k = setTimeout(S, 200));
-          },
-          w = function(e) {
-            if ((clearInterval(N), !isNaN(viewManangerConfig.rate))) {
-              var t = 1e3 * viewManangerConfig.rate;
-              t > 0 && (N = setTimeout(w, t));
+            for (var a, r = allStocks.length; r--; ) {
+              a = allStocks[r];
+              a.doUpdate(funcD, null, null, null, e);
             }
-            for (var a, r = allStocks.length; r--; )
-              (a = allStocks[r]), a.doUpdate(D, null, null, null, e);
           },
-          x = function() {
+          _view_update5Data = function() {
             viewState.viewId = 2;
-            for (var e, t = allStocks.length; t--; )
-              (e = allStocks[t]), e.initT5Data(e.datas, e.hq, b);
+            for (var e, t = allStocks.length; t--; ) {
+              e = allStocks[t];
+              e.initT5Data(e.datas, e.hq, onChangeView);
+            }
           };
-        (this.updateDataAll = w), (this.update5Data = x);
+        this.updateDataAll = _view_updateDataAll;
+        this.update5Data = _view_update5Data;
         var _view_createStockData = function(options, isMain) {
             var stockData = new STData(options, isMain);
-            isMain && (view_mainStock = stockData),
-              (allStocks[allStocks.length] = stockData),
-              toggleP(),
-              b();
+            isMain && (view_mainStock = stockData);
+            allStocks[allStocks.length] = stockData;
+            _view_toggleP();
+            onChangeView();
           },
-          M = function(e) {
+          _view_func_M = function(e) {
             for (var t, a, i = e, r = 0, o = 0; r < allStocks.length; r++)
               (a = allStocks[r]),
                 a.marketNum(a.market) == a.marketNum(i)
@@ -4310,141 +4376,150 @@ xh5_define(
             e.changeMarket(t);
           };
         this.changeData = changeData;
-        var toggleP = function() {
+        var _view_toggleP = function() {
             if (allStocks.length > 1)
-              viewMe.mM.togglePt({
+              view_Me.mM.togglePt({
                 v: !1
               });
             else {
               if (allStocks.length <= 0) return;
-              viewMe.mM.togglePt({
+              view_Me.mM.togglePt({
                 v: !0
               });
             }
           },
-          R = function(e) {
+          _view_func_R = function(e) {
             var t = viewState.start,
               a = viewState.end;
-            return (
-              (t = Math.max(t + e, 0)),
-              0 == t && 5 >= a && 0 == viewState.start && a++,
-              t >= a && (t = a - 1),
-              a > 5 && (a = 5),
-              [t, a]
-            );
+
+            t = Math.max(t + e, 0);
+            0 == t && 5 >= a && 0 == viewState.start && a++;
+            t >= a && (t = a - 1);
+            a > 5 && (a = 5);
+            return [t, a];
           };
-        (this.onWheel = function(e) {
+        this.onWheel = function(e) {
           var t = -1 * e.detail || e.wheelDelta;
           if (0 != t) {
             t = t > 0 ? -1 : 1;
-            var i = R(t);
-            viewMe.moving(i[0], i[1], "wheel");
+            var i = _view_func_R(t);
+            view_Me.moving(i[0], i[1], "wheel");
           }
-        }),
-          (this.onKb = function(e) {
-            var t = e.keyCode;
-            switch (t) {
-              case 38:
-              case 40:
-                var i = R(38 == t ? 1 : -1);
-                viewMe.moving(i[0], i[1], "Key");
-                break;
-              case 37:
-              case 39:
-                iMgr.iToKb(37 == t ? -1 : 1);
-                break;
-              default:
-                return;
-            }
-            xh5_EvtUtil.preventDefault(e);
-          }),
-          (this.zoomApi = function(e) {
-            var t = R(e ? 1 : -1);
-            viewMe.moving(t[0], t[1], "zoom");
-          }),
-          (this.moveApi = function(e) {
-            var t = viewState.start,
-              i = viewState.end;
-            (t += e),
-              (i += e),
-              i > 5 && ((t = 4), (i = 5)),
-              0 > t && ((t = 0), (i = 1)),
-              viewMe.moving(t, i, "move");
-          }),
-          (this.setViewData = p),
-          (this.onChangeView = b);
-        var A = 1;
-        (this.moving = function(t, a, i, r) {
+        };
+        this.onKb = function(e) {
+          var t = e.keyCode;
+          switch (t) {
+            case 38:
+            case 40:
+              var i = _view_func_R(38 == t ? 1 : -1);
+              view_Me.moving(i[0], i[1], "Key");
+              break;
+            case 37:
+            case 39:
+              _view_manager_iMgr_obj.iToKb(37 == t ? -1 : 1);
+              break;
+            default:
+              return;
+          }
+          xh5_EvtUtil.preventDefault(e);
+        };
+        this.zoomApi = function(e) {
+          var t = _view_func_R(e ? 1 : -1);
+          view_Me.moving(t[0], t[1], "zoom");
+        };
+        this.moveApi = function(e) {
+          var t = viewState.start,
+            i = viewState.end;
+          (t += e),
+            (i += e),
+            i > 5 && ((t = 4), (i = 5)),
+            0 > t && ((t = 0), (i = 1)),
+            view_Me.moving(t, i, "move");
+        };
+        this.setViewData = setViewData;
+        this.onChangeView = onChangeView;
+        var valA = 1;
+        this.moving = function(t, a, i, r) {
           (viewState.start = t),
             (viewState.end = a),
             ((4 != t && 5 != a) || (0 != t && 5 != a)) &&
               (viewState.viewId = 0),
-            r && 4 != t && 1 == A && ((i = "rs"), (A = 2), (C = 0)),
+            r && 4 != t && 1 == valA && ((i = "rs"), (valA = 2), (C = 0)),
             ("HF" == marketCode || "NF" == marketCode) &&
               0 == C &&
               i &&
-              (J.show(), x("t5"), (C = 1), (A = 2));
+              (loading.show(), _view_update5Data("t5"), (C = 1), (valA = 2));
           for (var o, s = allStocks.length; s--; )
             (o = allStocks[s]), o.setRange(), o.onViewChange();
-          d(), m(), _view_manager_ne.onRange(view_mainStock);
-        }),
-          (this.dAdd = 0),
-          (this.compare = function(e) {
-            for (var t = allStocks.length; t--; )
-              if (allStocks[t].symbol == e.symbol) return;
-            _view_createStockData(e, !1);
-          }),
-          (this.removeCompare = function(e) {
-            for (var t, a, i = "CN", r = e.length; r--; ) {
-              a = e[r];
-              for (var o = allStocks.length; o--; )
-                if (a == allStocks[o].symbol) {
-                  (t = allStocks.splice(o, 1)[0]),
-                    (i = t.market),
-                    t.clear(),
-                    (t = null);
-                  break;
-                }
-            }
-            M(i), toggleP(), d(), m(), _view_manager_ne.onRange(allStocks[0]);
-          }),
-          (this.onResize = function(e) {
-            for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
-          }),
-          (this.dcReset = function() {
-            for (var e, t = allStocks.length; t--; )
-              (e = allStocks.splice(t, 1)[0]), e.clear(), (e = null);
-          }),
-          (this.setScale = function(e) {
-            cfg.datas.scaleType = e;
-          }),
-          (this.setTLineStyle = function(a) {
-            if (a) {
-              !utils_util.isArr(a) && (a = [a]);
-              for (var i = a.length; i--; ) {
-                var r = a[i];
-                if (r.hasOwnProperty("symbol")) {
-                  for (var o = r.symbol, s = allStocks.length; s--; )
-                    if (allStocks[s].symbol == o) {
-                      allStocks[s].setTLineStyle(r), allStocks[s].draw();
-                      break;
-                    }
-                } else view_mainStock.setTLineStyle(r), view_mainStock.draw();
+          funD(), funcM(), _view_manager_ne.onRange(view_mainStock);
+        };
+        this.dAdd = 0;
+        this.compare = function(e) {
+          for (var t = allStocks.length; t--; )
+            if (allStocks[t].symbol == e.symbol) return;
+          _view_createStockData(e, !1);
+        };
+        this.removeCompare = function(e) {
+          for (var t, a, i = "CN", r = e.length; r--; ) {
+            a = e[r];
+            for (var o = allStocks.length; o--; )
+              if (a == allStocks[o].symbol) {
+                (t = allStocks.splice(o, 1)[0]),
+                  (i = t.market),
+                  t.clear(),
+                  (t = null);
+                break;
               }
-            } else view_mainStock.setTLineStyle(), view_mainStock.draw();
-          });
-        var E;
+          }
+          _view_func_M(i),
+            _view_toggleP(),
+            funD(),
+            funcM(),
+            _view_manager_ne.onRange(allStocks[0]);
+        };
+        this.onResize = function(e) {
+          for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
+        };
+        this.dcReset = function() {
+          for (var e, len = allStocks.length; len--; ) {
+            e = allStocks.splice(len, 1)[0];
+            e.clear();
+            e = null;
+          }
+        };
+        this.setScale = function(scaleType) {
+          _viem_manager_cfg.datas.scaleType = scaleType;
+        };
+        this.setTLineStyle = function(a) {
+          if (a) {
+            !utils_util.isArr(a) && (a = [a]);
+            for (var i = a.length; i--; ) {
+              var r = a[i];
+              if (r.hasOwnProperty("symbol")) {
+                for (var o = r.symbol, s = allStocks.length; s--; )
+                  if (allStocks[s].symbol == o) {
+                    allStocks[s].setTLineStyle(r), allStocks[s].draw();
+                    break;
+                  }
+              } else view_mainStock.setTLineStyle(r), view_mainStock.draw();
+            }
+          } else view_mainStock.setTLineStyle(), view_mainStock.draw();
+        };
+        var _view_TimerID;
         var P = function(e) {
-          e ? S() : iMgr.update();
+          e ? funcS() : _view_manager_iMgr_obj.update();
         };
         var H = !1;
         var F = 0;
         var $ = function() {
-          clearTimeout(E), (H = !1), (F = 0);
+          clearTimeout(_view_TimerID);
+          H = !1;
+          F = 0;
         };
         var K = function() {
-          E = setTimeout(function() {
-            F > 0 && S(), $();
+          _view_TimerID = setTimeout(function() {
+            F > 0 && funcS();
+            $();
           }, 500);
         };
         this.pushData = function(e, t) {
@@ -4462,29 +4537,31 @@ xh5_define(
           for (var i = e.length; i--; )
             for (var r = allStocks.length; r--; )
               if (allStocks[r].symbol == e[i].symbol && e[i].data) {
-                F++,
-                  allStocks[r].doUpdate(
-                    fBind(P, null, a),
-                    !1,
-                    e[i].data,
-                    e[i].market
-                  );
+                F++;
+                allStocks[r].doUpdate(
+                  fBind(P, null, a),
+                  !1,
+                  e[i].data,
+                  e[i].market
+                );
                 break;
               }
         };
         this.dcInit = function(config) {
-          _view_createStockData(config, !0), w();
+          _view_createStockData(config, !0);
+          _view_updateDataAll();
         };
         this.mM = new (function() {
           var newAC = function(chartlist, type, options) {
-            console.log(chartlist);
             var chart, method;
             switch (type) {
               case "price":
-                (chart = ht5_pChart), (method = "initPt");
+                chart = ht5_pChart;
+                method = "initPt";
                 break;
               case "tech":
-                (chart = ht5_tChart), (method = "initTc");
+                chart = ht5_tChart;
+                method = "initTc";
             }
 
             if (method) {
@@ -4503,16 +4580,16 @@ xh5_define(
                 );
             }
           };
-          var removeAC = function(t, a) {
+          var removeAC = function(t, type) {
             var i;
-            switch (a) {
+            switch (type) {
               case "price":
                 i = "removePt";
                 break;
               case "tech":
                 i = "removeTc";
             }
-            i && view_mainStock && (view_mainStock[i](t), b());
+            i && view_mainStock && (view_mainStock[i](t), onChangeView());
           };
           var showRs = function(t) {
             return ht5_o
@@ -4520,8 +4597,8 @@ xh5_define(
                   ? _view_manager_Q.sh(t)
                   : (view_mainStock.initRs(),
                     showRs(t),
-                    B.appendChild(_view_manager_Q.getBody())),
-                void initMgr.resizeAll(!0))
+                    domB.appendChild(_view_manager_Q.getBody())),
+                void _view_manager_initMgr_ojb.resizeAll(!0))
               : void KKE.api("plugins.rangeselector.get", null, function(e) {
                   (ht5_o = e), showRs(t);
                 });
@@ -4530,7 +4607,7 @@ xh5_define(
           this.newAC = newAC;
           this.removeAC = removeAC;
           this.togglePt = function(t) {
-            view_mainStock && (view_mainStock.togglePt(t), b());
+            view_mainStock && (view_mainStock.togglePt(t), onChangeView());
           };
         })();
       }
@@ -4544,10 +4621,10 @@ xh5_define(
         O = 0,
         unitShou = "\u624b",
         C = 0;
-      (_nf_window_var = viewManangerConfig._nf_window_var),
-        (_hf_window_var = viewManangerConfig._hf_window_var),
-        (_gbi_window_var = viewManangerConfig._gbi_window_var);
-      var R = function(e) {
+      _nf_window_var = viewManangerConfig._nf_window_var;
+      _hf_window_var = viewManangerConfig._hf_window_var;
+      _gbi_window_var = viewManangerConfig._gbi_window_var;
+      var _ViewManager_funcA = function(e) {
           return (
             "CN" === e ||
             "US" === e ||
@@ -4557,7 +4634,7 @@ xh5_define(
             "option_cn" === e
           );
         },
-        ObjectA = {
+        _ViewManager_ObjectA = {
           tcd: function(e) {
             var a;
             switch (e) {
@@ -4702,7 +4779,7 @@ xh5_define(
           }
         };
       utils_util.xh5_EvtDispatcher.call(this);
-      var chart_h5tObj = this;
+      var _ViewManager_me = this;
       //copy properties
       viewManangerConfig = copyProperties(
         {
@@ -4769,7 +4846,8 @@ xh5_define(
           ? utils_util.strUtil.replaceStr(viewManangerConfig.symbol)
           : viewManangerConfig.symbol.replace(".", "$");
 
-      if (0 == location.protocol.indexOf("https:")) viewManangerConfig.ssl = !0;
+      if (0 == location.protocol.indexOf("https:"))
+        viewManangerConfig.ssl = true;
       var randomKey =
         "_" +
         viewManangerConfig.symbol +
@@ -4777,18 +4855,21 @@ xh5_define(
         Math.floor(1234567890 * Math.random() + 1) +
         Math.floor(9876543210 * Math.random() + 1);
 
-      var cfg = cfgs_settinger.getSetting(randomKey);
+      var _viem_manager_cfg = cfgs_settinger.getSetting(randomKey);
 
-      cfg.datas.isT = !0;
-      viewManangerConfig.reorder || (cfg.custom.indicator_reorder = !1);
-      viewManangerConfig.reheight || (cfg.custom.indicator_reheight = !1);
+      _viem_manager_cfg.datas.isT = !0;
+      viewManangerConfig.reorder ||
+        (_viem_manager_cfg.custom.indicator_reorder = !1);
+      viewManangerConfig.reheight ||
+        (_viem_manager_cfg.custom.indicator_reheight = !1);
       marketCode = utils_util.market(viewManangerConfig.symbol);
-      cfg.datas.tDataLen = ObjectA.tcd(marketCode);
-      var tDataLen = cfg.datas.tDataLen;
-      var tipObj = new (function() {
+      _viem_manager_cfg.datas.tDataLen = _ViewManager_ObjectA.tcd(marketCode);
+      var tDataLen = _viem_manager_cfg.datas.tDataLen;
+      var _viem_manager_tipObj = new (function() {
         var e;
         this.showTip = function(a) {
-          e || (e = new utils_util.TipM(cfg.COLOR)), e.genTip(a);
+          e || (e = new utils_util.TipM(_viem_manager_cfg.COLOR));
+          e.genTip(a);
         };
         this.hideTip = function() {
           e && e.hide();
@@ -4801,34 +4882,35 @@ xh5_define(
             utils_util.isFunc(viewManangerConfig.noh5) &&
             viewManangerConfig.noh5(viewManangerConfig)
           );
-        cfg.PARAM.isFlash = !0;
+        _viem_manager_cfg.PARAM.isFlash = !0;
       }
       if (
-        (cfg.PARAM.isFlash &&
-          ((cfg.COLOR.K_EXT_BG = "#fff"), (cfg.COLOR.F_BG = "#fff")),
+        (_viem_manager_cfg.PARAM.isFlash &&
+          ((_viem_manager_cfg.COLOR.K_EXT_BG = "#fff"),
+          (_viem_manager_cfg.COLOR.F_BG = "#fff")),
         viewManangerConfig.dim)
       )
         for (var F in viewManangerConfig.dim) {
           if (
             viewManangerConfig.dim.hasOwnProperty(F) &&
-            utils_util.isNum(cfg.DIMENSION[F])
+            utils_util.isNum(_viem_manager_cfg.DIMENSION[F])
           )
-            cfg.DIMENSION[F] = viewManangerConfig.dim[F];
+            _viem_manager_cfg.DIMENSION[F] = viewManangerConfig.dim[F];
         }
 
-      var $,
-        V,
-        K,
+      var _view_manager_root_dom,
+        dom_elA,
+        mainareaDom,
         G,
         z,
         subArea,
-        B,
+        domB,
         _view_manager_view,
         _view_manager_whatJ,
         Y,
-        Z,
+        obj_Z,
         _view_manager_Q,
-        J,
+        loading,
         viewState = {
           viewId: globalCfg.URLHASH.vi(viewManangerConfig.view || "ts"),
           dataLength: void 0,
@@ -4837,183 +4919,210 @@ xh5_define(
           startDate: void 0,
           endDate: void 0
         },
-        t_rate = isNaN(viewManangerConfig.t_rate)
-          ? cfg.PARAM.T_RATE
+        _view_manager_t_rate = isNaN(viewManangerConfig.t_rate)
+          ? _viem_manager_cfg.PARAM.T_RATE
           : viewManangerConfig.t_rate,
         ae = !1,
         ie = 0;
-      var initMgr = new (function() {
-        var e;
-        var a = function(e, t, a) {
+      var _view_manager_initMgr_ojb = new (function() {
+        var logoDom;
+        var setSize = function(width, height, a) {
           var r = !1;
-          isNaN(e) && (e = viewManangerConfig.w || $.offsetWidth),
-            isNaN(t) &&
-              (t =
-                viewManangerConfig.h || $.offsetHeight - viewManangerConfig.mh);
+          isNaN(width) &&
+            (width =
+              viewManangerConfig.w || _view_manager_root_dom.offsetWidth);
+          isNaN(height) &&
+            (height =
+              viewManangerConfig.h ||
+              _view_manager_root_dom.offsetHeight - viewManangerConfig.mh);
           for (
             var n,
-              o = B.clientHeight || 0,
+              o = domB.clientHeight || 0,
               s = subArea.clientHeight || 0,
-              l = cfg.DIMENSION.getOneWholeTH(),
+              l = _viem_manager_cfg.DIMENSION.getOneWholeTH(),
               c = 0,
-              d = subArea.childNodes,
-              m = d.length,
+              childNodes = subArea.childNodes,
+              len = childNodes.length,
               p = 0,
-              h = d.length;
+              h = childNodes.length;
             h--;
 
-          )
-            (n = d[h]),
-              n.id.indexOf("blankctn") >= 0
-                ? ((c = n.offsetHeight), m--, (p += c))
-                : (p += l);
+          ) {
+            n = childNodes[h];
+            n.id.indexOf("blankctn") >= 0
+              ? ((c = n.offsetHeight), len--, (p += c))
+              : (p += l);
+          }
+
           return (
             !isNaN(a) && (s -= a),
-            s / (t - o) > 1 && ((s = p), (r = !0)),
-            cfg.DIMENSION.setStageW(e),
+            s / (height - o) > 1 && ((s = p), (r = !0)),
+            _viem_manager_cfg.DIMENSION.setStageW(width),
             1 == ie
-              ? m > 0 &&
-                (cfg.DIMENSION.setStageH(t, m * l + c + o), (r = !0), (ie = 0))
-              : cfg.DIMENSION.setStageH(t, s + o),
-            0 > t &&
-              ((cfg.DIMENSION.H_T_G =
-                cfg.DIMENSION.H_T_G - cfg.DIMENSION.H_T_T),
-              (cfg.DIMENSION.H_T_B = cfg.DIMENSION.H_TIME_PART)),
+              ? len > 0 &&
+                (_viem_manager_cfg.DIMENSION.setStageH(height, len * l + c + o),
+                (r = !0),
+                (ie = 0))
+              : _viem_manager_cfg.DIMENSION.setStageH(height, s + o),
+            0 > height &&
+              ((_viem_manager_cfg.DIMENSION.H_T_G =
+                _viem_manager_cfg.DIMENSION.H_T_G -
+                _viem_manager_cfg.DIMENSION.H_T_T),
+              (_viem_manager_cfg.DIMENSION.H_T_B =
+                _viem_manager_cfg.DIMENSION.H_TIME_PART)),
             r
           );
         };
-        var r = function() {
-          J.setPosition();
+        var updateLoadingPosition = function() {
+          loading.setPosition();
         };
-        var n = function() {
-          e && (e.style.display = cfg.custom.show_logo ? "" : "none");
+        var setLogoStyle = function() {
+          logoDom &&
+            (logoDom.style.display = _viem_manager_cfg.custom.show_logo
+              ? ""
+              : "none");
         };
-        var o = function(e, i, o) {
-          var s = a(i, o, 0 / 0);
+        var resizeAll = function(e, i, o) {
+          var s = setSize(i, o, 0 / 0);
           if (e || (i && o)) {
             if (!_view_manager_view) return;
-            _view_manager_view.onResize(s), iMgr.onResize();
+            _view_manager_view.onResize(s), _view_manager_iMgr_obj.onResize();
           }
-          r(),
-            n(),
+          updateLoadingPosition(),
+            setLogoStyle(),
             utils_util.stc("t_wh", [
-              cfg.DIMENSION.getStageW(),
-              cfg.DIMENSION.getStageH()
+              _viem_manager_cfg.DIMENSION.getStageW(),
+              _viem_manager_cfg.DIMENSION.getStageH()
             ]);
         };
-        var s = function() {
-          ($ = f$DOM(viewManangerConfig.domid) || viewManangerConfig.dom),
-            $ ||
-              (($ = utils_util_$C("div")),
-              document.body.appendChild($),
-              utils_util.trace.error("missing of dom id")),
-            (V = utils_util_$C("div")),
-            (V.style.position = "relative"),
-            (V.style.outlineStyle = "none"),
-            (V.style.webkitUserSelect = V.style.userSelect = V.style.MozUserSelect =
-              "none"),
-            (K = utils_util_$C("div", "mainarea_" + cfg.uid)),
-            (G = utils_util_$C("div")),
-            K.appendChild(G),
-            (z = utils_util_$C("div")),
-            (z.style.position = "absolute"),
-            (z.style.fontSize = cfg.STYLE.FONT_SIZE + "px"),
-            K.appendChild(z),
-            V.appendChild(K),
-            (subArea = utils_util_$C("div")),
-            V.appendChild(subArea),
-            (B = utils_util_$C("div")),
-            V.appendChild(B),
-            $.appendChild(V),
-            (J = new utils_util.LoadingSign()),
-            J.appendto(K, cfg);
+        var _view_manager_createDoms = function() {
+          _view_manager_root_dom =
+            f$DOM(viewManangerConfig.domid) || viewManangerConfig.dom;
+          if (!_view_manager_root_dom) {
+            _view_manager_root_dom = utils_util_$C("div");
+            document.body.appendChild(_view_manager_root_dom);
+            utils_util.trace.error("missing of dom id");
+          }
+
+          dom_elA = utils_util_$C("div");
+          dom_elA.style.position = "relative";
+          dom_elA.style.outlineStyle = "none";
+          dom_elA.style.webkitUserSelect = dom_elA.style.userSelect = dom_elA.style.MozUserSelect =
+            "none";
+          mainareaDom = utils_util_$C(
+            "div",
+            "mainarea_" + _viem_manager_cfg.uid
+          );
+          G = utils_util_$C("div");
+          mainareaDom.appendChild(G);
+          z = utils_util_$C("div");
+          z.style.position = "absolute";
+          z.style.fontSize = _viem_manager_cfg.STYLE.FONT_SIZE + "px";
+          mainareaDom.appendChild(z);
+          dom_elA.appendChild(mainareaDom);
+          subArea = utils_util_$C("div");
+          dom_elA.appendChild(subArea);
+          domB = utils_util_$C("div");
+          dom_elA.appendChild(domB);
+          _view_manager_root_dom.appendChild(dom_elA);
+          loading = new utils_util.LoadingSign();
+          loading.appendto(mainareaDom, _viem_manager_cfg);
         };
-        var l = function(a) {
+        var isInitTheme = function(a) {
           var i = !1;
           if (a) {
             _view_manager_Q && (i = _view_manager_Q.setTheme(a));
             for (var r in a)
               a.hasOwnProperty(r) &&
-                cfg.COLOR.hasOwnProperty(r) &&
-                cfg.COLOR[r] !== a[r] &&
-                ((cfg.COLOR[r] = a[r]), (i = !0));
+                _viem_manager_cfg.COLOR.hasOwnProperty(r) &&
+                _viem_manager_cfg.COLOR[r] !== a[r] &&
+                ((_viem_manager_cfg.COLOR[r] = a[r]), (i = !0));
             utils_util.stc("t_thm", a);
           }
           return (
             i &&
               logoM.styleLogo({
-                logo: e,
-                color: cfg.COLOR.LOGO
+                logo: logoDom,
+                color: _viem_manager_cfg.COLOR.LOGO
               }),
             i
           );
         };
-        var m = function(e) {
-          !cfg.custom.mousewheel_zoom ||
-            (document.activeElement !== V &&
-              document.activeElement.parentNode !== V) ||
+        var onMouseWheel = function(e) {
+          !_viem_manager_cfg.custom.mousewheel_zoom ||
+            (document.activeElement !== dom_elA &&
+              document.activeElement.parentNode !== dom_elA) ||
             (_view_manager_view && _view_manager_view.onWheel(e),
             xh5_EvtUtil.preventDefault(e),
             xh5_EvtUtil.stopPropagation(e));
         };
-        var p = function(e) {
-          cfg.custom.keyboard && _view_manager_view && _view_manager_view.onKb(e);
+        var onKeyDown = function(e) {
+          _viem_manager_cfg.custom.keyboard &&
+            _view_manager_view &&
+            _view_manager_view.onKb(e);
         };
-        var u = function() {
-          utils_util.xh5_deviceUtil.istd ||
-            (xh5_BrowserUtil.info.name.match(/firefox/i)
-              ? xh5_EvtUtil.addHandler(V, "DOMMouseScroll", m)
-              : xh5_EvtUtil.addHandler(V, "mousewheel", m),
-            (V.tabIndex = 0),
-            xh5_EvtUtil.addHandler(V, "keydown", p));
+        var setEventHandler = function() {
+          if (!utils_util.xh5_deviceUtil.istd) {
+            xh5_BrowserUtil.info.name.match(/firefox/i)
+              ? xh5_EvtUtil.addHandler(dom_elA, "DOMMouseScroll", onMouseWheel)
+              : xh5_EvtUtil.addHandler(dom_elA, "mousewheel", onMouseWheel);
+            dom_elA.tabIndex = 0;
+            xh5_EvtUtil.addHandler(dom_elA, "keydown", onKeyDown);
+          }
         };
-        var v = function(t) {
-          (e = t), V.appendChild(t);
+        var setLogoDom = function(dom) {
+          logoDom = dom;
+          dom_elA.appendChild(dom);
         };
-        var f = function() {
-          s(),
-            l(viewManangerConfig.theme),
-            o(),
-            u(),
-            cfg.DIMENSION.h_t < 0 &&
-              ((K.style.display = "none"),
-              (cfg.custom.indicator_reorder = !1),
-              (cfg.custom.indicator_reheight = !1)),
-            logoM.getLogo({
-              cb: v,
-              id: cfg.PARAM.LOGO_ID,
-              isShare: !1,
-              top: cfg.DIMENSION.posY + cfg.DIMENSION.H_MA4K + 17,
-              right: cfg.DIMENSION.RIGHT_W + cfg.DIMENSION.K_RIGHT_W,
-              LOGO_W: cfg.DIMENSION.LOGO_W,
-              LOGO_H: cfg.DIMENSION.LOGO_H,
-              color: cfg.COLOR.LOGO
+        var render = function() {
+          _view_manager_createDoms();
+          isInitTheme(viewManangerConfig.theme);
+          resizeAll();
+          setEventHandler();
+          _viem_manager_cfg.DIMENSION.h_t < 0 &&
+            ((mainareaDom.style.display = "none"),
+            (_viem_manager_cfg.custom.indicator_reorder = !1),
+            (_viem_manager_cfg.custom.indicator_reheight = !1));
+          logoM.getLogo({
+            cb: setLogoDom,
+            id: _viem_manager_cfg.PARAM.LOGO_ID,
+            isShare: !1,
+            top:
+              _viem_manager_cfg.DIMENSION.posY +
+              _viem_manager_cfg.DIMENSION.H_MA4K +
+              17,
+            right:
+              _viem_manager_cfg.DIMENSION.RIGHT_W +
+              _viem_manager_cfg.DIMENSION.K_RIGHT_W,
+            LOGO_W: _viem_manager_cfg.DIMENSION.LOGO_W,
+            LOGO_H: _viem_manager_cfg.DIMENSION.LOGO_H,
+            color: _viem_manager_cfg.COLOR.LOGO
+          });
+          xh5_BrowserUtil.noH5 &&
+            (_viem_manager_tipObj.showTip({
+              txt: viewManangerConfig.nohtml5info || globalCfg.nohtml5info,
+              parent: dom_elA
             }),
-            xh5_BrowserUtil.noH5 &&
-              (tipObj.showTip({
-                txt: viewManangerConfig.nohtml5info || globalCfg.nohtml5info,
-                parent: V
-              }),
-              utils_util.stc("t_nh5"));
+            utils_util.stc("t_nh5"));
         };
 
-        f();
-        this.resizeAll = o;
+        render();
+        this.resizeAll = resizeAll;
         this.innerResize = function(e) {
           _view_manager_view &&
-            (a(0 / 0, 0 / 0, e),
+            (setSize(0 / 0, 0 / 0, e),
             _view_manager_view.onResize(),
-            iMgr.onResize(),
-            r(),
+            _view_manager_iMgr_obj.onResize(),
+            updateLoadingPosition(),
             _view_manager_ne.onInnerResize({
-              height: cfg.DIMENSION.h_t
+              height: _viem_manager_cfg.DIMENSION.h_t
             }));
         };
-        this.initTheme = l;
+        this.initTheme = isInitTheme;
       })();
       var _view_manager_ne = new (function() {
         var e = 0,
-          a = function(a, r) {
+          currentData = function(a, r) {
             var n = tDataLen - 1,
               o = _view_manager_view.getAllStock()[0];
             if (
@@ -5062,97 +5171,96 @@ xh5_define(
                   (c.change = o.hq.price - o.hq.prevclose),
                   (c.percent = (o.hq.price - o.hq.prevclose) / o.hq.prevclose));
               }
-              return (
-                (a.day =
-                  utils_util.dateUtil.ds(l, "/", !1) +
-                  "/" +
-                  utils_util.dateUtil.nw(l.getDay()) +
-                  (a.time || "")),
-                (e = r),
-                utils_util.clone(a)
-              );
+              a.day =
+                utils_util.dateUtil.ds(l, "/", !1) +
+                "/" +
+                utils_util.dateUtil.nw(l.getDay()) +
+                (a.time || "");
+              e = r;
+
+              return utils_util.clone(a);
             }
           };
-        (this.currentData = a),
-          (this.onDataUpdate = function() {
-            if (utils_util.isFunc(viewManangerConfig.ondataupdate)) {
-              var e = a();
-              e &&
-                viewManangerConfig.ondataupdate({
-                  data: utils_util.clone(e),
-                  idx: viewState.currentLength - 1,
-                  left: cfg.DIMENSION.posX,
-                  top: cfg.DIMENSION.H_MA4K
-                });
-            }
-          }),
-          (this.onInnerResize = function(e) {
-            utils_util.isFunc(viewManangerConfig.oninnerresize) &&
-              viewManangerConfig.oninnerresize(e);
-          }),
-          (this.onRange = function(e) {
-            !ae &&
-              utils_util.isFunc(viewManangerConfig.onrange) &&
-              e &&
-              viewManangerConfig.onrange({
-                isCompare: e.isCompare,
-                data: utils_util.clone(e.datas),
-                width: cfg.DIMENSION.w_t,
-                height: cfg.DIMENSION.h_t,
-                viewRangeState: utils_util.clone(viewState),
-                range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
-                left: cfg.DIMENSION.posX,
-                top: cfg.DIMENSION.H_MA4K
+        this.currentData = currentData;
+        this.onDataUpdate = function() {
+          if (utils_util.isFunc(viewManangerConfig.ondataupdate)) {
+            var e = currentData();
+            e &&
+              viewManangerConfig.ondataupdate({
+                data: utils_util.clone(e),
+                idx: viewState.currentLength - 1,
+                left: _viem_manager_cfg.DIMENSION.posX,
+                top: _viem_manager_cfg.DIMENSION.H_MA4K
               });
-          }),
-          (this.onViewChanged = function() {
-            utils_util.isFunc(viewManangerConfig.onviewchanged) &&
-              viewManangerConfig.onviewchanged({
-                viewRangeState: utils_util.clone(viewState)
+          }
+        };
+        this.onInnerResize = function(e) {
+          utils_util.isFunc(viewManangerConfig.oninnerresize) &&
+            viewManangerConfig.oninnerresize(e);
+        };
+        this.onRange = function(e) {
+          !ae &&
+            utils_util.isFunc(viewManangerConfig.onrange) &&
+            e &&
+            viewManangerConfig.onrange({
+              isCompare: e.isCompare,
+              data: utils_util.clone(e.datas),
+              width: _viem_manager_cfg.DIMENSION.w_t,
+              height: _viem_manager_cfg.DIMENSION.h_t,
+              viewRangeState: utils_util.clone(viewState),
+              range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
+              left: _viem_manager_cfg.DIMENSION.posX,
+              top: _viem_manager_cfg.DIMENSION.H_MA4K
+            });
+        };
+        this.onViewChanged = function() {
+          utils_util.isFunc(viewManangerConfig.onviewchanged) &&
+            viewManangerConfig.onviewchanged({
+              viewRangeState: utils_util.clone(viewState)
+            });
+        };
+        this.onViewPrice = function(r, n, o, s) {
+          if (!ae && utils_util.isFunc(viewManangerConfig.onviewprice)) {
+            if ((r || (r = currentData(r, n)), !r)) return;
+            o || (o = _view_manager_view.getMainStock().getName());
+            var l,
+              c,
+              d = utils_util.clone(r);
+            viewManangerConfig.ennfloat
+              ? ((l = viewManangerConfig.nfloat),
+                (c = viewManangerConfig.nfloat))
+              : ((l = utils_util.strUtil.nfloat(d.price)),
+                (c = utils_util.strUtil.nfloat(d.avg_price))),
+              (d.price = Number(d.price.toFixed(l))),
+              (d.avg_price = Number(d.avg_price.toFixed(c)));
+            var m = viewManangerConfig.symbol.length;
+            "HK" == marketCode &&
+              viewManangerConfig.symbol.substring(m - 1, m) >= "A" &&
+              (d.avg_price = 0 / 0),
+              d.volume && d.volume < 0 && (d.volume = 0),
+              viewManangerConfig.onviewprice({
+                curname: o || "",
+                data_array: _view_manager_view.getAllStock().length,
+                data: d,
+                idx: e,
+                left: _viem_manager_cfg.DIMENSION.posX,
+                top: _viem_manager_cfg.DIMENSION.H_MA4K,
+                interacting: !!s
               });
-          }),
-          (this.onViewPrice = function(r, n, o, s) {
-            if (!ae && utils_util.isFunc(viewManangerConfig.onviewprice)) {
-              if ((r || (r = a(r, n)), !r)) return;
-              o || (o = _view_manager_view.getMainStock().getName());
-              var l,
-                c,
-                d = utils_util.clone(r);
-              viewManangerConfig.ennfloat
-                ? ((l = viewManangerConfig.nfloat),
-                  (c = viewManangerConfig.nfloat))
-                : ((l = utils_util.strUtil.nfloat(d.price)),
-                  (c = utils_util.strUtil.nfloat(d.avg_price))),
-                (d.price = Number(d.price.toFixed(l))),
-                (d.avg_price = Number(d.avg_price.toFixed(c)));
-              var m = viewManangerConfig.symbol.length;
-              "HK" == marketCode &&
-                viewManangerConfig.symbol.substring(m - 1, m) >= "A" &&
-                (d.avg_price = 0 / 0),
-                d.volume && d.volume < 0 && (d.volume = 0),
-                viewManangerConfig.onviewprice({
-                  curname: o || "",
-                  data_array: _view_manager_view.getAllStock().length,
-                  data: d,
-                  idx: e,
-                  left: cfg.DIMENSION.posX,
-                  top: cfg.DIMENSION.H_MA4K,
-                  interacting: !!s
-                });
-            }
-          }),
-          (this.onTechChanged = function(e) {
-            utils_util.isFunc(viewManangerConfig.ontechchanged) &&
-              viewManangerConfig.ontechchanged({
-                Indicator: e
-              });
-          }),
-          (this.shortClickHandler = function() {
-            utils_util.isFunc(viewManangerConfig.onshortclickmain) &&
-              viewManangerConfig.onshortclickmain();
-          });
+          }
+        };
+        this.onTechChanged = function(e) {
+          utils_util.isFunc(viewManangerConfig.ontechchanged) &&
+            viewManangerConfig.ontechchanged({
+              Indicator: e
+            });
+        };
+        this.shortClickHandler = function() {
+          utils_util.isFunc(viewManangerConfig.onshortclickmain) &&
+            viewManangerConfig.onshortclickmain();
+        };
       })();
-      var iMgr = new (function() {
+      var _view_manager_iMgr_obj = new (function() {
         var e,
           a,
           r,
@@ -5163,21 +5271,28 @@ xh5_define(
           c = new (function() {
             var t = function(t) {
               var a = e.body.style;
-              t && cfg.custom.show_floater
-                ? ((a.backgroundColor = cfg.COLOR.F_BG),
-                  (a.color = cfg.COLOR.F_T),
-                  (a.border = "1px solid " + cfg.COLOR.F_BR),
+              t && _viem_manager_cfg.custom.show_floater
+                ? ((a.backgroundColor = _viem_manager_cfg.COLOR.F_BG),
+                  (a.color = _viem_manager_cfg.COLOR.F_T),
+                  (a.border = "1px solid " + _viem_manager_cfg.COLOR.F_BR),
                   (a.display = ""))
                 : (a.display = "none");
             };
             (this.pv = function(a) {
               var i = e.body.style,
-                r = Math.max(cfg.DIMENSION.posX, 55) + 9,
-                n = cfg.DIMENSION.posX < 55 ? 9 : 0,
+                r = Math.max(_viem_manager_cfg.DIMENSION.posX, 55) + 9,
+                n = _viem_manager_cfg.DIMENSION.posX < 55 ? 9 : 0,
                 o =
-                  cfg.DIMENSION.getStageW() - l - 9 - cfg.DIMENSION.RIGHT_W - n;
+                  _viem_manager_cfg.DIMENSION.getStageW() -
+                  l -
+                  9 -
+                  _viem_manager_cfg.DIMENSION.RIGHT_W -
+                  n;
               (i.left =
-                (a.x > (cfg.DIMENSION.getStageW() - cfg.DIMENSION.RIGHT_W) >> 1
+                (a.x >
+                (_viem_manager_cfg.DIMENSION.getStageW() -
+                  _viem_manager_cfg.DIMENSION.RIGHT_W) >>
+                  1
                   ? r
                   : o) + "px"),
                 (i.top = (a.y || 0) + "px"),
@@ -5206,7 +5321,7 @@ xh5_define(
                 p = "text-align:right;border:0;height:16px;",
                 h = utils_util_$C("div");
               (h.style.position = "absolute"),
-                (h.style.zIndex = cfg.PARAM.I_Z_INDEX + 2),
+                (h.style.zIndex = _viem_manager_cfg.PARAM.I_Z_INDEX + 2),
                 (h.style.padding = "2px"),
                 (h.style.width = l + "px"),
                 (h.style.lineHeight = "16px"),
@@ -5301,11 +5416,11 @@ xh5_define(
                 (b.style.width = "100%"),
                 h.appendChild(b);
               var M = function(e, t) {
-                var a = cfg.COLOR.F_N;
+                var a = _viem_manager_cfg.COLOR.F_N;
                 return (
                   e > t
-                    ? (a = cfg.COLOR.F_RISE)
-                    : t > e && (a = cfg.COLOR.F_FALL),
+                    ? (a = _viem_manager_cfg.COLOR.F_RISE)
+                    : t > e && (a = _viem_manager_cfg.COLOR.F_FALL),
                   a
                 );
               };
@@ -5357,55 +5472,65 @@ xh5_define(
                 s = function() {
                   if (
                     ((a.style.borderStyle = "dashed"),
-                    (a.style.borderColor = cfg.COLOR.IVH_LINE),
+                    (a.style.borderColor = _viem_manager_cfg.COLOR.IVH_LINE),
                     (i.style.backgroundColor = r.style.backgroundColor =
-                      cfg.COLOR[e.txtBgCN]),
-                    (i.style.color = r.style.color = cfg.COLOR[e.txtCN]),
+                      _viem_manager_cfg.COLOR[e.txtBgCN]),
+                    (i.style.color = r.style.color =
+                      _viem_manager_cfg.COLOR[e.txtCN]),
                     n)
                   )
                     (a.style.borderWidth = "1px 0 0 0"),
                       (t.style.width = a.style.width =
-                        cfg.DIMENSION.getStageW() -
-                        cfg.DIMENSION.RIGHT_W +
+                        _viem_manager_cfg.DIMENSION.getStageW() -
+                        _viem_manager_cfg.DIMENSION.RIGHT_W +
                         "px"),
-                      (i.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
-                      (r.style.top = -(0.6 * cfg.STYLE.FONT_SIZE) + "px"),
+                      (i.style.top =
+                        -(0.6 * _viem_manager_cfg.STYLE.FONT_SIZE) + "px"),
+                      (r.style.top =
+                        -(0.6 * _viem_manager_cfg.STYLE.FONT_SIZE) + "px"),
                       (i.style.left = 0),
-                      (r.style.left = cfg.DIMENSION.extend_draw
+                      (r.style.left = _viem_manager_cfg.DIMENSION.extend_draw
                         ? ""
-                        : cfg.DIMENSION.getStageW() -
-                          cfg.DIMENSION.RIGHT_W +
+                        : _viem_manager_cfg.DIMENSION.getStageW() -
+                          _viem_manager_cfg.DIMENSION.RIGHT_W +
                           "px"),
                       (r.style.right = 0),
-                      (i.style.width = r.style.width = cfg.DIMENSION.extend_draw
+                      (i.style.width = r.style.width = _viem_manager_cfg
+                        .DIMENSION.extend_draw
                         ? ""
-                        : cfg.DIMENSION.posX + "px"),
+                        : _viem_manager_cfg.DIMENSION.posX + "px"),
                       (i.style.padding = "1px 0"),
                       (r.style.padding = "1px 0");
                   else {
                     a.style.borderWidth = "0 1px 0 0";
                     var o,
                       s,
-                      l = cfg.DIMENSION.H_MA4K + cfg.DIMENSION.H_T_B;
-                    cfg.DIMENSION.getStageH() < 0
+                      l =
+                        _viem_manager_cfg.DIMENSION.H_MA4K +
+                        _viem_manager_cfg.DIMENSION.H_T_B;
+                    _viem_manager_cfg.DIMENSION.getStageH() < 0
                       ? ((o = subArea.clientHeight), (s = o - l))
-                      : ((o = cfg.DIMENSION.getStageH() - B.clientHeight || 0),
-                        (s = cfg.DIMENSION.h_t)),
+                      : ((o =
+                          _viem_manager_cfg.DIMENSION.getStageH() -
+                            domB.clientHeight || 0),
+                        (s = _viem_manager_cfg.DIMENSION.h_t)),
                       (o -= l),
-                      (o += cfg.DIMENSION.I_V_O),
+                      (o += _viem_manager_cfg.DIMENSION.I_V_O),
                       (t.style.height = a.style.height = o + "px"),
                       (i.style.top = s + "px"),
                       (i.style.padding = "2px 2px 1px");
                   }
                 };
               (t.style.position = "absolute"),
-                (t.style.zIndex = cfg.PARAM.I_Z_INDEX - 2),
+                (t.style.zIndex = _viem_manager_cfg.PARAM.I_Z_INDEX - 2),
                 (i.style.position = r.style.position = a.style.position =
                   "absolute"),
                 (a.style.zIndex = 0),
                 (i.style.zIndex = r.style.zIndex = 1),
                 (i.style.font = r.style.font =
-                  cfg.STYLE.FONT_SIZE + "px " + cfg.STYLE.FONT_FAMILY),
+                  _viem_manager_cfg.STYLE.FONT_SIZE +
+                  "px " +
+                  _viem_manager_cfg.STYLE.FONT_FAMILY),
                 (i.style.whiteSpace = r.style.whiteSpace = "nowrap"),
                 (i.style.lineHeight = o + "px"),
                 (r.style.lineHeight = o + "px"),
@@ -5413,8 +5538,10 @@ xh5_define(
                   (i.style.textAlign = e.txtA) &&
                   (r.style.textAlign = "left"),
                 e.txtBgCN &&
-                  (i.style.backgroundColor = cfg.COLOR[e.txtBgCN]) &&
-                  (r.style.backgroundColor = cfg.COLOR[e.txtBgCN]),
+                  (i.style.backgroundColor =
+                    _viem_manager_cfg.COLOR[e.txtBgCN]) &&
+                  (r.style.backgroundColor =
+                    _viem_manager_cfg.COLOR[e.txtBgCN]),
                 s(),
                 t.appendChild(i),
                 n && t.appendChild(r),
@@ -5437,15 +5564,15 @@ xh5_define(
                   !isNaN(e.x))
                 ) {
                   var a = e.x + (e.ox || 0),
-                    n = cfg.DIMENSION.getStageW();
+                    n = _viem_manager_cfg.DIMENSION.getStageW();
                   t.style.left = a + "px";
                   var o = i.offsetWidth;
                   if ((0 >= o && (o = 112), o > 0)) {
                     var s = o >> 1;
                     e.x < s
                       ? (s = e.x)
-                      : a + s > n - cfg.DIMENSION.posX &&
-                        (s = a + o - n + cfg.DIMENSION.posX),
+                      : a + s > n - _viem_manager_cfg.DIMENSION.posX &&
+                        (s = a + o - n + _viem_manager_cfg.DIMENSION.posX),
                       (i.style.left = -s + "px");
                   }
                 }
@@ -5468,7 +5595,7 @@ xh5_define(
                 txtBgCN: "T_BG",
                 txtA: "center"
               })),
-              V.appendChild(n.body);
+              dom_elA.appendChild(n.body);
           },
           u = function() {
             r.display(!1), n.display(!1), c.showFloater(!1);
@@ -5481,14 +5608,14 @@ xh5_define(
               e[0].realLen >= 0 &&
                 (a =
                   5 == viewState.end
-                    ? e[0].realLen + cfg.datas.tDataLen * (t - 1)
-                    : cfg.datas.tDataLen * (t - 1)),
+                    ? e[0].realLen + _viem_manager_cfg.datas.tDataLen * (t - 1)
+                    : _viem_manager_cfg.datas.tDataLen * (t - 1)),
               a
             );
           },
           b = function(e) {
             e > 2e3 && (e = g()),
-              0 > e || (Y && Y.indirectI(e), Z && Z.indirectI(e));
+              0 > e || (Y && Y.indirectI(e), obj_Z && obj_Z.indirectI(e));
           },
           y = function() {
             b(g()), Y && Y.allDraw();
@@ -5498,7 +5625,7 @@ xh5_define(
           D = 0,
           T = 0 / 0,
           M = 0 / 0;
-        (this.iToD = function(a, o, l) {
+        this.iToD = function(a, o, l) {
           var d = a.x,
             m = a.ox || 0,
             p = a.y,
@@ -5521,7 +5648,7 @@ xh5_define(
             q = A > 1,
             F = C[0].datas.length,
             $ = P * F,
-            V = Math.floor((d * $) / cfg.DIMENSION.w_t);
+            V = Math.floor((d * $) / _viem_manager_cfg.DIMENSION.w_t);
           if (isNaN(d) && isNaN(p)) {
             if (
               ((k = !0), u(), stbd(C[0].datas[F - 1][0].date, C[0].hq.date))
@@ -5622,7 +5749,7 @@ xh5_define(
                 default:
                   S = tDataLen - 1;
               }
-            R(marketCode) &&
+            _ViewManager_funcA(marketCode) &&
             dateUtil.stbd(se, dateUtil.sd(le)) &&
             W.hq &&
             W.hq.time >= "09:00" &&
@@ -5641,7 +5768,7 @@ xh5_define(
           }
           if (L && (L.date || (L.date = se), !L || L.date)) {
             var de = d;
-            cfg.custom.stick && (d = L.ix || d);
+            _viem_manager_cfg.custom.stick && (d = L.ix || d);
             var me, pe;
             "HF" == marketCode
               ? ((me = _hf_window_var.time[0][0]),
@@ -5680,7 +5807,7 @@ xh5_define(
                 }),
                 c.pv({
                   x: de,
-                  y: cfg.DIMENSION.T_F_T
+                  y: _viem_manager_cfg.DIMENSION.T_F_T
                 })),
               r.pv({
                 y: p,
@@ -5692,233 +5819,227 @@ xh5_define(
                 v: he,
                 x: d,
                 ox: m,
-                y: cfg.DIMENSION.H_MA4K
+                y: _viem_manager_cfg.DIMENSION.H_MA4K
               }),
               b(V),
               _view_manager_ne.onViewPrice(L, V, B, !k),
-              chart_h5tObj.re(globalCfg.e.I_EVT, a.e);
+              _ViewManager_me.re(globalCfg.e.I_EVT, a.e);
           }
+        };
+        this.globalDragHandler = function(e, t, a, i, r) {
+          isNaN(e) && isNaN(t) && _ViewManager_me.re(globalCfg.e.I_EVT, r);
+        };
+        this.shortClickHandler = function() {
+          _view_manager_ne.shortClickHandler();
+        };
+        this.zoomView = function() {};
+        p();
+        h();
+        this.onResize = function() {
+          r.resize(), n.resize();
+        };
+        this.iHLineO = r;
+        this.hideIUis = u;
+        this.iToKb = function(e) {
+          (D += e), (S = D);
+          var t = _view_manager_view.getAllStock(),
+            a = t[0].datas.length,
+            i = t[0].datas[0][D],
+            r = t.length,
+            n = t[0].realLen,
+            o =
+              "string" != typeof t[0].date ? dateUtil.ds(t[0].date) : t[0].date;
+          1 >= a
+            ? dateUtil.stbd(t[0].datas[0][0].date, dateUtil.sd(o))
+              ? 0 > n && (n = tDataLen)
+              : (n = tDataLen)
+            : dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) ||
+              (n = tDataLen);
+          var s = tDataLen > n ? n + 1 : n;
+          if (0 > D) {
+            var l = tDataLen > n ? n : n - 1;
+            (S = D = (a - 1) * tDataLen + l), (i = t[0].datas[a - 1][l]);
+          } else if (D >= s + (a - 1) * tDataLen)
+            if (
+              dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) &&
+              0 > e
+            ) {
+              var c = 0;
+              (c = a > 1 ? n - 1 + tDataLen * (a - 1) : n - 1),
+                (S = D = c),
+                (i = t[0].datas[0][S]);
+            } else (S = D = 0), (i = t[0].datas[0][0]);
+          !fCONTAINS(mainareaDom, _view_manager_iMgr_obj.iHLineO.body) &&
+            mainareaDom.appendChild(_view_manager_iMgr_obj.iHLineO.body);
+          var d = Math.floor(S / tDataLen);
+          D >= tDataLen && (i = t[0].datas[d][S - d * tDataLen]),
+            (i.date = t[0].datas[d][0].date);
+          var p = r > 1 ? i.percent : i.price,
+            h = {
+              idx: D,
+              name: t[0].getName(),
+              mark: p,
+              datas: t[0].datas,
+              data: i,
+              x: i.ix,
+              y: i.py,
+              oy: _viem_manager_cfg.DIMENSION.H_MA4K,
+              ox: _viem_manager_cfg.DIMENSION.posX
+            };
+          this.iToD(h, !0, !0);
+        };
+        this.isIng = function() {
+          return !k;
+        };
+        (this.isMoving = function() {
+          return !1;
         }),
-          (this.globalDragHandler = function(e, t, a, i, r) {
-            isNaN(e) && isNaN(t) && chart_h5tObj.re(globalCfg.e.I_EVT, r);
-          }),
-          (this.shortClickHandler = function() {
-            _view_manager_ne.shortClickHandler();
-          }),
-          (this.zoomView = function() {}),
-          p(),
-          h(),
-          (this.onResize = function() {
-            r.resize(), n.resize();
-          }),
-          (this.iHLineO = r),
-          (this.hideIUis = u),
-          (this.iToKb = function(e) {
-            (D += e), (S = D);
-            var t = _view_manager_view.getAllStock(),
-              a = t[0].datas.length,
-              i = t[0].datas[0][D],
-              r = t.length,
-              n = t[0].realLen,
-              o =
-                "string" != typeof t[0].date
-                  ? dateUtil.ds(t[0].date)
-                  : t[0].date;
-            1 >= a
-              ? dateUtil.stbd(t[0].datas[0][0].date, dateUtil.sd(o))
-                ? 0 > n && (n = tDataLen)
-                : (n = tDataLen)
-              : dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) ||
-                (n = tDataLen);
-            var s = tDataLen > n ? n + 1 : n;
-            if (0 > D) {
-              var l = tDataLen > n ? n : n - 1;
-              (S = D = (a - 1) * tDataLen + l), (i = t[0].datas[a - 1][l]);
-            } else if (D >= s + (a - 1) * tDataLen)
-              if (
-                dateUtil.stbd(t[0].datas[a - 1][0].date, dateUtil.sd(o)) &&
-                0 > e
-              ) {
-                var c = 0;
-                (c = a > 1 ? n - 1 + tDataLen * (a - 1) : n - 1),
-                  (S = D = c),
-                  (i = t[0].datas[0][S]);
-              } else (S = D = 0), (i = t[0].datas[0][0]);
-            !fCONTAINS(K, iMgr.iHLineO.body) &&
-              K.appendChild(iMgr.iHLineO.body);
-            var d = Math.floor(S / tDataLen);
-            D >= tDataLen && (i = t[0].datas[d][S - d * tDataLen]),
-              (i.date = t[0].datas[d][0].date);
-            var p = r > 1 ? i.percent : i.price,
-              h = {
-                idx: D,
-                name: t[0].getName(),
-                mark: p,
-                datas: t[0].datas,
-                data: i,
-                x: i.ix,
-                y: i.py,
-                oy: cfg.DIMENSION.H_MA4K,
-                ox: cfg.DIMENSION.posX
-              };
-            this.iToD(h, !0, !0);
-          }),
-          (this.isIng = function() {
-            return !k;
-          }),
-          (this.isMoving = function() {
-            return !1;
-          }),
-          (this.iReset = function() {}),
-          (this.patcher = new (function() {
-            var i,
-              r = {},
-              n = function() {
-                if (i) {
-                  e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                  var t = "vid_" + viewState.viewId;
-                  if (i[t]) {
-                    var n;
-                    (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
-                  } else e = a;
+          (this.iReset = function() {});
+        this.patcher = new (function() {
+          var i,
+            r = {},
+            n = function() {
+              if (i) {
+                e.body.parentNode && e.body.parentNode.removeChild(e.body);
+                var t = "vid_" + viewState.viewId;
+                if (i[t]) {
+                  var n;
+                  (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
                 } else e = a;
-                !fCONTAINS(V, e.body) && V.appendChild(e.body);
-              };
-            (this.customFloater = function(e) {
-              (i = e), n(), utils_util.stc("t_fl", e);
-            }),
-              (this.switchFloater = n);
-          })()),
-          (this.update = function() {
-            var a = _view_manager_view.getAllStock();
-            if (a) {
-              var i,
-                r = a[0],
-                n = r.datas.length,
-                s = 0;
-              if (r) {
+              } else e = a;
+              !fCONTAINS(dom_elA, e.body) && dom_elA.appendChild(e.body);
+            };
+          (this.customFloater = function(e) {
+            (i = e), n(), utils_util.stc("t_fl", e);
+          }),
+            (this.switchFloater = n);
+        })();
+        this.update = function() {
+          var a = _view_manager_view.getAllStock();
+          if (a) {
+            var i,
+              r = a[0],
+              n = r.datas.length,
+              s = 0;
+            if (r) {
+              if (
+                (D > n * (tDataLen - 1) && (D = 0),
+                (i = Math.floor(D / (tDataLen - 1))),
+                n == i && (i -= 1),
+                D > tDataLen - 1)
+              ) {
+                var l = D - tDataLen * i;
+                s =
+                  stbd(r.datas[i][0].date, r.hq.date) && l > S ? r.realLen : l;
+              } else s = 1 == n && 0 == i && D > S ? r.realLen : D;
+              if (
+                ((i = 0 > i ? 0 : i), (s = 0 > s ? 0 : s), (o = r.datas[i][s]))
+              )
                 if (
-                  (D > n * (tDataLen - 1) && (D = 0),
-                  (i = Math.floor(D / (tDataLen - 1))),
-                  n == i && (i -= 1),
-                  D > tDataLen - 1)
-                ) {
-                  var l = D - tDataLen * i;
-                  s =
-                    stbd(r.datas[i][0].date, r.hq.date) && l > S
-                      ? r.realLen
-                      : l;
-                } else s = 1 == n && 0 == i && D > S ? r.realLen : D;
-                if (
-                  ((i = 0 > i ? 0 : i),
-                  (s = 0 > s ? 0 : s),
-                  (o = r.datas[i][s]))
+                  ((o.day =
+                    utils_util.dateUtil.ds(r.datas[i][0].date, "/", !1) +
+                    "/" +
+                    utils_util.dateUtil.nw(r.datas[i][0].date.getDay()) +
+                    (o.time || "")),
+                  e && e.setFloaterData({}),
+                  k)
                 )
-                  if (
-                    ((o.day =
-                      utils_util.dateUtil.ds(r.datas[i][0].date, "/", !1) +
+                  if (stbd(r.datas[n - 1][0].date, r.hq.date))
+                    (s = r.realLen >= 0 ? r.realLen : tDataLen - 1),
+                      (s += (n - 1) * tDataLen),
+                      (s = 0 > s ? Number.MAX_VALUE : s),
+                      b(s);
+                  else {
+                    if ("NF" == marketCode && r.hq.time >= "21:00")
+                      return (
+                        r.realLen >= 0 && (s = r.realLen),
+                        void (
+                          4 == viewState.start &&
+                          5 == viewState.end &&
+                          _view_manager_ne.onViewPrice(o, s, void 0, !k)
+                        )
+                      );
+                    y();
+                  }
+                else if ("HF" == marketCode)
+                  4 == viewState.start &&
+                    5 == viewState.end &&
+                    _view_manager_ne.onViewPrice(o, s, void 0, !k);
+                else if ("NF" == marketCode) {
+                  var c = new Date(o.date);
+                  o.date &&
+                    o.time >= "21:00" &&
+                    (c.setDate(
+                      1 == o.date.getDay() ? c.getDate() - 3 : c.getDate() - 1
+                    ),
+                    (o.day =
+                      utils_util.dateUtil.ds(c, "/", !1) +
                       "/" +
-                      utils_util.dateUtil.nw(r.datas[i][0].date.getDay()) +
-                      (o.time || "")),
-                    e && e.setFloaterData({}),
-                    k)
-                  )
-                    if (stbd(r.datas[n - 1][0].date, r.hq.date))
-                      (s = r.realLen >= 0 ? r.realLen : tDataLen - 1),
-                        (s += (n - 1) * tDataLen),
-                        (s = 0 > s ? Number.MAX_VALUE : s),
-                        b(s);
-                    else {
-                      if ("NF" == marketCode && r.hq.time >= "21:00")
-                        return (
-                          r.realLen >= 0 && (s = r.realLen),
-                          void (
-                            4 == viewState.start &&
-                            5 == viewState.end &&
-                            _view_manager_ne.onViewPrice(o, s, void 0, !k)
-                          )
-                        );
-                      y();
-                    }
-                  else if ("HF" == marketCode)
-                    4 == viewState.start &&
-                      5 == viewState.end &&
-                      _view_manager_ne.onViewPrice(o, s, void 0, !k);
-                  else if ("NF" == marketCode) {
-                    var c = new Date(o.date);
-                    o.date &&
-                      o.time >= "21:00" &&
-                      (c.setDate(
-                        1 == o.date.getDay() ? c.getDate() - 3 : c.getDate() - 1
-                      ),
-                      (o.day =
-                        utils_util.dateUtil.ds(c, "/", !1) +
-                        "/" +
-                        utils_util.dateUtil.nw(c.getDay()) +
-                        (o.time || ""))),
-                      _view_manager_ne.onViewPrice(o, s, void 0, !k);
-                  } else _view_manager_ne.onViewPrice(o, s, void 0, !k);
-              }
+                      utils_util.dateUtil.nw(c.getDay()) +
+                      (o.time || ""))),
+                    _view_manager_ne.onViewPrice(o, s, void 0, !k);
+                } else _view_manager_ne.onViewPrice(o, s, void 0, !k);
             }
-          });
+          }
+        };
       })();
 
       ht5_viewHelper = new (function() {
         var me = this,
-          a = function(a, i) {
-            if (cfg.hasOwnProperty(a)) {
+          setCustom = function(a, i) {
+            if (_viem_manager_cfg.hasOwnProperty(a)) {
               for (var r in i)
                 if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
                   return void utils_util.trace.error("illegal operation:", r);
               "DIMENSION" == a && (ie = 1),
-                copyProperties(cfg[a], i),
+                copyProperties(_viem_manager_cfg[a], i),
                 utils_util.stc(a, i),
                 me.resize();
             } else utils_util.trace.error("not exist param:", a);
-          },
-          r = function(e, a) {
-            var i;
-            if (cfg.hasOwnProperty(e)) {
-              i = utils_util.clone(cfg[e]);
-              for (var r in i)
-                if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
-                  (i[r] = null), delete i[r];
-                else if (a)
-                  for (var n = a.length; n--; )
-                    typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
-            }
-            return i;
-          },
-          removeorAddAC = function(chartList, techType, options) {
-            options = copyProperties(
-              {
-                toremove: !1,
-                isexclusive: !1,
-                callback: void 0
-              },
-              options
-            );
-            if (options.toremove) {
-              _view_manager_view.mM.removeAC(techType, chartList);
-            } else {
-              if (options.isexclusive) {
-                _view_manager_view.mM.removeAC(null, chartList);
-                _view_manager_view.mM.newAC(techType, chartList, options);
-              } else {
-                _view_manager_view.mM.newAC(techType, chartList, options);
-              }
-            }
-          },
-          updateViewId = function(viewId) {
-            (viewState.viewId = viewId),
-              (viewState.start = 1 == viewId ? 4 : 0),
-              (viewState.end = 5);
           };
+        var getDimension = function(e, a) {
+          var i;
+          if (_viem_manager_cfg.hasOwnProperty(e)) {
+            i = utils_util.clone(_viem_manager_cfg[e]);
+            for (var r in i)
+              if (i.hasOwnProperty(r) && utils_util.isFunc(i[r]))
+                (i[r] = null), delete i[r];
+              else if (a)
+                for (var n = a.length; n--; )
+                  typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
+          }
+          return i;
+        };
+       var removeorAddAC = function(chartList, techType, options) {
+          options = copyProperties(
+            {
+              toremove: !1,
+              isexclusive: !1,
+              callback: void 0
+            },
+            options
+          );
+          if (options.toremove) {
+            _view_manager_view.mM.removeAC(techType, chartList);
+          } else {
+            if (options.isexclusive) {
+              _view_manager_view.mM.removeAC(null, chartList);
+              _view_manager_view.mM.newAC(techType, chartList, options);
+            } else {
+              _view_manager_view.mM.newAC(techType, chartList, options);
+            }
+          }
+        };
+       var updateViewId = function(viewId) {
+          (viewState.viewId = viewId),
+            (viewState.start = 1 == viewId ? 4 : 0),
+            (viewState.end = 5);
+        };
         this.pushData = function(e, a) {
           !utils_util.isArr(e) && (e = [e]), _view_manager_view.pushData(e, a);
         };
         var s;
-        (this.pushTr = function(e) {
+        this.pushTr = function(e) {
           e &&
             e.data &&
             (clearTimeout(s),
@@ -5933,13 +6054,13 @@ xh5_define(
                 };
               _view_manager_view.pushData([r], 1);
             }, 20)));
-        }),
-          (this.setScale = function(e) {
-            _view_manager_view.setScale(e), utils_util.stc("t_scale", e);
-          });
+        };
+        this.setScale = function(e) {
+          _view_manager_view.setScale(e), utils_util.stc("t_scale", e);
+        };
         var l = !0;
         this.showView = function(e, a) {
-          iMgr.hideIUis(), l ? (l = !1) : J.hide();
+          _view_manager_iMgr_obj.hideIUis(), l ? (l = !1) : loading.hide();
           var r = globalCfg.URLHASH.vi(e);
           if (viewManangerConfig.date)
             return (
@@ -5958,8 +6079,11 @@ xh5_define(
               (updateViewId(r),
               ("HF" == marketCode || "NF" == marketCode) && "t5" == e && 0 == C)
             )
-              return J.show(), (C = 1), void _view_manager_view.update5Data(e);
-            _view_manager_view.onChangeView(!1, a), _view_manager_ne && _view_manager_ne.onViewPrice();
+              return (
+                loading.show(), (C = 1), void _view_manager_view.update5Data(e)
+              );
+            _view_manager_view.onChangeView(!1, a),
+              _view_manager_ne && _view_manager_ne.onViewPrice();
           }
         };
         var d = function(e) {
@@ -5969,13 +6093,14 @@ xh5_define(
               : [e.symbol]);
           },
           m = [];
-        (this.overlay = function(e, t) {
+        this.overlay = function(e, t) {
           if (_view_manager_view && 1 != _view_manager_view.dAdd)
             if (t) {
               _view_manager_view.removeCompare(d(e));
               for (var a = 0; a < m.length; a++)
                 e.symbol == m[a] && m.splice(a, 1);
-              _view_manager_view.getAllStock().length <= 1 && (_view_manager_view.dAdd = 0);
+              _view_manager_view.getAllStock().length <= 1 &&
+                (_view_manager_view.dAdd = 0);
             } else
               (viewManangerConfig.overlaycolor = e.linecolor || {
                 K_N: "#cccccc"
@@ -5983,35 +6108,37 @@ xh5_define(
                 (_view_manager_view.dAdd = 2),
                 _view_manager_view.compare(e),
                 m.push(e.symbol);
-        }),
-          (this.compare = function(e, a) {
-            if (_view_manager_view) {
-              var i,
-                r = 0;
-              if (a) {
-                if (
-                  ((i = utils_util.isStr(e) ? e.split(",") : [e.symbol]),
-                  1 == _view_manager_view.dAdd && _view_manager_view.removeCompare(i),
-                  _view_manager_view.getAllStock().length <= 1)
-                ) {
-                  for (r = 0; r < m.length; r++)
-                    (_view_manager_view.dAdd = 2),
-                      _view_manager_view.compare({
-                        symbol: m[r]
-                      });
-                  m.length < 1 && (_view_manager_view.dAdd = 0);
-                }
-              } else
-                2 == _view_manager_view.dAdd && _view_manager_view.removeCompare(m),
-                  (_view_manager_view.dAdd = 1),
-                  _view_manager_view.compare(e),
-                  utils_util.suda("t_comp");
-              utils_util.stc("t_comp", {
-                rm: a,
-                o: e
-              });
-            }
-          });
+        };
+        this.compare = function(e, a) {
+          if (_view_manager_view) {
+            var i,
+              r = 0;
+            if (a) {
+              if (
+                ((i = utils_util.isStr(e) ? e.split(",") : [e.symbol]),
+                1 == _view_manager_view.dAdd &&
+                  _view_manager_view.removeCompare(i),
+                _view_manager_view.getAllStock().length <= 1)
+              ) {
+                for (r = 0; r < m.length; r++)
+                  (_view_manager_view.dAdd = 2),
+                    _view_manager_view.compare({
+                      symbol: m[r]
+                    });
+                m.length < 1 && (_view_manager_view.dAdd = 0);
+              }
+            } else
+              2 == _view_manager_view.dAdd &&
+                _view_manager_view.removeCompare(m),
+                (_view_manager_view.dAdd = 1),
+                _view_manager_view.compare(e),
+                utils_util.suda("t_comp");
+            utils_util.stc("t_comp", {
+              rm: a,
+              o: e
+            });
+          }
+        };
         var p = 0;
         this.tCharts = function(e, a) {
           removeorAddAC("tech", e, a),
@@ -6022,19 +6149,19 @@ xh5_define(
           removeorAddAC("price", e, a),
             a && !a.noLog && (0 == h ? (h = 1) : utils_util.sudaLog());
         };
-        (this.showPCharts = function(e) {
+        this.showPCharts = function(e) {
           e && (_view_manager_view.mM.togglePt(e), utils_util.stc("t_sp", e));
-        }),
-          (this.getIndicators = function() {
-            var e = Y ? Y.getLog() : null,
-              t = Z ? Z.getLog() : null;
-            return {
-              tCharts: e,
-              pCharts: t
-            };
-          });
+        };
+        this.getIndicators = function() {
+          var e = Y ? Y.getLog() : null,
+            t = obj_Z ? obj_Z.getLog() : null;
+          return {
+            tCharts: e,
+            pCharts: t
+          };
+        };
         var f;
-        (this.showRangeSelector = function(e) {
+        this.showRangeSelector = function(e) {
           (f = copyProperties(
             {
               dispaly: !0,
@@ -6045,131 +6172,142 @@ xh5_define(
           )),
             _view_manager_view.mM.showRs(f),
             utils_util.stc("t_rs", e);
-        }),
-          (this.setLineStyle = function(e) {
-            _view_manager_view && _view_manager_view.setTLineStyle(e), utils_util.stc("t_style", e);
-          }),
-          (this.setCustom = fBind(a, this, "custom")),
-          (this.setDimension = fBind(a, this, "DIMENSION")),
-          (this.getDimension = fBind(r, null, "DIMENSION", ["boolean"])),
-          (this.setTheme = function(e) {
-            var t = initMgr.initTheme(e);
-            t &&
-              (this.setLineStyle({
-                linecolor: e
-              }),
-              this.resize());
-          }),
-          (this.newSymbol = function(e) {
-            if (
-              ((viewManangerConfig.symbol = e.symbol),
-              (viewManangerConfig.date = e.date),
-              iMgr.hideIUis(),
-              iMgr.iReset(),
-              _view_manager_view.dcReset(),
-              _view_manager_view.dcInit(viewManangerConfig),
-              tipObj.hideTip(),
-              Y)
-            ) {
-              var a = Y.getLog();
-              (Y = null), a && this.tCharts(a);
-            }
-            if (Z) {
-              var r = Z.getLog();
-              (Z = null), r && this.pCharts(r);
-            }
-            f && ((f.from = void 0), (f.to = void 0), _view_manager_view.mM.showRs(f)),
-              utils_util.stc("t_ns", e);
-          }),
-          (this.resize = function(e, t) {
-            initMgr.resizeAll(!0, e, t);
-          }),
-          (this.hide = function(e) {
-            (ae = !0),
-              iMgr.hideIUis(),
-              utils_util.$CONTAINS($, V) && $.removeChild(V),
-              e && _view_manager_view.dcReset();
-          }),
-          (this.show = function(e) {
-            (ae = !1),
-              e && (utils_util.isStr(e) && (e = f$DOM(e)), ($ = e)),
-              utils_util.$CONTAINS($, V) ||
-                ($.appendChild(V), initMgr.resizeAll(!0)),
-              _view_manager_ne && _view_manager_ne.onViewPrice();
-          }),
-          (this.shareTo = function(e) {
-            _view_manager_view.shareTo(e), utils_util.stc("t_share", e);
-            var a = e && e.type ? e.type : "weibo";
-            utils_util.suda("share", a);
-          }),
-          (this.getChartId = function() {
-            return cfg.uid;
-          }),
-          (this.dateTo = function(e, a) {
-            (viewManangerConfig.historytime = e),
-              (viewManangerConfig.historycb = a);
-            var r = e;
-            "object" == typeof e
-              ? (r = dateUtil.ds(e, "-"))
-              : (e = dateUtil.sd(e));
-            var n = _view_manager_whatJ.get();
-            if (null == n) return void (O = 1);
-            for (var o = n.length, s = 0; o > s; s++)
-              if (dateUtil.stbd(e, n[s][0].date))
-                return void _view_manager_view.moving(s, s + 1, "dateTo");
-            (viewManangerConfig.date = r),
-              (_view_manager_view.hasHistory = a),
-              utils_util.stc("t_ft", r),
-              this.newSymbol(viewManangerConfig);
-          }),
-          (this.showScale = function(e) {
-            _view_manager_view && _view_manager_view.setScale(e);
-          }),
-          (this.resize = function(e, t) {
-            initMgr.resizeAll(!0, e, t);
-          }),
-          (this.showCompatibleTip = function(e) {
-            initMgr.showCompatibleTip(e);
-          }),
-          (this.toggleExtend = function(e) {
-            var t,
-              i = cfg.DIMENSION.posX;
-            (t = e ? "on" == !e : cfg.DIMENSION.extend_draw),
-              a.call(this, "DIMENSION", {
-                extend_draw: !t,
-                posX: i > 9 ? cfg.DIMENSION.extend_padding : 55,
-                RIGHT_W: i > 9 ? cfg.DIMENSION.extend_padding : 55
-              }),
-              this.resize();
-          }),
-          (this.historyData = function() {
-            return _view_manager_view.historyData;
-          }),
-          (this.getExtraData = function(e) {
-            return _view_manager_view.getExtraData(e);
-          }),
-          (this.patcher = {
-            iMgr: iMgr.patcher
-          }),
-          (this.zoom = function(e) {
-            _view_manager_view.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
-          }),
-          (this.move = function(e) {
-            (e = parseInt(e)),
-              isNaN(e) || (_view_manager_view.moveApi(e), utils_util.stc("t_move", e, 9e3));
-          }),
-          (this.getSymbols = function() {
-            return _view_manager_view.getAllSymbols();
-          }),
-          (this.update = function() {
-            _view_manager_view.updateDataAll(1), utils_util.stc("t_up", "update", 9e3);
-          }),
-          (this.getCurrentData = function() {
-            return _view_manager_ne.currentData();
-          }),
-          (this.viewState = viewState),
-          (this.me = chart_h5tObj),
-          (this.type = "h5t");
+        };
+        this.setLineStyle = function(e) {
+          _view_manager_view && _view_manager_view.setTLineStyle(e),
+            utils_util.stc("t_style", e);
+        };
+        this.setCustom = fBind(setCustom, this, "custom");
+        this.setDimension = fBind(setCustom, this, "DIMENSION");
+        this.getDimension = fBind(getDimension, null, "DIMENSION", ["boolean"]);
+        this.setTheme = function(e) {
+          var t = _view_manager_initMgr_ojb.initTheme(e);
+          t &&
+            (this.setLineStyle({
+              linecolor: e
+            }),
+            this.resize());
+        };
+        this.newSymbol = function(e) {
+          if (
+            ((viewManangerConfig.symbol = e.symbol),
+            (viewManangerConfig.date = e.date),
+            _view_manager_iMgr_obj.hideIUis(),
+            _view_manager_iMgr_obj.iReset(),
+            _view_manager_view.dcReset(),
+            _view_manager_view.dcInit(viewManangerConfig),
+            _viem_manager_tipObj.hideTip(),
+            Y)
+          ) {
+            var a = Y.getLog();
+            (Y = null), a && this.tCharts(a);
+          }
+          if (obj_Z) {
+            var r = obj_Z.getLog();
+            (obj_Z = null), r && this.pCharts(r);
+          }
+          f &&
+            ((f.from = void 0),
+            (f.to = void 0),
+            _view_manager_view.mM.showRs(f)),
+            utils_util.stc("t_ns", e);
+        };
+        this.resize = function(e, t) {
+          _view_manager_initMgr_ojb.resizeAll(!0, e, t);
+        };
+        this.hide = function(e) {
+          (ae = !0),
+            _view_manager_iMgr_obj.hideIUis(),
+            utils_util.$CONTAINS(_view_manager_root_dom, dom_elA) &&
+              _view_manager_root_dom.removeChild(dom_elA),
+            e && _view_manager_view.dcReset();
+        };
+        this.show = function(e) {
+          (ae = !1),
+            e &&
+              (utils_util.isStr(e) && (e = f$DOM(e)),
+              (_view_manager_root_dom = e)),
+            utils_util.$CONTAINS(_view_manager_root_dom, dom_elA) ||
+              (_view_manager_root_dom.appendChild(dom_elA),
+              _view_manager_initMgr_ojb.resizeAll(!0)),
+            _view_manager_ne && _view_manager_ne.onViewPrice();
+        };
+        this.shareTo = function(e) {
+          _view_manager_view.shareTo(e), utils_util.stc("t_share", e);
+          var a = e && e.type ? e.type : "weibo";
+          utils_util.suda("share", a);
+        };
+        this.getChartId = function() {
+          return _viem_manager_cfg.uid;
+        };
+        this.dateTo = function(historytime, historycb) {
+          viewManangerConfig.historytime = historytime;
+          viewManangerConfig.historycb = historycb;
+          var date = historytime;
+          "object" == typeof historytime
+            ? (date = dateUtil.ds(historytime, "-"))
+            : (historytime = dateUtil.sd(historytime));
+          var n = _view_manager_whatJ.get();
+          if (null == n) return void (O = 1);
+          for (var o = n.length, s = 0; o > s; s++)
+            if (dateUtil.stbd(historytime, n[s][0].date))
+              return void _view_manager_view.moving(s, s + 1, "dateTo");
+
+          viewManangerConfig.date = date;
+          _view_manager_view.hasHistory = historycb;
+          utils_util.stc("t_ft", date);
+          this.newSymbol(viewManangerConfig);
+        };
+        this.showScale = function(e) {
+          _view_manager_view && _view_manager_view.setScale(e);
+        };
+        this.resize = function(e, t) {
+          _view_manager_initMgr_ojb.resizeAll(!0, e, t);
+        };
+        this.showCompatibleTip = function(e) {
+          _view_manager_initMgr_ojb.showCompatibleTip(e);
+        };
+        this.toggleExtend = function(e) {
+          var t,
+            i = _viem_manager_cfg.DIMENSION.posX;
+          (t = e ? "on" == !e : _viem_manager_cfg.DIMENSION.extend_draw),
+            setCustom.call(this, "DIMENSION", {
+              extend_draw: !t,
+              posX: i > 9 ? _viem_manager_cfg.DIMENSION.extend_padding : 55,
+              RIGHT_W: i > 9 ? _viem_manager_cfg.DIMENSION.extend_padding : 55
+            }),
+            this.resize();
+        };
+        this.historyData = function() {
+          return _view_manager_view.historyData;
+        };
+        this.getExtraData = function(e) {
+          return _view_manager_view.getExtraData(e);
+        };
+        this.patcher = {
+          iMgr: _view_manager_iMgr_obj.patcher
+        };
+        this.zoom = function(e) {
+          _view_manager_view.zoomApi(e), utils_util.stc("t_zoom", e, 9e3);
+        };
+        this.move = function(e) {
+          (e = parseInt(e)),
+            isNaN(e) ||
+              (_view_manager_view.moveApi(e), utils_util.stc("t_move", e, 9e3));
+        };
+        this.getSymbols = function() {
+          return _view_manager_view.getAllSymbols();
+        };
+        this.update = function() {
+          _view_manager_view.updateDataAll(1),
+            utils_util.stc("t_up", "update", 9e3);
+        };
+        this.getCurrentData = function() {
+          return _view_manager_ne.currentData();
+        };
+        this.viewState = viewState;
+        this.me = _ViewManager_me;
+        this.type = "h5t";
       })();
       _view_manager_view = new View();
       _view_manager_view.dcInit(viewManangerConfig);
@@ -6184,17 +6322,18 @@ xh5_define(
         viewManager.me.al(globalCfg.e.T_DATA_LOADED, n);
         utils_util.isFunc(callback) && callback(viewManager);
       }
+
       this.get = function(config, callback) {
-        utils_util.stc("h5t_get"),
-          utils_util.suda("h5t_" + utils_util.market(config.symbol));
-        var r;
-        0 == location.protocol.indexOf("https:") && (r = !0);
+        utils_util.stc("h5t_get");
+        utils_util.suda("h5t_" + utils_util.market(config.symbol));
+        var isHttps;
+        0 == location.protocol.indexOf("https:") && (isHttps = true);
         var market = utils_util.market(config.symbol),
           url =
             "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb=/InterfaceInfoService.getMarket?category=$market&symbol=$symbol",
           globalurl =
             "//stock.finance.sina.com.cn/usstock/api/jsonp.php/var $cb=/Global_IndexService.getTradeTime?symbol=$symbol&category=index";
-        switch ((r && (url = utils_util.getSUrl(url)), market)) {
+        switch ((isHttps && (url = utils_util.getSUrl(url)), market)) {
           case "HF":
             var l = "kke_future_" + config.symbol;
             utils_util.load(
@@ -6217,6 +6356,7 @@ xh5_define(
               }
             );
             break;
+
           case "NF":
             var c = "kke_future_" + config.symbol,
               d = config.symbol.replace("nf_", "").replace(/[\d]+$/, "");

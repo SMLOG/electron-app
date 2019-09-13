@@ -1,15 +1,19 @@
 xh5_define("ppt.ppt", ["utils.util"], function(e) {
   "use strict";
+
   function t(e) {
     function t(e) {
       i.set(k, e, g);
     }
+
     function a() {
       return i.get(k);
     }
+
     function l(e, t) {
       for (var n in t) t.hasOwnProperty(n) && (e.style[n] = t[n]);
     }
+
     function p(e) {
       var t = e.getAttribute("data-page");
       t > 0 &&
@@ -18,6 +22,7 @@ xh5_define("ppt.ppt", ["utils.util"], function(e) {
           "block")),
         (_ = t);
     }
+
     function r(e) {
       var n = Number(e.getAttribute("data-page"));
       ++n,
@@ -29,9 +34,11 @@ xh5_define("ppt.ppt", ["utils.util"], function(e) {
             (e.parentNode.parentNode.parentNode.childNodes[n].style.display =
               "block"));
     }
+
     function s(e) {
       t("know"), (e.parentNode.style.display = "none");
     }
+
     function c() {
       var t = o(e.userObj.dom_id),
         i = n("div");
@@ -89,6 +96,7 @@ xh5_define("ppt.ppt", ["utils.util"], function(e) {
         !1
       );
     }
+
     function u() {
       a() || (window.kke_tool_demo && c());
     }

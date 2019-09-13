@@ -1,5 +1,6 @@
 xh5_define("cfgs.settinger", [], function() {
   "use strict";
+
   function e(e) {
     (this.uid = e),
       (this.custom = {
@@ -311,16 +312,14 @@ xh5_define("cfgs.settinger", [], function() {
       I_EVT: "iEvent"
     },
     nohtml5info:
-      "\u68c0\u6d4b\u5230\u60a8\u7684\u6d4f\u89c8\u5668\u8fc7\u65e7\u4e14\u4e0d\u652f\u6301HTML 5\uff0c\u5f53\u524d\u4ee5\u517c\u5bb9\u6a21\u5f0f\u8fd0\u884c\u3002<br/>\u4e3a\u83b7\u5f97\u66f4\u597d\u7684\u4f53\u9a8c\u53ca\u5b8c\u5584\u7684\u529f\u80fd\uff0c\u5efa\u8bae\u4f7f\u7528<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/40975.html' target='_blank'>\u8c37\u6b4cChrome</a>\u6d4f\u89c8\u5668\uff0c\u6216\u5347\u7ea7\u5230\u60a8\u6d4f\u89c8\u5668\u7684<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/58979.html' target='_blank'>\u6700\u65b0\u7248\u672c</a>\u3002",
-    historyt08:
-      "\u5f53\u524d\u63d0\u4f9bA\u80a12008\u5e74\u4ee5\u6765\u7684\u5386\u53f2\u5206\u65f6\u8d70\u52bf\u67e5\u8be2",
-    nohistoryt:
-      "\u65e0\u6b64\u8bc1\u5238\u6b64\u65f6\u6bb5\u5386\u53f2\u5206\u65f6\u6570\u636e",
-    norecord: "\u8bc1\u5238\u4ee3\u7801\u65e0\u8bb0\u5f55",
-    notlisted: "\u672a\u4e0a\u5e02",
-    delisted: "\u9000\u5e02",
-    nodata: "\u672a\u52a0\u8f7d\u5230\u6709\u6548\u6570\u636e",
-    noredata: "\u90e8\u5206\u8bc1\u5238\u65e0\u590d\u6743\u6570\u636e"
+      "检测到您的浏览器过旧且不支持HTML 5，当前以兼容模式运行。<br/>为获得更好的体验及完善的功能，建议使用<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/40975.html' target='_blank'>谷歌Chrome</a>浏览器，或升级到您浏览器的<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/58979.html' target='_blank'>最新版本</a>。",
+    historyt08: "当前提供A股2008年以来的历史分时走势查询",
+    nohistoryt: "无此证券此时段历史分时数据",
+    norecord: "证券代码无记录",
+    notlisted: "未上市",
+    delisted: "退市",
+    nodata: "未加载到有效数据",
+    noredata: "部分证券无复权数据"
   };
   return new (function() {
     this.VER = "2.0.31";

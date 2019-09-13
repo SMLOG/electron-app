@@ -1428,11 +1428,11 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         }
       }
     }
-    function g() {
+    function defaultsetting() {
       var a = new Date().getTime() + Math.floor(987654321 * Math.random() + 1);
       return {
         charts_dom_id: "KKE_chart_" + a,
-        charts_Start: "T",
+        charts_Start: "K",
         charts_hasTChart: !1,
         stock_stutas: void 0,
         compare: {
@@ -2331,6 +2331,9 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               name: "MACD"
             },
             {
+              name: "KDJ"
+            },
+            {
               name: "BLANKCTN"
             }
           ],
@@ -2453,7 +2456,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         h5FigureDIV.appendChild(e),
           (e.style.webkitUserSelect = e.style.userSelect = e.style.MozUserSelect =
             "none"),
-          (X = g()),
+          (X = defaultsetting()),
           (W = i(X, W || null)),
           (W = config = z = i(W, configObj2 || null)),
           (W.domid = X.charts_dom_id),
@@ -2660,7 +2663,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             });
       },
       st = 0,
-      lt = function(a, n, o, i) {
+      initK = function(a, n, o, i) {
         st > 0 ||
           (st++,
           KKE.api("chart.h5k.get", z, function(t) {
@@ -2782,7 +2785,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 );
             }));
       },
-      ct = function() {
+      initT = function() {
         KKE.api("chart.h5t.get", config, function(tChart) {
           var e = configObj2.market;
           sinaTKChartObj.tChart = _tChart = tChart;
@@ -2872,10 +2875,10 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           var a = String(e).toLowerCase();
           switch (a) {
             case "t":
-              ct();
+              initT();
               break;
             case "k":
-              lt();
+              initK();
           }
           l.addHandler(window, "resize", function() {
             sinaTKChartObj.onresize();
@@ -2885,8 +2888,8 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
     at(),
       dt(W.charts_Start),
       (this.chartUserobj = configObj2),
-      (this.initK = lt),
-      (this.initT = ct),
+      (this.initK = initK),
+      (this.initT = initT),
       (this.compare = function(e, a) {
         var n = utils_util.market(e.symbol),
           o = configObj2.market;
@@ -2898,7 +2901,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             S.show(),
             S.compare(e, a);
         } else
-          lt({
+          initK({
             obj: e,
             rm: a
           });
@@ -2952,7 +2955,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         case "k30":
         case "k60":
           _tChart && _tChart.hide(),
-            S ? S.showView(t.view) : lt(!1, t.view, void 0, t.active);
+            S ? S.showView(t.view) : initK(!1, t.view, void 0, t.active);
       }
       (pt = t), C(t);
     }),

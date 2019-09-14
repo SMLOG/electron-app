@@ -2203,7 +2203,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                         bar: f[u]
                     },
                     this.selfArr[u][At] = r[u].volume < 0;
-                console.log("CDMA");
             },
             this.draw = function(t, r) {
                 if (this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r,
@@ -4427,13 +4426,22 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 };
             this.linkData = function(t) {
                     var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-                    if (i)
+
+                    if (i){
+                        //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
+                       let techs_datas = [];
                         for (var chart, a = techChartList.length; a--;) {
                             chart = techChartList[a],
                                 chart.initAndCalcAll(i),
                                 t && chart.update()
                             console.log(chart);
+                            techs_datas[`${chart.name}`]={
+                                symbol:chart.symbol,
+                                datas:chart.datas
+                            }
                         }
+                        window['techs']= techs_datas;
+                    }
 
                 },
                 this.setDataRange = function() {

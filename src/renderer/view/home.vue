@@ -102,8 +102,7 @@ export default {
               );
           }
         );
-      if (true)
-        /* KKE.api(
+      /* KKE.api(
           "plugins.techcharts.get",
           {
             type: "tech"
@@ -126,31 +125,55 @@ export default {
             window.tChart = tChart;
           }
         );*/
-        //alert("ok");
-        KKE.api(
-          "plugins.sinaTKChart.get",
-          {
-            compare: {
-              color: _compareColor
-            },
-            symbol: papercode, //证券代码
-            mt: "cnlv1",
-            dom_id: "h5Figure", //放置图形的dom容器id
-            type: "tech"
-          },
-          function(chart_) {
-            let _cnChart = chart_;
-            //多空
-            if (window.location.search.indexOf("showBBI") != -1) {
-              _cnChart.showView({
-                view: "kdd",
-                active: 3
-              });
-              $(document.body).scrollTop(480);
-            }
-            //compareH5.init();
-          }
-        );
+      //alert("ok");
+
+      (async () => {
+        let symbols = ["sz000002"];
+        for (let i = 0; i < symbols.length; i++) {
+          let dom = document.getElementById("h5Figure");
+          dom.innerHTML = "";
+          // dom.style.display = "none";
+          await new Promise((resolve, reject) => {
+            KKE.api(
+              "plugins.tchart.get",
+              {
+                compare: {
+                  color: _compareColor
+                },
+                symbol: symbols[i], //证券代码
+                mt: "cnlv1",
+                dom_id: "h5Figure", //放置图形的dom容器id
+                type: "tech"
+              },
+              function(chart_) {}
+            );
+            let handler = () => {
+              console.log("checking");
+              let techs = window["techs"];
+              let names = ["VOLUME", "MACD", "KDJ"];
+              let ready = false;
+              if (techs) {
+                for (let k = 0; k < names.length; k++) {
+                  let name = names[k];
+                  if (!techs[name] || techs[name].symbol != symbols[i]) {
+                    ready = false;
+                    break;
+                  }
+                  ready = true;
+                }
+              }
+              if (ready) {
+                return resolve();
+              }
+              setTimeout(() => {
+                handler();
+              }, 2000);
+              // resolve();
+            };
+            handler();
+          });
+        }
+      })();
     });
   },
   computed: {

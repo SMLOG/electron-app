@@ -7,7 +7,13 @@ import {
   screen,
   shell
 } from "electron";
+global.sharedObject = {
+  someProperty: "default value"
+};
 
+setInterval(() => {
+  console.log(global.sharedObject);
+}, 2000);
 var win = null;
 
 const winURL =

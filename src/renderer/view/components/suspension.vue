@@ -208,8 +208,6 @@ export default {
         }, [])
         .join(",");
       let needReloadData = false;
-      //http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/var=/CN_MarketData.getKLineData?symbol=sz000001&scale=240&ma=no&datalen=1
-      //http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh601318&scale=240&ma=5,10,30&datalen=1
       return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         this.items.map((item, i) => {
           let data = parse(item);
@@ -363,6 +361,16 @@ export default {
       //this.loadDatas();
       this.items = datas;
       //this.unCollapse();
+      let items = this.items.filter(it => it.code == this.indexCode);
+
+      if (
+        items.length > 0 &&
+        items[0].code == this.indexCode &&
+        items[0].changePV
+      ) {
+        this.progressBarWidth = Math.abs(items[0].changePV / 1) * 100;
+        this.indexPercent = items[0].changePV;
+      }
     });
 
     this.$electron.ipcRenderer.on("ALT+Z", () => {

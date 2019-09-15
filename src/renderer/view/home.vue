@@ -71,7 +71,6 @@ export default {
       loadScripts(["/static/js/sf_sdk.js"]).then(() => {
         let papercode = "sh601318";
         let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
-        console.log("KEE");
 
         if (false)
           KKE.api(
@@ -288,7 +287,6 @@ export default {
       });
     },
     sendRefresh() {
-      console.log(this.items);
       this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {

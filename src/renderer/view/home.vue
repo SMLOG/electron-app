@@ -30,7 +30,6 @@
         </draggable>
       </table>
     </div>
-    <div id="tkChart_wwysh601318"></div>
     <div id="h5Figure" style="height:600px"></div>
   </div>
 </template>
@@ -186,8 +185,8 @@ export default {
   methods: {
     dragEnd(e) {
       e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
-      store.save(this.items);
-      this.sendRefresh();
+      //store.save(this.items);
+      //this.sendRefresh();
     },
     reloadData() {
       this.items = store.fetch();
@@ -251,7 +250,7 @@ export default {
           if (item.time) that.time = item.time;
           Object.assign(item, data);
 
-          that.items.splice(i, 1, item);
+          //  that.items.splice(i, 1, item);
 
           if (item.code == that.indexCode && item.changePV) {
             that.progressBarWidth = Math.abs(item.changePV / 1) * 100;

@@ -4,18 +4,19 @@ let timerID;
 
 let wsize = win.getSize();
 document.addEventListener("mouseleave", event => {
-
   timerID = setInterval(() => {
     let mousePos = electron.screen.getCursorScreenPoint();
     let wPos = win.getPosition();
 
-
-    if (mousePos.x < wPos[0] || mousePos.x > wPos[0] + wsize[0] || mousePos.y < wPos[1] || mousePos.y > wPos[1] + wsize[1]) {
+    if (
+      mousePos.x < wPos[0] ||
+      mousePos.x > wPos[0] + wsize[0] ||
+      mousePos.y < wPos[1] ||
+      mousePos.y > wPos[1] + wsize[1]
+    ) {
       window.close();
     }
     //alert(mousePos.x)
-
-
   }, 500);
   //console.log(event);
 });
@@ -23,7 +24,7 @@ document.addEventListener("mouseenter", event => {
   if (timerID) clearTimeout(timerID);
   //console.log(event);
 });
-document.addEventListener("mousedown", function (e) {
+document.addEventListener("mousedown", function(e) {
   switch (e.button) {
     case 0:
       biasX = e.x;
@@ -36,7 +37,7 @@ document.addEventListener("mousedown", function (e) {
   }
 });
 
-document.addEventListener("mouseup", function () {
+document.addEventListener("mouseup", function() {
   biasX = 0;
   biasY = 0;
   document.removeEventListener("mousemove", moveEvent);
@@ -53,6 +54,19 @@ if (location.href.indexOf("eastmoney") > 0) {
       .height(0)
       .width(0);
     $("body").css("padding-top", 0);
+    $(window).scroll(() => {
+      var contentH = $("body").get(0).scrollHeight;
+      var viewH = $(this).height();
+      var scrollTop =
+        document.documentElement.scrollTop ||
+        window.pageYOffset ||
+        document.body.scrollTop;
+
+      if (viewH + scrollTop >= contentH) {
+        //do stuff
+        loadmorgubadata();
+      }
+    });
   });
 } else {
   //sina

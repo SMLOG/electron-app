@@ -359,9 +359,10 @@ export default {
 
     this.loadDatas();
 
-    this.$electron.ipcRenderer.on("refresh", () => {
-      this.loadDatas();
-      this.unCollapse();
+    this.$electron.ipcRenderer.on("refresh", (event, datas) => {
+      //this.loadDatas();
+      this.items = datas;
+      //this.unCollapse();
     });
 
     this.$electron.ipcRenderer.on("ALT+Z", () => {
@@ -393,7 +394,7 @@ export default {
       win.setPosition(e.screenX - biasX, e.screenY - biasY);
     }
     console.log(this);
-    this.timerFn();
+    //this.timerFn();
   }
 };
 </script>

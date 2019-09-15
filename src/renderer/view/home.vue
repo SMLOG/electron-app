@@ -39,7 +39,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { ObjectType, loadScripts } from "@/utils";
+import { ObjectType, parse, loadScripts } from "@/utils";
 export default {
   name: "home",
   data: function() {
@@ -59,6 +59,7 @@ export default {
   methods: {},
   mounted() {
     this.reloadData();
+    this.timerFn();
     if (this.createSuspension === true) {
       this.$electron.ipcRenderer.send("showSuspensionWindow");
     }
@@ -67,42 +68,43 @@ export default {
       this.$store.dispatch("hideSuspension");
     });
 
-    loadScripts(["/static/js/sf_sdk.js"]).then(() => {
-      let papercode = "sh601318";
-      let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
-      console.log("KEE");
+    if (false)
+      loadScripts(["/static/js/sf_sdk.js"]).then(() => {
+        let papercode = "sh601318";
+        let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
+        console.log("KEE");
 
-      if (false)
-        KKE.api(
-          "chart.h5k.get",
-          {
-            symbol: papercode
-          },
-          function(tChart) {
-            console.log(tChart);
-            tChart.tCharts.apply(null, [[{ name: "TVOL" }]]);
-            console.log("ok");
+        if (false)
+          KKE.api(
+            "chart.h5k.get",
+            {
+              symbol: papercode
+            },
+            function(tChart) {
+              console.log(tChart);
+              tChart.tCharts.apply(null, [[{ name: "TVOL" }]]);
+              console.log("ok");
 
-            if (false)
-              KKE.api(
-                "plugins.techcharts.get",
-                {
-                  type: "tech"
-                },
-                function(res) {
-                  console.log(res);
+              if (false)
+                KKE.api(
+                  "plugins.techcharts.get",
+                  {
+                    type: "tech"
+                  },
+                  function(res) {
+                    console.log(res);
 
-                  let tChart = res.tChart;
-                  new tChart({
-                    stockData: h5k,
-                    cfg: { DIMENSION: {}, datas: {} },
-                    usrObj: { tchartobject: {} }
-                  }).linkData();
-                }
-              );
-          }
-        );
-      /* KKE.api(
+                    let tChart = res.tChart;
+                    new tChart({
+                      stockData: h5k,
+                      cfg: { DIMENSION: {}, datas: {} },
+                      usrObj: { tchartobject: {} }
+                    }).linkData();
+                  }
+                );
+            }
+          );
+        /* KKE.api(
           "plugins.techcharts.get",
           {
             type: "tech"
@@ -125,56 +127,56 @@ export default {
             window.tChart = tChart;
           }
         );*/
-      //alert("ok");
+        //alert("ok");
 
-      (async () => {
-        let symbols = ["sz000002"];
-        for (let i = 0; i < symbols.length; i++) {
-          let dom = document.getElementById("h5Figure");
-          dom.innerHTML = "";
-          // dom.style.display = "none";
-          await new Promise((resolve, reject) => {
-            KKE.api(
-              "plugins.tchart.get",
-              {
-                compare: {
-                  color: _compareColor
+        (async () => {
+          let symbols = ["sz000002"];
+          for (let i = 0; i < symbols.length; i++) {
+            let dom = document.getElementById("h5Figure");
+            dom.innerHTML = "";
+            // dom.style.display = "none";
+            await new Promise((resolve, reject) => {
+              KKE.api(
+                "plugins.tchart.get",
+                {
+                  compare: {
+                    color: _compareColor
+                  },
+                  symbol: symbols[i], //证券代码
+                  mt: "cnlv1",
+                  dom_id: "h5Figure", //放置图形的dom容器id
+                  type: "tech"
                 },
-                symbol: symbols[i], //证券代码
-                mt: "cnlv1",
-                dom_id: "h5Figure", //放置图形的dom容器id
-                type: "tech"
-              },
-              function(chart_) {}
-            );
-            let handler = () => {
-              console.log("checking");
-              let techs = window["techs"];
-              let names = ["VOLUME", "MACD", "KDJ"];
-              let ready = false;
-              if (techs) {
-                for (let k = 0; k < names.length; k++) {
-                  let name = names[k];
-                  if (!techs[name] || techs[name].symbol != symbols[i]) {
-                    ready = false;
-                    break;
+                function(chart_) {}
+              );
+              let handler = () => {
+                console.log("checking");
+                let techs = window["techs"];
+                let names = ["VOLUME", "MACD", "KDJ"];
+                let ready = false;
+                if (techs) {
+                  for (let k = 0; k < names.length; k++) {
+                    let name = names[k];
+                    if (!techs[name] || techs[name].symbol != symbols[i]) {
+                      ready = false;
+                      break;
+                    }
+                    ready = true;
                   }
-                  ready = true;
                 }
-              }
-              if (ready) {
-                return resolve();
-              }
-              setTimeout(() => {
-                handler();
-              }, 2000);
-              // resolve();
-            };
-            handler();
-          });
-        }
-      })();
-    });
+                if (ready) {
+                  return resolve();
+                }
+                setTimeout(() => {
+                  handler();
+                }, 2000);
+                // resolve();
+              };
+              handler();
+            });
+          }
+        })();
+      });
   },
   computed: {
     createSuspension() {
@@ -209,8 +211,86 @@ export default {
         this.$electron.ipcRenderer.send("showSuspensionWindow");
       }
     },
+    timerFn() {
+      setTimeout(
+        () =>
+          this.refresh()
+            .then(() => this.timerFn())
+            .catch(() => {
+              this.timerFn();
+            }),
+        1000
+      );
+    },
+    notify(item, message) {
+      this.$electron.remote.app.notifywin.webContents.send("message", {
+        id: +new Date(),
+        time: item.time,
+        item: item,
+        content: message
+      });
+    },
+    refresh() {
+      let str = this.items
+        .reduce((total, cur, curIndex, arr) => {
+          if (cur.code.match(/^(sh)|(sz)/)) {
+            total.push(`${cur.code}_i`);
+          }
+          total.push(cur.code);
+
+          return total;
+        }, [])
+        .join(",");
+      console.log(str);
+      let that = this;
+      let needReloadData = false;
+      return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
+        that.items.map((item, i) => {
+          let data = parse(item);
+          data.pre = item.now;
+          if (item.time) that.time = item.time;
+          Object.assign(item, data);
+
+          that.items.splice(i, 1, item);
+
+          if (item.code == that.indexCode && item.changePV) {
+            that.progressBarWidth = Math.abs(item.changePV / 1) * 100;
+            that.indexPercent = item.changePV;
+          }
+
+          //** 每增涨 0.5 发送通知 */
+          item.threshold == undefined && (item.threshold = 0);
+
+          let diff = item.changePV - item.threshold;
+          if (Math.abs(diff) >= 0.5) {
+            let incr = parseInt(diff / 0.5) * 0.5;
+            that.notify(
+              item,
+              `increase ${incr} +  ${item.threshold}% to ${item.changeP}.`
+            );
+            item.threshold += incr;
+          }
+
+          //**超过均线后发送通知 */
+          if (item.data && item.data.length > 0) {
+            for (let i in (5, 10, 20, 30, 16)) {
+              if (item.price > item.data[0][`ma_price${i}`]) {
+                that.notify(
+                  item,
+                  `over MD${i} ${item.data[0][`ma_price${i}`]}.`
+                );
+              }
+            }
+          }
+
+          // vm.items.splice(newLength)
+        });
+        that.sendRefresh();
+      });
+    },
     sendRefresh() {
-      this.$electron.remote.app.minwin.webContents.send("refresh");
+      console.log(this.items);
+      this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {
       console.log(item);

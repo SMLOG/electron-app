@@ -7,13 +7,7 @@ import {
   screen,
   shell
 } from "electron";
-global.sharedObject = {
-  someProperty: "default value"
-};
 
-setInterval(() => {
-  console.log(global.sharedObject);
-}, 2000);
 var win = null;
 
 const winURL =
@@ -69,7 +63,11 @@ ipcMain.on("createSuspensionMenu", e => {
       label: "DevTool",
       click: () => {
         // win.webContents.toggleDevTools({ mode: "bottom" });
-        if (e.sender) e.sender.webContents.toggleDevTools({ mode: "undocked" });
+        if (e.sender) {
+          // e.sender.setSize(600, 600);
+
+          e.sender.webContents.toggleDevTools({ mode: "undocked" });
+        }
       }
     },
     { type: "separator" },

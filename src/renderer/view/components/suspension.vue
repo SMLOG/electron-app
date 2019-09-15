@@ -17,7 +17,12 @@
         ></div>
         <div class="flex">
           <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-          <span class="name" :title="title(item)" @click="openItem(item,$event)">{{item.name}}</span>
+          <span
+            class="name"
+            :style="{color:item.nameColor}"
+            :title="title(item)"
+            @click="openItem(item,$event)"
+          >{{item.name}}</span>
           <span class="content" :class="upDown(item.now-item.preClose)">
             <i @mouseenter="showPK(item)" @mouseleave="hidePK(item,false,$event)">{{item.now}}</i>
             <i
@@ -359,6 +364,8 @@ export default {
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
       //this.loadDatas();
+      let win = this.$electron.remote.getCurrentWindow();
+      win.setAlwaysOnTop(true, true, 1);
       this.items = datas;
       //this.unCollapse();
       let items = this.items.filter(it => it.code == this.indexCode);

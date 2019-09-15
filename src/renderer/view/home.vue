@@ -255,6 +255,25 @@ export default {
             that.progressBarWidth = Math.abs(item.changePV / 1) * 100;
             that.indexPercent = item.changePV;
           }
+          if (!item.predays) {
+            loadScripts([
+              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60,&datalen=1`
+            ]).then(() => {
+              if (window[`${item.code}_240`]) {
+                item.predays = window[`${item.code}_240`];
+                try {
+                  delete window[`${item.code}_240`];
+                } catch (e) {}
+              }
+            });
+          } else {
+            // MA30
+            if (item.now > item.predays[0].ma_price30) {
+              item.nameColor = "red";
+            } else {
+              item.nameColor = "green";
+            }
+          }
 
           //** 每增涨 0.5 发送通知 */
           item.threshold == undefined && (item.threshold = 0);

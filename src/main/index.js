@@ -61,6 +61,7 @@ function createWindow() {
     // mainWindow.hide();
   });
 }
+var appTray = null;
 
 app.on("ready", () => {
   globalShortcut.register("CommandOrControl+Alt+K", () => {
@@ -102,7 +103,6 @@ app.on("ready", () => {
     } else console.log(`regist key ${k} success`);
   });
 
-  var appTray = null;
   //系统托盘图标目录
   //let trayIcon = path.join(__dirname, 'app');//app是选取的目录
   var trayMenuTemplate = [

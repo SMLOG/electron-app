@@ -1,6 +1,13 @@
 
 <template>
   <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
+    <canvas
+      id="canvas"
+      ref="canvas"
+      width="100%"
+      height="100%"
+      style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 1;pointer-events:none;"
+    ></canvas>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
       <div
@@ -19,7 +26,7 @@
           <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
           <span
             class="name"
-            :style="{color:item.nameColor}"
+            :style="{textDecoration:item.nameColor=='red'&& 'underline'}"
             :title="title(item)"
             @click="openItem(item,$event)"
           >{{item.name}}</span>
@@ -58,6 +65,7 @@ import {
   time
 } from "@/utils";
 import { ObjectType } from "@/utils";
+import { drawMAs } from "@/ma";
 
 import TransparencyMouseFix from "electron-transparency-mouse-fix";
 const fix = new TransparencyMouseFix({
@@ -378,6 +386,10 @@ export default {
         this.progressBarWidth = Math.abs(items[0].changePV / 1) * 100;
         this.indexPercent = items[0].changePV;
       }
+
+      setTimeout(() => {
+        drawMAs(this.$refs.canvas, items, 27);
+      }, 300);
     });
 
     this.$electron.ipcRenderer.on("ALT+Z", () => {

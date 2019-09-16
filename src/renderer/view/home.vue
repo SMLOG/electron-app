@@ -306,7 +306,13 @@ export default {
       });
     },
     sendRefresh() {
-      this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
+      this.$electron.remote
+        .getCurrentWindow()
+        .getAllWindows()
+        .map(win => {
+          win.isVisible() && win.webContents.send("refresh", this.items);
+        });
+      //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {
       console.log(item);

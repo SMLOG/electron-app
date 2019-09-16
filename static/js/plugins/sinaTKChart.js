@@ -1,28 +1,28 @@
 xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
   "use strict";
-  function sinaTKChart(configObj) {
-    function n(symbol) {
+  function SinaTKChart(configObj) {
+    function isAIndex(symbol) {
       return /^sh000001|sz399001|sz399006|sz399415|sz399416|sz399300|sz000300$/.test(
         symbol
       )
-        ? ((configObj2.DKpChart = "dpdk"), (configObj2.DKtChart = "dpdks"), !0)
+        ? ((user_obj.DKpChart = "dpdk"), (user_obj.DKtChart = "dpdks"), !0)
         : !1;
     }
     function p(t, e) {
-      var a = "#f11200",
-        n = "#00a800",
-        o = "#666666";
+      var red = "#f11200",
+        green = "#00a800",
+        gray = "#666666";
       if (
-        "US" == configObj2.market ||
-        "HK" == configObj2.market ||
-        "LSE" === configObj2.market
+        "US" == user_obj.market ||
+        "HK" == user_obj.market ||
+        "LSE" === user_obj.market
       ) {
-        var i = a;
-        (a = n), (n = i);
+        var i = red;
+        (red = green), (green = i);
       }
       var r = e ? e : 0,
-        s = o;
-      return t > r ? (s = a) : r > t && (s = n), s;
+        s = gray;
+      return t > r ? (s = red) : r > t && (s = green), s;
     }
     function h(t) {
       for (
@@ -62,7 +62,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         if (t === "fx_s" + e[a].toLowerCase()) return !0;
       return !1;
     }
-    function u(marketCode) {
+    function getMarketSetting(marketCode) {
       var o = {
           api: {
             t: {},
@@ -85,25 +85,25 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           dim: {},
           menu: {
             menu_rek: !1,
-            user_obj: configObj2,
+            user_obj: user_obj,
             tab: [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "ts",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -153,7 +153,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         s = {
           dim: {},
           menu: {
-            user_obj: configObj2,
+            user_obj: user_obj,
             menu_rek: !1
           },
           param: {
@@ -187,20 +187,17 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             }
           }
         };
-      if (
-        configObj2.iswap ||
-        (configObj2.menu && configObj2.menu.menu_wapmore)
-      ) {
+      if (user_obj.iswap || (user_obj.menu && user_obj.menu.menu_wapmore)) {
         var l = {
-          tCharts: O,
+          tCharts: tSetting,
           setCustom: {
             allow_indicator_edit: !0,
             mousewheel_zoom: !0
           }
         };
         switch (
-          (configObj2.menu &&
-            configObj2.menu.menu_wapmore &&
+          (user_obj.menu &&
+            user_obj.menu.menu_wapmore &&
             ("HK" != marketCode &&
               (l.showRangeSelector = {
                 display: !0
@@ -214,7 +211,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   }
                 ]
               ],
-              tCharts: E,
+              tCharts: t2Setting,
               setCustom: {
                 allow_indicator_edit: !0,
                 mousewheel_zoom: !0
@@ -231,22 +228,22 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "global_index":
             r.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "ts",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -255,17 +252,17 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "op_m":
             r.menu.tab = [
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -275,64 +272,64 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             switch (
               ((r.menu.tab = [
                 {
-                  lab: "\u5206\u65f6",
+                  lab: "分时",
                   v: "ts",
                   t: "T"
                 },
                 {
-                  lab: "5\u65e5",
+                  lab: "5日",
                   v: "t5",
                   t: "T"
                 },
                 {
-                  lab: "\u65e5K",
+                  lab: "日K",
                   v: "kd",
                   t: "K"
                 },
                 {
-                  lab: "\u5468K",
+                  lab: "周K",
                   v: "kw",
                   t: "K"
                 },
                 {
-                  lab: "\u6708K",
+                  lab: "月K",
                   v: "km",
                   t: "K"
                 },
                 {
-                  lab: "\u66f4\u591a",
+                  lab: "更多",
                   v: "more",
                   t: "K"
                 }
               ]),
               (r.menu.more = [
                 {
-                  lab: "5\u5206",
+                  lab: "5分",
                   v: "k5",
                   t: "K"
                 },
                 {
-                  lab: "15\u5206",
+                  lab: "15分",
                   v: "k15",
                   t: "K"
                 },
                 {
-                  lab: "30\u5206",
+                  lab: "30分",
                   v: "k30",
                   t: "K"
                 },
                 {
-                  lab: "1\u6708",
+                  lab: "1月",
                   v: "km1",
                   t: "K"
                 },
                 {
-                  lab: "3\u6708",
+                  lab: "3月",
                   v: "km3",
                   t: "K"
                 },
                 {
-                  lab: "1\u5e74",
+                  lab: "1年",
                   v: "km12",
                   t: "K"
                 }
@@ -341,104 +338,103 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 linetype: "mountain"
               }),
               (r.api.t.showScale = "pct"),
-              configObj2.symbol)
+              user_obj.symbol)
             ) {
               case "gb_dji":
-                configObj2.symbol = "gb_$dji";
+                user_obj.symbol = "gb_$dji";
                 break;
               case "gb_ixic":
-                configObj2.symbol = "gb_$ixic";
+                user_obj.symbol = "gb_$ixic";
                 break;
               case "gb_inx":
-                configObj2.symbol = "gb_$inx";
+                user_obj.symbol = "gb_$inx";
             }
             break;
           case "CN":
           case "REPO":
             var c = [
                 {
-                  lab: "\u5206\u65f6",
+                  lab: "分时",
                   v: "ts",
                   t: "T"
                 },
                 {
-                  lab: "\u65e5K",
+                  lab: "日K",
                   v: "kd",
                   t: "K"
                 },
                 {
-                  lab: "\u5468K",
+                  lab: "周K",
                   v: "kw",
                   t: "K"
                 },
                 {
-                  lab: "\u6708K",
+                  lab: "月K",
                   v: "km",
                   t: "K"
                 },
                 {
-                  lab: "\u66f4\u591a",
+                  lab: "更多",
                   v: "more",
                   t: "K"
                 }
               ],
               m = [
                 {
-                  lab: "\u5206\u65f6",
+                  lab: "分时",
                   v: "ts",
                   t: "T"
                 },
                 {
-                  lab: "B/S\u70b9",
+                  lab: "B/S点",
                   v: "kdd",
                   t: "K"
                 },
                 {
-                  lab: "\u65e5K",
+                  lab: "日K",
                   v: "kd",
                   t: "K"
                 },
                 {
-                  lab: "\u5468K",
+                  lab: "周K",
                   v: "kw",
                   t: "K"
                 },
                 {
-                  lab: "\u6708K",
+                  lab: "月K",
                   v: "km",
                   t: "K"
                 },
                 {
-                  lab: "\u66f4\u591a",
+                  lab: "更多",
                   v: "more",
                   t: "K"
                 }
               ];
             (r.menu.tab =
-              N(configObj2.symbol) &&
-              configObj2.mt &&
-              (configObj2.iswap ||
-                (configObj2.menu && !configObj2.menu.menu_wapmore))
+              isA(user_obj.symbol) &&
+              user_obj.mt &&
+              (user_obj.iswap || (user_obj.menu && !user_obj.menu.menu_wapmore))
                 ? m
                 : c),
               (r.menu.more = [
                 {
-                  lab: "5\u5206",
+                  lab: "5分",
                   v: "k5",
                   t: "K"
                 },
                 {
-                  lab: "15\u5206",
+                  lab: "15分",
                   v: "k15",
                   t: "K"
                 },
                 {
-                  lab: "30\u5206",
+                  lab: "30分",
                   v: "k30",
                   t: "K"
                 },
                 {
-                  lab: "60\u5206",
+                  lab: "60分",
                   v: "k60",
                   t: "K"
                 }
@@ -448,22 +444,22 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "HF":
             (r.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "ts",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -479,22 +475,22 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "GOODS":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "ts",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -527,22 +523,22 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "LSE":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "ts",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -558,52 +554,52 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             break;
           case "BTC":
             var d =
-              "btc_btcokcoin" == configObj2.symbol
+              "btc_btcokcoin" == user_obj.symbol
                 ? [
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "15\u5206",
+                      lab: "15分",
                       v: "k15",
                       t: "K"
                     }
                   ]
                 : [
                     {
-                      lab: "1\u5206",
+                      lab: "1分",
                       v: "k1",
                       t: "K"
                     },
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "15\u5206",
+                      lab: "15分",
                       v: "k15",
                       t: "K"
                     }
@@ -616,47 +612,47 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               "forex" == marketCode
                 ? [
                     {
-                      lab: "1\u5206",
+                      lab: "1分",
                       v: "k1",
                       t: "K"
                     },
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "\u5e74K",
+                      lab: "年K",
                       v: "ky",
                       t: "K"
                     },
                     {
-                      lab: "5\u5206",
+                      lab: "5分",
                       v: "k5",
                       t: "K"
                     },
                     {
-                      lab: "15\u5206",
+                      lab: "15分",
                       v: "k15",
                       t: "K"
                     },
                     {
-                      lab: "30\u5206",
+                      lab: "30分",
                       v: "k30",
                       t: "K"
                     },
                     {
-                      lab: "60\u5206",
+                      lab: "60分",
                       v: "k60",
                       t: "K"
                     },
@@ -668,42 +664,42 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   ]
                 : [
                     {
-                      lab: "1\u5206",
+                      lab: "1分",
                       v: "k1",
                       t: "K"
                     },
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "\u5e74K",
+                      lab: "年K",
                       v: "ky",
                       t: "K"
                     },
                     {
-                      lab: "5\u5206",
+                      lab: "5分",
                       v: "k5",
                       t: "K"
                     },
                     {
-                      lab: "30\u5206",
+                      lab: "30分",
                       v: "k30",
                       t: "K"
                     }
                   ]),
-              (s.param.k.view = h(configObj2.symbol) ? "k1" : "kd"),
+              (s.param.k.view = h(user_obj.symbol) ? "k1" : "kd"),
               (s.param = {
                 t: {
                   theme: null
@@ -718,59 +714,59 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             (s.menu.tab = a(configObj.symbol)
               ? [
                   {
-                    lab: "\u5e74\u7ebf",
+                    lab: "年线",
                     v: "kcl",
                     t: "K"
                   },
                   {
-                    lab: "\u65e5K",
+                    lab: "日K",
                     v: "kd",
                     t: "K"
                   },
                   {
-                    lab: "\u5468K",
+                    lab: "周K",
                     v: "kw",
                     t: "K"
                   },
                   {
-                    lab: "\u6708K",
+                    lab: "月K",
                     v: "km",
                     t: "K"
                   },
                   {
-                    lab: "\u5e74K",
+                    lab: "年K",
                     v: "ky",
                     t: "K"
                   }
                 ]
               : [
                   {
-                    lab: "\u5206\u65f6",
+                    lab: "分时",
                     v: "t1",
                     t: "T"
                   },
                   {
-                    lab: "\u5e74\u7ebf",
+                    lab: "年线",
                     v: "kcl",
                     t: "K"
                   },
                   {
-                    lab: "\u65e5K",
+                    lab: "日K",
                     v: "kd",
                     t: "K"
                   },
                   {
-                    lab: "\u5468K",
+                    lab: "周K",
                     v: "kw",
                     t: "K"
                   },
                   {
-                    lab: "\u6708K",
+                    lab: "月K",
                     v: "km",
                     t: "K"
                   },
                   {
-                    lab: "\u5e74K",
+                    lab: "年K",
                     v: "ky",
                     t: "K"
                   }
@@ -806,17 +802,17 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "US":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "t1",
                 t: "T"
               },
               {
-                lab: "5\u65e5",
+                lab: "5日",
                 v: "t5",
                 t: "T"
               },
               {
-                lab: "\u5e74\u7ebf",
+                lab: "年线",
                 v: "kcl",
                 t: "K"
               },
@@ -826,42 +822,42 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 t: "K"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               },
               {
-                lab: "\u5e74K",
+                lab: "年K",
                 v: "ky",
                 t: "K"
               },
               {
-                lab: "5\u5206",
+                lab: "5分",
                 v: "k5",
                 t: "K"
               },
               {
-                lab: "15\u5206",
+                lab: "15分",
                 v: "k15",
                 t: "K"
               },
               {
-                lab: "30\u5206",
+                lab: "30分",
                 v: "k30",
                 t: "K"
               },
               {
-                lab: "60\u5206",
+                lab: "60分",
                 v: "k60",
                 t: "K"
               }
@@ -874,32 +870,32 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "HK":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "t1",
                 t: "T"
               },
               {
-                lab: "5\u65e5",
+                lab: "5日",
                 v: "t5",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               },
               {
-                lab: "\u5e74K",
+                lab: "年K",
                 v: "ky",
                 t: "K"
               }
@@ -909,17 +905,17 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "op_m":
             s.menu.tab = [
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               }
@@ -928,27 +924,27 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "global_index":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "t1",
                 t: "T"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               },
               {
-                lab: "\u5e74K",
+                lab: "年K",
                 v: "ky",
                 t: "K"
               }
@@ -959,52 +955,52 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "HF":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "t1",
                 t: "T"
               },
               {
-                lab: "\u5e74\u7ebf",
+                lab: "年线",
                 v: "kcl",
                 t: "K"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               },
               {
-                lab: "\u5e74K",
+                lab: "年K",
                 v: "ky",
                 t: "K"
               },
               {
-                lab: "5\u5206",
+                lab: "5分",
                 v: "k5",
                 t: "K"
               },
               {
-                lab: "15\u5206",
+                lab: "15分",
                 v: "k15",
                 t: "K"
               },
               {
-                lab: "30\u5206",
+                lab: "30分",
                 v: "k30",
                 t: "K"
               },
               {
-                lab: "60\u5206",
+                lab: "60分",
                 v: "k60",
                 t: "K"
               }
@@ -1047,127 +1043,127 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "CN":
           case "REPO":
             (s.menu.tab =
-              (configObj2.mt &&
-                ("cnlv1" == configObj2.mt ||
-                  "cnlv2" == configObj2.mt ||
-                  "cntouzi2" == configObj2.mt) &&
-                n(configObj2.symbol)) ||
-              N(configObj2.symbol)
+              (user_obj.mt &&
+                ("cnlv1" == user_obj.mt ||
+                  "cnlv2" == user_obj.mt ||
+                  "cntouzi2" == user_obj.mt) &&
+                isAIndex(user_obj.symbol)) ||
+              isA(user_obj.symbol)
                 ? [
                     {
-                      lab: "\u5206\u65f6",
+                      lab: "分时",
                       v: "t1",
                       t: "T"
                     },
                     {
-                      lab: "5\u65e5",
+                      lab: "5日",
                       v: "t5",
                       t: "T"
                     },
                     {
-                      lab: "\u5e74\u7ebf",
+                      lab: "年线",
                       v: "kcl",
                       t: "K"
                     },
                     {
-                      lab: "B/S\u70b9",
+                      lab: "B/S点",
                       v: "kdd",
                       t: "K"
                     },
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "\u5e74K",
+                      lab: "年K",
                       v: "ky",
                       t: "K"
                     },
                     {
-                      lab: "5\u5206",
+                      lab: "5分",
                       v: "k5",
                       t: "K"
                     },
                     {
-                      lab: "15\u5206",
+                      lab: "15分",
                       v: "k15",
                       t: "K"
                     },
                     {
-                      lab: "30\u5206",
+                      lab: "30分",
                       v: "k30",
                       t: "K"
                     },
                     {
-                      lab: "60\u5206",
+                      lab: "60分",
                       v: "k60",
                       t: "K"
                     }
                   ]
                 : [
                     {
-                      lab: "\u5206\u65f6",
+                      lab: "分时",
                       v: "t1",
                       t: "T"
                     },
                     {
-                      lab: "5\u65e5",
+                      lab: "5日",
                       v: "t5",
                       t: "T"
                     },
                     {
-                      lab: "\u5e74\u7ebf",
+                      lab: "年线",
                       v: "kcl",
                       t: "K"
                     },
                     {
-                      lab: "\u65e5K",
+                      lab: "日K",
                       v: "kd",
                       t: "K"
                     },
                     {
-                      lab: "\u5468K",
+                      lab: "周K",
                       v: "kw",
                       t: "K"
                     },
                     {
-                      lab: "\u6708K",
+                      lab: "月K",
                       v: "km",
                       t: "K"
                     },
                     {
-                      lab: "\u5e74K",
+                      lab: "年K",
                       v: "ky",
                       t: "K"
                     },
                     {
-                      lab: "5\u5206",
+                      lab: "5分",
                       v: "k5",
                       t: "K"
                     },
                     {
-                      lab: "15\u5206",
+                      lab: "15分",
                       v: "k15",
                       t: "K"
                     },
                     {
-                      lab: "30\u5206",
+                      lab: "30分",
                       v: "k30",
                       t: "K"
                     },
                     {
-                      lab: "60\u5206",
+                      lab: "60分",
                       v: "k60",
                       t: "K"
                     }
@@ -1178,57 +1174,57 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           case "NF":
             (s.menu.tab = [
               {
-                lab: "\u5206\u65f6",
+                lab: "分时",
                 v: "t1",
                 t: "T"
               },
               {
-                lab: "5\u65e5",
+                lab: "5日",
                 v: "t5",
                 t: "T"
               },
               {
-                lab: "\u5e74\u7ebf",
+                lab: "年线",
                 v: "kcl",
                 t: "K"
               },
               {
-                lab: "\u65e5K",
+                lab: "日K",
                 v: "kd",
                 t: "K"
               },
               {
-                lab: "\u5468K",
+                lab: "周K",
                 v: "kw",
                 t: "K"
               },
               {
-                lab: "\u6708K",
+                lab: "月K",
                 v: "km",
                 t: "K"
               },
               {
-                lab: "\u5e74K",
+                lab: "年K",
                 v: "ky",
                 t: "K"
               },
               {
-                lab: "5\u5206",
+                lab: "5分",
                 v: "k5",
                 t: "K"
               },
               {
-                lab: "15\u5206",
+                lab: "15分",
                 v: "k15",
                 t: "K"
               },
               {
-                lab: "30\u5206",
+                lab: "30分",
                 v: "k30",
                 t: "K"
               },
               {
-                lab: "60\u5206",
+                lab: "60分",
                 v: "k60",
                 t: "K"
               }
@@ -1259,14 +1255,15 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
       return o;
     }
     function b(t) {
-      for (var e, a = 0; 6 > a; a++)
-        (e = o("span")),
-          (e.style.display = "block"),
-          (e.style.styleFloat = "left"),
-          (e.style.cssFloat = "left"),
-          (e.style.width = "33%"),
-          (e.style.lineHeight = "normal"),
-          t.appendChild(e);
+      for (var e, a = 0; 6 > a; a++) {
+        e = $C("span");
+        e.style.display = "block";
+        e.style.styleFloat = "left";
+        e.style.cssFloat = "left";
+        e.style.width = "33%";
+        e.style.lineHeight = "normal";
+        t.appendChild(e);
+      }
     }
     function v() {
       (config.dim = {
@@ -1274,12 +1271,12 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         H_T_T: 0,
         posX: 55
       }),
-        (z.dim = {
+        (h5kOptions.dim = {
           H_T_G: 40,
           H_T_T: 0,
           posX: 45
         }),
-        (z.candlenum = 45);
+        (h5kOptions.candlenum = 45);
     }
     function k(t) {
       switch (t) {
@@ -1305,9 +1302,9 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
     }
     function f(e) {
       if (e.info.data) {
-        var a = e.info.viewRangeState,
-          n = k(a.viewId);
-        if (!isNaN(a.start) && !isNaN(a.end)) {
+        var viewRangeState = e.info.viewRangeState,
+          viewId = k(viewRangeState.viewId);
+        if (!isNaN(viewRangeState.start) && !isNaN(viewRangeState.end)) {
           var o,
             i,
             r,
@@ -1318,13 +1315,13 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           if (
             ("t" == e.type
               ? ((s = e.info.data[0].length),
-                (l = [a.start * s, a.end * s - 1]),
-                (c = e.chart.getSymbols()[0] + "|" + n))
+                (l = [viewRangeState.start * s, viewRangeState.end * s - 1]),
+                (c = e.chart.getSymbols()[0] + "|" + viewId))
               : ((l =
-                  a.dataLength < e.info.minCandleNum
+                  viewRangeState.dataLength < e.info.minCandleNum
                     ? [0, e.info.minCandleNum - 1]
-                    : [a.start, a.end]),
-                (c = e.chart.getSymbols()[0] + "|" + n)),
+                    : [viewRangeState.start, viewRangeState.end]),
+                (c = e.chart.getSymbols()[0] + "|" + viewId)),
             e.info.isCompare
               ? "t" == e.type
                 ? ((i = e.info.data[0][0].prevclose),
@@ -1336,12 +1333,12 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   "t" == e.type
                     ? e.info.range
                     : [e.info.range[1], e.info.range[0]]),
-            configObj2.dotTool && "k" == e.type)
+            user_obj.dotTool && "k" == e.type)
           )
-            if (configObj2.dotTool.inited)
-              ~[23, 24, 25, 364, 365, 366].indexOf(n)
-                ? (configObj2.dotTool.show(),
-                  configObj2.dotTool.update({
+            if (user_obj.dotTool.inited)
+              ~[23, 24, 25, 364, 365, 366].indexOf(viewId)
+                ? (user_obj.dotTool.show(),
+                  user_obj.dotTool.update({
                     zoom: l,
                     domain: o,
                     width: e.info.width,
@@ -1350,10 +1347,10 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                     left: e.info.left,
                     rangeData: e.info.data
                   }))
-                : configObj2.dotTool.hide();
+                : user_obj.dotTool.hide();
             else {
-              var d = configObj2.settingCfg.tkChart.showDotTool;
-              configObj2.dotTool.init({
+              var d = user_obj.settingCfg.tkChart.showDotTool;
+              user_obj.dotTool.init({
                 parentDiv: m,
                 width: e.info.width,
                 height: e.info.height,
@@ -1368,14 +1365,14 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 tip: {
                   show: !0,
                   formatter: function(t) {
-                    return t.date + ":\u9f99\u864e\u699c";
+                    return t.date + ":龙虎榜";
                   }
                 },
                 alwaysHide: d && !d.alwaysShow
               });
             }
-          if (configObj2.paintTool)
-            if (configObj2.paintTool.param) {
+          if (user_obj.paintTool)
+            if (user_obj.paintTool.param) {
               var p = {
                 zoom: l,
                 domain: o,
@@ -1387,11 +1384,11 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 shapeListName: c
               };
               "k" == e.type &&
-                (p.data = S.getExtraData({
+                (p.data = chartH5t.getExtraData({
                   name: "currentK",
                   clone: !1
                 })),
-                configObj2.paintTool.update(p);
+                user_obj.paintTool.update(p);
             } else {
               var h = {
                 shapeListName: c,
@@ -1418,26 +1415,28 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 }
               };
               "k" == e.type &&
-                (h.data = S.getExtraData({
+                (h.data = chartH5t.getExtraData({
                   name: "currentK",
                   clone: !1
                 })),
-                configObj2.paintTool.init(h);
+                user_obj.paintTool.init(h);
             }
-          n != j && sinaTKChartObj.re("PAINTTOOL_VIEW_CHANGEED", n), (j = n);
+          viewId != j && sinaTKChartObj.re("PAINTTOOL_VIEW_CHANGEED", viewId),
+            (j = viewId);
         }
       }
     }
-    function defaultsetting() {
+    function getDefaultChartSetting() {
       var a = new Date().getTime() + Math.floor(987654321 * Math.random() + 1);
       return {
         charts_dom_id: "KKE_chart_" + a,
+        //  charts_Start: "T",
         charts_Start: "K",
         charts_hasTChart: !1,
         stock_stutas: void 0,
         compare: {
           color: ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"],
-          userObj: configObj2,
+          userObj: user_obj,
           tkchart: sinaTKChartObj,
           dis_compare: !1,
           compare_dom_id: "KKE_compare_" + a,
@@ -1483,34 +1482,34 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               configObj.paintTool && configObj.paintTool.resize(t);
             },
             onviewprice: function(e) {
-              if (e.data && r(X.range.range_dom_id)) {
+              if (e.data && $DOM(chartsSetting.range.range_dom_id)) {
                 var a = e.data,
                   n =
-                    configObj2.iswap ||
-                    (configObj2.menu && configObj2.menu.menu_wapmore)
+                    user_obj.iswap ||
+                    (user_obj.menu && user_obj.menu.menu_wapmore)
                       ? a.time
                       : a.day,
                   o = Number(a.volume);
                 Number(o) < 0 && (o = 0), a.price < 0 && (a.price = 0);
                 var i = 2;
-                if (configObj2) {
-                  switch (configObj2.market) {
+                if (user_obj) {
+                  switch (user_obj.market) {
                     case "US":
                     case "HK":
                       i =
-                        configObj2.param &&
-                        configObj2.param.t &&
-                        configObj2.param.t.nfloat
-                          ? configObj2.param.t.nfloat
+                        user_obj.param &&
+                        user_obj.param.t &&
+                        user_obj.param.t.nfloat
+                          ? user_obj.param.t.nfloat
                           : utils_util.strUtil.nfloat(a.price);
                       break;
                     case "LSE":
                       i = 3;
                   }
-                  configObj2.param &&
-                    configObj2.param.t &&
-                    configObj2.param.t.ennfloat &&
-                    (i = configObj2.param.t.nfloat || 2);
+                  user_obj.param &&
+                    user_obj.param.t &&
+                    user_obj.param.t.ennfloat &&
+                    (i = user_obj.param.t.nfloat || 2);
                 }
                 (a.percent = isNaN(a.percent)
                   ? "--"
@@ -1519,30 +1518,30 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 var s = Number(a.avg_price).toFixed(i),
                   l = [
                     n,
-                    " \u4ef7:",
+                    " 价:",
                     Number(a.price).toFixed(i),
-                    " \u5747:",
+                    " 均:",
                     s,
-                    " \u91cf:",
+                    " 量:",
                     o,
-                    " \u5e45:",
+                    " 幅:",
                     a.percent + "%"
                   ];
-                if (configObj2) {
-                  var c = configObj2.market;
+                if (user_obj) {
+                  var c = user_obj.market;
                   if (("US" === c && l.splice(3, 2), "HK" === c)) {
-                    var m = configObj2.symbol.length;
-                    configObj2.symbol.substring(m - 1, m) >= "A" &&
+                    var m = user_obj.symbol.length;
+                    user_obj.symbol.substring(m - 1, m) >= "A" &&
                       (s = l[4] = "-");
                   }
                   ("LSE" === c || "US" === c) && (s = "--");
                 }
                 var d;
                 if (
-                  configObj2.iswap ||
-                  (configObj2.menu && configObj2.menu.menu_wapmore)
+                  user_obj.iswap ||
+                  (user_obj.menu && user_obj.menu.menu_wapmore)
                 ) {
-                  var h = r(X.range.range_dom_id).childNodes;
+                  var h = $DOM(chartsSetting.range.range_dom_id).childNodes;
                   for (d = 0; d < h.length; d++) {
                     var u;
                     (h[d].innerHTML = ""),
@@ -1560,66 +1559,66 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                     e.data_array > 1) &&
                     (l[0] = l[0] + " [" + b + "] ");
                   var v, k;
-                  "HF" == configObj2.market
+                  "HF" == user_obj.market
                     ? (v = k = "")
                     : ((v =
                         '<span style="color:' +
-                        W.range.rangeColor[2] +
+                        param.range.rangeColor[2] +
                         ';" class="' +
-                        W.range.rangeLabel +
-                        '">\u91cf</span>'),
+                        param.range.rangeLabel +
+                        '">量</span>'),
                       (k =
                         '<span class="' +
-                        W.range.rangeValue +
+                        param.range.rangeValue +
                         '">' +
                         o +
                         "</span>"));
                   var f = [
                     l[0],
                     '<span style="color:' +
-                      W.range.rangeColor[0] +
+                      param.range.rangeColor[0] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u4ef7</span>',
+                      param.range.rangeLabel +
+                      '">价</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       Number(a.price).toFixed(i) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[1] +
+                      param.range.rangeColor[1] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u5747</span>',
+                      param.range.rangeLabel +
+                      '">均</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       s +
                       "</span>",
                     v,
                     k,
                     '<span style="color:' +
-                      W.range.rangeColor[3] +
+                      param.range.rangeColor[3] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u5e45</span>',
+                      param.range.rangeLabel +
+                      '">幅</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.percent +
                       "%</span>"
                   ];
-                  if ("cntouzi2" != configObj2.mt)
+                  if ("cntouzi2" != user_obj.mt)
                     for (d = 0; d < f.length; d++)
                       (f[d] = f[d].replace('" class="', " ")),
                         (f[d] = f[d].replace("class", "style"));
-                  r(X.range.range_dom_id).innerHTML = f.join("");
+                  $DOM(chartsSetting.range.range_dom_id).innerHTML = f.join("");
                 }
               }
             }
@@ -1627,7 +1626,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           k: {
             onrange: function(t) {
               f({
-                chart: S,
+                chart: chartH5t,
                 info: t,
                 type: "k"
               });
@@ -1637,7 +1636,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 configObj.dotTool && configObj.dotTool.update(t);
             },
             onviewprice: function(e) {
-              if (r(X.range.range_dom_id)) {
+              if ($DOM(chartsSetting.range.range_dom_id)) {
                 var a = e.data,
                   n = a.close / (1 + Number(a.percent));
                 (a.percent = isNaN(a.percent)
@@ -1649,19 +1648,19 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 var i = "";
                 if (
                   (menuTab &&
-                    "CN" == configObj2.market &&
-                    N(configObj2.symbol)) ||
-                  "HK" === configObj2.market
+                    "CN" == user_obj.market &&
+                    isA(user_obj.symbol)) ||
+                  "HK" === user_obj.market
                 ) {
                   var s = 0;
-                  d.load(
+                  bridge.load(
                     {
                       uid: [
-                        configObj2.CFGSETTING_IFRAME_PREFIX,
+                        user_obj.CFGSETTING_IFRAME_PREFIX,
                         new Date().getTime(),
                         Math.floor(987654321 * Math.random() + 1)
                       ].join("|"),
-                      key: configObj2.CFGSETTING_IFRAME_PREFIX
+                      key: user_obj.CFGSETTING_IFRAME_PREFIX
                     },
                     function(t) {
                       if (
@@ -1676,17 +1675,14 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                             i = "";
                             break;
                           case "1":
-                            i =
-                              '<span style="color:#ff0000">[\u540e\u590d\u6743]</span>';
+                            i = '<span style="color:#ff0000">[后复权]</span>';
                             break;
                           case "-1":
-                            i =
-                              '<span style="color:#ff0000">[\u524d\u590d\u6743]</span>';
+                            i = '<span style="color:#ff0000">[前复权]</span>';
                         }
                       else
                         "kdd" == menuTab.chooseTab.tab &&
-                          (i =
-                            '<span style="color:#ff0000">[\u524d\u590d\u6743]</span>');
+                          (i = '<span style="color:#ff0000">[前复权]</span>');
                     },
                     !0
                   );
@@ -1703,91 +1699,91 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   " ",
                   a.time || "",
                   i,
-                  " \u5f00:",
+                  " 开:",
                   a.open.toFixed(2),
-                  " \u9ad8:",
+                  " 高:",
                   a.high.toFixed(2),
-                  " \u5e45:",
+                  " 幅:",
                   a.percent + "%",
-                  " \u6536:",
+                  " 收:",
                   a.close && a.close.toFixed(2),
-                  " \u4f4e:",
+                  " 低:",
                   a.low.toFixed(2),
-                  " \u91cf:",
+                  " 量:",
                   o
                 ];
                 if (
-                  configObj2.iswap ||
-                  (configObj2.menu && configObj2.menu.menu_wapmore)
+                  user_obj.iswap ||
+                  (user_obj.menu && user_obj.menu.menu_wapmore)
                 ) {
-                  var m = r(X.range.range_dom_id).childNodes;
+                  var m = $DOM(chartsSetting.range.range_dom_id).childNodes;
                   c.splice(0, 4), c.unshift(a.day);
                   for (var h, u = 0, b = m.length; b > u; u++)
                     (h = 0 == u ? c[2 * u] : c[2 * u - 1] + c[2 * u]),
                       (m[u].innerHTML = h);
                 } else {
                   var v, k;
-                  "HF" == configObj2.market
+                  "HF" == user_obj.market
                     ? (v = k = "")
                     : ((k =
                         '<span style="color:' +
-                        W.range.rangeColor[4] +
+                        param.range.rangeColor[4] +
                         ';" class="' +
-                        W.range.rangeLabel +
-                        '">\u91cf</span>'),
+                        param.range.rangeLabel +
+                        '">量</span>'),
                       (v =
                         '<span class="' +
-                        W.range.rangeValue +
+                        param.range.rangeValue +
                         '">' +
                         o +
                         "</span>"));
                   var f = [
                     c[0],
                     '<span style="color:' +
-                      W.range.rangeColor[0] +
+                      param.range.rangeColor[0] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u5f00</span>',
+                      param.range.rangeLabel +
+                      '">开</span>',
                     '<span style="color:' +
                       p(a.open, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.open.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[1] +
+                      param.range.rangeColor[1] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u9ad8</span>',
+                      param.range.rangeLabel +
+                      '">高</span>',
                     '<span style="color:' +
                       p(a.high, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.high.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[2] +
+                      param.range.rangeColor[2] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u6536</span>',
+                      param.range.rangeLabel +
+                      '">收</span>',
                     '<span style="color:' +
                       p(a.close, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.close.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[3] +
+                      param.range.rangeColor[3] +
                       ';" class="' +
-                      W.range.rangeLabel +
-                      '">\u4f4e</span>',
+                      param.range.rangeLabel +
+                      '">低</span>',
                     '<span style="color:' +
                       p(a.low, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.low.toFixed(2) +
                       "</span>",
@@ -1796,24 +1792,24 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                     '<span style="color:' +
                       p(a.change) +
                       ';margin-left: 4px;;" class="' +
-                      W.range.rangeValue +
+                      param.range.rangeValue +
                       '">' +
                       a.percent +
                       "%</span>"
                   ];
                   if (
-                    ("CN" !== configObj2.market ||
+                    ("CN" !== user_obj.market ||
                       (23 !== j && 24 !== j && 25 !== j) ||
-                      !utils_util.isCNK(configObj2.symbol) ||
+                      !utils_util.isCNK(user_obj.symbol) ||
                       (a.postVol &&
                         (f = f.concat([
                           '<span style="color:' +
-                            W.range.rangeColor[4] +
+                            param.range.rangeColor[4] +
                             ';" class="' +
-                            W.range.rangeLabel +
-                            '">\u76d8\u540e\u91cf|\u989d</span>',
+                            param.range.rangeLabel +
+                            '">盘后量|额</span>',
                           '<span class="' +
-                            W.range.rangeValue +
+                            param.range.rangeValue +
                             '">' +
                             (0 === a.postVol
                               ? 0
@@ -1824,12 +1820,12 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                               : utils_util.strUtil.vs(a.postAmt, !0)) +
                             "</span>"
                         ]))),
-                    "cntouzi2" != configObj2.mt)
+                    "cntouzi2" != user_obj.mt)
                   )
                     for (u = 0; u < f.length; u++)
                       (f[u] = f[u].replace('" class="', " ")),
                         (f[u] = f[u].replace("class", "style"));
-                  r(X.range.range_dom_id).innerHTML = f.join("");
+                  $DOM(chartsSetting.range.range_dom_id).innerHTML = f.join("");
                 }
               }
             }
@@ -1840,7 +1836,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             setCustom: {
               show_underlay_vol: !1
             },
-            tCharts: O
+            tCharts: tSetting
           },
           k: {
             setCustom: {
@@ -1853,7 +1849,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 }
               ]
             ],
-            tCharts: E
+            tCharts: t2Setting
           }
         }
       };
@@ -1871,7 +1867,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
       return e;
     }
     function _() {
-      var t = h(configObj2.symbol) ? "k1" : "kd";
+      var t = h(user_obj.symbol) ? "k1" : "kd";
       "k1" != t &&
         C({
           view: t
@@ -1879,47 +1875,47 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
       var e = new Date(),
         a = new Date();
       "k1" == t &&
-        S.showView("k1", {
+        chartH5t.showView("k1", {
           callback: function() {
-            S.setLineStyle({
+            chartH5t.setLineStyle({
               linetype: "line"
-            }),
-              S.pCharts(null, {
-                toremove: !0,
-                noLog: 1
-              });
+            });
+            chartH5t.pCharts(null, {
+              toremove: !0,
+              noLog: 1
+            });
             var t = 60 * e.getTimezoneOffset() * 1e3;
-            e.setTime(e.getTime() + t),
-              e.setHours(e.getHours() + 4),
-              (a = new Date(99999, 9, 9)),
-              S.dateFromTo(e, a),
-              KKE.api(
-                "patch.forex.newhqtime",
-                {
-                  symbol: configObj2.symbol,
-                  timeSymbol: "sys_time",
-                  interval: 30,
-                  offset: 30
-                },
-                function(t) {
-                  t &&
-                    S.pushData({
-                      symbol: configObj2.symbol,
-                      data: t
-                    }),
-                    S.pCharts(null, {
-                      toremove: !0,
-                      noLog: 1
-                    });
-                }
-              );
+            e.setTime(e.getTime() + t);
+            e.setHours(e.getHours() + 4);
+            a = new Date(99999, 9, 9);
+            chartH5t.dateFromTo(e, a);
+            KKE.api(
+              "patch.forex.newhqtime",
+              {
+                symbol: user_obj.symbol,
+                timeSymbol: "sys_time",
+                interval: 30,
+                offset: 30
+              },
+              function(t) {
+                t &&
+                  chartH5t.pushData({
+                    symbol: user_obj.symbol,
+                    data: t
+                  }),
+                  chartH5t.pCharts(null, {
+                    toremove: !0,
+                    noLog: 1
+                  });
+              }
+            );
           }
         });
     }
     function w() {
-      m.get("kke_CnLv1_PPT_v2") ||
-        !configObj2.mt ||
-        ("cnlv1" != configObj2.mt && "cnlv2" != configObj2.mt) ||
+      cookieUtil.get("kke_CnLv1_PPT_v2") ||
+        !user_obj.mt ||
+        ("cnlv1" != user_obj.mt && "cnlv2" != user_obj.mt) ||
         KKE.api(
           "tools.pptsetting.get",
           function() {
@@ -1927,7 +1923,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               "ppt.ppt.get",
               {
                 menu: menuTab,
-                userObj: configObj2
+                userObj: user_obj
               },
               null
             );
@@ -1937,7 +1933,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
     }
     function y() {
       KKE.api("plugins.paintSth.get", {}, function(t) {
-        (configObj2.paintTool = t),
+        (user_obj.paintTool = t),
           t.bind("save", function() {
             try {
               var t = JSON.parse(arguments[1]);
@@ -1952,23 +1948,23 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               );
             } catch (n) {}
           });
-      }),
-        (configObj2.uParam = W.menu.menu_dom_h + 2 + W.range.range_dom_h),
-        KKE.api(
-          "plugins.userpanel.get",
-          {
-            userObj: configObj2,
-            chartId: W.domid,
-            menu: menuTab,
-            chart: sinaTKChartObj
-          },
-          function() {}
-        );
+      });
+      user_obj.uParam = param.menu.menu_dom_h + 2 + param.range.range_dom_h;
+      KKE.api(
+        "plugins.userpanel.get",
+        {
+          userObj: user_obj,
+          chartId: param.domid,
+          menu: menuTab,
+          chart: sinaTKChartObj
+        },
+        function() {}
+      );
     }
     function C(t) {
-      if (!W.iswap && !W.menu.menu_wapmore) {
-        for (var e = 0; e < W.menu.tab.length; e++) {
-          var a = W.menu.tab[e].v;
+      if (!param.iswap && !param.menu.menu_wapmore) {
+        for (var e = 0; e < param.menu.tab.length; e++) {
+          var a = param.menu.tab[e].v;
           if (a == t.view) {
             !t.active && (t.active = e);
             break;
@@ -1981,10 +1977,10 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
     }
     utils_util.xh5_EvtDispatcher.call(this);
     var _tChart,
-      S,
+      chartH5t,
       menuTab,
       sinaTKChartObj = this,
-      configObj2 = configObj;
+      user_obj = configObj;
     this.me = sinaTKChartObj;
     var indicatorTabLogger = {},
       indicatorTab = function(t) {
@@ -1992,74 +1988,72 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           a,
           n,
           o,
-          i = t.getChartId(),
-          r = "blankctn_" + i,
-          s = t.type;
-        if ("h5k" == s) {
-          switch (
-            ((e =
-              "HF" != configObj2.market
-                ? [
-                    "\u65e0",
-                    "MACD",
-                    "KDJ",
-                    "RSI",
-                    "BOLL",
-                    "WR",
-                    "DMI",
-                    "BBIBOLL",
-                    "ROC",
-                    "PSY",
-                    "OBV",
-                    "WVAD",
-                    "CCI",
-                    "TRIX",
-                    "DMA",
-                    "EXPMA",
-                    "BIAS",
-                    "ASI",
-                    "VR",
-                    "EMV",
-                    "BRAR"
-                  ]
-                : [
-                    "\u65e0",
-                    "MACD",
-                    "KDJ",
-                    "RSI",
-                    "BOLL",
-                    "WR",
-                    "DMI",
-                    "BBIBOLL",
-                    "ROC",
-                    "PSY",
-                    "CCI",
-                    "TRIX",
-                    "DMA",
-                    "EXPMA",
-                    "BIAS",
-                    "ASI",
-                    "BRAR"
-                  ]),
-            configObj2.market)
-          ) {
+          chartId = t.getChartId(),
+          r = "blankctn_" + chartId,
+          type = t.type;
+        if ("h5k" == type) {
+          e =
+            "HF" != user_obj.market
+              ? [
+                  "无",
+                  "MACD",
+                  "KDJ",
+                  "RSI",
+                  "BOLL",
+                  "WR",
+                  "DMI",
+                  "BBIBOLL",
+                  "ROC",
+                  "PSY",
+                  "OBV",
+                  "WVAD",
+                  "CCI",
+                  "TRIX",
+                  "DMA",
+                  "EXPMA",
+                  "BIAS",
+                  "ASI",
+                  "VR",
+                  "EMV",
+                  "BRAR"
+                ]
+              : [
+                  "无",
+                  "MACD",
+                  "KDJ",
+                  "RSI",
+                  "BOLL",
+                  "WR",
+                  "DMI",
+                  "BBIBOLL",
+                  "ROC",
+                  "PSY",
+                  "CCI",
+                  "TRIX",
+                  "DMA",
+                  "EXPMA",
+                  "BIAS",
+                  "ASI",
+                  "BRAR"
+                ];
+          switch (user_obj.market) {
             case "HF":
             case "forex":
             case "forex_yt":
             case "BTC":
             case "global_index":
-              a = "\u65e0";
+              a = "无";
               break;
             default:
               a = "VOLUME";
           }
           (o = 1), (n = "k");
         } else {
-          switch (((o = 60), configObj2.market)) {
+          switch (((o = 60), user_obj.market)) {
             case "HF":
             case "global_index":
               (e = [
-                "\u65e0",
+                "无",
                 "MACD",
                 "BOLL",
                 "RSI",
@@ -2071,11 +2065,11 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 "BIAS",
                 "VR"
               ]),
-                (a = "\u65e0");
+                (a = "无");
               break;
             case "NF":
               (e = [
-                "\u65e0",
+                "无",
                 "POSITION",
                 "LB",
                 "MACD",
@@ -2093,9 +2087,9 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               break;
             default:
               (e =
-                "cnlv2" == configObj2.mt
+                "cnlv2" == user_obj.mt
                   ? [
-                      "\u65e0",
+                      "无",
                       "TFLOW",
                       "LB",
                       "MACD",
@@ -2110,7 +2104,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                       "VR"
                     ]
                   : [
-                      "\u65e0",
+                      "无",
                       "LB",
                       "MACD",
                       "BOLL",
@@ -2142,11 +2136,11 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             domid: r
           },
           function(t) {
-            indicatorTabLogger[s] = t;
+            indicatorTabLogger[type] = t;
           }
         );
       },
-      A = {
+      settingCfg = {
         kChart: {
           pCharts: [
             {
@@ -2180,45 +2174,45 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           }
         }
       };
-    (configObj2.indicatorTab = indicatorTab),
-      (configObj2.indicatorTabLogger = indicatorTabLogger),
-      (configObj2.CFGSETTING_IFRAME_PREFIX = "sinatkchart_settingcfgpanel~"),
-      (configObj2.REKSETTING_PREFIX = "sinatkchart_reksetting~"),
-      (configObj2.REKSETTING_COOKIE = "kCookieRek"),
-      (configObj2.EXTEND_PERFIX = "sinatkchart_extendsettingV2"),
-      (configObj2.settingCfg = void 0),
-      (configObj2.settingRek = void 0),
-      (configObj2.market = utils_util.market(configObj2.symbol)),
-      (configObj2.DKpChart = "TZY"),
-      (configObj2.DKtChart = "TZYS");
-    var N = function(symbol) {
+    user_obj.indicatorTab = indicatorTab;
+    user_obj.indicatorTabLogger = indicatorTabLogger;
+    user_obj.CFGSETTING_IFRAME_PREFIX = "sinatkchart_settingcfgpanel~";
+    user_obj.REKSETTING_PREFIX = "sinatkchart_reksetting~";
+    user_obj.REKSETTING_COOKIE = "kCookieRek";
+    user_obj.EXTEND_PERFIX = "sinatkchart_extendsettingV2";
+    user_obj.settingCfg = void 0;
+    user_obj.settingRek = void 0;
+    user_obj.market = utils_util.market(user_obj.symbol);
+    user_obj.DKpChart = "TZY";
+    user_obj.DKtChart = "TZYS";
+    var isA = function(symbol) {
       return /^sh6\d{5}|sh900\d{3}|sz00\d{4}|sz30\d{4}|sz20\d{4}$/.test(symbol);
     };
     !(function() {
-      d.load(
+      bridge.load(
         {
           uid: [
-            configObj2.CFGSETTING_IFRAME_PREFIX,
+            user_obj.CFGSETTING_IFRAME_PREFIX,
             new Date().getTime(),
             Math.floor(987654321 * Math.random() + 1)
           ].join("|"),
-          key: configObj2.CFGSETTING_IFRAME_PREFIX
+          key: user_obj.CFGSETTING_IFRAME_PREFIX
         },
         function(t) {
           t
-            ? (configObj2.settingCfg = i(A, JSON.parse(t)))
-            : ("US" == configObj2.market &&
-                (A.tChart.setLineStyle.linetype = "mountain"),
-              (configObj2.settingCfg = A));
+            ? (user_obj.settingCfg = oc(settingCfg, JSON.parse(t)))
+            : ("US" == user_obj.market &&
+                (settingCfg.tChart.setLineStyle.linetype = "mountain"),
+              (user_obj.settingCfg = settingCfg));
         },
         !0
       );
     })();
-    var O;
+    var tSetting;
     !(function() {
-      switch (configObj2.market) {
+      switch (user_obj.market) {
         case "NF":
-          O = [
+          tSetting = [
             [
               {
                 name: "POSITION"
@@ -2242,7 +2236,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           break;
         case "HF":
         case "global_index":
-          O = [
+          tSetting = [
             [
               {
                 name: "MACD"
@@ -2259,8 +2253,8 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           ];
           break;
         default:
-          O =
-            "cnlv2" == configObj2.mt
+          tSetting =
+            "cnlv2" == user_obj.mt
               ? [
                   [
                     {
@@ -2299,13 +2293,13 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 ];
       }
     })();
-    var E;
-    switch (configObj2.market) {
+    var t2Setting;
+    switch (user_obj.market) {
       case "HF":
       case "forex_yt":
       case "BTC":
       case "forex":
-        E = [
+        t2Setting = [
           [
             {
               name: "MACD"
@@ -2316,13 +2310,13 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
           ],
           {
             callback: function() {
-              indicatorTab(S);
+              indicatorTab(chartH5t);
             }
           }
         ];
         break;
       default:
-        E = [
+        t2Setting = [
           [
             {
               name: "VOLUME"
@@ -2331,184 +2325,184 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               name: "MACD"
             },
             {
-              name: "KDJ"
-            },
-            {
               name: "BLANKCTN"
             }
           ],
           {
             callback: function() {
-              indicatorTab(S);
+              indicatorTab(chartH5t);
             }
           }
         ];
     }
-    var F,
+    var tkSetting,
       B,
-      M,
+      charts_dom,
       U,
       V,
-      H,
+      marketSetting,
       config,
-      z,
-      X,
+      h5kOptions,
+      chartsSetting,
       j,
       G,
-      W = void 0,
-      $ = function(t, e) {
-        KKE.api("plugins.compare.get", W.compare, function(a) {
+      param = void 0,
+      apiCompare = function(t, e) {
+        KKE.api("plugins.compare.get", param.compare, function(a) {
           (G = a), t.appendChild(e);
         });
       },
-      Y = function(t) {
-        W.menu.dis_menu
-          ? ((B = o("div")),
-            (B.id = W.menu.menu_dom_id),
-            configObj2.iswap && (W.menu.menu_dom_h = 39),
-            (B.style.height = W.menu.menu_dom_h + "px"),
-            (W.menu.iswap = configObj2.iswap),
-            t.appendChild(B))
-          : (W.menu.menu_dom_h = 0);
+      createMenu = function(parentDom) {
+        param.menu.dis_menu
+          ? ((B = $C("div")),
+            (B.id = param.menu.menu_dom_id),
+            user_obj.iswap && (param.menu.menu_dom_h = 39),
+            (B.style.height = param.menu.menu_dom_h + "px"),
+            (param.menu.iswap = user_obj.iswap),
+            parentDom.appendChild(B))
+          : (param.menu.menu_dom_h = 0);
       },
-      Z = function() {
-        W.compare.dis_compare
-          ? ((V = o("div")),
-            (V.id = W.compare.compare_dom_id),
+      createCompare = function() {
+        param.compare.dis_compare
+          ? ((V = $C("div")),
+            (V.id = param.compare.compare_dom_id),
             (V.style.clear = "both"),
-            (V.style.marginLeft = W.compare.compare_dom_left),
+            (V.style.marginLeft = param.compare.compare_dom_left),
             (V.style.paddingTop = "7px"),
             (V.style.lineHeight = V.style.height =
-              W.compare.compare_dom_h + "px"),
-            (W.compare.compare_dom_h = 30))
-          : (W.compare.compare_dom_h = 0);
+              param.compare.compare_dom_h + "px"),
+            (param.compare.compare_dom_h = 30))
+          : (param.compare.compare_dom_h = 0);
       },
-      J = function(t) {
-        if (W.range.dis_range) {
+      dis_range = function(parentDom) {
+        if (param.range.dis_range) {
           if (
-            ((U = o("div")),
-            (U.id = W.range.range_dom_id),
+            ((U = $C("div")),
+            (U.id = param.range.range_dom_id),
             (U.style.clear = "both"),
             (U.style.whiteSpace = "nowrap"),
-            W.range.rangeCon
-              ? (U.className = W.range.rangeCon)
+            param.range.rangeCon
+              ? (U.className = param.range.rangeCon)
               : (U.style.marginLeft = "5px"),
-            configObj2.iswap || W.menu.menu_wapmore)
+            user_obj.iswap || param.menu.menu_wapmore)
           )
             (U.style.fontSize = "10px"),
               (U.style.marginLeft = "25px"),
               b(U),
-              (W.range.range_dom_h = 30),
-              (U.style.height = W.range.range_dom_h + "px");
+              (param.range.range_dom_h = 30),
+              (U.style.height = param.range.range_dom_h + "px");
           else {
             U.style.fontSize = "12px";
             var e = 4;
             (U.style.paddingTop = e + "px"),
               (U.style.lineHeight = U.style.height =
-                W.range.range_dom_h + "px"),
-              (W.range.range_dom_h += e);
+                param.range.range_dom_h + "px"),
+              (param.range.range_dom_h += e);
           }
-          t.appendChild(U);
-        } else W.range_dom_h = 0;
+          parentDom.appendChild(U);
+        } else param.range_dom_h = 0;
       },
-      q = function(t) {
-        Y(t), J(t), Z(t);
+      q = function(parentDom) {
+        createMenu(parentDom);
+        dis_range(parentDom);
+        createCompare(parentDom);
       },
-      Q = function(t) {
-        W.compare.dis_compare
-          ? (t.appendChild(V), $(t, V))
-          : (W.compare.compare_dom_h = 0);
+      Q = function(tkChartDom) {
+        param.compare.dis_compare
+          ? (tkChartDom.appendChild(V), apiCompare(tkChartDom, V))
+          : (param.compare.compare_dom_h = 0);
       },
       tt = function() {
-        W.charts_hasTChart ||
-          "US" !== configObj2.market ||
-          1 !== W.stock_stutas ||
-          (W.menu.tab = [
+        param.charts_hasTChart ||
+          "US" !== user_obj.market ||
+          1 !== param.stock_stutas ||
+          (param.menu.tab = [
             {
-              lab: "\u65e5K",
+              lab: "日K",
               v: "kd",
               t: "K"
             },
             {
-              lab: "\u5468K",
+              lab: "周K",
               v: "kw",
               t: "K"
             },
             {
-              lab: "\u6708K",
+              lab: "月K",
               v: "km",
               t: "K"
             }
           ]);
       },
-      et = function() {
+      createtkChartDom = function() {
         var e = utils_util.$C("div");
         return (
           (e.style.width = e.style.height = "100%"),
           (e.style.position = "relative"),
-          (configObj2.dom_id = e.id = "tkChart_wwy" + configObj2.symbol),
+          (user_obj.dom_id = e.id = "tkChart_wwy" + user_obj.symbol),
           e
         );
       },
-      at = function() {
-        var h5FigureDIV = r(configObj2.dom_id),
-          e = et();
-        h5FigureDIV.appendChild(e),
-          (e.style.webkitUserSelect = e.style.userSelect = e.style.MozUserSelect =
-            "none"),
-          (X = defaultsetting()),
-          (W = i(X, W || null)),
-          (W = config = z = i(W, configObj2 || null)),
-          (W.domid = X.charts_dom_id),
-          (W.symbol = configObj2.symbol),
-          ("forex" == configObj2.market ||
-            "forex_yt" == configObj2.market ||
-            "BTC" == configObj2.market) &&
-            (W.charts_Start = "K"),
-          (H = u(configObj2.market)),
-          (W = i(W, H)),
-          (W = i(W, configObj2)),
-          (config = i(W.param.t, config || null)),
-          (z = i(W.param.k, z || null)),
-          (z.pcm = 2),
-          configObj2.iswap && v(),
-          (M = o("div")),
-          (M.id = X.charts_dom_id),
-          q(e);
-        var a = e.offsetHeight,
+      render = function() {
+        var h5FigureDIV = $DOM(user_obj.dom_id),
+          tkChartDom = createtkChartDom();
+        h5FigureDIV.appendChild(tkChartDom);
+        tkChartDom.style.webkitUserSelect = tkChartDom.style.userSelect = tkChartDom.style.MozUserSelect =
+          "none";
+        chartsSetting = getDefaultChartSetting();
+        param = oc(chartsSetting, param || null);
+        param = config = h5kOptions = oc(param, user_obj || null);
+        param.domid = chartsSetting.charts_dom_id;
+        param.symbol = user_obj.symbol;
+        ("forex" == user_obj.market ||
+          "forex_yt" == user_obj.market ||
+          "BTC" == user_obj.market) &&
+          (param.charts_Start = "K");
+        marketSetting = getMarketSetting(user_obj.market);
+        param = oc(param, marketSetting);
+        param = oc(param, user_obj);
+        config = oc(param.param.t, config || null);
+        h5kOptions = oc(param.param.k, h5kOptions || null);
+        h5kOptions.pcm = 2;
+        user_obj.iswap && v();
+        charts_dom = $C("div");
+        charts_dom.id = chartsSetting.charts_dom_id;
+        q(tkChartDom);
+        var a = tkChartDom.offsetHeight,
           n =
-            e.offsetHeight -
-            W.menu.menu_dom_h -
+            tkChartDom.offsetHeight -
+            param.menu.menu_dom_h -
             2 -
-            W.range.range_dom_h -
-            W.compare.compare_dom_h,
+            param.range.range_dom_h -
+            param.compare.compare_dom_h,
           s = (n / a) * 100;
-        (M.style.height = s + "%"),
-          e.appendChild(M),
-          Q(e),
-          tt(),
-          "op_m" == configObj2.market && (W.charts_Start = "K"),
-          (F = W.api);
+        charts_dom.style.height = s + "%";
+        tkChartDom.appendChild(charts_dom);
+        Q(tkChartDom);
+        tt();
+        "op_m" == user_obj.market && (param.charts_Start = "K");
+        tkSetting = param.api;
       },
       nt = function() {
-        var e = configObj2.settingCfg.kChart;
-        for (var a in e) e.hasOwnProperty(a) && "setCustom" == a && S[a](e[a]);
+        var e = user_obj.settingCfg.kChart;
+        for (var a in e)
+          e.hasOwnProperty(a) && "setCustom" == a && chartH5t[a](e[a]);
         menuTab && menuTab.setPPT("block"),
-          S.setCustom({
+          chartH5t.setCustom({
             allow_indicator_edit: !0
           }),
-          S.setCustom({
+          chartH5t.setCustom({
             storage_lv: 2
           }),
           utils_util.suda("m_bs"),
-          S.showView("kd"),
-          S.setDimension({
+          chartH5t.showView("kd"),
+          chartH5t.setDimension({
             I_V_O: 0
           }),
-          S.pCharts(
+          chartH5t.pCharts(
             [
               {
-                name: configObj2.DKpChart
+                name: user_obj.DKpChart
               }
             ],
             {
@@ -2516,11 +2510,11 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               noLog: 1
             }
           ),
-          "cnlv1wap" == configObj2.mt
-            ? (S.tCharts(
+          "cnlv1wap" == user_obj.mt
+            ? (chartH5t.tCharts(
                 [
                   {
-                    name: configObj2.DKtChart
+                    name: user_obj.DKtChart
                   }
                 ],
                 {
@@ -2528,13 +2522,13 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   noLog: 1
                 }
               ),
-              S.showRangeSelector({
+              chartH5t.showRangeSelector({
                 display: !1
               }))
-            : (S.tCharts(
+            : (chartH5t.tCharts(
                 [
                   {
-                    name: configObj2.DKtChart
+                    name: user_obj.DKtChart
                   },
                   {
                     name: "volume"
@@ -2545,10 +2539,10 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                   noLog: 1
                 }
               ),
-              S.showRangeSelector({
+              chartH5t.showRangeSelector({
                 display: !0
               })),
-          "TZY" == configObj2.DKpChart && S.setReK(-1);
+          "TZY" == user_obj.DKpChart && chartH5t.setReK(-1);
       },
       ot = function(t) {
         var e = new Date(),
@@ -2571,43 +2565,40 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             e.setTime(e.getTime() + n),
               e.setHours(e.getHours() + 4),
               (a = new Date(99999, 9, 9)),
-              S.dateFromTo(e, a),
+              chartH5t.dateFromTo(e, a),
               KKE.api(
                 "patch.forex.newhqtime",
                 {
-                  symbol: configObj2.symbol,
+                  symbol: user_obj.symbol,
                   timeSymbol: "sys_time",
                   interval: 30,
                   offset: 30
                 },
                 function(t) {
                   t &&
-                    S.pushData({
+                    chartH5t.pushData({
                       symbol: symbol,
                       data: t
                     });
                 }
               );
         }
-        S.showView("kd", {
+        chartH5t.showView("kd", {
           callback: function() {
-            S.setLineStyle({
+            chartH5t.setLineStyle({
               linetype: "line"
             });
           }
         }),
-          S.showYTD(),
-          S.showRangeSelector({
+          chartH5t.showYTD(),
+          chartH5t.showRangeSelector({
             from: e,
             to: a
           });
       },
       it = function(t, e, a) {
         var n = void 0;
-        n =
-          "t" == e
-            ? configObj2.settingCfg.tChart
-            : configObj2.settingCfg.kChart;
+        n = "t" == e ? user_obj.settingCfg.tChart : user_obj.settingCfg.kChart;
         for (var o in n)
           if (n.hasOwnProperty(o))
             if ("pCharts" == o || "tCharts" == o) {
@@ -2623,8 +2614,8 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                 }
               });
             } else if ("setReK" == o)
-              N(configObj2.symbol) && t[o](n[o]),
-                "HK" === configObj2.market && t[o](n[o]);
+              isA(user_obj.symbol) && t[o](n[o]),
+                "HK" === user_obj.market && t[o](n[o]);
             else if ("showView" == o)
               sinaTKChartObj[o]({
                 view: n[o]
@@ -2641,57 +2632,58 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               t[o](n[o]);
             }
         if ("init" == a)
-          for (o in configObj2.settingCfg.tkChart)
-            configObj2.settingCfg.tkChart.hasOwnProperty(o) &&
+          for (o in user_obj.settingCfg.tkChart)
+            user_obj.settingCfg.tkChart.hasOwnProperty(o) &&
               sinaTKChartObj[o](
                 "showView" === o
                   ? {
-                      view: configObj2.settingCfg.tkChart[o]
+                      view: user_obj.settingCfg.tkChart[o]
                     }
-                  : configObj2.settingCfg.tkChart[o]
+                  : user_obj.settingCfg.tkChart[o]
               );
       },
       rt = function() {
         if (_tChart && _tChart.getSymbols().length > 1)
           for (var t = "line", e = 1; e < _tChart.getSymbols().length; e++)
-            S.compare({
+            chartH5t.compare({
               symbol: _tChart.getSymbols()[e],
               linecolor: {
-                K_N: W.compare.color[e - 1]
+                K_N: param.compare.color[e - 1]
               },
               linetype: t
             });
       },
       st = 0,
-      initK = function(a, n, o, i) {
+      initK = function(a, view, rek, i) {
         st > 0 ||
           (st++,
-          KKE.api("chart.h5k.get", z, function(t) {
-            if (((sinaTKChartObj.kChart = S = t), n && "kdd" == n))
-              nt(),
-                i &&
-                  C({
-                    view: n,
-                    active: i
-                  });
-            else {
-              for (var e in F.k)
-                if (F.k.hasOwnProperty(e)) {
-                  var r = F.k[e];
-                  c(r) || (r = [r]),
-                    ("pCharts" != e || W.iswap) &&
-                      s(S[e]) &&
-                      S[e].apply(null, r);
+          KKE.api("chart.h5k.get", h5kOptions, function(t) {
+            sinaTKChartObj.kChart = chartH5t = t;
+            if (view && "kdd" == view) {
+              nt();
+              i &&
+                C({
+                  view: view,
+                  active: i
+                });
+            } else {
+              for (var e in tkSetting.k)
+                if (tkSetting.k.hasOwnProperty(e)) {
+                  var r = tkSetting.k[e];
+                  isArr(r) || (r = [r]),
+                    ("pCharts" != e || param.iswap) &&
+                      isFunc(chartH5t[e]) &&
+                      chartH5t[e].apply(null, r);
                 }
-              "km1" == n || "km3" == n || "km12" == n || "ytd" == n
-                ? ot(n)
-                : n && S.showView(n),
-                ((o && N(configObj2.symbol)) ||
-                  (o && "HK" === configObj2.market)) &&
-                  S.setReK("cnlv1wap" === configObj2.mt ? 0 : o),
-                W.iswap || "cnlv1wap" == configObj2.mt
-                  ? "cnlv1wap" === configObj2.mt &&
-                    S.tCharts(
+              "km1" == view || "km3" == view || "km12" == view || "ytd" == view
+                ? ot(view)
+                : view && chartH5t.showView(view),
+                ((rek && isA(user_obj.symbol)) ||
+                  (rek && "HK" === user_obj.market)) &&
+                  chartH5t.setReK("cnlv1wap" === user_obj.mt ? 0 : rek),
+                param.iswap || "cnlv1wap" == user_obj.mt
+                  ? "cnlv1wap" === user_obj.mt &&
+                    chartH5t.tCharts(
                       [
                         {
                           name: "MACD"
@@ -2702,51 +2694,52 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
                         noLog: 1
                       }
                     )
-                  : (menuTab && it(S), "kcl" == n && S.showView(n));
+                  : (menuTab && it(chartH5t),
+                    "kcl" == view && chartH5t.showView(view));
             }
             if ((rt(), a)) {
-              var l = configObj2.iswap || W.menu.menu_wapmore ? 1 : 2;
-              menuTab && menuTab.setTarget(l), S.compare(a.obj, a.rm);
+              var l = user_obj.iswap || param.menu.menu_wapmore ? 1 : 2;
+              menuTab && menuTab.setTarget(l), chartH5t.compare(a.obj, a.rm);
             }
             menuTab
               ? (menuTab.setChart({
-                  k: S,
-                  o: configObj2
+                  k: chartH5t,
+                  o: user_obj
                 }),
                 i &&
                   C({
-                    view: n,
+                    view: view,
                     active: i
                   }))
-              : W.menu.dis_menu &&
-                mt(
-                  W.menu,
+              : param.menu.dis_menu &&
+                apiMenu(
+                  param.menu,
                   {
                     type: "k",
-                    chart: S
+                    chart: chartH5t
                   },
                   function() {
-                    it(S), _();
+                    it(chartH5t), _();
                   }
                 );
           }),
-          (sinaTKChartObj.chartUserobj = configObj2),
+          (sinaTKChartObj.chartUserobj = user_obj),
           "CN" === utils_util.market(configObj.symbol) &&
-            N(configObj.symbol) &&
+            isA(configObj.symbol) &&
             KKE.api("plugins.dotTool.get", {}, function(e) {
-              configObj2.dotTool = e;
+              user_obj.dotTool = e;
               var a = new Date();
               (a =
                 a.getFullYear() + "-" + (a.getMonth() + 1) + "-" + a.getDate()),
                 utils_util.load(
                   "//finance.sina.com.cn/touzi/lhstockskx/" +
-                    configObj2.symbol +
+                    user_obj.symbol +
                     ".js?" +
                     a,
                   function() {
-                    configObj2.dotTool.pushData({
+                    user_obj.dotTool.pushData({
                       key: "tzylhb",
-                      data: K(window["tzy_lhstock_kx_" + configObj2.symbol]),
+                      data: K(window["tzy_lhstock_kx_" + user_obj.symbol]),
                       dotStyle: {
                         position: "absolute",
                         width: "8px",
@@ -2787,56 +2780,53 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
       },
       initT = function() {
         KKE.api("chart.h5t.get", config, function(tChart) {
-          var e = configObj2.market;
+          var e = user_obj.market;
           sinaTKChartObj.tChart = _tChart = tChart;
-          for (var a in F.t)
-            if (F.t.hasOwnProperty(a)) {
-              var n = F.t[a];
-              c(n) || (n = [n]),
-                s(_tChart[a]) &&
-                  ("US" != e || 1 !== W.stock_stutas) &&
-                  _tChart[a].apply(null, n);
+          for (var a in tkSetting.t)
+            if (tkSetting.t.hasOwnProperty(a)) {
+              var tchartOptions = tkSetting.t[a];
+              isArr(tchartOptions) || (tchartOptions = [tchartOptions]),
+                isFunc(_tChart[a]) &&
+                  ("US" != e || 1 !== param.stock_stutas) &&
+                  _tChart[a].apply(null, tchartOptions);
             }
           menuTab
             ? menuTab.setChart({
                 t: _tChart
               })
-            : W.menu.dis_menu &&
-              mt(W.menu, {
+            : param.menu.dis_menu &&
+              apiMenu(param.menu, {
                 type: "t",
                 chart: _tChart
               }),
-            W.iswap ||
-              W.menu.menu_wapmore ||
+            param.iswap ||
+              param.menu.menu_wapmore ||
               it(
                 _tChart,
                 "t",
-                "t1" == configObj2.settingCfg.tkChart.showView
-                  ? "click"
-                  : "init"
+                "t1" == user_obj.settingCfg.tkChart.showView ? "click" : "init"
               ),
-            W.menu.dis_menu || sinaTKChartObj.re("T_DATA_LOADED", null);
+            param.menu.dis_menu || sinaTKChartObj.re("T_DATA_LOADED", null);
         });
       };
-    (this.menuTab = menuTab),
-      (this.setTKChart = function(t) {
-        (configObj2.settingCfg = t),
-          menuTab && menuTab.setCfg(t),
-          menuTab &&
-            "kdd" != menuTab.chooseTab.tab &&
-            "k1" != menuTab.chooseTab.tab &&
-            (S && it(S), _tChart && it(_tChart, "t")),
-          t.tkChart.showDotTool && this.showDotTool(t.tkChart.showDotTool),
-          d.save({
-            uid: [
-              configObj2.CFGSETTING_IFRAME_PREFIX,
-              new Date().getTime()
-            ].join("|"),
-            key: configObj2.CFGSETTING_IFRAME_PREFIX,
-            value: t
-          });
+    this.menuTab = menuTab;
+    this.setTKChart = function(t) {
+      user_obj.settingCfg = t;
+      menuTab && menuTab.setCfg(t);
+      menuTab &&
+        "kdd" != menuTab.chooseTab.tab &&
+        "k1" != menuTab.chooseTab.tab &&
+        (chartH5t && it(chartH5t), _tChart && it(_tChart, "t"));
+      t.tkChart.showDotTool && this.showDotTool(t.tkChart.showDotTool);
+      bridge.save({
+        uid: [user_obj.CFGSETTING_IFRAME_PREFIX, new Date().getTime()].join(
+          "|"
+        ),
+        key: user_obj.CFGSETTING_IFRAME_PREFIX,
+        value: t
       });
-    var mt = function(t, a, n) {
+    };
+    var apiMenu = function(t, a, n) {
         var o = a.type,
           i = {};
         switch (o) {
@@ -2850,29 +2840,31 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
               k: a.chart
             };
         }
-        (W.menu.me = sinaTKChartObj),
-          (W.menu[o + "chart"] = a.chart),
-          KKE.api("plugins.menu.get", W.menu, function(t) {
-            sinaTKChartObj.re("T_DATA_LOADED", null),
-              (menuTab = t),
-              (sinaTKChartObj.menuTab = menuTab),
-              W.iswap || W.menu.menu_wapmore || (configObj.nocfg || y(), w()),
-              "forex" == configObj2.market || "forex_yt" == configObj2.market
-                ? pt
-                  ? C(pt)
-                  : (menuTab.chooseTab = {
-                      tye: "K",
-                      tab: "kd"
-                    })
-                : C({
-                    view: configObj2.settingCfg.tkChart.showView
-                  }),
-              n && n();
-          });
+        param.menu.me = sinaTKChartObj;
+        param.menu[o + "chart"] = a.chart;
+        KKE.api("plugins.menu.get", param.menu, function(t) {
+          sinaTKChartObj.re("T_DATA_LOADED", null);
+          menuTab = t;
+          sinaTKChartObj.menuTab = menuTab;
+          param.iswap ||
+            param.menu.menu_wapmore ||
+            (configObj.nocfg || y(), w());
+          "forex" == user_obj.market || "forex_yt" == user_obj.market
+            ? pt
+              ? C(pt)
+              : (menuTab.chooseTab = {
+                  tye: "K",
+                  tab: "kd"
+                })
+            : C({
+                view: user_obj.settingCfg.tkChart.showView
+              });
+          n && n();
+        });
       },
-      dt = function(e) {
-        if (utils_util.isStr(e)) {
-          var a = String(e).toLowerCase();
+      dt = function(type) {
+        if (utils_util.isStr(type)) {
+          var a = String(type).toLowerCase();
           switch (a) {
             case "t":
               initT();
@@ -2880,32 +2872,32 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             case "k":
               initK();
           }
-          l.addHandler(window, "resize", function() {
+          xh5_EvtUtil.addHandler(window, "resize", function() {
             sinaTKChartObj.onresize();
           });
         }
       };
-    at(),
-      dt(W.charts_Start),
-      (this.chartUserobj = configObj2),
-      (this.initK = initK),
-      (this.initT = initT),
-      (this.compare = function(e, a) {
-        var n = utils_util.market(e.symbol),
-          o = configObj2.market;
-        if ((e.linetype || (e.linetype = "line"), n === o))
-          _tChart && _tChart.compare(e, a), S && S.compare(e, a);
-        else if ((_tChart && _tChart.hide(), S)) {
-          var i = configObj2.iswap || W.menu.menu_wapmore ? 1 : 2;
-          menuTab && menuTab.setTarget("kdd" == menuTab.chooseTab.tab ? 3 : i),
-            S.show(),
-            S.compare(e, a);
-        } else
-          initK({
-            obj: e,
-            rm: a
-          });
-      });
+    render();
+    dt(param.charts_Start);
+    this.chartUserobj = user_obj;
+    this.initK = initK;
+    this.initT = initT;
+    this.compare = function(e, a) {
+      var n = utils_util.market(e.symbol),
+        o = user_obj.market;
+      if ((e.linetype || (e.linetype = "line"), n === o))
+        _tChart && _tChart.compare(e, a), chartH5t && chartH5t.compare(e, a);
+      else if ((_tChart && _tChart.hide(), chartH5t)) {
+        var i = user_obj.iswap || param.menu.menu_wapmore ? 1 : 2;
+        menuTab && menuTab.setTarget("kdd" == menuTab.chooseTab.tab ? 3 : i),
+          chartH5t.show(),
+          chartH5t.compare(e, a);
+      } else
+        initK({
+          obj: e,
+          rm: a
+        });
+    };
     var pt,
       ht = new (function() {
         var t = 0,
@@ -2913,7 +2905,7 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
             var i;
             o || (o = 100);
             try {
-              i = S;
+              i = chartH5t;
             } catch (r) {}
             return i
               ? n()
@@ -2927,22 +2919,28 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         this.waitFor = e;
       })(),
       ut = 0;
-    (this.showView = function(t) {
-      if (t.active && 0 == ut && "t1" != configObj2.settingCfg.tkChart.showView)
+    this.showView = function(options) {
+      if (
+        options.active &&
+        0 == ut &&
+        "t1" != user_obj.settingCfg.tkChart.showView
+      )
         return (
           ut++,
           void ht.waitFor("", function() {
-            "kdd" == t.view ? (nt(), C(t)) : sinaTKChartObj.showView(t),
+            "kdd" == options.view
+              ? (nt(), C(options))
+              : sinaTKChartObj.showView(options),
               (ut = 0);
           })
         );
-      switch (t.view) {
+      switch (options.view) {
         case "t1":
         case "ts":
-          S && S.hide(), _tChart.showView(t.view);
+          chartH5t && chartH5t.hide(), _tChart.showView(options.view);
           break;
         case "t5":
-          _tChart.showView(t.view);
+          _tChart.showView(options.view);
           break;
         case "ytd":
         case "kdd":
@@ -2954,92 +2952,94 @@ xh5_define("plugins.sinaTKChart", ["utils.util"], function(utils_util) {
         case "k15":
         case "k30":
         case "k60":
-          _tChart && _tChart.hide(),
-            S ? S.showView(t.view) : initK(!1, t.view, void 0, t.active);
+          _tChart && _tChart.hide();
+          chartH5t
+            ? chartH5t.showView(options.view)
+            : initK(!1, options.view, void 0, options.active);
       }
-      (pt = t), C(t);
-    }),
-      (this.showDotTool = function(t) {
-        var e = t.alwaysShow;
-        configObj2.dotTool &&
-          (e ? configObj2.dotTool.show(!0) : configObj2.dotTool.hide(!0));
-      }),
-      (this.pushData = function(t) {
-        _tChart && _tChart.pushData(t.obj, t.num),
-          configObj2.iswap ||
-            W.menu.menu_wapmore ||
-            (S && S.pushData(t.obj, t.num));
-      }),
-      (this.resizePaintTool = function() {
-        var t,
-          e,
-          a = configObj2.paintTool,
-          n = configObj2.dotTool;
-        menuTab &&
-          ("K" == menuTab.chooseTab.tye && S
-            ? ((e = S.getDimension()),
-              (t = {
-                width: e.w_k,
-                height: e.h_k,
-                left: e.RIGHT_W,
-                top: e.T_F_T
-              }))
-            : _tChart &&
-              ((e = _tChart.getDimension()),
-              (t = {
-                width: e.w_t,
-                height: e.h_t,
-                left: e.RIGHT_W,
-                top: e.T_F_T
-              })),
-          t && a && a.resize(t),
-          t && n && n.update(t));
-      }),
-      (this.onresize = function() {
-        _tChart && _tChart.resize(),
-          S && S.resize(),
-          sinaTKChartObj.resizePaintTool();
-      }),
-      (this.update = function() {
-        _tChart && _tChart.update(), S && S.update();
-      }),
-      (this.param = W);
+      pt = options;
+      C(options);
+    };
+    this.showDotTool = function(t) {
+      var e = t.alwaysShow;
+      user_obj.dotTool &&
+        (e ? user_obj.dotTool.show(!0) : user_obj.dotTool.hide(!0));
+    };
+    this.pushData = function(t) {
+      _tChart && _tChart.pushData(t.obj, t.num),
+        user_obj.iswap ||
+          param.menu.menu_wapmore ||
+          (chartH5t && chartH5t.pushData(t.obj, t.num));
+    };
+    this.resizePaintTool = function() {
+      var t,
+        e,
+        a = user_obj.paintTool,
+        n = user_obj.dotTool;
+      menuTab &&
+        ("K" == menuTab.chooseTab.tye && chartH5t
+          ? ((e = chartH5t.getDimension()),
+            (t = {
+              width: e.w_k,
+              height: e.h_k,
+              left: e.RIGHT_W,
+              top: e.T_F_T
+            }))
+          : _tChart &&
+            ((e = _tChart.getDimension()),
+            (t = {
+              width: e.w_t,
+              height: e.h_t,
+              left: e.RIGHT_W,
+              top: e.T_F_T
+            })),
+        t && a && a.resize(t),
+        t && n && n.update(t));
+    };
+    this.onresize = function() {
+      _tChart && _tChart.resize(),
+        chartH5t && chartH5t.resize(),
+        sinaTKChartObj.resizePaintTool();
+    };
+    this.update = function() {
+      _tChart && _tChart.update(), chartH5t && chartH5t.update();
+    };
+    this.param = param;
   }
-  function a(t) {
+  function a(symbol) {
     return (
-      "sb899001" === t ||
-      "sb899305" === t ||
-      "sb899306" === t ||
-      "sb899307" === t ||
-      "sb899003" === t
+      "sb899001" === symbol ||
+      "sb899305" === symbol ||
+      "sb899306" === symbol ||
+      "sb899307" === symbol ||
+      "sb899003" === symbol
     );
   }
   function sinaTKChart$() {
-    (this.VER = "1.4.2"),
-      (this.get = function(config, callback) {
-        var i = new sinaTKChart(config);
-        var r = function(e) {
-          i.me.rl(e, r),
-            utils_util.isFunc(callback) && callback(i),
-            (window.sinaTKChartV1 = i),
-            a(config.symbol) &&
-              i.showView({
-                view: "kcl",
-                active: 0
-              });
-        };
-        i.me.al("T_DATA_LOADED", r, !1);
-      });
+    this.VER = "1.4.2";
+    this.get = function(config, callback) {
+      var i = new SinaTKChart(config);
+      var r = function(e) {
+        i.me.rl(e, r);
+        utils_util.isFunc(callback) && callback(i);
+        window.sinaTKChartV1 = i;
+        a(config.symbol) &&
+          i.showView({
+            view: "kcl",
+            active: 0
+          });
+      };
+      i.me.al("T_DATA_LOADED", r, !1);
+    };
   }
-  var o = utils_util.$C,
-    i = utils_util.oc,
-    r = utils_util.$DOM,
-    s = utils_util.isFunc,
-    l = utils_util.xh5_EvtUtil,
-    c = utils_util.isArr,
-    m = utils_util.cookieUtil,
-    d = utils_util.bridge;
-  return (
-    utils_util.fInherit(sinaTKChart, utils_util.xh5_EvtDispatcher), sinaTKChart$
-  );
+  var $C = utils_util.$C,
+    oc = utils_util.oc,
+    $DOM = utils_util.$DOM,
+    isFunc = utils_util.isFunc,
+    xh5_EvtUtil = utils_util.xh5_EvtUtil,
+    isArr = utils_util.isArr,
+    cookieUtil = utils_util.cookieUtil,
+    bridge = utils_util.bridge;
+  utils_util.fInherit(SinaTKChart, utils_util.xh5_EvtDispatcher);
+  return sinaTKChart$;
 });

@@ -6,7 +6,7 @@
       ref="canvas"
       width="100%"
       height="100%"
-      style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 1;pointer-events:none;"
+      style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 10;pointer-events:none;"
     ></canvas>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
     <div class="content_body">
@@ -67,11 +67,10 @@ import {
 import { ObjectType } from "@/utils";
 import { drawMAs } from "@/ma";
 
-import TransparencyMouseFix from "electron-transparency-mouse-fix";
-const fix = new TransparencyMouseFix({
+/*import TransparencyMouseFix from "electron-transparency-mouse-fix";const fix = new TransparencyMouseFix({
   log: true,
   fixPointerEvents: "auto"
-});
+});*/
 export default {
   name: "suspension",
   data() {
@@ -388,7 +387,7 @@ export default {
       }
 
       setTimeout(() => {
-        drawMAs(this.$refs.canvas, items, 27);
+        drawMAs(this.$refs.canvas, this.items, 27);
       }, 300);
     });
 

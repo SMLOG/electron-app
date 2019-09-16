@@ -257,7 +257,7 @@ export default {
           }
           if (!item.predays) {
             loadScripts([
-              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60,&datalen=1`
+              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60,&datalen=60`
             ]).then(() => {
               if (window[`${item.code}_240`]) {
                 item.predays = window[`${item.code}_240`];
@@ -306,12 +306,9 @@ export default {
       });
     },
     sendRefresh() {
-      this.$electron.remote
-        .getCurrentWindow()
-        .getAllWindows()
-        .map(win => {
-          win.isVisible() && win.webContents.send("refresh", this.items);
-        });
+      this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
+        win.isVisible() && win.webContents.send("refresh", this.items);
+      });
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {

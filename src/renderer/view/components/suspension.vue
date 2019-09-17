@@ -4,8 +4,6 @@
     <canvas
       id="canvas"
       ref="canvas"
-      width="100%"
-      height="100%"
       style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 10;pointer-events:none;"
     ></canvas>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
@@ -39,7 +37,6 @@
           </span>
         </div>
       </div>
-      <div class="item" @click="trade()">{{time}}</div>
     </div>
     <span
       id="rd"
@@ -182,121 +179,7 @@ export default {
       else if (val < 0) return "down";
       else return "";
     },
-    loadDatas() {
-      this.items = store.fetch();
-      this.loadMD();
-    },
-    loadMD() {
-      let that = this;
-      (async function() {
-        //获取均线数值
-        for (let i = 0; i < that.items.length; ++i) {
-          let item = that.items[i];
-          let url = `http://money.finance.sina.com.cn/quotes_service/api/jsonp_v2.php/window.var_${item.code}=/CN_MarketData.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60&datalen=1`;
 
-          await loadScripts([url]).then(() => {});
-        }
-        that.items.map(item => {
-          if (window[`var_${item.code}`]) {
-            item.data = window[`var_${item.code}`];
-            delete window[`var_${item.code}`];
-          }
-          return item;
-        });
-        that.loadMDate = new Date().getTime();
-      })();
-    },
-    refresh() {
-      let win = this.$electron.remote.getCurrentWindow();
-      win.setAlwaysOnTop(true, true, 1);
-      let str = this.items
-        .reduce((total, cur, curIndex, arr) => {
-          if (cur.code.match(/^(sh)|(sz)/)) {
-            total.push(`${cur.code}_i`);
-          }
-          total.push(cur.code);
-
-          return total;
-        }, [])
-        .join(",");
-      let needReloadData = false;
-      return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
-        this.items.map((item, i) => {
-          let data = parse(item);
-          data.pre = item.now;
-          if (item.time) this.time = item.time;
-          Object.assign(item, data);
-
-          this.items.splice(i, 1, item);
-
-          if (!item.predays) {
-            loadScripts([
-              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20_${item.code}_240=/CN_MarketDataService.getKLineData?symbol=sz000001&scale=240&ma=no,&datalen=2`
-            ]).then(() => {
-              if (window[`${item.code}_240`]) {
-                item.predays = window[`${item.code}_240`];
-                delete window[`${item.code}_240`];
-              }
-            });
-          } else {
-            let comp = item.volume / item.predays[0].volume;
-            let estcomp = 0;
-            //item.volumeTimes =
-            if (time().percent > 0.4) {
-              estcomp = item.volume / time().percent / item.predays[0].volume;
-            }
-            if (comp > 2)
-              this.notify(item, `volume 放大 ${comp.toFixed(2)} 倍。`);
-            else if (comp > 1)
-              this.notify(item, `volume 增强 ${comp.toFixed(2)} 倍。`);
-          }
-
-          if (item.code == this.indexCode && item.changePV) {
-            this.progressBarWidth = Math.abs(item.changePV / 1) * 100;
-            this.indexPercent = item.changePV;
-          }
-
-          //** 每增涨 0.5 发送通知 */
-          item.threshold == undefined && (item.threshold = 0);
-
-          let diff = item.changePV - item.threshold;
-          if (Math.abs(diff) >= 0.5) {
-            let incr = parseInt(diff / 0.5) * 0.5;
-            this.notify(
-              item,
-              `increase ${incr} +  ${item.threshold}% to ${item.changeP}.`
-            );
-            item.threshold += incr;
-          }
-
-          //**超过均线后发送通知 */
-          if (item.data && item.data.length > 0) {
-            for (let i in (5, 10, 20, 30, 16)) {
-              if (item.price > item.data[0][`ma_price${i}`]) {
-                this.notify(
-                  item,
-                  `over MD${i} ${item.data[0][`ma_price${i}`]}.`
-                );
-              }
-            }
-          }
-
-          // vm.items.splice(newLength)
-        });
-        if (new Date().getTime() - this.loadMDate > 86400000) this.loadMD();
-      });
-    },
-    timerFn() {
-      setTimeout(
-        () =>
-          this.refresh()
-            .then(() => this.timerFn())
-            .catch(() => {
-              this.timerFn();
-            }),
-        1000
-      );
-    },
     resizeWin() {
       let win = this.$electron.remote.getCurrentWindow();
       let screen = this.$electron.remote.screen;
@@ -366,8 +249,6 @@ export default {
     let biasY = 0;
     let that = this;
     let openwin;
-
-    this.loadDatas();
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
       //this.loadDatas();
@@ -478,8 +359,8 @@ export default {
   /* background-color: rgba(255, 255, 255, 0.6);*/
 }
 .shrink2 {
-  width: 6px;
-  height: 6px;
+  width: 3px;
+  height: 3px;
   border: 1px solid black;
   border-radius: 8px;
   background: white;

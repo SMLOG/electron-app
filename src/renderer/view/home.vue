@@ -268,7 +268,10 @@ export default {
             });
           } else {
             // MA30
-            if (item.now > item.predays[0].ma_price30) {
+            if (
+              item.predays &&
+              item.now > item.predays[item.predays.length - 1].ma_price30
+            ) {
               item.nameColor = "red";
             } else {
               item.nameColor = "green";

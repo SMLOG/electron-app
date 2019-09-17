@@ -2181,25 +2181,25 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
             "k" != a.type && (this.sname = "T_" + this.name);
         var s = "#b82c0c",
             e = "#2ec196",
-            h = bt.calcEMA,
-            o = bt.operateArr,
-            l = bt.getArr;
+            ema = bt.calcEMA,
+            operateArr = bt.operateArr,
+            getArr = bt.getArr;
         this.initAndCalcAll = function(i) {
                 var r = this.gdsd(i),
                     dif12Day = this.customArr[0].v,
                     dea26Day = this.customArr[1].v,
                     bar9Day = this.customArr[2].v,
-                    closeArr = l(r, this.tkProp.close),
-                    c = o(h(closeArr, dif12Day), h(closeArr, dea26Day), "-"),
-                    d = h(c, bar9Day),
-                    f = o(o(c, d, "-"), 2, "*");
+                    closeArr = getArr(r, this.tkProp.close),
+                    diff = operateArr(ema(closeArr, dif12Day), ema(closeArr, dea26Day), "-"),
+                    dea = ema(diff, bar9Day),
+                    f = operateArr(operateArr(diff, dea, "-"), 2, "*");
                 this.oriArr = r,
                     this.datas ? utils_util.ca(this.datas) : this.datas = [],
                     utils_util.ca(this.selfArr);
                 for (var u = 0, p = r.length; p > u; u++)
                     this.selfArr[u] = {
-                        dif: c[u],
-                        dea: d[u],
+                        dif: diff[u],
+                        dea: dea[u],
                         bar: f[u]
                     },
                     this.selfArr[u][At] = r[u].volume < 0;

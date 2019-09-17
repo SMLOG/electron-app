@@ -218,7 +218,7 @@ export default {
       let winSize = win.getSize();
 
       if (this.shrinkBottom) {
-        this.setSize(winSize[0], 1 * 25);
+        this.setSize(winSize[0], 1 * 27);
       }
       if (this.shrinkTop) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -312,8 +312,8 @@ export default {
   margin: 0;
 }
 .item {
-  height: 25px;
-  line-height: 25px;
+  height: 27px;
+  line-height: 27px;
   font-size: 12px;
   text-align: center;
   color: #666;

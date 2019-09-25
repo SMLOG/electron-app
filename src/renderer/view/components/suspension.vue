@@ -1,6 +1,6 @@
 
 <template>
-  <div id="suspension" ref="box" @mouseenter="unCollapseH" @mouseleave="collapse(false)">
+  <div id="suspension" ref="box" @mouseleave="collapse(false)">
     <canvas
       id="canvas"
       ref="canvas"
@@ -19,7 +19,7 @@
         class="item etmf-void"
         v-for="(item,i) in items"
         :key="item.code"
-        v-show="isCollapseH==false || (isCollapseH&&selectIndex==i)"
+        v-show="!isCollapseH || (isCollapseH&&selectIndex==i)"
       >
         <div class="flex">
           <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
@@ -63,7 +63,8 @@ import {
   time
 } from "@/utils";
 import { ObjectType } from "@/utils";
-import { drawMAs } from "@/ma";
+import { setTimeout } from "timers";
+//import { drawMAs } from "@/ma";
 
 /*import TransparencyMouseFix from "electron-transparency-mouse-fix";const fix = new TransparencyMouseFix({
   log: true,
@@ -155,7 +156,7 @@ export default {
       }, 500);
     },
     toggleShrinkTop() {
-      this.shrinkTop = !this.shrinkTop;
+      // this.shrinkTop = !this.shrinkTop;
     },
     toggleShrinkBottom() {
       this.shrinkBottom = !this.shrinkBottom;
@@ -196,8 +197,10 @@ export default {
         body.offsetHeight,
         html.clientHeight,
         html.scrollHeight,
-        html.offsetHeight
+        html.offsetHeight,
+        27 * this.items.length
       );
+      console.log(height);
       if (winSize[1] != height) this.setSize(winSize[0], height);
     },
     setSize(w, h) {
@@ -209,10 +212,6 @@ export default {
     unCollapse(all) {
       if (this.shrinkBottom) {
         this.unCollapseV();
-      }
-      if (this.shrinkTop) {
-        this.unCollapseH();
-        this.isCollapseH = false;
       }
     },
     collapse(all) {
@@ -231,18 +230,10 @@ export default {
       }
       //win.setIgnoreMouseEvents(true, { forward: true });
     },
-    unCollapseH() {
-      let win = this.$electron.remote.getCurrentWindow();
-      let winSize = win.getSize();
-      const size = this.$electron.remote.screen.getPrimaryDisplay()
-        .workAreaSize; //获取显示器的宽高
-
-      win.setPosition(size.width - winSize[0] + 3, win.getPosition()[1]);
-
-      // win.setIgnoreMouseEvents(false, { forward: true });
-    },
     unCollapseV() {
+      this.isCollapseH = false;
       this.resizeWin();
+      //requestAnimationFrame(this.resizeWin().bind(this));
     },
     trade() {}
   },
@@ -272,12 +263,13 @@ export default {
         this.indexPercent = items[0].changePV;
       }
 
-      setTimeout(() => {
+      /*setTimeout(() => {
         drawMAs(this.$refs.canvas, this.items, 27);
-      }, 300);
+      }, 300);*/
     });
 
     this.$electron.ipcRenderer.on("ALT+Z", () => {
+      console.log("height:" + win.getSize()[1]);
       if (win.getSize()[1] > 30) this.collapse(true);
       else this.unCollapse(true);
     });

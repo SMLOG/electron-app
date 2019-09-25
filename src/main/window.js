@@ -109,7 +109,7 @@ ipcMain.on("createSuspensionMenu", e => {
 function createSuspensionWindow() {
   win = new BrowserWindow({
     useContentSize: true,
-    width: 2 * 107, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
+    width: 180, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
     height: 27, //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
     type: "toolbar", //创建的窗口类型为工具栏窗口
     frame: false, //要创建无边框窗口

@@ -90,7 +90,12 @@ app.on("ready", () => {
     console.log("注册失败");
   }
 
-  let keysMap = { "ALT+E": "notifywin", "ALT+Z": "minwin" };
+  let keysMap = {
+    "ALT+E": "notifywin",
+    "ALT+Z": "minwin",
+    "ALT+CommandOrControl+L": "minwin",
+    "ALT+CommandOrControl+1": "minwin"
+  };
   Object.keys(keysMap).forEach(k => {
     console.log(`check key ${k} is regist: ${globalShortcut.isRegistered(k)}`);
     if (

@@ -7,19 +7,20 @@
       style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 10;pointer-events:none;"
     ></canvas>
     <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
+    <div style="position:fixed;top:0;left:0;height:27px;width:100%;" class="item progress">
+      <div
+        class="progress_bar"
+        :class="{up:indexPercent>0,down:indexPercent<0}"
+        :style="{width:progressBarWidth+'%'}"
+      ></div>
+    </div>
     <div class="content_body">
       <div
         class="item etmf-void"
         v-for="(item,i) in items"
         :key="item.code"
-        :class="{progress:i==0}"
+        v-show="isCollapseH==false || (isCollapseH&&selectIndex==i)"
       >
-        <div
-          class="progress_bar"
-          :class="{up:indexPercent>0,down:indexPercent<0}"
-          v-if="i==0"
-          :style="{width:progressBarWidth+'%'}"
-        ></div>
         <div class="flex">
           <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
           <span
@@ -80,7 +81,9 @@ export default {
       altKey: false,
       indexCode: "sh000001",
       progressBarWidth: 0,
-      indexPercent: 0
+      indexPercent: 0,
+      selectIndex: 0,
+      isCollapseH: false
     };
   },
   filters: {
@@ -209,6 +212,7 @@ export default {
       }
       if (this.shrinkTop) {
         this.unCollapseH();
+        this.isCollapseH = false;
       }
     },
     collapse(all) {
@@ -219,6 +223,7 @@ export default {
 
       if (this.shrinkBottom) {
         this.setSize(winSize[0], 1 * 27);
+        this.isCollapseH = true;
       }
       if (this.shrinkTop) {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -275,6 +280,22 @@ export default {
     this.$electron.ipcRenderer.on("ALT+Z", () => {
       if (win.getSize()[1] > 30) this.collapse(true);
       else this.unCollapse(true);
+    });
+    let displayNext = () => {
+      this.selectIndex++;
+      if (this.selectIndex >= this.items.length) this.selectIndex = 0;
+    };
+    this.$electron.ipcRenderer.on("ALT+CommandOrControl+L", displayNext);
+    let randomDisplayTimerID = 0;
+    this.$electron.ipcRenderer.on("ALT+CommandOrControl+1", () => {
+      if (randomDisplayTimerID > 0) {
+        clearInterval(randomDisplayTimerID);
+        randomDisplayTimerID = 0;
+      } else {
+        randomDisplayTimerID = setInterval(() => {
+          displayNext();
+        }, 3000);
+      }
     });
     this.unCollapse();
     this.collapse();

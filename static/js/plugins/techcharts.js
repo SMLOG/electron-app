@@ -4440,7 +4440,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                                 datas:chart.datas
                             }
                         }
-                        window['techs']= techs_datas;
+                        window[`techs`]= [techs_datas,i];
                     }
 
                 },

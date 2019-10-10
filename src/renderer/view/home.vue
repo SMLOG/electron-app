@@ -11,6 +11,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>PE(TTM)</th>
+            <th>净利润同比</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -25,6 +26,8 @@
             <td>{{item.name}}</td>
             <td>{{item.now}}</td>
             <td>{{item.pe_ttm}}</td>
+            <td>{{item.zzl}}</td>
+
             <td>
               <a class="action" @click="delItem(item)">Delete</a>
             </td>
@@ -128,7 +131,8 @@ export default {
           }
         );*/
         //alert("ok");
-
+        let fmtDate = d =>
+          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
         (async () => {
           let symbols = ["sz000002"];
           for (let i = 0; i < symbols.length; i++) {
@@ -152,9 +156,10 @@ export default {
               let handler = () => {
                 console.log("checking");
                 let techs = window["techs"];
-                let names = ["VOLUME", "MACD", "KDJ"];
+                let names = ["VOLUME", "MACD"];
                 let ready = false;
                 if (techs) {
+                  techs = techs[0];
                   for (let k = 0; k < names.length; k++) {
                     let name = names[k];
                     if (!techs[name] || techs[name].symbol != symbols[i]) {
@@ -165,6 +170,69 @@ export default {
                   }
                 }
                 if (ready) {
+                  let datas = techs["MACD"].datas;
+                  let prices = window["techs"][1];
+                  let buyi = -1;
+                  let mmd = [];
+                  for (let j = 1; j < datas.length; j++) {
+                    if (
+                      parseFloat(datas[j].bar) > 0 &&
+                      parseFloat(datas[j - 1].bar) <= 0
+                    ) {
+                      buyi = j;
+                    }
+                    // 空动能
+                    else if (
+                      buyi > 0 &&
+                      parseFloat(datas[j].bar) <= parseFloat(datas[buyi].bar) &&
+                      parseFloat(datas[j - 1].bar) >=
+                        parseFloat(datas[buyi].bar)
+                    ) {
+                      if (datas[buyi]) {
+                        // console.log(datas[j], datas[j - 1], datas[buyi]);
+                        let profit = (
+                          prices[j].close - prices[buyi].close
+                        ).toFixed(2);
+
+                        console.log(
+                          `buy ${fmtDate(datas[buyi].date)} ${fmtDate(
+                            prices[buyi].date
+                          )}  sell ${fmtDate(datas[j].date)} ${fmtDate(
+                            prices[j].date
+                          )} price:${prices[j].close.toFixed(2)} - ${prices[
+                            buyi
+                          ].close.toFixed(2)} profit:${profit}`
+                        );
+                        datas[j].close = prices[j].close;
+                        datas[buyi].close = prices[buyi].close;
+
+                        mmd.push([datas[buyi], datas[j], j - buyi]);
+                      }
+                    }
+                  }
+                  window.mmd = mmd;
+
+                  let i2019 = mmd.filter(p => p[0].date.getFullYear() == 2018);
+                  console.log(i2019);
+                  i2019.reduce((total, prev, arr, i) => {
+                    let profit = prev[1].close - prev[0].close;
+                    total += profit;
+                    console.log(
+                      fmtDate(prev[0].date),
+                      "to",
+
+                      fmtDate(prev[1].date),
+
+                      prev[2] + "天",
+                      `买入价${prev[0].close.toFixed(
+                        2
+                      )} 卖出价${prev[1].close.toFixed(2)}`,
+                      "当期盈利" + profit.toFixed(2),
+                      "总盈利" + total.toFixed(2)
+                    );
+                    return total;
+                  }, 0);
+
                   return resolve();
                 }
                 setTimeout(() => {
@@ -219,7 +287,7 @@ export default {
             .catch(() => {
               this.timerFn();
             }),
-        1000
+        2000
       );
     },
     notify(item, message) {
@@ -251,10 +319,10 @@ export default {
           let data = parse(item);
           data.pre = item.now;
           if (item.time) that.time = item.time;
+          //item.zzl = "test";
           Object.assign(item, data);
-
+          that.$set(this.items[i], "zzl", window["zzl" + item.code]);
           attachData(item);
-
           //  that.items.splice(i, 1, item);
 
           if (item.code == that.indexCode && item.changePV) {

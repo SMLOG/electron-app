@@ -782,13 +782,15 @@ const csvJSON = csv => {
   const lines = csv.trim().split("\n");
   const headers = lines[0].split(",").filter(x => x.trim());
   const items = {};
+  items["reportDate"] = headers;
 
   for (let i = 1; i < lines.length; i++) {
     if (!lines[i]) continue;
     const currentline = lines[i].split(",");
-    let name = currentline[0];
+    let name = currentline[0].trim();
 
     items[name] = {};
+
     for (let j = 1; j < headers.length; j++) {
       let reportDate = headers[j];
       items[name][reportDate] = currentline[j];
@@ -796,14 +798,18 @@ const csvJSON = csv => {
   }
   return items;
 };
-export function attachData(item) {
+
+export async function attachData(item) {
   const tbls = ["lrb", "xjllb", "zcfzb"];
 
   for (let i = 0; i < tbls.length; i++) {
     let tbname = tbls[i];
     if (!item[tbname]) {
-      fetch(
-        `http://quotes.money.163.com/service/xjllb_${item.code.replace(
+      item.zzl = "--";
+
+      item[tbname] = {};
+      await fetch(
+        `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
           /[^0-9]/g,
           ""
         )}.html`
@@ -813,10 +819,23 @@ export function attachData(item) {
           var reader = new FileReader();
           reader.onload = function(e) {
             var text = reader.result;
-            item[tbname] = csvJSON(text);
+            let tb = (window["tb_" + tbname + item.code] = csvJSON(text));
+            //  item[tbname] = csvJSON(text);
+
+            if (tb["稀释每股收益"]) {
+              var laste = parseFloat(tb["稀释每股收益"][tb.reportDate[1]]);
+              var last2 = parseFloat(tb["稀释每股收益"][tb.reportDate[5]]);
+              window["zzl" + item.code] = item.zzl =
+                (((laste - last2) * 100) / last2).toFixed(0) +
+                "%" +
+                `,${laste},${last2}`;
+            }
           };
           reader.readAsText(blob, "GBK");
         });
+    } else {
+      item.zzl = window["zzl" + item.code];
+      console.log(item.zzl);
     }
   }
 }

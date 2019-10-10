@@ -109,7 +109,7 @@ xh5_define(
               s = {
                 rsAmount: void 0
               },
-              r = function(e, a, s, r, l) {
+              initState = function(e, a, s, r, l) {
                 if (a) {
                   if (n) {
                     if (
@@ -125,7 +125,7 @@ xh5_define(
                       (a = t.kUtil.adbd(a, K.get(e), s, !1)));
                   o["k" + e] = a;
                   var d = a.length,
-                    u = r ? L.PARAM.K_CL_NUM : L.PARAM.defaultCandleNum;
+                    u = r ? setting.PARAM.K_CL_NUM : setting.PARAM.defaultCandleNum;
                   (o["k" + e + "v"] = d > u ? d - u : 0),
                     (o["k" + e + "b"] = d);
                 }
@@ -170,14 +170,14 @@ xh5_define(
               (this.getOriDK = function() {
                 return i;
               }),
-              (this.initState = r),
+              (this.initState = initState),
               (this.initDWMState = function(e, n) {
                 var a = t.clone(n.day, null);
-                r(_.URLHASH.KD, n.day),
-                  r(_.URLHASH.KW, n.week),
-                  r(_.URLHASH.KM, n.month),
-                  r(_.URLHASH.KCL, a, !1, !0),
-                  r(_.URLHASH.KY, n.year);
+                initState(_.URLHASH.KD, n.day),
+                  initState(_.URLHASH.KW, n.week),
+                  initState(_.URLHASH.KM, n.month),
+                  initState(_.URLHASH.KCL, a, !1, !0),
+                  initState(_.URLHASH.KY, n.year);
               }),
               (this.extraDataObj = s),
               (this.initExtraData = function() {
@@ -240,16 +240,16 @@ xh5_define(
             (this.createPlayingData = function() {
               var e,
                 t,
-                n = L.DIMENSION.h_k,
-                a = n * L.DIMENSION.P_HV,
-                i = n * (1 - L.DIMENSION.P_HV);
+                n = setting.DIMENSION.h_k,
+                a = n * setting.DIMENSION.P_HV,
+                i = n * (1 - setting.DIMENSION.P_HV);
               (e = h.labelMinP), (t = h.labelMaxP);
               for (
                 var o,
                   s = h.labelMaxVol,
                   r = h.prevclose,
                   l = h.isTotalRedraw ? 0 : h.dataLen - h.dataLenOffset,
-                  c = L.custom.show_underlay_vol,
+                  c = setting.custom.show_underlay_vol,
                   u = h.isCompare ? "ppp" : "pp",
                   p = h.dataLen;
                 p > l;
@@ -280,9 +280,9 @@ xh5_define(
                         (1 == a.pcm || V.viewId == _.URLHASH.K1) &&
                           (0 == o &&
                             s > 1 &&
-                            s < L.PARAM.minCandleNum &&
+                            s < setting.PARAM.minCandleNum &&
                             ((o = s - 1), (V.start = o)),
-                          s - o >= L.PARAM.defaultCandleNum &&
+                          s - o >= setting.PARAM.defaultCandleNum &&
                             ((o += r), (V.start = o)));
                     }
                     C.set("v", o), C.set("b", s);
@@ -909,7 +909,7 @@ xh5_define(
             !t.isArr(e) && (e = [e]);
             for (var o = e.length; o--; )
               if (e[o].name && "VOLUME" === e[o].name.toUpperCase()) {
-                e.splice(o, 1), (L.custom.show_underlay_vol = !0);
+                e.splice(o, 1), (setting.custom.show_underlay_vol = !0);
                 break;
               }
             N ||
@@ -919,7 +919,7 @@ xh5_define(
                 chartArea: R,
                 titleArea: H,
                 cb: W,
-                cfg: L,
+                cfg: setting,
                 type: "k",
                 usrObj: a
               })),
@@ -933,10 +933,10 @@ xh5_define(
               !t.isArr(e) && (e = [e]);
               for (var n = e.length; n--; )
                 if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
-                  e.splice(n, 1), (L.custom.show_underlay_vol = !1);
+                  e.splice(n, 1), (setting.custom.show_underlay_vol = !1);
                   break;
                 }
-            } else L.custom.show_underlay_vol = !1;
+            } else setting.custom.show_underlay_vol = !1;
             N && N.removeChart(e);
           }),
           (this.togglePt = function(e, t) {
@@ -949,7 +949,7 @@ xh5_define(
                 iMgr: B,
                 cb: W,
                 subArea: D,
-                cfg: L,
+                cfg: setting,
                 type: "k",
                 usrObj: a,
                 initMgr: j
@@ -963,7 +963,7 @@ xh5_define(
           (this.initRs = function() {
             (w = new o({
               stockData: h,
-              setting: L,
+              setting: setting,
               rc: I.moving
             })),
               w.linkData(),
@@ -976,10 +976,10 @@ xh5_define(
       function k(e, a) {
         function i() {
           if (y)
-            (r = L.COLOR.K_N),
-              (s = L.COLOR.K_FALL),
-              (l = L.COLOR.K_RISE),
-              (c = L.COLOR.K_CL);
+            (r = setting.COLOR.K_N),
+              (s = setting.COLOR.K_FALL),
+              (l = setting.COLOR.K_RISE),
+              (c = setting.COLOR.K_CL);
           else {
             var a = o.linecolor,
               i = a.K_N || "#" + t.randomColor();
@@ -993,13 +993,13 @@ xh5_define(
             (m.K_RISE = l),
             (m.K_CL = c),
             (d = new n.xh5_ibPainter({
-              setting: L,
+              setting: setting,
               sd: e,
               ctn: C,
               withHBg: y,
               fixScale: !1,
               reO: {
-                mh: L.DIMENSION.H_MA4K
+                mh: setting.DIMENSION.H_MA4K
               },
               iMgr: B,
               iTo: function(t, n, a, i) {
@@ -1007,14 +1007,14 @@ xh5_define(
                   !h(t, B.iHLineO.body) && t.appendChild(B.iHLineO.body);
                   var o =
                     e.labelMaxP -
-                    (a / L.DIMENSION.h_k) * (e.labelMaxP - e.labelMinP);
+                    (a / setting.DIMENSION.h_k) * (e.labelMaxP - e.labelMinP);
                   B.iToD(
                     {
                       mark: o,
                       x: n,
                       y: a,
-                      oy: L.DIMENSION.H_MA4K,
-                      ox: L.DIMENSION.posX,
+                      oy: setting.DIMENSION.H_MA4K,
+                      ox: setting.DIMENSION.posX,
                       e: i
                     },
                     !0,
@@ -1053,7 +1053,7 @@ xh5_define(
               (l = m.K_RISE),
               (c = m.K_CL),
               !o.linetype && (o.linetype = g),
-              (L.datas.candle = o.linetype),
+              (setting.datas.candle = o.linetype),
               0 == o.linetype.indexOf("line") ||
                 0 == o.linetype.indexOf("mountain"))
             ) {
@@ -1062,7 +1062,7 @@ xh5_define(
             }
           },
           _ = function(t, n) {
-            u.fillStyle = L.COLOR.K_EXT;
+            u.fillStyle = setting.COLOR.K_EXT;
             for (
               var a, i, o, s = !1, r = !1, l = e.datas, c = l.length;
               c--;
@@ -1073,11 +1073,11 @@ xh5_define(
                 var h = o.high.toFixed(b);
                 99 > a
                   ? (u.textAlign = "left")
-                  : a > L.DIMENSION.w_k - 99
+                  : a > setting.DIMENSION.w_k - 99
                   ? ((u.textAlign = "right"), (a -= 5))
                   : (u.textAlign = "center"),
                   (i = o.hy),
-                  i < L.STYLE.FONT_SIZE && (i = L.STYLE.FONT_SIZE + 2),
+                  i < setting.STYLE.FONT_SIZE && (i = setting.STYLE.FONT_SIZE + 2),
                   u.fillText(h, a, i);
               }
               if (((a = n), !r && o.low == e.rangeMin)) {
@@ -1085,12 +1085,12 @@ xh5_define(
                 var d = o.low.toFixed(b);
                 99 > a
                   ? (u.textAlign = "left")
-                  : a > L.DIMENSION.w_k - 99
+                  : a > setting.DIMENSION.w_k - 99
                   ? ((u.textAlign = "right"), (a -= 5))
                   : (u.textAlign = "center"),
-                  (i = Math.floor(o.ly + L.STYLE.FONT_SIZE + 2)),
-                  i > L.DIMENSION.h_k + 0.5 * L.STYLE.FONT_SIZE - 3 &&
-                    (i = L.DIMENSION.h_k),
+                  (i = Math.floor(o.ly + setting.STYLE.FONT_SIZE + 2)),
+                  i > setting.DIMENSION.h_k + 0.5 * setting.STYLE.FONT_SIZE - 3 &&
+                    (i = setting.DIMENSION.h_k),
                   u.fillText(d, a, i);
               }
               if (r && s) break;
@@ -1100,14 +1100,14 @@ xh5_define(
           w = function() {
             var t = e.datas,
               n = t.length,
-              a = L.DIMENSION.w_k / Math.max(n, L.PARAM.minCandleNum),
+              a = setting.DIMENSION.w_k / Math.max(n, setting.PARAM.minCandleNum),
               i = 0.5 * a,
               o = z.x - a;
             d.beginPath();
             for (var s, r, l = 0; n > l; l++)
               (s = t[l]),
                 (r = s.vy),
-                d.drawVStickC(o, r, i, L.DIMENSION.h_k, L.COLOR.V_SD),
+                d.drawVStickC(o, r, i, setting.DIMENSION.h_k, setting.COLOR.V_SD),
                 (o += a);
             d.stroke();
           },
@@ -1117,7 +1117,7 @@ xh5_define(
                 n,
                 a = e.datas,
                 i = a.length,
-                s = L.DIMENSION.w_k / Math.max(i, L.PARAM.minCandleNum),
+                s = setting.DIMENSION.w_k / Math.max(i, setting.PARAM.minCandleNum),
                 r = z.x - 0.4 * s,
                 l = 0;
               i > l;
@@ -1133,15 +1133,15 @@ xh5_define(
             d.stroke(),
               0 == o.linetype.indexOf("mountain") &&
                 ((r -= s),
-                d.lineTo(r, L.DIMENSION.h_k),
-                d.lineTo(z.x - 0.4 * s, L.DIMENSION.h_k),
+                d.lineTo(r, setting.DIMENSION.h_k),
+                d.lineTo(z.x - 0.4 * s, setting.DIMENSION.h_k),
                 d.newFillStyle_rgba(
-                  L.COLOR.M_ARR,
-                  L.DIMENSION.h_k,
-                  L.COLOR.M_ARR_A
+                  setting.COLOR.M_ARR,
+                  setting.DIMENSION.h_k,
+                  setting.COLOR.M_ARR_A
                 ),
                 d.fill()),
-              y && L.custom.show_ext_marks && _(s, r);
+              y && setting.custom.show_ext_marks && _(s, r);
           },
           S = function() {
             for (
@@ -1151,7 +1151,7 @@ xh5_define(
                 i,
                 o = e.datas,
                 c = o.length,
-                h = L.DIMENSION.w_k / Math.max(c, L.PARAM.minCandleNum),
+                h = setting.DIMENSION.w_k / Math.max(c, setting.PARAM.minCandleNum),
                 u = 0.6 * h,
                 p = -1,
                 m = 1,
@@ -1193,7 +1193,7 @@ xh5_define(
                   (t += h);
               d.stroke(), p++;
             }
-            y && L.custom.show_ext_marks && _(h, t);
+            y && setting.custom.show_ext_marks && _(h, t);
           },
           M = function() {
             var t,
@@ -1201,7 +1201,7 @@ xh5_define(
               a,
               i = e.datas,
               o = i.length,
-              c = L.DIMENSION.w_k / Math.max(o, L.PARAM.minCandleNum),
+              c = setting.DIMENSION.w_k / Math.max(o, setting.PARAM.minCandleNum),
               h = 0.6 * c,
               u = -1;
             h = Math.floor(h) % 2 === 0 ? Math.floor(h) : Math.floor(h) - 1;
@@ -1240,7 +1240,7 @@ xh5_define(
                   (t += c);
               d.stroke(), u++;
             }
-            y && L.custom.show_ext_marks && _(c, t);
+            y && setting.custom.show_ext_marks && _(c, t);
           },
           I = function() {
             for (
@@ -1250,7 +1250,7 @@ xh5_define(
                 i,
                 o = e.datas,
                 c = o.length,
-                h = L.DIMENSION.w_k / Math.max(c, L.PARAM.minCandleNum),
+                h = setting.DIMENSION.w_k / Math.max(c, setting.PARAM.minCandleNum),
                 u = 0.6 * h,
                 p = -1,
                 m = 0;
@@ -1276,7 +1276,7 @@ xh5_define(
                   (t += h);
               d.stroke(), p++;
             }
-            y && L.custom.show_ext_marks && _(h, t);
+            y && setting.custom.show_ext_marks && _(h, t);
           },
           A = function() {
             y && d.drawBg(z.x);
@@ -1287,22 +1287,22 @@ xh5_define(
                   0 == o.linetype.indexOf("mountain"),
                 a = 0 == o.linetype.indexOf("hollow"),
                 i = 0 == o.linetype.indexOf("ohlc");
-              d.clear(n, L.PARAM.getHd()),
+              d.clear(n, setting.PARAM.getHd()),
                 d.newGStyle({
                   textBaseline: "bottom",
-                  font: L.STYLE.FONT_SIZE + "px " + L.STYLE.FONT_FAMILY
+                  font: setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY
                 }),
-                y && L.custom.show_underlay_vol && w(),
+                y && setting.custom.show_underlay_vol && w(),
                 n ? k() : a ? S() : i ? I() : M();
             }
           };
         (this.draw = A),
           (this.clear = function(e) {
-            e ? d.clear(!1, L.PARAM.getHd()) : (d.remove(), (d = null));
+            e ? d.clear(!1, setting.PARAM.getHd()) : (d.remove(), (d = null));
           }),
           (this.resize = function() {
             d.resize({
-              mh: L.DIMENSION.H_MA4K
+              mh: setting.DIMENSION.H_MA4K
             }),
               A();
           }),
@@ -1327,8 +1327,8 @@ xh5_define(
               n = Number.MAX_VALUE,
               i = -Number.MAX_VALUE,
               o = f.length,
-              s = o > 1 || "percent" == L.datas.scaleType;
-            L.custom.k_overlay && (s = !1);
+              s = o > 1 || "percent" == setting.datas.scaleType;
+            setting.custom.k_overlay && (s = !1);
             for (var r, l, c, h, d = s ? "Percent" : "Price", u = o; u--; )
               (e = f[u]),
                 a.scalerange
@@ -1353,7 +1353,7 @@ xh5_define(
             for (var m = o; m--; ) (e = f[m]), e.setPricePos(p, s);
           },
           N = function() {
-            (V.start < 1 || !L.custom.smooth) && z.resetX();
+            (V.start < 1 || !setting.custom.smooth) && z.resetX();
             for (var e = f.length; e--; ) f[e].draw();
           },
           w = function() {
@@ -1502,8 +1502,8 @@ xh5_define(
             l = !1,
             h = function() {
               i || ((i = c("div")), (i.style.margin = "0 auto")),
-                (i.style.width = 0.8 * L.DIMENSION.getStageW() + "px"),
-                (i.style.height = 0.83 * L.DIMENSION.h_k + "px");
+                (i.style.width = 0.8 * setting.DIMENSION.getStageW() + "px"),
+                (i.style.height = 0.83 * setting.DIMENSION.h_k + "px");
             },
             d = function(e) {
               n.dateTo(e.date, function(e) {
@@ -1544,7 +1544,7 @@ xh5_define(
                   top: "2%"
                 }
               };
-              return o || (o = new t.TipM(L.COLOR)), (a.content = i), a;
+              return o || (o = new t.TipM(setting.COLOR)), (a.content = i), a;
             },
             v = function(t) {
               var s = f(t);
@@ -1581,7 +1581,7 @@ xh5_define(
                       txt: _.historyt08,
                       parent: x
                     });
-                  switch (L.custom.history_t) {
+                  switch (setting.custom.history_t) {
                     case "layer":
                       h(), v(n);
                       break;
@@ -1635,10 +1635,10 @@ xh5_define(
             if (
               (!a && z.resetX(),
               !(
-                n - t < L.PARAM.minCandleNum ||
+                n - t < setting.PARAM.minCandleNum ||
                 n > V.dataLength ||
                 0 > t ||
-                n - t > L.PARAM.maxCandleNum
+                n - t > setting.PARAM.maxCandleNum
               ))
             ) {
               (V.start = t), (V.end = n), (V.currentLength = n - t);
@@ -1730,7 +1730,7 @@ xh5_define(
               }
         }),
           (this.setScale = function(e) {
-            (L.datas.scaleType = e), y(), N();
+            (setting.datas.scaleType = e), y(), N();
           }),
           (this.setLineStyle = function(n) {
             if (n) {
@@ -1756,15 +1756,15 @@ xh5_define(
             var n = V.start,
               a = V.end,
               i = e / Math.abs(e),
-              o = i * Math.ceil((a - n) / L.PARAM.zoomUnit);
+              o = i * Math.ceil((a - n) / setting.PARAM.zoomUnit);
             if (
-              (Math.abs(o) > L.PARAM.zoomLimit && (o = i * L.PARAM.zoomLimit),
-              L.custom.centerZoom)
+              (Math.abs(o) > setting.PARAM.zoomLimit && (o = i * setting.PARAM.zoomLimit),
+              setting.custom.centerZoom)
             ) {
-              var s = t ? t.layerX / L.DIMENSION.w_k : 0.5;
-              s < L.PARAM.zoomArea
+              var s = t ? t.layerX / setting.DIMENSION.w_k : 0.5;
+              s < setting.PARAM.zoomArea
                 ? (a = Math.min(a - o * Math.abs(o), V.dataLength))
-                : s > 1 - L.PARAM.zoomArea
+                : s > 1 - setting.PARAM.zoomArea
                 ? (n = Math.max(n + o * Math.abs(o), 0))
                 : ((n = Math.max(n + o * Math.abs(o), 0)),
                   (a = Math.min(a - o * Math.abs(o), V.dataLength)));
@@ -1853,18 +1853,18 @@ xh5_define(
               default:
                 t.grabM.shareTo({
                   ctn: x,
-                  w: L.DIMENSION.getStageW(),
-                  h: L.DIMENSION.getStageH() - (O.clientHeight || 0),
-                  ignoreZIdxArr: [L.PARAM.I_Z_INDEX],
-                  ignoreIdArr: [L.PARAM.LOGO_ID],
-                  priorZIdx: L.PARAM.G_Z_INDEX,
+                  w: setting.DIMENSION.getStageW(),
+                  h: setting.DIMENSION.getStageH() - (O.clientHeight || 0),
+                  ignoreZIdxArr: [setting.PARAM.I_Z_INDEX],
+                  ignoreIdArr: [setting.PARAM.LOGO_ID],
+                  priorZIdx: setting.PARAM.G_Z_INDEX,
                   nologo: !1,
-                  top: L.DIMENSION.posY + L.DIMENSION.H_MA4K + 17,
-                  right: L.DIMENSION.RIGHT_W + L.DIMENSION.K_RIGHT_W,
-                  LOGO_W: L.DIMENSION.LOGO_W,
-                  LOGO_H: L.DIMENSION.LOGO_H,
-                  color: L.COLOR.LOGO,
-                  bgColor: L.COLOR.BG,
+                  top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+                  right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+                  LOGO_W: setting.DIMENSION.LOGO_W,
+                  LOGO_H: setting.DIMENSION.LOGO_H,
+                  color: setting.COLOR.LOGO,
+                  bgColor: setting.COLOR.BG,
                   txt: e.wbtext,
                   url: e.url,
                   extra: e.extra
@@ -1969,7 +1969,7 @@ xh5_define(
           VER: "2.11.0"
         }
       );
-      var L;
+      var setting;
       !(function() {
         if (
           (!a.symbol && (a.symbol = "sh000001"),
@@ -1979,7 +1979,7 @@ xh5_define(
             "LSE" === t.market(a.symbol)
               ? t.strUtil.replaceStr(a.symbol)
               : a.symbol.replace(".", "$")),
-          (L = e.getSetting(
+          (setting = e.getSetting(
             [
               "_",
               a.symbol,
@@ -1989,36 +1989,36 @@ xh5_define(
             ].join("")
           )),
           0 == location.protocol.indexOf("https:") && (a.ssl = !0),
-          isNaN(a.rate) && (a.rate = L.PARAM.updateRate),
+          isNaN(a.rate) && (a.rate = setting.PARAM.updateRate),
           !isNaN(a.mincandlenum) &&
             a.mincandlenum > 0 &&
-            (L.PARAM.minCandleNum = a.mincandlenum),
+            (setting.PARAM.minCandleNum = a.mincandlenum),
           !isNaN(a.candlenum) &&
-            a.candlenum >= L.PARAM.minCandleNum &&
-            (L.PARAM.defaultCandleNum = a.candlenum),
-          isNaN(a.maxcandlenum) || (L.PARAM.maxCandleNum = a.maxcandlenum),
+            a.candlenum >= setting.PARAM.minCandleNum &&
+            (setting.PARAM.defaultCandleNum = a.candlenum),
+          isNaN(a.maxcandlenum) || (setting.PARAM.maxCandleNum = a.maxcandlenum),
           !isNaN(a.zoomunit) &&
-            a.zoomunit > L.PARAM.minCandleNum &&
-            (L.PARAM.zoomUnit = a.zoomunit),
+            a.zoomunit > setting.PARAM.minCandleNum &&
+            (setting.PARAM.zoomUnit = a.zoomunit),
           !isNaN(a.zoomlimit) &&
             a.zoomlimit > 0 &&
-            (L.PARAM.zoomLimit = Math.round(a.zoomlimit)),
+            (setting.PARAM.zoomLimit = Math.round(a.zoomlimit)),
           g.noH5)
         ) {
           if ("undefined" == typeof FlashCanvas || a.fh5)
             return void (t.isFunc(a.noh5) && a.noh5(a));
-          L.PARAM.isFlash = !0;
+          setting.PARAM.isFlash = !0;
         }
         if (
-          (L.PARAM.isFlash && (L.COLOR.F_BG = "#fff"),
-          a.reorder || (L.custom.indicator_reorder = !1),
-          a.reheight || (L.custom.indicator_reheight = !1),
+          (setting.PARAM.isFlash && (setting.COLOR.F_BG = "#fff"),
+          a.reorder || (setting.custom.indicator_reorder = !1),
+          a.reheight || (setting.custom.indicator_reheight = !1),
           a.dim)
         )
           for (var n in a.dim)
             a.dim.hasOwnProperty(n) &&
-              t.isNum(L.DIMENSION[n]) &&
-              (L.DIMENSION[n] = a.dim[n]);
+              t.isNum(setting.DIMENSION[n]) &&
+              (setting.DIMENSION[n] = a.dim[n]);
       })();
       var I,
         A,
@@ -2049,15 +2049,15 @@ xh5_define(
           x: 0,
           resetX: function(e) {
             this.x = isNaN(e)
-              ? L.DIMENSION.w_k /
-                Math.max(V.currentLength, L.PARAM.minCandleNum)
+              ? setting.DIMENSION.w_k /
+                Math.max(V.currentLength, setting.PARAM.minCandleNum)
               : e;
           }
         },
         q = new (function() {
           var e;
           (this.showTip = function(n) {
-            e || (e = new t.TipM(L.COLOR)), e.genTip(n);
+            e || (e = new t.TipM(setting.COLOR)), e.genTip(n);
           }),
             (this.hideTip = function() {
               e && e.hide();
@@ -2075,12 +2075,12 @@ xh5_define(
                 isCompare: n,
                 data: e.datas,
                 viewRangeState: t.clone(V, null),
-                width: L.DIMENSION.w_k,
-                height: L.DIMENSION.h_k,
-                left: L.DIMENSION.posX,
-                top: L.DIMENSION.H_MA4K,
+                width: setting.DIMENSION.w_k,
+                height: setting.DIMENSION.h_k,
+                left: setting.DIMENSION.posX,
+                top: setting.DIMENSION.H_MA4K,
                 range: [e.labelMaxP, e.labelMinP, e.labelMaxVol],
-                minCandleNum: L.PARAM.minCandleNum
+                minCandleNum: setting.PARAM.minCandleNum
               });
           };
           var n = [];
@@ -2118,8 +2118,8 @@ xh5_define(
                   data: t.clone(i, null),
                   rangedata: r,
                   idx: o,
-                  left: L.DIMENSION.posX,
-                  top: L.DIMENSION.H_MA4K,
+                  left: setting.DIMENSION.posX,
+                  top: setting.DIMENSION.H_MA4K,
                   data_array: s,
                   curname: l,
                   interacting: !!c
@@ -2133,8 +2133,8 @@ xh5_define(
                   a.ondataupdate({
                     data: t.clone(n, null),
                     idx: V.currentLength - 1,
-                    left: L.DIMENSION.posX,
-                    top: L.DIMENSION.H_MA4K
+                    left: setting.DIMENSION.posX,
+                    top: setting.DIMENSION.H_MA4K
                   });
               }
             }),
@@ -2172,7 +2172,7 @@ xh5_define(
                 var o,
                   s = O.clientHeight || 0,
                   r = D.clientHeight || 0,
-                  l = L.DIMENSION.getOneWholeTH(),
+                  l = setting.DIMENSION.getOneWholeTH(),
                   c = 0,
                   h = D.childNodes,
                   d = h.length,
@@ -2188,16 +2188,16 @@ xh5_define(
               return (
                 !isNaN(n) && (r -= n),
                 r / (t - s) > 1 && ((r = u), (i = !0)),
-                L.DIMENSION.setStageW(e),
+                setting.DIMENSION.setStageW(e),
                 1 == $
                   ? d > 0 &&
-                    (L.DIMENSION.setStageH(t, d * l + c + s), (i = !0), ($ = 0))
-                  : L.DIMENSION.setStageH(t, r + s),
+                    (setting.DIMENSION.setStageH(t, d * l + c + s), (i = !0), ($ = 0))
+                  : setting.DIMENSION.setStageH(t, r + s),
                 i
               );
             },
             d = function() {
-              s && (s.style.display = L.custom.show_logo ? "" : "none");
+              s && (s.style.display = setting.custom.show_logo ? "" : "none");
             },
             p = function() {
               (F = new t.LoadingSign()), F.appendto(C);
@@ -2212,12 +2212,12 @@ xh5_define(
                 I.onResize(o), B.onResize();
               }
               (i.style.left = "1px"),
-                (i.style.top = L.DIMENSION.h_k + L.DIMENSION.H_MA4K + "px"),
+                (i.style.top = setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px"),
                 d(),
                 m(),
                 t.stc("k_wh", [
-                  L.DIMENSION.getStageW(),
-                  L.DIMENSION.getStageH()
+                  setting.DIMENSION.getStageW(),
+                  setting.DIMENSION.getStageH()
                 ]);
             },
             v = function() {
@@ -2228,13 +2228,13 @@ xh5_define(
                 (x.style.outlineStyle = "none"),
                 (x.style.webkitUserSelect = x.style.userSelect = x.style.MozUserSelect =
                   "none"),
-                (C = c("div", "mainarea_" + L.uid)),
+                (C = c("div", "mainarea_" + setting.uid)),
                 (R = c("div")),
                 C.appendChild(R),
                 (H = c("div")),
                 (H.style.position = "absolute"),
                 (H.style.fontSize = H.style.lineHeight =
-                  L.STYLE.FONT_SIZE + "px"),
+                  setting.STYLE.FONT_SIZE + "px"),
                 (H.style.width = "100%"),
                 C.appendChild(H),
                 x.appendChild(C),
@@ -2244,7 +2244,7 @@ xh5_define(
                 x.appendChild(O),
                 (e = new N({
                   width: r,
-                  height: L.DIMENSION.H_TIME_PART
+                  height: setting.DIMENSION.H_TIME_PART
                 })),
                 (n = e.g),
                 (i = e.canvas),
@@ -2258,28 +2258,28 @@ xh5_define(
                 E && (n = E.setTheme(e));
                 for (var a in e)
                   e.hasOwnProperty(a) &&
-                    L.COLOR.hasOwnProperty(a) &&
-                    L.COLOR[a] !== e[a] &&
-                    ((L.COLOR[a] = e[a]), (n = !0));
+                    setting.COLOR.hasOwnProperty(a) &&
+                    setting.COLOR[a] !== e[a] &&
+                    ((setting.COLOR[a] = e[a]), (n = !0));
                 t.stc("k_thm", e);
               }
               return (
                 n &&
                   w.styleLogo({
                     logo: s,
-                    color: L.COLOR.LOGO
+                    color: setting.COLOR.LOGO
                   }),
                 n
               );
             },
             y = function(e) {
-              !L.custom.mousewheel_zoom ||
+              !setting.custom.mousewheel_zoom ||
                 (document.activeElement !== x &&
                   document.activeElement.parentNode !== x) ||
                 (I && I.onWheel(e), u.preventDefault(e), u.stopPropagation(e));
             },
             k = function(e) {
-              L.custom.keyboard && I && I.onKb(e);
+              setting.custom.keyboard && I && I.onKb(e);
             },
             S = function() {
               t.xh5_deviceUtil.istd ||
@@ -2300,13 +2300,13 @@ xh5_define(
             S(),
             w.getLogo({
               cb: M,
-              id: L.PARAM.LOGO_ID,
+              id: setting.PARAM.LOGO_ID,
               isShare: !1,
-              top: L.DIMENSION.posY + L.DIMENSION.H_MA4K + 17,
-              right: L.DIMENSION.RIGHT_W + L.DIMENSION.K_RIGHT_W,
-              LOGO_W: L.DIMENSION.LOGO_W,
-              LOGO_H: L.DIMENSION.LOGO_H,
-              color: L.COLOR.LOGO
+              top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+              right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+              LOGO_W: setting.DIMENSION.LOGO_W,
+              LOGO_H: setting.DIMENSION.LOGO_H,
+              color: setting.COLOR.LOGO
             }),
             g.noH5 &&
               (q.showTip({
@@ -2322,25 +2322,25 @@ xh5_define(
                 B.onResize(),
                 m(),
                 Y.onInnerResize({
-                  height: L.DIMENSION.h_k
+                  height: setting.DIMENSION.h_k
                 }));
             }),
             (this.initTheme = b),
             (this.drawReMark = function(t) {
               if (t) {
                 if (((i.style.display = ""), o == t)) return;
-                var a = L.DIMENSION.H_TIME_PART;
+                var a = setting.DIMENSION.H_TIME_PART;
                 (o = t),
                   e.resize({
                     width: r,
                     height: a,
-                    hd: L.PARAM.getHd()
+                    hd: setting.PARAM.getHd()
                   }),
-                  (n.font = "12px " + L.STYLE.FONT_FAMILY),
+                  (n.font = "12px " + setting.STYLE.FONT_FAMILY),
                   (n.textBaseline = "top"),
-                  (n.fillStyle = L.COLOR.REMARK_BG),
+                  (n.fillStyle = setting.COLOR.REMARK_BG),
                   n.fillRect(0, 0, r, a),
-                  (n.fillStyle = L.COLOR.REMARK_T),
+                  (n.fillStyle = setting.COLOR.REMARK_T),
                   n.fillText(t, 0, 0);
               } else i.style.display = "none";
             });
@@ -2357,20 +2357,20 @@ xh5_define(
             p = new (function() {
               var t = function(t) {
                 var n = e.body.style;
-                t && L.custom.show_floater
-                  ? ((n.backgroundColor = L.COLOR.F_BG),
-                    (n.color = L.COLOR.F_T),
-                    (n.border = "1px solid " + L.COLOR.F_BR),
+                t && setting.custom.show_floater
+                  ? ((n.backgroundColor = setting.COLOR.F_BG),
+                    (n.color = setting.COLOR.F_T),
+                    (n.border = "1px solid " + setting.COLOR.F_BR),
                     (n.display = ""))
                   : (n.display = "none");
               };
               (this.pv = function(n) {
                 var a = e.body.style,
-                  i = Math.max(L.DIMENSION.posX, 55) + 9;
+                  i = Math.max(setting.DIMENSION.posX, 55) + 9;
                 (a.left =
-                  (n.x > L.DIMENSION.getStageW() >> 1
+                  (n.x > setting.DIMENSION.getStageW() >> 1
                     ? i
-                    : L.DIMENSION.getStageW() - u - 9) + "px"),
+                    : setting.DIMENSION.getStageW() - u - 9) + "px"),
                   (a.top = (n.y || 0) + "px"),
                   t(!0);
               }),
@@ -2390,7 +2390,7 @@ xh5_define(
                   h = c("div"),
                   p = h.style;
                 (p.position = "absolute"),
-                  (p.zIndex = L.PARAM.I_Z_INDEX + 2),
+                  (p.zIndex = setting.PARAM.I_Z_INDEX + 2),
                   (p.padding = "2px"),
                   (p.width = u + "px"),
                   (p.lineHeight = "16px"),
@@ -2567,11 +2567,11 @@ xh5_define(
                 var T,
                   U,
                   E = function(e, t) {
-                    var n = L.COLOR.F_N;
+                    var n = setting.COLOR.F_N;
                     return (
                       e > t
-                        ? (n = L.COLOR.F_RISE)
-                        : t > e && (n = L.COLOR.F_FALL),
+                        ? (n = setting.COLOR.F_RISE)
+                        : t > e && (n = setting.COLOR.F_FALL),
                       n
                     );
                   },
@@ -2675,43 +2675,43 @@ xh5_define(
                   s = function() {
                     if (
                       ((n.style.borderStyle = "dashed"),
-                      (n.style.borderColor = L.COLOR.IVH_LINE),
-                      (a.style.backgroundColor = L.COLOR[e.txtBgCN]),
-                      (a.style.color = L.COLOR[e.txtCN]),
+                      (n.style.borderColor = setting.COLOR.IVH_LINE),
+                      (a.style.backgroundColor = setting.COLOR[e.txtBgCN]),
+                      (a.style.color = setting.COLOR[e.txtCN]),
                       o)
                     )
                       (n.style.borderWidth = "1px 0 0 0"),
                         (t.style.width = n.style.width =
-                          L.DIMENSION.getStageW() + "px"),
-                        (a.style.top = -(0.6 * L.STYLE.FONT_SIZE) + "px"),
-                        (a.style.width = L.DIMENSION.extend_draw
+                          setting.DIMENSION.getStageW() + "px"),
+                        (a.style.top = -(0.6 * setting.STYLE.FONT_SIZE) + "px"),
+                        (a.style.width = setting.DIMENSION.extend_draw
                           ? ""
-                          : L.DIMENSION.posX + "px"),
+                          : setting.DIMENSION.posX + "px"),
                         (a.style.left = 0),
                         (a.style.padding = "1px 0");
                     else {
                       n.style.borderWidth = "0 1px 0 0";
                       var i,
                         s,
-                        r = L.DIMENSION.H_MA4K + L.DIMENSION.H_T_B;
-                      L.DIMENSION.getStageH() < 0
+                        r = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
+                      setting.DIMENSION.getStageH() < 0
                         ? ((i = D.clientHeight), (s = i - r))
-                        : ((i = L.DIMENSION.getStageH() - O.clientHeight || 0),
-                          (s = L.DIMENSION.h_k)),
+                        : ((i = setting.DIMENSION.getStageH() - O.clientHeight || 0),
+                          (s = setting.DIMENSION.h_k)),
                         (i -= r),
-                        (i += L.DIMENSION.I_V_O),
+                        (i += setting.DIMENSION.I_V_O),
                         (t.style.height = n.style.height = i + "px"),
                         (a.style.top = s + "px"),
                         (a.style.padding = "2px 2px 1px");
                     }
                   };
                 (t.style.position = "absolute"),
-                  (t.style.zIndex = L.PARAM.I_Z_INDEX - 2),
+                  (t.style.zIndex = setting.PARAM.I_Z_INDEX - 2),
                   (a.style.position = n.style.position = "absolute"),
                   (n.style.zIndex = 0),
                   (a.style.zIndex = 1),
                   (a.style.font =
-                    L.STYLE.FONT_SIZE + "px " + L.STYLE.FONT_FAMILY),
+                    setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY),
                   (a.style.whiteSpace = "nowrap"),
                   (a.style.lineHeight = i + "px"),
                   e.txtA && (a.style.textAlign = e.txtA),
@@ -2731,7 +2731,7 @@ xh5_define(
                   ) {
                     e.x < 0 && (e.x = 0);
                     var n = e.x + (e.ox || 0),
-                      i = L.DIMENSION.getStageW();
+                      i = setting.DIMENSION.getStageW();
                     (n = ~~(n + 0.5)), (n -= 1), (t.style.left = n + "px");
                     var o = a.offsetWidth || 66,
                       s = o >> 1;
@@ -2797,9 +2797,9 @@ xh5_define(
                 (0 > l || l > u) && ((s = 0 / 0), (l = 0 / 0));
               }
               var m = V.currentLength,
-                f = Math.max(m, L.PARAM.minCandleNum);
-              s += L.DIMENSION.w_k / f - z.x;
-              var v = Math.floor((s * f) / L.DIMENSION.w_k);
+                f = Math.max(m, setting.PARAM.minCandleNum);
+              s += setting.DIMENSION.w_k / f - z.x;
+              var v = Math.floor((s * f) / setting.DIMENSION.w_k);
               if (
                 (0 > v ? (v = 0) : v >= m && (v = m - 1),
                 !isNaN(v) && (k = v),
@@ -2812,8 +2812,8 @@ xh5_define(
               if (n) {
                 var U = I.getAllStock(),
                   E = U.length,
-                  F = E > 1 || "percent" == L.datas.scaleType;
-                L.custom.k_overlay && (F = !1);
+                  F = E > 1 || "percent" == setting.datas.scaleType;
+                setting.custom.k_overlay && (F = !1);
                 for (var P, $, q, j, B = Number.MAX_VALUE, W = 0; E > W; W++)
                   (q = U[W]),
                     (D = q.datas),
@@ -2844,7 +2844,7 @@ xh5_define(
                 else if (
                   ((O =
                     T > 99999 ? Math.floor(T) : T.toFixed(T > 9999 ? 1 : d)),
-                  L.custom.show_k_rangepercent && C)
+                  setting.custom.show_k_rangepercent && C)
                 ) {
                   var G = ((T - C.prevclose) / C.prevclose) * 100;
                   (G = isNaN(G) || !isFinite(G) ? "--" : G.toFixed(d)),
@@ -2868,7 +2868,7 @@ xh5_define(
               }
               if (x) {
                 var Z = s;
-                L.custom.stick && (s = x.ix || s),
+                setting.custom.stick && (s = x.ix || s),
                   e &&
                     (e.setFloaterData({
                       symbol: y,
@@ -2879,7 +2879,7 @@ xh5_define(
                     }),
                     p.pv({
                       x: Z,
-                      y: L.DIMENSION.K_F_T
+                      y: setting.DIMENSION.K_F_T
                     })),
                   i.pv({
                     y: l,
@@ -2889,7 +2889,7 @@ xh5_define(
                   o.pv({
                     x: s,
                     ox: r,
-                    y: L.DIMENSION.H_MA4K,
+                    y: setting.DIMENSION.H_MA4K,
                     v: x.day + " " + (x.time || "")
                   }),
                   b(v),
@@ -2919,11 +2919,11 @@ xh5_define(
             var a = {
               mark:
                 K.labelMaxP -
-                (n.cy / L.DIMENSION.h_k) * (K.labelMaxP - K.labelMinP),
+                (n.cy / setting.DIMENSION.h_k) * (K.labelMaxP - K.labelMinP),
               x: n.ix,
               y: n.cy,
-              oy: L.DIMENSION.H_MA4K,
-              ox: L.DIMENSION.posX
+              oy: setting.DIMENSION.H_MA4K,
+              ox: setting.DIMENSION.posX
             };
             return void this.iToD(a, !0, !0);
           };
@@ -2938,16 +2938,16 @@ xh5_define(
             isNaN(P) && (P = e);
             var l = t - P,
               c = V.dataLength,
-              h = L.DIMENSION.w_k / r;
+              h = setting.DIMENSION.w_k / r;
             if (Math.abs(l) < h) {
-              if (L.custom.smooth && h > 4) {
+              if (setting.custom.smooth && h > 4) {
                 if (s >= c && 0 > l) return;
                 if (1 > o && l > 0) return;
                 (z.x = l), I.callSdDraw();
               }
             } else {
               P = t;
-              var d = Math.round((l * r) / L.DIMENSION.w_k);
+              var d = Math.round((l * r) / setting.DIMENSION.w_k);
               (o -= d),
                 (s -= d),
                 s >= c && ((s = c), (o = s - r)),
@@ -2964,18 +2964,18 @@ xh5_define(
               0 == n && (n = 1);
               var a = V.start,
                 i = V.end,
-                o = n * Math.ceil((i - a) / L.PARAM.zoomUnit);
+                o = n * Math.ceil((i - a) / setting.PARAM.zoomUnit);
               if (
-                (Math.abs(o) > L.PARAM.zoomLimit && (o = n * L.PARAM.zoomLimit),
-                L.custom.centerZoom)
+                (Math.abs(o) > setting.PARAM.zoomLimit && (o = n * setting.PARAM.zoomLimit),
+                setting.custom.centerZoom)
               ) {
                 var s = Math.min.apply(Math, t),
-                  r = s / L.DIMENSION.w_k,
+                  r = s / setting.DIMENSION.w_k,
                   l = Math.max.apply(Math, t),
-                  c = l / L.DIMENSION.w_k;
-                r < L.PARAM.zoomArea
+                  c = l / setting.DIMENSION.w_k;
+                r < setting.PARAM.zoomArea
                   ? (i = Math.min(i - o * Math.abs(o), V.dataLength))
-                  : c > 1 - L.PARAM.zoomArea
+                  : c > 1 - setting.PARAM.zoomArea
                   ? (a = Math.max(a + o * Math.abs(o), 0))
                   : ((a = Math.max(a + o * Math.abs(o), 0)),
                     (i = Math.min(i - o * Math.abs(o), V.dataLength)));
@@ -3023,16 +3023,16 @@ xh5_define(
         };
         var n,
           a = function(n, a) {
-            if (L.hasOwnProperty(n)) {
+            if (setting.hasOwnProperty(n)) {
               for (var i in a)
                 if (a.hasOwnProperty(i) && t.isFunc(a[i])) return;
-              "DIMENSION" == n && ($ = 1), p(L[n], a), t.stc(n, a), e.resize();
+              "DIMENSION" == n && ($ = 1), p(setting[n], a), t.stc(n, a), e.resize();
             }
           },
           i = function(e, n) {
             var a;
-            if (L.hasOwnProperty(e)) {
-              a = t.clone(L[e], null);
+            if (setting.hasOwnProperty(e)) {
+              a = t.clone(setting[e], null);
               for (var i in a)
                 if (a.hasOwnProperty(i))
                   if (t.isFunc(a[i])) (a[i] = null), delete a[i];
@@ -3193,7 +3193,7 @@ xh5_define(
                   {
                     linetype: t,
                     linecolor: {
-                      K_CL: L.COLOR.T_P
+                      K_CL: setting.COLOR.T_P
                     }
                   },
                   !0
@@ -3237,7 +3237,7 @@ xh5_define(
                 {
                   linetype: "line",
                   linecolor: {
-                    K_CL: L.COLOR.T_P
+                    K_CL: setting.COLOR.T_P
                   }
                 },
                 !0
@@ -3363,8 +3363,8 @@ xh5_define(
               t.stc("k_ns", e);
           }),
           (this.toggleExtend = function() {
-            var e = L.DIMENSION.extend_draw,
-              t = L.DIMENSION.posX;
+            var e = setting.DIMENSION.extend_draw,
+              t = setting.DIMENSION.posX;
             a.call(this, "DIMENSION", {
               extend_draw: !e,
               posX: t > 9 ? 7 : 55
@@ -3377,7 +3377,7 @@ xh5_define(
             t.suda("share", n);
           }),
           (this.getChartId = function() {
-            return L.uid;
+            return setting.uid;
           }),
           (this.getSymbols = function() {
             return I.getAllSymbols();

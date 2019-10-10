@@ -33,7 +33,10 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     icon: "app.ico",
-    show: false
+    show: false,
+    webPreferences: {
+      webSecurity: false
+    }
   });
   mainWindow.loadURL(winURL);
   app.mainWindow = mainWindow;

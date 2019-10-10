@@ -369,7 +369,7 @@ export default {
   display: flex;
   background-color: #eef4fe;
 
-  /* background-color: rgba(255, 255, 255, 0.6);*/
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .shrink2 {
   width: 3px;

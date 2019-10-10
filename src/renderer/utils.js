@@ -259,6 +259,10 @@ export const hqParser = new (function() {
       e.cvs = e.now > 0 ? e.now * e.currcapital * 10000 : "--";
       e.ltgb = 1 * e.currcapital * 10000;
     }
+    if (window[`v_${item.code}`]) {
+      let arr = window[`v_${item.code}`].split("~");
+      e.pe_ttm = arr[39];
+    }
 
     return e;
   }
@@ -773,4 +777,46 @@ export function time() {
     t: diff,
     percent: (diff / 4) * 3600
   };
+}
+const csvJSON = csv => {
+  const lines = csv.trim().split("\n");
+  const headers = lines[0].split(",").filter(x => x.trim());
+  const items = {};
+
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i]) continue;
+    const currentline = lines[i].split(",");
+    let name = currentline[0];
+
+    items[name] = {};
+    for (let j = 1; j < headers.length; j++) {
+      let reportDate = headers[j];
+      items[name][reportDate] = currentline[j];
+    }
+  }
+  return items;
+};
+export function attachData(item) {
+  const tbls = ["lrb", "xjllb", "zcfzb"];
+
+  for (let i = 0; i < tbls.length; i++) {
+    let tbname = tbls[i];
+    if (!item[tbname]) {
+      fetch(
+        `http://quotes.money.163.com/service/xjllb_${item.code.replace(
+          /[^0-9]/g,
+          ""
+        )}.html`
+      )
+        .then(res => res.blob())
+        .then(blob => {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var text = reader.result;
+            item[tbname] = csvJSON(text);
+          };
+          reader.readAsText(blob, "GBK");
+        });
+    }
+  }
 }

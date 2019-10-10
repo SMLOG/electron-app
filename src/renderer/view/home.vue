@@ -9,7 +9,8 @@
           <tr>
             <th>Code</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Price</th>
+            <th>PE(TTM)</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -22,7 +23,8 @@
           >
             <td>{{item.code}}</td>
             <td>{{item.name}}</td>
-            <td>{{item.countryID|objectType}}</td>
+            <td>{{item.now}}</td>
+            <td>{{item.pe_ttm}}</td>
             <td>
               <a class="action" @click="delItem(item)">Delete</a>
             </td>
@@ -38,7 +40,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { ObjectType, parse, loadScripts } from "@/utils";
+import { ObjectType, parse, loadScripts, attachData } from "@/utils";
 export default {
   name: "home",
   data: function() {
@@ -239,15 +241,19 @@ export default {
           return total;
         }, [])
         .join(",");
-      console.log(str);
       let that = this;
       let needReloadData = false;
-      return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
+      return loadScripts([
+        `http://hq.sinajs.cn/list=${str}`,
+        `http://qt.gtimg.cn/q=${str}`
+      ]).then(() => {
         that.items.map((item, i) => {
           let data = parse(item);
           data.pre = item.now;
           if (item.time) that.time = item.time;
           Object.assign(item, data);
+
+          attachData(item);
 
           //  that.items.splice(i, 1, item);
 

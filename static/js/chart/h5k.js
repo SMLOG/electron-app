@@ -125,7 +125,9 @@ xh5_define(
                       (a = t.kUtil.adbd(a, K.get(e), s, !1)));
                   o["k" + e] = a;
                   var d = a.length,
-                    u = r ? setting.PARAM.K_CL_NUM : setting.PARAM.defaultCandleNum;
+                    u = r
+                      ? setting.PARAM.K_CL_NUM
+                      : setting.PARAM.defaultCandleNum;
                   (o["k" + e + "v"] = d > u ? d - u : 0),
                     (o["k" + e + "b"] = d);
                 }
@@ -1077,7 +1079,8 @@ xh5_define(
                   ? ((u.textAlign = "right"), (a -= 5))
                   : (u.textAlign = "center"),
                   (i = o.hy),
-                  i < setting.STYLE.FONT_SIZE && (i = setting.STYLE.FONT_SIZE + 2),
+                  i < setting.STYLE.FONT_SIZE &&
+                    (i = setting.STYLE.FONT_SIZE + 2),
                   u.fillText(h, a, i);
               }
               if (((a = n), !r && o.low == e.rangeMin)) {
@@ -1089,7 +1092,8 @@ xh5_define(
                   ? ((u.textAlign = "right"), (a -= 5))
                   : (u.textAlign = "center"),
                   (i = Math.floor(o.ly + setting.STYLE.FONT_SIZE + 2)),
-                  i > setting.DIMENSION.h_k + 0.5 * setting.STYLE.FONT_SIZE - 3 &&
+                  i >
+                    setting.DIMENSION.h_k + 0.5 * setting.STYLE.FONT_SIZE - 3 &&
                     (i = setting.DIMENSION.h_k),
                   u.fillText(d, a, i);
               }
@@ -1100,14 +1104,21 @@ xh5_define(
           w = function() {
             var t = e.datas,
               n = t.length,
-              a = setting.DIMENSION.w_k / Math.max(n, setting.PARAM.minCandleNum),
+              a =
+                setting.DIMENSION.w_k / Math.max(n, setting.PARAM.minCandleNum),
               i = 0.5 * a,
               o = z.x - a;
             d.beginPath();
             for (var s, r, l = 0; n > l; l++)
               (s = t[l]),
                 (r = s.vy),
-                d.drawVStickC(o, r, i, setting.DIMENSION.h_k, setting.COLOR.V_SD),
+                d.drawVStickC(
+                  o,
+                  r,
+                  i,
+                  setting.DIMENSION.h_k,
+                  setting.COLOR.V_SD
+                ),
                 (o += a);
             d.stroke();
           },
@@ -1117,7 +1128,9 @@ xh5_define(
                 n,
                 a = e.datas,
                 i = a.length,
-                s = setting.DIMENSION.w_k / Math.max(i, setting.PARAM.minCandleNum),
+                s =
+                  setting.DIMENSION.w_k /
+                  Math.max(i, setting.PARAM.minCandleNum),
                 r = z.x - 0.4 * s,
                 l = 0;
               i > l;
@@ -1151,7 +1164,9 @@ xh5_define(
                 i,
                 o = e.datas,
                 c = o.length,
-                h = setting.DIMENSION.w_k / Math.max(c, setting.PARAM.minCandleNum),
+                h =
+                  setting.DIMENSION.w_k /
+                  Math.max(c, setting.PARAM.minCandleNum),
                 u = 0.6 * h,
                 p = -1,
                 m = 1,
@@ -1201,7 +1216,8 @@ xh5_define(
               a,
               i = e.datas,
               o = i.length,
-              c = setting.DIMENSION.w_k / Math.max(o, setting.PARAM.minCandleNum),
+              c =
+                setting.DIMENSION.w_k / Math.max(o, setting.PARAM.minCandleNum),
               h = 0.6 * c,
               u = -1;
             h = Math.floor(h) % 2 === 0 ? Math.floor(h) : Math.floor(h) - 1;
@@ -1250,7 +1266,9 @@ xh5_define(
                 i,
                 o = e.datas,
                 c = o.length,
-                h = setting.DIMENSION.w_k / Math.max(c, setting.PARAM.minCandleNum),
+                h =
+                  setting.DIMENSION.w_k /
+                  Math.max(c, setting.PARAM.minCandleNum),
                 u = 0.6 * h,
                 p = -1,
                 m = 0;
@@ -1290,7 +1308,8 @@ xh5_define(
               d.clear(n, setting.PARAM.getHd()),
                 d.newGStyle({
                   textBaseline: "bottom",
-                  font: setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY
+                  font:
+                    setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY
                 }),
                 y && setting.custom.show_underlay_vol && w(),
                 n ? k() : a ? S() : i ? I() : M();
@@ -1758,7 +1777,8 @@ xh5_define(
               i = e / Math.abs(e),
               o = i * Math.ceil((a - n) / setting.PARAM.zoomUnit);
             if (
-              (Math.abs(o) > setting.PARAM.zoomLimit && (o = i * setting.PARAM.zoomLimit),
+              (Math.abs(o) > setting.PARAM.zoomLimit &&
+                (o = i * setting.PARAM.zoomLimit),
               setting.custom.centerZoom)
             ) {
               var s = t ? t.layerX / setting.DIMENSION.w_k : 0.5;
@@ -1860,7 +1880,8 @@ xh5_define(
                   priorZIdx: setting.PARAM.G_Z_INDEX,
                   nologo: !1,
                   top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
-                  right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+                  right:
+                    setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
                   LOGO_W: setting.DIMENSION.LOGO_W,
                   LOGO_H: setting.DIMENSION.LOGO_H,
                   color: setting.COLOR.LOGO,
@@ -1996,7 +2017,8 @@ xh5_define(
           !isNaN(a.candlenum) &&
             a.candlenum >= setting.PARAM.minCandleNum &&
             (setting.PARAM.defaultCandleNum = a.candlenum),
-          isNaN(a.maxcandlenum) || (setting.PARAM.maxCandleNum = a.maxcandlenum),
+          isNaN(a.maxcandlenum) ||
+            (setting.PARAM.maxCandleNum = a.maxcandlenum),
           !isNaN(a.zoomunit) &&
             a.zoomunit > setting.PARAM.minCandleNum &&
             (setting.PARAM.zoomUnit = a.zoomunit),
@@ -2191,7 +2213,9 @@ xh5_define(
                 setting.DIMENSION.setStageW(e),
                 1 == $
                   ? d > 0 &&
-                    (setting.DIMENSION.setStageH(t, d * l + c + s), (i = !0), ($ = 0))
+                    (setting.DIMENSION.setStageH(t, d * l + c + s),
+                    (i = !0),
+                    ($ = 0))
                   : setting.DIMENSION.setStageH(t, r + s),
                 i
               );
@@ -2212,7 +2236,8 @@ xh5_define(
                 I.onResize(o), B.onResize();
               }
               (i.style.left = "1px"),
-                (i.style.top = setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px"),
+                (i.style.top =
+                  setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px"),
                 d(),
                 m(),
                 t.stc("k_wh", [
@@ -2696,7 +2721,9 @@ xh5_define(
                         r = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
                       setting.DIMENSION.getStageH() < 0
                         ? ((i = D.clientHeight), (s = i - r))
-                        : ((i = setting.DIMENSION.getStageH() - O.clientHeight || 0),
+                        : ((i =
+                            setting.DIMENSION.getStageH() - O.clientHeight ||
+                            0),
                           (s = setting.DIMENSION.h_k)),
                         (i -= r),
                         (i += setting.DIMENSION.I_V_O),
@@ -2711,7 +2738,9 @@ xh5_define(
                   (n.style.zIndex = 0),
                   (a.style.zIndex = 1),
                   (a.style.font =
-                    setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY),
+                    setting.STYLE.FONT_SIZE +
+                    "px " +
+                    setting.STYLE.FONT_FAMILY),
                   (a.style.whiteSpace = "nowrap"),
                   (a.style.lineHeight = i + "px"),
                   e.txtA && (a.style.textAlign = e.txtA),
@@ -2966,7 +2995,8 @@ xh5_define(
                 i = V.end,
                 o = n * Math.ceil((i - a) / setting.PARAM.zoomUnit);
               if (
-                (Math.abs(o) > setting.PARAM.zoomLimit && (o = n * setting.PARAM.zoomLimit),
+                (Math.abs(o) > setting.PARAM.zoomLimit &&
+                  (o = n * setting.PARAM.zoomLimit),
                 setting.custom.centerZoom)
               ) {
                 var s = Math.min.apply(Math, t),
@@ -3026,7 +3056,10 @@ xh5_define(
             if (setting.hasOwnProperty(n)) {
               for (var i in a)
                 if (a.hasOwnProperty(i) && t.isFunc(a[i])) return;
-              "DIMENSION" == n && ($ = 1), p(setting[n], a), t.stc(n, a), e.resize();
+              "DIMENSION" == n && ($ = 1),
+                p(setting[n], a),
+                t.stc(n, a),
+                e.resize();
             }
           },
           i = function(e, n) {

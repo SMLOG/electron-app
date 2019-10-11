@@ -7,11 +7,30 @@
       <table>
         <thead>
           <tr>
-            <th>Code</th>
             <th>Name</th>
             <th>Price</th>
-            <th>PE(TTM)</th>
-            <th>净利润同比</th>
+            <th
+              @click="sort('pe_ttm')"
+              :class="{ 
+                    ascending : sortby === 'pe_ttm' && !descending,
+                    descending: sortby ===  'pe_ttm' && descending
+                }"
+            >PE(TTM)</th>
+            <th
+              @click="sort('zzl3')"
+              :class="{ 
+                    ascending : sortby === 'zzl3' && !descending,
+                    descending: sortby ===  'zzl3' && descending
+                }"
+            >三年增长</th>
+            <th
+              @click="sort('tbzz')"
+              :class="{ 
+                    ascending : sortby === 'tbzz' && !descending,
+                    descending: sortby ===  'tbzz' && descending
+                }"
+            >同比</th>
+            <th>每年收益</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -22,10 +41,11 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td>{{item.code}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.now}}</td>
+            <td :title="item.code">{{item.name}}</td>
+            <td>{{item.now}}({{item.change}})</td>
             <td>{{item.pe_ttm}}</td>
+            <td>{{(item.zzl3*100).toFixed(1)}}%</td>
+            <td>{{(item.tbzz*100).toFixed(1)}}%</td>
             <td>{{item.zzl}}</td>
 
             <td>
@@ -35,7 +55,6 @@
         </draggable>
       </table>
     </div>
-    <div id="h5Figure" style="height:600px"></div>
   </div>
 </template>
 
@@ -48,7 +67,9 @@ export default {
   name: "home",
   data: function() {
     return {
-      items: []
+      items: [],
+      descending: true,
+      sortby: ""
     };
   },
   components: {
@@ -60,7 +81,6 @@ export default {
       return ObjectType[id];
     }
   },
-  methods: {},
   mounted() {
     this.reloadData();
     this.timerFn();
@@ -252,6 +272,22 @@ export default {
     }
   },
   methods: {
+    sort(prop) {
+      this.items.sort(function(a, b) {
+        if (typeof a[prop] === "number") {
+          return a[prop] - b[prop];
+        }
+        if (a[prop] && b[prop]) {
+          a = a[prop].toLowerCase();
+          b = b[prop].toLowerCase();
+          return a < b ? -1 : a > b ? 1 : 0;
+        }
+        return 0;
+      });
+      this.descending = this.sortby === prop ? !this.descending : false;
+      if (this.descending) this.items.reverse();
+      this.sortby = prop;
+    },
     dragEnd(e) {
       e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
       //store.save(this.items);
@@ -366,5 +402,95 @@ td {
 }
 .action {
   cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+table th,
+table td {
+  font-size: 12px;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+table th:not(:first-of-type) {
+  border-left: 0;
+}
+table td {
+  border-top: 0;
+}
+table td:not(:first-of-type) {
+  border-left: 0;
+}
+table th {
+  background: #c61515;
+  color: white;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+table tr:nth-of-type(even) td {
+  background: whitesmoke;
+}
+table tr:hover td {
+  background: #b3b3b3;
+}
+table th {
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 60px;
+  transition: background-color 150ms;
+  padding: 16px 8px 16px 22px;
+}
+table th:before {
+  content: "";
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 300ms, -webkit-transform 300ms;
+  transition: transform 300ms, color 300ms;
+  transition: transform 300ms, color 300ms, -webkit-transform 300ms;
+  position: absolute;
+  font-size: 18px;
+  left: 4px;
+  top: calc(50% - 9px);
+}
+table .ascending:before {
+  /*-webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);*/
+  color: white;
+}
+table .descending:before {
+  /*-webkit-transform: rotate(90deg);
+  transform: rotate(90deg);*/
+  color: white;
+}
+table .ascending::before {
+  content: "↑";
+}
+table .descending {
+  content: "↓";
+}
+@supports (display: contents) {
+  table {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+  }
+  table thead,
+  table tbody,
+  table tr {
+    display: contents;
+  }
+  table th {
+    border-color: #af1313;
+  }
 }
 </style>

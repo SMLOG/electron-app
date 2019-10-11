@@ -801,7 +801,7 @@ const csvJSON = csv => {
 let mgsy = "基本每股收益";
 
 export function attachData(item) {
-  const tbls = ["lrb"];
+  const tbls = ["lrb", "xjllb", "zcfzb"];
   //, "xjllb", "zcfzb"
   let analyst = { zzl: "--" };
 
@@ -811,14 +811,14 @@ export function attachData(item) {
   ) {
     let lrb = window["tb_lrb" + item.code];
     if (lrb[mgsy]) {
-      var laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
-      var last2 = parseFloat(lrb[mgsy][lrb.reportDate[5]]);
-      item.zzl =
-        (((laste - last2) * 100) / last2).toFixed(0) +
-        "%" +
-        `,${laste},${last2}`;
-      analyst["zzl"] = item.zzl;
-      console.log(item.zzl);
+      let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
+      let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
+      let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
+      let last4 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 3 * 4]]);
+      analyst.zzl3 = Math.pow(laste / last4, 1 / 3) - 1;
+
+      analyst.tbzz = (laste - last2) / last2;
+      analyst.zzl = `${laste},${last2},${last3},${last4}`;
     }
 
     return analyst;

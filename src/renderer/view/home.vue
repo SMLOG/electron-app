@@ -43,7 +43,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { ObjectType, parse, loadScripts, attachData } from "@/utils";
+import { ObjectType, parse, loadScripts, attachData, timeout } from "@/utils";
 export default {
   name: "home",
   data: function() {
@@ -280,15 +280,12 @@ export default {
       }
     },
     timerFn() {
-      setTimeout(
-        () =>
-          this.refresh()
-            .then(() => this.timerFn())
-            .catch(() => {
-              this.timerFn();
-            }),
-        2000
-      );
+      (async () => {
+        for (;;) {
+          await timeout(2000);
+          await this.refresh();
+        }
+      })();
     },
     notify(item, message) {
       this.$electron.remote.app.notifywin.webContents.send("message", {
@@ -298,7 +295,7 @@ export default {
         content: message
       });
     },
-    refresh() {
+    async refresh() {
       let str = this.items
         .reduce((total, cur, curIndex, arr) => {
           if (cur.code.match(/^(sh)|(sz)/)) {
@@ -311,76 +308,32 @@ export default {
         .join(",");
       let that = this;
       let needReloadData = false;
-      return loadScripts([
+      await loadScripts([
         `http://hq.sinajs.cn/list=${str}`,
         `http://qt.gtimg.cn/q=${str}`
-      ]).then(() => {
-        that.items.map((item, i) => {
-          let data = parse(item);
-          data.pre = item.now;
-          if (item.time) that.time = item.time;
-          //item.zzl = "test";
-          Object.assign(item, data);
-          that.$set(this.items[i], "zzl", window["zzl" + item.code]);
-          attachData(item);
-          //  that.items.splice(i, 1, item);
+      ]);
 
-          if (item.code == that.indexCode && item.changePV) {
-            that.progressBarWidth = Math.abs(item.changePV / 1) * 100;
-            that.indexPercent = item.changePV;
-          }
-          if (!item.predays) {
-            loadScripts([
-              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=5,10,20,30,60,&datalen=60`
-            ]).then(() => {
-              if (window[`${item.code}_240`]) {
-                item.predays = window[`${item.code}_240`];
-                try {
-                  delete window[`${item.code}_240`];
-                } catch (e) {}
-              }
-            });
-          } else {
-            // MA30
-            if (
-              item.predays &&
-              item.now > item.predays[item.predays.length - 1].ma_price30
-            ) {
-              item.nameColor = "red";
-            } else {
-              item.nameColor = "green";
-            }
-          }
+      for (let i = 0; i < that.items.length; i++) {
+        let item = that.items[i];
+        let data = parse(item);
+        Object.assign(item, data);
+        //that.$set(item, "zzl", "zzl");
+        let analyst = attachData(item);
 
-          //** 每增涨 0.5 发送通知 */
-          item.threshold == undefined && (item.threshold = 0);
+        if (typeof analyst == "object") {
+          for (let p in analyst) that.$set(item, p, analyst[p]);
+          // Object.assign(item, analyst);
+        }
+        //  that.items.splice(i, 1, item);
 
-          let diff = item.changePV - item.threshold;
-          if (Math.abs(diff) >= 0.5) {
-            let incr = parseInt(diff / 0.5) * 0.5;
-            that.notify(
-              item,
-              `increase ${incr} +  ${item.threshold}% to ${item.changeP}.`
-            );
-            item.threshold += incr;
-          }
+        if (item.code == that.indexCode && item.changePV) {
+          that.progressBarWidth = Math.abs(item.changePV / 1) * 100;
+          that.indexPercent = item.changePV;
+        }
 
-          //**超过均线后发送通知 */
-          if (item.data && item.data.length > 0) {
-            for (let i in (5, 10, 20, 30, 16)) {
-              if (item.price > item.data[0][`ma_price${i}`]) {
-                that.notify(
-                  item,
-                  `over MD${i} ${item.data[0][`ma_price${i}`]}.`
-                );
-              }
-            }
-          }
-
-          // vm.items.splice(newLength)
-        });
-        that.sendRefresh();
-      });
+        // vm.items.splice(newLength)
+      }
+      that.sendRefresh();
     },
     sendRefresh() {
       this.$electron.remote.BrowserWindow.getAllWindows().map(win => {

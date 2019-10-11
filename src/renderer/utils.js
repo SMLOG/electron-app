@@ -798,44 +798,71 @@ const csvJSON = csv => {
   }
   return items;
 };
+let mgsy = "基本每股收益";
 
-export async function attachData(item) {
-  const tbls = ["lrb", "xjllb", "zcfzb"];
+export function attachData(item) {
+  const tbls = ["lrb"];
+  //, "xjllb", "zcfzb"
+  let analyst = { zzl: "--" };
 
-  for (let i = 0; i < tbls.length; i++) {
-    let tbname = tbls[i];
-    if (!item[tbname]) {
-      item.zzl = "--";
+  if (
+    tbls.filter(t => typeof window["tb_" + t + item.code] === "object")
+      .length == tbls.length
+  ) {
+    let lrb = window["tb_lrb" + item.code];
+    if (lrb[mgsy]) {
+      var laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
+      var last2 = parseFloat(lrb[mgsy][lrb.reportDate[5]]);
+      item.zzl =
+        (((laste - last2) * 100) / last2).toFixed(0) +
+        "%" +
+        `,${laste},${last2}`;
+      analyst["zzl"] = item.zzl;
+      console.log(item.zzl);
+    }
 
-      item[tbname] = {};
-      await fetch(
-        `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
-          /[^0-9]/g,
-          ""
-        )}.html`
-      )
-        .then(res => res.blob())
-        .then(blob => {
+    return analyst;
+  }
+
+  (async () => {
+    for (let i = 0; i < tbls.length; i++) {
+      let tbname = tbls[i];
+      const tbVarName = "tb_" + tbname + item.code;
+      if (!window[tbVarName]) {
+        window[tbVarName] = true;
+        item[tbname] = {};
+        let blob = await fetch(
+          `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
+            /[^0-9]/g,
+            ""
+          )}.html`
+        ).then(res => res.blob());
+
+        await new Promise((resolve, rejct) => {
           var reader = new FileReader();
           reader.onload = function(e) {
             var text = reader.result;
-            let tb = (window["tb_" + tbname + item.code] = csvJSON(text));
+            let tbDatas = (window[tbVarName] = csvJSON(text));
             //  item[tbname] = csvJSON(text);
-
-            if (tb["稀释每股收益"]) {
-              var laste = parseFloat(tb["稀释每股收益"][tb.reportDate[1]]);
-              var last2 = parseFloat(tb["稀释每股收益"][tb.reportDate[5]]);
-              window["zzl" + item.code] = item.zzl =
-                (((laste - last2) * 100) / last2).toFixed(0) +
-                "%" +
-                `,${laste},${last2}`;
-            }
+            resolve(tbDatas);
           };
           reader.readAsText(blob, "GBK");
         });
-    } else {
-      item.zzl = window["zzl" + item.code];
-      console.log(item.zzl);
+      }
     }
+  })();
+  return analyst;
+}
+
+function vlookup(search, index, code, tbname, match) {
+  let tb = window["tb_" + tbname + code];
+  if (match) {
+    if (tb[search] && tb[search][index] != undefined) {
+      return parseFloat(tb[search][index]);
+    }
+    return null;
   }
+}
+export function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

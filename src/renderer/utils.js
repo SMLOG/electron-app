@@ -262,6 +262,9 @@ export const hqParser = new (function() {
     if (window[`v_${item.code}`]) {
       let arr = window[`v_${item.code}`].split("~");
       e.pe_ttm = arr[39];
+      e.turnover = arr[38];
+      e.lz = arr[44];
+      e.zsz = arr[45];
     }
 
     return e;
@@ -801,9 +804,8 @@ const csvJSON = csv => {
 let mgsy = "基本每股收益";
 
 export function attachData(item) {
-  const tbls = ["lrb", "xjllb", "zcfzb"];
-  //, "xjllb", "zcfzb"
-  let analyst = { zzl: "--" };
+  const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
+  let analyst = {};
 
   if (
     tbls.filter(t => typeof window["tb_" + t + item.code] === "object")
@@ -815,9 +817,13 @@ export function attachData(item) {
       let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
       let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
       let last4 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 3 * 4]]);
-      analyst.zzl3 = Math.pow(laste / last4, 1 / 3) - 1;
+      if (laste / last4 < 0) {
+        analyst.zzl3 = 100 * Math.pow(1 - laste / last4, 1 / 3);
+      } else {
+        analyst.zzl3 = 100 * (Math.pow(laste / last4, 1 / 3) - 1);
+      }
 
-      analyst.tbzz = (laste - last2) / last2;
+      analyst.tbzz = (100 * (laste - last2)) / last2;
       analyst.zzl = `${laste},${last2},${last3},${last4}`;
     }
 
@@ -866,3 +872,20 @@ function vlookup(search, index, code, tbname, match) {
 export function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+function getLastReportDate() {
+  let d = new Date();
+  //3-31,6-30,9-30,12-31
+  //if(d.getMonth()>2)
+  let now =
+    ("0" + (d.getMonth() + 1)).substr(-2, 2) + ("0" + d.getDay()).substr(-2, 2);
+  for (let e of ["09-30", "06-30", "03-31"]) {
+    if (now > e) {
+      return d.getFullYear() + "-" + e;
+    }
+  }
+
+  return d.getFullYear() + "-12-31";
+}
+//get historitical data for one code
+//http://quotes.money.163.com/service/chddata.html?code=0600000&start=20140101&end=20151231&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
+//http://api.money.126.net/data/feed/0000001,0601857,0601600,0600900,1002024,money.api?callback=_ntes_quote_callback82292434

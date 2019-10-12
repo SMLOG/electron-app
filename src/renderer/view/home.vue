@@ -8,29 +8,15 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Price</th>
             <th
-              @click="sort('pe_ttm')"
+              v-for="col in head"
+              @click="sort(col.prop)"
+              :key="col.prop"
               :class="{ 
-                    ascending : sortby === 'pe_ttm' && !descending,
-                    descending: sortby ===  'pe_ttm' && descending
+                    ascending : sortby === col.prop && !descending,
+                    descending: sortby ===col.prop && descending
                 }"
-            >PE(TTM)</th>
-            <th
-              @click="sort('zzl3')"
-              :class="{ 
-                    ascending : sortby === 'zzl3' && !descending,
-                    descending: sortby ===  'zzl3' && descending
-                }"
-            >三年增长</th>
-            <th
-              @click="sort('tbzz')"
-              :class="{ 
-                    ascending : sortby === 'tbzz' && !descending,
-                    descending: sortby ===  'tbzz' && descending
-                }"
-            >同比</th>
-            <th>每年收益</th>
+            >{{col.label}}</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -42,11 +28,11 @@
             :class="{'odd':index%2 != 1}"
           >
             <td :title="item.code">{{item.name}}</td>
-            <td>{{item.now}}({{item.change}})</td>
-            <td>{{item.pe_ttm}}</td>
-            <td>{{(item.zzl3*100).toFixed(1)}}%</td>
-            <td>{{(item.tbzz*100).toFixed(1)}}%</td>
-            <td>{{item.zzl}}</td>
+
+            <td
+              v-for="col in head"
+              :key="col.prop"
+            >{{col.fmt?col.fmt(item[col.prop]):item[col.prop]}}</td>
 
             <td>
               <a class="action" @click="delItem(item)">Delete</a>
@@ -63,13 +49,32 @@ import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { ObjectType, parse, loadScripts, attachData, timeout } from "@/utils";
+const fmtPercent = value => {
+  if (value) return parseFloat(value).toFixed(2) + "%";
+  return value;
+};
 export default {
   name: "home",
   data: function() {
     return {
       items: [],
       descending: true,
-      sortby: ""
+      sortby: "",
+      head: [
+        { label: "Price", prop: "now", type: "number" },
+        {
+          label: "Turnover",
+          prop: "turnover",
+          type: "number",
+          fmt: fmtPercent
+        },
+        { label: "流值", prop: "lz", type: "string" },
+        { label: "总值", prop: "zsz", type: "number" },
+        { label: "PE(TTM)", prop: "pe_ttm", type: "number" },
+        { label: "三年复合", prop: "zzl3", type: "number", fmt: fmtPercent },
+        { label: "同比", prop: "tbzz", type: "number", fmt: fmtPercent },
+        { label: "收益", prop: "zzl", type: "string" }
+      ]
     };
   },
   components: {
@@ -378,12 +383,13 @@ export default {
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {
-      console.log(item);
-      //this.items = this.items.slice(this.items.indexOf(item), 1);
-      console.log(this.items.indexOf(item));
-      this.items.splice(this.items.indexOf(item), 1);
-      store.save(this.items);
-      this.sendRefresh();
+      if (confirm("are you sure?")) {
+        //this.items = this.items.slice(this.items.indexOf(item), 1);
+        console.log(this.items.indexOf(item));
+        this.items.splice(this.items.indexOf(item), 1);
+        store.save(this.items);
+        this.sendRefresh();
+      }
     }
   }
 };
@@ -419,7 +425,7 @@ table td {
   font-size: 12px;
   text-align: left;
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 5px;
 }
 table th:not(:first-of-type) {
   border-left: 0;
@@ -431,7 +437,7 @@ table td:not(:first-of-type) {
   border-left: 0;
 }
 table th {
-  background: #c61515;
+  background: #666;
   color: white;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
@@ -443,13 +449,11 @@ table tr:hover td {
 }
 table th {
   cursor: pointer;
-  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 60px;
   transition: background-color 150ms;
-  padding: 16px 8px 16px 22px;
+  user-select: none;
 }
 table th:before {
   content: "";
@@ -475,9 +479,13 @@ table .descending:before {
 }
 table .ascending::before {
   content: "↑";
+  margin-left: -5px;
+  font-size: 12px;
 }
-table .descending {
+table .descending:before {
   content: "↓";
+  margin-left: -5px;
+  font-size: 12px;
 }
 @supports (display: contents) {
   table {

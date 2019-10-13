@@ -186,7 +186,6 @@ export default {
   height: 45px;
   width: 600px;
   margin: 0 auto;
-  margin-top: 10px;
   position: relative;
 }
 

@@ -822,9 +822,18 @@ export function attachData(item) {
       } else {
         analyst.zzl3 = 100 * (Math.pow(laste / last4, 1 / 3) - 1);
       }
+      if (laste < last4 && analyst.zzl3 > 0) analyst.zzl3 -= 2 * analyst.zzl3;
+
+      if (laste / last3 < 0) {
+        analyst.zzl2 = 100 * Math.pow(1 - laste / last3, 1 / 2);
+      } else {
+        analyst.zzl2 = 100 * (Math.pow(laste / last3, 1 / 2) - 1);
+      }
+      if (laste < last3 && analyst.zzl2 > 0) analyst.zzl2 -= 2 * analyst.zzl2;
 
       analyst.tbzz = (100 * (laste - last2)) / last2;
       analyst.zzl = `${laste},${last2},${last3},${last4}`;
+      analyst.PEG = item.pe_ttm / analyst.zzl3;
     }
 
     return analyst;

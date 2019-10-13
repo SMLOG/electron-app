@@ -1,7 +1,19 @@
 <template>
   <div>
     <div>
-      <search-panel @select="addItem"></search-panel>
+      <div style="float:left;">
+        <ul class="filters" style="margin-top:20px;">
+          <li>
+            <a @click="visibility='all'" :class="{ selected: visibility == 'all' }">All</a>
+          </li>
+          <li>
+            <a @click="visibility='focus'" :class="{ selected: visibility == 'focus' }">Focus</a>
+          </li>
+        </ul>
+      </div>
+      <div style="float:right;">
+        <search-panel @select="addItem"></search-panel>
+      </div>
     </div>
     <div>
       <table>
@@ -23,7 +35,7 @@
         <draggable v-model="items" @update="dragEnd" tag="tbody">
           <tr
             class="item"
-            v-for="(item,index) in items"
+            v-for="(item,index) in filteredItems"
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
@@ -32,10 +44,11 @@
             <td
               v-for="col in head"
               :key="col.prop"
-            >{{col.fmt?col.fmt(item[col.prop]):item[col.prop]}}</td>
+            >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
             <td>
-              <a class="action" @click="delItem(item)">Delete</a>
+              <input type="checkbox" v-model="item.isFocus" @change="saveDatas()" />
+              <a style="float:right;" class="action" @click="delItem(item)">Delete</a>
             </td>
           </tr>
         </draggable>
@@ -53,6 +66,18 @@ const fmtPercent = value => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
 };
+
+const filters = {
+  all: function(items) {
+    return items;
+  },
+  focus: function(items) {
+    return items.filter(function(item) {
+      return item.isFocus;
+    });
+  }
+};
+
 export default {
   name: "home",
   data: function() {
@@ -60,6 +85,7 @@ export default {
       items: [],
       descending: true,
       sortby: "",
+      visibility: "all",
       head: [
         { label: "Price", prop: "now", type: "number" },
         {
@@ -71,7 +97,20 @@ export default {
         { label: "流值", prop: "lz", type: "string" },
         { label: "总值", prop: "zsz", type: "number" },
         { label: "PE(TTM)", prop: "pe_ttm", type: "number" },
-        { label: "三年复合", prop: "zzl3", type: "number", fmt: fmtPercent },
+        {
+          label: "PEG",
+          prop: "PEG",
+          type: "number",
+          fmt: e => e && e.toFixed(2)
+        },
+        {
+          label: "三二年复合",
+          prop: "zzl3",
+          type: "number",
+          fmt: (e, item) =>
+            e &&
+            `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
+        },
         { label: "同比", prop: "tbzz", type: "number", fmt: fmtPercent },
         { label: "收益", prop: "zzl", type: "string" }
       ]
@@ -274,6 +313,9 @@ export default {
   computed: {
     createSuspension() {
       return this.$store.state.suspension.show;
+    },
+    filteredItems: function() {
+      return filters[this.visibility](this.items);
     }
   },
   methods: {
@@ -390,6 +432,9 @@ export default {
         store.save(this.items);
         this.sendRefresh();
       }
+    },
+    saveDatas() {
+      store.save(this.items);
     }
   }
 };
@@ -500,5 +545,35 @@ table .descending:before {
   table th {
     border-color: #af1313;
   }
+}
+
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.filters li {
+  display: inline;
+}
+
+.filters li a {
+  color: inherit;
+  margin: 3px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.filters li a:hover {
+  border-color: rgba(175, 47, 47, 0.1);
+}
+
+.filters li a.selected {
+  border-color: rgba(175, 47, 47, 0.2);
 }
 </style>

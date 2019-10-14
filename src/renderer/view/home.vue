@@ -7,6 +7,9 @@
             <a @click="visibility='all'" :class="{ selected: visibility == 'all' }">All</a>
           </li>
           <li>
+            <a @click="visibility='lowVal'" :class="{ selected: visibility == 'lowVal' }">Candidate</a>
+          </li>
+          <li>
             <a @click="visibility='focus'" :class="{ selected: visibility == 'focus' }">Focus</a>
           </li>
         </ul>
@@ -75,6 +78,11 @@ const filters = {
     return items.filter(function(item) {
       return item.isFocus;
     });
+  },
+  lowVal: function(items) {
+    return items.filter(function(item) {
+      return item.lowVal;
+    });
   }
 };
 
@@ -130,7 +138,7 @@ export default {
           fmt: e => e && e.toFixed(2)
         },
         {
-          label: "三二年复合",
+          label: "CAGR",
           prop: "zzl3",
           type: "number",
           fmt: (e, item) =>
@@ -145,7 +153,7 @@ export default {
           type: "string",
           fmt: (e, item) => {
             let tb = window["tb_zycwzb" + item.code];
-            if (tb) {
+            if (tb && tb.reportDate) {
               tb.reportDate[1];
               let n = "净资产收益率加权(%)";
               return (item.roe = `${tb[n][tb.reportDate[1]]},${
@@ -271,6 +279,15 @@ export default {
         //that.$set(item, "zzl", "zzl");
         let analyst = attachData(item);
 
+        if (
+          item.pe_ttm > 0 &&
+          ((item.tbzz && item.tbzz > 0 && item.pe_ttm / item.tbzz < 1) ||
+            (item.PEG && item.PEG > 0 && item.PEG < 1))
+        ) {
+          item.lowVal = true;
+        } else {
+          item.lowVal = false;
+        }
         if (typeof analyst == "object") {
           for (let p in analyst) that.$set(item, p, analyst[p]);
           // Object.assign(item, analyst);

@@ -87,12 +87,38 @@ export default {
       sortby: "",
       visibility: "all",
       head: [
-        { label: "Price", prop: "now", type: "number" },
+        {
+          label: "Price",
+          prop: "now",
+          type: "number",
+          fmt: (e, item) => `${e}(${item.change})`
+        },
         {
           label: "Turnover",
           prop: "turnover",
           type: "number",
           fmt: fmtPercent
+        },
+        {
+          label: "Trend",
+          prop: "trend",
+          type: "string",
+          fmt: (e, item) => {
+            if (window[`${item.code}_240`]) {
+              return (item.trend = window[`${item.code}_240`]
+                .map((e, i, datas) => {
+                  if (i > 0) e.preClose = datas[i - 1].close;
+                  return e;
+                })
+                .map(e => `${(e.close - (e.preClose || e.close)).toFixed(2)}`)
+                .reverse()
+                .slice(0, 4)
+                .join(","));
+            } else {
+              item.trend = "";
+            }
+            return item.trend;
+          }
         },
         { label: "流值", prop: "lz", type: "string" },
         { label: "总值", prop: "zsz", type: "number" },
@@ -112,7 +138,22 @@ export default {
             `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
         },
         { label: "同比", prop: "tbzz", type: "number", fmt: fmtPercent },
-        { label: "收益", prop: "zzl", type: "string" }
+        { label: "收益", prop: "zzl", type: "string" },
+        {
+          label: "ROE",
+          prop: "roe",
+          type: "string",
+          fmt: (e, item) => {
+            let tb = window["tb_zycwzb" + item.code];
+            if (tb) {
+              tb.reportDate[1];
+              let n = "净资产收益率加权(%)";
+              return (item.roe = `${tb[n][tb.reportDate[1]]},${
+                tb[n][tb.reportDate[5]]
+              },${tb[n][tb.reportDate[9]]}`);
+            }
+          }
+        }
       ]
     };
   },
@@ -135,180 +176,6 @@ export default {
     this.$electron.ipcRenderer.on("hideSuspension", (e, data) => {
       this.$store.dispatch("hideSuspension");
     });
-
-    if (false)
-      loadScripts(["/static/js/sf_sdk.js"]).then(() => {
-        let papercode = "sh601318";
-        let _compareColor = ["#f69931", "#f2c700", "#3e4de1", "#bf58ef"];
-
-        if (false)
-          KKE.api(
-            "chart.h5k.get",
-            {
-              symbol: papercode
-            },
-            function(tChart) {
-              console.log(tChart);
-              tChart.tCharts.apply(null, [[{ name: "TVOL" }]]);
-              console.log("ok");
-
-              if (false)
-                KKE.api(
-                  "plugins.techcharts.get",
-                  {
-                    type: "tech"
-                  },
-                  function(res) {
-                    console.log(res);
-
-                    let tChart = res.tChart;
-                    new tChart({
-                      stockData: h5k,
-                      cfg: { DIMENSION: {}, datas: {} },
-                      usrObj: { tchartobject: {} }
-                    }).linkData();
-                  }
-                );
-            }
-          );
-        /* KKE.api(
-          "plugins.techcharts.get",
-          {
-            type: "tech"
-          },
-          function(callbackObj) {
-            console.log(callbackObj);
-            let tChart = callbackObj.tChart;
-            let pChart = callbackObj.pChart;
-            //let t = new tChart({});
-            new pChart({
-                iMgr: iMgr,
-                stockData: stockData,
-                chartArea: G,
-                titleArea: z,
-                cb: he,
-                type: "t",
-                cfg: cfg,
-                usrObj: config
-              }))
-            window.tChart = tChart;
-          }
-        );*/
-        //alert("ok");
-        let fmtDate = d =>
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-        (async () => {
-          let symbols = ["sz000002"];
-          for (let i = 0; i < symbols.length; i++) {
-            let dom = document.getElementById("h5Figure");
-            dom.innerHTML = "";
-            // dom.style.display = "none";
-            await new Promise((resolve, reject) => {
-              KKE.api(
-                "plugins.tchart.get",
-                {
-                  compare: {
-                    color: _compareColor
-                  },
-                  symbol: symbols[i], //证券代码
-                  mt: "cnlv1",
-                  dom_id: "h5Figure", //放置图形的dom容器id
-                  type: "tech"
-                },
-                function(chart_) {}
-              );
-              let handler = () => {
-                console.log("checking");
-                let techs = window["techs"];
-                let names = ["VOLUME", "MACD"];
-                let ready = false;
-                if (techs) {
-                  techs = techs[0];
-                  for (let k = 0; k < names.length; k++) {
-                    let name = names[k];
-                    if (!techs[name] || techs[name].symbol != symbols[i]) {
-                      ready = false;
-                      break;
-                    }
-                    ready = true;
-                  }
-                }
-                if (ready) {
-                  let datas = techs["MACD"].datas;
-                  let prices = window["techs"][1];
-                  let buyi = -1;
-                  let mmd = [];
-                  for (let j = 1; j < datas.length; j++) {
-                    if (
-                      parseFloat(datas[j].bar) > 0 &&
-                      parseFloat(datas[j - 1].bar) <= 0
-                    ) {
-                      buyi = j;
-                    }
-                    // 空动能
-                    else if (
-                      buyi > 0 &&
-                      parseFloat(datas[j].bar) <= parseFloat(datas[buyi].bar) &&
-                      parseFloat(datas[j - 1].bar) >=
-                        parseFloat(datas[buyi].bar)
-                    ) {
-                      if (datas[buyi]) {
-                        // console.log(datas[j], datas[j - 1], datas[buyi]);
-                        let profit = (
-                          prices[j].close - prices[buyi].close
-                        ).toFixed(2);
-
-                        console.log(
-                          `buy ${fmtDate(datas[buyi].date)} ${fmtDate(
-                            prices[buyi].date
-                          )}  sell ${fmtDate(datas[j].date)} ${fmtDate(
-                            prices[j].date
-                          )} price:${prices[j].close.toFixed(2)} - ${prices[
-                            buyi
-                          ].close.toFixed(2)} profit:${profit}`
-                        );
-                        datas[j].close = prices[j].close;
-                        datas[buyi].close = prices[buyi].close;
-
-                        mmd.push([datas[buyi], datas[j], j - buyi]);
-                      }
-                    }
-                  }
-                  window.mmd = mmd;
-
-                  let i2019 = mmd.filter(p => p[0].date.getFullYear() == 2018);
-                  console.log(i2019);
-                  i2019.reduce((total, prev, arr, i) => {
-                    let profit = prev[1].close - prev[0].close;
-                    total += profit;
-                    console.log(
-                      fmtDate(prev[0].date),
-                      "to",
-
-                      fmtDate(prev[1].date),
-
-                      prev[2] + "天",
-                      `买入价${prev[0].close.toFixed(
-                        2
-                      )} 卖出价${prev[1].close.toFixed(2)}`,
-                      "当期盈利" + profit.toFixed(2),
-                      "总盈利" + total.toFixed(2)
-                    );
-                    return total;
-                  }, 0);
-
-                  return resolve();
-                }
-                setTimeout(() => {
-                  handler();
-                }, 2000);
-                // resolve();
-              };
-              handler();
-            });
-          }
-        })();
-      });
   },
   computed: {
     createSuspension() {
@@ -399,6 +266,7 @@ export default {
       for (let i = 0; i < that.items.length; i++) {
         let item = that.items[i];
         let data = parse(item);
+        data.pre = item.now;
         Object.assign(item, data);
         //that.$set(item, "zzl", "zzl");
         let analyst = attachData(item);

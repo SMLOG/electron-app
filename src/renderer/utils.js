@@ -853,6 +853,8 @@ export function attachData(item) {
           )}.html`
         ).then(res => res.blob());
 
+        loadScripts([`https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=5`]);
+
         await new Promise((resolve, rejct) => {
           var reader = new FileReader();
           reader.onload = function(e) {
@@ -896,5 +898,5 @@ function getLastReportDate() {
   return d.getFullYear() + "-12-31";
 }
 //get historitical data for one code
-//http://quotes.money.163.com/service/chddata.html?code=0600000&start=20140101&end=20151231&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
+//http://quotes.money.163.com/service/chddata.html?code=0600900&start=20191001&end=20191014&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
 //http://api.money.126.net/data/feed/0000001,0601857,0601600,0600900,1002024,money.api?callback=_ntes_quote_callback82292434

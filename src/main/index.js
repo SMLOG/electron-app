@@ -116,7 +116,9 @@ app.on("ready", () => {
   var trayMenuTemplate = [
     {
       label: "设置",
-      click: function() {} //打开相应页面
+      click: function() {
+        mainWindow.show();
+      } //打开相应页面
     },
     {
       label: "帮助",

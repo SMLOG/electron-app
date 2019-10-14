@@ -30,11 +30,8 @@
             @click="openItem(item,$event)"
           >{{item.name}}</span>
           <span class="content" :class="upDown(item.now-item.preClose)">
-            <i @mouseenter="showPK(item)" @mouseleave="hidePK(item,false,$event)">{{item.now}}</i>
-            <i
-              @mouseenter="showPK(item,'style2')"
-              @mouseleave="hidePK(item,true,$event)"
-            >({{item.change}}){{item.changeP}}</i>
+            <i>{{item.now}}</i>
+            <i>({{item.change}}){{item.changeP}}</i>
           </span>
         </div>
       </div>

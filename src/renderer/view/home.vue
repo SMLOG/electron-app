@@ -96,10 +96,21 @@ export default {
       visibility: "all",
       head: [
         {
-          label: "Price",
+          label: "Now",
           prop: "now",
           type: "number",
           fmt: (e, item) => `${e}(${item.change})`
+        },
+        {
+          label: "Vol",
+          prop: "vol",
+          type: "number",
+          fmt: (e, item) => {
+            console.log(item.volume, item.preVolume);
+            return (item.vol = ((item.volume - item.preVolume) / 100).toFixed(
+              0
+            ));
+          }
         },
         {
           label: "Turnover",
@@ -275,6 +286,8 @@ export default {
         let item = that.items[i];
         let data = parse(item);
         data.pre = item.now;
+        if (!data.preVolume || item.volume > data.preVolume)
+          data.preVolume = item.volume;
         Object.assign(item, data);
         //that.$set(item, "zzl", "zzl");
         let analyst = attachData(item);

@@ -853,7 +853,9 @@ export function attachData(item) {
           )}.html`
         ).then(res => res.blob());
 
-        loadScripts([`https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=5`]);
+        loadScripts([
+          `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=5`
+        ]);
 
         await new Promise((resolve, rejct) => {
           var reader = new FileReader();
@@ -900,3 +902,4 @@ function getLastReportDate() {
 //get historitical data for one code
 //http://quotes.money.163.com/service/chddata.html?code=0600900&start=20191001&end=20191014&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
 //http://api.money.126.net/data/feed/0000001,0601857,0601600,0600900,1002024,money.api?callback=_ntes_quote_callback82292434
+//fetch('http://vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=11&symbol=sz000002&rn=26185407').then(res=>res.text()).then(text=>console.log(text));

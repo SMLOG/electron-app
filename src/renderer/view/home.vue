@@ -7,7 +7,16 @@
             <a @click="visibility='all'" :class="{ selected: visibility == 'all' }">All</a>
           </li>
           <li>
-            <a @click="visibility='lowVal'" :class="{ selected: visibility == 'lowVal' }">Candidate</a>
+            <a
+              @click="visibility='candidateType1'"
+              :class="{ selected: visibility == 'candidateType1' }"
+            >Candidate1</a>
+          </li>
+          <li>
+            <a
+              @click="visibility='candidateType2'"
+              :class="{ selected: visibility == 'candidateType2' }"
+            >Candidate2</a>
           </li>
           <li>
             <a @click="visibility='focus'" :class="{ selected: visibility == 'focus' }">Focus</a>
@@ -79,9 +88,14 @@ const filters = {
       return item.isFocus;
     });
   },
-  lowVal: function(items) {
+  candidateType1: function(items) {
     return items.filter(function(item) {
-      return item.lowVal;
+      return item.candidateType > 0;
+    });
+  },
+  candidateType2: function(items) {
+    return items.filter(function(item) {
+      return item.candidateType > 1;
     });
   }
 };
@@ -106,7 +120,6 @@ export default {
           prop: "vol",
           type: "number",
           fmt: (e, item) => {
-            console.log(item.volume, item.preVolume);
             return (item.vol = ((item.volume - item.preVolume) / 100).toFixed(
               0
             ));
@@ -131,7 +144,7 @@ export default {
                 })
                 .map(e => `${(e.close - (e.preClose || e.close)).toFixed(2)}`)
                 .reverse()
-                .slice(0, 4)
+                .slice(0, 5)
                 .join(","));
             } else {
               item.trend = "";
@@ -297,9 +310,12 @@ export default {
           ((item.tbzz && item.tbzz > 0 && item.pe_ttm / item.tbzz < 1) ||
             (item.PEG && item.PEG > 0 && item.PEG < 1))
         ) {
-          item.lowVal = true;
+          item.candidateType = 1;
+          let tbPGE = item.pe_ttm / item.tbzz;
+          if (tbPGE < 1 && tbPGE > 0 && item.PEG > 0 && item.PEG < 1)
+            item.candidateType = 2;
         } else {
-          item.lowVal = false;
+          item.candidateType = 0;
         }
         if (typeof analyst == "object") {
           for (let p in analyst) that.$set(item, p, analyst[p]);
@@ -318,7 +334,8 @@ export default {
     },
     sendRefresh() {
       this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
-        win.isVisible() && win.webContents.send("refresh", this.items);
+        win.isVisible() &&
+          win.webContents.send("refresh", this.items.filter(e => e.isFocus));
       });
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },

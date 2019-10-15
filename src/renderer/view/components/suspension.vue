@@ -95,7 +95,11 @@ export default {
       return toPercent(val, 2);
     }
   },
-
+  computed: {
+    filteredItems() {
+      return this.items.filter(e => e.isFocus);
+    }
+  },
   methods: {
     checkAltKey(e) {
       this.altKey = e.altKey == 1;
@@ -107,11 +111,6 @@ export default {
     },
     title(item) {
       return `${item.name}\n${ObjectType[item.countryID]}\n${item.orgCode}`;
-    },
-    dragEnd(e) {
-      e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
-      store.save(this.items);
-      this.sendRefresh();
     },
     hidePK(item, isCloseWin, event) {
       try {

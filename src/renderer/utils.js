@@ -801,7 +801,7 @@ const csvJSON = csv => {
   }
   return items;
 };
-let mgsy = "基本每股收益";
+let mgsy = "净利润(扣除非经常性损益后)(万元)";
 
 export function attachData(item) {
   const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
@@ -811,7 +811,7 @@ export function attachData(item) {
     tbls.filter(t => typeof window["tb_" + t + item.code] === "object")
       .length == tbls.length
   ) {
-    let lrb = window["tb_lrb" + item.code];
+    let lrb = window["tb_zycwzb" + item.code];
     if (lrb[mgsy]) {
       let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
       let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
@@ -854,7 +854,7 @@ export function attachData(item) {
         ).then(res => res.blob());
 
         loadScripts([
-          `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=5`
+          `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
         ]);
 
         await new Promise((resolve, rejct) => {

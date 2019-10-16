@@ -3,23 +3,8 @@
     <div>
       <div style="float:left;">
         <ul class="filters" style="margin-top:20px;">
-          <li>
-            <a @click="visibility='all'" :class="{ selected: visibility == 'all' }">All</a>
-          </li>
-          <li>
-            <a
-              @click="visibility='candidateType1'"
-              :class="{ selected: visibility == 'candidateType1' }"
-            >Candidate1</a>
-          </li>
-          <li>
-            <a
-              @click="visibility='candidateType2'"
-              :class="{ selected: visibility == 'candidateType2' }"
-            >Candidate2</a>
-          </li>
-          <li>
-            <a @click="visibility='focus'" :class="{ selected: visibility == 'focus' }">Focus</a>
+          <li v-for="(k,filter) in filters" :key="filter">
+            <a @click="visibility=filter" :class="{ selected: visibility == filter }">{{filter}}</a>
           </li>
         </ul>
       </div>
@@ -51,7 +36,7 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td :title="item.code">{{item.name}}</td>
+            <td :title="item.code" :class="{avggood:item.avgzs>30}">{{item.name}}</td>
 
             <td
               v-for="col in head"
@@ -80,22 +65,25 @@ const fmtPercent = value => {
 };
 
 const filters = {
-  all: function(items) {
+  All: function(items) {
     return items;
   },
-  focus: function(items) {
-    return items.filter(function(item) {
-      return item.isFocus;
-    });
-  },
-  candidateType1: function(items) {
+  候选一: function(items) {
     return items.filter(function(item) {
       return item.candidateType > 0;
     });
   },
-  candidateType2: function(items) {
+  候选二: function(items) {
     return items.filter(function(item) {
       return item.candidateType > 1;
+    });
+  },
+  强势: items => {
+    return items.filter(e => e.avgzs > 30);
+  },
+  关注: function(items) {
+    return items.filter(function(item) {
+      return item.isFocus;
     });
   }
 };
@@ -104,10 +92,11 @@ export default {
   name: "home",
   data: function() {
     return {
+      filters: filters,
       items: [],
       descending: true,
       sortby: "",
-      visibility: "all",
+      visibility: "All",
       head: [
         {
           label: "Now",
@@ -266,6 +255,40 @@ export default {
         for (;;) {
           await timeout(2000);
           await this.refresh();
+        }
+      })();
+      (async () => {
+        for (;;) {
+          await timeout(60000);
+          let d = new Date();
+          let h = d.getHours();
+          let m = d.getMinutes();
+          if (h < 9 || h > 15) continue;
+          if (h == 9 && m < 30) continue;
+          if (h == 11 && m > 30) continue;
+          if (h > 11 && h < 13) continue;
+          if (h > 15) continue;
+          for (let i = 0; i < this.items.length; i++) {
+            let item = this.items[i];
+            let name = "tdatas" + item.code;
+
+            let datas = window[name] || (window[name] = []);
+            console.log(window[name]);
+            datas.push({
+              p: item.now,
+              v: item.volume,
+              a: item.amount,
+              avg: (item.amount / item.volume).toFixed(2)
+            });
+
+            let avg = (item.amount / item.volume).toFixed(2);
+
+            if (datas.length == 0 || avg < datas[datas.length - 1].avg) {
+              item.avgzs = 0;
+              continue;
+            }
+            item.avgzs += 1;
+          }
         }
       })();
     },
@@ -490,5 +513,61 @@ table .descending:before {
 
 .filters li a.selected {
   border-color: rgba(175, 47, 47, 0.2);
+}
+.avggood {
+  color: red;
+}
+/* 定义keyframe动画，命名为blink */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* 添加兼容性前缀 */
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* 定义blink类*/
+.avggood,
+.blink {
+  color: #dd4814;
+  animation: blink 1s linear infinite;
+  /* 其它浏览器兼容性前缀 */
+  -webkit-animation: blink 2s linear infinite;
+  -moz-animation: blink 1s linear infinite;
+  -ms-animation: blink 1s linear infinite;
+  -o-animation: blink 1s linear infinite;
 }
 </style>

@@ -1,0 +1,191 @@
+table {
+  width: 100%;
+}
+th,
+td {
+  text-align: left;
+}
+.odd {
+  background: #eee;
+}
+.action {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+table th,
+table td {
+  font-size: 12px;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+table th:not(:first-of-type) {
+  border-left: 0;
+}
+table td {
+  border-top: 0;
+}
+table td:not(:first-of-type) {
+  border-left: 0;
+}
+table th {
+  background: #666;
+  color: white;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+table tr:nth-of-type(even) td {
+  background: whitesmoke;
+}
+table tr:hover td {
+  background: #b3b3b3;
+}
+table th {
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 150ms;
+  user-select: none;
+}
+table th:before {
+  content: "";
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 300ms, -webkit-transform 300ms;
+  transition: transform 300ms, color 300ms;
+  transition: transform 300ms, color 300ms, -webkit-transform 300ms;
+  position: absolute;
+  font-size: 18px;
+  left: 4px;
+  top: calc(50% - 9px);
+}
+table .ascending:before {
+  /*-webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);*/
+  color: white;
+}
+table .descending:before {
+  /*-webkit-transform: rotate(90deg);
+  transform: rotate(90deg);*/
+  color: white;
+}
+table .ascending::before {
+  content: "↑";
+  margin-left: -5px;
+  font-size: 12px;
+}
+table .descending:before {
+  content: "↓";
+  margin-left: -5px;
+  font-size: 12px;
+}
+@supports (display: contents) {
+  table {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+  }
+  table thead,
+  table tbody,
+  table tr {
+    display: contents;
+  }
+  table th {
+    border-color: #af1313;
+  }
+}
+
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.filters li {
+  display: inline;
+}
+
+.filters li a {
+  color: inherit;
+  margin: 3px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.filters li a:hover {
+  border-color: rgba(175, 47, 47, 0.1);
+}
+
+.filters li a.selected {
+  border-color: rgba(175, 47, 47, 0.2);
+}
+.avggood {
+  color: red;
+}
+/* 定义keyframe动画，命名为blink */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* 添加兼容性前缀 */
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* 定义blink类*/
+.avggood,
+.blink {
+  color: #dd4814;
+  animation: blink 1s linear infinite;
+  /* 其它浏览器兼容性前缀 */
+  -webkit-animation: blink 2s linear infinite;
+  -moz-animation: blink 1s linear infinite;
+  -ms-animation: blink 1s linear infinite;
+  -o-animation: blink 1s linear infinite;
+}

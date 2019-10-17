@@ -36,7 +36,7 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td :title="item.code" :class="{avggood:item.avgzs>30}">{{item.name}}</td>
+            <td :title="item.code" :class="{avggood:item.avgzs>30}">{{item.name}}{{item.avgzs}}</td>
 
             <td
               v-for="col in head"
@@ -96,7 +96,7 @@ export default {
       items: [],
       descending: true,
       sortby: "",
-      visibility: "All",
+      visibility: "强势",
       head: [
         {
           label: "Now",
@@ -258,7 +258,45 @@ export default {
         }
       })();
       (async () => {
+        await loadScripts(["/static/js/sf_sdk.js"]);
+
         for (;;) {
+          for (let i = 0; i < this.items.length; i++) {
+            let item = this.items[i];
+            let name = "tdatas" + item.code;
+            if (!window[name]) {
+              window[name] = [];
+              let resp = await new Promise((resolve, reject) => {
+                KKE.api(
+                  "datas.t.get",
+                  {
+                    symbol: item.code
+                  },
+                  function(resp) {
+                    resolve(resp);
+                  }
+                );
+              });
+              console.log(resp);
+
+              item.avgzs = 0;
+              let datas = (window[name] = resp.data.td1.filter(
+                e => e.volume > 0
+              ));
+
+              for (let i = datas.length - 1; i > 0; i--) {
+                if (
+                  datas[i].avg_price > datas[i].price ||
+                  Math.floor(datas[i].avg_price * 100) / 100 <
+                    Math.floor(datas[i - 1].avg_price * 100) / 100
+                ) {
+                  console.log(i, datas[i], datas[i - 1]);
+                  break;
+                }
+                item.avgzs += 1;
+              }
+            }
+          }
           await timeout(60000);
           let d = new Date();
           let h = d.getHours();
@@ -271,19 +309,16 @@ export default {
           for (let i = 0; i < this.items.length; i++) {
             let item = this.items[i];
             let name = "tdatas" + item.code;
-
-            let datas = window[name] || (window[name] = []);
-            console.log(window[name]);
+            let datas = window[name];
+            let avg = (item.amount / item.volume).toFixed(2);
             datas.push({
-              p: item.now,
-              v: item.volume,
-              a: item.amount,
-              avg: (item.amount / item.volume).toFixed(2)
+              price: item.now,
+              volume: item.volume,
+              amount: item.amount,
+              avg_price: avg
             });
 
-            let avg = (item.amount / item.volume).toFixed(2);
-
-            if (datas.length == 0 || avg < datas[datas.length - 1].avg) {
+            if (avg < datas[datas.length - 2].avg || item.now < avg) {
               item.avgzs = 0;
               continue;
             }

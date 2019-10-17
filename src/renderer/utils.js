@@ -203,7 +203,7 @@ export const hqParser = new (function() {
       e.sell ||
       (e.stopDay = !0);
 
-    if (!e.now) {
+    if (!e.open) {
       e.now = d[11];
     }
     e.now = toFixed(e.now, 2);

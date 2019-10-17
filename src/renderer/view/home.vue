@@ -36,7 +36,12 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td :title="item.code" :class="{avggood:item.avgzs>30}">{{item.name}}{{item.avgzs}}</td>
+            <td :title="item.code">
+              {{item.name}}
+              <span
+                :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
+              >{{item.avgzs}}/{{item.upArgCount}}</span>
+            </td>
 
             <td
               v-for="col in head"
@@ -59,29 +64,26 @@ import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { ObjectType, parse, loadScripts, attachData, timeout } from "@/utils";
-const fmtPercent = value => {
-  if (value) return parseFloat(value).toFixed(2) + "%";
-  return value;
-};
+import { headers } from "./headers";
 
 const filters = {
   All: function(items) {
     return items;
   },
-  候选一: function(items) {
+  Option1: function(items) {
     return items.filter(function(item) {
       return item.candidateType > 0;
     });
   },
-  候选二: function(items) {
+  Option2: function(items) {
     return items.filter(function(item) {
       return item.candidateType > 1;
     });
   },
-  强势: items => {
-    return items.filter(e => e.avgzs > 30);
+  Strong: items => {
+    return items.filter(e => e.avgzs > 0 || e.upArgCount > 120);
   },
-  关注: function(items) {
+  Focus: function(items) {
     return items.filter(function(item) {
       return item.isFocus;
     });
@@ -96,86 +98,8 @@ export default {
       items: [],
       descending: true,
       sortby: "",
-      visibility: "强势",
-      head: [
-        {
-          label: "Now",
-          prop: "now",
-          type: "number",
-          fmt: (e, item) => `${e}(${item.change})`
-        },
-        {
-          label: "Vol",
-          prop: "vol",
-          type: "number",
-          fmt: (e, item) => {
-            return (item.vol = ((item.volume - item.preVolume) / 100).toFixed(
-              0
-            ));
-          }
-        },
-        {
-          label: "Turnover",
-          prop: "turnover",
-          type: "number",
-          fmt: fmtPercent
-        },
-        {
-          label: "Trend",
-          prop: "trend",
-          type: "string",
-          fmt: (e, item) => {
-            if (window[`${item.code}_240`]) {
-              return (item.trend = window[`${item.code}_240`]
-                .map((e, i, datas) => {
-                  if (i > 0) e.preClose = datas[i - 1].close;
-                  return e;
-                })
-                .map(e => `${(e.close - (e.preClose || e.close)).toFixed(2)}`)
-                .reverse()
-                .slice(0, 5)
-                .join(","));
-            } else {
-              item.trend = "";
-            }
-            return item.trend;
-          }
-        },
-        { label: "流值", prop: "lz", type: "string" },
-        { label: "总值", prop: "zsz", type: "number" },
-        { label: "PE(TTM)", prop: "pe_ttm", type: "number" },
-        {
-          label: "PEG",
-          prop: "PEG",
-          type: "number",
-          fmt: e => e && e.toFixed(2)
-        },
-        {
-          label: "CAGR",
-          prop: "zzl3",
-          type: "number",
-          fmt: (e, item) =>
-            e &&
-            `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
-        },
-        { label: "同比", prop: "tbzz", type: "number", fmt: fmtPercent },
-        { label: "收益", prop: "zzl", type: "string" },
-        {
-          label: "ROE",
-          prop: "roe",
-          type: "string",
-          fmt: (e, item) => {
-            let tb = window["tb_zycwzb" + item.code];
-            if (tb && tb.reportDate) {
-              tb.reportDate[1];
-              let n = "净资产收益率加权(%)";
-              return (item.roe = `${tb[n][tb.reportDate[1]]},${
-                tb[n][tb.reportDate[5]]
-              },${tb[n][tb.reportDate[9]]}`);
-            }
-          }
-        }
-      ]
+      visibility: "Strong",
+      head: headers
     };
   },
   components: {
@@ -279,21 +203,28 @@ export default {
               });
               console.log(resp);
 
-              item.avgzs = 0;
+              item.avgzs = item.upArgCount = 0;
+
               let datas = (window[name] = resp.data.td1.filter(
                 e => e.volume > 0
               ));
-
+              let stop1 = false;
               for (let i = datas.length - 1; i > 0; i--) {
                 if (
-                  datas[i].avg_price > datas[i].price ||
+                  datas[i].avg_price >
+                  datas[i]
+                    .price /*||
                   Math.floor(datas[i].avg_price * 100) / 100 <
-                    Math.floor(datas[i - 1].avg_price * 100) / 100
+                    Math.floor(datas[i - 1].avg_price * 100) / 100*/
                 ) {
                   console.log(i, datas[i], datas[i - 1]);
-                  break;
+                  stop1 = true;
+                  // break;
+                } else {
+                  if (!stop1) item.avgzs += 1;
+
+                  item.upArgCount += 1;
                 }
-                item.avgzs += 1;
               }
             }
           }
@@ -321,8 +252,10 @@ export default {
             if (avg < datas[datas.length - 2].avg || item.now < avg) {
               item.avgzs = 0;
               continue;
+            } else {
+              item.upArgCount += 1;
+              item.avgzs += 1;
             }
-            item.avgzs += 1;
           }
         }
       })();
@@ -412,197 +345,4 @@ export default {
   }
 };
 </script>
-
-<style type="text/css">
-table {
-  width: 100%;
-}
-th,
-td {
-  text-align: left;
-}
-.odd {
-  background: #eee;
-}
-.action {
-  cursor: pointer;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-table thead th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-table th,
-table td {
-  font-size: 12px;
-  text-align: left;
-  border: 1px solid #ccc;
-  padding: 5px;
-}
-table th:not(:first-of-type) {
-  border-left: 0;
-}
-table td {
-  border-top: 0;
-}
-table td:not(:first-of-type) {
-  border-left: 0;
-}
-table th {
-  background: #666;
-  color: white;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
-}
-table tr:nth-of-type(even) td {
-  background: whitesmoke;
-}
-table tr:hover td {
-  background: #b3b3b3;
-}
-table th {
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 150ms;
-  user-select: none;
-}
-table th:before {
-  content: "";
-  display: inline-block;
-  color: rgba(255, 255, 255, 0.4);
-  transition: color 300ms, -webkit-transform 300ms;
-  transition: transform 300ms, color 300ms;
-  transition: transform 300ms, color 300ms, -webkit-transform 300ms;
-  position: absolute;
-  font-size: 18px;
-  left: 4px;
-  top: calc(50% - 9px);
-}
-table .ascending:before {
-  /*-webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);*/
-  color: white;
-}
-table .descending:before {
-  /*-webkit-transform: rotate(90deg);
-  transform: rotate(90deg);*/
-  color: white;
-}
-table .ascending::before {
-  content: "↑";
-  margin-left: -5px;
-  font-size: 12px;
-}
-table .descending:before {
-  content: "↓";
-  margin-left: -5px;
-  font-size: 12px;
-}
-@supports (display: contents) {
-  table {
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-  }
-  table thead,
-  table tbody,
-  table tr {
-    display: contents;
-  }
-  table th {
-    border-color: #af1313;
-  }
-}
-
-.filters {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: absolute;
-  right: 0;
-  left: 0;
-}
-
-.filters li {
-  display: inline;
-}
-
-.filters li a {
-  color: inherit;
-  margin: 3px;
-  padding: 3px 7px;
-  text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: 3px;
-}
-
-.filters li a:hover {
-  border-color: rgba(175, 47, 47, 0.1);
-}
-
-.filters li a.selected {
-  border-color: rgba(175, 47, 47, 0.2);
-}
-.avggood {
-  color: red;
-}
-/* 定义keyframe动画，命名为blink */
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-/* 添加兼容性前缀 */
-@-webkit-keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@-moz-keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@-ms-keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@-o-keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-/* 定义blink类*/
-.avggood,
-.blink {
-  color: #dd4814;
-  animation: blink 1s linear infinite;
-  /* 其它浏览器兼容性前缀 */
-  -webkit-animation: blink 2s linear infinite;
-  -moz-animation: blink 1s linear infinite;
-  -ms-animation: blink 1s linear infinite;
-  -o-animation: blink 1s linear infinite;
-}
-</style>
+<style scoped src="./home.css"/>

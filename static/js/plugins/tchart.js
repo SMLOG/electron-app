@@ -214,7 +214,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   }
                 ]
               ],
-              tCharts: E,
+              tCharts: defaultE,
               setCustom: {
                 allow_indicator_edit: !0,
                 mousewheel_zoom: !0
@@ -1564,53 +1564,53 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     ? (v = k = "")
                     : ((v =
                         '<span style="color:' +
-                        W.range.rangeColor[2] +
+                        whatW.range.rangeColor[2] +
                         ';" class="' +
-                        W.range.rangeLabel +
+                        whatW.range.rangeLabel +
                         '">\u91cf</span>'),
                       (k =
                         '<span class="' +
-                        W.range.rangeValue +
+                        whatW.range.rangeValue +
                         '">' +
                         o +
                         "</span>"));
                   var f = [
                     l[0],
                     '<span style="color:' +
-                      W.range.rangeColor[0] +
+                      whatW.range.rangeColor[0] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u4ef7</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       Number(a.price).toFixed(i) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[1] +
+                      whatW.range.rangeColor[1] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u5747</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       s +
                       "</span>",
                     v,
                     k,
                     '<span style="color:' +
-                      W.range.rangeColor[3] +
+                      whatW.range.rangeColor[3] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u5e45</span>',
                     '<span style="color:' +
                       p(a.change) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.percent +
                       "%</span>"
@@ -1731,63 +1731,63 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     ? (v = k = "")
                     : ((k =
                         '<span style="color:' +
-                        W.range.rangeColor[4] +
+                        whatW.range.rangeColor[4] +
                         ';" class="' +
-                        W.range.rangeLabel +
+                        whatW.range.rangeLabel +
                         '">\u91cf</span>'),
                       (v =
                         '<span class="' +
-                        W.range.rangeValue +
+                        whatW.range.rangeValue +
                         '">' +
                         o +
                         "</span>"));
                   var f = [
                     c[0],
                     '<span style="color:' +
-                      W.range.rangeColor[0] +
+                      whatW.range.rangeColor[0] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u5f00</span>',
                     '<span style="color:' +
                       p(a.open, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.open.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[1] +
+                      whatW.range.rangeColor[1] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u9ad8</span>',
                     '<span style="color:' +
                       p(a.high, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.high.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[2] +
+                      whatW.range.rangeColor[2] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u6536</span>',
                     '<span style="color:' +
                       p(a.close, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.close.toFixed(2) +
                       "</span>",
                     '<span style="color:' +
-                      W.range.rangeColor[3] +
+                      whatW.range.rangeColor[3] +
                       ';" class="' +
-                      W.range.rangeLabel +
+                      whatW.range.rangeLabel +
                       '">\u4f4e</span>',
                     '<span style="color:' +
                       p(a.low, n) +
                       ';" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.low.toFixed(2) +
                       "</span>",
@@ -1796,7 +1796,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     '<span style="color:' +
                       p(a.change) +
                       ';margin-left: 4px;;" class="' +
-                      W.range.rangeValue +
+                      whatW.range.rangeValue +
                       '">' +
                       a.percent +
                       "%</span>"
@@ -1808,12 +1808,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       (a.postVol &&
                         (f = f.concat([
                           '<span style="color:' +
-                            W.range.rangeColor[4] +
+                            whatW.range.rangeColor[4] +
                             ';" class="' +
-                            W.range.rangeLabel +
+                            whatW.range.rangeLabel +
                             '">\u76d8\u540e\u91cf|\u989d</span>',
                           '<span class="' +
-                            W.range.rangeValue +
+                            whatW.range.rangeValue +
                             '">' +
                             (0 === a.postVol
                               ? 0
@@ -1853,7 +1853,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 }
               ]
             ],
-            tCharts: E
+            tCharts: defaultE
           }
         }
       };
@@ -1953,12 +1953,13 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             } catch (n) {}
           });
       }),
-        (configObj2.uParam = W.menu.menu_dom_h + 2 + W.range.range_dom_h),
+        (configObj2.uParam =
+          whatW.menu.menu_dom_h + 2 + whatW.range.range_dom_h),
         KKE.api(
           "plugins.userpanel.get",
           {
             userObj: configObj2,
-            chartId: W.domid,
+            chartId: whatW.domid,
             menu: menuTab,
             chart: sinaTKChartObj
           },
@@ -1966,9 +1967,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         );
     }
     function C(t) {
-      if (!W.iswap && !W.menu.menu_wapmore) {
-        for (var e = 0; e < W.menu.tab.length; e++) {
-          var a = W.menu.tab[e].v;
+      if (!whatW.iswap && !whatW.menu.menu_wapmore) {
+        for (var e = 0; e < whatW.menu.tab.length; e++) {
+          var a = whatW.menu.tab[e].v;
           if (a == t.view) {
             !t.active && (t.active = e);
             break;
@@ -2299,13 +2300,13 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 ];
       }
     })();
-    var E;
+    var defaultE;
     switch (configObj2.market) {
       case "HF":
       case "forex_yt":
       case "BTC":
       case "forex":
-        E = [
+        defaultE = [
           [
             {
               name: "MACD"
@@ -2322,10 +2323,13 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         ];
         break;
       default:
-        E = [
+        defaultE = [
           [
             {
               name: "VOLUME"
+            },
+            {
+              name: "BOLL"
             },
             {
               name: "MACD"
@@ -2344,7 +2348,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           }
         ];
     }
-    var F,
+    var whatF,
       B,
       M,
       U,
@@ -2355,75 +2359,75 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       X,
       j,
       G,
-      W = void 0,
+      whatW = void 0,
       $ = function(t, e) {
-        KKE.api("plugins.compare.get", W.compare, function(a) {
+        KKE.api("plugins.compare.get", whatW.compare, function(a) {
           (G = a), t.appendChild(e);
         });
       },
       Y = function(t) {
-        W.menu.dis_menu
+        whatW.menu.dis_menu
           ? ((B = o("div")),
-            (B.id = W.menu.menu_dom_id),
-            configObj2.iswap && (W.menu.menu_dom_h = 39),
-            (B.style.height = W.menu.menu_dom_h + "px"),
-            (W.menu.iswap = configObj2.iswap),
+            (B.id = whatW.menu.menu_dom_id),
+            configObj2.iswap && (whatW.menu.menu_dom_h = 39),
+            (B.style.height = whatW.menu.menu_dom_h + "px"),
+            (whatW.menu.iswap = configObj2.iswap),
             t.appendChild(B))
-          : (W.menu.menu_dom_h = 0);
+          : (whatW.menu.menu_dom_h = 0);
       },
       Z = function() {
-        W.compare.dis_compare
+        whatW.compare.dis_compare
           ? ((V = o("div")),
-            (V.id = W.compare.compare_dom_id),
+            (V.id = whatW.compare.compare_dom_id),
             (V.style.clear = "both"),
-            (V.style.marginLeft = W.compare.compare_dom_left),
+            (V.style.marginLeft = whatW.compare.compare_dom_left),
             (V.style.paddingTop = "7px"),
             (V.style.lineHeight = V.style.height =
-              W.compare.compare_dom_h + "px"),
-            (W.compare.compare_dom_h = 30))
-          : (W.compare.compare_dom_h = 0);
+              whatW.compare.compare_dom_h + "px"),
+            (whatW.compare.compare_dom_h = 30))
+          : (whatW.compare.compare_dom_h = 0);
       },
       J = function(t) {
-        if (W.range.dis_range) {
+        if (whatW.range.dis_range) {
           if (
             ((U = o("div")),
-            (U.id = W.range.range_dom_id),
+            (U.id = whatW.range.range_dom_id),
             (U.style.clear = "both"),
             (U.style.whiteSpace = "nowrap"),
-            W.range.rangeCon
-              ? (U.className = W.range.rangeCon)
+            whatW.range.rangeCon
+              ? (U.className = whatW.range.rangeCon)
               : (U.style.marginLeft = "5px"),
-            configObj2.iswap || W.menu.menu_wapmore)
+            configObj2.iswap || whatW.menu.menu_wapmore)
           )
             (U.style.fontSize = "10px"),
               (U.style.marginLeft = "25px"),
               b(U),
-              (W.range.range_dom_h = 30),
-              (U.style.height = W.range.range_dom_h + "px");
+              (whatW.range.range_dom_h = 30),
+              (U.style.height = whatW.range.range_dom_h + "px");
           else {
             U.style.fontSize = "12px";
             var e = 4;
             (U.style.paddingTop = e + "px"),
               (U.style.lineHeight = U.style.height =
-                W.range.range_dom_h + "px"),
-              (W.range.range_dom_h += e);
+                whatW.range.range_dom_h + "px"),
+              (whatW.range.range_dom_h += e);
           }
           t.appendChild(U);
-        } else W.range_dom_h = 0;
+        } else whatW.range_dom_h = 0;
       },
       q = function(t) {
         Y(t), J(t), Z(t);
       },
       Q = function(t) {
-        W.compare.dis_compare
+        whatW.compare.dis_compare
           ? (t.appendChild(V), $(t, V))
-          : (W.compare.compare_dom_h = 0);
+          : (whatW.compare.compare_dom_h = 0);
       },
       tt = function() {
-        W.charts_hasTChart ||
+        whatW.charts_hasTChart ||
           "US" !== configObj2.market ||
-          1 !== W.stock_stutas ||
-          (W.menu.tab = [
+          1 !== whatW.stock_stutas ||
+          (whatW.menu.tab = [
             {
               lab: "\u65e5K",
               v: "kd",
@@ -2457,19 +2461,19 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           (e.style.webkitUserSelect = e.style.userSelect = e.style.MozUserSelect =
             "none"),
           (X = defaultsetting()),
-          (W = i(X, W || null)),
-          (W = config = z = i(W, configObj2 || null)),
-          (W.domid = X.charts_dom_id),
-          (W.symbol = configObj2.symbol),
+          (whatW = i(X, whatW || null)),
+          (whatW = config = z = i(whatW, configObj2 || null)),
+          (whatW.domid = X.charts_dom_id),
+          (whatW.symbol = configObj2.symbol),
           ("forex" == configObj2.market ||
             "forex_yt" == configObj2.market ||
             "BTC" == configObj2.market) &&
-            (W.charts_Start = "K"),
+            (whatW.charts_Start = "K"),
           (H = u(configObj2.market)),
-          (W = i(W, H)),
-          (W = i(W, configObj2)),
-          (config = i(W.param.t, config || null)),
-          (z = i(W.param.k, z || null)),
+          (whatW = i(whatW, H)),
+          (whatW = i(whatW, configObj2)),
+          (config = i(whatW.param.t, config || null)),
+          (z = i(whatW.param.k, z || null)),
           (z.pcm = 2),
           configObj2.iswap && v(),
           (M = o("div")),
@@ -2478,17 +2482,17 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         var a = e.offsetHeight,
           n =
             e.offsetHeight -
-            W.menu.menu_dom_h -
+            whatW.menu.menu_dom_h -
             2 -
-            W.range.range_dom_h -
-            W.compare.compare_dom_h,
+            whatW.range.range_dom_h -
+            whatW.compare.compare_dom_h,
           s = (n / a) * 100;
         (M.style.height = s + "%"),
           e.appendChild(M),
           Q(e),
           tt(),
-          "op_m" == configObj2.market && (W.charts_Start = "K"),
-          (F = W.api);
+          "op_m" == configObj2.market && (whatW.charts_Start = "K"),
+          (whatF = whatW.api);
       },
       nt = function() {
         var e = configObj2.settingCfg.kChart;
@@ -2657,7 +2661,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             S.compare({
               symbol: _tChart.getSymbols()[e],
               linecolor: {
-                K_N: W.compare.color[e - 1]
+                K_N: whatW.compare.color[e - 1]
               },
               linetype: t
             });
@@ -2675,11 +2679,11 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     active: i
                   });
             else {
-              for (var e in F.k)
-                if (F.k.hasOwnProperty(e)) {
-                  var r = F.k[e];
+              for (var e in whatF.k)
+                if (whatF.k.hasOwnProperty(e)) {
+                  var r = whatF.k[e];
                   c(r) || (r = [r]),
-                    ("pCharts" != e || W.iswap) &&
+                    ("pCharts" != e || whatW.iswap) &&
                       s(S[e]) &&
                       S[e].apply(null, r);
                 }
@@ -2689,7 +2693,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 ((o && N(configObj2.symbol)) ||
                   (o && "HK" === configObj2.market)) &&
                   S.setReK("cnlv1wap" === configObj2.mt ? 0 : o),
-                W.iswap || "cnlv1wap" == configObj2.mt
+                whatW.iswap || "cnlv1wap" == configObj2.mt
                   ? "cnlv1wap" === configObj2.mt &&
                     S.tCharts(
                       [
@@ -2705,7 +2709,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   : (menuTab && it(S), "kcl" == n && S.showView(n));
             }
             if ((rt(), a)) {
-              var l = configObj2.iswap || W.menu.menu_wapmore ? 1 : 2;
+              var l = configObj2.iswap || whatW.menu.menu_wapmore ? 1 : 2;
               menuTab && menuTab.setTarget(l), S.compare(a.obj, a.rm);
             }
             menuTab
@@ -2718,9 +2722,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     view: n,
                     active: i
                   }))
-              : W.menu.dis_menu &&
+              : whatW.menu.dis_menu &&
                 mt(
-                  W.menu,
+                  whatW.menu,
                   {
                     type: "k",
                     chart: S
@@ -2789,25 +2793,25 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         KKE.api("chart.h5t.get", config, function(tChart) {
           var e = configObj2.market;
           sinaTKChartObj.tChart = _tChart = tChart;
-          for (var a in F.t)
-            if (F.t.hasOwnProperty(a)) {
-              var n = F.t[a];
+          for (var a in whatF.t)
+            if (whatF.t.hasOwnProperty(a)) {
+              var n = whatF.t[a];
               c(n) || (n = [n]),
                 s(_tChart[a]) &&
-                  ("US" != e || 1 !== W.stock_stutas) &&
+                  ("US" != e || 1 !== whatW.stock_stutas) &&
                   _tChart[a].apply(null, n);
             }
           menuTab
             ? menuTab.setChart({
                 t: _tChart
               })
-            : W.menu.dis_menu &&
-              mt(W.menu, {
+            : whatW.menu.dis_menu &&
+              mt(whatW.menu, {
                 type: "t",
                 chart: _tChart
               }),
-            W.iswap ||
-              W.menu.menu_wapmore ||
+            whatW.iswap ||
+              whatW.menu.menu_wapmore ||
               it(
                 _tChart,
                 "t",
@@ -2815,7 +2819,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   ? "click"
                   : "init"
               ),
-            W.menu.dis_menu || sinaTKChartObj.re("T_DATA_LOADED", null);
+            whatW.menu.dis_menu || sinaTKChartObj.re("T_DATA_LOADED", null);
         });
       };
     (this.menuTab = menuTab),
@@ -2850,13 +2854,15 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               k: a.chart
             };
         }
-        (W.menu.me = sinaTKChartObj),
-          (W.menu[o + "chart"] = a.chart),
-          KKE.api("plugins.menu.get", W.menu, function(t) {
+        (whatW.menu.me = sinaTKChartObj),
+          (whatW.menu[o + "chart"] = a.chart),
+          KKE.api("plugins.menu.get", whatW.menu, function(t) {
             sinaTKChartObj.re("T_DATA_LOADED", null),
               (menuTab = t),
               (sinaTKChartObj.menuTab = menuTab),
-              W.iswap || W.menu.menu_wapmore || (configObj.nocfg || y(), w()),
+              whatW.iswap ||
+                whatW.menu.menu_wapmore ||
+                (configObj.nocfg || y(), w()),
               "forex" == configObj2.market || "forex_yt" == configObj2.market
                 ? pt
                   ? C(pt)
@@ -2886,7 +2892,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         }
       };
     at(),
-      dt(W.charts_Start),
+      dt(whatW.charts_Start),
       (this.chartUserobj = configObj2),
       (this.initK = initK),
       (this.initT = initT),
@@ -2896,7 +2902,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         if ((e.linetype || (e.linetype = "line"), n === o))
           _tChart && _tChart.compare(e, a), S && S.compare(e, a);
         else if ((_tChart && _tChart.hide(), S)) {
-          var i = configObj2.iswap || W.menu.menu_wapmore ? 1 : 2;
+          var i = configObj2.iswap || whatW.menu.menu_wapmore ? 1 : 2;
           menuTab && menuTab.setTarget("kdd" == menuTab.chooseTab.tab ? 3 : i),
             S.show(),
             S.compare(e, a);
@@ -2967,7 +2973,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       (this.pushData = function(t) {
         _tChart && _tChart.pushData(t.obj, t.num),
           configObj2.iswap ||
-            W.menu.menu_wapmore ||
+            whatW.menu.menu_wapmore ||
             (S && S.pushData(t.obj, t.num));
       }),
       (this.resizePaintTool = function() {
@@ -3003,7 +3009,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       (this.update = function() {
         _tChart && _tChart.update(), S && S.update();
       }),
-      (this.param = W);
+      (this.param = whatW);
   }
   function a(t) {
     return (

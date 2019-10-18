@@ -20,6 +20,8 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
+window.loadScripts = loadScripts;
+
 export const hqParser = new (function() {
   function hk(item) {
     let hqstr = window[`hq_str_${item.code}`];

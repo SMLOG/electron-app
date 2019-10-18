@@ -36,7 +36,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { ObjectType, loadScripts } from "@/utils";
+import { ObjectType, loadScripts } from "@/lib/utils";
 import { FieldHead } from "@/fieldhead";
 
 export default {

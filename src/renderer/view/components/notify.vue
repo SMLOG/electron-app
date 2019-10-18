@@ -20,7 +20,7 @@
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent, openWin } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent, openWin } from "@/lib/utils";
 
 export default {
   name: "notify",
@@ -28,7 +28,7 @@ export default {
     return {
       messages: [],
       autoShow: false,
-      hasNew:false
+      hasNew: false
     };
   },
   filters: {
@@ -166,7 +166,7 @@ export default {
   cursor: move;
 }
 
-.new .logo{
+.new .logo {
   background-color: green;
 }
 .content_body {

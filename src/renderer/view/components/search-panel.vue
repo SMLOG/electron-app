@@ -43,7 +43,7 @@
 
 <script type="text/javascript">
 // import xxx from someSrc     es6中得到模块的方法。
-import { loadScripts, parse, toFixed, toPercent } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent } from "@/lib/utils";
 import store from "@/localdata";
 
 export default {

@@ -57,9 +57,9 @@ import {
   openWin,
   openWin2,
   openSite,
-  time
-} from "@/utils";
-import { ObjectType } from "@/utils";
+  time,
+  ObjectType
+} from "@/lib/utils";
 import { setTimeout } from "timers";
 //import { drawMAs } from "@/ma";
 

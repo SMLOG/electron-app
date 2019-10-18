@@ -62,7 +62,7 @@
 </template>
 <script>
 import store from "@/localdata";
-import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/utils";
+import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/lib/utils";
 
 import jquery from "jquery";
 export default {

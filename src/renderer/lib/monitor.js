@@ -1,5 +1,7 @@
 import { loadScripts, timeout } from "./utils";
 import { getTechDatas } from "./tech";
+import { getXSJJTable } from "./getTable";
+import { format } from "path";
 export const filters = {
   All: function(items) {
     return items;
@@ -36,7 +38,7 @@ export function isNotTradeTime() {
 }
 export async function monitor(items) {
   await loadScripts(["/static/js/sf_sdk.js"]);
-
+  window.items = items;
   for (;;) {
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
@@ -77,6 +79,12 @@ export async function monitor(items) {
         }
       }
     }
+
+    let xsjj = await getXSJJTable();
+    for (let item of items) {
+      item.xsjj = xsjj[item.code];
+    }
+
     await timeout(60000);
     if (isNotTradeTime()) continue;
     for (let i = 0; i < this.items.length; i++) {

@@ -28,6 +28,18 @@
             >{{col.label}}</th>
             <th>Action</th>
           </tr>
+          <tr v-if="selectItem">
+            <th :colspan="head.length+2">
+              <div id="detail" ref="detail">
+                {{selectItem.name}}
+                <span v-if="selectItem.xsjj">
+                  {{selectItem.xsjj.ltsj}} - {{selectItem.xsjj.xsglx}} - {{selectItem.xsjj.jjsl}}
+                  解禁数量 {{selectItem.xsjj.kjjsl}}
+                  流通市值比 {{selectItem.xsjj.zb}}
+                </span>
+              </div>
+            </th>
+          </tr>
         </thead>
         <draggable v-model="items" @update="dragEnd" tag="tbody">
           <tr
@@ -36,7 +48,7 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td :title="item.code">
+            <td :title="item.code" @click="toggleDetail(item)">
               {{item.name}}
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
@@ -68,6 +80,7 @@ import {
   parse,
   loadScripts,
   attachData,
+  dateFormat,
   timeout
 } from "@/lib/utils";
 import { headers } from "./headers";
@@ -82,7 +95,8 @@ export default {
       descending: true,
       sortby: "",
       visibility: "Strong",
-      head: headers
+      head: headers,
+      selectItem: null
     };
   },
   components: {
@@ -114,6 +128,10 @@ export default {
     }
   },
   methods: {
+    toggleDetail(item) {
+      if (this.selectItem != item) this.selectItem = item;
+      else this.selectItem = null;
+    },
     sort(prop) {
       this.items.sort(function(a, b) {
         if (typeof a[prop] === "number") {

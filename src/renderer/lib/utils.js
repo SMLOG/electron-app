@@ -912,3 +912,64 @@ function getLastReportDate() {
 //http://quotes.money.163.com/service/chddata.html?code=0600900&start=20191001&end=20191014&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
 //http://api.money.126.net/data/feed/0000001,0601857,0601600,0600900,1002024,money.api?callback=_ntes_quote_callback82292434
 //fetch('http://vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=11&symbol=sz000002&rn=26185407').then(res=>res.text()).then(text=>console.log(text));
+
+export function ConvertUnit(oridata, power) {
+  let v;
+  if (oridata === "" || oridata === "-") {
+    return "-";
+  }
+  var m = Math.abs(oridata);
+  if (!isNaN(power)) {
+    m = m * Math.pow(10, power);
+  }
+  if (m < 10000) {
+    v = (m / 1).toFixed(0);
+  } else if (m >= 10000 && m < 1000000) {
+    v = (m / 10000).toFixed(2) + "万";
+  } else if (m >= 1000000 && m < 100000000) {
+    v = (m / 10000).toFixed(0) + "万";
+  } else if (m >= 100000000 && m < 10000000000) {
+    v = (m / 100000000).toFixed(2) + "亿";
+  } else {
+    v = (m / 100000000).toFixed(2) + "亿";
+  }
+
+  return v;
+}
+
+export function dateFormat(dateS, part) {
+  if (dateS == "-" || typeof dateS == "undefined") {
+    return "-";
+  }
+  if (dateS.length > 10) {
+    dateS = dateS.split("T")[0].replace(/-/g, "/");
+  }
+  var date = new Date(dateS);
+  var datecopy;
+  var redate = "";
+  part = part == null ? "yyyy-MM-dd HH:mm:ss" : part;
+  var y = date.getFullYear();
+  var M = date.getMonth() + 1;
+  var d = date.getDate();
+  var H = date.getHours();
+  var m = date.getMinutes();
+  var s = date.getSeconds();
+  var MM = M > 9 ? M : "0" + M;
+  var dd = d > 9 ? d : "0" + d;
+  var HH = H > 9 ? H : "0" + H;
+  var mm = m > 9 ? m : "0" + m;
+  var ss = s > 9 ? s : "0" + s;
+  redate = part
+    .replace("yyyy", y)
+    .replace("MM", MM)
+    .replace("dd", dd)
+    .replace("HH", HH)
+    .replace("mm", mm)
+    .replace("ss", ss)
+    .replace("M", M)
+    .replace("d", d)
+    .replace("H", H)
+    .replace("m", m)
+    .replace("s", s);
+  return redate;
+}

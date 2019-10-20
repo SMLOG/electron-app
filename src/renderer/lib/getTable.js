@@ -31,6 +31,7 @@ function decode(str, codes) {
 
 async function getXSJJTable() {
   if (window.xsjj) return window.xsjj;
+  let todayStr = new Date().Format("yyyy-MM-dd");
   let params = {
     type: "XSJJ_NJ_PC",
     token: "70f12f2f4f091e459a279469fe49eca5", // # 访问令牌，必须
@@ -38,8 +39,8 @@ async function getXSJJTable() {
     sr: 1,
     p: 1,
     ps: 30,
-    js: "var VDOQAFpi={pages:(tp),data:(x),font:(font)}",
-    filter: "(mkt=)(ltsj>=^2019-10-19^ and ltsj<=^2021-10-19^)",
+    js: "var xsjjo={pages:(tp),data:(x),font:(font)}",
+    filter: `(mkt=)(ltsj>=^${todayStr}^ and ltsj<=^${todayStr}^)`,
     rt: 51294261
   };
   let url = "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?";
@@ -52,11 +53,11 @@ async function getXSJJTable() {
   console.log(url);
   //let text = await fetch(url ).then(resp=>resp.text());
   await loadScripts([url]);
-  console.log(window.VDOQAFpi);
+  console.log(window.xsjjo);
 
   let xsjj = {};
-  if (window.VDOQAFpi.data)
-    for (let d of window.VDOQAFpi.data) {
+  if (window.xsjjo.data)
+    for (let d of window.xsjjo.data) {
       let mk = "sz";
       if (d.gpdm.substring(0, 1) == 6) {
         mk = "sh";
@@ -65,7 +66,7 @@ async function getXSJJTable() {
       for (var key in d) {
         var html = d[key];
         try {
-          d[key] = decode(html, window.VDOQAFpi.font.FontMapping);
+          d[key] = decode(html, window.xsjjo.font.FontMapping);
         } catch (err) {}
       }
       d.kjjsl = ConvertUnit(d.kjjsl * 10000);
@@ -81,10 +82,11 @@ async function getXSJJTable() {
 async function getTableGDZJC() {
   let url =
     "http://data.eastmoney.com/DataCenter_V3/gdzjc.ashx?pagesize=50&page=1&js=var%20ElXraUuI&param=&sortRule=-1&sortType=BDJZ&tabid=all&code=&name=&rt=52384461";
-  if (!window.ElXraUuI) await loadScripts([url]);
+  if (window.gdzjc) return window.gdzjc;
+  await loadScripts([url]);
   console.log(ElXraUuI);
   let r = {};
-  if (ElXraUuI)
+  if (window.ElXraUuI)
     for (let datastr of window.ElXraUuI.data) {
       let data = datastr.split(",");
       let mk = "sz";
@@ -138,7 +140,7 @@ async function getTableGDZJC() {
       r[`${mk}${data[0]}`].push({ str: str });
     }
   console.log(r);
-  return r;
+  return (window.gdzjc = r);
 }
 
 async function getYZYGTable() {

@@ -31,16 +31,21 @@ function decode(str, codes) {
 
 async function getXSJJTable() {
   if (window.xsjj) return window.xsjj;
-  let todayStr = new Date().Format("yyyy-MM-dd");
+  let startDate = new Date(
+    new Date().getTime() - 30 * 24 * 60 * 60 * 1000
+  ).Format("yyyy-MM-dd");
+  let endDate = new Date(
+    new Date().getTime() + 30 * 24 * 60 * 60 * 1000
+  ).Format("yyyy-MM-dd");
   let params = {
     type: "XSJJ_NJ_PC",
     token: "70f12f2f4f091e459a279469fe49eca5", // # 访问令牌，必须
     st: "ltsj",
     sr: 1,
     p: 1,
-    ps: 30,
+    ps: 10000,
     js: "var xsjjo={pages:(tp),data:(x),font:(font)}",
-    filter: `(mkt=)(ltsj>=^${todayStr}^ and ltsj<=^${todayStr}^)`,
+    filter: `(mkt=)(ltsj>=^${startDate}^ and ltsj<=^${endDate}^)`,
     rt: 51294261
   };
   let url = "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?";
@@ -76,7 +81,7 @@ async function getXSJJTable() {
       if (!xsjj[`${mk}${d.gpdm}`]) xsjj[`${mk}${d.gpdm}`] = [];
       xsjj[`${mk}${d.gpdm}`].push(d);
     }
-  return xsjj;
+  return (window.xsjj = xsjj);
 }
 
 async function getTableGDZJC() {

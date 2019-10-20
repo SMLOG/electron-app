@@ -1,6 +1,6 @@
 import { loadScripts, timeout } from "./utils";
 import { getTechDatas } from "./tech";
-import { getXSJJTable } from "./getTable";
+import { getTables } from "./getTable";
 import { format } from "path";
 export const filters = {
   All: function(items) {
@@ -80,15 +80,12 @@ export async function monitor(items) {
       }
     }
 
-    let xsjj = await getXSJJTable();
-    for (let item of items) {
-      item.xsjj = xsjj[item.code];
-    }
+    await getTables(items);
 
     await timeout(60000);
     if (isNotTradeTime()) continue;
-    for (let i = 0; i < this.items.length; i++) {
-      let item = this.items[i];
+    for (let i = 0; i < items.length; i++) {
+      let item = items[i];
       let name = "tdatas" + item.code;
       let datas = window[name];
       let avg = (item.amount / item.volume).toFixed(2);

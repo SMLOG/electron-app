@@ -28,14 +28,14 @@
             >{{col.label}}</th>
             <th>Action</th>
           </tr>
-          <tr v-if="selectItem">
+          <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
             <th :colspan="head.length+2">
               <div id="detail" ref="detail">
-                {{selectItem.name}}
-                <span v-if="selectItem.xsjj">
-                  {{selectItem.xsjj.ltsj}} - {{selectItem.xsjj.xsglx}} - {{selectItem.xsjj.jjsl}}
-                  解禁数量 {{selectItem.xsjj.kjjsl}}
-                  流通市值比 {{selectItem.xsjj.zb}}
+                <span v-if="selectItem.tables&&selectItem.tables.length>0">
+                  <div v-for="t in selectItem.tables" :key="t.str">
+                    {{selectItem.name}}
+                    <span v-html="t.str"></span>
+                  </div>
                 </span>
               </div>
             </th>
@@ -48,7 +48,11 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td :title="item.code" @click="toggleDetail(item)">
+            <td
+              :title="item.code"
+              @click="toggleDetail(item)"
+              :class="{lk:item.tables&&item.tables.length>0}"
+            >
               {{item.name}}
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"

@@ -196,3 +196,6 @@ table .descending:before {
   -ms-animation: blink 1s linear infinite;
   -o-animation: blink 1s linear infinite;
 }
+.lk {
+  color: green;
+}

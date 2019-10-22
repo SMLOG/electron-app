@@ -183,8 +183,7 @@ export default {
 
 <style type="text/css">
 .search-input {
-  height: 45px;
-  width: 600px;
+  height: 25px;
   margin: 0 auto;
   position: relative;
 }
@@ -192,8 +191,7 @@ export default {
 .search-input input {
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
-  width: 500px;
-  height: 45px;
+  height: 25px;
   font-size: 18px;
   float: left;
   padding-left: 10px;
@@ -210,6 +208,7 @@ export default {
   font-size: 16px;
   font-weight: bold;
   float: left;
+  display: none;
 }
 
 .search-btn {
@@ -248,14 +247,14 @@ input::-ms-clear {
 
 .search-reset {
   width: 21px;
-  height: 21px;
+  height: 11px;
   position: absolute;
   display: block;
-  line-height: 21px;
+  line-height: 11px;
   text-align: center;
   cursor: pointer;
   font-size: 20px;
-  right: 110px;
+  right: 10px;
   top: 12px;
 }
 

@@ -31,7 +31,7 @@
           >{{item.name}}</span>
           <span class="content" :class="upDown(item.now-item.preClose)">
             <i>{{item.now}}</i>
-            <i>({{item.change}}){{item.changeP}}</i>
+            <i>({{item.change}}){{item.turnover}}%</i>
           </span>
         </div>
       </div>

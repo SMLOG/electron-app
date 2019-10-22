@@ -2,7 +2,7 @@
   <div>
     <div>
       <div style="float:left;">
-        <ul class="filters" style="margin-top:20px;">
+        <ul class="filters">
           <li v-for="(k,filter) in filters" :key="filter">
             <a @click="visibility=filter" :class="{ selected: visibility == filter }">{{filter}}</a>
           </li>

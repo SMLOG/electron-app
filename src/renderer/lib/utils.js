@@ -219,7 +219,7 @@ export const hqParser = new (function() {
       e.high = "--";
       e.low = "--";
     }
-    if (!e.now || "--" == e.open) {
+    if (!e.now) {
       e.change = "--";
       e.changeP = "--";
     }

@@ -846,7 +846,7 @@ export function attachData(item) {
       ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
       analyst.PEG = item.pe_ttm / analyst.zzl3;
     }
-
+    analyst.reportDate = lrb.reportDate[1];
     return analyst;
   }
 

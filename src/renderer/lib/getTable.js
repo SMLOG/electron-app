@@ -3,26 +3,20 @@ import { getExcludeList } from "./exclude-list";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables() {
-  let daystr = new Date().Format("YYYY-MM-dd");
+  let daystr = new Date().Format("yyyy-MM-dd");
   let tabs = [
     await getXSJJTable() /*限售解禁*/,
     await getTableGDZJC() /*增减持 */,
     await getYZYGTable(),
     getExcludeList()
   ];
-
   for (let item of items) {
-    if (!item.tables) item.tables = [];
-    else if (item.tables.length && item.tables[0].date == daystr) continue;
+    if (window[`tables_${item.code}`]) continue;
+    item.tables = window[`tables_${item.code}`] = [];
+
     for (let tab of tabs) {
       if (tab[item.code]) {
-        // item.tables.xsjj = xsjj[item.code];
-        console.log(tab[item.code]);
-        item.tables = item.tables.concat(tab[item.code]).map(e => {
-          e.date = daystr;
-          return e;
-        });
-        console.log(item.tables);
+        item.tables = item.tables.concat(tab[item.code]);
       }
     }
   }

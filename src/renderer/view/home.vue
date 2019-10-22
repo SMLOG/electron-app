@@ -154,8 +154,8 @@ export default {
     },
     dragEnd(e) {
       e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
-      //store.save(this.items);
-      //this.sendRefresh();
+      store.save(this.items);
+      this.sendRefresh();
     },
     reloadData() {
       this.items = store.fetch();

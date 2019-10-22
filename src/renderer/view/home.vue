@@ -53,7 +53,7 @@
               @click="toggleDetail(item)"
               :class="{lk:item.tables&&item.tables.length>0}"
             >
-              {{item.name}}
+              <span :class="{sz:item.mk=='sz'}">{{item.name}}</span>
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
               >{{item.avgzs}}/{{item.upArgCount}}</span>

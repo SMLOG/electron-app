@@ -269,6 +269,8 @@ export const hqParser = new (function() {
       e.zsz = arr[45];
     }
 
+    e.mk = item.code && item.code.indexOf("sh") ? "sh" : "sz";
+
     return e;
   }
   function b(item) {

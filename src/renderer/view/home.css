@@ -199,3 +199,6 @@ table .descending:before {
 .lk {
   color: green;
 }
+.sz {
+  text-decoration: underline;
+}

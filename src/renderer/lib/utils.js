@@ -269,7 +269,7 @@ export const hqParser = new (function() {
       e.zsz = arr[45];
     }
 
-    e.mk = item.code && item.code.indexOf("sh") ? "sh" : "sz";
+    e.mk = item.code && item.code.indexOf("sh") > -1 ? "sh" : "sz";
 
     return e;
   }

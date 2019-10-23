@@ -4435,12 +4435,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                                 chart.initAndCalcAll(i),
                                 t && chart.update()
                             console.log(chart);
-                            techs_datas[`${chart.name}`]={
-                                symbol:chart.symbol,
-                                datas:chart.datas
-                            }
+                            techs_datas[chart.name] =chart.datas;
                         }
-                        window[`techs`]= [techs_datas,i];
+                        window['tech_'+chart.symbol]= techs_datas;
                     }
 
                 },

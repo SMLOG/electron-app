@@ -896,7 +896,7 @@ function vlookup(search, index, code, tbname, match) {
 export function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-function getLastReportDate() {
+export function getLastReportDate() {
   let d = new Date();
   //3-31,6-30,9-30,12-31
   //if(d.getMonth()>2)

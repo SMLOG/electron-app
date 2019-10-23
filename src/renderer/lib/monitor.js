@@ -2,29 +2,7 @@ import { loadScripts, timeout } from "./utils";
 import { getTechDatas } from "./tech";
 import { getTables } from "./getTable";
 import { format } from "path";
-export const filters = {
-  All: function(items) {
-    return items;
-  },
-  Option1: function(items) {
-    return items.filter(function(item) {
-      return item.candidateType > 0;
-    });
-  },
-  Option2: function(items) {
-    return items.filter(function(item) {
-      return item.candidateType > 1;
-    });
-  },
-  Strong: items => {
-    return items.filter(e => e.avgzs > 0 || e.upArgCount > 120);
-  },
-  Focus: function(items) {
-    return items.filter(function(item) {
-      return item.isFocus;
-    });
-  }
-};
+import { filters } from "./filters";
 export function isNotTradeTime() {
   let d = new Date();
   let h = d.getHours();
@@ -42,6 +20,10 @@ export async function monitor(items) {
   for (;;) {
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
+
+      if (!window["tech_" + item.code]) {
+        await getTechDatas(item.code);
+      }
       let name = "tdatas" + item.code;
       if (!window[name]) {
         window[name] = [];

@@ -1,3 +1,5 @@
+import { getLastReportDate } from "../lib/utils";
+const reportDate = getLastReportDate();
 const fmtPercent = value => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
@@ -83,7 +85,18 @@ export const headers = [
     fmt: (e, item) =>
       e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
   },
-  { label: "同比", prop: "tbzz", type: "number", fmt: fmtPercent },
+  {
+    label: "同比",
+    prop: "tbzz",
+    type: "number",
+    fmt: fmtPercent,
+    class: item => {
+      if (item.reportDate == reportDate)
+        return {
+          reportUpdate: true
+        };
+    }
+  },
   { label: "收益", prop: "zzl", type: "string" },
   {
     label: "ROE",

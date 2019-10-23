@@ -203,3 +203,6 @@ table .descending:before {
 .sz::before {
   content: "•";
 }
+.reportUpdate {
+  text-decoration: underline;
+}

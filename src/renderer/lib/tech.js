@@ -1,5 +1,5 @@
 import { timeout } from "./utils";
-async function getTechDatas(code) {
+export async function getTechDatas(code) {
   if (window.techs && window.techs[code]) return window.techs[code];
   let dom = document.createElement("DIV");
   document.body.appendChild(dom);
@@ -19,10 +19,10 @@ async function getTechDatas(code) {
     );
   });
   do {
-    if (window.techs && window.techs[code]) {
+    if (window["tech_" + code]) {
       document.body.remove(dom);
-      return window.techs[code];
+      return window["tech_" + code];
     }
-    timeout(2000);
+    timeout(100);
   } while (true);
 }

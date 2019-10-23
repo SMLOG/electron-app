@@ -62,6 +62,7 @@
             <td
               v-for="col in head"
               :key="col.prop"
+              :class="col.class&&col.class(item)"
             >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
             <td>
@@ -88,8 +89,8 @@ import {
   timeout
 } from "@/lib/utils";
 import { headers } from "./headers";
-import { monitor, filters } from "@/lib/monitor";
-
+import { monitor } from "@/lib/monitor";
+import { filters } from "@/lib/filters";
 export default {
   name: "home",
   data: function() {
@@ -98,7 +99,7 @@ export default {
       items: [],
       descending: true,
       sortby: "",
-      visibility: "Strong",
+      visibility: "Safe",
       head: headers,
       selectItem: null
     };

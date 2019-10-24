@@ -170,6 +170,7 @@ export default {
       }
       this.reloadData();
       this.sendRefresh();
+      monitor(this.items);
     },
     newWindow() {
       if (this.createSuspension === true) {
@@ -187,7 +188,12 @@ export default {
           await this.refresh();
         }
       })();
-      monitor(this.items);
+      (async () => {
+        for (;;) {
+          monitor(this.items);
+          await timeout(60000);
+        }
+      })();
     },
     notify(item, message) {
       this.$electron.remote.app.notifywin.webContents.send("message", {

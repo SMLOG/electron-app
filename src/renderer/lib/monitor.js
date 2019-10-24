@@ -22,7 +22,7 @@ export async function monitor(items) {
       let item = items[i];
 
       if (!window["tech_" + item.code]) {
-        await getTechDatas(item.code);
+        // await getTechDatas(item.code);
       }
       let name = "tdatas" + item.code;
       if (!window[name]) {

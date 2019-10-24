@@ -12,7 +12,7 @@ export const headers = [
     fmt: (e, item) => `${e}(${item.change})`
   },
   {
-    label: "Vol",
+    label: "V",
     prop: "vol",
     type: "number",
     fmt: (e, item) => {
@@ -66,7 +66,7 @@ export const headers = [
     }
   },
   {
-    label: "流值/总值",
+    label: "LZ/ZZ",
     prop: "lz",
     type: "string",
     fmt: (e, item) => `${e}/${item.zsz}`
@@ -86,7 +86,7 @@ export const headers = [
       e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
   },
   {
-    label: "同比",
+    label: "CP",
     prop: "tbzz",
     type: "number",
     fmt: fmtPercent,
@@ -97,7 +97,7 @@ export const headers = [
         };
     }
   },
-  { label: "收益", prop: "zzl", type: "string" },
+  { label: "Ben", prop: "zzl", type: "string" },
   {
     label: "ROE",
     prop: "roe",

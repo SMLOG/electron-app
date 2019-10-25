@@ -24,7 +24,12 @@ export async function monitor(items) {
 
     queue = queue.then(() => {
       try {
-        window["tech_" + item.code] || getTechDatas(item.code);
+        return (
+          window["tech_" + item.code] ||
+          getTechDatas(item.code).then(data => {
+            return (window["tech_" + item.code] = data);
+          })
+        );
       } catch (e) {
         console.log(e);
       }

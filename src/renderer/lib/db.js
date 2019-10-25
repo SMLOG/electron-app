@@ -5,21 +5,27 @@ const myDB = {
 };
 const cacheName = "cache";
 function openDB(name, version) {
-  var version = version || 1;
-  var request = window.indexedDB.open(name, version);
-  request.onerror = function(e) {
-    console.log(e.currentTarget.error.message);
-  };
-  request.onsuccess = function(e) {
-    myDB.db = e.target.result;
-  };
-  request.onupgradeneeded = function(e) {
-    var db = e.target.result;
-    if (!db.objectStoreNames.contains(cacheName)) {
-      db.createObjectStore(cacheName, { keyPath: "url" });
-    }
-    console.log("DB version changed to " + version);
-  };
+  if (myDB.db) return myDB.db;
+
+  return new Promise((resolve, reject) => {
+    var version = version || 1;
+    var request = window.indexedDB.open(name, version);
+    request.onerror = function(e) {
+      console.log(e.currentTarget.error.message);
+      reject();
+    };
+    request.onsuccess = function(e) {
+      myDB.db = e.target.result;
+      resolve();
+    };
+    request.onupgradeneeded = function(e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains(cacheName)) {
+        db.createObjectStore(cacheName, { keyPath: "id" });
+      }
+      console.log("DB version changed to " + version);
+    };
+  });
 }
 function add2Cache(item) {
   return new Promise((resolve, reject) => {
@@ -39,11 +45,11 @@ function add2Cache(item) {
   });
 }
 
-function getCacheItem(url) {
+function getCacheItem(id) {
   return new Promise((resolve, reject) => {
     var transaction = myDB.db.transaction(cacheName, "readwrite");
     var store = transaction.objectStore(cacheName);
-    var request = store.get(url);
+    var request = store.get(id);
     request.onsuccess = function(e) {
       var item = e.target.result;
       console.log(item);
@@ -89,12 +95,12 @@ function update2Cache(item) {
   });
 }
 
-function remove(url) {
+function remove(id) {
   return new Promise((resolve, reject) => {
     var request = myDB.db
       .transaction(cacheName, "readwrite")
       .objectStore(cacheName)
-      .delete(url);
+      .delete(id);
 
     request.onsuccess = function(event) {
       console.log("数据删除成功");
@@ -107,4 +113,29 @@ function remove(url) {
   });
 }
 
-openDB(myDB.name, myDB.version);
+function sameDay(d1, d2) {
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
+export async function getTodayCacheData(id, callback) {
+  await openDB(myDB.name, myDB.version);
+  let cache = await getCacheItem(id);
+  if (cache && cache.date && sameDay(cache.date, new Date())) {
+    console.log("get cache");
+    console.log(cache);
+    return cache;
+  }
+  if (cache) remove(id);
+  console.log("callback====");
+  cache = await callback();
+  cache.id = id;
+  cache.date = new Date();
+  add2Cache(cache);
+  return cache;
+}
+
+window.getTodayCacheData = getTodayCacheData;

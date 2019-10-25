@@ -1,8 +1,8 @@
-import { loadScripts, timeout } from "./utils";
+import { loadScripts } from "./utils";
 import { getTechDatas } from "./tech";
 import { getTables } from "./getTable";
-import { format } from "path";
-import { filters } from "./filters";
+
+let queue = Promise.resolve();
 export function isNotTradeTime() {
   let d = new Date();
   let h = d.getHours();
@@ -22,9 +22,14 @@ export async function monitor(items) {
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
 
-    if (!window["tech_" + item.code]) {
-      // await getTechDatas(item.code);
-    }
+    queue = queue.then(() => {
+      try {
+        window["tech_" + item.code] || getTechDatas(item.code);
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
     let name = "tdatas" + item.code;
     if (!window[name]) {
       window[name] = [];

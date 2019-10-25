@@ -2325,6 +2325,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       default:
         defaultE = [
           [
+            { name: "MA" },
             {
               name: "VOLUME"
             },

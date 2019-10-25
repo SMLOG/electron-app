@@ -85,7 +85,6 @@ import {
   parse,
   loadScripts,
   fetchEval,
-  attachData,
   dateFormat,
   timeout
 } from "@/lib/utils";
@@ -222,10 +221,12 @@ export default {
         `http://qt.gtimg.cn/q=${str}`
       ]);*/
 
-      await fetchEval([
-        `http://hq.sinajs.cn/list=${str}`,
-        `http://qt.gtimg.cn/q=${str}`
-      ]);
+      try {
+        await fetchEval([
+          `http://hq.sinajs.cn/list=${str}`,
+          `http://qt.gtimg.cn/q=${str}`
+        ]);
+      } catch (e) {}
 
       for (let i = 0; i < that.items.length; i++) {
         let item = that.items[i];
@@ -235,8 +236,6 @@ export default {
           data.preVolume = item.volume;
         Object.assign(item, data);
         //that.$set(item, "zzl", "zzl");
-        let analyst = attachData(item);
-
         if (
           item.pe_ttm > 0 &&
           ((item.tbzz && item.tbzz > 0 && item.pe_ttm / item.tbzz < 1) ||
@@ -248,10 +247,6 @@ export default {
             item.candidateType = 2;
         } else {
           item.candidateType = 0;
-        }
-        if (typeof analyst == "object") {
-          for (let p in analyst) that.$set(item, p, analyst[p]);
-          // Object.assign(item, analyst);
         }
         //  that.items.splice(i, 1, item);
 

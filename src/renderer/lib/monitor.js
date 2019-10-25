@@ -1,6 +1,6 @@
 import { loadScripts } from "./utils";
 import { getTechDatas } from "./tech";
-import { getTables } from "./getTable";
+import { getTables, attachData } from "./getTable";
 
 let queue = Promise.resolve();
 export function isNotTradeTime() {
@@ -21,6 +21,13 @@ export async function monitor(items) {
   window.items = items;
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
+
+    let analyst = attachData(item);
+
+    if (typeof analyst == "object") {
+      //for (let p in analyst) that.$set(item, p, analyst[p]);
+      Object.assign(item, analyst);
+    }
 
     queue = queue.then(() => {
       try {

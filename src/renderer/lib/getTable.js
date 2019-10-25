@@ -183,3 +183,106 @@ async function getYZYGTable() {
     }
   return (window.yzyg = yzyg);
 }
+
+const csvJSON = csv => {
+  const lines = csv.trim().split("\n");
+  const headers = lines[0].split(",").filter(x => x.trim());
+  const items = {};
+  items["reportDate"] = headers;
+
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i]) continue;
+    const currentline = lines[i].split(",");
+    let name = currentline[0].trim();
+
+    items[name] = {};
+
+    for (let j = 1; j < headers.length; j++) {
+      let reportDate = headers[j];
+      items[name][reportDate] = currentline[j];
+    }
+  }
+  return items;
+};
+let mgsy = "净利润(扣除非经常性损益后)(万元)";
+const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
+
+function updateItem(item) {
+  let analyst = {};
+
+  if (
+    tbls.filter(t => typeof window["tb_" + t + item.code] === "object")
+      .length == tbls.length
+  ) {
+    let lrb = window["tb_zycwzb" + item.code];
+    if (lrb[mgsy]) {
+      let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
+      let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
+      let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
+      let last4 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 3 * 4]]);
+
+      if (laste / last4 < 0) {
+        analyst.zzl3 = 100 * Math.pow(1 - laste / last4, 1 / 3);
+      } else {
+        analyst.zzl3 = 100 * (Math.pow(laste / last4, 1 / 3) - 1);
+      }
+      if (laste < last4 && analyst.zzl3 > 0) analyst.zzl3 -= 2 * analyst.zzl3;
+
+      if (laste / last3 < 0) {
+        analyst.zzl2 = 100 * Math.pow(1 - laste / last3, 1 / 2);
+      } else {
+        analyst.zzl2 = 100 * (Math.pow(laste / last3, 1 / 2) - 1);
+      }
+      if (laste < last3 && analyst.zzl2 > 0) analyst.zzl2 -= 2 * analyst.zzl2;
+
+      analyst.tbzz = (100 * (laste - last2)) / last2;
+      analyst.zzl = `(${(laste / 10000).toFixed(2)}亿)${(
+        ((laste - last2) * 100) /
+        last2
+      ).toFixed(2)},${(((last2 - last3) * 100) / last3).toFixed(2)},${(
+        ((last3 - last4) * 100) /
+        last4
+      ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
+      item.PEG = analyst.PEG = item.pe_ttm / analyst.zzl3;
+      console.log(item.PEG);
+    }
+    analyst.reportDate = lrb.reportDate[1];
+    Object.assign(item, analyst);
+    return analyst;
+  }
+}
+
+export function attachData(item) {
+  (async () => {
+    for (let i = 0; i < tbls.length; i++) {
+      let tbname = tbls[i];
+      const tbVarName = "tb_" + tbname + item.code;
+      if (!window[tbVarName]) {
+        window[tbVarName] = true;
+        item[tbname] = {};
+        let blob = await fetch(
+          `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
+            /[^0-9]/g,
+            ""
+          )}.html`
+        ).then(res => res.blob());
+
+        loadScripts([
+          `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
+        ]);
+
+        await new Promise((resolve, rejct) => {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var text = reader.result;
+            let tbDatas = (window[tbVarName] = csvJSON(text));
+            //  item[tbname] = csvJSON(text);
+            resolve(tbDatas);
+          };
+          reader.readAsText(blob, "GBK");
+        });
+        updateItem(item);
+      }
+    }
+  })();
+}

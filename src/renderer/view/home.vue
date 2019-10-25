@@ -84,6 +84,7 @@ import {
   ObjectType,
   parse,
   loadScripts,
+  fetchEval,
   attachData,
   dateFormat,
   timeout
@@ -216,7 +217,12 @@ export default {
         .join(",");
       let that = this;
       let needReloadData = false;
-      await loadScripts([
+      /* await loadScripts([
+        `http://hq.sinajs.cn/list=${str}`,
+        `http://qt.gtimg.cn/q=${str}`
+      ]);*/
+
+      await fetchEval([
         `http://hq.sinajs.cn/list=${str}`,
         `http://qt.gtimg.cn/q=${str}`
       ]);

@@ -20,6 +20,26 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
+export async function fetchEval(urls, callback) {
+  for (let i = 0; i < urls.length; i++) {
+    let url = urls[i];
+    let blob = await fetch(url).then(res => res.blob());
+
+    let text = await new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var text = reader.result;
+        resolve(text);
+      };
+      reader.readAsText(blob, "GBK");
+    });
+
+    eval.bind(window)(text);
+  }
+
+  callback && callback();
+}
+
 window.loadScripts = loadScripts;
 
 export const hqParser = new (function() {

@@ -91,6 +91,7 @@ import {
 import { headers } from "./headers";
 import { monitor } from "@/lib/monitor";
 import { filters } from "@/lib/filters";
+import { updateItem } from "@/lib/getTable";
 export default {
   name: "home",
   data: function() {
@@ -236,6 +237,12 @@ export default {
           data.preVolume = item.volume;
         Object.assign(item, data);
         //that.$set(item, "zzl", "zzl");
+        let analyst = updateItem(item);
+        //Object.assign(item, analyst);
+        for (let p in analyst) {
+          this.$set(item, p, analyst[p]);
+        }
+
         if (
           item.pe_ttm > 0 &&
           ((item.tbzz && item.tbzz > 0 && item.pe_ttm / item.tbzz < 1) ||

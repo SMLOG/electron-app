@@ -47,9 +47,10 @@ export const headers = [
     prop: "turnover2",
     type: "number",
     fmt: (ee, item) => {
+      window[`item_${item.code}`] = item;
+
       if (!item.currcapital) return "";
       if (!window[`${item.code}_turnover2`] && window[`${item.code}_240`]) {
-        window[`item_${item.code}`] = item;
         window[`${item.code}_turnover2`] = true;
         item.turnover2 = window[`${item.code}_240`]
           .filter(e => e.day != item.date)
@@ -104,14 +105,16 @@ export const headers = [
     prop: "roe",
     type: "string",
     fmt: (e, item) => {
-      let tb = window["tb_zycwzb" + item.code];
-      if (tb && tb.reportDate) {
-        tb.reportDate[1];
-        let n = "净资产收益率加权(%)";
-        return (item.roe = `${tb[n][tb.reportDate[1]]},${
-          tb[n][tb.reportDate[5]]
-        },${tb[n][tb.reportDate[9]]}`);
-      }
+      try {
+        let tb = window["tb_zycwzb" + item.code];
+        if (tb && tb.reportDate) {
+          tb.reportDate[1];
+          let n = "净资产收益率加权(%)";
+          return (item.roe = `${tb[n][tb.reportDate[1]]},${
+            tb[n][tb.reportDate[5]]
+          },${tb[n][tb.reportDate[9]]}`);
+        }
+      } catch (e) {}
     }
   }
 ];

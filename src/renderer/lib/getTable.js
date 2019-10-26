@@ -207,7 +207,7 @@ const csvJSON = csv => {
 let mgsy = "净利润(扣除非经常性损益后)(万元)";
 const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
 
-function updateItem(item) {
+export function updateItem(item) {
   let analyst = {};
 
   if (

@@ -24,11 +24,6 @@ export async function monitor(items) {
 
     let analyst = attachData(item);
 
-    if (typeof analyst == "object") {
-      //for (let p in analyst) that.$set(item, p, analyst[p]);
-      Object.assign(item, analyst);
-    }
-
     queue = queue.then(() => {
       console.log("====getTechDatas1");
       if (window["tech_" + item.code]) return window["tech_" + item.code];

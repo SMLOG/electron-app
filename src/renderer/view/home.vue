@@ -163,6 +163,7 @@ export default {
       this.items = store.fetch();
     },
     addItem(selectItem) {
+      store.save(this.items);
       let datas = store.fetch();
       console.log(selectItem);
       if (datas.filter(it => it.code == selectItem.code).length == 0) {

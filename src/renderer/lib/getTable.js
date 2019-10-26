@@ -67,7 +67,7 @@ async function getXSJJTable() {
   //let text = await fetch(url ).then(resp=>resp.text());
   //await loadScripts([url]);
 
-  window.xsjjo = await getCacheData(new Date(), "tab_xsjjo", async () => {
+  window.xsjjo = await getCacheData(new Date(), "tab_限售解禁", async () => {
     await fetchEval([url]);
     console.log(window.xsjjo);
     return window.xsjjo;
@@ -103,7 +103,18 @@ async function getTableGDZJC() {
   let url =
     "http://data.eastmoney.com/DataCenter_V3/gdzjc.ashx?pagesize=50&page=1&js=var%20ElXraUuI&param=&sortRule=-1&sortType=BDJZ&tabid=all&code=&name=&rt=52384461";
   if (window.gdzjc) return window.gdzjc;
-  await loadScripts([url]);
+  //await loadScripts([url]);
+
+  window.ElXraUuI = await getCacheData(
+    new Date(),
+    "tab_股东增减持",
+    async () => {
+      await fetchEval([url]);
+      console.log(window.ElXraUuI);
+      return window.ElXraUuI;
+    }
+  );
+
   console.log(ElXraUuI);
   let r = {};
   if (window.ElXraUuI)
@@ -171,7 +182,14 @@ async function getYZYGTable() {
 
   console.log(url);
   //let text = await fetch(url ).then(resp=>resp.text());
-  await loadScripts([url]);
+  //await loadScripts([url]);
+
+  window.yzygo = await getCacheData(new Date(), "tab_业绩预告", async () => {
+    await fetchEval([url]);
+    console.log(window.yzygo);
+    return window.yzygo;
+  });
+
   console.log(window.yzygo);
 
   let yzyg = {};

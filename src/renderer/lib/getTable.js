@@ -243,8 +243,7 @@ function updateItem(item) {
         ((last3 - last4) * 100) /
         last4
       ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
-      item.PEG = analyst.PEG = item.pe_ttm / analyst.zzl3;
-      console.log(item.PEG);
+      analyst.PEG = item.pe_ttm / analyst.zzl3;
     }
     analyst.reportDate = lrb.reportDate[1];
     Object.assign(item, analyst);

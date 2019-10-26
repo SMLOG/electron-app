@@ -30,18 +30,19 @@ export async function monitor(items) {
     }
 
     queue = queue.then(() => {
-      try {
-        return (
-          window["tech_" + item.code] ||
-          getTechDatas(item.code).then(data => {
-            return (window["tech_" + item.code] = data);
-          })
-        );
-      } catch (e) {
-        console.log(e);
-      }
+      console.log("====getTechDatas1");
+      if (window["tech_" + item.code]) return window["tech_" + item.code];
+      return getTechDatas(item);
+      /*
+      return getTechDatas(item).then(data => {
+        console.log("====getTechDatas3");
+
+        console.log(data);
+        return (window["tech_" + item.code] = data);
+      });*/
     });
 
+    window.queuejob = queue;
     let name = "tdatas" + item.code;
     if (!window[name]) {
       window[name] = [];

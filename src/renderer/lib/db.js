@@ -31,6 +31,8 @@ function add2Cache(item) {
   return new Promise((resolve, reject) => {
     var request = myDB.db.transaction(cacheName, "readwrite");
     var store = request.objectStore(cacheName);
+    console.log("add2Cache");
+    console.log(item);
 
     store.add(item);
     request.onsuccess = function(event) {
@@ -121,20 +123,23 @@ function sameDay(d1, d2) {
   );
 }
 
-export async function getTodayCacheData(id, callback) {
+export async function getTodayCacheData(item, id, callback) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
-  if (cache && cache.date && sameDay(cache.date, new Date())) {
-    console.log("get cache");
+  if (cache && cache.date && sameDay(cache.date, new Date(item.date))) {
+    console.log("get from cache");
     console.log(cache);
-    return cache;
+    return cache.data;
   }
-  if (cache) remove(id);
-  console.log("callback====");
-  cache = await callback();
+  //if (cache) await remove(id);
+  //else
+  cache = {};
+  cache.data = await callback();
+
   cache.id = id;
-  cache.date = new Date();
-  add2Cache(cache);
+  cache.date = (item.date && new Date(item.date)) || new Date();
+
+  await update2Cache(cache);
   return cache;
 }
 

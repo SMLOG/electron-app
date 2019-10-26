@@ -267,13 +267,13 @@ export default {
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },
     delItem(item) {
-      if (confirm("are you sure?")) {
-        //this.items = this.items.slice(this.items.indexOf(item), 1);
-        console.log(this.items.indexOf(item));
-        this.items.splice(this.items.indexOf(item), 1);
-        store.save(this.items);
-        this.sendRefresh();
-      }
+      //if (confirm("are you sure?")) {
+      //this.items = this.items.slice(this.items.indexOf(item), 1);
+      console.log(this.items.indexOf(item));
+      this.items.splice(this.items.indexOf(item), 1);
+      store.save(this.items);
+      this.sendRefresh();
+      //}
     },
     saveDatas() {
       store.save(this.items);

@@ -277,9 +277,14 @@ export default {
       //if (confirm("are you sure?")) {
       //this.items = this.items.slice(this.items.indexOf(item), 1);
       console.log(this.items.indexOf(item));
+      for (let k in window) {
+        console.log(k);
+        if (k.indexOf(item.code) > -1) window[k] = undefined;
+      }
       this.items.splice(this.items.indexOf(item), 1);
       store.save(this.items);
       this.sendRefresh();
+
       //}
     },
     saveDatas() {

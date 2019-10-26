@@ -14,10 +14,9 @@ export function isNotTradeTime() {
   if (h > 15) return true;
   return false;
 }
-let issdkloaded = false;
+let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
 export async function monitor(items) {
-  if (!issdkloaded) await loadScripts(["/static/js/sf_sdk.js"]);
-  issdkloaded = true;
+  await loadscript;
   window.items = items;
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
@@ -25,11 +24,9 @@ export async function monitor(items) {
     attachData(item);
 
     queue = queue.then(() => {
-      if (window["tech_" + item.code]) return window["tech_" + item.code];
       return getTechDatas(item);
     });
 
-    window.queuejob = queue;
     let name = "tdatas" + item.code;
     if (!window[name]) {
       window[name] = [];
@@ -49,22 +46,16 @@ export async function monitor(items) {
 
       let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
       let stop1 = false;
-      for (let i = datas.length - 1; i > 0; i--) {
-        if (
-          datas[i].avg_price >
-          datas[i]
-            .price /*||
-                  Math.floor(datas[i].avg_price * 100) / 100 <
-                    Math.floor(datas[i - 1].avg_price * 100) / 100*/
-        ) {
+      for (let t of datas) {
+        if (t.avg_price > t.price) {
           stop1 = true;
-          // break;
         } else {
           if (!stop1) item.avgzs += 1;
 
           item.upArgCount += 1;
         }
       }
+      console.log(item);
     }
   }
 

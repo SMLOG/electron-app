@@ -22,19 +22,11 @@ export async function monitor(items) {
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
 
-    let analyst = attachData(item);
+    attachData(item);
 
     queue = queue.then(() => {
-      console.log("====getTechDatas1");
       if (window["tech_" + item.code]) return window["tech_" + item.code];
       return getTechDatas(item);
-      /*
-      return getTechDatas(item).then(data => {
-        console.log("====getTechDatas3");
-
-        console.log(data);
-        return (window["tech_" + item.code] = data);
-      });*/
     });
 
     window.queuejob = queue;

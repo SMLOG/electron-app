@@ -1,4 +1,11 @@
-import { loadScripts, dateFormat, ConvertUnit, getDate, split } from "./utils";
+import {
+  loadScripts,
+  dateFormat,
+  ConvertUnit,
+  getDate,
+  split,
+  fetchEval
+} from "./utils";
 import { getExcludeList } from "./exclude-list";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
@@ -58,7 +65,8 @@ async function getXSJJTable() {
   url += arr.join("&");
   console.log(url);
   //let text = await fetch(url ).then(resp=>resp.text());
-  await loadScripts([url]);
+  //await loadScripts([url]);
+  await fetchEval([url]);
   console.log(window.xsjjo);
 
   let xsjj = {};
@@ -246,7 +254,6 @@ export function updateItem(item) {
       analyst.PEG = item.pe_ttm / analyst.zzl3;
     }
     analyst.reportDate = lrb.reportDate[1];
-    Object.assign(item, analyst);
     return analyst;
   }
 }

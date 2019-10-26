@@ -54,7 +54,6 @@ function getCacheItem(id) {
     var request = store.get(id);
     request.onsuccess = function(e) {
       var item = e.target.result;
-      console.log(item);
       resolve(item);
     };
     request.onerror = function(event) {
@@ -123,12 +122,12 @@ function sameDay(d1, d2) {
   );
 }
 
-export async function getTodayCacheData(item, id, callback) {
+export async function getTodayCacheData(date, id, callback) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
-  if (cache && cache.date && sameDay(cache.date, new Date(item.date))) {
-    console.log("get from cache");
-    console.log(cache);
+  if (cache && cache.date && sameDay(cache.date, new Date(date))) {
+    //console.log("get from cache");
+    //console.log(cache);
     return cache.data;
   }
   //if (cache) await remove(id);
@@ -137,7 +136,7 @@ export async function getTodayCacheData(item, id, callback) {
   cache.data = await callback();
 
   cache.id = id;
-  cache.date = (item.date && new Date(item.date)) || new Date();
+  cache.date = (date && new Date(date)) || new Date();
 
   await update2Cache(cache);
   return cache;

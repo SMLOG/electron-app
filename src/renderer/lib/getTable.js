@@ -316,3 +316,36 @@ export function attachData(item) {
     }
   })();
 }
+
+export async function getallalist() {
+  let datalist = await getCacheData(new Date(), "a-list2", async () => {
+    let url =
+      "http://25.push2.eastmoney.com/api/qt/clist/get?cb=callbacka&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152&_=1572107420243";
+    let p = new Promise((resolve, reject) => {
+      window.callbacka = function(data) {
+        console.log(data);
+        resolve(data);
+      };
+    });
+
+    await fetchEval([url]);
+    let datalist = await p;
+    console.log(datalist);
+    return datalist;
+  });
+  datalist = datalist.data.diff;
+  return datalist.map(e => {
+    return {
+      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
+      name: e.f14,
+      now: e.f2,
+      changePV: e.f3,
+      changeV: e.f4,
+      open: e.f17,
+      preClose: e.f18,
+      turnover: e.f8,
+      pe: e.f9
+    };
+  });
+}
+window.getallalist = getallalist;

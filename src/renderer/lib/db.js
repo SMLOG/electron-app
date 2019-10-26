@@ -139,7 +139,7 @@ export async function getCacheData(date, id, callback) {
   cache.date = (date && new Date(date)) || new Date();
 
   await update2Cache(cache);
-  return cache;
+  return cache.data;
 }
 
 window.getCacheData = getCacheData;

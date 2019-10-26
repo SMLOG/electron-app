@@ -66,7 +66,13 @@ async function getXSJJTable() {
   console.log(url);
   //let text = await fetch(url ).then(resp=>resp.text());
   //await loadScripts([url]);
-  await fetchEval([url]);
+
+  window.xsjjo = await getCacheData(new Date(), "tab_xsjjo", async () => {
+    await fetchEval([url]);
+    console.log(window.xsjjo);
+    return window.xsjjo;
+  });
+
   console.log(window.xsjjo);
 
   let xsjj = {};

@@ -20,19 +20,37 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 
-export async function fetchEval(urls, callback) {
+export async function fetchEval(urls, encode, callback) {
   for (let i = 0; i < urls.length; i++) {
     let url = urls[i];
-    let blob = await fetch(url).then(res => res.blob());
-
-    let text = await new Promise((resolve, reject) => {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var text = reader.result;
-        resolve(text);
-      };
-      reader.readAsText(blob, "GBK");
-    });
+    let text;
+    if (encode) {
+      let blob = await fetch(url).then(res => res.blob());
+      text = await new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var text = reader.result;
+          resolve(text);
+        };
+        reader.readAsText(blob, encode || "utf-8");
+      });
+    } else {
+      let charset;
+      let blob = await fetch(url).then(res => {
+        let contentType = res.headers.get("content-type");
+        charset = contentType.match(/.*?charset=(.+)/);
+        charset = charset && charset[1];
+        return res.blob();
+      });
+      text = await new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          let text = reader.result;
+          resolve(text);
+        };
+        reader.readAsText(blob, charset || "utf-8");
+      });
+    }
 
     eval.bind(window)(text);
   }

@@ -91,7 +91,7 @@ import {
 import { headers } from "./headers";
 import { monitor } from "@/lib/monitor";
 import { filters } from "@/lib/filters";
-import { updateItem } from "@/lib/getTable";
+import { updateItem, getMeetList } from "@/lib/getTable";
 export default {
   name: "home",
   data: function() {
@@ -160,7 +160,19 @@ export default {
       this.sendRefresh();
     },
     reloadData() {
-      this.items = store.fetch();
+      getMeetList().then(list => {
+        this.items = store.fetch();
+        let map = {};
+        for (let k of this.items) {
+          map[k.code] = k;
+        }
+        for (let i of list) {
+          if (map[i.code]) {
+          } else {
+            //this.items.push(i);
+          }
+        }
+      });
     },
     addItem(selectItem) {
       store.save(this.items);
@@ -186,8 +198,8 @@ export default {
     timerFn() {
       (async () => {
         for (;;) {
-          await timeout(2000);
           await this.refresh();
+          await timeout(2000);
         }
       })();
       (async () => {
@@ -206,16 +218,19 @@ export default {
       });
     },
     async refresh() {
-      let str = this.items
-        .reduce((total, cur, curIndex, arr) => {
-          if (cur.code.match(/^(sh)|(sz)/)) {
-            total.push(`${cur.code}_i`);
-          }
-          total.push(cur.code);
+      let arr = this.items.reduce((total, cur, curIndex, arr) => {
+        if (cur.code.match(/^(sh)|(sz)/)) {
+          total.push(`${cur.code}_i`);
+        }
+        total.push(cur.code);
 
-          return total;
-        }, [])
-        .join(",");
+        return total;
+      }, []);
+      const arrs = arr.reduce((init, item, index) => {
+        index % 20 === 0 ? init.push([item]) : init[init.length - 1].push(item);
+        return init;
+      }, []);
+
       let that = this;
       let needReloadData = false;
       /* await loadScripts([
@@ -224,10 +239,13 @@ export default {
       ]);*/
 
       try {
-        await fetchEval([
-          `http://hq.sinajs.cn/list=${str}`,
-          `http://qt.gtimg.cn/q=${str}`
-        ]);
+        for (let a of arrs) {
+          let str = a.join(",");
+          await fetchEval([
+            `http://hq.sinajs.cn/list=${str}`,
+            `http://qt.gtimg.cn/q=${str}`
+          ]);
+        }
       } catch (e) {}
 
       for (let i = 0; i < that.items.length; i++) {

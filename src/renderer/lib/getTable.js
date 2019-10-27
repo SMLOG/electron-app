@@ -347,8 +347,12 @@ export async function getMeetList() {
         preClose: e.f18,
         turnover: e.f8,
         pe: e.f9,
-        zsz: e.f20,
-        lz: e.f21,
+        volume: e.f5,
+        amount: e.f6,
+        high: e.f15,
+        low: e.f16,
+        zsz: (e.f20 / 100000000).toFixed(2),
+        lz: (e.f21 / 100000000).toFixed(2),
         zf60: e.f24,
         zf250: e.f25,
         firstDay: e.f26
@@ -356,11 +360,11 @@ export async function getMeetList() {
     });
     if (datalist.length == 0) return [];
     let d = new Date();
-    d.setFullYear(d.getFullYear() - 1);
+    d.setFullYear(d.getFullYear() - 3);
     let lastyearStr = d.Format("yyyyMMdd");
     return datalist.filter(
       e =>
-        e.lz > 150 * 100000000 &&
+        e.lz > 100 &&
         e.zf60 > 0 &&
         e.firstDay <= lastyearStr &&
         e.zf60 < 100 &&

@@ -316,61 +316,119 @@ export function attachData(item) {
     }
   })();
 }
-
-export async function getMeetList() {
-  let datalist = await getCacheData(new Date(), "a-list2", async () => {
-    let url =
-      "http://25.push2.eastmoney.com/api/qt/clist/get?cb=callbacka&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f11,f62,f128,f136,f115,f152&_=1572107420243";
-    let p = new Promise((resolve, reject) => {
-      window.callbacka = function(data) {
-        console.log(data);
-        resolve(data);
-      };
-    });
-
+async function getYKLineDatas(item) {
+  let sid = item.code.replace("sh", "1.").replace("sz", "0.");
+  let url = `http://push2his.eastmoney.com/api/qt/stock/kline/get?cb=jQuery18302719163191132177_1572179583739&secid=${sid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58&klt=103&fqt=0&beg=19900101&end=${new Date().getFullYear() +
+    1}0101&_=1572179889234`;
+}
+async function getKLineDatas(item) {
+  /*let shklines = await getCacheData(new Date(), "sh000001-kline", async () => {
+    let code = "sh000001";
+    let url = `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${code}_240=/CN_MarketDataService.getKLineData?symbol=${code}&scale=240&ma=no&datalen=6`;
     await fetchEval([url]);
-    let datalist = await p;
-    console.log(datalist);
-    return datalist;
+    return window[`sh000001_240`];
+  });*/
+
+  let klines = await getCacheData(
+    new Date(),
+    `${item.code}_kline`,
+    async () => {
+      let url = `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`;
+      await fetchEval([url]);
+      let ret = window[`${item.code}_240`];
+      try {
+        delete window[`${item.code}_240`];
+      } catch (e) {
+        console.log(e);
+      }
+      return ret;
+    }
+  );
+
+  return klines;
+}
+function isCP(arr) {
+  let ret = 0;
+  let retp = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < 0) break;
+    ret += 1;
+    retp += arr[i];
+  }
+  return ret > 2 && retp < 0.05;
+}
+export async function getMeetList() {
+  let url =
+    "http://25.push2.eastmoney.com/api/qt/clist/get?cb=callbacka&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f128,f136,f115,f152&_=1572107420243";
+  let p = new Promise((resolve, reject) => {
+    window.callbacka = function(data) {
+      resolve(data);
+    };
   });
 
-  let month2szlist = await getCacheData(new Date(), "2months-sz", async () => {
-    datalist = datalist.data.diff;
-    datalist = datalist.map(e => {
-      return {
-        code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
-        name: e.f14,
-        now: e.f2,
-        changePV: e.f3,
-        changeV: e.f4,
-        open: e.f17,
-        preClose: e.f18,
-        turnover: e.f8,
-        pe: e.f9,
-        volume: e.f5,
-        amount: e.f6,
-        high: e.f15,
-        low: e.f16,
-        zsz: (e.f20 / 100000000).toFixed(2),
-        lz: (e.f21 / 100000000).toFixed(2),
-        zf60: e.f24,
-        zf250: e.f25,
-        firstDay: e.f26
-      };
-    });
-    if (datalist.length == 0) return [];
-    let d = new Date();
-    d.setFullYear(d.getFullYear() - 3);
-    let lastyearStr = d.Format("yyyyMMdd");
-    return datalist.filter(
-      e =>
-        e.lz > 100 &&
-        e.zf60 > 0 &&
-        e.firstDay <= lastyearStr &&
-        e.zf60 < 100 &&
-        e.name.indexOf("ST") == -1
-    );
+  await fetchEval([url]);
+  let datalist = await p;
+
+  let lineDatas = [
+    {
+      day: "2019-10-18",
+      open: "2982.342",
+      high: "2987.204",
+      low: "2933.242",
+      close: "2938.141",
+      volume: "14999067800"
+    },
+    {
+      day: "2019-10-21",
+      open: "2933.897",
+      high: "2940.325",
+      low: "2917.688",
+      close: "2939.618",
+      volume: "13247510700"
+    }
+  ];
+  datalist = datalist.data.diff;
+  datalist = datalist.map(e => {
+    return {
+      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
+      name: e.f14,
+      now: e.f2,
+      changePV: e.f3,
+      changeV: e.f4,
+      open: e.f17,
+      preClose: e.f18,
+      turnover: e.f8,
+      pe: e.f9,
+      volume: e.f5,
+      amount: e.f6,
+      high: e.f15,
+      low: e.f16,
+      zsz: (e.f20 / 100000000).toFixed(2),
+      lz: (e.f21 / 100000000).toFixed(2),
+      avg: (e.f6 / e.f5).toFixed(2),
+      zf60: e.f24,
+      zf250: e.f25,
+      firstDay: e.f26
+    };
   });
-  return month2szlist;
+  let d = new Date();
+  d.setFullYear(d.getFullYear() - 3);
+  let lastyearStr = d.Format("yyyyMMdd");
+  for (let item of datalist) {
+    let klines = await getKLineDatas(item);
+    item.sz3 =
+      klines && isCP(klines.map(e => (e.close - e.open) / e.close).reverse());
+    item.klines = klines;
+  }
+  return datalist.filter(
+    e =>
+      e.now > 5 &&
+      e.lz > 100 &&
+      // e.zf60 > 0 &&
+      //  e.firstDay <= lastyearStr &&
+      e.zf60 < 100 &&
+      e.name.indexOf("ST") == -1 &&
+      e.sz3
+  );
 }
 window.getallalist = getMeetList;

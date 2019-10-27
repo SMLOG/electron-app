@@ -125,7 +125,11 @@ function sameDay(d1, d2) {
 export async function getCacheData(date, id, callback) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
-  if (cache && cache.date && sameDay(cache.date, new Date(date))) {
+
+  if (
+    cache &&
+    (!date || (cache.date && date && sameDay(cache.date, new Date(date))))
+  ) {
     //console.log("get from cache");
     //console.log(cache);
     return cache.data;

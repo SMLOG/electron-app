@@ -160,19 +160,7 @@ export default {
       this.sendRefresh();
     },
     reloadData() {
-      getMeetList().then(list => {
-        this.items = store.fetch();
-        let map = {};
-        for (let k of this.items) {
-          map[k.code] = k;
-        }
-        for (let i of list) {
-          if (map[i.code]) {
-          } else {
-            //this.items.push(i);
-          }
-        }
-      });
+      this.items = store.fetch();
     },
     addItem(selectItem) {
       store.save(this.items);
@@ -295,9 +283,7 @@ export default {
     delItem(item) {
       //if (confirm("are you sure?")) {
       //this.items = this.items.slice(this.items.indexOf(item), 1);
-      console.log(this.items.indexOf(item));
       for (let k in window) {
-        console.log(k);
         if (k.indexOf(item.code) > -1) window[k] = undefined;
       }
       this.items.splice(this.items.indexOf(item), 1);

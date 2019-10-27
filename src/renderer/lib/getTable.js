@@ -347,15 +347,26 @@ async function getKLineDatas(item) {
 
   return klines;
 }
-function isCP(arr) {
+function isCP(klines) {
+  let arr = klines
+    .map((e, i, datas) => {
+      e.preClose = i > 0 ? datas[i - 1].close : 0;
+      e.zf = (
+        (100 * (e.close - Math.max(e.open, e.preClose))) /
+        e.close
+      ).toFixed(2);
+      return e;
+    })
+    .map(e => (e.close - Math.max(e.open, e.preClose)) / e.close)
+    .reverse();
   let ret = 0;
   let retp = 0;
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i] < 0) break;
+    if (arr[i] <= 0 || arr[i] > 0.03) break;
     ret += 1;
     retp += arr[i];
   }
-  return ret > 2 && retp < 0.05;
+  return ret > 2 && retp < 0.08;
 }
 export async function getMeetList() {
   let url =
@@ -416,8 +427,7 @@ export async function getMeetList() {
   let lastyearStr = d.Format("yyyyMMdd");
   for (let item of datalist) {
     let klines = await getKLineDatas(item);
-    item.sz3 =
-      klines && isCP(klines.map(e => (e.close - e.open) / e.close).reverse());
+    item.sz3 = klines && isCP(klines);
     item.klines = klines;
   }
   return datalist.filter(

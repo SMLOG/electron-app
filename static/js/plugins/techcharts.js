@@ -4430,14 +4430,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                     if (i){
                         //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
                        let techs_datas = [];
+                       let symbol ;
                         for (var chart, a = techChartList.length; a--;) {
                             chart = techChartList[a],
                                 chart.initAndCalcAll(i),
                                 t && chart.update()
                             console.log(chart);
                             techs_datas[chart.name] =chart.datas;
+                            symbol = chart.symbol;
                         }
-                        window['tech_'+chart.symbol]= techs_datas;
+                        window['tech_'+symbol]= techs_datas;
                     }
 
                 },

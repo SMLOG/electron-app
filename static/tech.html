@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <script src="js/sf_sdk.js"></script>
+    <script>
+      KKE.api(
+        "plugins.tchart.get",
+        {
+          symbol: document.location.href.split("?")[1],
+          mt: "cnlv1",
+          dom_id: "h5Figure",
+          type: "tech"
+        },
+        function(chart_) {}
+      );
+    </script>
+  </head>
+  <body>
+    <div id="h5Figure"></div>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <iframe src="static/tech.html?sh000001" style="width:100%;height:400px;display:none;"></iframe>
     <div>
       <div style="float:left;">
         <ul class="filters">

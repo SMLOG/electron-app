@@ -3,34 +3,18 @@ import { getCacheData } from "./db";
 
 export async function getTechDatas(item) {
   let techId = "tech_" + item.code;
-  if (window[techId]) return window[techId];
 
-  return (window[techId] = await getCacheData(item.date, techId, async () => {
-    let dom =
-      document.getElementById("h5Figure") || document.createElement("DIV");
-    document.body.appendChild(dom);
-    dom.setAttribute("id", "h5Figure");
-    dom.innerHTML = "";
-    dom.style.display = "none";
-
-    KKE.api(
-      "plugins.tchart.get",
-      {
-        symbol: item.code,
-        mt: "cnlv1",
-        dom_id: "h5Figure",
-        type: "tech"
-      },
-      function(chart_) {}
-    );
-
+  let techDatas = await getCacheData(item.date, techId, async () => {
+    let ifr = document.getElementsByTagName("iframe")[0];
+    let url = ifr.src.replace("sh000001", item.code);
+    ifr.src = url;
+    ifr.contentWindow[techId] = null;
     do {
-      console.log(new Date());
-      if (window["tech_" + item.code]) {
-        //document.body.remove(dom);
-        return window["tech_" + item.code];
+      if (ifr.contentWindow[techId]) {
+        return ifr.contentWindow[techId];
       }
       await timeout(100);
     } while (true);
-  }));
+  });
+  return techDatas;
 }

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <iframe src="static/tech.html?sh000001" style="width:100%;height:400px;display:none;"></iframe>
+    <iframe src="static/tech.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+
+    <webview
+      id="figure"
+      src="http://finance.sina.com.cn/realstock/company/sh601318/nc.shtml"
+      style="width:100%;height:460px;display:none;"
+    ></webview>
     <div>
       <div style="float:left;">
         <ul class="filters">
@@ -81,6 +87,7 @@
 import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
+import { initwebview } from "@/lib/webview";
 import {
   ObjectType,
   parse,
@@ -116,6 +123,7 @@ export default {
     }
   },
   mounted() {
+    initwebview();
     this.reloadData();
     this.timerFn();
     if (this.createSuspension === true) {

@@ -46,7 +46,9 @@ export async function monitor(items) {
 
       let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
       let stop1 = false;
-      for (let t of datas) {
+      item.preDirPrice = item.open;
+      for (let k = 0; i < datas.length; k++) {
+        t = datas[k];
         if (t.avg_price > t.price) {
           stop1 = true;
         } else {
@@ -54,6 +56,15 @@ export async function monitor(items) {
 
           item.upArgCount += 1;
         }
+        if (k > 0) {
+          if (t.price > item.preDirPrice) {
+            item.dir = "up";
+          } else if (t.price < item.preDirPrice) {
+            item.dir = "down";
+          }
+          item.preDirPrice = t.price;
+        }
+        item.preAvg = t.avg_price;
       }
       console.log(item);
     }
@@ -64,22 +75,19 @@ export async function monitor(items) {
   if (isNotTradeTime()) return;
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
-    let name = "tdatas" + item.code;
-    let datas = window[name];
     let avg = (item.amount / item.volume).toFixed(2);
-    datas.push({
-      price: item.now,
-      volume: item.volume,
-      amount: item.amount,
-      avg_price: avg
-    });
 
-    if (avg < datas[datas.length - 2].avg || item.now < avg) {
+    if (item.now > item.preDirPrice) {
+      item.dir = "up";
+    } else if (item.now < item.preDirPrice) {
+      item.dir = "down";
+    }
+    if (avg < item.preAvg || item.now < avg) {
       item.avgzs = 0;
-      continue;
     } else {
       item.upArgCount += 1;
       item.avgzs += 1;
     }
+    item.preAvg = avg;
   }
 }

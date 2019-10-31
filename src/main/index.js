@@ -31,7 +31,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000,
+    width: 1200,
     icon: "app.ico",
     show: false,
     webPreferences: {

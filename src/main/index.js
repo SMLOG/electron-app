@@ -117,7 +117,8 @@ app.on("ready", () => {
     {
       label: "设置",
       click: function() {
-        mainWindow.show();
+        if (mainWindow.isVisible()) mainWindow.hide();
+        else mainWindow.show();
       } //打开相应页面
     },
     {

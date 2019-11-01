@@ -1,4 +1,7 @@
 export const filters = {
+  Find: function(items, items2) {
+    return items2;
+  },
   All: function(items) {
     return items;
   },

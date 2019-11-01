@@ -12,6 +12,15 @@ export const headers = [
     fmt: (e, item) => `${e}(${item.change})`
   },
   {
+    label: "HL",
+    prop: "hl",
+    type: "number",
+    fmt: (e, item) =>
+      (item.hl = `${(item.high - item.preClose).toFixed(2)},${(
+        item.low - item.preClose
+      ).toFixed(2)}`)
+  },
+  {
     label: "V",
     prop: "vol",
     type: "number",

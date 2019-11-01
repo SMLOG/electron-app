@@ -64,6 +64,7 @@
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
               >{{item.avgzs}}/{{item.upArgCount}}</span>
+              <span v-if="item.contDir!=0">/{{item.contDir}}</span>
             </td>
 
             <td
@@ -110,7 +111,8 @@ export default {
       sortby: "",
       visibility: "Safe",
       head: headers,
-      selectItem: null
+      selectItem: null,
+      items2: []
     };
   },
   components: {
@@ -139,7 +141,7 @@ export default {
       return this.$store.state.suspension.show;
     },
     filteredItems: function() {
-      return filters[this.visibility](this.items);
+      return filters[this.visibility](this.items, this.items2);
     }
   },
   methods: {
@@ -204,6 +206,13 @@ export default {
           monitor(this.items);
           await timeout(60000);
         }
+      })();
+      (async () => {
+        let items = await getFindList();
+        this.items2.length = 0;
+
+        items.forEach(e => this.items2.push(e));
+        await timeout(300000);
       })();
     },
     notify(item, message) {

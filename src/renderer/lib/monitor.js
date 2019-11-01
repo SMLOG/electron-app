@@ -47,8 +47,8 @@ export async function monitor(items) {
       let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
       let stop1 = false;
       item.preDirPrice = item.open;
-      for (let k = 0; i < datas.length; k++) {
-        t = datas[k];
+      for (let k = 0; k < datas.length; k++) {
+        let t = datas[k];
         if (t.avg_price > t.price) {
           stop1 = true;
         } else {
@@ -58,12 +58,14 @@ export async function monitor(items) {
         }
         if (k > 0) {
           if (t.price > item.preDirPrice) {
-            item.dir = "up";
+            item.contDir = (item.contDir > 0 ? item.contDir : 0) + 1;
           } else if (t.price < item.preDirPrice) {
-            item.dir = "down";
+            item.contDir = (item.contDir < 0 ? item.contDir : 0) - 1;
           }
           item.preDirPrice = t.price;
         }
+        item.preDirPrice = t.price;
+
         item.preAvg = t.avg_price;
       }
       console.log(item);

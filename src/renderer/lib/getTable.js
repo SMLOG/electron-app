@@ -4,6 +4,7 @@ import {
   ConvertUnit,
   getDate,
   split,
+  parse,
   fetchEval
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
@@ -283,34 +284,41 @@ export function updateItem(item) {
 }
 
 export function attachData(item) {
-  (async () => {
+  return (async () => {
     for (let i = 0; i < tbls.length; i++) {
       let tbname = tbls[i];
       const tbVarName = "tb_" + tbname + item.code;
       if (!window[tbVarName]) {
         window[tbVarName] = true;
-        item[tbname] = {};
-        let blob = await fetch(
-          `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
-            /[^0-9]/g,
-            ""
-          )}.html`
-        ).then(res => res.blob());
+        window[`${item.code}_240`] = await getCacheData(
+          new Date(),
+          `${item.code}_240`,
+          async () => {
+            await fetchEval([
+              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
+            ]);
+            return window[`${item.code}_240`];
+          }
+        );
+        await getCacheData(new Date(), tbVarName, async () => {
+          let blob = await fetch(
+            `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
+              /[^0-9]/g,
+              ""
+            )}.html`
+          ).then(res => res.blob());
 
-        loadScripts([
-          `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
-        ]);
-
-        await new Promise((resolve, rejct) => {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            var text = reader.result;
-            let tbDatas = (window[tbVarName] = csvJSON(text));
-            //  item[tbname] = csvJSON(text);
-            resolve(tbDatas);
-          };
-          reader.readAsText(blob, "GBK");
+          return await new Promise((resolve, rejct) => {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              var text = reader.result;
+              let tbDatas = (window[tbVarName] = csvJSON(text));
+              resolve(tbDatas);
+            };
+            reader.readAsText(blob, "GBK");
+          });
         });
+
         updateItem(item);
       }
     }
@@ -368,7 +376,7 @@ function isCP(klines) {
   }
   return ret > 2 && retp < 0.08;
 }
-export async function getMeetList() {
+export async function getFindList() {
   let url =
     "http://25.push2.eastmoney.com/api/qt/clist/get?cb=callbacka&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f128,f136,f115,f152&_=1572107420243";
   let p = new Promise((resolve, reject) => {
@@ -406,10 +414,12 @@ export async function getMeetList() {
       now: e.f2,
       changePV: e.f3,
       changeV: e.f4,
+      change: e.f4,
       open: e.f17,
       preClose: e.f18,
       turnover: e.f8,
       pe: e.f9,
+      pe_ttm: e.f9,
       volume: e.f5,
       amount: e.f6,
       high: e.f15,
@@ -430,15 +440,46 @@ export async function getMeetList() {
     item.sz3 = klines && isCP(klines);
     item.klines = klines;
   }
-  return datalist.filter(
+  datalist = datalist.filter(
     e =>
       e.now > 5 &&
       e.lz > 100 &&
       // e.zf60 > 0 &&
       //  e.firstDay <= lastyearStr &&
       e.zf60 < 100 &&
-      e.name.indexOf("ST") == -1 &&
-      e.sz3
+      e.name.indexOf("ST") == -1
+    //&& e.sz3
   );
+
+  const arrs = datalist
+    .map(e => e.code)
+    .reduce((init, item, index) => {
+      index % 20 === 0 ? init.push([item]) : init[init.length - 1].push(item);
+      return init;
+    }, []);
+
+  try {
+    for (let a of arrs) {
+      let str = a.join(",");
+      await fetchEval([
+        `http://hq.sinajs.cn/list=${str}`,
+        `http://qt.gtimg.cn/q=${str}`
+      ]);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
+    let data = parse(item);
+    Object.assign(item, data);
+    await attachData(item);
+    let analyst = updateItem(item);
+    //Object.assign(item, analyst);
+    Object.assign(item, analyst);
+  }
+  alert(datalist.length);
+  return datalist;
 }
-window.getallalist = getMeetList;
+window.getFindList = getFindList;

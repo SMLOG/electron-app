@@ -136,6 +136,7 @@ export async function getCacheData(date, id, callback) {
   }
   //if (cache) await remove(id);
   //else
+  if (!callback) return null;
   cache = {};
   cache.data = await callback();
 
@@ -147,3 +148,12 @@ export async function getCacheData(date, id, callback) {
 }
 
 window.getCacheData = getCacheData;
+
+export const cache = {};
+
+export function getCache(id) {
+  return cache[id];
+}
+export function putCache(id, data) {
+  return (cache[id] = data);
+}

@@ -17,7 +17,6 @@ export function isNotTradeTime() {
 let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
 export async function monitor(items) {
   await loadscript;
-  window.items = items;
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
 

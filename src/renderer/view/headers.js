@@ -1,4 +1,6 @@
 import { getLastReportDate } from "../lib/utils";
+import { cache } from "../lib/db";
+
 const reportDate = getLastReportDate();
 const fmtPercent = value => {
   if (value) return parseFloat(value).toFixed(2) + "%";
@@ -35,8 +37,8 @@ export const headers = [
     prop: "trend",
     type: "string",
     fmt: (e, item) => {
-      if (window[`${item.code}_240`]) {
-        return (item.trend = window[`${item.code}_240`]
+      if (cache[`${item.code}_240`]) {
+        return (item.trend = cache[`${item.code}_240`]
           .map((e, i, datas) => {
             if (i > 0) e.preClose = datas[i - 1].close;
             return e;
@@ -53,27 +55,8 @@ export const headers = [
   },
   {
     label: "Turnover%",
-    prop: "turnover2",
-    type: "number",
-    fmt: (ee, item) => {
-      window[`item_${item.code}`] = item;
-
-      if (!item.currcapital) return "";
-      if (!window[`${item.code}_turnover2`] && window[`${item.code}_240`]) {
-        window[`${item.code}_turnover2`] = true;
-        item.turnover2 = window[`${item.code}_240`]
-          .filter(e => e.day != item.date)
-
-          .map(
-            e => `${((e.volume / item.currcapital / 10000) * 100).toFixed(2)}`
-          )
-          .reverse()
-          .slice(0, 2)
-          .join(",");
-      }
-      if (item.turnover2) return `${item.turnover},${item.turnover2}`;
-      else return item.turnover;
-    }
+    prop: "turnover",
+    type: "number"
   },
 
   {
@@ -115,7 +98,7 @@ export const headers = [
     type: "string",
     fmt: (e, item) => {
       try {
-        let tb = window["tb_zycwzb" + item.code];
+        let tb = cache["tb_zycwzb" + item.code];
         if (tb && tb.reportDate) {
           tb.reportDate[1];
           let n = "净资产收益率加权(%)";

@@ -8,9 +8,10 @@ import {
   fetchEval
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
+import { getCache, putCache, getCacheData } from "./db";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
-export async function getTables() {
+export async function getTables(items) {
   let daystr = new Date().Format("yyyy-MM-dd");
   let tabs = [
     await getXSJJTable() /*限售解禁*/,
@@ -240,88 +241,83 @@ const csvJSON = csv => {
 let mgsy = "净利润(扣除非经常性损益后)(万元)";
 const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
 
-export function updateItem(item) {
-  let analyst = {};
+export async function updateItem(item) {
+  let lrb = await getCacheData(null, `tb_zycwzb${item.code}`);
+  putCache(`tb_zycwzb${item.code}`, lrb);
 
-  if (
-    tbls.filter(t => typeof window["tb_" + t + item.code] === "object")
-      .length == tbls.length
-  ) {
-    let lrb = window["tb_zycwzb" + item.code];
-    if (lrb[mgsy]) {
-      let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
-      let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
-      let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
-      let last4 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 3 * 4]]);
+  if (lrb) {
+    let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
+    let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
+    let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
+    let last4 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 3 * 4]]);
 
-      if (laste / last4 < 0) {
-        analyst.zzl3 = 100 * Math.pow(1 - laste / last4, 1 / 3);
-      } else {
-        analyst.zzl3 = 100 * (Math.pow(laste / last4, 1 / 3) - 1);
-      }
-      if (laste < last4 && analyst.zzl3 > 0) analyst.zzl3 -= 2 * analyst.zzl3;
-
-      if (laste / last3 < 0) {
-        analyst.zzl2 = 100 * Math.pow(1 - laste / last3, 1 / 2);
-      } else {
-        analyst.zzl2 = 100 * (Math.pow(laste / last3, 1 / 2) - 1);
-      }
-      if (laste < last3 && analyst.zzl2 > 0) analyst.zzl2 -= 2 * analyst.zzl2;
-
-      analyst.tbzz = (100 * (laste - last2)) / last2;
-      analyst.zzl = `(${(laste / 10000).toFixed(2)}亿)${(
-        ((laste - last2) * 100) /
-        last2
-      ).toFixed(2)},${(((last2 - last3) * 100) / last3).toFixed(2)},${(
-        ((last3 - last4) * 100) /
-        last4
-      ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
-      analyst.PEG = item.pe_ttm / analyst.zzl3;
+    if (laste / last4 < 0) {
+      item.zzl3 = 100 * Math.pow(1 - laste / last4, 1 / 3);
+    } else {
+      item.zzl3 = 100 * (Math.pow(laste / last4, 1 / 3) - 1);
     }
-    analyst.reportDate = lrb.reportDate[1];
-    return analyst;
+    if (laste < last4 && item.zzl3 > 0) item.zzl3 -= 2 * item.zzl3;
+
+    if (laste / last3 < 0) {
+      item.zzl2 = 100 * Math.pow(1 - laste / last3, 1 / 2);
+    } else {
+      item.zzl2 = 100 * (Math.pow(laste / last3, 1 / 2) - 1);
+    }
+    if (laste < last3 && item.zzl2 > 0) item.zzl2 -= 2 * item.zzl2;
+
+    item.tbzz = (100 * (laste - last2)) / last2;
+    item.zzl = `(${(laste / 10000).toFixed(2)}亿)${(
+      ((laste - last2) * 100) /
+      last2
+    ).toFixed(2)},${(((last2 - last3) * 100) / last3).toFixed(2)},${(
+      ((last3 - last4) * 100) /
+      last4
+    ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
+    item.PEG = item.pe_ttm / item.zzl3;
+    item.reportDate = lrb.reportDate[1];
   }
+  return item;
 }
 
 export function attachData(item) {
   return (async () => {
+    if (!getCache(`${item.code}_240`)) {
+      let cache240 = await getCacheData(
+        new Date(),
+        `${item.code}_240`,
+        async () => {
+          await fetchEval([
+            `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
+          ]);
+          return window[`${item.code}_240`];
+        }
+      );
+      putCache(`${item.code}_240`, cache240);
+    }
+
     for (let i = 0; i < tbls.length; i++) {
       let tbname = tbls[i];
       const tbVarName = "tb_" + tbname + item.code;
-      if (!window[tbVarName]) {
-        window[tbVarName] = true;
-        window[`${item.code}_240`] = await getCacheData(
-          new Date(),
-          `${item.code}_240`,
-          async () => {
-            await fetchEval([
-              `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
-            ]);
-            return window[`${item.code}_240`];
-          }
-        );
-        await getCacheData(new Date(), tbVarName, async () => {
-          let blob = await fetch(
-            `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
-              /[^0-9]/g,
-              ""
-            )}.html`
-          ).then(res => res.blob());
+      await getCacheData(null, tbVarName, async () => {
+        let blob = await fetch(
+          `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
+            /[^0-9]/g,
+            ""
+          )}.html`
+        ).then(res => res.blob());
 
-          return await new Promise((resolve, rejct) => {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-              var text = reader.result;
-              let tbDatas = (window[tbVarName] = csvJSON(text));
-              resolve(tbDatas);
-            };
-            reader.readAsText(blob, "GBK");
-          });
+        return await new Promise((resolve, rejct) => {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var text = reader.result;
+            let tbDatas = csvJSON(text);
+            resolve(tbDatas);
+          };
+          reader.readAsText(blob, "GBK");
         });
-
-        updateItem(item);
-      }
+      });
     }
+    await updateItem(item);
   })();
 }
 async function getYKLineDatas(item) {
@@ -479,7 +475,6 @@ export async function getFindList() {
     //Object.assign(item, analyst);
     Object.assign(item, analyst);
   }
-  alert(datalist.length);
   return datalist;
 }
 window.getFindList = getFindList;

@@ -89,6 +89,7 @@ import SearchPanel from "@/view/components/search-panel";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
+import { loadHQ } from "@/lib/hq";
 import {
   ObjectType,
   parse,
@@ -109,7 +110,7 @@ export default {
       items: [],
       descending: true,
       sortby: "",
-      visibility: "Safe",
+      visibility: "Strong",
       head: headers,
       selectItem: null,
       items2: []
@@ -125,7 +126,7 @@ export default {
     }
   },
   mounted() {
-    initwebview();
+    //initwebview();
     this.reloadData();
     this.timerFn();
     if (this.createSuspension === true) {
@@ -224,49 +225,20 @@ export default {
       });
     },
     async refresh() {
-      let arr = this.items.reduce((total, cur, curIndex, arr) => {
-        if (cur.code.match(/^(sh)|(sz)/)) {
-          total.push(`${cur.code}_i`);
-        }
-        total.push(cur.code);
-
-        return total;
-      }, []);
-      const arrs = arr.reduce((init, item, index) => {
-        index % 20 === 0 ? init.push([item]) : init[init.length - 1].push(item);
-        return init;
-      }, []);
-
       let that = this;
       let needReloadData = false;
-      /* await loadScripts([
-        `http://hq.sinajs.cn/list=${str}`,
-        `http://qt.gtimg.cn/q=${str}`
-      ]);*/
-
-      try {
-        for (let a of arrs) {
-          let str = a.join(",");
-          await fetchEval([
-            `http://hq.sinajs.cn/list=${str}`,
-            `http://qt.gtimg.cn/q=${str}`
-          ]);
-        }
-      } catch (e) {}
-
+      loadHQ(this.items);
       for (let i = 0; i < that.items.length; i++) {
         let item = that.items[i];
-        let data = parse(item);
+        /* let data = parse(item);
         data.pre = item.now;
         if (!data.preVolume || item.volume > data.preVolume)
           data.preVolume = item.volume;
         Object.assign(item, data);
-        //that.$set(item, "zzl", "zzl");
         let analyst = updateItem(item);
-        //Object.assign(item, analyst);
         for (let p in analyst) {
           this.$set(item, p, analyst[p]);
-        }
+        }*/
 
         if (
           item.pe_ttm > 0 &&

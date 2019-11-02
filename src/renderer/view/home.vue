@@ -74,7 +74,7 @@
             >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
             <td>
-              <input type="checkbox" v-model="item.isFocus" @change="saveDatas()" />
+              <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
               <a style="float:right;" class="action" @click="delItem(item)">Delete</a>
             </td>
           </tr>
@@ -151,7 +151,8 @@ export default {
       else this.selectItem = null;
     },
     sort(prop) {
-      this.items.sort(function(a, b) {
+      let items = this.visibility == "Find" ? this.items2 : this.items;
+      items.sort(function(a, b) {
         if (typeof a[prop] === "number") {
           return a[prop] - b[prop];
         }
@@ -163,7 +164,7 @@ export default {
         return 0;
       });
       this.descending = this.sortby === prop ? !this.descending : false;
-      if (this.descending) this.items.reverse();
+      if (this.descending) items.reverse();
       this.sortby = prop;
     },
     dragEnd(e) {
@@ -282,7 +283,8 @@ export default {
 
       //}
     },
-    saveDatas() {
+    saveDatas(item) {
+      if (item.isFocus) this.addItem(item);
       store.save(this.items);
     }
   }

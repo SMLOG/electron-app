@@ -512,7 +512,64 @@ export function getLink(item) {
   return "https:" + s;
 }
 //
+let klinewin;
+export function openKlineWindow(target, item) {
+  //let url = `http://quotes.sina.cn/hs/company/quotes/view/${item.code}/?from=wap`;
+  let url = `http://localhost:9080/static/tech.html?${item.code}`;
+  try {
+    if (klinewin) {
+      if (klinewin.isVisible()) {
+        if (klinewin.code == item.code) {
+          klinewin.close();
+        } else klinewin.loadURL(url);
+        return;
+      } else klinewin = null;
+    }
+  } catch (e) {
+    klinewin = null;
+  }
 
+  const size = target.$electron.remote.screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
+
+  klinewin = new target.$electron.remote.BrowserWindow({
+    width: size.width * 0.8,
+    height: 400,
+    x: 0,
+    y: 0,
+    // transparent: true, //设置透明
+    alwaysOnTop: true, //窗口是否总是显示在其他窗口之前
+    webPreferences: {
+      javascript: true,
+      plugins: true,
+      nodeIntegration: true,
+      webSecurity: false,
+      preload: "http://localhost:9080/static/preload-kline.js"
+    }
+  });
+  klinewin.setMenu(null);
+  let winsize = klinewin.getSize();
+  klinewin.setPosition(size.width - winsize[0], 30);
+  klinewin.loadURL(url);
+  let win = target.$electron.remote.getCurrentWindow();
+  win.focus();
+  klinewin.webContents.on("dom-ready", e => {
+    klinewin.webContents.executeJavaScript(`function loadScripts(scripts) {
+  return scripts.reduce((currentPromise, scriptUrl) => {
+  return currentPromise.then(() => {
+    return new Promise((resolve, reject) => {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = scriptUrl;
+      script.onload = () => resolve();
+      document.getElementsByTagName("head")[0].appendChild(script);
+    });
+  });
+  }, Promise.resolve());
+  }
+  loadScripts(['http://localhost:9080/static/preload-kline.js'])`);
+  });
+  klinewin.code = item.code;
+}
 export function openWin2(target, item) {
   let app = target.$electron.remote.app;
   if (app.openwin) {

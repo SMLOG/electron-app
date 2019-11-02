@@ -63,7 +63,7 @@
               @click="toggleDetail(item)"
               :class="{lk:item.tables&&item.tables.length>0}"
             >
-              <span :class="{sz:item.mk=='sz'}">{{item.name}}</span>
+              <span :class="{sz:item.mk=='sz'}" @click="openlink(item)">{{item.name}}</span>
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
               >{{item.avgzs}}/{{item.upArgCount}}</span>
@@ -99,7 +99,8 @@ import {
   loadScripts,
   fetchEval,
   dateFormat,
-  timeout
+  timeout,
+  openKlineWindow
 } from "@/lib/utils";
 import { headers } from "./headers";
 import { monitor } from "@/lib/monitor";
@@ -158,6 +159,9 @@ export default {
     }
   },
   methods: {
+    openlink(item) {
+      openKlineWindow(this, item);
+    },
     updateFilterCounts() {
       let map = {};
       console.log("update filter count");

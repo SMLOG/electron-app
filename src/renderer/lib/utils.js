@@ -301,7 +301,7 @@ export const hqParser = new (function() {
     }
     if (window[`v_${item.code}`]) {
       let arr = window[`v_${item.code}`].split("~");
-      e.pe_ttm = arr[39];
+      e.pe_ttm = parseFloat(arr[39]);
       e.turnover = arr[38];
       e.lz = arr[44];
       e.zsz = arr[45];
@@ -408,7 +408,7 @@ const handleMap = {
 export function parse(item) {
   if (handleMap[item.countryID])
     return hqParser[handleMap[item.countryID]](item);
-  else return {};
+  else return hqParser.a(item);
 }
 
 export function toFixed(value, n) {

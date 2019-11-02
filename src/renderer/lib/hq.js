@@ -1,4 +1,4 @@
-import { parse } from "./utils";
+import { parse, fetchEval } from "./utils";
 import { updateItem } from "@/lib/getTable";
 
 export async function loadHQ(items) {
@@ -18,16 +18,18 @@ export async function loadHQ(items) {
         `http://qt.gtimg.cn/q=${str}`
       ]);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 
-  items.forEach(item => {
+  for (let k = 0; k < items.length; k++) {
+    let item = items[k];
     let data = parse(item);
     data.pre = item.now;
     if (!data.preVolume || item.volume > data.preVolume)
       data.preVolume = item.volume;
     Object.assign(item, data);
-    let analyst = updateItem(item);
-    Object.assign(item, analyst);
-  });
+    await updateItem(item);
+  }
   return items;
 }

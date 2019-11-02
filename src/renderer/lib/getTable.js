@@ -9,6 +9,7 @@ import {
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData } from "./db";
+import { loadHQ } from "./hq";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
@@ -384,24 +385,6 @@ export async function getFindList() {
   await fetchEval([url]);
   let datalist = await p;
 
-  let lineDatas = [
-    {
-      day: "2019-10-18",
-      open: "2982.342",
-      high: "2987.204",
-      low: "2933.242",
-      close: "2938.141",
-      volume: "14999067800"
-    },
-    {
-      day: "2019-10-21",
-      open: "2933.897",
-      high: "2940.325",
-      low: "2917.688",
-      close: "2939.618",
-      volume: "13247510700"
-    }
-  ];
   datalist = datalist.data.diff;
   datalist = datalist.map(e => {
     return {
@@ -415,7 +398,6 @@ export async function getFindList() {
       preClose: e.f18,
       turnover: e.f8,
       pe: e.f9,
-      pe_ttm: e.f9,
       volume: e.f5,
       amount: e.f6,
       high: e.f15,
@@ -430,12 +412,6 @@ export async function getFindList() {
   });
   let d = new Date();
   d.setFullYear(d.getFullYear() - 3);
-  let lastyearStr = d.Format("yyyyMMdd");
-  for (let item of datalist) {
-    let klines = await getKLineDatas(item);
-    item.sz3 = klines && isCP(klines);
-    item.klines = klines;
-  }
   datalist = datalist.filter(
     e =>
       e.now > 5 &&
@@ -446,38 +422,11 @@ export async function getFindList() {
       e.name.indexOf("ST") == -1
     //&& e.sz3
   );
+  await loadHQ(datalist);
 
-  const arrs = datalist
-    .map(e => e.code)
-    .reduce((init, item, index) => {
-      index % 20 === 0 ? init.push([item]) : init[init.length - 1].push(item);
-      return init;
-    }, []);
-
-  try {
-    for (let a of arrs) {
-      let str = a.join(",");
-      await fetchEval([
-        `http://hq.sinajs.cn/list=${str}`,
-        `http://qt.gtimg.cn/q=${str}`
-      ]);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-
-  for (let i = 0; i < datalist.length; i++) {
-    let item = datalist[i];
-    let data = parse(item);
-    Object.assign(item, data);
-    await attachData(item);
-    let analyst = updateItem(item);
-    //Object.assign(item, analyst);
-    Object.assign(item, analyst);
-  }
-  return datalist.filter(
-    e =>
-      (e.tbzz > 0) & (e.PEG > 0) && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40
-  );
+  datalist = datalist.filter(e => {
+    return e.PEG > 0 && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40;
+  });
+  return datalist;
 }
 window.getFindList = getFindList;

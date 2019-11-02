@@ -239,9 +239,24 @@ const csvJSON = csv => {
   }
   return items;
 };
-let mgsy = "净利润(扣除非经常性损益后)(万元)";
+const mgsy = "净利润(扣除非经常性损益后)(万元)";
+
 const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
 
+function zzl(lrb, type, n) {
+  let first = parseFloat(lrb[type][lrb.reportDate[1]]);
+  let last = parseFloat(lrb[type][lrb.reportDate[1 + (n - 1) * 4]]);
+  let ret = [];
+  for (let i = 0; i < n; i++) {
+    let v1 = parseFloat(lrb[type][lrb.reportDate[1 + i * 4]]);
+    let v2 = parseFloat(lrb[type][lrb.reportDate[5 + i * 4]]);
+    let z = ((v1 * 100) / v2).toFixed(2);
+    ret.push(z);
+  }
+  return `(${(first / 10000).toFixed(2)}亿)${ret.join(",")},(${(
+    last / 10000
+  ).toFixed(2)}亿)`;
+}
 export async function updateItem(item) {
   let lrb = await getCacheData(null, `tb_zycwzb${item.code}`);
   putCache(`tb_zycwzb${item.code}`, lrb);
@@ -267,13 +282,8 @@ export async function updateItem(item) {
     if (laste < last3 && item.zzl2 > 0) item.zzl2 -= 2 * item.zzl2;
 
     item.tbzz = (100 * (laste - last2)) / last2;
-    item.zzl = `(${(laste / 10000).toFixed(2)}亿)${(
-      ((laste - last2) * 100) /
-      last2
-    ).toFixed(2)},${(((last2 - last3) * 100) / last3).toFixed(2)},${(
-      ((last3 - last4) * 100) /
-      last4
-    ).toFixed(2)},(${(last4 / 10000).toFixed(2)}亿)`;
+    item.zzl = zzl(lrb, mgsy, 4);
+    item.xjlzzl = zzl(lrb, "经营活动产生的现金流量净额(万元)", 2);
     item.PEG = item.pe_ttm / item.zzl3;
     item.reportDate = lrb.reportDate[1];
   }

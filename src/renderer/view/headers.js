@@ -54,7 +54,7 @@ export const headers = [
     }
   },
   {
-    label: "Turnover%",
+    label: "TO%",
     prop: "turnover",
     type: "number"
   },
@@ -65,7 +65,7 @@ export const headers = [
     type: "string",
     fmt: (e, item) => `${e}/${item.zsz}`
   },
-  { label: "PE(TTM)", prop: "pe_ttm", type: "number" },
+  { label: "TTM", prop: "pe_ttm", type: "number" },
   {
     label: "PEG",
     prop: "PEG",
@@ -91,6 +91,7 @@ export const headers = [
         };
     }
   },
+  { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
     label: "ROE",

@@ -36,7 +36,7 @@
                     descending: sortby ===col.prop && descending
                 }"
             >{{col.label}}</th>
-            <th>Action</th>
+            <th>A</th>
           </tr>
           <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
             <th :colspan="head.length+2">
@@ -78,7 +78,7 @@
 
             <td>
               <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-              <a style="float:right;" class="action" @click="delItem(item)">Delete</a>
+              <a style="float:right;" class="action" @click="delItem(item)">x</a>
             </td>
           </tr>
         </draggable>

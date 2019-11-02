@@ -475,6 +475,9 @@ export async function getFindList() {
     //Object.assign(item, analyst);
     Object.assign(item, analyst);
   }
-  return datalist;
+  return datalist.filter(
+    e =>
+      (e.tbzz > 0) & (e.PEG > 0) && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40
+  );
 }
 window.getFindList = getFindList;

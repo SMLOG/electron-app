@@ -11,7 +11,10 @@
       <div style="float:left;">
         <ul class="filters">
           <li v-for="(k,filter) in filters" :key="filter">
-            <a @click="visibility=filter" :class="{ selected: visibility == filter }">{{filter}}</a>
+            <a
+              @click="visibility=filter"
+              :class="{ selected: visibility == filter }"
+            >{{filter}}({{filterCounts[filter]}})</a>
           </li>
         </ul>
       </div>
@@ -113,7 +116,8 @@ export default {
       visibility: "Strong",
       head: headers,
       selectItem: null,
-      items2: []
+      items2: [],
+      filterCounts: {}
     };
   },
   components: {
@@ -137,6 +141,14 @@ export default {
       this.$store.dispatch("hideSuspension");
     });
   },
+  watch: {
+    items(newVal) {
+      this.updateFilterCounts();
+    },
+    items2(newVal) {
+      this.updateFilterCounts();
+    }
+  },
   computed: {
     createSuspension() {
       return this.$store.state.suspension.show;
@@ -146,6 +158,14 @@ export default {
     }
   },
   methods: {
+    updateFilterCounts() {
+      let map = {};
+      console.log("update filter count");
+      for (let k in this.filters) {
+        map[k] = this.filters[k](this.items, this.items2).length;
+      }
+      this.filterCounts = map;
+    },
     toggleDetail(item) {
       if (this.selectItem != item) this.selectItem = item;
       else this.selectItem = null;
@@ -231,15 +251,6 @@ export default {
       loadHQ(this.items);
       for (let i = 0; i < that.items.length; i++) {
         let item = that.items[i];
-        /* let data = parse(item);
-        data.pre = item.now;
-        if (!data.preVolume || item.volume > data.preVolume)
-          data.preVolume = item.volume;
-        Object.assign(item, data);
-        let analyst = updateItem(item);
-        for (let p in analyst) {
-          this.$set(item, p, analyst[p]);
-        }*/
 
         if (
           item.pe_ttm > 0 &&
@@ -286,6 +297,7 @@ export default {
     saveDatas(item) {
       if (item.isFocus) this.addItem(item);
       store.save(this.items);
+      this.updateFilterCounts();
     }
   }
 };

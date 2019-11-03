@@ -59,7 +59,7 @@
 	</script>
 	<script>
 		var relateSymbol = 'sh000001,sz399001,sz399006,b_SPX,hkHSI';//,b_SX5E';//相关代码
-		var paperCode=document.location.href.split("?")[1];
+		var paperCode=document.location.href.split("?")[1].split('&')[0];
         var isIndex = '0';
 	</script>
 
@@ -524,7 +524,27 @@
 	<script type="text/javascript" src="//finance.sina.com.cn/other/src/app/build.callUpApp.min.js?hsw=7.32"></script>
 
     <script type="text/javascript" charset="GBK" src="//localhost:9080/static/js2/cn2017.js?hsw=7.32"></script>
+<script>
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+}
 
+let timer = setInterval(() => {
+   if( $("li[type=nav]").length>0)clearInterval(timer);
+   else return;
+   $("li[type=nav]").click(function(e) {
+      let type = $(this).attr("data-view");
+      if (type) {
+        setCookie("dataView", type);
+      }
+    });
+}, 100);
+
+
+</script>
 </body>
 
 </html>

@@ -169,12 +169,15 @@ export default {
         left: td.offset().left + td.outerWidth()
       });
       let url = `http://localhost:9080/static/tech.html?${item.code}`;
-      if (webview[0].src == url && webview.is(":visible")) webview.hide();
+      if (webview[0].src.indexOf(url) > -1 && webview.is(":visible"))
+        webview.hide();
       else {
-        webview[0].src = url;
         webview.show();
+        setTimeout(() => {
+          webview.attr("src", url);
+        }, 10);
       }
-      window.webview = webview;
+      console.log(url);
       //openKlineWindow(this, item);
     },
     updateFilterCounts() {

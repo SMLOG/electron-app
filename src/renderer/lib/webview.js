@@ -1,5 +1,5 @@
 export function initwebview() {
-  const webview = document.querySelector("webview");
+  /*const webview = document.querySelector("webview");
 
   webview.addEventListener("dom-ready", e => {
     webview.openDevTools();
@@ -18,5 +18,5 @@ export function initwebview() {
     }, Promise.resolve());
     }
     loadScripts(['http://localhost:9080/static/preload-webview.js'])`);
-  });
+  });*/
 }

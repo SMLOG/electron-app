@@ -1203,7 +1203,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 dim: {
                     H_T_G: 45
                 },
-                candlenum: 240
+                candlenum: 40
             },
             tInitParam: {
                 theme: {},
@@ -1503,7 +1503,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             show: !1
         },
         clinicStock: {
-            show: !0,
+            show: !1,
             style: {
                 position: "absolute",
                 bottom: 0,
@@ -1516,6 +1516,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100%",
                 "float": "right",
+                display:'none',
                 backgroundImage: "url(//n.sinaimg.cn/finance/201706cn/icon_zhen.png)"
             }
         },

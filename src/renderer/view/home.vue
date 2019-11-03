@@ -1,86 +1,99 @@
 <template>
   <div>
     <iframe src="static/tech.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
-
-    <webview
-      ref="webview"
-      id="figure"
-      style="position:fixed;left:30px;right:0;bottom:0;display:none;z-index:100"
-    ></webview>
-    <div>
-      <div style="float:left;">
-        <ul class="filters">
-          <li v-for="(k,filter) in filters" :key="filter">
-            <a
-              @click="visibility=filter"
-              :class="{ selected: visibility == filter }"
-            >{{filter}}({{filterCounts[filter]}})</a>
-          </li>
-        </ul>
+    <div
+      id="top"
+      style="
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0%;
+    overflow: auto;
+    position: absolute;
+    overflow-x:hidden;
+"
+      ref="top"
+    >
+      <div>
+        <div style="float:left;">
+          <ul class="filters">
+            <li v-for="(k,filter) in filters" :key="filter">
+              <a
+                @click="visibility=filter"
+                :class="{ selected: visibility == filter }"
+              >{{filter}}({{filterCounts[filter]}})</a>
+            </li>
+          </ul>
+        </div>
+        <div style="float:right;">
+          <search-panel @select="addItem"></search-panel>
+        </div>
       </div>
-      <div style="float:right;">
-        <search-panel @select="addItem"></search-panel>
-      </div>
-    </div>
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th
-              v-for="col in head"
-              @click="sort(col.prop)"
-              :key="col.prop"
-              :class="{ 
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th
+                v-for="col in head"
+                @click="sort(col.prop)"
+                :key="col.prop"
+                :class="{ 
                     ascending : sortby === col.prop && !descending,
                     descending: sortby ===col.prop && descending
                 }"
-            >{{col.label}}</th>
-            <th>A</th>
-          </tr>
-          <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
-            <th :colspan="head.length+2">
-              <div id="detail" ref="detail">
-                <span v-if="selectItem.tables&&selectItem.tables.length>0">
-                  <div v-for="t in selectItem.tables" :key="t.str">
-                    {{selectItem.name}}
-                    <span v-html="t.str"></span>
-                  </div>
-                </span>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <draggable v-model="items" @update="dragEnd" tag="tbody">
-          <tr
-            class="item"
-            v-for="(item,index) in filteredItems"
-            :key="item.code"
-            :class="{'odd':index%2 != 1}"
-          >
-            <td :title="item.code" :class="{lk:item.tables&&item.tables.length>0}">
-              <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
-              <span
-                @click="toggleDetail(item)"
-                :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-              >{{item.avgzs}}/{{item.upArgCount}}</span>
-              <span v-if="item.contDir!=0">/{{item.contDir}}</span>
-            </td>
+              >{{col.label}}</th>
+              <th>A</th>
+            </tr>
+            <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
+              <th :colspan="head.length+2">
+                <div id="detail" ref="detail">
+                  <span v-if="selectItem.tables&&selectItem.tables.length>0">
+                    <div v-for="t in selectItem.tables" :key="t.str">
+                      {{selectItem.name}}
+                      <span v-html="t.str"></span>
+                    </div>
+                  </span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <draggable v-model="items" @update="dragEnd" tag="tbody">
+            <tr
+              class="item"
+              v-for="(item,index) in filteredItems"
+              :key="item.code"
+              :class="{'odd':index%2 != 1}"
+            >
+              <td :title="item.code" :class="{lk:item.tables&&item.tables.length>0}">
+                <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
+                <span
+                  @click="toggleDetail(item)"
+                  :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
+                >{{item.avgzs}}/{{item.upArgCount}}</span>
+                <span v-if="item.contDir!=0">/{{item.contDir}}</span>
+              </td>
 
-            <td
-              v-for="col in head"
-              :key="col.prop"
-              :class="col.class&&col.class(item)"
-            >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
+              <td
+                v-for="col in head"
+                :key="col.prop"
+                :class="col.class&&col.class(item)"
+              >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
-            <td>
-              <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-              <a style="float:right;" class="action" @click="delItem(item)">x</a>
-            </td>
-          </tr>
-        </draggable>
-      </table>
+              <td>
+                <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                <a style="float:right;" class="action" @click="delItem(item)">x</a>
+              </td>
+            </tr>
+          </draggable>
+        </table>
+      </div>
     </div>
+    <webview
+      ref="webview"
+      id="figure"
+      style="position:absolute;left:0;right:0;bottom:0;top:100%;display:none;z-index:100"
+    ></webview>
   </div>
 </template>
 
@@ -161,15 +174,16 @@ export default {
     openlink(item, event) {
       let webview = $(this.$refs.webview);
       let td = $(event.target).closest("td");
-      webview.css({
-        top: $(window).height() * 0.5,
-        left: td.offset().left + td.outerWidth()
-      });
+
       let url = `http://localhost:9080/static/tech.html?${item.code}`;
       if (webview[0].src.indexOf(url) > -1 && webview.is(":visible")) {
         webview.hide();
+        $(this.$refs.top).css("bottom", "0%");
       } else {
         webview.show();
+        $(this.$refs.top).css("bottom", "40%");
+
+        webview.css("top", "60%");
       }
       webview.attr("src", url);
 

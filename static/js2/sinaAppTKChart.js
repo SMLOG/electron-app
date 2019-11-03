@@ -1203,7 +1203,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 dim: {
                     H_T_G: 45
                 },
-                candlenum: 40
+                candlenum: 240
             },
             tInitParam: {
                 theme: {},

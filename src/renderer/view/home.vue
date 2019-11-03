@@ -3,9 +3,9 @@
     <iframe src="static/tech.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
 
     <webview
+      ref="webview"
       id="figure"
-      src="http://finance.sina.com.cn/realstock/company/sh601318/nc.shtml"
-      style="width:100%;height:460px;display:none;"
+      style="position:fixed;left:30px;right:0;bottom:0;display:none;z-index:100"
     ></webview>
     <div>
       <div style="float:left;">
@@ -63,7 +63,7 @@
               @click="toggleDetail(item)"
               :class="{lk:item.tables&&item.tables.length>0}"
             >
-              <span :class="{sz:item.mk=='sz'}" @click="openlink(item)">{{item.name}}</span>
+              <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
               <span
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
               >{{item.avgzs}}/{{item.upArgCount}}</span>
@@ -93,6 +93,7 @@ import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
+import * as $ from "jquery";
 import {
   ObjectType,
   parse,
@@ -131,7 +132,8 @@ export default {
     }
   },
   mounted() {
-    //initwebview();
+    initwebview();
+
     this.reloadData();
     this.timerFn();
     if (this.createSuspension === true) {
@@ -159,8 +161,21 @@ export default {
     }
   },
   methods: {
-    openlink(item) {
-      openKlineWindow(this, item);
+    openlink(item, event) {
+      let webview = $(this.$refs.webview);
+      let td = $(event.target).closest("td");
+      webview.css({
+        top: $(window).height() * 0.5,
+        left: td.offset().left + td.outerWidth()
+      });
+      let url = `http://localhost:9080/static/tech.html?${item.code}`;
+      if (webview[0].src == url && webview.is(":visible")) webview.hide();
+      else {
+        webview[0].src = url;
+        webview.show();
+      }
+      window.webview = webview;
+      //openKlineWindow(this, item);
     },
     updateFilterCounts() {
       let map = {};

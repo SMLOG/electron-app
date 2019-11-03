@@ -19,11 +19,17 @@
 	<link rel="stylesheet" type="text/css" href="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataStyle.css?hsw=7.32">
     <link rel="stylesheet" type="text/css" href="//n.sinaimg.cn/finance/201706cn/cwIndexF10.css?hsw=7.32">
 	<!-- head头添加分享图片 -->
-	<link rel="apple-touch-icon-precomposed" sizes="171x171" href="//n.sinaimg.cn/finance/hqcenter_sharepic/hqcenter_171x171.jpg">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="//n.sinaimg.cn/finance/hqcenter_sharepic/hqcenter_114x114.jpg">
-	<link rel="apple-touch-icon-precomposed" href="//n.sinaimg.cn/finance/hqcenter_sharepic/hqcenter_57x57.jpg">
 
-	<script type="text/javascript">
+    <script type="text/javascript">
+    function getMyCookie(cname,def) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+  return def;
+}
 		try {
 			document.domain = "sina.cn";
 		} catch (event) {}
@@ -514,10 +520,10 @@
 	<!--//n.sinaimg.cn/finance/hqbasic_component/HQ_DataApps.js-->
 	<script type="text/javascript" src="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataApps.js?hsw=7.32"></script>
 	<script type="text/javascript" src="//n.sinaimg.cn/finance/wap/h5/hq/js/zepto.min.js"></script>
-	<script type="text/javascript" src="//finance.sina.com.cn/sinafinancesdk/js/sf_sdk.js"></script>
+	<script type="text/javascript" src="//localhost:9080/static/js2/sf_sdk.js"></script>
 	<script type="text/javascript" src="//finance.sina.com.cn/other/src/app/build.callUpApp.min.js?hsw=7.32"></script>
 
-    <script type="text/javascript" charset="GBK" src="//i2.sinaimg.cn/cj/finance/cn/wap/res/cn2017_F10.js?hsw=7.32"></script>
+    <script type="text/javascript" charset="GBK" src="//localhost:9080/static/js2/cn2017.js?hsw=7.32"></script>
 
 </body>
 

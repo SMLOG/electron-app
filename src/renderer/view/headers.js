@@ -33,27 +33,6 @@ export const headers = [
     }
   },
   {
-    label: "Trend",
-    prop: "trend",
-    type: "string",
-    fmt: (e, item) => {
-      if (cache[`${item.code}_240`]) {
-        return (item.trend = cache[`${item.code}_240`]
-          .map((e, i, datas) => {
-            if (i > 0) e.preClose = datas[i - 1].close;
-            return e;
-          })
-          .map(e => `${(e.close - (e.preClose || e.close)).toFixed(2)}`)
-          .reverse()
-          .slice(0, 5)
-          .join(","));
-      } else {
-        item.trend = "";
-      }
-      return item.trend;
-    }
-  },
-  {
     label: "TO%",
     prop: "turnover",
     type: "number"

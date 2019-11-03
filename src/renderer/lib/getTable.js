@@ -250,7 +250,7 @@ function zzl(lrb, type, n) {
   for (let i = 0; i < n; i++) {
     let v1 = parseFloat(lrb[type][lrb.reportDate[1 + i * 4]]);
     let v2 = parseFloat(lrb[type][lrb.reportDate[5 + i * 4]]);
-    let z = ((v1 * 100) / v2).toFixed(2);
+    let z = (((v1 - v2) * 100) / v2).toFixed(2);
     ret.push(z);
   }
   return `(${(first / 10000).toFixed(2)}亿)${ret.join(",")},(${(
@@ -435,7 +435,14 @@ export async function getFindList() {
   await loadHQ(datalist);
 
   datalist = datalist.filter(e => {
-    return e.PEG > 0 && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40;
+    return (
+      e.PEG > 0 &&
+      e.PEG < 2 &&
+      e.pe_ttm > 0 &&
+      e.pe_ttm < 40 &&
+      e.tbzz > 0 &&
+      e.pe_ttm / e.tbzz < 2
+    );
   });
   return datalist;
 }

@@ -58,13 +58,10 @@
             :key="item.code"
             :class="{'odd':index%2 != 1}"
           >
-            <td
-              :title="item.code"
-              @click="toggleDetail(item)"
-              :class="{lk:item.tables&&item.tables.length>0}"
-            >
+            <td :title="item.code" :class="{lk:item.tables&&item.tables.length>0}">
               <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
               <span
+                @click="toggleDetail(item)"
                 :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
               >{{item.avgzs}}/{{item.upArgCount}}</span>
               <span v-if="item.contDir!=0">/{{item.contDir}}</span>
@@ -169,14 +166,13 @@ export default {
         left: td.offset().left + td.outerWidth()
       });
       let url = `http://localhost:9080/static/tech.html?${item.code}`;
-      if (webview[0].src.indexOf(url) > -1 && webview.is(":visible"))
+      if (webview[0].src.indexOf(url) > -1 && webview.is(":visible")) {
         webview.hide();
-      else {
+      } else {
         webview.show();
-        setTimeout(() => {
-          webview.attr("src", url);
-        }, 10);
       }
+      webview.attr("src", url);
+
       console.log(url);
       //openKlineWindow(this, item);
     },

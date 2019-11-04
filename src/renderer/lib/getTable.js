@@ -241,7 +241,7 @@ const csvJSON = csv => {
 };
 const mgsy = "净利润(扣除非经常性损益后)(万元)";
 
-const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
+const tbls = ["lrb"]; //, "xjllb", "zcfzb", "zycwzb"];
 
 function zzl(lrb, type, n) {
   let first = parseFloat(lrb[type][lrb.reportDate[1]]);
@@ -292,7 +292,7 @@ export async function updateItem(item) {
 
 export function attachData(item) {
   return (async () => {
-    if (!getCache(`${item.code}_240`)) {
+    /*if (!getCache(`${item.code}_240`)) {
       let cache240 = await getCacheData(
         new Date(),
         `${item.code}_240`,
@@ -304,7 +304,7 @@ export function attachData(item) {
         }
       );
       putCache(`${item.code}_240`, cache240);
-    }
+    }*/
 
     for (let i = 0; i < tbls.length; i++) {
       let tbname = tbls[i];
@@ -433,6 +433,10 @@ export async function getFindList() {
     //&& e.sz3
   );
   await loadHQ(datalist);
+
+  for (let i = 0; i < datalist.length; i++) {
+    await attachData(datalist[i]);
+  }
 
   datalist = datalist.filter(e => {
     return (

@@ -241,7 +241,7 @@ const csvJSON = csv => {
 };
 const mgsy = "净利润(扣除非经常性损益后)(万元)";
 
-const tbls = ["lrb"]; //, "xjllb", "zcfzb", "zycwzb"];
+const tbls = ["lrb", "xjllb", "zcfzb", "zycwzb"];
 
 function zzl(lrb, type, n) {
   let first = parseFloat(lrb[type][lrb.reportDate[1]]);

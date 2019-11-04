@@ -85,7 +85,7 @@ function update2Cache(item) {
       .put(item);
 
     request.onsuccess = function(event) {
-      console.log("数据更新成功");
+      console.log("数据更新成功:" + item.id);
       resolve();
     };
 

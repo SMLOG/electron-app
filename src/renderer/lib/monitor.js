@@ -46,7 +46,7 @@ export async function monitor(items) {
       let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
       let stop1 = false;
       item.preDirPrice = item.open;
-      for (let k = 0; k < datas.length; k++) {
+      for (let k = k.length - 1; k >= 0; k--) {
         let t = datas[k];
         if (t.avg_price > t.price) {
           stop1 = true;
@@ -55,15 +55,6 @@ export async function monitor(items) {
 
           item.upArgCount += 1;
         }
-        if (k > 0) {
-          if (t.price > item.preDirPrice) {
-            item.contDir = (item.contDir > 0 ? item.contDir : 0) + 1;
-          } else if (t.price < item.preDirPrice) {
-            item.contDir = (item.contDir < 0 ? item.contDir : 0) - 1;
-          }
-          item.preDirPrice = t.price;
-        }
-        item.preDirPrice = t.price;
 
         item.preAvg = t.avg_price;
       }
@@ -78,11 +69,11 @@ export async function monitor(items) {
     let item = items[i];
     let avg = (item.amount / item.volume).toFixed(2);
 
-    if (item.now > item.preDirPrice) {
-      item.dir = "up";
+    /*if (item.now > item.preDirPrice) {
+      item.contDir = (item.contDir > 0 ? item.contDir : 0) + 1;
     } else if (item.now < item.preDirPrice) {
-      item.dir = "down";
-    }
+      item.contDir = (item.contDir < 0 ? item.contDir : 0) - 1;
+    }*/
     if (avg < item.preAvg || item.now < avg) {
       item.avgzs = 0;
     } else {

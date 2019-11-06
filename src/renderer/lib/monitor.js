@@ -44,21 +44,32 @@ export async function monitor(items) {
       item.avgzs = item.upArgCount = 0;
 
       let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
-      let stop1 = false;
-      item.preDirPrice = item.open;
-      for (let k = k.length - 1; k >= 0; k--) {
+      item.preAvg = item.open;
+
+      item.contDir = 0;
+      for (let k = 0; k < datas.length; k++) {
         let t = datas[k];
-        if (t.avg_price > t.price) {
-          stop1 = true;
-        } else {
-          if (!stop1) item.avgzs += 1;
-
+        if (t.price > t.avg_price && item.avgzs >= 0) {
+          item.avgzs += 1;
           item.upArgCount += 1;
+        } else if (t.price < t.avg_price && item.avgzs <= 0) {
+          item.avgzs -= 1;
+        } else if (
+          (t.price > t.avg_price && item.avgzs < 0) ||
+          (t.price < t.avg_price && item.avgzs > 0)
+        ) {
+          item.avgzs = 0;
         }
-
+        if (t.avg_price > item.preAvg && item.contDir >= 0) item.contDir += 1;
+        else if (t.avg_price < item.preAvg && item.contDir <= 0)
+          item.contDir -= 1;
+        else if (
+          (t.avg_price < item.preAvg && item.contDir > 0) ||
+          (t.avg_price > item.preAvg && item.contDir < 0)
+        )
+          item.contDir = 0;
         item.preAvg = t.avg_price;
       }
-      console.log(item);
     }
   }
 
@@ -69,17 +80,26 @@ export async function monitor(items) {
     let item = items[i];
     let avg = (item.amount / item.volume).toFixed(2);
 
-    /*if (item.now > item.preDirPrice) {
-      item.contDir = (item.contDir > 0 ? item.contDir : 0) + 1;
-    } else if (item.now < item.preDirPrice) {
-      item.contDir = (item.contDir < 0 ? item.contDir : 0) - 1;
-    }*/
-    if (avg < item.preAvg || item.now < avg) {
-      item.avgzs = 0;
-    } else {
-      item.upArgCount += 1;
+    if (avg > item.preAvg && item.contDir >= 0) item.contDir += 1;
+    else if (avg < item.preAvg && item.contDir <= 0) item.contDir -= 1;
+    else if (
+      (avg < item.preAvg && item.contDir > 0) ||
+      (avg > item.preAvg && item.contDir < 0)
+    )
+      item.contDir = 0;
+
+    if (item.now > avg && item.avgzs >= 0) {
       item.avgzs += 1;
+      item.upArgCount += 1;
+    } else if (item.now < avg && item.avgzs <= 0) {
+      item.avgzs -= 1;
+    } else if (
+      (item.now > avg && item.avgzs < 0) ||
+      (item.now < avg && item.avgzs > 0)
+    ) {
+      item.avgzs = 0;
     }
+
     item.preAvg = avg;
   }
 }

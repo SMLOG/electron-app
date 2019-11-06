@@ -56,11 +56,11 @@
               >
                 <td :title="item.code" :class="{lk:item.tables&&item.tables.length>0}">
                   <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
-                  <span
+                  <span title="avgzs"
                     @click="toggleDetail(item)"
                     :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-                  >{{item.avgzs}}/{{item.upArgCount}}</span>
-                  <span v-if="item.contDir!=0">/{{item.contDir}}</span>
+                  >{{item.avgzs}}</span><span title="upArgCount">/{{item.upArgCount}}</span>
+                  <span  title="contDir">/{{item.contDir}}</span>
                 </td>
 
                 <td

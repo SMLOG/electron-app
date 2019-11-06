@@ -220,3 +220,6 @@ table .descending:before {
 #dragBar:hover {
   background: rgba(0, 0, 0, 0.1);
 }
+.hl {
+  color: red;
+}

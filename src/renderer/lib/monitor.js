@@ -1,6 +1,6 @@
 import { loadScripts } from "./utils";
 import { getTechDatas } from "./tech";
-import { getTables, attachData } from "./getTable";
+import { getTables, attachData, hl } from "./getTable";
 
 let queue = Promise.resolve();
 export function isNotTradeTime() {
@@ -17,6 +17,8 @@ export function isNotTradeTime() {
 let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
 export async function monitor(items) {
   await loadscript;
+  await hl(items);
+
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
 

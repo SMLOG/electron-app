@@ -10,6 +10,7 @@ import {
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData } from "./db";
 import { loadHQ } from "./hq";
+import { prependListener } from "cluster";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
@@ -448,6 +449,22 @@ export async function getFindList() {
       e.pe_ttm / e.tbzz < 2
     );
   });
+  await hl(datalist);
+  console.log(datalist);
   return datalist;
+}
+
+export async function hl(datalist) {
+  for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
+    let klines = await getKLineDatas(item);
+    let dline = klines[klines.length - 1];
+    let pdline = klines[klines.length - 2];
+    console.log(dline);
+    console.log(dline.close, dline.open);
+    if (dline.close > dline.open && dline.volume / pdline.volume > 1.4) {
+      item.hili = 2;
+    }
+  }
 }
 window.getFindList = getFindList;

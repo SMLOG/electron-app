@@ -54,13 +54,18 @@
                 :key="item.code"
                 :class="{'odd':index%2 != 1}"
               >
-                <td :title="item.code" :class="{lk:item.tables&&item.tables.length>0}">
+                <td
+                  :title="item.code"
+                  :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2}"
+                >
                   <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
-                  <span title="avgzs"
+                  <span
+                    title="avgzs"
                     @click="toggleDetail(item)"
                     :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-                  >{{item.avgzs}}</span><span title="upArgCount">/{{item.upArgCount}}</span>
-                  <span  title="contDir">/{{item.contDir}}</span>
+                  >{{item.avgzs}}</span>
+                  <span title="upArgCount">/{{item.upArgCount}}</span>
+                  <span title="contDir">/{{item.contDir}}</span>
                 </td>
 
                 <td
@@ -330,11 +335,6 @@ export default {
             (item.PEG && item.PEG > 0 && item.PEG < 1))
         ) {
           item.candidateType = 1;
-          let tbPGE = item.pe_ttm / item.tbzz;
-          if (tbPGE < 1 && tbPGE > 0 && item.PEG > 0 && item.PEG < 1)
-            item.candidateType = 2;
-        } else {
-          item.candidateType = 0;
         }
         //  that.items.splice(i, 1, item);
 

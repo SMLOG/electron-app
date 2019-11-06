@@ -5,9 +5,9 @@ export const filters = {
   All: function(items) {
     return items;
   },
-  Option1: function(items) {
+  HL: function(items) {
     return items.filter(function(item) {
-      return item.candidateType > 0;
+      return item.hili == 2;
     });
   },
   Option2: function(items) {

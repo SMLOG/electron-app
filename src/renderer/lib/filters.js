@@ -1,8 +1,8 @@
 export const filters = {
-  Find: function(items, items2) {
+  海选: function(items, items2) {
     return items2;
   },
-  All: function(items) {
+  自选: function(items) {
     return items;
   },
   HL: function(items) {

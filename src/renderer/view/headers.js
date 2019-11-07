@@ -1,5 +1,5 @@
 import { getLastReportDate } from "../lib/utils";
-import { cache } from "../lib/db";
+import { cache, getCacheData } from "../lib/db";
 
 const reportDate = getLastReportDate();
 const fmtPercent = value => {
@@ -7,6 +7,17 @@ const fmtPercent = value => {
   return value;
 };
 export const headers = [
+  {
+    label: "HY",
+    prop: "hy",
+    type: "string",
+    fmt: (e, item) => {
+      getCacheData(null, "ind_" + item.code).then(iname => {
+        item.hy = iname;
+      });
+      return item.hy;
+    }
+  },
   {
     label: "Now",
     prop: "now",

@@ -1,7 +1,7 @@
 import { loadScripts } from "./utils";
 import { getTechDatas } from "./tech";
 import { getTables, attachData, hl } from "./getTable";
-
+import { getAllInd } from "./ind";
 let queue = Promise.resolve();
 export function isNotTradeTime() {
   let d = new Date();

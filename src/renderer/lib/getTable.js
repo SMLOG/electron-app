@@ -460,9 +460,16 @@ export async function hl(datalist) {
     let klines = await getKLineDatas(item);
     let dline = klines[klines.length - 1];
     let pdline = klines[klines.length - 2];
-    console.log(dline);
-    console.log(dline.close, dline.open);
-    if (dline.close > dline.open && dline.volume / pdline.volume > 1.4) {
+    if (
+      dline.close > dline.open &&
+      dline.volume /
+        Math.min(
+          klines[klines.length - 2].volume,
+          klines[klines.length - 3].volume,
+          klines[klines.length - 4].volume
+        ) >
+        1.4
+    ) {
       item.hili = 2;
     }
   }

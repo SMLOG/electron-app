@@ -1042,3 +1042,15 @@ export function getCookie(cname, def) {
   }
   return def;
 }
+export async function awaitTimeout(promise, ts = 30000) {
+  return Promise.race([
+    promise,
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log("exception ...." + promise);
+        reject();
+      }, ts);
+    })
+  ]);
+}
+window.awaitTimeout = awaitTimeout;

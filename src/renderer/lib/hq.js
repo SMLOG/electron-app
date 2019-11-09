@@ -2,6 +2,7 @@ import { parse, fetchEval } from "./utils";
 import { updateItem } from "@/lib/getTable";
 
 export async function loadHQ(items) {
+  if (items.length == 0) return items;
   const arrs = items
     .map(e => e.code)
     .reduce((init, item, index) => {
@@ -29,7 +30,12 @@ export async function loadHQ(items) {
     if (!data.preVolume || item.volume > data.preVolume)
       data.preVolume = item.volume;
     Object.assign(item, data);
-    await updateItem(item);
+    try {
+      await updateItem(item);
+    } catch (e) {
+      console.log(e);
+    }
   }
+  console.log(items);
   return items;
 }

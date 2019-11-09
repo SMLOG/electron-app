@@ -5,7 +5,8 @@ import {
   getDate,
   split,
   parse,
-  fetchEval
+  fetchEval,
+  awaitTimeout
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData } from "./db";
@@ -393,7 +394,7 @@ export async function getFindList() {
     };
   });
 
-  await fetchEval([url]);
+  await awaitTimeout(fetchEval([url]));
   let datalist = await p;
 
   datalist = datalist.data.diff;
@@ -459,7 +460,6 @@ export async function hl(datalist) {
     let item = datalist[i];
     let klines = await getKLineDatas(item);
     let dline = klines[klines.length - 1];
-    let pdline = klines[klines.length - 2];
     if (
       dline.close > dline.open &&
       dline.volume /

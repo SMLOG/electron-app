@@ -2269,6 +2269,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
     }
     ,
     B.render = function() {
+        if(true)return;
         var e = this
           , t = e.hqData
           , n = document.getElementById(e.param.dom.position)

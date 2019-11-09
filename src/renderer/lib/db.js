@@ -3,6 +3,8 @@ const myDB = {
   version: 1,
   db: null
 };
+const cacheObj = {};
+
 const cacheName = "cache";
 function openDB(name, version) {
   if (myDB.db) return myDB.db;
@@ -25,6 +27,7 @@ function openDB(name, version) {
       }
       console.log("DB version changed to " + version);
     };
+    window.request = request;
   });
 }
 function add2Cache(item) {
@@ -121,6 +124,7 @@ function sameDay(d1, d2) {
     d1.getDate() === d2.getDate()
   );
 }
+export { cacheObj as cache };
 
 export async function getCacheData(date, id, callback) {
   await openDB(myDB.name, myDB.version);
@@ -149,11 +153,9 @@ export async function getCacheData(date, id, callback) {
 
 window.getCacheData = getCacheData;
 
-export const cache = {};
-
 export function getCache(id) {
-  return cache[id];
+  return cacheObj[id];
 }
 export function putCache(id, data) {
-  return (cache[id] = data);
+  return (cacheObj[id] = data);
 }

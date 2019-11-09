@@ -6,11 +6,17 @@
         <div>
           <div style="float:left;">
             <ul class="filters">
+              <li v-for="(k,filter) in afilters" :key="filter">
+                <a
+                  @click="selectSrc=k,visibility=null"
+                  :class="{ selected: selectSrc == k }"
+                >{{filter}}({{filterCounts[filter]}})</a>
+              </li>
               <li v-for="(k,filter) in filters" :key="filter">
                 <a
                   @click="visibility=filter"
                   :class="{ selected: visibility == filter }"
-                >{{filter}}({{filterCounts[filter]}})</a>
+                >{{filter}}({{filterCounts[selectSrc.name+filter]}})</a>
               </li>
             </ul>
           </div>
@@ -120,13 +126,14 @@ import {
 } from "@/lib/utils";
 import { headers } from "./headers";
 import { monitor } from "@/lib/monitor";
-import { filters } from "@/lib/filters";
+import { filters, afilters } from "@/lib/filters";
 import { updateItem, getMeetList } from "@/lib/getTable";
 export default {
   name: "home",
   data: function() {
     return {
       filters: filters,
+      afilters: afilters,
       items: [],
       descending: true,
       sortby: "",
@@ -134,7 +141,8 @@ export default {
       head: headers,
       selectItem: null,
       items2: [],
-      filterCounts: {}
+      filterCounts: {},
+      selectSrc: afilters["自选"]
     };
   },
   directives: {
@@ -203,7 +211,10 @@ export default {
       return this.$store.state.suspension.show;
     },
     filteredItems: function() {
-      return filters[this.visibility](this.items, this.items2);
+      let items = this[this.selectSrc.name];
+      if (this.visibility)
+        return filters[this.visibility](this[this.selectSrc.name]);
+      else return items;
     }
   },
   methods: {
@@ -238,9 +249,16 @@ export default {
     updateFilterCounts() {
       let map = {};
       console.log("update filter count");
-      for (let k in this.filters) {
-        map[k] = this.filters[k](this.items, this.items2).length;
+      for (let i in this.afilters) {
+        let items = this[this.afilters[i].name];
+        let name = this.afilters[i].name;
+        map[i] = items.length;
+
+        for (let k in this.filters) {
+          map[name + k] = this.filters[k](items).length;
+        }
       }
+
       this.filterCounts = map;
     },
     toggleDetail(item) {
@@ -248,7 +266,8 @@ export default {
       else this.selectItem = null;
     },
     sort(prop) {
-      let items = this.visibility == "Find" ? this.items2 : this.items;
+      let items = this[this.selectSrc.name];
+
       items.sort(function(a, b) {
         if (typeof a[prop] === "number") {
           return a[prop] - b[prop];

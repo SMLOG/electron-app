@@ -1,11 +1,19 @@
+export const afilters = {
+  海选: {
+    name: "items2"
+  },
+  自选: {
+    name: "items"
+  }
+};
 export const filters = {
-  海选: function(items, items2) {
+  /*海选: function(items, items2) {
     return items2;
   },
   自选: function(items) {
     return items;
-  },
-  HL: function(items) {
+  },*/
+  量价: function(items) {
     return items.filter(function(item) {
       return item.hili == 2;
     });

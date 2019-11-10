@@ -14,11 +14,16 @@ export async function getAllInd() {
     await fetchEval([url]);
     let resp = await p;
     delete window[cb];
+    return resp;
+  });
 
-    for (let i = 0; i < resp.data.diff.length; i++) {
-      let item = resp.data.diff[i];
-      let indCode = item.f12;
-      let cb = "cb" + +new Date();
+  console.log(resp);
+  for (let i = 0; i < resp.data.diff.length; i++) {
+    let item = resp.data.diff[i];
+    let indCode = item.f12;
+
+    let respi = await getCacheData(null, "industry_" + indCode, async () => {
+      let cb = rid("indi");
 
       let iurl = `http://push2.eastmoney.com/api/qt/clist/get?pn=1&pz=500&po=1&np=1&ut=b2884a393a59ad64002292a3e90d46a5&fltt=2&invt=2&fid=f62&fs=b:${indCode}&stat=1&fields=f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205,f124&rt=52437752&cb=${cb}&_=1573132586640`;
 
@@ -30,19 +35,20 @@ export async function getAllInd() {
       await fetchEval([iurl]);
       let respi = await p;
       delete window[cb];
+      return respi;
+    });
 
-      for (let k = 0; k < respi.data.diff.length; k++) {
-        let it = respi.data.diff[k];
-        let code = (it.f12.substring(0, 1) == "6" ? "sh" : "sz") + it.f12;
+    for (let k = 0; k < respi.data.diff.length; k++) {
+      let it = respi.data.diff[k];
+      let code = (it.f12.substring(0, 1) == "6" ? "sh" : "sz") + it.f12;
 
-        await getCacheData(null, "ind_" + code, async function() {
-          return item.f14;
-        });
-      }
+      await getCacheData(null, "ind_" + code, async function() {
+        //console.log(code, item.f14);
+        //console.log(item);
+        return item.f14;
+      });
     }
-    return resp;
-  });
-
+  }
   return resp;
 }
 getAllInd();

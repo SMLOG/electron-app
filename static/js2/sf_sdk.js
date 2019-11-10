@@ -20,7 +20,7 @@ xh5_define("cfgs.settinger", [], function() {
           k_0pct: "no",
           touch_prevent: !0,
           mini_threshold: { width: 0 / 0, height: 0 / 0 },
-          show_logo: !0,
+          show_logo: !1,
           k_overlay: !1,
           stick: !0,
           smooth: !1,

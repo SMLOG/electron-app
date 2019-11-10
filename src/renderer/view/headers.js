@@ -12,8 +12,8 @@ export const headers = [
     prop: "hy",
     type: "string",
     fmt: (e, item) => {
-      getCacheData(null, "ind_" + item.code).then(iname => {
-        item.hy = iname;
+      getCacheData(null, "ind_2" + item.code).then(data => {
+        item.hy = data && data.f14;
       });
       return item.hy;
     }

@@ -453,7 +453,7 @@ export async function getFindList() {
       e.pe_ttm > 0 &&
       e.pe_ttm < 40 &&
       e.tbzz > 0 &&
-      e.pe_ttm / e.tbzz < 2
+      e.pe_ttm / e.tbzz < 3
     );
   });
   await hl(datalist);

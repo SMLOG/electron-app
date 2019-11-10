@@ -131,7 +131,7 @@ function createSuspensionWindow() {
   win.loadURL(winURL);
 
   win.once("ready-to-show", () => {
-    win.show();
+    // win.show();
     globalShortcut.register("CommandOrControl+Alt+V", () => {
       console.log("hideshow");
       if (win.isVisible()) {

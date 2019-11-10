@@ -473,7 +473,7 @@ export async function hl(datalist) {
           klines[klines.length - 3].volume,
           klines[klines.length - 4].volume
         ) >
-        2
+        1.5
     ) {
       item.hili = 2;
     }

@@ -36,6 +36,5 @@ export async function loadHQ(items) {
       console.log(e);
     }
   }
-  console.log(items);
   return items;
 }

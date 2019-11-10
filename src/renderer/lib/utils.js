@@ -1042,8 +1042,37 @@ export function getCookie(cname, def) {
   }
   return def;
 }
-export async function awaitTimeout(promise, ts = 30000) {
-  return Promise.race([
+
+export async function retry(fn, times, delay) {
+  var err = null;
+  return new Promise(function(resolve, reject) {
+    var attempt = function() {
+      fn()
+        .then(resolve)
+        .catch(function(err) {
+          console.log(`Attempt #${times} failed`);
+          if (0 == times) {
+            reject(err);
+          } else {
+            times--;
+            setTimeout(function() {
+              attempt();
+            }, delay);
+          }
+        });
+    };
+
+    attempt();
+  });
+}
+
+export async function awaitTimeout(fn, ts = 15000) {
+  return retry(fn, 5, ts).catch(e => {
+    alert("fail");
+    return Promise.reject(e);
+  });
+
+  /*return Promise.race([
     promise,
     new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -1051,6 +1080,6 @@ export async function awaitTimeout(promise, ts = 30000) {
         reject();
       }, ts);
     })
-  ]);
+  ]);*/
 }
 window.awaitTimeout = awaitTimeout;

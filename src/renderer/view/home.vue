@@ -97,10 +97,16 @@
       <div
         id="dragBar"
         ref="dragBar"
-        style="position:absolute;width:100%;height:10px;cursor:row-resize;"
+        style="position:absolute;width:100%;height:10px;cursor:row-resize;text-align:center;"
         v-drag
         draggable="false"
-      ></div>
+      >
+        <i
+          class="arrow down"
+          style="position:relative;top:-10px;cursor:pointer;"
+          @click="closeview()"
+        ></i>
+      </div>
       <webview ref="webview" id="figure" style="width:100%;height:100%;"></webview>
     </div>
   </div>
@@ -218,6 +224,10 @@ export default {
     }
   },
   methods: {
+    closeview() {
+      let webviewWrap = $(this.$refs.webviewWrap);
+      webviewWrap.hide();
+    },
     openlink(item, event) {
       let webview = $(this.$refs.webview);
       let webviewWrap = $(this.$refs.webviewWrap);

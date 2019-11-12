@@ -13,7 +13,10 @@ export const headers = [
     type: "string",
     fmt: (e, item) => {
       getCacheData(null, "ind_2" + item.code).then(data => {
-        item.hy = data && data.f14;
+        item.hy =
+          data &&
+          cache[data.f12] &&
+          `${cache[data.f12].f14}(${cache[data.f12].f3}%)`;
       });
       return item.hy;
     }
@@ -22,7 +25,7 @@ export const headers = [
     label: "Now",
     prop: "now",
     type: "number",
-    fmt: (e, item) => `${e}(${item.change})`
+    fmt: (e, item) => `${e}(${item.changeP})`
   },
   {
     label: "HL",

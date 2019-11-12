@@ -4,7 +4,7 @@ const myDB = {
   db: null
 };
 const cacheObj = {};
-
+window.cacheObj = cacheObj;
 const cacheName = "cache";
 function openDB(name, version) {
   if (myDB.db) return myDB.db;

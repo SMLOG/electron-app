@@ -21,7 +21,7 @@ export async function getAllInd() {
   for (let i = 0; i < resp.data.diff.length; i++) {
     let item = resp.data.diff[i];
     let indCode = item.f12;
-
+    cache[indCode] = item;
     let respi = await getCacheData(null, "industry_" + indCode, async () => {
       let cb = rid("indi");
 

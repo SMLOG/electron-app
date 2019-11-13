@@ -87,6 +87,39 @@ export const headers = [
   { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
+    label: "净利率",
+    prop: "净利率(%)",
+    type: "number",
+    fmt: (e, item) => {
+      if (window["zyzb_" + item.code]) {
+        let data = window["zyzb_" + item.code];
+        return data["净利率(%)"][data["reportDate"][1]];
+      }
+    }
+  },
+  {
+    label: "毛利率",
+    prop: "毛利率(%)",
+    type: "number",
+    fmt: (e, item) => {
+      if (window["zyzb_" + item.code]) {
+        let data = window["zyzb_" + item.code];
+        return data["毛利率(%)"][data["reportDate"][1]];
+      }
+    }
+  },
+  {
+    label: "资产负债率",
+    prop: "资产负债率(%)",
+    type: "number",
+    fmt: (e, item) => {
+      if (window["zyzb_" + item.code]) {
+        let data = window["zyzb_" + item.code];
+        return data["资产负债率(%)"][data["reportDate"][1]];
+      }
+    }
+  },
+  {
     label: "ROE",
     prop: "roe",
     type: "string",

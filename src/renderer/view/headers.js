@@ -28,15 +28,6 @@ export const headers = [
     fmt: (e, item) => `${e}(${item.changeP})`
   },
   {
-    label: "HL",
-    prop: "hl",
-    type: "number",
-    fmt: (e, item) =>
-      (item.hl = `${(item.high - item.preClose).toFixed(2)},${(
-        item.low - item.preClose
-      ).toFixed(2)}`)
-  },
-  {
     label: "V",
     prop: "vol",
     type: "number",
@@ -87,13 +78,30 @@ export const headers = [
   { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
+    label: "ROE",
+    prop: "roe",
+    type: "number",
+    fmt: (e, item) => {
+      try {
+        let tb = cache["tb_zycwzb" + item.code];
+        if (tb && tb.reportDate) {
+          tb.reportDate[1];
+          let n = "净资产收益率加权(%)";
+          return (item.roe = `${tb[n][tb.reportDate[1]]}`);
+        }
+      } catch (e) {}
+    }
+  },
+  {
     label: "净利率",
     prop: "净利率(%)",
     type: "number",
     fmt: (e, item) => {
       if (window["zyzb_" + item.code]) {
         let data = window["zyzb_" + item.code];
-        return data["净利率(%)"][data["reportDate"][1]];
+        return (item["净利率(%)"] = parseFloat(
+          data["净利率(%)"][data["reportDate"][1]]
+        ));
       }
     }
   },
@@ -104,7 +112,9 @@ export const headers = [
     fmt: (e, item) => {
       if (window["zyzb_" + item.code]) {
         let data = window["zyzb_" + item.code];
-        return data["毛利率(%)"][data["reportDate"][1]];
+        return (item["毛利率(%)"] = parseFloat(
+          data["毛利率(%)"][data["reportDate"][1]]
+        ));
       }
     }
   },
@@ -115,25 +125,10 @@ export const headers = [
     fmt: (e, item) => {
       if (window["zyzb_" + item.code]) {
         let data = window["zyzb_" + item.code];
-        return data["资产负债率(%)"][data["reportDate"][1]];
+        return (item["资产负债率(%)"] = parseFloat(
+          data["资产负债率(%)"][data["reportDate"][1]]
+        ));
       }
-    }
-  },
-  {
-    label: "ROE",
-    prop: "roe",
-    type: "string",
-    fmt: (e, item) => {
-      try {
-        let tb = cache["tb_zycwzb" + item.code];
-        if (tb && tb.reportDate) {
-          tb.reportDate[1];
-          let n = "净资产收益率加权(%)";
-          return (item.roe = `${tb[n][tb.reportDate[1]]},${
-            tb[n][tb.reportDate[5]]
-          },${tb[n][tb.reportDate[9]]}`);
-        }
-      } catch (e) {}
     }
   }
 ];

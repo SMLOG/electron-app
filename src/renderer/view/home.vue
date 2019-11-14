@@ -97,7 +97,6 @@
       <div
         id="dragBar"
         ref="dragBar"
-        style="position:absolute;width:100%;height:10px;cursor:row-resize;text-align:center;"
         v-drag
         draggable="false"
       >
@@ -175,7 +174,7 @@ export default {
           document.onmousemove = null;
           document.onmouseup = null;
           $("#top").css("margin-bottom", $(oDiv).outerHeight());
-          setCookie("charTop", $(oDiv).outerHeight());
+          setCookie("charTop", $(window).outerHeight()-$(oDiv).outerHeight());
         };
         //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
         return false;
@@ -247,9 +246,12 @@ export default {
             $(window).height() - chartop + "px"
           );
           webviewWrap.css("top", chartop + "px");
+           setTimeout(()=>{webviewWrap.css("top", (chartop-1) + "px");},10);
         }
+       
+         webviewWrap.show();
         webview[0].style.height = "100%";
-        webviewWrap.show();
+       
       }
       webview.attr("src", url);
 

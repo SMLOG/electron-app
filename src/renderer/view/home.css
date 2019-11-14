@@ -217,9 +217,12 @@ table .descending:before {
   word-break: break-all;
   white-space: normal;
 }
-#dragBar:hover {
-  background: rgba(0, 0, 0, 0.1);
+#dragBar {
+  position:absolute;
+  width:100%;height:5px;cursor:row-resize;
+  text-align:center;border-top:1px solid #1bc07d;
 }
+
 .hl {
   color: red;
 }

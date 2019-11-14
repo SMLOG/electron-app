@@ -1,7 +1,2 @@
-git pull 
+npm run start
 
-cnpm i
-
-npm run dev
-
-pause

@@ -174,7 +174,7 @@ export default {
           document.onmousemove = null;
           document.onmouseup = null;
           $("#top").css("margin-bottom", $(oDiv).outerHeight());
-          setCookie("charTop", $(window).outerHeight()-$(oDiv).outerHeight());
+          setCookie("charTop", ($(window).outerHeight()-$(oDiv).outerHeight())/$(window).outerHeight());
         };
         //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
         return false;
@@ -239,7 +239,7 @@ export default {
         $(this.$refs.top).css("margin-bottom", "0");
       } else {
         if (!webviewWrap.is(":visible")) {
-          let chartop = getCookie("charTop", $(window).height() * 0.6);
+          let chartop = Math.min(getCookie("charTop",   0.6),0.9)*$(window).height();
           console.log(chartop, $(window).height() * 0.6);
           $(this.$refs.top).css(
             "margin-bottom",
@@ -342,7 +342,7 @@ export default {
         this.items2.length = 0;
 
         items.forEach(e => this.items2.push(e));
-        await timeout(300000);
+        await timeout(60000);
       })();
     },
     notify(item, message) {

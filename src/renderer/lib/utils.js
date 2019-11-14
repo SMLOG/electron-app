@@ -1065,8 +1065,9 @@ export async function retry(fn, times, delay) {
     attempt();
   });
 }
+let rirand = 1;
 export function rid(name) {
-  return `${name}${+new Date()}${Math.floor(Math.random() * 1000)}`;
+  return `${name}${rirand++}`;
 }
 export async function awaitTimeout(fn, ts = 15000) {
   return retry(fn, 5, ts).catch(e => {

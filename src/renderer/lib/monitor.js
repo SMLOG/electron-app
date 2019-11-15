@@ -15,6 +15,44 @@ export function isNotTradeTime() {
   return false;
 }
 let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
+
+async function getTdatas(code){
+  return await new Promise((resolve, reject) => {
+    KKE.api(
+      "datas.t.get",
+      {
+        symbol: code
+      },
+      function(resp) {
+        resolve(resp);
+      }
+    );
+  });
+
+}
+window.getTdatas = getTdatas;
+
+
+async function get5Tdatas(code){
+  return await new Promise((resolve, reject) => {
+    KKE.api("datas.t.get", {
+      assisthq: 1,
+ dataformatter: undefined,
+ date: null,
+ dist5: 0,
+ faker: "CN",
+ ssl: true,
+ symbol: code,
+ withI: true,
+ withT5: 1,
+  }, function(data) {
+    resolve(data)
+  });
+  });
+
+}
+window.get5Tdatas = get5Tdatas;
+
 export async function monitor(items) {
   await loadscript;
   await hl(items);
@@ -31,17 +69,7 @@ export async function monitor(items) {
     let name = "tdatas" + item.code;
     if (!window[name]) {
       window[name] = [];
-      let resp = await new Promise((resolve, reject) => {
-        KKE.api(
-          "datas.t.get",
-          {
-            symbol: item.code
-          },
-          function(resp) {
-            resolve(resp);
-          }
-        );
-      });
+      let resp = await getTdatas(item.code);
 
       item.avgzs = item.upArgCount = 0;
 

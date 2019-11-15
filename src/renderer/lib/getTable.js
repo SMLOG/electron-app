@@ -415,7 +415,7 @@ async function getKLineDatas(item) {
     new Date(),
     `${item.code}_kline`,
     async () => {
-      let url = `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`;
+      let url = `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=260`;
       await fetchEval([url]);
       let ret = window[`${item.code}_240`];
       try {
@@ -429,6 +429,7 @@ async function getKLineDatas(item) {
 
   return klines;
 }
+window.getKLineDatas=getKLineDatas;
 function isCP(klines) {
   let arr = klines
     .map((e, i, datas) => {
@@ -536,7 +537,13 @@ export async function hl(datalist) {
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
     let klines = await getKLineDatas(item);
+    let ylen = Math.min(klines.length,52*5);
+    let yagoline = klines[klines.length-ylen];
+
     let dline = klines[klines.length - 1];
+
+    item['52weekPer'] = 1*(100*(dline.close - yagoline.close)/yagoline.close).toFixed(2);
+
     if (
       dline.close > dline.open &&
       dline.volume /

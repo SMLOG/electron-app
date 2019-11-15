@@ -27,7 +27,7 @@ export const headers = [
     type: "number",
     fmt: (e, item) => `${e}(${item.changeP})`
   },
-  {
+ /* {
     label: "V",
     prop: "vol",
     type: "number",
@@ -36,6 +36,12 @@ export const headers = [
         0
       )}/${item.bsVols && (item.bsVols[5] / 100).toFixed(0)}`);
     }
+  },*/
+  
+  {
+    label: "52周%",
+    prop: "52weekPer",
+    type: "number"
   },
   {
     label: "TO%",

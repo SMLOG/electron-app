@@ -2,31 +2,17 @@
   <head>
     <script src="js/sf_sdk.js"></script>
     <script>
-      var papercode = "sh000001";
-      var bkSymbol = "new_jrhy";
+      KKE.api(
+        "plugins.tchart.get",
+        {
+          symbol: document.location.href.split("?")[1],
+          mt: "cnlv1",
+          dom_id: "h5Figure",
+          type: "tech"
+        },
+        function(chart_) {}
+      );
     </script>
-    <script src="//news.sina.com.cn/268/2015/0112/jquery.newest.js"></script>
-    <script
-      type="text/javascript"
-      src="//n.sinaimg.cn/finance/hq2018/utils-hq.js?ts=3.7"
-      charset="utf-8"
-    ></script>
-    <script
-      charset="utf-8"
-      src="//i.sso.sina.com.cn/js/ssologin.js"
-      type="text/javascript"
-    ></script>
-
-    <script
-      type="text/javascript"
-      src="//www.sinaimg.cn/cj/ddp/js/swfobject2.2.js"
-    ></script>
-
-    <script
-      type="text/javascript"
-      src="fixTotalShare.js?ll"
-      charset="gbk"
-    ></script>
   </head>
   <body>
     <div id="h5Figure"></div>

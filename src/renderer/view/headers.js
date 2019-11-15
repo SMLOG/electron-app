@@ -84,13 +84,22 @@ export const headers = [
   { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
-    label: "股息率%",
+    label: "股息%",
     prop: "GXL",
     type: "number",
     fmt: (e, item) => {
       if(cache["xjfh_" + item.code])
         item.GXL= (cache["xjfh_" + item.code]/10/item.now*100).toFixed(2);
       return  item.GXL;
+    }
+  },  {
+    label: "分红%",
+    prop: "FHL",
+    type: "number",
+    fmt: (e, item) => {
+      if(cache["xjfh_" + item.code])
+        item.FHL= (cache["xjfh_" + item.code]/cache['EarningsPerShare_'+ item.code]/10*100).toFixed(2);
+      return  item.FHL;
     }
   },
   {

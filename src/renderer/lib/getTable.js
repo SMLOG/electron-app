@@ -258,6 +258,7 @@ async function getGXL() {
       
      cache['gxl_'+mk+d.Code] = d.GXL;
      cache['xjfh_'+mk+d.Code]=d.XJFH;
+     cache['EarningsPerShare_'+mk+d.Code]=d.EarningsPerShare
     }
 }
 window.getGXL=getGXL;

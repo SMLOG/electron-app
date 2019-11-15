@@ -255,7 +255,9 @@ async function getGXL() {
       d.ReportingPeriod = dateFormat(d.ReportingPeriod, "yyyy-MM-dd");
       d.ResultsbyDate = dateFormat(d.ResultsbyDate, "yyyy-MM-dd");
       d.GXL = (d.GXL*100).toFixed(2);
+      
      cache['gxl_'+mk+d.Code] = d.GXL;
+     cache['xjfh_'+mk+d.Code]=d.XJFH;
     }
 }
 window.getGXL=getGXL;

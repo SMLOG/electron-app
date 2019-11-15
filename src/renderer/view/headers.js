@@ -84,11 +84,12 @@ export const headers = [
   { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
-    label: "股息率",
+    label: "股息率%",
     prop: "GXL",
     type: "number",
     fmt: (e, item) => {
-      item.GXL= cache["gxl_" + item.code];
+      if(cache["xjfh_" + item.code])
+        item.GXL= (cache["xjfh_" + item.code]/10/item.now*100).toFixed(2);
       return  item.GXL;
     }
   },

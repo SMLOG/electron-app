@@ -28,6 +28,8 @@
           <table>
             <thead>
               <tr>
+                  <th>A</th>
+
                 <th>Name</th>
                 <th
                   v-for="col in head"
@@ -38,7 +40,6 @@
                     descending: sortby ===col.prop && descending
                 }"
                 >{{col.label}}</th>
-                <th>A</th>
               </tr>
               <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
                 <th :colspan="head.length+2">
@@ -59,7 +60,11 @@
                 v-for="(item,index) in filteredItems"
                 :key="item.code"
                 :class="{'odd':index%2 != 1}"
-              >
+              >             <td>
+                  <a style="float:left;" class="action" @click="delItem(item)">x</a>
+                  <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+
+                </td>
                 <td
                   :title="item.code"
                   :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2}"
@@ -80,10 +85,7 @@
                   :class="col.class&&col.class(item)"
                 >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
-                <td>
-                  <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-                  <a style="float:right;" class="action" @click="delItem(item)">x</a>
-                </td>
+   
               </tr>
             </draggable>
           </table>

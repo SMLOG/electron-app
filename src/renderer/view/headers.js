@@ -93,7 +93,7 @@ export const headers = [
         if (tb && tb.reportDate) {
           tb.reportDate[1];
           let n = "净资产收益率加权(%)";
-          return (item.roe = `${tb[n][tb.reportDate[1]]}`);
+          return (item.roe = parseFloat(tb[n][tb.reportDate[1]]));
         }
       } catch (e) {}
     }

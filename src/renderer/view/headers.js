@@ -84,6 +84,15 @@ export const headers = [
   { label: "Cash", prop: "xjlzzl", type: "string" },
   { label: "Ben", prop: "zzl", type: "string" },
   {
+    label: "股息率",
+    prop: "GXL",
+    type: "number",
+    fmt: (e, item) => {
+      item.GXL= cache["gxl_" + item.code];
+      return  item.GXL;
+    }
+  },
+  {
     label: "ROE",
     prop: "roe",
     type: "number",

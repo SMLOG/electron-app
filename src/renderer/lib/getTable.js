@@ -10,7 +10,7 @@ import {
   rid
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
-import { getCache, putCache, getCacheData } from "./db";
+import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
 import { prependListener } from "cluster";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
@@ -33,6 +33,8 @@ export async function getTables(items) {
       }
     }
   }
+
+  await getGXL();
 }
 function decode(str, codes) {
   str = str.toString();
@@ -221,6 +223,42 @@ async function getYZYGTable() {
     }
   return (window.yzyg = yzyg);
 }
+
+
+async function getGXL() {
+  if (window.qRSAJPRO) return window.qRSAJPRO;
+ 
+  
+  
+  let url =
+    `http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var%20qRSAJPRO&pagesize=50000&page=1&sr=-1&sortType=YAGGR&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod%3E=^${new Date().getFullYear()-1}-12-31^%20and%20ReportingPeriod%3C=^${new Date().getFullYear()}-12-31^)&rt=52460253`;
+
+
+  console.log(url);
+  //let text = await fetch(url ).then(resp=>resp.text());
+  //await loadScripts([url]);
+
+  window.qRSAJPRO = await getCacheData(new Date(), "tab_fh3", async () => {
+    await fetchEval([url]);
+    console.log(window.qRSAJPRO);
+    return window.qRSAJPRO;
+  });
+
+  console.log(window.qRSAJPRO);
+
+  if (window.qRSAJPRO.data)
+    for (let d of window.qRSAJPRO.data) {
+      let mk = "sz";
+      if (d.Code.substring(0, 1) == 6) {
+        mk = "sh";
+      }
+      d.ReportingPeriod = dateFormat(d.ReportingPeriod, "yyyy-MM-dd");
+      d.ResultsbyDate = dateFormat(d.ResultsbyDate, "yyyy-MM-dd");
+      d.GXL = (d.GXL*100).toFixed(2);
+     cache['gxl_'+mk+d.Code] = d.GXL;
+    }
+}
+window.getGXL=getGXL;
 
 const csvJSON = csv => {
   const lines = csv.trim().split("\n");

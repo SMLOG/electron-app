@@ -253,3 +253,5 @@ i.arrow {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
+
+.link{cursor: pointer;}

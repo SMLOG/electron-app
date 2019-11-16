@@ -67,7 +67,7 @@
                 </td>
                 <td
                   :title="item.code"
-                  :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2}"
+                  :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
                 >
                   <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
                   <span

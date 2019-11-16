@@ -66,6 +66,12 @@ export const headers = [
     label: "CAGR",
     prop: "zzl3",
     type: "number",
+
+    class: item => {
+        return {
+          link: true
+        };
+    }    ,
     click:(item,event,openlink)=>{
       openlink(item,event,'http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}');
     },

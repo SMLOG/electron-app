@@ -83,6 +83,7 @@
                   v-for="col in head"
                   :key="col.prop"
                   :class="col.class&&col.class(item)"
+                  @click="col.click&&col.click(item,$event,openlink)"
                 >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
 
    
@@ -229,12 +230,12 @@ export default {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();
     },
-    openlink(item, event) {
+    openlink(item, event,link='http://localhost:9080/static/tech.html?{{code}}') {
       let webview = $(this.$refs.webview);
       let webviewWrap = $(this.$refs.webviewWrap);
       let td = $(event.target).closest("td");
 
-      let url = `http://localhost:9080/static/tech.html?${item.code}`;
+      let url =link.replace('{{code}}',item.code);
 
       if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {
         webviewWrap.hide();

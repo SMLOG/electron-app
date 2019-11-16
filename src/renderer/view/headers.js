@@ -50,7 +50,7 @@ export const headers = [
   },
 
   {
-    label: "LZ/ZZ",
+    label: "流值/总值",
     prop: "lz",
     type: "string",
     fmt: (e, item) => `${e}/${item.zsz}`
@@ -66,6 +66,9 @@ export const headers = [
     label: "CAGR",
     prop: "zzl3",
     type: "number",
+    click:(item,event,openlink)=>{
+      openlink(item,event,'http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}');
+    },
     fmt: (e, item) =>
       e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
   },

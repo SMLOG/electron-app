@@ -59,7 +59,7 @@
                 class="item"
                 v-for="(item,index) in filteredItems"
                 :key="item.code"
-                :class="{'odd':index%2 != 1}"
+                :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
               >             <td>
                   <a style="float:left;" class="action" @click="delItem(item)">x</a>
                   <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
@@ -150,7 +150,8 @@ export default {
       selectItem: null,
       items2: [],
       filterCounts: {},
-      selectSrc: afilters["自选"]
+      selectSrc: afilters["自选"],
+      openCode:null
     };
   },
   directives: {
@@ -229,6 +230,8 @@ export default {
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();
+       $(this.$refs.top).css("margin-bottom", "0");
+       this.openCode=null;
     },
     openlink(item, event,link='http://localhost:9080/static/tech.html?{{code}}') {
       let webview = $(this.$refs.webview);
@@ -238,8 +241,8 @@ export default {
       let url =link.replace('{{code}}',item.code);
 
       if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {
-        webviewWrap.hide();
-        $(this.$refs.top).css("margin-bottom", "0");
+       
+        this.closeview();
       } else {
         if (!webviewWrap.is(":visible")) {
           let chartop = Math.min(getCookie("charTop",   0.6),0.9)*$(window).height();
@@ -254,6 +257,7 @@ export default {
        
          webviewWrap.show();
         webview[0].style.height = "100%";
+        this.openCode=item.code;
        
       }
       webview.attr("src", url);

@@ -255,3 +255,7 @@ i.arrow {
 }
 
 .link{cursor: pointer;}
+
+.openlink{
+  background: gray;
+}

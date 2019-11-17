@@ -224,15 +224,11 @@ async function getYZYGTable() {
   return (window.yzyg = yzyg);
 }
 
-
 async function getGXL() {
   if (window.qRSAJPRO) return window.qRSAJPRO;
- 
-  
-  
-  let url =
-    `http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var%20qRSAJPRO&pagesize=50000&page=1&sr=-1&sortType=YAGGR&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod%3E=^${new Date().getFullYear()-1}-12-31^%20and%20ReportingPeriod%3C=^${new Date().getFullYear()}-12-31^)&rt=52460253`;
 
+  let url = `http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var%20qRSAJPRO&pagesize=50000&page=1&sr=-1&sortType=YAGGR&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod%3E=^${new Date().getFullYear() -
+    1}-12-31^%20and%20ReportingPeriod%3C=^${new Date().getFullYear()}-12-31^)&rt=52460253`;
 
   console.log(url);
   //let text = await fetch(url ).then(resp=>resp.text());
@@ -254,14 +250,14 @@ async function getGXL() {
       }
       d.ReportingPeriod = dateFormat(d.ReportingPeriod, "yyyy-MM-dd");
       d.ResultsbyDate = dateFormat(d.ResultsbyDate, "yyyy-MM-dd");
-      d.GXL = (d.GXL*100).toFixed(2);
-      
-     cache['gxl_'+mk+d.Code] = d.GXL;
-     cache['xjfh_'+mk+d.Code]=d.XJFH;
-     cache['EarningsPerShare_'+mk+d.Code]=d.EarningsPerShare
+      d.GXL = (d.GXL * 100).toFixed(2);
+
+      cache["gxl_" + mk + d.Code] = d.GXL;
+      cache["xjfh_" + mk + d.Code] = d.XJFH;
+      cache["EarningsPerShare_" + mk + d.Code] = d.EarningsPerShare;
     }
 }
-window.getGXL=getGXL;
+window.getGXL = getGXL;
 
 const csvJSON = csv => {
   const lines = csv.trim().split("\n");
@@ -470,7 +466,24 @@ async function getKLineDatas(item) {
 
   return klines;
 }
-window.getKLineDatas=getKLineDatas;
+window.getKLineDatas = getKLineDatas;
+
+async function getGZlist() {
+  let gzlist = await getCacheData(new Date(), `getGZlist`, async () => {
+    let url = `http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=SECURITYCODE&sr=1&p=1&ps=50000&js=var%20HecYRTyS={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^2019-11-15^)&rt=52466643`;
+    await fetchEval([url]);
+    let ret = window[`HecYRTyS`];
+    try {
+      delete window[`HecYRTyS`];
+    } catch (e) {
+      console.log(e);
+    }
+    return ret;
+  });
+
+  return gzlist;
+}
+window.getGZlist = getGZlist;
 function isCP(klines) {
   let arr = klines
     .map((e, i, datas) => {
@@ -493,7 +506,7 @@ function isCP(klines) {
   return ret > 2 && retp < 0.08;
 }
 
-async function getHXList(){
+async function getHXList() {
   let cb = rid("list");
 
   let url = `http://25.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f128,f136,f115,f152&_=1572107420243`;
@@ -513,7 +526,6 @@ async function getHXList(){
   return datalist;
 }
 export async function getFindList() {
-
   let datalist = await getHXList();
   console.log(datalist);
   datalist = datalist.data.diff;
@@ -578,12 +590,13 @@ export async function hl(datalist) {
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
     let klines = await getKLineDatas(item);
-    let ylen = Math.min(klines.length,52*5);
-    let yagoline = klines[klines.length-ylen];
+    let ylen = Math.min(klines.length, 52 * 5);
+    let yagoline = klines[klines.length - ylen];
 
     let dline = klines[klines.length - 1];
 
-    item['52weekPer'] = 1*(100*(dline.close - yagoline.close)/yagoline.close).toFixed(2);
+    item["52weekPer"] =
+      1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
 
     if (
       dline.close > dline.open &&

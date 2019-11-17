@@ -253,6 +253,9 @@ export default {
           );
           webviewWrap.css("top", chartop + "px");
            setTimeout(()=>{webviewWrap.css("top", (chartop-1) + "px");},10);
+           console.log(event);
+           if(event.clientY>$(window).height() - chartop)
+           window.scrollTo({top:window.scrollY+chartop});
         }
        
          webviewWrap.show();

@@ -27,7 +27,7 @@ export const headers = [
     type: "number",
     fmt: (e, item) => `${e}(${item.changeP})`
   },
- /* {
+  /* {
     label: "V",
     prop: "vol",
     type: "number",
@@ -37,7 +37,7 @@ export const headers = [
       )}/${item.bsVols && (item.bsVols[5] / 100).toFixed(0)}`);
     }
   },*/
-  
+
   {
     label: "52周%",
     prop: "52weekPer",
@@ -68,12 +68,16 @@ export const headers = [
     type: "number",
 
     class: item => {
-        return {
-          link: true
-        };
-    }    ,
-    click:(item,event,openlink)=>{
-      openlink(item,event,'http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}');
+      return {
+        link: true
+      };
+    },
+    click: (item, event, openlink) => {
+      openlink(
+        item,
+        event,
+        "http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}"
+      );
     },
     fmt: (e, item) =>
       e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
@@ -91,24 +95,48 @@ export const headers = [
     }
   },
   { label: "Cash", prop: "xjlzzl", type: "string" },
-  { label: "Ben", prop: "zzl", type: "string" },
+  {
+    label: "Ben",
+    prop: "zzl",
+    type: "string",
+    class: item => {
+      return {
+        link: true
+      };
+    },
+    click: (item, event, openlink) => {
+      let url = `http://stockhtm.finance.qq.com/sstock/ggcx/${item.code.replace(
+        /[a-z]/gi,
+        ""
+      )}.shtml?pgv_ref=fi_quote_my_recent`;
+      openlink(item, event, url);
+    }
+  },
   {
     label: "股息%",
     prop: "GXL",
     type: "number",
     fmt: (e, item) => {
-      if(cache["xjfh_" + item.code])
-        item.GXL= (cache["xjfh_" + item.code]/10/item.now*100).toFixed(2);
-      return  item.GXL;
+      if (cache["xjfh_" + item.code])
+        item.GXL = ((cache["xjfh_" + item.code] / 10 / item.now) * 100).toFixed(
+          2
+        );
+      return item.GXL;
     }
-  },  {
+  },
+  {
     label: "分红%",
     prop: "FHL",
     type: "number",
     fmt: (e, item) => {
-      if(cache["xjfh_" + item.code])
-        item.FHL= (cache["xjfh_" + item.code]/cache['EarningsPerShare_'+ item.code]/10*100).toFixed(2);
-      return  item.FHL;
+      if (cache["xjfh_" + item.code])
+        item.FHL = (
+          (cache["xjfh_" + item.code] /
+            cache["EarningsPerShare_" + item.code] /
+            10) *
+          100
+        ).toFixed(2);
+      return item.FHL;
     }
   },
   {

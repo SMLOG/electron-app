@@ -7,18 +7,17 @@ const cacheObj = {};
 window.cacheObj = cacheObj;
 const cacheName = "cache";
 function openDB(name, version) {
-  if (myDB.db) return myDB.db;
-
   return new Promise((resolve, reject) => {
+    if (myDB.db) return resolve(myDB.db);
     var version = version || 1;
     var request = window.indexedDB.open(name, version);
     request.onerror = function(e) {
       console.log(e.currentTarget.error.message);
-      reject();
+      reject(e);
     };
     request.onsuccess = function(e) {
       myDB.db = e.target.result;
-      resolve();
+      resolve(myDB.db);
     };
     request.onupgradeneeded = function(e) {
       var db = e.target.result;
@@ -117,35 +116,35 @@ function remove(id) {
   });
 }
 
-function sameDay(d1, d2) {
+function isNotBefore(d1, d2) {
   return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
+    d1.getFullYear() >= d2.getFullYear() &&
+    d1.getMonth() >= d2.getMonth() &&
+    d1.getDate() >= d2.getDate()
   );
 }
 export { cacheObj as cache };
 
-export async function getCacheData(date, id, callback) {
+export async function getCacheData(date, id, callback, mergeData) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
 
   if (
     cache &&
-    (!date || (cache.date && date && sameDay(cache.date, new Date(date))))
+    (!date || (cache.date && date && isNotBefore(cache.date, new Date(date))))
   ) {
-    //console.log("get from cache");
-    //console.log(cache);
+    if (mergeData) {
+      Object.assign(cache.data || {}, mergeData);
+      await update2Cache(cache);
+    }
     return cache.data;
   }
-  //if (cache) await remove(id);
-  //else
-  if (!callback) return null;
-  cache = {};
-  cache.data = await callback();
 
+  cache = {};
+  if (callback) cache.data = await callback();
+  if (mergeData) Object.assign(cache.data || {}, mergeData);
   cache.id = id;
-  cache.date = (date && new Date(date)) || new Date();
+  cache.date = new Date();
 
   await update2Cache(cache);
   return cache.data;

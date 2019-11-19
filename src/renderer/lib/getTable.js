@@ -553,6 +553,11 @@ export async function getFindList() {
       firstDay: e.f26
     };
   });
+
+  for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
+    await getCacheData(null, item.code, null, item);
+  }
   let d = new Date();
   d.setFullYear(d.getFullYear() - 3);
   datalist = datalist.filter(

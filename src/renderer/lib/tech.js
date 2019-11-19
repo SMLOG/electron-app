@@ -6,7 +6,7 @@ export async function getTechDatas(item) {
 
   let techDatas = await getCacheData(item.date, techId, async () => {
     let ifr = document.getElementsByTagName("iframe")[0];
-    let url = ifr.src.replace("sh000001", item.code);
+    let url = ifr.src.split("?")[0] + "?" + item.code;
     ifr.src = url;
     ifr.contentWindow[techId] = null;
     do {
@@ -18,3 +18,4 @@ export async function getTechDatas(item) {
   });
   return techDatas;
 }
+window.getTechDatas = getTechDatas;

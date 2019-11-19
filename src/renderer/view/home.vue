@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iframe src="static/tech.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <div id="top" ref="top">
       <div>
         <div>
@@ -28,7 +28,7 @@
           <table>
             <thead>
               <tr>
-                  <th>A</th>
+                <th>A</th>
 
                 <th>Name</th>
                 <th
@@ -60,10 +60,10 @@
                 v-for="(item,index) in filteredItems"
                 :key="item.code"
                 :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
-              >             <td>
+              >
+                <td>
                   <a style="float:left;" class="action" @click="delItem(item)">x</a>
                   <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-
                 </td>
                 <td
                   :title="item.code"
@@ -85,8 +85,6 @@
                   :class="col.class&&col.class(item)"
                   @click="col.click&&col.click(item,$event,openlink)"
                 >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
-
-   
               </tr>
             </draggable>
           </table>
@@ -97,12 +95,7 @@
       ref="webviewWrap"
       style="position:fixed;left:0;right:0;bottom:0;top:60%;display:none;z-index:100"
     >
-      <div
-        id="dragBar"
-        ref="dragBar"
-        v-drag
-        draggable="false"
-      >
+      <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           class="arrow down"
           style="position:relative;top:-10px;cursor:pointer;"
@@ -151,7 +144,7 @@ export default {
       items2: [],
       filterCounts: {},
       selectSrc: afilters["自选"],
-      openCode:null
+      openCode: null
     };
   },
   directives: {
@@ -178,7 +171,11 @@ export default {
           document.onmousemove = null;
           document.onmouseup = null;
           $("#top").css("margin-bottom", $(oDiv).outerHeight());
-          setCookie("charTop", ($(window).outerHeight()-$(oDiv).outerHeight())/$(window).outerHeight());
+          setCookie(
+            "charTop",
+            ($(window).outerHeight() - $(oDiv).outerHeight()) /
+              $(window).outerHeight()
+          );
         };
         //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
         return false;
@@ -230,38 +227,43 @@ export default {
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();
-       $(this.$refs.top).css("margin-bottom", "0");
-       this.openCode=null;
+      $(this.$refs.top).css("margin-bottom", "0");
+      this.openCode = null;
     },
-    openlink(item, event,link='http://localhost:9080/static/tech.html?{{code}}') {
+    openlink(
+      item,
+      event,
+      link = "http://localhost:9080/static/tech.html?{{code}}"
+    ) {
       let webview = $(this.$refs.webview);
       let webviewWrap = $(this.$refs.webviewWrap);
       let td = $(event.target).closest("td");
 
-      let url =link.replace('{{code}}',item.code);
+      let url = link.replace("{{code}}", item.code);
 
       if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {
-       
         this.closeview();
       } else {
         if (!webviewWrap.is(":visible")) {
-          let chartop = Math.min(getCookie("charTop",   0.6),0.9)*$(window).height();
+          let chartop =
+            Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
           console.log(chartop, $(window).height() * 0.6);
           $(this.$refs.top).css(
             "margin-bottom",
             $(window).height() - chartop + "px"
           );
           webviewWrap.css("top", chartop + "px");
-           setTimeout(()=>{webviewWrap.css("top", (chartop-1) + "px");},10);
-           console.log(event);
-           if(event.clientY>$(window).height() - chartop)
-           window.scrollTo({top:window.scrollY+chartop});
+          setTimeout(() => {
+            webviewWrap.css("top", chartop - 1 + "px");
+          }, 10);
+          console.log(event);
+          if (event.clientY > $(window).height() - chartop)
+            window.scrollTo({ top: window.scrollY + chartop });
         }
-       
-         webviewWrap.show();
+
+        webviewWrap.show();
         webview[0].style.height = "100%";
-        this.openCode=item.code;
-       
+        this.openCode = item.code;
       }
       webview.attr("src", url);
 

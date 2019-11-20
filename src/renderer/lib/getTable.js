@@ -623,6 +623,7 @@ export async function hl(datalist) {
     });
 
     item.ma5 = techData.MA[techData.MA.length - 1].ma5;
+    item.ma10 = techData.MA[techData.MA.length - 1].ma10;
   }
 }
 window.getFindList = getFindList;

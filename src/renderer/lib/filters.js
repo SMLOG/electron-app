@@ -23,9 +23,9 @@ export const filters = {
       return item.now >= item.ma5;
     });
   },
-  Option2: function(items) {
+  MA10: function(items) {
     return items.filter(function(item) {
-      return item.candidateType > 1;
+      return item.now >= item.ma10;
     });
   },
   Strong: items => {
@@ -36,11 +36,7 @@ export const filters = {
         e.trend.split("-").filter(x => x.trim()).length < 4*/
     );
   },
-  Safe: items => {
-    return items.filter(
-      e => e.avgzs > 0 && e.upArgCount > 100 && e.changePV > 0 && e.changePV < 4
-    );
-  },
+
   Focus: function(items) {
     return items.filter(function(item) {
       return item.isFocus;

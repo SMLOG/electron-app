@@ -88,11 +88,13 @@ function update2Cache(item) {
 
     request.onsuccess = function(event) {
       console.log("数据更新成功:" + item.id);
+      document.title = "数据更新成功:" + item.id;
       resolve();
     };
 
     request.onerror = function(event) {
       console.log("数据更新失败");
+      document.title = "数据更新失败:" + item.id;
       reject();
     };
   });

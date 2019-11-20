@@ -12,7 +12,8 @@ import {
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
-import { prependListener } from "cluster";
+import { getTechDatas } from "./tech";
+
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
@@ -554,10 +555,6 @@ export async function getFindList() {
     };
   });
 
-  for (let i = 0; i < datalist.length; i++) {
-    let item = datalist[i];
-    await getCacheData(null, item.code, null, item);
-  }
   let d = new Date();
   d.setFullYear(d.getFullYear() - 3);
   datalist = datalist.filter(
@@ -570,6 +567,7 @@ export async function getFindList() {
       e.name.indexOf("ST") == -1
     //&& e.sz3
   );
+
   await loadHQ(datalist);
 
   for (let i = 0; i < datalist.length; i++) {
@@ -586,11 +584,15 @@ export async function getFindList() {
       e.pe_ttm / e.tbzz < 3
     );
   });
+  for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
+    await getCacheData(null, item.code, null, item);
+  }
   await hl(datalist);
   console.log(datalist);
   return datalist;
 }
-
+let queue = Promise.resolve();
 export async function hl(datalist) {
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
@@ -615,6 +617,12 @@ export async function hl(datalist) {
     ) {
       item.hili = 2;
     }
+
+    let techData = await queue.then(() => {
+      return getTechDatas(item);
+    });
+
+    item.ma5 = techData.MA[techData.MA.length - 1].ma5;
   }
 }
 window.getFindList = getFindList;

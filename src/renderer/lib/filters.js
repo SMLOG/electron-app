@@ -18,6 +18,11 @@ export const filters = {
       return item.hili == 2;
     });
   },
+  MA5: function(items) {
+    return items.filter(function(item) {
+      return item.now >= item.ma5;
+    });
+  },
   Option2: function(items) {
     return items.filter(function(item) {
       return item.candidateType > 1;

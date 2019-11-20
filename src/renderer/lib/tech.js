@@ -11,7 +11,9 @@ export async function getTechDatas(item) {
     ifr.contentWindow[techId] = null;
     do {
       if (ifr.contentWindow[techId]) {
-        return ifr.contentWindow[techId];
+        let ret = ifr.contentWindow[techId];
+        ifr.contentWindow[techId] = null;
+        return ret;
       }
       await timeout(100);
     } while (true);

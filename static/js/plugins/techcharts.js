@@ -4431,6 +4431,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                         //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
                        let techs_datas = [];
                        let symbol ;
+                       techs_datas['kdatas'] = i;
                         for (var chart, a = techChartList.length; a--;) {
                             chart = techChartList[a],
                                 chart.initAndCalcAll(i),

@@ -117,7 +117,7 @@ function remove(id) {
     };
   });
 }
-
+window.removeCache = remove;
 function isNotBefore(d1, d2) {
   return (
     d1.getFullYear() >= d2.getFullYear() &&

@@ -596,7 +596,12 @@ let queue = Promise.resolve();
 export async function hl(datalist) {
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
-    let klines = await getKLineDatas(item);
+
+    let techData = await queue.then(() => {
+      return getTechDatas(item);
+    });
+
+    let klines = techData.kdatas;
     let ylen = Math.min(klines.length, 52 * 5);
     let yagoline = klines[klines.length - ylen];
 
@@ -618,9 +623,7 @@ export async function hl(datalist) {
       item.hili = 2;
     }
 
-    let techData = await queue.then(() => {
-      return getTechDatas(item);
-    });
+
 
     item.ma5 = techData.MA[techData.MA.length - 1].ma5;
     item.ma10 = techData.MA[techData.MA.length - 1].ma10;

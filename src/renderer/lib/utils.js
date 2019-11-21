@@ -1086,3 +1086,22 @@ export async function awaitTimeout(fn, ts = 15000) {
   ]);*/
 }
 window.awaitTimeout = awaitTimeout;
+
+
+export function isObjectEmpty(property)
+{
+  if (!property) {
+    return true;
+  }
+
+  var i;
+  var isEmpty = true;
+  for (i in property) {
+    if (Object.prototype.hasOwnProperty.call(property, i)) {
+      isEmpty = false;
+    }
+  }
+
+  return isEmpty;
+}
+ 

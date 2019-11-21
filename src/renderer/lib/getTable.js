@@ -7,6 +7,7 @@ import {
   parse,
   fetchEval,
   awaitTimeout,
+  isObjectEmpty,
   rid
 } from "./utils";
 import { getExcludeList } from "./exclude-list";
@@ -300,9 +301,10 @@ function zzl(lrb, type, n) {
 }
 export async function updateItem(item) {
   let lrb = await getCacheData(null, `tb_zycwzb${item.code}`);
-  putCache(`tb_zycwzb${item.code}`, lrb);
 
-  if (lrb) {
+  if (!isObjectEmpty(lrb)) {
+    putCache(`tb_zycwzb${item.code}`, lrb);
+
     let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
     let last2 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 1 * 4]]);
     let last3 = parseFloat(lrb[mgsy][lrb.reportDate[1 + 2 * 4]]);
@@ -622,8 +624,6 @@ export async function hl(datalist) {
     ) {
       item.hili = 2;
     }
-
-
 
     item.ma5 = techData.MA[techData.MA.length - 1].ma5;
     item.ma10 = techData.MA[techData.MA.length - 1].ma10;

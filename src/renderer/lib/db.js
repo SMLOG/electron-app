@@ -141,7 +141,7 @@ export async function getCacheData(date, id, callback, mergeData) {
     }
     return cache.data;
   }
-
+  if (!callback && !mergeData) return null;
   cache = {};
   if (callback) cache.data = await callback();
   if (mergeData) Object.assign(cache.data || {}, mergeData);

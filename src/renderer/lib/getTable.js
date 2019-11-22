@@ -528,9 +528,8 @@ async function getHXList() {
 
   return datalist;
 }
-export async function getFindList() {
+export async function getFindList(callback) {
   let datalist = await getHXList();
-  console.log(datalist);
   datalist = datalist.data.diff;
   datalist = datalist.map(e => {
     return {
@@ -572,61 +571,60 @@ export async function getFindList() {
 
   await loadHQ(datalist);
 
+  datalist = datalist.filter(e => {
+    return e.pe_ttm > 0 && e.pe_ttm < 40;
+  });
+
   for (let i = 0; i < datalist.length; i++) {
     await attachData(datalist[i]);
-  }
-
-  datalist = datalist.filter(e => {
-    return (
+    let e = datalist[i];
+    if (
       e.PEG > 0 &&
       e.PEG < 2 &&
       e.pe_ttm > 0 &&
       e.pe_ttm < 40 &&
       e.tbzz > 0 &&
       e.pe_ttm / e.tbzz < 3
-    );
-  });
-  for (let i = 0; i < datalist.length; i++) {
-    let item = datalist[i];
-    await getCacheData(null, item.code, null, item);
+    ) {
+      await getCacheData(null, e.code, null, e);
+      await hl(e);
+
+      callback(e);
+    }
   }
-  await hl(datalist);
+
   console.log(datalist);
   return datalist;
 }
 let queue = Promise.resolve();
-export async function hl(datalist) {
-  for (let i = 0; i < datalist.length; i++) {
-    let item = datalist[i];
+export async function hl(item) {
+  let techData = await queue.then(() => {
+    return getTechDatas(item);
+  });
 
-    let techData = await queue.then(() => {
-      return getTechDatas(item);
-    });
+  let klines = techData.kdatas;
+  let ylen = Math.min(klines.length, 52 * 5);
+  let yagoline = klines[klines.length - ylen];
 
-    let klines = techData.kdatas;
-    let ylen = Math.min(klines.length, 52 * 5);
-    let yagoline = klines[klines.length - ylen];
+  let dline = klines[klines.length - 1];
 
-    let dline = klines[klines.length - 1];
+  item["52weekPer"] =
+    1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
 
-    item["52weekPer"] =
-      1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
-
-    if (
-      dline.close > dline.open &&
-      dline.volume /
-        Math.min(
-          klines[klines.length - 2].volume,
-          klines[klines.length - 3].volume,
-          klines[klines.length - 4].volume
-        ) >
-        1.5
-    ) {
-      item.hili = 2;
-    }
-
-    item.ma5 = techData.MA[techData.MA.length - 1].ma5;
-    item.ma10 = techData.MA[techData.MA.length - 1].ma10;
+  if (
+    dline.close > dline.open &&
+    dline.volume /
+      Math.min(
+        klines[klines.length - 2].volume,
+        klines[klines.length - 3].volume,
+        klines[klines.length - 4].volume
+      ) >
+      1.5
+  ) {
+    item.hili = 2;
   }
+
+  item.ma5 = techData.MA[techData.MA.length - 1].ma5;
+  item.ma10 = techData.MA[techData.MA.length - 1].ma10;
 }
 window.getFindList = getFindList;

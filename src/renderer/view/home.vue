@@ -149,9 +149,8 @@ export default {
   },
   directives: {
     drag(el) {
-      let oDiv = $(el).parent()[0]; //当前元素
-      let self = this; //上下文
-      //禁止选择网页上的文字
+      let oDiv = $(el).parent()[0];
+      let self = this;
       document.onselectstart = function() {
         return false;
       };
@@ -350,10 +349,13 @@ export default {
         }
       })();
       (async () => {
-        let items = await getFindList();
         this.items2.length = 0;
 
-        items.forEach(e => this.items2.push(e));
+        let items = await getFindList(e => {
+          this.items2.push(e);
+        });
+
+        // items.forEach(e => this.items2.push(e));
         await timeout(60000);
       })();
     },

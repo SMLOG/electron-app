@@ -305,6 +305,7 @@ export const hqParser = new (function() {
       e.turnover = arr[38];
       e.lz = arr[44];
       e.zsz = arr[45];
+      e.ltg = parseFloat((e.lz / e.now).toFixed(2));
     }
 
     e.mk = item.code && item.code.indexOf("sh") > -1 ? "sh" : "sz";
@@ -1087,9 +1088,7 @@ export async function awaitTimeout(fn, ts = 15000) {
 }
 window.awaitTimeout = awaitTimeout;
 
-
-export function isObjectEmpty(property)
-{
+export function isObjectEmpty(property) {
   if (!property) {
     return true;
   }
@@ -1104,4 +1103,3 @@ export function isObjectEmpty(property)
 
   return isEmpty;
 }
- 

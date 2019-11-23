@@ -49,7 +49,7 @@ export const headers = [
     type: "number"
   },
   {
-    label: "流通/万手",
+    label: "流通亿股",
     prop: "ltg",
     type: "number"
   },

@@ -544,7 +544,7 @@ export async function getFindList(callback) {
       turnover: e.f8,
       pe: e.f9,
       volume: e.f5,
-      ltg: parseFloat((e.f21 / e.f2  / 100000000).toFixed(2)),
+      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
       amount: e.f6,
       high: e.f15,
       low: e.f16,
@@ -579,14 +579,7 @@ export async function getFindList(callback) {
   for (let i = 0; i < datalist.length; i++) {
     await attachData(datalist[i]);
     let e = datalist[i];
-    if (
-      e.PEG > 0 &&
-      e.PEG < 2 &&
-      e.pe_ttm > 0 &&
-      e.pe_ttm < 40 &&
-      e.tbzz > 0 &&
-      e.pe_ttm / e.tbzz < 3
-    ) {
+    if (e.PEG > 0 && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40 && e.tbzz > 0) {
       await getCacheData(null, e.code, null, e);
       await hl(e);
 

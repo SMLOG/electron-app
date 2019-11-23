@@ -16,7 +16,7 @@ export function isNotTradeTime() {
 }
 let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
 
-async function getTdatas(code){
+async function getTdatas(code) {
   return await new Promise((resolve, reject) => {
     KKE.api(
       "datas.t.get",
@@ -28,37 +28,38 @@ async function getTdatas(code){
       }
     );
   });
-
 }
 window.getTdatas = getTdatas;
 
-
-async function get5Tdatas(code){
+async function get5Tdatas(code) {
   return await new Promise((resolve, reject) => {
-    KKE.api("datas.t.get", {
-      assisthq: 1,
- dataformatter: undefined,
- date: null,
- dist5: 0,
- faker: "CN",
- ssl: true,
- symbol: code,
- withI: true,
- withT5: 1,
-  }, function(data) {
-    resolve(data)
+    KKE.api(
+      "datas.t.get",
+      {
+        assisthq: 1,
+        dataformatter: undefined,
+        date: null,
+        dist5: 0,
+        faker: "CN",
+        ssl: true,
+        symbol: code,
+        withI: true,
+        withT5: 1
+      },
+      function(data) {
+        resolve(data);
+      }
+    );
   });
-  });
-
 }
 window.get5Tdatas = get5Tdatas;
 
 export async function monitor(items) {
   await loadscript;
-  await hl(items);
 
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
+    await hl(item);
 
     attachData(item);
 

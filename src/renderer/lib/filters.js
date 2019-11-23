@@ -29,12 +29,11 @@ export const filters = {
     });
   },
   Strong: items => {
-    return items.filter(
-      e => e.changePV > 0 && (e.avgzs > 20 || e.upArgCount > 120)
-      /*&&
-        e.trend &&
-        e.trend.split("-").filter(x => x.trim()).length < 4*/
-    );
+    return items.filter(function(item) {
+      return (
+        item.now >= item.ma5 && item.ma5 >= item.ma10 && item.ma10 > item.ma20
+      );
+    });
   },
 
   Focus: function(items) {

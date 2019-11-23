@@ -627,5 +627,6 @@ export async function hl(item) {
 
   item.ma5 = techData.MA[techData.MA.length - 1].ma5;
   item.ma10 = techData.MA[techData.MA.length - 1].ma10;
+  item.ma20 = techData.MA[techData.MA.length - 1].ma20;
 }
 window.getFindList = getFindList;

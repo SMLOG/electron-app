@@ -1,5 +1,4 @@
-import { loadScripts } from "./utils";
-import { getTechDatas } from "./tech";
+import { getTechDatas, getTdatas } from "./tech";
 import { getTables, attachData, hl } from "./getTable";
 import { getAllInd } from "./ind";
 let queue = Promise.resolve();
@@ -14,49 +13,8 @@ export function isNotTradeTime() {
   if (h > 15) return true;
   return false;
 }
-let loadscript = loadScripts(["/static/js/sf_sdk.js"]);
-
-async function getTdatas(code) {
-  return await new Promise((resolve, reject) => {
-    KKE.api(
-      "datas.t.get",
-      {
-        symbol: code
-      },
-      function(resp) {
-        resolve(resp);
-      }
-    );
-  });
-}
-window.getTdatas = getTdatas;
-
-async function get5Tdatas(code) {
-  return await new Promise((resolve, reject) => {
-    KKE.api(
-      "datas.t.get",
-      {
-        assisthq: 1,
-        dataformatter: undefined,
-        date: null,
-        dist5: 0,
-        faker: "CN",
-        ssl: true,
-        symbol: code,
-        withI: true,
-        withT5: 1
-      },
-      function(data) {
-        resolve(data);
-      }
-    );
-  });
-}
-window.get5Tdatas = get5Tdatas;
 
 export async function monitor(items) {
-  await loadscript;
-
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     await hl(item);

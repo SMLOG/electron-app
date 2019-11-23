@@ -51,7 +51,19 @@ export const headers = [
   {
     label: "流通亿股",
     prop: "ltg",
-    type: "number"
+    type: "number",
+    class: item => {
+      return {
+        link: true
+      };
+    },
+    click: (item, event, openlink) => {
+      openlink(
+        item,
+        event,
+        "http://f10.eastmoney.com/ShareholderResearch/Index?type=web&code={{code}}#"
+      );
+    }
   },
   {
     label: "流值/总值",

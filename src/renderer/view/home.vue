@@ -62,7 +62,7 @@
                 :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
               >
                 <td>
-                  <a style="float:left;" class="action" @click="delItem(item)">x</a>
+                  <a class="action" @click="delItem(item)">x</a>
                   <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
                 </td>
                 <td

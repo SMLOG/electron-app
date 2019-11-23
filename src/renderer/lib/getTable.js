@@ -607,13 +607,7 @@ export async function hl(item) {
 
   if (
     dline.close > dline.open &&
-    dline.volume /
-      Math.min(
-        klines[klines.length - 2].volume,
-        klines[klines.length - 3].volume,
-        klines[klines.length - 4].volume
-      ) >
-      1.5
+    dline.volume / avg(klines.slice(-6).map(e => e.volume)) > 1.5
   ) {
     item.hili = 2;
   }
@@ -622,4 +616,8 @@ export async function hl(item) {
   item.ma10 = techData.MA[techData.MA.length - 1].ma10;
   item.ma20 = techData.MA[techData.MA.length - 1].ma20;
 }
+function avg(arr) {
+  return arr.reduce((a, b) => a + b) / arr.length;
+}
+
 window.getFindList = getFindList;

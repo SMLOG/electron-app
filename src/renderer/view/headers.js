@@ -48,7 +48,11 @@ export const headers = [
     prop: "turnover",
     type: "number"
   },
-
+  {
+    label: "流通/万手",
+    prop: "ltg",
+    type: "number"
+  },
   {
     label: "流值/总值",
     prop: "lz",

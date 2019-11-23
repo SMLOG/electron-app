@@ -13,11 +13,11 @@ export const filters = {
   自选: function(items) {
     return items;
   },*/
-  量价: function(items) {
+  /* 量价: function(items) {
     return items.filter(function(item) {
       return item.hili == 2;
     });
-  },
+  },*/
   MA5: function(items) {
     return items.filter(function(item) {
       return item.now >= item.ma5;

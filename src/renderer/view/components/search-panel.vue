@@ -17,6 +17,7 @@
         @keydown.down="selectDown()"
         @keydown.up.prevent="selectUp()"
         @keydown.esc.prevent="clearInput()"
+        ref="input"
       />
       <!-- 这是一个小叉叉，点击它可清除输入框内容 -->
       <span class="search-reset" @click="clearInput()">&times;</span>
@@ -71,6 +72,19 @@ export default {
       ]
     };
   },
+  mounted () {
+    document.addEventListener('keydown', (e) => {
+      if(e.target&&e.target.nodeName=='BODY'){
+        if(
+          e.charCode>='a'.charAt(0)&&e.charCode<='a'.charAt(0)
+        ||e.charCode>='A'.charAt(0)&&e.charCode<='Z'.charAt(0)
+        ||e.charCode>='0'.charAt(0)&&e.charCode<='9'.charAt(0)
+        )
+        this.$refs.input.focus();
+         // this.keyword +=e.key;
+      }
+   });    
+  },
   methods: {
     onSuggestionsFetchRequested() {
       let name = "suggestdata_" + +new Date();
@@ -113,6 +127,7 @@ export default {
             };
           })
           .filter(e => e);
+        if(options.length>0)
         options.unshift({ id: -1, oname: "选项", name: "名称", code: "代码" });
 
         this.myData = options;

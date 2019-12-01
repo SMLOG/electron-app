@@ -1,10 +1,11 @@
 <template>
   <div>
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
-    <div id="top" ref="top">
-      <div>
-        <div>
-          <div style="float:left;">
+     <div id="searchpane" >
+            <search-panel @select="addItem"></search-panel>
+    </div>
+        <div id="menus" >
+          <div >
             <ul class="filters">
               <li v-for="(k,filter) in afilters" :key="filter">
                 <a
@@ -20,10 +21,9 @@
               </li>
             </ul>
           </div>
-          <div style="float:right;">
-            <search-panel @select="addItem"></search-panel>
-          </div>
+
         </div>
+    <div >
         <div>
           <table>
             <thead>
@@ -89,9 +89,8 @@
             </draggable>
           </table>
         </div>
-      </div>
     </div>
-    <div
+    <div id="webviewWrap"
       ref="webviewWrap"
       style="position:fixed;left:0;right:0;bottom:0;top:60%;display:none;z-index:100"
     >

@@ -115,9 +115,7 @@ table .descending:before {
   margin: 0;
   padding: 0;
   list-style: none;
-  position: absolute;
-  right: 0;
-  left: 0;
+
 }
 
 .filters li {
@@ -267,3 +265,11 @@ i.arrow {
 .action {
   margin-left: -10px;
 }
+
+.filters li{float: left;height: 25px;}
+.filters:after{
+  content: "";
+clear: both;
+}
+
+#searchpane{position: fixed;right:10px;}

@@ -16,6 +16,7 @@
         @keydown.enter="search()"
         @keydown.down="selectDown()"
         @keydown.up.prevent="selectUp()"
+        @keydown.esc.prevent="clearInput()"
       />
       <!-- 这是一个小叉叉，点击它可清除输入框内容 -->
       <span class="search-reset" @click="clearInput()">&times;</span>

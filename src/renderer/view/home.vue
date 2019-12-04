@@ -1,96 +1,97 @@
 <template>
   <div>
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
-     <div id="searchpane" >
-            <search-panel @select="addItem"></search-panel>
+    <div id="searchpane">
+      <search-panel @select="addItem"></search-panel>
     </div>
-        <div id="menus" >
-          <div >
-            <ul class="filters">
-              <li v-for="(k,filter) in afilters" :key="filter">
-                <a
-                  @click="selectSrc=k,visibility=null"
-                  :class="{ selected: selectSrc == k }"
-                >{{filter}}({{filterCounts[filter]}})</a>
-              </li>
-              <li v-for="(k,filter) in filters" :key="filter">
-                <a
-                  @click="visibility=filter"
-                  :class="{ selected: visibility == filter }"
-                >{{filter}}({{filterCounts[selectSrc.name+filter]}})</a>
-              </li>
-            </ul>
-          </div>
+    <div id="menus">
+      <div>
+        <ul class="filters">
+          <li v-for="(k,filter) in afilters" :key="filter">
+            <a
+              @click="selectSrc=k,visibility=null"
+              :class="{ selected: selectSrc == k }"
+            >{{filter}}({{filterCounts[filter]}})</a>
+          </li>
+          <li v-for="(k,filter) in filters" :key="filter">
+            <a
+              @click="visibility=filter"
+              :class="{ selected: visibility == filter }"
+            >{{filter}}({{filterCounts[selectSrc.name+filter]}})</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>A</th>
 
-        </div>
-    <div >
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>A</th>
-
-                <th>Name</th>
-                <th
-                  v-for="col in head"
-                  @click="sort(col.prop)"
-                  :key="col.prop"
-                  :class="{ 
+              <th>Name</th>
+              <th
+                v-for="col in head"
+                @click="sort(col.prop)"
+                :key="col.prop"
+                :class="{ 
                     ascending : sortby === col.prop && !descending,
                     descending: sortby ===col.prop && descending
                 }"
-                >{{col.label}}</th>
-              </tr>
-              <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
-                <th :colspan="head.length+2">
-                  <div id="detail" ref="detail">
-                    <span v-if="selectItem.tables&&selectItem.tables.length>0">
-                      <div v-for="t in selectItem.tables" :key="t.str">
-                        {{selectItem.name}}
-                        <span v-html="t.str"></span>
-                      </div>
-                    </span>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <draggable v-model="items" @update="dragEnd" tag="tbody">
-              <tr
-                class="item"
-                v-for="(item,index) in filteredItems"
-                :key="item.code"
-                :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
+              >{{col.label}}</th>
+            </tr>
+            <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
+              <th :colspan="head.length+2">
+                <div id="detail" ref="detail">
+                  <span v-if="selectItem.tables&&selectItem.tables.length>0">
+                    <div v-for="t in selectItem.tables" :key="t.str">
+                      {{selectItem.name}}
+                      <span v-html="t.str"></span>
+                    </div>
+                  </span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <draggable v-model="items" @update="dragEnd" tag="tbody">
+            <tr
+              class="item"
+              v-for="(item,index) in filteredItems"
+              :key="item.code"
+              :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
+            >
+              <td>
+                <a class="action" @click="delItem(item)">x</a>
+                <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                <a :name="item.code"></a>
+              </td>
+              <td
+                :title="item.code"
+                :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
               >
-                <td>
-                  <a class="action" @click="delItem(item)">x</a>
-                  <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-                </td>
-                <td
-                  :title="item.code"
-                  :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
-                >
-                  <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
-                  <span
-                    title="avgzs"
-                    @click="toggleDetail(item)"
-                    :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-                  >{{item.avgzs}}</span>
-                  <span title="upArgCount">/{{item.upArgCount}}</span>
-                  <span title="contDir">/{{item.contDir}}</span>
-                </td>
+                <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
+                <span
+                  title="avgzs"
+                  @click="toggleDetail(item)"
+                  :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
+                >{{item.avgzs}}</span>
+                <span title="upArgCount">/{{item.upArgCount}}</span>
+                <span title="contDir">/{{item.contDir}}</span>
+              </td>
 
-                <td
-                  v-for="col in head"
-                  :key="col.prop"
-                  :class="col.class&&col.class(item)"
-                  @click="col.click&&col.click(item,$event,openlink)"
-                >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
-              </tr>
-            </draggable>
-          </table>
-        </div>
+              <td
+                v-for="col in head"
+                :key="col.prop"
+                :class="col.class&&col.class(item)"
+                @click="col.click&&col.click(item,$event,openlink)"
+              >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
+            </tr>
+          </draggable>
+        </table>
+      </div>
     </div>
-    <div id="webviewWrap"
+    <div
+      id="webviewWrap"
       ref="webviewWrap"
       style="position:fixed;left:0;right:0;bottom:0;top:60%;display:none;z-index:100"
     >
@@ -321,6 +322,8 @@ export default {
         datas.push(selectItem);
         store.save(datas);
       }
+      location.href = "#" + selectItem.code;
+      this.openCode = selectItem.code;
       this.reloadData();
       this.sendRefresh();
       monitor(this.items);

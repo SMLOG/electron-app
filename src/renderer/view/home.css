@@ -115,7 +115,6 @@ table .descending:before {
   margin: 0;
   padding: 0;
   list-style: none;
-
 }
 
 .filters li {
@@ -196,6 +195,15 @@ table .descending:before {
   -ms-animation: blink 1s linear infinite;
   -o-animation: blink 1s linear infinite;
 }
+.blinkbg {
+  background-color: #dd4814;
+  animation: blink 1s linear infinite;
+  /* 其它浏览器兼容性前缀 */
+  -webkit-animation: blink 2s linear infinite;
+  -moz-animation: blink 1s linear infinite;
+  -ms-animation: blink 1s linear infinite;
+  -o-animation: blink 1s linear infinite;
+}
 .lk {
   color: green;
 }
@@ -266,10 +274,16 @@ i.arrow {
   margin-left: -10px;
 }
 
-.filters li{float: left;height: 25px;}
-.filters:after{
+.filters li {
+  float: left;
+  height: 25px;
+}
+.filters:after {
   content: "";
-clear: both;
+  clear: both;
 }
 
-#searchpane{position: fixed;right:10px;}
+#searchpane {
+  position: fixed;
+  right: 10px;
+}

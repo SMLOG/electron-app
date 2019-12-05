@@ -267,8 +267,8 @@ i.arrow {
   cursor: pointer;
 }
 
-.openlink {
-  background: gray;
+.openlink td {
+  background: gray !important;
 }
 .action {
   margin-left: -10px;

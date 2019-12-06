@@ -58,7 +58,7 @@
               class="item"
               v-for="(item,index) in filteredItems"
               :key="item.code"
-              :class="{'odd':index%2 != 1,'openlink':openCode==item.code,'openlink':index === focus}"
+              :class="{'odd':index%2 != 1,'openlink':index === focus||openCode===item.code}"
               @click="focus=index"
             >
               <td>
@@ -357,7 +357,8 @@ export default {
       }
       location.href = "#" + selectItem.code;
       this.openCode = selectItem.code;
-      this.reloadData();
+      console.log(this.openCode);
+      //this.reloadData();
       this.sendRefresh();
       monitor(this.items);
     },

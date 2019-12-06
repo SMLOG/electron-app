@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'show':show}">
     <!-- 组件不能写到template的根节点上，即每个组件只有一个根节点，这里的div就是这个template的根节点 -->
     <!--  getindex是自定义事件 -->
     <div class="search-input">
@@ -214,9 +214,13 @@ export default {
   margin: 0 auto;
   position: relative;
 }
-
-.search-input input {
+.show .search-input input {
   border: 1px solid #e4e4e4;
+  background: white;
+}
+.search-input input {
+  border: none;
+  background: transparent;
   box-sizing: border-box;
   height: 25px;
   font-size: 18px;

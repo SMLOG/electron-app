@@ -58,7 +58,8 @@
               class="item"
               v-for="(item,index) in filteredItems"
               :key="item.code"
-              :class="{'odd':index%2 != 1,'openlink':openCode==item.code}"
+              :class="{'odd':index%2 != 1,'openlink':openCode==item.code,'openlink':index === focus}"
+              @click="focus=index"
             >
               <td>
                 <a class="action" @click="delItem(item)">x</a>
@@ -144,7 +145,9 @@ export default {
       items2: [],
       filterCounts: {},
       selectSrc: afilters["自选"],
-      openCode: null
+      openCode: null,
+      focus: null,
+      openType: null
     };
   },
   directives: {
@@ -202,6 +205,32 @@ export default {
     this.$electron.ipcRenderer.on("hideSuspension", (e, data) => {
       this.$store.dispatch("hideSuspension");
     });
+
+    document.addEventListener("keydown", e => {
+      if (e.target && e.target.nodeName == "BODY") {
+        switch (event.keyCode) {
+          case 37:
+          case 38:
+            if (this.focus === null) {
+              this.focus = 0;
+            } else if (this.focus > 0) {
+              this.focus--;
+            }
+            break;
+
+          case 39:
+          case 40:
+            if (this.focus === null) {
+              this.focus = 0;
+            } else if (this.focus < this.items.length - 1) {
+              this.focus++;
+            }
+            break;
+        }
+
+        // this.keyword +=e.key;
+      }
+    });
   },
   watch: {
     items(newVal) {
@@ -209,6 +238,10 @@ export default {
     },
     items2(newVal) {
       this.updateFilterCounts();
+    },
+    focus() {
+      let items = this[this.selectSrc.name];
+      this.openlink(items[this.focus], null, this.openType);
     }
   },
   computed: {
@@ -234,9 +267,9 @@ export default {
       event,
       link = "http://localhost:9080/static/tech.html?{{code}}"
     ) {
+      this.openType = link;
       let webview = $(this.$refs.webview);
       let webviewWrap = $(this.$refs.webviewWrap);
-      let td = $(event.target).closest("td");
 
       let url = link.replace("{{code}}", item.code);
 

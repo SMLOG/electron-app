@@ -72,18 +72,18 @@ export default {
       ]
     };
   },
-  mounted () {
-    document.addEventListener('keydown', (e) => {
-      if(e.target&&e.target.nodeName=='BODY'){
-        if(
-          e.charCode>='a'.charAt(0)&&e.charCode<='a'.charAt(0)
-        ||e.charCode>='A'.charAt(0)&&e.charCode<='Z'.charAt(0)
-        ||e.charCode>='0'.charAt(0)&&e.charCode<='9'.charAt(0)
+  mounted() {
+    document.addEventListener("keydown", e => {
+      if (e.target && e.target.nodeName == "BODY") {
+        if (
+          (e.charCode >= "a".charAt(0) && e.charCode <= "a".charAt(0)) ||
+          (e.charCode >= "A".charAt(0) && e.charCode <= "Z".charAt(0)) ||
+          (e.charCode >= "0".charAt(0) && e.charCode <= "9".charAt(0))
         )
-        this.$refs.input.focus();
-         // this.keyword +=e.key;
+          this.$refs.input.focus();
+        // this.keyword +=e.key;
       }
-   });    
+    });
   },
   methods: {
     onSuggestionsFetchRequested() {
@@ -127,8 +127,13 @@ export default {
             };
           })
           .filter(e => e);
-        if(options.length>0)
-        options.unshift({ id: -1, oname: "选项", name: "名称", code: "代码" });
+        if (options.length > 0)
+          options.unshift({
+            id: -1,
+            oname: "选项",
+            name: "名称",
+            code: "代码"
+          });
 
         this.myData = options;
       });
@@ -174,7 +179,7 @@ export default {
       }
 
       this.myData = [];
-
+      this.clearInput();
       //datas.push({ code: myData[this.searchIndex].code });
       //打开对应的搜索界面
       // window.open(this.logoData[this.searchIndex].searchSrc + this.keyword);
@@ -233,7 +238,7 @@ export default {
 
 .search-select {
   position: absolute;
-  top: 45px;
+  top: 25px;
   width: 500px;
   box-sizing: border-box;
   z-index: 999;

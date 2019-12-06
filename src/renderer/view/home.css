@@ -285,5 +285,14 @@ i.arrow {
 
 #searchpane {
   position: fixed;
-  right: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  height: 0;
+  z-index: 10000;
+}
+#searchpane > div {
+  display: inline-block;
+  text-align: left;
 }

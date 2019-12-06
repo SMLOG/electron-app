@@ -55,6 +55,7 @@ export default {
       keyword: "", //v-model绑定的输入框的value
       now: -1,
       searchIndex: 0,
+      show: false,
       logoData: [
         {
           name: "360搜索",
@@ -75,12 +76,15 @@ export default {
   mounted() {
     document.addEventListener("keydown", e => {
       if (e.target && e.target.nodeName == "BODY") {
-        if (
-          (e.charCode >= "a".charAt(0) && e.charCode <= "a".charAt(0)) ||
-          (e.charCode >= "A".charAt(0) && e.charCode <= "Z".charAt(0)) ||
-          (e.charCode >= "0".charAt(0) && e.charCode <= "9".charAt(0))
-        )
+        let c = String.fromCharCode(e.keyCode).replace(/[^A-Za-z 0-9]/, "");
+        if (c) {
+          this.show = true;
+          // this.keyword = e.key;
+          // console.log(this.$refs.input);
+
           this.$refs.input.focus();
+        }
+
         // this.keyword +=e.key;
       }
     });
@@ -194,6 +198,8 @@ export default {
     clearInput: function() {
       this.keyword = "";
       this.myData = [];
+      this.show = false;
+      this.$refs.input.blur();
     },
     getIndex: function(index) {
       this.searchIndex = index;

@@ -4,7 +4,8 @@ import {
   globalShortcut,
   dialog,
   Tray,
-  Menu
+  Menu,
+  screen
 } from "electron";
 import * as path from "path";
 
@@ -28,10 +29,12 @@ function createWindow() {
   /**
    * Initial window options
    */
+
+  const scSize = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: scSize.height / 2,
     useContentSize: true,
-    width: 1200,
+    width: scSize.width,
     icon: "app.ico",
     show: false,
     webPreferences: {

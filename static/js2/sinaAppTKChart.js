@@ -1242,6 +1242,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 setReK: 0,
                 tCharts: [{
                     name: "VOLUME"
+                },{
+                    name: "MACD"
                 }],
                 pCharts: [{
                     name: "MA"
@@ -1405,7 +1407,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             },
             kChart: {
                 show: !0,
-                tCharts: ["null", "VOLUME", "ASI", "BIAS", "BRAR", "CCI", "DMA", "DMI", "EMV", "KDJ", "MACD", "OBV", "PSY", "ROC", "RSI", "SAR", "TRIX", "VR", "WR", "WVAD", "EMV"],
+                tCharts: ["null", "VOLUME", "KDJ", "MACD",  ],
                 pCharts: ["VOLUME", "MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"]
             },
             tChart: {

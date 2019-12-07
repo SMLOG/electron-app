@@ -1606,7 +1606,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
                 kInitParam: {
                     theme: {},
                     dim: {
-                        H_T_G: 145
+                        H_T_G: 125
                     },
                     candlenum: 240
                 },

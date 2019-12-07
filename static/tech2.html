@@ -8,9 +8,19 @@
           symbol: document.location.href.split("?")[1],
           mt: "cnlv1",
           dom_id: "h5Figure",
-          type: "tech"
+          type: "tech",
+          view: "kw"
         },
-        function(chart_) {}
+        function(chart_) {
+          window.cc = chart_;
+          console.log(chart_);
+          setTimeout(() => {
+            chart_.showView({
+              view: "kw"
+            });
+            window.kwready = true;
+          }, 50);
+        }
       );
     </script>
   </head>

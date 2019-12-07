@@ -10,10 +10,12 @@ export async function getTechDatas(item) {
     let url = ifr.src.split("?")[0] + "?" + item.code;
     ifr.src = url;
     ifr.contentWindow[techId] = null;
+    ifr.contentWindow.kwready = false;
     do {
-      if (ifr.contentWindow[techId]) {
+      if (ifr.contentWindow[techId] && ifr.contentWindow.kwready) {
         let ret = ifr.contentWindow[techId];
         ifr.contentWindow[techId] = null;
+        ifr.contentWindow.kwready = false;
         return ret;
       }
       await timeout(100);

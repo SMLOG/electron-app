@@ -208,6 +208,8 @@ export default {
 
     document.addEventListener("keydown", e => {
       if (e.target && e.target.nodeName == "BODY") {
+        let items = this[this.selectSrc.name];
+
         switch (event.keyCode) {
           case 37:
           case 38:
@@ -222,7 +224,7 @@ export default {
           case 40:
             if (this.focus === null) {
               this.focus = 0;
-            } else if (this.focus < this.items.length - 1) {
+            } else if (this.focus < items.length - 1) {
               this.focus++;
             }
             break;

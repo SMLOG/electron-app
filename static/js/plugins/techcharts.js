@@ -4426,12 +4426,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 };
             this.linkData = function(t) {
                     var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-
+                    var kdatas = stockData.kDb.get(23);
                     if (i){
                         //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
                        let techs_datas = [];
                        let symbol ;
-                       techs_datas['kdatas'] = i;
+                       techs_datas['kdatas'] = kdatas;
+                       techs_datas['datas'] = i;
                         for (var chart, a = techChartList.length; a--;) {
                             chart = techChartList[a],
                                 chart.initAndCalcAll(i),

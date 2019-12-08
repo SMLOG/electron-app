@@ -172,11 +172,7 @@ async function getTableGDZJC() {
 
       //增减
       var zengjian = data[5] == "" ? "-" : "" + data[5] + "";
-      var str = `股东 ${gdmc1} ${
-        data[8]
-      } ${bdksr1} - ${bdjzr1}  ${zengjian} ${bdsl1}(${data[9]})万股 占总股 ${
-        data[7]
-      }`;
+      var str = `股东 ${gdmc1} ${data[8]} ${bdksr1} - ${bdjzr1}  ${zengjian} ${bdsl1}(${data[9]})万股 占总股 ${data[7]}`;
       if (!r[`${mk}${data[0]}`]) r[`${mk}${data[0]}`] = [];
       r[`${mk}${data[0]}`].push({ str: str });
     }
@@ -615,6 +611,14 @@ export async function hl(item) {
   item.ma5 = techData.MA[techData.MA.length - 1].ma5;
   item.ma10 = techData.MA[techData.MA.length - 1].ma10;
   item.ma20 = techData.MA[techData.MA.length - 1].ma20;
+
+  item.macdjc =
+    techData.MACD[techData.MACD.length - 1].bar > 0 &&
+    techData.MACD[techData.MACD.length - 1].bar >
+      techData.MACD[techData.MACD.length - 2].bar &&
+    techData.MACD[techData.MACD.length - 2].bar >
+      techData.MACD[techData.MACD.length - 3].bar &&
+    techData.MACD[techData.MACD.length - 3].bar < 0;
 }
 function avg(arr) {
   return arr.reduce((a, b) => a + b) / arr.length;

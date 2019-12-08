@@ -35,7 +35,9 @@ export const filters = {
       );
     });
   },
-
+  周线金叉: items => {
+    return items.filter(e => e.macdjc);
+  },
   Focus: function(items) {
     return items.filter(function(item) {
       return item.isFocus;

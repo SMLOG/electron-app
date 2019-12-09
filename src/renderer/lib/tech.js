@@ -2,22 +2,20 @@ import { timeout } from "./utils";
 import { getCacheData } from "./db";
 import { loadScripts } from "./utils";
 
-export async function getTechDatas(item, cache = true, type = "kd") {
+export async function getTechDatas(item, cache = true) {
   let techId = "tech_" + item.code;
   let get = async () => {
     let ifr = document.getElementsByTagName("iframe")[0];
     let url = ifr.src.split("?")[0] + "?" + item.code;
     ifr.src = url;
     ifr.contentWindow[techId] = null;
-    ifr.contentWindow.kwready = false;
     do {
-      if (ifr.contentWindow[techId] && ifr.contentWindow.kwready) {
+      if (ifr.contentWindow[techId]) {
         let ret = ifr.contentWindow[techId];
         ifr.contentWindow[techId] = null;
-        ifr.contentWindow.kwready = false;
         return ret;
       }
-      await timeout(100);
+      await timeout(1000);
     } while (true);
   };
   let techDatas;

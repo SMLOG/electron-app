@@ -588,37 +588,43 @@ export async function getFindList(callback) {
 }
 let queue = Promise.resolve();
 export async function hl(item) {
-  let techData = await queue.then(() => {
-    return getTechDatas(item);
-  });
+  try {
+    console.log("get techdata");
+    let techData = await queue.then(() => {
+      return getTechDatas(item);
+    });
+    console.log("end techdata");
 
-  let klines = techData.kdatas;
-  let ylen = Math.min(klines.length, 52 * 5);
-  let yagoline = klines[klines.length - ylen];
+    let klines = techData.kdatas;
+    let ylen = Math.min(klines.length, 52 * 5);
+    let yagoline = klines[klines.length - ylen];
 
-  let dline = klines[klines.length - 1];
+    let dline = klines[klines.length - 1];
 
-  item["52weekPer"] =
-    1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
+    item["52weekPer"] =
+      1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
 
-  if (
-    dline.close > dline.open &&
-    dline.volume / avg(klines.slice(-6).map(e => e.volume)) > 1.5
-  ) {
-    item.hili = 2;
+    if (
+      dline.close > dline.open &&
+      dline.volume / avg(klines.slice(-6).map(e => e.volume)) > 1.5
+    ) {
+      item.hili = 2;
+    }
+
+    item.ma5 = techData.MA[techData.MA.length - 1].ma5;
+    item.ma10 = techData.MA[techData.MA.length - 1].ma10;
+    item.ma20 = techData.MA[techData.MA.length - 1].ma20;
+
+    item.macdjc =
+      techData.MACD[techData.MACD.length - 1].bar > 0 &&
+      techData.MACD[techData.MACD.length - 1].bar >
+        techData.MACD[techData.MACD.length - 2].bar &&
+      techData.MACD[techData.MACD.length - 2].bar >
+        techData.MACD[techData.MACD.length - 3].bar &&
+      techData.MACD[techData.MACD.length - 3].bar < 0;
+  } catch (e) {
+    console.log(e);
   }
-
-  item.ma5 = techData.MA[techData.MA.length - 1].ma5;
-  item.ma10 = techData.MA[techData.MA.length - 1].ma10;
-  item.ma20 = techData.MA[techData.MA.length - 1].ma20;
-
-  item.macdjc =
-    techData.MACD[techData.MACD.length - 1].bar > 0 &&
-    techData.MACD[techData.MACD.length - 1].bar >
-      techData.MACD[techData.MACD.length - 2].bar &&
-    techData.MACD[techData.MACD.length - 2].bar >
-      techData.MACD[techData.MACD.length - 3].bar &&
-    techData.MACD[techData.MACD.length - 3].bar < 0;
 }
 function avg(arr) {
   return arr.reduce((a, b) => a + b) / arr.length;

@@ -59,7 +59,6 @@
               v-for="(item,index) in filteredItems"
               :key="item.code"
               :class="{'odd':index%2 != 1,'openlink':index === focus||openCode===item.code}"
-              @click="focus=index"
             >
               <td>
                 <a class="action" @click="delItem(item)">x</a>
@@ -290,9 +289,9 @@ export default {
           setTimeout(() => {
             webviewWrap.css("top", chartop - 1 + "px");
           }, 10);
-          console.log(event);
-          if (event.clientY > $(window).height() - chartop)
-            window.scrollTo({ top: window.scrollY + chartop });
+          //  console.log(event);
+          //   if (event.clientY > $(window).height() - chartop)
+          //   window.scrollTo({ top: window.scrollY + chartop });
         }
 
         webviewWrap.show();

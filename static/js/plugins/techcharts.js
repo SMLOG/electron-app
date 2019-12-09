@@ -4426,7 +4426,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 };
             this.linkData = function(t) {
                     var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-                    var kdatas = stockData.kDb.get(23);
+                    var kdatas = stockData.kDb.get(24);
                     if (i){
                         //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
                        let techs_datas = [];

@@ -26,7 +26,7 @@ export async function getTechDatas(item, cache = true) {
           result[v] = ret;
           break;
         }
-        await timeout(1000);
+        await timeout(100);
       }
     }
     console.log(result);

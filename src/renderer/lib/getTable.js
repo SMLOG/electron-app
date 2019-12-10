@@ -590,11 +590,11 @@ let queue = Promise.resolve();
 export async function hl(item) {
   try {
     console.log("get techdata");
-    let techData = await queue.then(() => {
+    let techResult = await queue.then(() => {
       return getTechDatas(item);
     });
     console.log("end techdata");
-
+    let techData = techResult.kw;
     let klines = techData.kdatas;
     let ylen = Math.min(klines.length, 52 * 5);
     let yagoline = klines[klines.length - ylen];

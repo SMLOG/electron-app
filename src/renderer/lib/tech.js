@@ -8,15 +8,30 @@ export async function getTechDatas(item, cache = true) {
     let ifr = document.getElementsByTagName("iframe")[0];
     let url = ifr.src.split("?")[0] + "?" + item.code;
     ifr.src = url;
-    ifr.contentWindow[techId] = null;
-    do {
-      if (ifr.contentWindow[techId]) {
-        let ret = ifr.contentWindow[techId];
-        ifr.contentWindow[techId] = null;
-        return ret;
+    await new Promise((resolve, reject) => {
+      ifr.onload = function(e) {
+        resolve();
+      };
+    });
+    let result = {};
+    for (let v of ["kd", "kw"]) {
+      ifr.contentWindow[techId] = null;
+      ifr.contentWindow.chart_.showView({
+        view: "kw"
+      });
+      for (;;) {
+        if (ifr.contentWindow[techId]) {
+          let ret = ifr.contentWindow[techId];
+          ifr.contentWindow[techId] = null;
+          result[v] = ret;
+          break;
+        }
+        await timeout(1000);
       }
-      await timeout(1000);
-    } while (true);
+    }
+    console.log(result);
+
+    return result;
   };
   let techDatas;
   if (cache) techDatas = await getCacheData(item.date, techId, get);

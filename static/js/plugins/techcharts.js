@@ -4385,7 +4385,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                         }
                     return i
                 },
-                E = function(s) {
+                createChartWhat = function(s) {
                     if (s) {
                         var techName = s.name;
                         if (techName) {
@@ -4408,7 +4408,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                         }
                     }
                 },
-                J = function(t, i) {
+                rmChart = function(t, i) {
                     if (t) {
                         var r = t.name;
                         if (r) {
@@ -4426,18 +4426,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 };
             this.linkData = function(t) {
                     var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-                    var kdatas = stockData.kDb.get(24);
                     if (i){
-                        //i = i.filter(e=>e.date.getTime()-new Date('2019-08-07')<=0);
                        let techs_datas = [];
                        let symbol ;
-                       techs_datas['kdatas'] = kdatas;
+                       techs_datas['kdatas'] = i;
                        techs_datas['datas'] = i;
                         for (var chart, a = techChartList.length; a--;) {
                             chart = techChartList[a],
                                 chart.initAndCalcAll(i),
                                 t && chart.update()
-                            console.log(chart);
                             techs_datas[chart.name] =chart.datas;
                             symbol = chart.symbol;
                         }
@@ -4480,12 +4477,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 },
                 this.clear = function() {
                     for (var t = techChartList.length; t--;)
-                        J(techChartList[t], !0)
+                        rmChart(techChartList[t], !0)
                 },
                 this.createChart = function(i, r) {
                     !utils_util.isArr(i) && (i = [i]);
                     for (var a = 0, s = i.length; s > a; a++)
-                        E(i[a]);
+                        createChartWhat(i[a]);
                     cb(!0, r, i)
                 },
                 this.removeChart = function(i) {
@@ -4497,7 +4494,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                             })
                     }!utils_util.isArr(i) && (i = [i]);
                     for (var a = 0, s = i.length; s > a; a++)
-                        J(i[a]);
+                        rmChart(i[a]);
                     cb(!0)
                 }
         }

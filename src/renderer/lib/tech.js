@@ -29,7 +29,6 @@ export async function getTechDatas(item, cache = true) {
         await timeout(100);
       }
     }
-    console.log(result);
 
     return result;
   };

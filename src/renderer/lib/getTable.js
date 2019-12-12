@@ -587,6 +587,17 @@ export async function getFindList(callback) {
   return datalist;
 }
 let queue = Promise.resolve();
+
+function isMacdJC(techData) {
+  return (
+    techData.MACD[techData.MACD.length - 1].bar > 0 &&
+    techData.MACD[techData.MACD.length - 1].bar >
+      techData.MACD[techData.MACD.length - 2].bar &&
+    techData.MACD[techData.MACD.length - 2].bar >
+      techData.MACD[techData.MACD.length - 3].bar &&
+    techData.MACD[techData.MACD.length - 3].bar < 0
+  );
+}
 export async function hl(item) {
   try {
     console.log("get techdata");
@@ -595,7 +606,8 @@ export async function hl(item) {
     });
     console.log("end techdata");
     let techData = techResult.kw;
-    let klines = techData.kdatas;
+    let kdtech = techResult.kd;
+    let klines = kdtech.datas;
     let ylen = Math.min(klines.length, 52 * 5);
     let yagoline = klines[klines.length - ylen];
 
@@ -615,13 +627,13 @@ export async function hl(item) {
     item.ma10 = techData.MA[techData.MA.length - 1].ma10;
     item.ma20 = techData.MA[techData.MA.length - 1].ma20;
 
-    item.macdjc =
-      techData.MACD[techData.MACD.length - 1].bar > 0 &&
-      techData.MACD[techData.MACD.length - 1].bar >
-        techData.MACD[techData.MACD.length - 2].bar &&
+    item.macdjc = isMacdJC(techData);
+
+    item.macdbxh =
+      techData.MACD[techData.MACD.length - 2].bar &&
       techData.MACD[techData.MACD.length - 2].bar >
         techData.MACD[techData.MACD.length - 3].bar &&
-      techData.MACD[techData.MACD.length - 3].bar < 0;
+      isMacdJC(kdtech);
   } catch (e) {
     console.log(e);
   }

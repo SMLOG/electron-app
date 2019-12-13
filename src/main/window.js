@@ -35,7 +35,7 @@ ipcMain.on("createSuspensionMenu", e => {
       }
     },
     {
-      label: "选股",
+      label: "选",
       enabled: true,
       click: () => {
         const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -97,7 +97,7 @@ ipcMain.on("createSuspensionMenu", e => {
       }
     },
     {
-      label: "退出软件",
+      label: "退出",
       click: () => {
         app.quit();
       }

@@ -12,6 +12,11 @@ export default new Router({
       component: () => import("@/view/components/notify")
     },
     {
+      path: "/today",
+      name: "today",
+      component: () => import("@/view/components/today")
+    },
+    {
       path: "/pank",
       name: "pank",
       component: () => import("@/view/components/pank")
@@ -20,6 +25,6 @@ export default new Router({
       path: "/suspension",
       name: "suspension",
       component: () => import("@/view/components/suspension")
-    },
+    }
   ]
 });

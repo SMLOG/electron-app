@@ -125,6 +125,26 @@ app.on("ready", () => {
       } //打开相应页面
     },
     {
+      type: "separator"
+    },
+    {
+      label: "Windows",
+      submenu: [
+        {
+          label: "today",
+          // accelerator: "CmdOrCtrl+Z"
+          // ,role: "undo"
+          type: "checkbox",
+          click: function(menuItem, browserWindow, event) {
+            //showDlg(menuItem.label, menuItem.label, browserWindow);
+            toggleWindow("today", ret => {
+              menuItem.checked = ret;
+            });
+          }
+        }
+      ]
+    },
+    {
       label: "帮助",
       click: function() {}
     },
@@ -190,7 +210,62 @@ app.on("activate", () => {
     createWindow();
   }
 });
+let windows = {};
+function toggleWindow(type, cb) {
+  let win = windows[type];
+  if (win) {
+    if (win.isVisible()) win.hide(), cb && cb(false);
+    else win.show(), cb && cb(true);
+    return;
+  }
+  win = new BrowserWindow({
+    width: 200,
+    height: 200,
+    type: "toolbar",
+    frame: true,
+    autoHideMenuBar: true,
+    resizable: false,
+    show: true,
+    webPreferences: {
+      //  devTools: false, //关闭调试工具
+      webSecurity: false
+    },
+    transparent: true,
+    alwaysOnTop: true
+  });
+  const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
+  const winSize = win.getSize(); //获取窗口宽高
 
+  //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
+  win.setPosition(size.width - winSize[0], size.height - winSize[1]);
+
+  const url =
+    process.env.NODE_ENV === "development"
+      ? `http://localhost:9080/#/${type}`
+      : `file://${__dirname}/index.html/#/${type}`;
+
+  win.loadURL(url);
+  windows[type] = win;
+
+  win.once("ready-to-show", () => {
+    win.show();
+  });
+
+  win.on("close", () => {
+    win = null;
+    windows[type] = null;
+    cb && cb(false);
+  });
+}
+function showDlg(title, msg, focusedWindow = null) {
+  const options = {
+    type: "info",
+    title: "" + title,
+    buttons: ["OK"],
+    message: "" + msg
+  };
+  dialog.showMessageBox(focusedWindow, options, function() {});
+}
 /**
  * Auto Updater
  *

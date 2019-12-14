@@ -224,13 +224,13 @@ function toggleWindow(type, cb) {
     type: "toolbar",
     frame: true,
     autoHideMenuBar: true,
-    resizable: false,
+    resizable: true,
     show: true,
     webPreferences: {
       //  devTools: false, //关闭调试工具
       webSecurity: false
     },
-    transparent: true,
+    transparent: false,
     alwaysOnTop: true
   });
   const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高

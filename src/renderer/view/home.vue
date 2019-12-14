@@ -23,7 +23,7 @@
       </div>
     </div>
     <div>
-      <div ref="top">
+      <div ref="listtbl">
         <table>
           <thead>
             <tr>
@@ -113,7 +113,9 @@ import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
-import * as $ from "jquery";
+import $ from "jquery";
+import "jquery.scrollto";
+window.$ = $;
 import {
   ObjectType,
   parse,
@@ -281,7 +283,7 @@ export default {
           let chartop =
             Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
           console.log(chartop, $(window).height() * 0.6);
-          $(this.$refs.top).css(
+          $(this.$refs.listtbl).css(
             "margin-bottom",
             $(window).height() - chartop + "px"
           );
@@ -291,8 +293,20 @@ export default {
           }, 10);
           //  console.log(event);
           //   if (event.clientY > $(window).height() - chartop)
-          //   window.scrollTo({ top: window.scrollY + chartop });
+          window.scrollTo({
+            top:
+              $(`a[name=${item.code}]`)
+                .eq(0)
+                .offset().top -
+              $("table tr")
+                .eq(1)
+                .offset().top +
+              $("table tr")
+                .eq(0)
+                .height()
+          });
         }
+        // $.scrollTo($(`a[name=${item.code}]`));
 
         webviewWrap.show();
         webview[0].style.height = "100%";

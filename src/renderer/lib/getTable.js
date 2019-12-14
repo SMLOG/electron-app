@@ -627,10 +627,11 @@ export async function hl(item) {
     item.ma10 = techData.MA[techData.MA.length - 1].ma10;
     item.ma20 = techData.MA[techData.MA.length - 1].ma20;
 
-    item.macdjc = isMacdJC(techData);
+    item.macdweek = isMacdJC(techData);
 
-    item.macdbxh =
-      techData.MACD[techData.MACD.length - 2].bar &&
+    item.macdkdweek =
+      techData.MACD[techData.MACD.length - 1].bar >
+        techData.MACD[techData.MACD.length - 2].bar &&
       techData.MACD[techData.MACD.length - 2].bar >
         techData.MACD[techData.MACD.length - 3].bar &&
       isMacdJC(kdtech);

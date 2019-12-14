@@ -35,8 +35,11 @@ export const filters = {
       );
     });
   },
-  周线金叉: items => {
-    return items.filter(e => e.macdjc);
+  WeekX: items => {
+    return items.filter(e => e.macdweek);
+  },
+  KdWeekX: items => {
+    return items.filter(e => e.macdkdweek);
   },
   Focus: function(items) {
     return items.filter(function(item) {

@@ -17,7 +17,7 @@ export async function getTechDatas(item, cache = true) {
     for (let v of ["kd", "kw"]) {
       ifr.contentWindow[techId] = null;
       ifr.contentWindow.chart_.showView({
-        view: "kw"
+        view: v
       });
       for (;;) {
         if (ifr.contentWindow[techId]) {
@@ -34,7 +34,10 @@ export async function getTechDatas(item, cache = true) {
   };
   let techDatas;
   if (cache) techDatas = await getCacheData(item.date, techId, get);
-  else techDatas = await get();
+  else {
+    techDatas = await get();
+    await getCacheData(item.date, techId, get, techDatas);
+  }
   return techDatas;
 }
 window.getTechDatas = getTechDatas;

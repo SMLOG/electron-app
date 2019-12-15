@@ -245,6 +245,7 @@ export default {
     focus() {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
+      this.scrollToItem(items[this.focus]);
     }
   },
   computed: {
@@ -261,6 +262,20 @@ export default {
       if (this.visibility)
         return filters[this.visibility](this[this.selectSrc.name]);
       else return items;
+    },
+    scrollToItem(item) {
+      window.scrollTo({
+        top:
+          $(`a[name=${item.code}]`)
+            .eq(0)
+            .offset().top -
+          $("table tr")
+            .eq(1)
+            .offset().top +
+          $("table tr")
+            .eq(0)
+            .height()
+      });
     },
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
@@ -296,18 +311,7 @@ export default {
           }, 10);
           //  console.log(event);
           //   if (event.clientY > $(window).height() - chartop)
-          window.scrollTo({
-            top:
-              $(`a[name=${item.code}]`)
-                .eq(0)
-                .offset().top -
-              $("table tr")
-                .eq(1)
-                .offset().top +
-              $("table tr")
-                .eq(0)
-                .height()
-          });
+          this.scrollToItem(item);
         }
         // $.scrollTo($(`a[name=${item.code}]`));
 

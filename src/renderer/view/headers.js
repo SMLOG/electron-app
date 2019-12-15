@@ -8,6 +8,12 @@ const fmtPercent = value => {
 };
 export const headers = [
   {
+    label: "Now",
+    prop: "now",
+    type: "number",
+    fmt: (e, item) => `${e}(${item.changeP})`
+  },
+  {
     label: "HY",
     prop: "hy",
     type: "string",
@@ -21,12 +27,7 @@ export const headers = [
       return item.hy;
     }
   },
-  {
-    label: "Now",
-    prop: "now",
-    type: "number",
-    fmt: (e, item) => `${e}(${item.changeP})`
-  },
+
   /* {
     label: "V",
     prop: "vol",
@@ -66,7 +67,7 @@ export const headers = [
     }
   },
   {
-    label: "流值/总值",
+    label: "流/总",
     prop: "lz",
     type: "string",
     fmt: (e, item) => `${e}/${item.zsz}`
@@ -129,7 +130,7 @@ export const headers = [
     }
   },
   {
-    label: "股息%",
+    label: "息%",
     prop: "GXL",
     type: "number",
     fmt: (e, item) => {
@@ -141,7 +142,7 @@ export const headers = [
     }
   },
   {
-    label: "分红%",
+    label: "红%",
     prop: "FHL",
     type: "number",
     fmt: (e, item) => {

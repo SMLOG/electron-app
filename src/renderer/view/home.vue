@@ -63,7 +63,7 @@
               <td>
                 <a class="action" @click="delItem(item)">x</a>
                 <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-                <a :name="item.code"></a>
+                <a :name="item.code">{{index+1}}</a>
               </td>
               <td
                 :title="item.code"

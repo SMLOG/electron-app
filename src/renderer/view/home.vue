@@ -209,7 +209,7 @@ export default {
 
     document.addEventListener("keydown", e => {
       if (e.target && e.target.nodeName == "BODY") {
-        let items = this[this.selectSrc.name];
+        let items = this.getfilterItems();
 
         switch (event.keyCode) {
           case 37:
@@ -243,7 +243,7 @@ export default {
       this.updateFilterCounts();
     },
     focus() {
-      let items = this[this.selectSrc.name];
+      let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
     }
   },
@@ -252,13 +252,16 @@ export default {
       return this.$store.state.suspension.show;
     },
     filteredItems: function() {
+      return this.getfilterItems();
+    }
+  },
+  methods: {
+    getfilterItems() {
       let items = this[this.selectSrc.name];
       if (this.visibility)
         return filters[this.visibility](this[this.selectSrc.name]);
       else return items;
-    }
-  },
-  methods: {
+    },
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();

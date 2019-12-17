@@ -114,7 +114,6 @@ import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import $ from "jquery";
-import "jquery.scrollto";
 window.$ = $;
 import {
   ObjectType,

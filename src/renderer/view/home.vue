@@ -27,6 +27,7 @@
         <table>
           <thead>
             <tr>
+              <th>#</th>
               <th>A</th>
 
               <th>Name</th>
@@ -41,7 +42,7 @@
               >{{col.label}}</th>
             </tr>
             <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
-              <th :colspan="head.length+2">
+              <th :colspan="head.length+3">
                 <div id="detail" ref="detail">
                   <span v-if="selectItem.tables&&selectItem.tables.length>0">
                     <div v-for="t in selectItem.tables" :key="t.str">
@@ -61,9 +62,10 @@
               :class="{'odd':index%2 != 1,'openlink':index === focus||openCode===item.code}"
             >
               <td>
-                <a class="action" @click="delItem(item)">x</a>
-                <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
                 <a :name="item.code">{{index+1}}</a>
+              </td>
+              <td>
+                <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
               </td>
               <td
                 :title="item.code"

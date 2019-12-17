@@ -5,7 +5,7 @@
       KKE.api(
         "plugins.tchart.get",
         {
-          symbol: document.location.href.split("?")[1],
+          symbol: document.location.href.split("?")[1].split("&")[0],
           mt: "cnlv1",
           dom_id: "h5Figure",
           type: "tech"

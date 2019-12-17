@@ -605,7 +605,6 @@ export async function hl(item) {
       return getTechDatas(item);
     });
     console.log("end techdata");
-    let techData = techResult.kw;
     let kdtech = techResult.kd;
     let klines = kdtech.datas;
     let ylen = Math.min(klines.length, 52 * 5);
@@ -623,17 +622,18 @@ export async function hl(item) {
       item.hili = 2;
     }
 
-    item.ma5 = techData.MA[techData.MA.length - 1].ma5;
-    item.ma10 = techData.MA[techData.MA.length - 1].ma10;
-    item.ma20 = techData.MA[techData.MA.length - 1].ma20;
+    item.ma5 = kdtech.MA[kdtech.MA.length - 1].ma5;
+    item.ma10 = kdtech.MA[kdtech.MA.length - 1].ma10;
+    item.ma20 = kdtech.MA[kdtech.MA.length - 1].ma20;
+    let weekData = techResult.kw;
 
-    item.macdweek = isMacdJC(techData);
+    item.macdweek = isMacdJC(weekData);
 
     item.macdkdweek =
-      techData.MACD[techData.MACD.length - 1].bar >
-        techData.MACD[techData.MACD.length - 2].bar &&
-      techData.MACD[techData.MACD.length - 2].bar >
-        techData.MACD[techData.MACD.length - 3].bar &&
+      weekData.MACD[weekData.MACD.length - 1].bar >
+        weekData.MACD[weekData.MACD.length - 2].bar &&
+      weekData.MACD[weekData.MACD.length - 2].bar >
+        weekData.MACD[weekData.MACD.length - 3].bar &&
       isMacdJC(kdtech);
   } catch (e) {
     console.log(e);

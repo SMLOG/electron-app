@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Setting @change="changeSetting" />
+
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <div id="searchpane">
       <search-panel @select="addItem"></search-panel>
@@ -28,6 +30,7 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>x</th>
               <th>A</th>
 
               <th>Name</th>
@@ -63,6 +66,9 @@
             >
               <td>
                 <a :name="item.code">{{index+1}}</a>
+              </td>
+              <td>
+                <a class="action" @click="delItem(item)">x</a>
               </td>
               <td>
                 <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
@@ -111,6 +117,7 @@
 
 <script>
 import SearchPanel from "@/view/components/search-panel";
+import Setting from "@/view/components/setting";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
@@ -149,7 +156,8 @@ export default {
       selectSrc: afilters["自选"],
       openCode: null,
       focus: null,
-      openType: null
+      openType: null,
+      showSetting: false
     };
   },
   directives: {
@@ -188,7 +196,8 @@ export default {
   },
   components: {
     SearchPanel,
-    draggable
+    draggable,
+    Setting
   },
   filters: {
     objectType(id) {
@@ -258,6 +267,9 @@ export default {
     }
   },
   methods: {
+    changeSetting(settings) {
+      console.log(settings);
+    },
     getfilterItems() {
       let items = this[this.selectSrc.name];
       if (this.visibility)

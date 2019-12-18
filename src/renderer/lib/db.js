@@ -1,3 +1,5 @@
+import localStore from "../localdata";
+
 const myDB = {
   name: "local",
   version: 1,
@@ -130,6 +132,10 @@ export { cacheObj as cache };
 export async function getCacheData(date, id, callback, mergeData) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
+
+  if (cache && cache.date && localStore.isShouldRemove(id, cache.date)) {
+    await remove(id);
+  }
 
   if (
     cache &&

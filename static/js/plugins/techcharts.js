@@ -4427,7 +4427,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
             this.linkData = function(t) {
                     var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
                     if (i){
-                       let techs_datas = [];
+                       let techs_datas = {};
                        let symbol ;
                        techs_datas['kdatas'] = i;
                        techs_datas['datas'] = i;

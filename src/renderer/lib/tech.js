@@ -7,16 +7,14 @@ export async function getTechDatas(item, cache = true) {
   let get = async () => {
     let ifr = document.getElementsByTagName("iframe")[0];
     let url = ifr.src.split("?")[0] + "?" + item.code;
-    //ifr.src = url;
-
+    ifr.src = url;
+    await new Promise((resolve, reject) => {
+      ifr.onload = function(e) {
+        resolve();
+      };
+    });
     let result = {};
     for (let v of ["kd", "kw"]) {
-      await new Promise((resolve, reject) => {
-        ifr.onload = function(e) {
-          resolve();
-        };
-      });
-      ifr.src = url + "&_t=" + seq++;
       ifr.contentWindow[techId] = null;
       ifr.contentWindow.chart_.showView({
         view: v
@@ -25,10 +23,8 @@ export async function getTechDatas(item, cache = true) {
         if (ifr.contentWindow[techId]) {
           let ret = ifr.contentWindow[techId];
           ifr.contentWindow[techId] = null;
-          //let data = {};
-          // data["data"] = ret;
 
-          result[v] = ret; //JSON.parse(JSON.stringify(data)).data; //deepCopy(ret);
+          result[v] = JSON.parse(JSON.stringify(ret)); //deepCopy(ret);
           break;
         }
         await timeout(100);

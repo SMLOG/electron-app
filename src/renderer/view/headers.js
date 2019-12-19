@@ -1,6 +1,6 @@
 import { getLastReportDate } from "../lib/utils";
 import { cache, getCacheData } from "../lib/db";
-
+import storejs from "storejs";
 const reportDate = getLastReportDate();
 const fmtPercent = value => {
   if (value) return parseFloat(value).toFixed(2) + "%";
@@ -211,3 +211,10 @@ export const headers = [
     }
   }
 ];
+
+export function getCheckFields(onlyCheck = true) {
+  let checkFields = storejs.get("fields") || [];
+  headers.map(f => checkFields.indexOf(f.prop) > -1 && (f.checkd = true));
+  if (onlyCheck) return headers.filter(e => e.checked);
+  else return headers;
+}

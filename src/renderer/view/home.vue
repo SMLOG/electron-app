@@ -116,6 +116,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import store from "@/localdata";
@@ -135,7 +137,7 @@ import {
   setCookie,
   getCookie
 } from "@/lib/utils";
-import { headers } from "./headers";
+import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
 import { filters, afilters } from "@/lib/filters";
 import { updateItem, getMeetList } from "@/lib/getTable";
@@ -149,7 +151,7 @@ export default {
       descending: true,
       sortby: "",
       visibility: "Strong",
-      head: headers,
+      head: getCheckFields(),
       selectItem: null,
       items2: [],
       filterCounts: {},
@@ -256,6 +258,12 @@ export default {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
       this.scrollToItem(items[this.focus]);
+    },
+    fields: {
+      deep: true,
+      handler(newValue, oldValue) {
+        this.head = getCheckFields();
+      }
     }
   },
   computed: {
@@ -264,7 +272,8 @@ export default {
     },
     filteredItems: function() {
       return this.getfilterItems();
-    }
+    },
+    ...mapGetters(["fields"])
   },
   methods: {
     changeSetting(settings) {
@@ -422,9 +431,11 @@ export default {
       (async () => {
         this.items2.length = 0;
 
-        let items = await getFindList(e => {
-          this.items2.push(e);
-        });
+        if (false) {
+          let items = await getFindList(e => {
+            this.items2.push(e);
+          });
+        }
 
         // items.forEach(e => this.items2.push(e));
         await timeout(60000);

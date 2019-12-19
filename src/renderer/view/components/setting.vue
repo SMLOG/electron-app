@@ -12,6 +12,12 @@
             </tr>
           </tbody>
         </table>
+        <draggable v-model="cols" @update="dragEnd" tag="ul">
+          <li v-for="col in cols" :key="col.prop">
+            {{col.label}}
+            <input type="checkbox" v-model="col.checked" @click="changeCols" />
+          </li>
+        </draggable>
       </div>
     </div>
   </div>
@@ -19,18 +25,32 @@
 
 <script>
 import store from "@/localdata";
+import { getCheckFields } from "../headers";
+import { mapActions, mapState } from "vuex";
+import draggable from "vuedraggable";
 
 export default {
   name: "setting",
   data: function() {
     return {
-      showSetting: false
+      showSetting: false,
+      cols: getCheckFields(false)
     };
   },
+  components: {
+    draggable
+  },
+  watch: {},
+
   methods: {
+    dragEnd() {},
+    changeCols() {
+      this.setFields(this.cols.filter(c => c.checked));
+    },
     clearTechData() {
       store.setSetting("tech", +new Date());
-    }
+    },
+    ...mapActions(["setFields"])
   }
 };
 </script>

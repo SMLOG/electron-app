@@ -15,7 +15,7 @@
         <draggable v-model="cols" @update="dragEnd" tag="ul">
           <li v-for="col in cols" :key="col.prop">
             {{col.label}}
-            <input type="checkbox" v-model="col.checked" @click="changeCols" />
+            <input type="checkbox" v-model="col.checked" @change="changeCols" />
           </li>
         </draggable>
       </div>
@@ -43,9 +43,11 @@ export default {
   watch: {},
 
   methods: {
-    dragEnd() {},
+    dragEnd() {
+      this.changeCols();
+    },
     changeCols() {
-      this.setFields(this.cols.filter(c => c.checked));
+      this.setFields(this.cols);
     },
     clearTechData() {
       store.setSetting("tech", +new Date());

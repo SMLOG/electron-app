@@ -1,12 +1,13 @@
 import { getLastReportDate } from "../lib/utils";
 import { cache, getCacheData } from "../lib/db";
-import storejs from "storejs";
+import { getFields } from "../store/modules/suspension";
+
 const reportDate = getLastReportDate();
 const fmtPercent = value => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
 };
-export const headers = [
+export let headers = [
   {
     label: "Now",
     prop: "now",
@@ -213,8 +214,17 @@ export const headers = [
 ];
 
 export function getCheckFields(onlyCheck = true) {
-  let checkFields = storejs.get("fields") || [];
-  headers.map(f => checkFields.indexOf(f.prop) > -1 && (f.checkd = true));
+  let checkFields = getFields();
+  let checked = checkFields.filter(e => e.checked).map(e => e.prop);
+  let all = checkFields.map(e => e.prop);
+  headers.map(f => {
+    f.order = all.indexOf(f.prop) > -1 ? all.indexOf(f.prop) : headers.length;
+
+    checked.indexOf(f.prop) > -1 && (f.checked = true);
+    return f;
+  });
+  headers = headers.slice().sort((a, b) => a.order - b.order);
+
   if (onlyCheck) return headers.filter(e => e.checked);
   else return headers;
 }

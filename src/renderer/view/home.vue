@@ -3,9 +3,7 @@
     <Setting @change="changeSetting" />
 
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
-    <div id="searchpane">
-      <search-panel @select="addItem"></search-panel>
-    </div>
+    <search-panel @select="addItem"></search-panel>
     <div id="menus">
       <div>
         <ul class="filters">
@@ -431,11 +429,9 @@ export default {
       (async () => {
         this.items2.length = 0;
 
-        if (false) {
-          let items = await getFindList(e => {
-            this.items2.push(e);
-          });
-        }
+        let items = await getFindList(e => {
+          this.items2.push(e);
+        });
 
         // items.forEach(e => this.items2.push(e));
         await timeout(60000);

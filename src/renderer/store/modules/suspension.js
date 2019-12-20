@@ -1,8 +1,9 @@
 import storejs from "storejs";
 
+const fileds_key = "fields_key";
 const state = {
   show: storejs.get("showSuspension"),
-  fields: storejs.get("fields") || []
+  fields: getFields()
 };
 
 const actions = {
@@ -18,9 +19,8 @@ const actions = {
     state.show = status;
   },
   setFields: function({ state, commit }, fields) {
-    storejs.set("fields", fields);
+    storejs.set(fileds_key, fields);
     state.fields = fields;
-    console.log(state);
     commit(SET_FIELDS, fields);
   }
 };
@@ -33,6 +33,10 @@ const mutations = {
     state.fields = fields;
   }
 };
+
+export function getFields() {
+  return storejs.get(fileds_key) || [];
+}
 export default {
   state,
   actions,

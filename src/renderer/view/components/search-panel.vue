@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'show':show}">
+  <div id="searchpane" :class="{'show':show}">
     <!-- 组件不能写到template的根节点上，即每个组件只有一个根节点，这里的div就是这个template的根节点 -->
     <!--  getindex是自定义事件 -->
     <div class="search-input">
@@ -217,6 +217,7 @@ export default {
 .show .search-input input {
   border: 1px solid #e4e4e4;
   background: white;
+  z-index: 1;
 }
 .search-input input {
   border: none;
@@ -315,5 +316,21 @@ input::-ms-clear {
 .search-select ul li span {
   width: 30%;
   display: inline-block;
+}
+#searchpane.show {
+  z-index: 10000;
+}
+#searchpane {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  height: 0;
+  z-index: -1;
+}
+#searchpane > div {
+  display: inline-block;
+  text-align: left;
 }
 </style>

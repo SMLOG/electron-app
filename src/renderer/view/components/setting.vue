@@ -67,6 +67,7 @@ export default {
   background: gray;
   border-radius: 11px;
   cursor: pointer;
+  z-index: 1000;
 }
 #setting_contents {
   position: fixed;

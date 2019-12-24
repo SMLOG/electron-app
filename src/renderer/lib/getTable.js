@@ -14,7 +14,7 @@ import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
 import { getTechDatas } from "./tech";
-
+import { callFun } from "./tech-manager";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
@@ -586,61 +586,10 @@ export async function getFindList(callback) {
   console.log(datalist);
   return datalist;
 }
-let queue = Promise.resolve();
 
-function isMacdJC(techData) {
-  return (
-    techData.MACD[techData.MACD.length - 1].bar > 0 &&
-    techData.MACD[techData.MACD.length - 1].bar >
-      techData.MACD[techData.MACD.length - 2].bar &&
-    techData.MACD[techData.MACD.length - 2].bar >
-      techData.MACD[techData.MACD.length - 3].bar &&
-    techData.MACD[techData.MACD.length - 3].bar < 0
-  );
-}
 export async function hl(item) {
-  try {
-    console.log("get techdata");
-    let techResult = await queue.then(() => {
-      return getTechDatas(item);
-    });
-    console.log("end techdata");
-    let kdtech = techResult.kd;
-    let klines = kdtech.datas;
-    let ylen = Math.min(klines.length, 52 * 5);
-    let yagoline = klines[klines.length - ylen];
-
-    let dline = klines[klines.length - 1];
-
-    item["52weekPer"] =
-      1 * ((100 * (dline.close - yagoline.close)) / yagoline.close).toFixed(2);
-
-    if (
-      dline.close > dline.open &&
-      dline.volume / avg(klines.slice(-6).map(e => e.volume)) > 1.5
-    ) {
-      item.hili = 2;
-    }
-
-    item.ma5 = kdtech.MA[kdtech.MA.length - 1].ma5;
-    item.ma10 = kdtech.MA[kdtech.MA.length - 1].ma10;
-    item.ma20 = kdtech.MA[kdtech.MA.length - 1].ma20;
-    let weekData = techResult.kw;
-
-    item.macdweek = isMacdJC(weekData);
-
-    item.macdkdweek =
-      weekData.MACD[weekData.MACD.length - 1].bar >
-        weekData.MACD[weekData.MACD.length - 2].bar &&
-      weekData.MACD[weekData.MACD.length - 2].bar >
-        weekData.MACD[weekData.MACD.length - 3].bar &&
-      isMacdJC(kdtech);
-  } catch (e) {
-    console.log(e);
-  }
+  await callFun(item);
 }
 function avg(arr) {
   return arr.reduce((a, b) => a + b) / arr.length;
 }
-
-window.getFindList = getFindList;

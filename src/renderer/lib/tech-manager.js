@@ -25,8 +25,8 @@ const techMap = {
 export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
-    filters[name] = function(item) {
-      return item[`_${name}`];
+    filters[name] = function(items) {
+      return items.filter(e => e[`_${name}`]);
     };
   }
   return filters;

@@ -22,7 +22,7 @@
         </ul>
       </div>
     </div>
-    <div>
+    <div id="tbl">
       <div ref="listtbl">
         <table>
           <thead>
@@ -43,7 +43,7 @@
               >{{col.label}}</th>
             </tr>
             <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
-              <th :colspan="head.length+3">
+              <th :colspan="head.length+4">
                 <div id="detail" ref="detail">
                   <span v-if="selectItem.tables&&selectItem.tables.length>0">
                     <div v-for="t in selectItem.tables" :key="t.str">
@@ -138,7 +138,7 @@ import {
 import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
 import { filters, afilters } from "@/lib/filters";
-import { updateItem, getMeetList } from "@/lib/getTable";
+import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
 export default {
   name: "home",
   data: function() {

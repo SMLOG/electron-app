@@ -8,17 +8,7 @@ export const afilters = {
   }
 };
 
-export const filters = {
-  MA5: function(items) {
-    return items.filter(function(item) {
-      return item.now >= item.ma5;
-    });
-  },
-  MA10: function(items) {
-    return items.filter(function(item) {
-      return item.now >= item.ma10;
-    });
-  },
+export let filters = {
   Strong: items => {
     return items.filter(function(item) {
       return (

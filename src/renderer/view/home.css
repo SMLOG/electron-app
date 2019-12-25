@@ -5,9 +5,7 @@ th,
 td {
   text-align: left;
 }
-.odd {
-  background: #eee;
-}
+
 .action {
   cursor: pointer;
 }
@@ -22,6 +20,15 @@ table {
   top: 30px;
   z-index: 1;
 }
+#tbl table thead th:first-child {
+  position: sticky;
+  left: 0px;
+}
+#tbl table tbody td:first-child {
+  position: sticky;
+  left: 0px;
+}
+
 #tbl table thead :nth-child(2) th {
   position: -webkit-sticky;
   position: sticky;
@@ -33,7 +40,7 @@ table th,
 table td {
   font-size: 12px;
   text-align: left;
-  border: 1px solid #ccc;
+  border: none;
   padding: 5px;
 }
 table th:not(:first-of-type) {
@@ -52,6 +59,9 @@ table th {
 }
 table tr:nth-of-type(even) td {
   background: whitesmoke;
+}
+table tr:nth-of-type(odd) td {
+  background: white;
 }
 table tr:hover td {
   background: #b3b3b3;
@@ -90,6 +100,14 @@ table .ascending::before {
   content: "↑";
   margin-left: -5px;
   font-size: 12px;
+}
+table td {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+table th {
+  word-break: keep-all;
+  white-space: nowrap;
 }
 table .descending:before {
   content: "↓";
@@ -293,4 +311,10 @@ i.arrow {
   top: 31px;
   left: 0;
   right: 0;
+}
+.first {
+  display: inline-flex;
+}
+.first > * {
+  padding: 3px;
 }

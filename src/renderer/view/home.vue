@@ -27,11 +27,15 @@
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>x</th>
-              <th>A</th>
+              <th>
+                <div class="first">
+                  <span>#</span>
+                  <span>x</span>
+                  <span>a</span>
+                  <span>Name</span>
+                </div>
+              </th>
 
-              <th>Name</th>
               <th
                 v-for="col in head"
                 @click="sort(col.prop)"
@@ -60,29 +64,33 @@
               class="item"
               v-for="(item,index) in filteredItems"
               :key="item.code"
-              :class="{'odd':index%2 != 1,'openlink':index === focus||openCode===item.code}"
+              :class="{'openlink':index === focus||openCode===item.code}"
             >
               <td>
-                <a :name="item.code">{{index+1}}</a>
-              </td>
-              <td>
-                <a class="action" @click="delItem(item)">x</a>
-              </td>
-              <td>
-                <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
-              </td>
-              <td
-                :title="item.code"
-                :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
-              >
-                <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
-                <span
-                  title="avgzs"
-                  @click="toggleDetail(item)"
-                  :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-                >{{item.avgzs}}</span>
-                <span title="upArgCount">/{{item.upArgCount}}</span>
-                <span title="contDir">/{{item.contDir}}</span>
+                <div class="first">
+                  <span>
+                    <a :name="item.code">{{index+1}}</a>
+                  </span>
+                  <span>
+                    <a class="action" @click="delItem(item)">x</a>
+                  </span>
+                  <span>
+                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                  </span>
+                  <div
+                    :title="item.code"
+                    :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
+                  >
+                    <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
+                    <span
+                      title="avgzs"
+                      @click="toggleDetail(item)"
+                      :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
+                    >{{item.avgzs}}</span>
+                    <span title="upArgCount">/{{item.upArgCount}}</span>
+                    <span title="contDir">/{{item.contDir}}</span>
+                  </div>
+                </div>
               </td>
 
               <td

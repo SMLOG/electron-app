@@ -64,7 +64,7 @@ table tr:nth-of-type(odd) td {
   background: white;
 }
 table tr:hover td {
-  background: #b3b3b3;
+  background: #e3e3e3;
 }
 table th {
   cursor: pointer;

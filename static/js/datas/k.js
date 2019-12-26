@@ -2,7 +2,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
   "use strict";
   var loadScript = lib.load
     , n = lib.dateUtil
-    , a = lib.kUtil
+    , kUtil = lib.kUtil
     , s = lib.xh5_S_KLC_D
     , o = 0 == location.protocol.indexOf("https:");
   return new function() {
@@ -157,15 +157,15 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
               name: m,
               symbol: l
           });
-          var v = a.mw(t, s, _, c, r.endDay)
+          var v = kUtil.mw(t, s, _, c, r.endDay)
             , g = v[0]
             , k = v[1]
             , N = v[2]
             , $ = void 0;
-          if (a.pd(t, null),
-          a.pd(g, null),
-          a.pd(k, null),
-          a.pd(N, null),
+          if (kUtil.pd(t, null),
+          kUtil.pd(g, null),
+          kUtil.pd(k, null),
+          kUtil.pd(N, null),
           s && s.settlement) {
               var w = t[t.length - 1];
               w.ampP = w.amplitude / s.settlement,
@@ -184,7 +184,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
               name: m,
               symbol: l
           }),
-          o.ytd && ($ = a.yd(t),
+          o.ytd && ($ = kUtil.yd(t),
           lib.oc($[0], {
               name: m,
               symbol: l
@@ -653,7 +653,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
                   })) {
                       var l = {};
                       1 == c && (/^forex/.test(o.market) || /^BTC/.test(o.market)) && (l.usePc = !0),
-                      a.pd(t, l),
+                      kUtil.pd(t, l),
                       h.data = t
                   } else
                       h.msg = "error";
@@ -737,7 +737,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
           var s = t.staticdata
             , o = l();
           if (t.ismink)
-              a.pd(s, null),
+              kUtil.pd(s, null),
               o.data = s;
           else {
               var r = i(s, null, t);

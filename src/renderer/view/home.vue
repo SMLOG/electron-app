@@ -398,12 +398,10 @@ export default {
       this.items = store.fetch();
     },
     addItem(selectItem) {
-      store.save(this.items);
-      let datas = store.fetch();
       console.log(selectItem);
-      if (datas.filter(it => it.code == selectItem.code).length == 0) {
-        datas.push(selectItem);
-        store.save(datas);
+      if (this.items.filter(it => it.code == selectItem.code).length == 0) {
+        this.items.push(selectItem);
+        store.save(this.items);
       }
       location.href = "#" + selectItem.code;
       this.openCode = selectItem.code;

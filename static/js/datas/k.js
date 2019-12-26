@@ -1,9 +1,9 @@
-xh5_define("datas.k", ["utils.util"], function(e) {
+xh5_define("datas.k", ["utils.util"], function(lib) {
   "use strict";
-  var t = e.load
-    , n = e.dateUtil
-    , a = e.kUtil
-    , s = e.xh5_S_KLC_D
+  var loadScript = lib.load
+    , n = lib.dateUtil
+    , a = lib.kUtil
+    , s = lib.xh5_S_KLC_D
     , o = 0 == location.protocol.indexOf("https:");
   return new function() {
       this.VER = "2.7.0";
@@ -89,14 +89,14 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           }
       }
         , i = function(t, s, o) {
-          var r = K(o)
+          var r = getK(o)
             , l = o.symbol
             , i = o.newthour
             , c = 1
             , u = r.market;
-          "CN" == u && (c = s && /[gz]/.test(s.type) ? 10 : e.isRepos(l) ? 10 : 100),
-          e.isRepos(l) && (c = 10),
-          e.isCNK(l) && (c = 1),
+          "CN" == u && (c = s && /[gz]/.test(s.type) ? 10 : lib.isRepos(l) ? 10 : 100),
+          lib.isRepos(l) && (c = 10),
+          lib.isCNK(l) && (c = 1),
           t || (t = []);
           var p = 0 / 0
             , m = "";
@@ -152,7 +152,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           if (t.length < 1)
               return [t, void 0, void 0, void 0];
           var _ = !isNaN(p) && p > 0 ? p : t[0].open;
-          e.oc(t[0], {
+          lib.oc(t[0], {
               prevclose: _,
               name: m,
               symbol: l
@@ -172,36 +172,36 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               w.change = w.close - s.settlement,
               w.percent = w.change / s.settlement
           }
-          return e.oc(g[0], {
+          return lib.oc(g[0], {
               name: m,
               symbol: l
           }),
-          e.oc(k[0], {
+          lib.oc(k[0], {
               name: m,
               symbol: l
           }),
-          e.oc(N[0], {
+          lib.oc(N[0], {
               name: m,
               symbol: l
           }),
           o.ytd && ($ = a.yd(t),
-          e.oc($[0], {
+          lib.oc($[0], {
               name: m,
               symbol: l
           })),
           [t, g, k, $, N]
       }
         , c = function(t, n, a) {
-          var s = e.market(t)
+          var s = lib.market(t)
             , l = s ? r[s][n ? "MINK_URL" : "DAYK_URL"] : null;
-          return (o || a) && (l = e.getSUrl(l)),
+          return (o || a) && (l = lib.getSUrl(l)),
           l
       }
         , u = function(t, n) {
-          var a, s, l = e.market(t);
+          var a, s, l = lib.market(t);
           return r[l] && (a = r[l].DAYK_RE_URL,
           s = r[l].RE_VAR),
-          a && (o || n) && (a = e.getSUrl(a)),
+          a && (o || n) && (a = lib.getSUrl(a)),
           {
               url: a,
               VAR: s,
@@ -209,11 +209,11 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           }
       }
         , p = function(t, n) {
-          var a, s, l, i = e.market(t);
+          var a, s, l, i = lib.market(t);
           return r[i] && (a = r[i].INIT_URL,
           s = r[i].INIT_VAR,
           l = r[i].INIT_VAR_PRE),
-          a && (o || n) && (a = e.getSUrl(a)),
+          a && (o || n) && (a = lib.getSUrl(a)),
           {
               url: a,
               VAR: s,
@@ -431,7 +431,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           return e
       }
         , $ = function(t, a, s, o) {
-          for (var r, l, i = e.market(o.hqSb), c = "BTC" == i ? 0 : ("DINIW" == o.hqSb,
+          for (var r, l, i = lib.market(o.hqSb), c = "BTC" == i ? 0 : ("DINIW" == o.hqSb,
           6), u = a.length; u-- && 0 != u; )
               for (var p = a[u], m = a[u - 1], b = n.ssd(p.day), h = n.ssd(m.day), d = u; h.setMinutes(h.getMinutes() + s) < b; ) {
                   if (r = h.getDay(),
@@ -446,7 +446,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                       c > l))
                           continue
                   }
-                  var f = e.clone(m, null);
+                  var f = lib.clone(m, null);
                   f.day = n.dss(h),
                   a.splice(d++, 0, f)
               }
@@ -478,7 +478,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           }
       }
         , w = function(t, a, s) {
-          var o = e.market(s.hqSb)
+          var o = lib.market(s.hqSb)
             , r = "BTC" == o ? 0 : ("DINIW" == s.hqSb,
           6)
             , l = a[a.length - 1].day
@@ -504,7 +504,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         , D = function(t, a) {
           if (!t)
               return null;
-          var s, o, r = Number(a.scale), l = e.market(a.hqSb);
+          var s, o, r = Number(a.scale), l = lib.market(a.hqSb);
           a.hqObjs && (s = a.hqObjs[a.hqSb],
           o = new Date(1e3 * a.hqObjs[a.withsymbol].hqstr)),
           o || (o = new Date);
@@ -535,20 +535,20 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           return e && e.result && e.result.data ? (e = e.result.data,
           D(e, t)) : null
       }
-        , K = function(t) {
-          var n, a = t.symbol, s = t.volunit || 1, o = e.market(a), l = !1;
-          t.dataurl && t.dataurl.length > 1 ? n = t.dataurl : (/^(CN|HK|US|REPO)/.test(o) && (l = !0),
-          e.isCNK(t.symbol) && (l = !1,
+        , getK = function(conf) {
+          var dataurl, symbol = conf.symbol, volunit = conf.volunit || 1, mkCode = lib.market(symbol), l = !1;
+          conf.dataurl && conf.dataurl.length > 1 ? dataurl = conf.dataurl : (/^(CN|HK|US|REPO)/.test(mkCode) && (l = !0),
+          lib.isCNK(conf.symbol) && (l = !1,
           r.CN.DAYK_URL = r.CNKCB.DAYK_URL),
-          n = c(a, !!t.ismink, t.ssl));
-          var i, u, p, m = a, g = a;
-          switch (o) {
+          dataurl = c(symbol, !!conf.ismink, conf.ssl));
+          var i, u, p, m = symbol, g = symbol;
+          switch (mkCode) {
           case "HK":
-              m = 0 == a.indexOf("rt_") ? a : "rt_" + a,
+              m = 0 == symbol.indexOf("rt_") ? symbol : "rt_" + symbol,
               g = m.substring(5);
               break;
           case "US":
-              m = 0 == a.indexOf("gb_") ? a : "gb_" + a,
+              m = 0 == symbol.indexOf("gb_") ? symbol : "gb_" + symbol,
               g = m.split("_")[1],
               g = g.replace("$", "."),
               g = g.toUpperCase(),
@@ -559,8 +559,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               break;
           case "CN":
           case "REPO":
-              s = .01,
-              e.isCNK(m) && (s = 1);
+              volunit = .01,
+              lib.isCNK(m) && (volunit = 1);
               break;
           case "forex":
           case "forex_yt":
@@ -575,7 +575,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               p = 5;
               break;
           case "OTC":
-              g = a.replace("sb", "otc_"),
+              g = symbol.replace("sb", "otc_"),
               u = f;
               break;
           case "CFF":
@@ -585,53 +585,53 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               i = _;
               break;
           case "HF":
-              m = 0 == a.indexOf("hf_") ? a : "hf_" + a,
+              m = 0 == symbol.indexOf("hf_") ? symbol : "hf_" + symbol,
               g = m.split("_")[1],
               u = v,
               i = k;
               break;
           case "NF":
-              m = 0 == a.indexOf("nf_") ? a : "nf_" + a,
+              m = 0 == symbol.indexOf("nf_") ? symbol : "nf_" + symbol,
               g = m.split("_")[1],
               u = b,
               i = k;
               break;
           case "global_index":
-              m = 0 == a.indexOf("znb_") ? a : "znb_" + a,
+              m = 0 == symbol.indexOf("znb_") ? symbol : "znb_" + symbol,
               g = m.split("_")[1],
               u = N;
               break;
           case "LSE":
-              m = 0 == a.indexOf("lse_") ? a : "lse_" + a,
+              m = 0 == symbol.indexOf("lse_") ? symbol : "lse_" + symbol,
               g = m.split("_")[1],
-              m = e.strUtil.replaceStr(m),
+              m = lib.strUtil.replaceStr(m),
               u = N;
               break;
           case "MSCI":
-              m = 0 == a.indexOf("msci_") ? a : "msci_" + a,
-              g = a.replace("msci_", ""),
+              m = 0 == symbol.indexOf("msci_") ? symbol : "msci_" + symbol,
+              g = symbol.replace("msci_", ""),
               u = b;
               break;
           case "GOODS":
-              m = 0 == a.indexOf("gds_") ? a : "gds_" + a,
+              m = 0 == symbol.indexOf("gds_") ? symbol : "gds_" + symbol,
               g = m.split("_")[1],
               u = N
           }
-          return t.customksb && (g = t.customksb),
+          return conf.customksb && (g = conf.customksb),
           {
               hqSb: m,
               kSb: g,
               dayDataHandler: u,
               minDataHandler: i,
               endDay: p,
-              kUrl: n,
+              kUrl: dataurl,
               isCompressData: l,
-              vu: s,
-              market: o
+              vu: volunit,
+              market: mkCode
           }
       }
         , S = function(n, s) {
-          var o = K(n)
+          var o = getK(n)
             , r = new Date
             , i = [r.getFullYear(), r.getMonth() + 1, r.getDate()].join("_")
             , c = n.scale
@@ -641,7 +641,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             , b = function(r) {
               var b = r ? r.dataObj : void 0
                 , h = l();
-              t(o.kUrl.replace("$symbol", o.kSb).replace(u, c).replace("$cb", "var%20" + m + "=").replace("$rn", i).replace("$datalen", p), function() {
+              loadScript(o.kUrl.replace("$symbol", o.kSb).replace(u, c).replace("$cb", "var%20" + m + "=").replace("$rn", i).replace("$datalen", p), function() {
                   var t = window[m]
                     , r = n.dataformatter || o.minDataHandler || g;
                   if (t = r(t, {
@@ -657,10 +657,10 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                       h.data = t
                   } else
                       h.msg = "error";
-                  e.isFunc(s) && s(h)
+                  lib.isFunc(s) && s(h)
               }, function() {
                   h.msg = "error",
-                  e.isFunc(s) && s(h)
+                  lib.isFunc(s) && s(h)
               }, {
                   market: o.market,
                   symbol: o.hqSb,
@@ -674,14 +674,14 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           }, b) : b()
       }
         , L = function(n, a) {
-          var o = K(n)
-            , r = function(r) {
+          var o = getK(n);
+            var r = function(r) {
               var c = r ? r.data[0] : void 0
                 , u = l()
                 , p = new Date
                 , m = [p.getFullYear(), p.getMonth() + 1, p.getDate()].join("_")
                 , h = "_" + o.kSb.replace(/\W/g, "") + m;
-              t(o.kUrl.replace("$symbol", o.kSb).replace("$rn", m).replace("$cb", "var%20" + h + "="), function() {
+              loadScript(o.kUrl.replace("$symbol", o.kSb).replace("$rn", m).replace("$cb", "var%20" + h + "="), function() {
                   var t;
                   if (o.isCompressData) {
                       var r = o.kSb.replace(".", "$");
@@ -701,7 +701,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                       ytd: p[3] || null,
                       year: p[4]
                   } : u.msg = "error",
-                  e.isFunc(a) && a(u)
+                  lib.isFunc(a) && a(u)
               }, function() {
                   if (c) {
                       var t = i(null, c, n);
@@ -713,13 +713,13 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                           ytd: t[3] || null,
                           year: t[4]
                       } : u.msg = "error",
-                      e.isFunc(a) && a(u)
+                      lib.isFunc(a) && a(u)
                   } else
                       u.msg = "error",
                       u.data = {
                           hq: c
                       },
-                      e.isFunc(a) && a(u)
+                      lib.isFunc(a) && a(u)
               }, {
                   market: o.market,
                   symbol: o.hqSb,
@@ -749,10 +749,10 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                   year: r[4]
               }
           }
-          e.isFunc(n) && n(o)
+          lib.isFunc(n) && n(o)
       };
       this.get = function(t, n) {
-          t.staticdata ? U(t, n) : (t.wfn && e.isFunc(m[t.wfn]) && (window[t.wfn] = m[t.wfn]),
+          t.staticdata ? U(t, n) : (t.wfn && lib.isFunc(m[t.wfn]) && (window[t.wfn] = m[t.wfn]),
           t.ismink ? S(t, n) : L(t, n))
       }
       ,
@@ -767,21 +767,21 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             , i = r.url;
           if (!i)
               return s.msg = "error",
-              void (e.isFunc(a) && a(s));
+              void (lib.isFunc(a) && a(s));
           var c = n.dir
             , p = r.VAR || "";
           p = p.replace("$symbol", o).replace("$dir", c),
           "HK" === n.market && (p = "hk" + p);
           var m = new Date
             , b = m.getHours();
-          t(i.replace("$symbol", o).replace("$dir", c).replace("$rn", b), function() {
+          loadScript(i.replace("$symbol", o).replace("$dir", c).replace("$rn", b), function() {
               var t = window[p];
               window[p] = null,
               t && t.total > 0 ? s.data = t.data : s.msg = "error",
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, function() {
               s.msg = "error",
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, {
               market: r.market,
               symbol: o,
@@ -798,15 +798,15 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             , u = c + o
             , m = window[u];
           m ? (s.data = m,
-          e.isFunc(a) && a(s)) : (o = o.split("hf_")[1],
-          t(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
+          lib.isFunc(a) && a(s)) : (o = o.split("hf_")[1],
+          loadScript(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
               m = window[u],
               m ? s.data = m : (window[u] = null,
               s.msg = "error, illegal data"),
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, function() {
               s.msg = "error",
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, {
               market: r.market,
               symbol: o,
@@ -823,15 +823,15 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             , u = c + o
             , m = window[u];
           m ? (s.data = m,
-          e.isFunc(a) && a(s)) : (o = o.match(/^nf_([a-zA-Z]+)\d+$/)[1],
-          t(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
+          lib.isFunc(a) && a(s)) : (o = o.match(/^nf_([a-zA-Z]+)\d+$/)[1],
+          loadScript(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
               m = window[u],
               m ? s.data = m : (window[u] = null,
               s.msg = "error, illegal data"),
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, function() {
               s.msg = "error",
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, {
               market: r.market,
               symbol: o,
@@ -848,15 +848,15 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             , u = c + o
             , m = window[u];
           m ? (s.data = m,
-          e.isFunc(a) && a(s)) : (o = o.split("znb_")[1],
-          t(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
+          lib.isFunc(a) && a(s)) : (o = o.split("znb_")[1],
+          loadScript(i.replace("$cb", "var%20" + u + "=").replace("$symbol", o), function() {
               m = window[u],
               m ? s.data = m : (window[u] = null,
               s.msg = "error, illegal data"),
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, function() {
               s.msg = "error",
-              e.isFunc(a) && a(s)
+              lib.isFunc(a) && a(s)
           }, {
               market: r.market,
               symbol: o,

@@ -15,10 +15,11 @@ const techMap = {
     return isMacdJC(kw);
   },
   KdWeekX: function({ item, kd, kw, km }) {
-    return;
-    kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
+    return (
+      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
       kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
-      isMacdJC(kd);
+      isMacdJC(kd)
+    );
   }
 };
 

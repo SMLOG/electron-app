@@ -323,3 +323,11 @@ tr.openlink .first > *:first-child {
 .first > * {
   padding: 3px;
 }
+
+.del {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAABEUlEQ…2fpXmiGfFATs5/sufukz1ncOknYkRiQ06p5GxImtJu3F+8AXd0lPf62kHsAAAAAElFTkSuQmCC);
+  background-size: 12px 12px;
+  height: 12px;
+  vertical-align: text-top;
+  width: 12px;
+}

@@ -2136,6 +2136,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                     prop: o + "30",
                     idct: h + "30",
                     desc: h
+                }, {
+                    v: 60,
+                    color: e[3],
+                    prop: o + "60",
+                    idct: h + "60",
+                    desc: h
                 }])
             },
             this.initAndCalcAll = function(i) {
@@ -5583,7 +5589,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
         };
     var bt = function() {
         function t(t) {
-            return null === t ? "Null" : void 0 === t ? "Undefined" : r.call(t).slice(8, -1)
+            return null === t ? "Null" : void 0 === t ? "Undefined" : toString.call(t).slice(8, -1)
         }
 
         function i(t, i, r) {
@@ -5598,10 +5604,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                     return r ? i / r : null
             }
         }
-        var r = Object.prototype.toString,
-            a = Math.min,
-            s = Math.max,
-            e = Math.abs,
+        var toString = Object.prototype.toString,
+            min = Math.min,
+            max = Math.max,
+            abs = Math.abs,
             getArr = function(t, i, r) {
                 if (i) {
                     for (var a = [], s = 0, e = t.length; e > s; s++)
@@ -5709,7 +5715,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
             },
             A = function(t) {
                 for (var i = calcA(t), r = 0, a = t.length, s = a; s--;)
-                    r += e(t[s] - i);
+                    r += abs(t[s] - i);
                 return r / a
             },
             calcAVEDEV = function(t, i) {
@@ -5718,22 +5724,22 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                 return r
             },
             calcHHV = function(t, i) {
-                for (var r = [], a = t.length, e = s.apply(null, t), h = 0; a > h; h++)
-                    r.push(i ? s.apply(null, i > h ? t.slice(0, h + 1) : t.slice(h - i + 1, h + 1)) : e);
+                for (var r = [], a = t.length, e = max.apply(null, t), h = 0; a > h; h++)
+                    r.push(i ? max.apply(null, i > h ? t.slice(0, h + 1) : t.slice(h - i + 1, h + 1)) : e);
                 return r
             },
             calcLLV = function(t, i) {
-                for (var r = [], s = t.length, e = a.apply(null, t), h = 0; s > h; h++)
-                    r.push(i ? a.apply(null, i > h ? t.slice(0, h + 1) : t.slice(h - i + 1, h + 1)) : e);
+                for (var r = [], s = t.length, e = min.apply(null, t), h = 0; s > h; h++)
+                    r.push(i ? min.apply(null, i > h ? t.slice(0, h + 1) : t.slice(h - i + 1, h + 1)) : e);
                 return r
             },
             calcABS = function(i) {
                 switch (t(i)) {
                     case "Number":
-                        return e(i);
+                        return abs(i);
                     case "Array":
                         for (var r = [], a = 0, s = i.length; s > a; a++)
-                            r.push(e(i[a]));
+                            r.push(abs(i[a]));
                         return r;
                     default:
                         throw new Error("argument of Function calcABS was error!")
@@ -5748,13 +5754,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                                 for (a = [],
                                     e = 0,
                                     h = i.length; h > e; e++)
-                                    a.push(s(i[e], r[e]));
+                                    a.push(max(i[e], r[e]));
                                 return a;
                             case "Number":
                                 for (a = [],
                                     e = 0,
                                     h = i.length; h > e; e++)
-                                    a.push(s(i[e], r));
+                                    a.push(max(i[e], r));
                                 return a;
                             default:
                                 throw new Error("argument of Function calcMAX was error!")
@@ -5766,10 +5772,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(utils
                                 for (a = [],
                                     e = 0,
                                     h = r.length; h > e; e++)
-                                    a.push(s(i, r[e]));
+                                    a.push(max(i, r[e]));
                                 return a;
                             case "Number":
-                                return s(i, r);
+                                return max(i, r);
                             default:
                                 throw new Error("argument of Function calcMAX was error!")
                         }

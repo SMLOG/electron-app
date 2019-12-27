@@ -28,7 +28,7 @@
           <thead>
             <tr>
               <th>
-                <div class="first">
+                <div class="first" style="width:140px;">
                   <span>#</span>
                   <span>x</span>
                   <span>a</span>

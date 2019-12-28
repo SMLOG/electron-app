@@ -21,14 +21,24 @@ const techMap = {
       isMacdJC(kd)
     );
   },
-  NH: function({ item, kd, kw, km }) {
-    console.log(kd);
+  粘合多头: function({ item, kd, kw, km }) {
+    //5,10,20日三线粘合 {取1%振幅内粘合}
     let m = item.now;
-    let m5 = kd.MA.ma5;
-    let m10 = kd.MA.ma10;
-    let m20 = kd.MA.ma20;
+    let ma = kd.MA[kd.MA.length - 1];
+    let ma1 = kd.MA[kd.MA.length - 2];
+    let m5 = ma.ma5;
+    let m10 = ma.ma10;
+    let m20 = ma.ma20;
+    let x1 = m5 / m10 - 1 < 0.01;
+    let x2 = m5 / m20 - 1 < 0.01;
+    let x3 = m10 / m20 - 1 < 0.01;
 
-    return m > m5 && m5 > m10 && m10 > m20;
+    //AA:=MA(C,5)>REF(MA(C,5),1);BB:=MA(C,10)>REF(MA(C,10),1);CC:=MA(C,5)>MA(C,10);{均线勾头向上}
+    let aa = m5 > ma1.ma5;
+    let bb = m10 > ma1.ma10;
+    let cc = m20 > ma1.ma20;
+
+    return x1 && x2 && x3 && aa && bb && cc;
   }
 };
 

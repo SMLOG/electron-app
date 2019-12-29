@@ -107,7 +107,7 @@
     <div
       id="webviewWrap"
       ref="webviewWrap"
-      style="position:fixed;left:0;right:0;bottom:0;top:60%;display:none;z-index:100"
+      style="position:fixed;left:170px;right:0;bottom:0;top:60%;display:none;z-index:100"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i

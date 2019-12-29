@@ -1391,7 +1391,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         tech: {
             show: !0,
             style: {
-                width: "10%",
+                width: "5%",
                 "float": "left"
             },
             boxStyle: {

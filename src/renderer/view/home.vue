@@ -107,7 +107,7 @@
     <div
       id="webviewWrap"
       ref="webviewWrap"
-      style="position:fixed;left:170px;right:0;bottom:0;top:60%;display:none;z-index:100"
+      style="position:fixed;left:120px;right:0;bottom:0;top:60%;display:none;z-index:100"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
@@ -263,7 +263,7 @@ export default {
     focus() {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
-      this.scrollToItem(items[this.focus]);
+      //this.scrollToItem(items[this.focus]);
     },
     fields: {
       deep: true,
@@ -339,7 +339,7 @@ export default {
           }, 10);
           //  console.log(event);
           //   if (event.clientY > $(window).height() - chartop)
-          this.scrollToItem(item);
+          // this.scrollToItem(item);
         }
         // $.scrollTo($(`a[name=${item.code}]`));
 
@@ -398,14 +398,11 @@ export default {
       this.items = store.fetch();
     },
     addItem(selectItem) {
-      console.log(selectItem);
       if (this.items.filter(it => it.code == selectItem.code).length == 0) {
         this.items.push(selectItem);
         store.save(this.items);
       }
-      location.href = "#" + selectItem.code;
       this.openCode = selectItem.code;
-      console.log(this.openCode);
       //this.reloadData();
       this.sendRefresh();
       monitor(this.items);

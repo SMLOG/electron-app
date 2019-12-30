@@ -17,7 +17,6 @@
             :filter="filter"
             :filterCounts="filterCounts[selectSrc.name+filter]"
             @click.native="visibility = filter"
-            :item="k"
             :selected="visibility == filter"
           ></FilterItem>
         </ul>
@@ -282,17 +281,24 @@ export default {
     filteredItems: function() {
       return this.getfilterItems();
     },
-    ...mapGetters(["fields"])
+    ...mapGetters(["fields"]),
+    ...mapGetters({ sfilters: "filters" })
   },
   methods: {
-    changeSetting(settings) {
-      console.log(settings);
-    },
+    changeSetting(settings) {},
     getfilterItems() {
       let items = this[this.selectSrc.name];
-      if (this.visibility)
-        return filters[this.visibility](this[this.selectSrc.name]);
-      else return items;
+      if (this.visibility) {
+        let items = filters[this.visibility](this[this.selectSrc.name]);
+        if (this.sfilters) {
+          let fs = this.sfilters[this.visibility];
+          if (fs)
+            for (let f of fs.filter(e => e.checked))
+              items = filters[f.name](items);
+        }
+
+        return items;
+      } else return items;
     },
     scrollToItem(item) {
       window.scrollTo({
@@ -357,7 +363,6 @@ export default {
     },
     updateFilterCounts() {
       let map = {};
-      console.log("update filter count");
       for (let i in this.afilters) {
         let items = this[this.afilters[i].name];
         let name = this.afilters[i].name;

@@ -1,5 +1,5 @@
 <template>
-  <li class="filterItem" is="li">
+  <li ref="filteritem" class="filterItem" is="li">
     <a>{{ filter }}({{ filterCounts }})</a>
     <i
       class="arrow"
@@ -7,7 +7,7 @@
       @click="show=!show"
       ref="arrow"
     ></i>
-    <ul v-if="selected&&show" class="items" ref="items">
+    <ul v-show="selected&&show" class="items">
       <li v-for="f in allfilters" :key="f.name">
         <input type="checkbox" v-model="f.checked" @change="change" />
         {{ f.name }}
@@ -30,8 +30,7 @@ export default {
   },
   mounted() {
     window.addEventListener("click", e => {
-      if (!this.$refs.items) return;
-      if (this.$refs.items.contains(e.target)) {
+      if (this.$refs.filteritem.contains(e.target)) {
       } else {
         this.show = false;
       }
@@ -46,7 +45,7 @@ export default {
     ...mapActions(["setFilters"]),
     change() {
       this.filters[this.filter] = this.allfilters;
-      this.setFilters(this.filters);
+      this.setFilters(Object.assign({}, this.filters));
     }
   },
   computed: {

@@ -1,4 +1,6 @@
 import { buildFilters } from "./tech-manager";
+import { getFilters } from "../store/modules/suspension";
+
 export const afilters = {
   海选: {
     name: "items2"
@@ -23,3 +25,14 @@ export let filters = {
   }
 };
 filters = Object.assign(filters, buildFilters());
+
+export function getCheckFilters(name) {
+  let checkFields = getFilters()[name] || [];
+  let checked = checkFields.filter(e => e.checked).map(e => e.name);
+  let filters_arr = Object.keys(filters);
+  let ret = filters_arr.map(f => {
+    return { name: f, checked: checked.indexOf(f) > -1 };
+  });
+
+  return ret;
+}

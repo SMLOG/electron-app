@@ -154,8 +154,9 @@ table .descending:before {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
+.filters li.selected {
   border-color: rgba(175, 47, 47, 0.2);
+  border-bottom: 1px solid #ccc;
 }
 .avggood {
   color: red;

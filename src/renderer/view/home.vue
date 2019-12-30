@@ -7,18 +7,19 @@
     <div id="menus">
       <div>
         <ul class="filters">
-          <li v-for="(k,filter) in afilters" :key="filter">
-            <a
-              @click="selectSrc=k,visibility=null"
-              :class="{ selected: selectSrc == k }"
-            >{{filter}}({{filterCounts[filter]}})</a>
+          <li v-for="(k,filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
+            <a @click="selectSrc=k,visibility=null">{{filter}}({{filterCounts[filter]}})</a>
           </li>
-          <li v-for="(k,filter) in filters" :key="filter">
-            <a
-              @click="visibility=filter"
-              :class="{ selected: visibility == filter }"
-            >{{filter}}({{filterCounts[selectSrc.name+filter]}})</a>
-          </li>
+          <FilterItem
+            v-for="(k,filter) in filters"
+            :key="filter"
+            :class="{ selected: visibility == filter }"
+            :filter="filter"
+            :filterCounts="filterCounts[selectSrc.name+filter]"
+            @click.native="visibility = filter"
+            :item="k"
+            :selected="visibility == filter"
+          ></FilterItem>
         </ul>
       </div>
     </div>
@@ -126,6 +127,7 @@ import { mapState, mapGetters } from "vuex";
 
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
+import FilterItem from "@/view/components/FilterItem";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
@@ -205,7 +207,8 @@ export default {
   components: {
     SearchPanel,
     draggable,
-    Setting
+    Setting,
+    FilterItem
   },
   filters: {
     objectType(id) {

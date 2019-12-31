@@ -1,12 +1,22 @@
 import { buildFilters } from "./tech-manager";
 import { getFilters } from "../store/modules/suspension";
+import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
+import store from "../localdata";
 
 export const afilters = {
   海选: {
-    name: "items2"
+    name: "items2",
+    get: async function(cb) {
+      await getFindList(e => {
+        cb(e);
+      });
+    }
   },
   自选: {
-    name: "items"
+    name: "items",
+    get: function(cb) {
+      cb(store.fetch());
+    }
   }
 };
 

@@ -121,11 +121,7 @@ function remove(id) {
 }
 window.removeCache = remove;
 function isNotBefore(d1, d2) {
-  return (
-    d1.getFullYear() >= d2.getFullYear() &&
-    d1.getMonth() >= d2.getMonth() &&
-    d1.getDate() >= d2.getDate()
-  );
+  return d1.getTime() >= d2.getTime();
 }
 export { cacheObj as cache };
 

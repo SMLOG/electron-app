@@ -1,31 +1,46 @@
 <template>
-  <li ref="filteritem" class="filterItem" is="li">
-    <a>{{ filter }}({{ filterCounts }})</a>
-    <i
-      class="arrow"
-      :class="{left:!(selected&&show),down:selected&&show}"
-      @click="show=!show"
-      ref="arrow"
-    ></i>
-    <ul v-show="selected&&show" class="items">
-      <li v-for="f in allfilters" :key="f.name">
-        <input type="checkbox" v-model="f.checked" @change="change" />
-        {{ f.name }}
+  <div id="filterctr" :class="{showAll:showAll}">
+    <ul class="filters">
+      <li v-for="(k,filter) in afilters" :key="filter">
+        <a>{{filter}}</a>
       </li>
     </ul>
-  </li>
+    <table>
+      <tr v-for="(filters,i) in filterArry" :key="filters">
+        <td v-for="(filter) in filters" :key="filter">
+          <div>{{ filter }}</div>
+        </td>
+        <td>
+          <i v-if="i==0" class="arrow left" @click="showAll=!showAll"></i>
+        </td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
-import { filters, getCheckFilters } from "@/lib/filters";
+import { filters, getCheckFilters, afilters } from "@/lib/filters";
 import { mapActions, mapGetters } from "vuex";
 
+let keys = Object.keys(filters);
+
+let filterArry = [];
+for (let i = 0; i < keys.length; i++) {
+  let arr = [];
+  for (let k = i; k < keys.length; k++) {
+    arr.push(keys[k]);
+  }
+  filterArry.push(arr);
+}
+
 export default {
-  name: "filterItem",
+  name: "filterCtr",
   data: function() {
     return {
-      allfilters: getCheckFilters(this.filter),
-      show: false
+      filterArry: filterArry,
+      afilters: afilters,
+
+      showAll: false
     };
   },
   mounted() {
@@ -40,7 +55,7 @@ export default {
     filter: String,
     filterCounts: Number,
     selected: Boolean,
-    items:Array
+    items: Array
   },
   methods: {
     ...mapActions(["setFilters"]),
@@ -55,6 +70,36 @@ export default {
 };
 </script>
 <style scoped>
+td {
+  padding: 3px 7px;
+  margin: 3px;
+}
+table {
+  width: auto !important;
+}
+#filterctr.showAll {
+  height: 25px;
+  overflow: hidden;
+}
+#filterctr {
+  position: fixed;
+  background: white;
+  z-index: 10000;
+}
+.filters {
+  list-style: none;
+}
+ul {
+  padding: 3px 7px;
+  margin: 3px;
+  float: left;
+}
+ul li {
+  float: left;
+}
+table {
+  float: left;
+}
 .items {
   background: white;
   padding: 10px;

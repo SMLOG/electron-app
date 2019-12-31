@@ -10,6 +10,7 @@
           <li v-for="(k,filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
             <a @click="selectSrc=k,visibility=null">{{filter}}({{filterCounts[filter]}})</a>
           </li>
+
           <FilterItem
             v-for="(k,filter) in filters"
             :key="filter"
@@ -18,6 +19,7 @@
             :filterCounts="filterCounts[selectSrc.name+filter]"
             @click.native="visibility = filter"
             :selected="visibility == filter"
+            :items="filteredItems"
           ></FilterItem>
         </ul>
       </div>
@@ -127,6 +129,7 @@ import { mapState, mapGetters } from "vuex";
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import FilterItem from "@/view/components/FilterItem";
+import FilterCtrl from "@/view/components/FilterCtrl";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
@@ -207,7 +210,8 @@ export default {
     SearchPanel,
     draggable,
     Setting,
-    FilterItem
+    FilterItem,
+    FilterCtrl
   },
   filters: {
     objectType(id) {

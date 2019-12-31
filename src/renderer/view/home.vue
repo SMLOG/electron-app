@@ -290,8 +290,11 @@ export default {
   },
   methods: {
     changeSetting(settings) {},
+    getSelectItems() {
+      return this[this.selectSrc.name];
+    },
     getfilterItems() {
-      let items = this[this.selectSrc.name];
+      let items = this.getSelectItems();
       if (this.visibility) {
         let items = filters[this.visibility](this[this.selectSrc.name]);
         if (this.sfilters) {

@@ -30,10 +30,13 @@ export default {
   },
   mounted() {
     window.addEventListener("click", e => {
+      if(this.$refs.filteritem){
       if (this.$refs.filteritem.contains(e.target)) {
       } else {
         this.show = false;
       }
+      }
+
     });
   },
   props: {

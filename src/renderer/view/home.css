@@ -156,7 +156,7 @@ table .descending:before {
 
 .filters li.selected {
   border-color: rgba(175, 47, 47, 0.2);
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid green;
 }
 .avggood {
   color: red;

@@ -6,9 +6,9 @@
       </li>
     </ul>
     <table>
-      <tr v-for="(filters,i) in filterArry" :key="filters">
-        <td v-for="(filter) in filters" :key="filter">
-          <div>{{ filter }}</div>
+      <tr v-for="(filters,i) in filtersCount" :key="i">
+        <td v-for="(filter,k) in filters" :key="k">
+          <div>{{ filter.name }}({{filter[src]}})</div>
         </td>
         <td>
           <i v-if="i==0" class="arrow left" @click="showAll=!showAll"></i>
@@ -37,7 +37,6 @@ export default {
   name: "filterCtr",
   data: function() {
     return {
-      filterArry: filterArry,
       afilters: afilters,
 
       showAll: false
@@ -53,9 +52,10 @@ export default {
   },
   props: {
     filter: String,
-    filterCounts: Number,
+    filtersCount: Array,
     selected: Boolean,
-    items: Array
+    items: Array,
+    src: String
   },
   methods: {
     ...mapActions(["setFilters"]),

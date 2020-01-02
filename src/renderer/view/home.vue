@@ -5,10 +5,13 @@
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <search-panel @select="addItem"></search-panel>
     <div id="menus">
+      <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" v-if="false" />
       <div>
         <ul class="filters">
           <li v-for="(k,filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
-            <a @click="selectSrc=k,visibility=null">{{filter}}({{filterCounts[filter]}})</a>
+            <a
+              @click="selectSrc=k,visibility=null,selectFilter=filter"
+            >{{filter}}({{filterCounts[filter]}})</a>
           </li>
 
           <FilterItem
@@ -134,8 +137,6 @@ import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
-import $ from "jquery";
-window.$ = $;
 import {
   ObjectType,
   parse,
@@ -149,14 +150,19 @@ import {
 } from "@/lib/utils";
 import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
-import { filters, afilters } from "@/lib/filters";
+import { filters, afilters, toFiltersCount, filtersCount } from "@/lib/filters";
 import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
+import $ from "jquery";
+window.$ = $;
+const SELF = "自选";
+
 export default {
   name: "home",
   data: function() {
     return {
       filters: filters,
       afilters: afilters,
+      selectFilter: SELF,
       items: [],
       descending: true,
       sortby: "",
@@ -165,11 +171,12 @@ export default {
       selectItem: null,
       items2: [],
       filterCounts: {},
-      selectSrc: afilters["自选"],
+      selectSrc: afilters[SELF],
       openCode: null,
       focus: null,
       openType: null,
-      showSetting: false
+      showSetting: false,
+      filtersCount: filtersCount
     };
   },
   directives: {
@@ -449,6 +456,7 @@ export default {
 
         let items = await getFindList(e => {
           this.items2.push(e);
+          toFiltersCount(e, "海选");
         });
 
         // items.forEach(e => this.items2.push(e));

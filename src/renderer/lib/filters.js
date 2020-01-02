@@ -46,3 +46,29 @@ export function getCheckFilters(name) {
 
   return ret;
 }
+export const filtersCount = [];
+{
+  const keys = Object.keys(filters);
+  const akeys = Object.keys(afilters);
+
+  for (let i = 0; i < keys.length; i++) {
+    let arr = [];
+    for (let k = i; k < keys.length; k++) {
+      let it = { name: keys[k] };
+      for (let j of akeys) it[j] = 0;
+      arr.push(it);
+    }
+    filtersCount.push(arr);
+  }
+}
+export function toFiltersCount(item, src) {
+  for (let cn = 0; cn < filtersCount.length; cn++) {
+    for (let ri = 0; ri < filtersCount.length - cn; ri++) {
+      let it = filtersCount[ri][cn];
+      if (filters[it.name]([item]).length > 0) {
+        it[src] += 1;
+      } else break;
+    }
+  }
+}
+window.filtersCount = filtersCount;

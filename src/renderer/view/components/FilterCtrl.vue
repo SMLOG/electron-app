@@ -9,9 +9,9 @@
     <table cellpadding="0" cellspacing="0">
       <tr v-for="(filters,i) in filtersCount" :key="i">
         <td v-for="(filter,k) in filters" :key="k">
-          <div :class="{curCol:i==0&&k==c}">
+          <div>
             <a
-              :class="{cur:i==r&&k==c}"
+              :class="{cur:i==r&&k==c ,curCol:i==0&&k==c}"
               @click="selectFilterChain(i,k)"
             >{{ filter.name }}({{filter[src]}})</a>
           </div>

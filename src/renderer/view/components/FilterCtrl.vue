@@ -1,17 +1,28 @@
 <template>
-  <div id="filterctr" :class="{showAll:showAll}">
-    <ul class="filters">
-      <li v-for="(k,filter) in afilters" :key="filter">
-        <a>{{filter}}</a>
-      </li>
-    </ul>
-    <table>
+  <div
+    id="filterctr"
+    :class="{showAll:showAll}"
+    ref="filterctr"
+    @mouseover="showAll=true"
+    @mouseout="showAll=false"
+  >
+    <table cellpadding="0" cellspacing="0">
       <tr v-for="(filters,i) in filtersCount" :key="i">
         <td v-for="(filter,k) in filters" :key="k">
-          <div>{{ filter.name }}({{filter[src]}})</div>
+          <div :class="{curCol:i==0&&k==c}">
+            <a
+              :class="{cur:i==r&&k==c}"
+              @click="selectFilterChain(i,k)"
+            >{{ filter.name }}({{filter[src]}})</a>
+          </div>
         </td>
         <td>
-          <i v-if="i==0" class="arrow left" @click="showAll=!showAll"></i>
+          <i
+            v-if="i==0"
+            class="arrow"
+            :class="{left:!showAll,down:showAll}"
+            @click="showAll=!showAll"
+          ></i>
         </td>
       </tr>
     </table>
@@ -38,13 +49,12 @@ export default {
   data: function() {
     return {
       afilters: afilters,
-
       showAll: false
     };
   },
   mounted() {
     window.addEventListener("click", e => {
-      if (this.$refs.filteritem.contains(e.target)) {
+      if (this.$refs.filterctr.contains(e.target)) {
       } else {
         this.show = false;
       }
@@ -55,13 +65,14 @@ export default {
     filtersCount: Array,
     selected: Boolean,
     items: Array,
-    src: String
+    src: String,
+    r: Number,
+    c: Number
   },
   methods: {
-    ...mapActions(["setFilters"]),
-    change() {
-      this.filters[this.filter] = this.allfilters;
-      this.setFilters(Object.assign({}, this.filters));
+    selectFilterChain(r, c) {
+      this.$emit("filterChainChange", r, c);
+      this.showAll = false;
     }
   },
   computed: {
@@ -72,19 +83,29 @@ export default {
 <style scoped>
 td {
   padding: 3px 7px;
-  margin: 3px;
 }
 table {
   width: auto !important;
 }
 #filterctr.showAll {
-  height: 25px;
-  overflow: hidden;
+  height: auto;
 }
 #filterctr {
   position: fixed;
   background: white;
   z-index: 10000;
+  left: 180px;
+  top: 0;
+  box-shadow: 3px 3px 3px #888888;
+  height: 25px;
+  overflow: hidden;
+}
+.curCol {
+  border-bottom: 1px solid #222;
+}
+.cur {
+  background: #222;
+  color: white;
 }
 .filters {
   list-style: none;
@@ -112,7 +133,7 @@ table {
   display: block;
 }
 
-li a {
+td {
   color: inherit;
   margin: 3px;
   padding: 3px 7px;

@@ -72,3 +72,11 @@ export function toFiltersCount(item, src) {
   }
 }
 window.filtersCount = filtersCount;
+
+export function getFilterChain(ri, ci) {
+  if (ri < 0 || ci < 0) return [];
+  return new Array(ri + 1)
+    .fill(0)
+    .map((a, i) => filters[filtersCount[i][ci].name]);
+}
+window.getFilterChain = getFilterChain;

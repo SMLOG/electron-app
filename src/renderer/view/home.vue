@@ -1,30 +1,38 @@
 <template>
   <div>
-    <Setting @change="changeSetting" />
+    <Setting />
 
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <search-panel @select="addItem"></search-panel>
     <div id="menus">
-      <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" v-if="false" />
       <div>
         <ul class="filters">
-          <li v-for="(k,filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
+          <li v-for="(k, filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
             <a
-              @click="selectSrc=k,visibility=null,selectFilter=filter"
-            >{{filter}}({{filterCounts[filter]}})</a>
+              @click="
+                (selectSrc = k), (visibility = null), (selectFilter = filter),selectFilter_r=selectFilter_c=-1
+              "
+            >{{ filter }}({{ filterCounts[filter] }})</a>
           </li>
 
-          <FilterItem
-            v-for="(k,filter) in filters"
+          <!--<FilterItem
+            v-for="(k, filter) in filters"
             :key="filter"
             :class="{ selected: visibility == filter }"
             :filter="filter"
-            :filterCounts="filterCounts[selectSrc.name+filter]"
+            :filterCounts="filterCounts[selectSrc.name + filter]"
             @click.native="visibility = filter"
             :selected="visibility == filter"
             :items="filteredItems"
-          ></FilterItem>
+          ></FilterItem>-->
         </ul>
+        <FilterCtrl
+          :filtersCount="filtersCount"
+          :src="selectFilter"
+          @filterChainChange="selectFilterChange"
+          :r="selectFilter_r"
+          :c="selectFilter_c"
+        />
       </div>
     </div>
     <div id="tbl">
@@ -45,18 +53,22 @@
                 v-for="col in head"
                 @click="sort(col.prop)"
                 :key="col.prop"
-                :class="{ 
-                    ascending : sortby === col.prop && !descending,
-                    descending: sortby ===col.prop && descending
+                :class="{
+                  ascending: sortby === col.prop && !descending,
+                  descending: sortby === col.prop && descending
                 }"
-              >{{col.label}}</th>
+              >{{ col.label }}</th>
             </tr>
-            <tr v-if="selectItem &&  selectItem.tables&&selectItem.tables.length>0">
-              <th :colspan="head.length+4">
+            <tr
+              v-if="
+                selectItem && selectItem.tables && selectItem.tables.length > 0
+              "
+            >
+              <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables&&selectItem.tables.length>0">
+                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
                     <div v-for="t in selectItem.tables" :key="t.str">
-                      {{selectItem.name}}
+                      {{ selectItem.name }}
                       <span v-html="t.str"></span>
                     </div>
                   </span>
@@ -67,14 +79,14 @@
           <draggable v-model="items" @update="dragEnd" tag="tbody">
             <tr
               class="item"
-              v-for="(item,index) in filteredItems"
+              v-for="(item, index) in filteredItems"
               :key="item.code"
-              :class="{'openlink':index === focus||openCode===item.code}"
+              :class="{ openlink: index === focus || openCode === item.code }"
             >
               <td>
                 <div class="first">
                   <span>
-                    <a :name="item.code">{{index+1}}</a>
+                    <a :name="item.code">{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -84,16 +96,25 @@
                   </span>
                   <div
                     :title="item.code"
-                    :class="{lk:item.tables&&item.tables.length>0,hl:item.hili==2,link:true}"
+                    :class="{
+                      lk: item.tables && item.tables.length > 0,
+                      hl: item.hili == 2,
+                      link: true
+                    }"
                   >
-                    <span :class="{sz:item.mk=='sz'}" @click="openlink(item,$event)">{{item.name}}</span>
+                    <span
+                      :class="{ sz: item.mk == 'sz' }"
+                      @click="openlink(item, $event)"
+                    >{{ item.name }}</span>
                     <span
                       title="avgzs"
                       @click="toggleDetail(item)"
-                      :class="{avggood:item.avgzs>45 && item.upArgCount>120}"
-                    >{{item.avgzs}}</span>
-                    <span title="upArgCount">/{{item.upArgCount}}</span>
-                    <span title="contDir">/{{item.contDir}}</span>
+                      :class="{
+                        avggood: item.avgzs > 45 && item.upArgCount > 120
+                      }"
+                    >{{ item.avgzs }}</span>
+                    <span title="upArgCount">/{{ item.upArgCount }}</span>
+                    <span title="contDir">/{{ item.contDir }}</span>
                   </div>
                 </div>
               </td>
@@ -101,9 +122,9 @@
               <td
                 v-for="col in head"
                 :key="col.prop"
-                :class="col.class&&col.class(item)"
-                @click="col.click&&col.click(item,$event,openlink)"
-              >{{col.fmt?col.fmt(item[col.prop],item):item[col.prop]}}</td>
+                :class="col.class && col.class(item)"
+                @click="col.click && col.click(item, $event, openlink)"
+              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
             </tr>
           </draggable>
         </table>
@@ -150,7 +171,13 @@ import {
 } from "@/lib/utils";
 import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
-import { filters, afilters, toFiltersCount, filtersCount } from "@/lib/filters";
+import {
+  filters,
+  afilters,
+  toFiltersCount,
+  filtersCount,
+  getFilterChain
+} from "@/lib/filters";
 import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
 import $ from "jquery";
 window.$ = $;
@@ -176,7 +203,9 @@ export default {
       focus: null,
       openType: null,
       showSetting: false,
-      filtersCount: filtersCount
+      filtersCount: filtersCount,
+      selectFilter_r: -1,
+      selectFilter_c: -1
     };
   },
   directives: {
@@ -296,23 +325,20 @@ export default {
     ...mapGetters({ sfilters: "filters" })
   },
   methods: {
-    changeSetting(settings) {},
+    selectFilterChange(r, c) {
+      this.selectFilter_r = r;
+      this.selectFilter_c = c;
+    },
     getSelectItems() {
       return this[this.selectSrc.name];
     },
     getfilterItems() {
       let items = this.getSelectItems();
-      if (this.visibility) {
-        let items = filters[this.visibility](this[this.selectSrc.name]);
-        if (this.sfilters) {
-          let fs = this.sfilters[this.visibility];
-          if (fs)
-            for (let f of fs.filter(e => e.checked))
-              items = filters[f.name](items);
-        }
-
-        return items;
-      } else return items;
+      let fcs = getFilterChain(this.selectFilter_r, this.selectFilter_c);
+      for (let fc of fcs) {
+        items = fc(items);
+      }
+      return items;
     },
     scrollToItem(item) {
       window.scrollTo({
@@ -523,4 +549,4 @@ export default {
   }
 };
 </script>
-<style scoped src="./home.css"/>
+<style scoped src="./home.css" />

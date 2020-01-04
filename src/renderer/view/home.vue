@@ -7,13 +7,13 @@
     <div id="menus">
       <div>
         <ul class="filters">
-          <li v-for="(k, filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
+          <Sea v-for="(k, filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
             <a
               @click="
                 (selectSrc = k), (visibility = null), (selectFilter = filter),selectFilter_r=selectFilter_c=-1
               "
             >{{ filter }}({{ k.items.length }})</a>
-          </li>
+          </Sea>
         </ul>
         <FilterCtrl
           :filtersCount="filtersCount"
@@ -143,6 +143,7 @@ import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
+import Sea from "@/view/components/Sea";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
@@ -236,7 +237,8 @@ export default {
     draggable,
     Setting,
     FilterItem,
-    FilterCtrl
+    FilterCtrl,
+    Sea
   },
   filters: {
     objectType(id) {

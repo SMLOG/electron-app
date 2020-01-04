@@ -12,19 +12,8 @@
               @click="
                 (selectSrc = k), (visibility = null), (selectFilter = filter),selectFilter_r=selectFilter_c=-1
               "
-            >{{ filter }}({{ filterCounts[filter] }})</a>
+            >{{ filter }}({{ k.items.length }})</a>
           </li>
-
-          <!--<FilterItem
-            v-for="(k, filter) in filters"
-            :key="filter"
-            :class="{ selected: visibility == filter }"
-            :filter="filter"
-            :filterCounts="filterCounts[selectSrc.name + filter]"
-            @click.native="visibility = filter"
-            :selected="visibility == filter"
-            :items="filteredItems"
-          ></FilterItem>-->
         </ul>
         <FilterCtrl
           :filtersCount="filtersCount"
@@ -176,7 +165,8 @@ import {
   afilters,
   toFiltersCount,
   filtersCount,
-  getFilterChain
+  getFilterChain,
+  updateFiltersCount
 } from "@/lib/filters";
 import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
 import $ from "jquery";
@@ -197,7 +187,6 @@ export default {
       head: getCheckFields(),
       selectItem: null,
       items2: [],
-      filterCounts: {},
       selectSrc: afilters[SELF],
       openCode: null,
       focus: null,
@@ -296,12 +285,6 @@ export default {
     });
   },
   watch: {
-    items(newVal) {
-      this.updateFilterCounts();
-    },
-    items2(newVal) {
-      this.updateFilterCounts();
-    },
     focus() {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
@@ -330,6 +313,7 @@ export default {
       this.selectFilter_c = c;
     },
     getSelectItems() {
+      window.items = this[this.selectSrc.name];
       return this[this.selectSrc.name];
     },
     getfilterItems() {
@@ -401,20 +385,6 @@ export default {
       console.log(url);
       //openKlineWindow(this, item);
     },
-    updateFilterCounts() {
-      let map = {};
-      for (let i in this.afilters) {
-        let items = this[this.afilters[i].name];
-        let name = this.afilters[i].name;
-        map[i] = items.length;
-
-        for (let k in this.filters) {
-          map[name + k] = this.filters[k](items).length;
-        }
-      }
-
-      this.filterCounts = map;
-    },
     toggleDetail(item) {
       if (this.selectItem != item) this.selectItem = item;
       else this.selectItem = null;
@@ -444,11 +414,13 @@ export default {
     },
     reloadData() {
       this.items = store.fetch();
+      this.items.forEach(e => toFiltersCount(e, SELF));
     },
     addItem(selectItem) {
       if (this.items.filter(it => it.code == selectItem.code).length == 0) {
         this.items.push(selectItem);
         store.save(this.items);
+        toFiltersCount(selectItem, SELF);
       }
       this.openCode = selectItem.code;
       //this.reloadData();
@@ -479,6 +451,8 @@ export default {
       })();
       (async () => {
         this.items2.length = 0;
+        afilters["海选"].items = this.items2;
+        afilters[SELF].items = this.items;
 
         let items = await getFindList(e => {
           this.items2.push(e);
@@ -536,6 +510,8 @@ export default {
         if (k.indexOf(item.code) > -1) window[k] = undefined;
       }
       this.items.splice(this.items.indexOf(item), 1);
+      toFiltersCount(item, SELF, "-");
+
       store.save(this.items);
       this.sendRefresh();
 
@@ -544,7 +520,7 @@ export default {
     saveDatas(item) {
       if (item.isFocus) this.addItem(item);
       store.save(this.items);
-      this.updateFilterCounts();
+      updateFiltersCount();
     }
   }
 };

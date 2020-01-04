@@ -1,6 +1,6 @@
 import { buildFilters } from "./tech-manager";
 import { getFilters } from "../store/modules/suspension";
-import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
+import { getFindList } from "@/lib/getTable";
 import store from "../localdata";
 
 export const afilters = {
@@ -8,15 +8,17 @@ export const afilters = {
     name: "items2",
     get: async function(cb) {
       await getFindList(e => {
-        cb(e);
+        this.items.push(e);
       });
-    }
+    },
+    items: []
   },
   自选: {
     name: "items",
     get: function(cb) {
-      cb(store.fetch());
-    }
+      this.items.concat(store.fetch());
+    },
+    items: []
   }
 };
 
@@ -61,17 +63,36 @@ export const filtersCount = [];
     filtersCount.push(arr);
   }
 }
-export function toFiltersCount(item, src) {
+export function toFiltersCount(item, src, type = "+") {
   for (let cn = 0; cn < filtersCount.length; cn++) {
     for (let ri = 0; ri < filtersCount.length - cn; ri++) {
       let it = filtersCount[ri][cn];
       if (filters[it.name]([item]).length > 0) {
-        it[src] += 1;
+        it[src] += type == "-" ? -1 : 1;
       } else break;
     }
   }
 }
-window.filtersCount = filtersCount;
+export function updateFiltersCount() {
+  const keys = Object.keys(filters);
+  const akeys = Object.keys(afilters);
+
+  for (let i = 0; i < keys.length; i++) {
+    for (let k = 0; k < keys.length - i; k++) {
+      let it = filtersCount[i][k];
+      if (!it) filtersCount[i][k] = { name: keys[k + i] };
+      let fcs = getFilterChain(i, k);
+      for (let j of akeys) {
+        let items = afilters[j].items;
+        for (let fc of fcs) {
+          items = fc(items);
+        }
+        it[j] = items.length;
+      }
+    }
+  }
+}
+window.updateFiltersCount = updateFiltersCount;
 
 export function getFilterChain(ri, ci) {
   if (ri < 0 || ci < 0) return [];

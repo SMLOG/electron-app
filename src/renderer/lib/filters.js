@@ -23,13 +23,6 @@ export const afilters = {
 };
 
 export let filters = {
-  Strong: items => {
-    return items.filter(function(item) {
-      return (
-        item.now >= item.ma5 && item.ma5 >= item.ma10 && item.ma10 > item.ma20
-      );
-    });
-  },
   Focus: function(items) {
     return items.filter(function(item) {
       return item.isFocus;

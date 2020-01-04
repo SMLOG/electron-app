@@ -288,7 +288,6 @@ export default {
     focus() {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
-      //this.scrollToItem(items[this.focus]);
     },
     fields: {
       deep: true,

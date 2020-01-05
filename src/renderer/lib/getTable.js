@@ -557,7 +557,6 @@ export async function getFindList(callback) {
   d.setFullYear(d.getFullYear() - 3);
   datalist = datalist.filter(
     e =>
-      e.now > 5 &&
       e.lz > 100 &&
       // e.zf60 > 0 &&
       //  e.firstDay <= lastyearStr &&

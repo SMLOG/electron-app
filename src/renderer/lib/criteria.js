@@ -1,3 +1,5 @@
+import storejs from "storejs";
+
 export const criteria = {
   scope: {
     market: {
@@ -151,21 +153,66 @@ export const criteria = {
     }
   },
   basic: {
-    roe: { name: "roe", op: "between", label: "净资产收益率 ROE", unit: "%" },
-    roa: { name: "roa", op: "between", label: "总资产收益率 ROA", unit: "%" },
-    gpm: { name: "gpm", op: "between", label: "毛利率 GPM", unit: "%" },
-    epsgr: { name: "epsgr", op: "between", label: "利润增长率", unit: "%" },
-    dar: { name: "dar", op: "between", label: "资产负债比", unit: "%" },
-    pe: { name: "pe", op: "between", label: "市盈率 PE", unit: "倍" },
-    pb: { name: "pb", op: "between", label: "市净率 PB", unit: "倍" },
-    peg: { name: "peg", op: "between", label: "市盈增长比率 PEG", unit: "倍" },
+    roe: {
+      name: "roe",
+      op: "between",
+      label: "净资产收益率 ROE",
+      unit: "%"
+    },
+    roa: {
+      name: "roa",
+      op: "between",
+      label: "总资产收益率 ROA",
+      unit: "%"
+    },
+    gpm: {
+      name: "gpm",
+      op: "between",
+      label: "毛利率 GPM",
+      unit: "%"
+    },
+    epsgr: {
+      name: "epsgr",
+      op: "between",
+      label: "利润增长率",
+      unit: "%"
+    },
+    dar: {
+      name: "dar",
+      op: "between",
+      label: "资产负债比",
+      unit: "%"
+    },
+    pe: {
+      name: "pe",
+      op: "between",
+      label: "市盈率 PE",
+      unit: "倍"
+    },
+    pb: {
+      name: "pb",
+      op: "between",
+      label: "市净率 PB",
+      unit: "倍"
+    },
+    peg: {
+      name: "peg",
+      op: "between",
+      label: "市盈增长比率 PEG",
+      unit: "倍"
+    },
     ev_ebit: {
       name: "ev_ebit",
       op: "between",
       label: "企业价值倍数 EV/EBIT",
       unit: "倍"
     },
-    ps: { name: "ps", op: "between", label: "市销率 PS", unit: "倍" },
+    ps: {
+      name: "ps",
+      op: "between",
+      label: "市销率 PS",
+      unit: "倍"
+    },
     avg_dividend_yield_ratio: {
       name: "avg_dividend_yield_ratio",
       op: "between",
@@ -194,15 +241,20 @@ const isTypeFun = function(t) {
 };
 const isObject = isTypeFun("Object");
 
-function copy(target,src){
-  for(let k in target){
-      if (target.hasOwnProperty(k) && src.hasOwnProperty(k) && src[k]   ){
-
-          if(isObject(target[k]) && isObject(src[k]))
-          copy(target[k],src[k]);
-          else target[k] = src[k];
-
-      }
+function copy(target, src) {
+  for (let k in src) {
+    if (src.hasOwnProperty(k)) {
+      if (isObject(target[k]) && isObject(src[k])) copy(target[k], src[k]);
+      else if (k[0] == "_") target[k] = src[k];
+    }
   }
   return target;
+}
+export const criterias = storejs.get("criterias") || [{}];
+for (let i = 0; i < criterias.length; i++) {
+  criterias[i] = copy(Object.assign({}, criteria), criterias[i]);
+}
+
+export function saveCriterias(cs) {
+  storejs.set("criterias", cs);
 }

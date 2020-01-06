@@ -9,7 +9,12 @@
     ></i>
     <div v-show="show" class="items" style="width:700px;">
       <div id="search-criteria">
-        <form action="javascript:void(0)" class="ng-pristine ng-valid">
+        <form
+          v-for="(criteria, i) in criterias"
+          :key="i"
+          action="javascript:void(0)"
+          class="ng-pristine ng-valid"
+        >
           <div id="basic-search-criteria" class="form-inline">
             <div
               v-for="(obj, type) in criteria.scope"
@@ -50,14 +55,21 @@
                 data-step="1"
                 data-unit-value="1"
               >
-                <td><input type="checkbox" autocomplete="off" /></td>
+                <td>
+                  <input
+                    type="checkbox"
+                    v-model="v._enable"
+                    autocomplete="off"
+                    @click="clickCheckBox(v)"
+                  />
+                </td>
                 <td>{{ v.label }}</td>
                 <td class="number lower">
-                  <input type="number" style="width:60px" />
+                  <input type="number" style="width:60px" v-model="v._value1" />
                 </td>
 
                 <td class="number upper">
-                  <input type="number" style="width:60px" />
+                  <input type="number" style="width:60px" v-model="v._value2" />
                 </td>
                 <td>{{ v.unit }}</td>
               </tr>
@@ -66,17 +78,7 @@
 
           <div id="operation-bar" class="form-inline">
             <div class="form-group">
-              <button class="btn btn-default" ng-click="screen()">选股</button>
-            </div>
-            <div class="form-group">
-              <button
-                class="btn btn-default"
-                ng-disabled="disableComparison()"
-                ng-click="compareStocks()"
-                disabled="disabled"
-              >
-                比较
-              </button>
+              <button class="btn btn-default" @click="apply">Apply</button>
             </div>
           </div>
         </form>
@@ -87,7 +89,7 @@
 
 <script>
 import { filters, getCheckFilters } from "@/lib/filters";
-import { criteria } from "@/lib/criteria";
+import { criterias, saveCriterias } from "@/lib/criteria";
 
 import { mapActions, mapGetters } from "vuex";
 
@@ -101,7 +103,7 @@ export default {
     return {
       allfilters: getCheckFilters(this.filter),
       show: false,
-      criteria: criteria
+      criterias: criterias
     };
   },
   mounted() {
@@ -124,6 +126,13 @@ export default {
     change() {
       this.filters[this.filter] = this.allfilters;
       this.setFilters(Object.assign({}, this.filters));
+    },
+    apply() {
+      console.log(this.criterias);
+      saveCriterias(this.criterias);
+    },
+    clickCheckBox(v) {
+      console.log(v);
     }
   },
   computed: {

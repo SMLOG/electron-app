@@ -186,3 +186,23 @@ export const criteria = {
     }
   }
 };
+
+const isTypeFun = function(t) {
+  return function(e) {
+    return {}.toString.call(e) == "[object " + t + "]";
+  };
+};
+const isObject = isTypeFun("Object");
+
+function copy(target,src){
+  for(let k in target){
+      if (target.hasOwnProperty(k) && src.hasOwnProperty(k) && src[k]   ){
+
+          if(isObject(target[k]) && isObject(src[k]))
+          copy(target[k],src[k]);
+          else target[k] = src[k];
+
+      }
+  }
+  return target;
+}

@@ -157,7 +157,15 @@ export const criteria = {
       name: "roe",
       op: "between",
       label: "净资产收益率 ROE",
-      unit: "%"
+      unit: "%",
+      get: async function(item) {
+        let tb = await getCacheData(null, `tb_zycwzb${item.code}`);
+        if (tb && tb.reportDate) {
+          tb.reportDate[1];
+          let n = "净资产收益率加权(%)";
+          return (item.roe = parseFloat(tb[n][tb.reportDate[1]]));
+        }
+      }
     },
     roa: {
       name: "roa",
@@ -187,7 +195,10 @@ export const criteria = {
       name: "pe",
       op: "between",
       label: "市盈率 PE",
-      unit: "倍"
+      unit: "倍",
+      get: item => {
+        return item.pe_ttm;
+      }
     },
     pb: {
       name: "pb",
@@ -250,9 +261,12 @@ function copy(target, src) {
   }
   return target;
 }
-export const criterias = storejs.get("criterias") || [{}];
-for (let i = 0; i < criterias.length; i++) {
-  criterias[i] = copy(Object.assign({}, criteria), criterias[i]);
+export function getCriterias() {
+  let criterias = storejs.get("criterias") || [{}];
+  for (let i = 0; i < criterias.length; i++) {
+    criterias[i] = copy(Object.assign({}, criteria), criterias[i]);
+  }
+  return criterias;
 }
 
 export function saveCriterias(cs) {

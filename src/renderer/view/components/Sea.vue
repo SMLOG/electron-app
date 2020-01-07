@@ -89,7 +89,7 @@
 
 <script>
 import { filters, getCheckFilters } from "@/lib/filters";
-import { criterias, saveCriterias } from "@/lib/criteria";
+import { getCriterias, saveCriterias } from "@/lib/criteria";
 
 import { mapActions, mapGetters } from "vuex";
 
@@ -103,7 +103,7 @@ export default {
     return {
       allfilters: getCheckFilters(this.filter),
       show: false,
-      criterias: criterias
+      criterias: getCriterias()
     };
   },
   mounted() {

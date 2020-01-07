@@ -10,6 +10,7 @@ import {
   isObjectEmpty,
   rid
 } from "./utils";
+import { getCriterias } from "./criteria";
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
@@ -552,7 +553,20 @@ export async function getFindList(callback) {
       firstDay: e.f26
     };
   });
+  let crs = getCriterias();
+  for (let i = 0; i < crs.length; i++) {
+    let cr = crs[i];
+    let keys = Object.keys(cr.basic);
+    for (let j = 0; j < keys.length; j++) {
+      let c = cr.basic[j];
+      if (c && c.enable) {
+        /* let val = await c.get();
+        if(val){
 
+        }*/
+      }
+    }
+  }
   let d = new Date();
   d.setFullYear(d.getFullYear() - 3);
   datalist = datalist.filter(

@@ -16,6 +16,7 @@ import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
 import { getTechDatas } from "./tech";
 import { callFun } from "./tech-manager";
+import { isTokenCharValid } from "builder-util";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
@@ -554,49 +555,68 @@ export async function getFindList(callback) {
     };
   });
   let crs = getCriterias();
-  for (let i = 0; i < crs.length; i++) {
-    let cr = crs[i];
-    let keys = Object.keys(cr.basic);
-    for (let j = 0; j < keys.length; j++) {
-      let c = cr.basic[j];
-      if (c && c.enable) {
-        /* let val = await c.get();
-        if(val){
-
-        }*/
-      }
-    }
-  }
-  let d = new Date();
-  d.setFullYear(d.getFullYear() - 3);
-  datalist = datalist.filter(
-    e =>
-      e.lz > 100 &&
-      // e.zf60 > 0 &&
-      //  e.firstDay <= lastyearStr &&
-      e.zf60 < 100 &&
-      e.name.indexOf("ST") == -1
-    //&& e.sz3
-  );
-
-  await loadHQ(datalist);
-
-  datalist = datalist.filter(e => {
-    return e.pe_ttm > 0 && e.pe_ttm < 40;
+  let ccArrList = crs.map(cr => {
+    return []
+      .concat(Object.values(cr.scope))
+      .concat(Object.values(cr.basic))
+      .filter(e => e && e._enable);
   });
 
-  for (let i = 0; i < datalist.length; i++) {
-    await attachData(datalist[i]);
-    let e = datalist[i];
-    if (e.PEG > 0 && e.PEG < 2 && e.pe_ttm > 0 && e.pe_ttm < 40 && e.tbzz > 0) {
-      await getCacheData(null, e.code, null, e);
-      await hl(e);
+  let recursivFiltersSync = (item, filters) => {
+    if (filters.length == 0) return true;
+    let f = filters.pop();
+    return f.is(item) && recursivFiltersSync(item, filters);
+  };
+  let recursivFiltersAsync = async (item, filters) => {
+    if (filters.length == 0) return true;
+    let f = filters.pop();
+    return (await f.is(item)) && (await recursivFiltersAsync(item, filters));
+  };
+  let recursivFiltersTopSync = (item, filters) => {
+    if (filters.length == 0) return true;
+    let f = filters.pop();
+    return (
+      recursivFiltersSync(item, f) ||
+      (filters.length > 0 && recursivFiltersTopSync(item, filters))
+    );
+  };
 
-      callback(e);
-    }
+  let recursivFiltersTopAsync = async (item, filters) => {
+    if (filters.length == 0) return true;
+    let f = filters.pop();
+    return (
+      (await recursivFiltersAsync(item, f)) ||
+      (filters.length > 0 && (await recursivFiltersTopAsync(item, filters)))
+    );
+  };
+
+  datalist = datalist.filter(item =>
+    recursivFiltersTopSync(
+      item,
+      ccArrList.map(a => a.filter(e => e.order == 0))
+    )
+  );
+  console.log("0:", datalist);
+
+  await loadHQ(datalist);
+  datalist = datalist.filter(item =>
+    recursivFiltersTopSync(
+      item,
+      ccArrList.map(a => a.filter(e => e.order == 1))
+    )
+  );
+  console.log("1:", datalist);
+
+  for (let i = 0; i < datalist.length; i++) {
+    if (
+      await recursivFiltersTopAsync(
+        datalist[i],
+        ccArrList.map(a => a.filter(e => e.order == 2))
+      )
+    )
+      callback(datalist[i]);
   }
 
-  console.log(datalist);
   return datalist;
 }
 

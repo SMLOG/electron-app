@@ -1,5 +1,6 @@
 import storejs from "storejs";
-
+import { getCacheData } from "./db";
+import { attachData, hl } from "./getTable";
 export const criteria = {
   scope: {
     market: {
@@ -196,8 +197,9 @@ export const criteria = {
       op: "between",
       label: "市盈率 PE",
       unit: "倍",
-      get: item => {
-        return item.pe_ttm;
+      order: 1,
+      is: item => {
+        return item.pe_ttm > 0 && item.pe_ttm < 40;
       }
     },
     pb: {
@@ -210,7 +212,22 @@ export const criteria = {
       name: "peg",
       op: "between",
       label: "市盈增长比率 PEG",
-      unit: "倍"
+      unit: "倍",
+      order: 2,
+      is: async e => {
+        await attachData(e);
+        if (
+          e.PEG > 0 &&
+          e.PEG < 2 &&
+          e.pe_ttm > 0 &&
+          e.pe_ttm < 40 &&
+          e.tbzz > 0
+        ) {
+          await getCacheData(null, e.code, null, e);
+          await hl(e);
+          return true;
+        }
+      }
     },
     ev_ebit: {
       name: "ev_ebit",
@@ -241,6 +258,24 @@ export const criteria = {
       op: "between",
       label: "股价",
       unit: "元"
+    },
+    others: {
+      name: "others",
+      label: "Others",
+      unit: "",
+      order: 0,
+      is: function(item) {
+        let d = new Date();
+        d.setFullYear(d.getFullYear() - 3);
+        return (
+          item.lz > 100 &&
+          // e.zf60 > 0 &&
+          //  e.firstDay <= lastyearStr &&
+          item.zf60 < 100 &&
+          item.name.indexOf("ST") == -1
+          //&& e.sz3
+        );
+      }
     }
   }
 };
@@ -268,7 +303,7 @@ export function getCriterias() {
   }
   return criterias;
 }
-
+window.getCriterias = getCriterias;
 export function saveCriterias(cs) {
   storejs.set("criterias", cs);
 }

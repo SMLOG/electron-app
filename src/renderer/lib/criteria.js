@@ -198,8 +198,11 @@ export const criteria = {
       label: "市盈率 PE",
       unit: "倍",
       order: 1,
-      is: item => {
-        return item.pe_ttm > 0 && item.pe_ttm < 40;
+      is: function(item) {
+        return (
+          item.pe_ttm > (this._value1 || Number.MIN_VALUE) &&
+          item.pe_ttm < (this._value2 || Number.MAX_VALUE)
+        );
       }
     },
     pb: {
@@ -214,11 +217,11 @@ export const criteria = {
       label: "市盈增长比率 PEG",
       unit: "倍",
       order: 2,
-      is: async e => {
+      is: async function(e) {
         await attachData(e);
         if (
-          e.PEG > 0 &&
-          e.PEG < 2 &&
+          e.PEG > (this._value1 || Number.MIN_VALUE) &&
+          e.PEG < (this._value2 || Number.MAX_VALUE) &&
           e.pe_ttm > 0 &&
           e.pe_ttm < 40 &&
           e.tbzz > 0

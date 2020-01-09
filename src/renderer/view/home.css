@@ -23,10 +23,13 @@ table {
 #tbl table thead th:first-child {
   position: sticky;
   left: 0px;
+  background: #666;
+  z-index: 2;
 }
 #tbl table tbody td:first-child {
   position: sticky;
   left: 0px;
+  background: #eee;
 }
 
 #tbl table thead :nth-child(2) th {

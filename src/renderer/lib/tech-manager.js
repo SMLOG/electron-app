@@ -1,6 +1,7 @@
 import { getTechDatas } from "./tech";
 function isMacdJC(techData) {
   return (
+    techData.MACD.length > 3 &&
     techData.MACD[techData.MACD.length - 1].bar > 0 &&
     techData.MACD[techData.MACD.length - 1].bar >
       techData.MACD[techData.MACD.length - 2].bar &&
@@ -16,6 +17,7 @@ const techMap = {
   },
   KdWeekX: function({ item, kd, kw, km }) {
     return (
+      kw.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
       kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
       isMacdJC(kd)
@@ -24,6 +26,7 @@ const techMap = {
   粘合多头: function({ item, kd, kw, km }) {
     //5,10,20日三线粘合 {取1%振幅内粘合}
     let m = item.now;
+    if (kd.MA.length < 30) return false;
     let ma = kd.MA[kd.MA.length - 1];
     let ma1 = kd.MA[kd.MA.length - 2];
     let m5 = ma.ma5;

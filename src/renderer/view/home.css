@@ -338,5 +338,5 @@ tr.openlink .first > *:first-child {
 }
 .firstCol {
   max-width: 170px !important;
-  width: 170px;
+  min-width: 170px;
 }

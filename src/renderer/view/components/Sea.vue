@@ -1,6 +1,6 @@
 <template>
   <li ref="filteritem" class="filterItem" is="li">
-    <div :class="{selected:selected}">
+    <div :class="{ selected: selected }">
       <slot></slot>
       <i
         v-if="is_search"
@@ -24,13 +24,19 @@
           class="ng-pristine ng-valid"
         >
           <div id="basic-search-criteria" class="form-inline">
-            <div v-for="(obj, type) in criteria.scope" class="form-group" :key="type">
+            <div
+              v-for="(obj, type) in criteria.scope"
+              class="form-group"
+              :key="type"
+            >
               <label>{{ obj.label }}</label>
-              <select class="form-control" :data-factor="type" :data-operator="obj.op">
+              <select
+                class="form-control"
+                :data-factor="type"
+                :data-operator="obj.op"
+              >
                 <option v-for="(v, k) in obj.values" :value="k" :key="k">
-                  {{
-                  v
-                  }}
+                  {{ v }}
                 </option>
               </select>
             </div>
@@ -166,7 +172,7 @@ table {
   min-width: 40px;
 }
 #search-criteria {
-  max-height: calc(100vh - 60px);
+  max-height: calc(100vh - 100px);
   overflow: auto;
 }
 .form-group {

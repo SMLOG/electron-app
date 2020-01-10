@@ -2,7 +2,10 @@
   <div>
     <Setting />
 
-    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+    <iframe
+      src="static/tech2.html?sh000001"
+      style="width:100%;height:600px;display:none;"
+    ></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap">
@@ -12,8 +15,11 @@
             :key="filter"
             :selected="selectSrc == k"
             @click.native="
-                (selectSrc = k), (visibility = null), (selectFilter = filter),selectFilter_r=selectFilter_c=-1
-              "
+              (selectSrc = k),
+                (visibility = null),
+                (selectFilter = filter),
+                (selectFilter_r = selectFilter_c = -1)
+            "
             :is_search="k.is_search"
           >
             <a>{{ filter }}({{ k.items.length }})</a>
@@ -50,7 +56,9 @@
                   ascending: sortby === col.prop && !descending,
                   descending: sortby === col.prop && descending
                 }"
-              >{{ col.label }}</th>
+              >
+                {{ col.label }}
+              </th>
             </tr>
             <tr
               v-if="
@@ -59,7 +67,9 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
+                  <span
+                    v-if="selectItem.tables && selectItem.tables.length > 0"
+                  >
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -85,7 +95,11 @@
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveDatas(item)"
+                    />
                   </span>
                   <div
                     :title="item.code"
@@ -98,14 +112,16 @@
                     <span
                       :class="{ sz: item.mk == 'sz' }"
                       @click="openlink(item, $event)"
-                    >{{ item.name }}</span>
+                      >{{ item.name }}</span
+                    >
                     <span
                       title="avgzs"
                       @click="toggleDetail(item)"
                       :class="{
                         avggood: item.avgzs > 45 && item.upArgCount > 120
                       }"
-                    >{{ item.avgzs }}</span>
+                      >{{ item.avgzs }}</span
+                    >
                     <span title="upArgCount">/{{ item.upArgCount }}</span>
                     <span title="contDir">/{{ item.contDir }}</span>
                   </div>
@@ -117,7 +133,9 @@
                 :key="col.prop"
                 :class="col.class && col.class(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
             </tr>
           </draggable>
         </table>
@@ -126,7 +144,7 @@
     <div
       id="webviewWrap"
       ref="webviewWrap"
-      style="position:fixed;left:120px;right:0;bottom:0;top:60%;display:none;z-index:100"
+      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:100"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
@@ -135,7 +153,11 @@
           @click="closeview()"
         ></i>
       </div>
-      <webview ref="webview" id="figure" style="width:100%;height:100%;"></webview>
+      <webview
+        ref="webview"
+        id="figure"
+        style="width:100%;height:100%;"
+      ></webview>
     </div>
   </div>
 </template>
@@ -504,7 +526,10 @@ export default {
     sendRefresh() {
       this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
         win.isVisible() &&
-          win.webContents.send("refresh", this.items.filter(e => e.isFocus));
+          win.webContents.send(
+            "refresh",
+            this.items.filter(e => e.isFocus)
+          );
       });
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },

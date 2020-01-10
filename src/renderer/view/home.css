@@ -153,14 +153,6 @@ table .descending:before {
   cursor: pointer;
 }
 
-.filters li a:hover {
-  border-color: rgba(175, 47, 47, 0.1);
-}
-
-.filters li.selected {
-  background: #222;
-  color: white;
-}
 .avggood {
   color: red;
 }
@@ -268,6 +260,9 @@ i.arrow {
 .arrow.right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
+}
+.selected i.arrow {
+  border-color: transparent transparent rgba(255, 255, 255, 1) transparent;
 }
 
 .arrow.left {

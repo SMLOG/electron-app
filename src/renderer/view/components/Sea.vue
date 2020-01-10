@@ -1,8 +1,21 @@
 <template>
   <li ref="filteritem" class="filterItem" is="li">
-    <slot></slot>
-    <i class="arrow" :class="{ left: !show, down: show }" @click="show = !show" ref="arrow"></i>
-    <div v-show="show" class="items" style="width:700px;">
+    <div :class="{selected:selected}">
+      <slot></slot>
+      <i
+        v-if="is_search"
+        class="arrow"
+        :class="{ left: !show, down: show }"
+        @click="show = !show"
+        ref="arrow"
+      ></i>
+    </div>
+    <div v-if="is_search" v-show="show" class="items" style="width:700px;">
+      <div id="operation-bar" class="form-inline">
+        <div class="form-group">
+          <button class="btn btn-default" @click="apply">Apply</button>
+        </div>
+      </div>
       <div id="search-criteria">
         <form
           v-for="(criteria, i) in criterias"
@@ -22,6 +35,7 @@
               </select>
             </div>
           </div>
+
           <table id="search-criterias" class="table table-condensed borderless">
             <thead>
               <tr>
@@ -64,12 +78,6 @@
               </tr>
             </tbody>
           </table>
-
-          <div id="operation-bar" class="form-inline">
-            <div class="form-group">
-              <button class="btn btn-default" @click="apply">Apply</button>
-            </div>
-          </div>
         </form>
       </div>
     </div>
@@ -108,7 +116,8 @@ export default {
   props: {
     filter: String,
     filterCounts: Number,
-    selected: Boolean
+    selected: Boolean,
+    is_search: Boolean
   },
   methods: {
     ...mapActions(["setFilters"]),
@@ -142,7 +151,10 @@ textarea {
   font: 12px/1.5 Tahoma, "Microsoft Yahei", "Simsun";
   color: #444;
 }
-
+.selected {
+  background: #222;
+  color: white;
+}
 table {
   empty-cells: show;
   border-collapse: collapse;
@@ -152,6 +164,10 @@ table {
 }
 #search-criterias th {
   min-width: 40px;
+}
+#search-criteria {
+  max-height: calc(100vh - 60px);
+  overflow: auto;
 }
 .form-group {
   display: table-cell;
@@ -210,12 +226,15 @@ i.arrow {
   flex: 0;
   cursor: pointer;
   transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
+  margin-right: 5px;
 }
 .arrow.right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
-
+.selected i.arrow {
+  border-color: transparent transparent rgba(255, 255, 255, 0.8) transparent;
+}
 .arrow.left {
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);

@@ -7,12 +7,16 @@
     <div>
       <div id="menuWrap">
         <ul class="filters" id="menus">
-          <Sea v-for="(k, filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
-            <a
-              @click="
+          <Sea
+            v-for="(k, filter) in afilters"
+            :key="filter"
+            :selected="selectSrc == k"
+            @click.native="
                 (selectSrc = k), (visibility = null), (selectFilter = filter),selectFilter_r=selectFilter_c=-1
               "
-            >{{ filter }}({{ k.items.length }})</a>
+            :is_search="k.is_search"
+          >
+            <a>{{ filter }}({{ k.items.length }})</a>
           </Sea>
         </ul>
         <FilterCtrl

@@ -157,6 +157,7 @@ i.arrow {
   cursor: pointer;
   transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
 }
+
 .arrow.right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);

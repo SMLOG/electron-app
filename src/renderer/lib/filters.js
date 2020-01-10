@@ -6,6 +6,7 @@ import store from "../localdata";
 export const afilters = {
   海选: {
     name: "items2",
+    is_search: true,
     get: async function(cb) {
       await getFindList(e => {
         this.items.push(e);

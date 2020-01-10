@@ -4,9 +4,9 @@
 
     <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <search-panel @select="addItem"></search-panel>
-    <div id="menus">
-      <div>
-        <ul class="filters">
+    <div>
+      <div id="menuWrap">
+        <ul class="filters" id="menus">
           <Sea v-for="(k, filter) in afilters" :key="filter" :class="{ selected: selectSrc == k }">
             <a
               @click="
@@ -29,8 +29,8 @@
         <table>
           <thead>
             <tr>
-              <th>
-                <div class="first" style="width:140px;">
+              <th class="firstCol">
+                <div class="first">
                   <span>#</span>
                   <span>x</span>
                   <span>a</span>
@@ -72,7 +72,7 @@
               :key="item.code"
               :class="{ openlink: index === focus || openCode === item.code }"
             >
-              <td>
+              <td class="firstCol">
                 <div class="first">
                   <span>
                     <a :name="item.code">{{ index + 1 }}</a>

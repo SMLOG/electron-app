@@ -158,8 +158,8 @@ table .descending:before {
 }
 
 .filters li.selected {
-  border-color: rgba(175, 47, 47, 0.2);
-  border-bottom: 1px solid green;
+  background: #222;
+  color: white;
 }
 .avggood {
   color: red;
@@ -300,19 +300,26 @@ tr.openlink .first > *:first-child {
 
 .filters li {
   float: left;
-  height: 25px;
+  margin: 3px;
 }
 .filters:after {
   content: "";
   clear: both;
 }
-#menus {
+#menuWrap {
   position: fixed;
+  height: 31px;
   top: 0;
   left: 0;
   z-index: 101;
   background: white;
+  width: 100%;
   padding: 3px;
+}
+#menus {
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  float: left;
 }
 #tbl {
   position: absolute;
@@ -333,4 +340,8 @@ tr.openlink .first > *:first-child {
   height: 12px;
   vertical-align: text-top;
   width: 12px;
+}
+.firstCol {
+  max-width: 170px !important;
+  width: 170px;
 }

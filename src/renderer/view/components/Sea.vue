@@ -1,12 +1,7 @@
 <template>
   <li ref="filteritem" class="filterItem" is="li">
     <slot></slot>
-    <i
-      class="arrow"
-      :class="{ left: !show, down: show }"
-      @click="show = !show"
-      ref="arrow"
-    ></i>
+    <i class="arrow" :class="{ left: !show, down: show }" @click="show = !show" ref="arrow"></i>
     <div v-show="show" class="items" style="width:700px;">
       <div id="search-criteria">
         <form
@@ -16,20 +11,14 @@
           class="ng-pristine ng-valid"
         >
           <div id="basic-search-criteria" class="form-inline">
-            <div
-              v-for="(obj, type) in criteria.scope"
-              class="form-group"
-              :key="type"
-            >
+            <div v-for="(obj, type) in criteria.scope" class="form-group" :key="type">
               <label>{{ obj.label }}</label>
-              <select
-                class="form-control"
-                :data-factor="type"
-                :data-operator="obj.op"
-              >
-                <option v-for="(v, k) in obj.values" :value="k" :key="k">{{
+              <select class="form-control" :data-factor="type" :data-operator="obj.op">
+                <option v-for="(v, k) in obj.values" :value="k" :key="k">
+                  {{
                   v
-                }}</option>
+                  }}
+                </option>
               </select>
             </div>
           </div>
@@ -183,9 +172,12 @@ label {
   border-bottom: 2px solid #ddd;
 }
 .items {
+  margin-top: 10px;
   background: white;
   padding: 10px;
   position: absolute;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
 }
 .filterItem li {
   display: inline;
@@ -217,6 +209,7 @@ i.arrow {
   border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
   flex: 0;
   cursor: pointer;
+  transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
 }
 .arrow.right {
   transform: rotate(-45deg);

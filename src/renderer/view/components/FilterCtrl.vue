@@ -91,14 +91,13 @@ table {
   height: auto;
 }
 #filterctr {
-  position: fixed;
+  float: left;
   background: white;
-  z-index: 10000;
-  left: 180px;
-  top: 0;
-  box-shadow: 3px 3px 3px #888888;
   height: 25px;
   overflow: hidden;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  margin-left: 10px;
 }
 .curCol {
   border-bottom: 1px solid #222;
@@ -156,6 +155,7 @@ i.arrow {
   border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
   flex: 0;
   cursor: pointer;
+  transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
 }
 .arrow.right {
   transform: rotate(-45deg);

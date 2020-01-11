@@ -14,7 +14,7 @@ export async function getTechDatas(item, cache = true) {
       };
     });
     let result = {};
-    for (let v of ["kd", "kw"]) {
+    for (let v of ["kd", "kw","km"]) {
       ifr.contentWindow[techId] = null;
       ifr.contentWindow.chart_.showView({
         view: v
@@ -30,6 +30,7 @@ export async function getTechDatas(item, cache = true) {
         await timeout(100);
       }
     }
+
 
     return result;
   };

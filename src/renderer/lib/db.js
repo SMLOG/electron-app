@@ -129,6 +129,7 @@ export async function getCacheData(date, id, callback, mergeData) {
 
   if (cache && cache.date && localStore.isShouldRemove(id, cache.date)) {
     await remove(id);
+    cache = null;
   }
 
   if (

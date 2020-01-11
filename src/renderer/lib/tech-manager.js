@@ -12,6 +12,9 @@ function isMacdJC(techData) {
 }
 
 const techMap = {
+  MonthX: function({ item, kd, kw, km }) {
+    return isMacdJC(km);
+  },
   WeekX: function({ item, kd, kw, km }) {
     return isMacdJC(kw);
   },

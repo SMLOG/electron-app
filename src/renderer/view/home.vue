@@ -144,7 +144,7 @@
     <div
       id="webviewWrap"
       ref="webviewWrap"
-      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:100"
+      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:10000"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
@@ -241,7 +241,9 @@ export default {
           let t = e.clientY - disY;
           //移动当前元素
           // target.style.left = l + "px";
+          if(t<=0)t=0;
           oDiv.style.top = t + "px";
+          
         };
         document.onmouseup = function(e) {
           document.onmousemove = null;

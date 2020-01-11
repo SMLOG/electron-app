@@ -12,13 +12,13 @@ function isMacdJC(techData) {
 }
 
 const techMap = {
-  MonthX: function({ item, kd, kw, km }) {
+  KMX: function({ item, kd, kw, km }) {
     return isMacdJC(km);
   },
-  WeekX: function({ item, kd, kw, km }) {
+  KWX: function({ item, kd, kw, km }) {
     return isMacdJC(kw);
   },
-  KdWeekX: function({ item, kd, kw, km }) {
+  KDWX: function({ item, kd, kw, km }) {
     return (
       kw.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&

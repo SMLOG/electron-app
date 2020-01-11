@@ -95,3 +95,12 @@ export function getFilterChain(ri, ci) {
     .map((a, i) => filters[filtersCount[i][ci].name]);
 }
 window.getFilterChain = getFilterChain;
+
+export function orFiltersItem(item, filters) {
+  if (filters.length == 0) return false;
+  let f = filters.pop();
+  return f([item]).length > 0 || orFiltersItem(item, filters);
+}
+export function getOrFiltersItems(items) {
+  return items.filter(item => orFiltersItem(item, Object.values(filters)));
+}

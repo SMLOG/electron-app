@@ -11,6 +11,7 @@ import {
   rid
 } from "./utils";
 import { getCriterias } from "./criteria";
+
 import { getExcludeList } from "./exclude-list";
 import { getCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
@@ -616,6 +617,7 @@ export async function getFindList(callback) {
     )
       callback(datalist[i]);
   }
+  callback(null);
 
   return datalist;
 }

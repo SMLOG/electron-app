@@ -197,7 +197,8 @@ import {
   toFiltersCount,
   filtersCount,
   getFilterChain,
-  updateFiltersCount
+  updateFiltersCount,
+  getOrFiltersItems
 } from "@/lib/filters";
 import { updateItem, getMeetList, getFindList } from "@/lib/getTable";
 import $ from "jquery";
@@ -489,8 +490,14 @@ export default {
         afilters[SELF].items = this.items;
 
         let items = await getFindList(e => {
-          this.items2.push(e);
-          toFiltersCount(e, "海选");
+          if (e) {
+            this.items2.push(e);
+            toFiltersCount(e, "海选");
+          } else {
+            let items = getOrFiltersItems(this.items2);
+            console.log(items);
+            monitor(items);
+          }
         });
 
         // items.forEach(e => this.items2.push(e));

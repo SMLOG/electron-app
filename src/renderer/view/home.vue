@@ -1,6 +1,10 @@
 <template>
   <div>
     <Setting />
+    <div
+      id="bg"
+      style="position:fixed;top:0;left:0;width:180px;bottom:0;background:#222;z-index:-1; "
+    ></div>
 
     <iframe
       src="static/tech2.html?sh000001"
@@ -144,7 +148,7 @@
     <div
       id="webviewWrap"
       ref="webviewWrap"
-      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:10000"
+      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:4"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
@@ -235,17 +239,16 @@ export default {
         //鼠标按下，计算当前元素距离可视区的距离
         let disX = e.clientX - oDiv.offsetLeft;
         let disY = e.clientY - oDiv.offsetTop;
-       let winH = $(window).outerHeight();
+        let winH = $(window).outerHeight();
         document.onmousemove = function(e) {
           //通过事件委托，计算移动的距离
           let l = e.clientX - disX;
           let t = e.clientY - disY;
           //移动当前元素
           // target.style.left = l + "px";
-          if(t<=0)t=0;
-          else if(t>=winH)t=winH-8;
+          if (t <= 0) t = 0;
+          else if (t >= winH) t = winH - 8;
           oDiv.style.top = t + "px";
-          
         };
         document.onmouseup = function(e) {
           document.onmousemove = null;

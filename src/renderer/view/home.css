@@ -29,7 +29,8 @@ table {
 #tbl table tbody td:first-child {
   position: sticky;
   left: 0px;
-  background: #eee;
+  background: #222;
+  color: #fff;
 }
 
 #tbl table thead :nth-child(2) th {
@@ -306,7 +307,7 @@ tr.openlink .first > *:first-child {
   height: 31px;
   top: 0;
   left: 0;
-  z-index: 101;
+  z-index: 3;
   background: white;
   width: 100%;
   padding: 3px;
@@ -339,4 +340,5 @@ tr.openlink .first > *:first-child {
 .firstCol {
   max-width: 170px !important;
   min-width: 170px;
+  width: 170px;
 }

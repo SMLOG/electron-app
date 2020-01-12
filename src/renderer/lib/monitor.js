@@ -1,7 +1,6 @@
 import { getTechDatas, getTdatas } from "./tech";
 import { getTables, attachData, hl } from "./getTable";
-import { getAllInd } from "./ind";
-import { cache, getCacheData } from "./db";
+import { cache } from "./db";
 
 let queue = Promise.resolve();
 export function isNotTradeTime() {
@@ -29,39 +28,42 @@ export async function monitor(items) {
 
     let name = "tdatas" + item.code;
     if (!cache[name]) {
-      cache[name] = [];
+      let cdata = {};
+      cache[name] = cdata;
       let resp = await getTdatas(item.code);
 
-      item.avgzs = item.upArgCount = 0;
+      cdata.avgzs = cdata.upArgCount = 0;
 
-      let datas = (cache[name] = resp.data.td1.filter(e => e.volume > 0));
-      item.preAvg = item.open;
+      let datas = resp.data.td1.filter(e => e.volume > 0);
+      cdata.preAvg = item.open;
 
-      item.contDir = 0;
+      cdata.contDir = 0;
       for (let k = 0; k < datas.length; k++) {
         let t = datas[k];
-        if (t.price > t.avg_price && item.avgzs >= 0) {
-          item.avgzs += 1;
-          item.upArgCount += 1;
-        } else if (t.price < t.avg_price && item.avgzs <= 0) {
-          item.avgzs -= 1;
+        if (t.price > t.avg_price && cdata.avgzs >= 0) {
+          cdata.avgzs += 1;
+          cdata.upArgCount += 1;
+        } else if (t.price < t.avg_price && cdata.avgzs <= 0) {
+          cdata.avgzs -= 1;
         } else if (
-          (t.price > t.avg_price && item.avgzs < 0) ||
-          (t.price < t.avg_price && item.avgzs > 0)
+          (t.price > t.avg_price && cdata.avgzs < 0) ||
+          (t.price < t.avg_price && cdata.avgzs > 0)
         ) {
-          item.avgzs = 0;
+          cdata.avgzs = 0;
         }
-        if (t.avg_price > item.preAvg && item.contDir >= 0) item.contDir += 1;
-        else if (t.avg_price < item.preAvg && item.contDir <= 0)
-          item.contDir -= 1;
+        if (t.avg_price > cdata.preAvg && cdata.contDir >= 0)
+          cdata.contDir += 1;
+        else if (t.avg_price < cdata.preAvg && cdata.contDir <= 0)
+          cdata.contDir -= 1;
         else if (
-          (t.avg_price < item.preAvg && item.contDir > 0) ||
-          (t.avg_price > item.preAvg && item.contDir < 0)
+          (t.avg_price < cdata.preAvg && cdata.contDir > 0) ||
+          (t.avg_price > cdata.preAvg && cdata.contDir < 0)
         )
-          item.contDir = 0;
-        item.preAvg = t.avg_price;
+          cdata.contDir = 0;
+        cdata.preAvg = t.avg_price;
       }
     }
+    Object.assign(item, cache[name]);
   }
 
   await getTables(items);

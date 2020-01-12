@@ -495,7 +495,7 @@ export default {
             toFiltersCount(e, "海选");
           } else {
             let items = getOrFiltersItems(this.items2);
-            console.log(items);
+            console.log("monitor:", items);
             monitor(items);
           }
         });

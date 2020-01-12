@@ -119,15 +119,15 @@
                       >{{ item.name }}</span
                     >
                     <span
-                      title="avgzs"
+                      title="最后持续平均线分钟(-下+上)"
                       @click="toggleDetail(item)"
                       :class="{
                         avggood: item.avgzs > 45 && item.upArgCount > 120
                       }"
                       >{{ item.avgzs }}</span
                     >
-                    <span title="upArgCount">/{{ item.upArgCount }}</span>
-                    <span title="contDir">/{{ item.contDir }}</span>
+                    <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
+                    <span title="连续方向分钟数">/{{ item.contDir }}</span>
                   </div>
                 </div>
               </td>

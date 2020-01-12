@@ -1,6 +1,8 @@
 import { getTechDatas, getTdatas } from "./tech";
 import { getTables, attachData, hl } from "./getTable";
 import { getAllInd } from "./ind";
+import { cache, getCacheData } from "./db";
+
 let queue = Promise.resolve();
 export function isNotTradeTime() {
   let d = new Date();
@@ -26,13 +28,13 @@ export async function monitor(items) {
     });
 
     let name = "tdatas" + item.code;
-    if (!window[name]) {
-      window[name] = [];
+    if (!cache[name]) {
+      cache[name] = [];
       let resp = await getTdatas(item.code);
 
       item.avgzs = item.upArgCount = 0;
 
-      let datas = (window[name] = resp.data.td1.filter(e => e.volume > 0));
+      let datas = (cache[name] = resp.data.td1.filter(e => e.volume > 0));
       item.preAvg = item.open;
 
       item.contDir = 0;

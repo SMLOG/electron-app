@@ -26,7 +26,7 @@ export async function monitor(items) {
       return getTechDatas(item);
     });
 
-    let name = "tdatas" + item.code;
+    let name = "monitor_" + item.code;
     if (!cache[name]) {
       let cdata = {};
       cache[name] = cdata;
@@ -70,29 +70,32 @@ export async function monitor(items) {
 
   if (isNotTradeTime()) return;
   for (let i = 0; i < items.length; i++) {
+    let cdata = cache[name];
+
     let item = items[i];
     let avg = (item.amount / item.volume).toFixed(2);
 
-    if (avg > item.preAvg && item.contDir >= 0) item.contDir += 1;
-    else if (avg < item.preAvg && item.contDir <= 0) item.contDir -= 1;
+    if (avg > cdata.preAvg && cdata.contDir >= 0) cdata.contDir += 1;
+    else if (avg < cdata.preAvg && cdata.contDir <= 0) cdata.contDir -= 1;
     else if (
-      (avg < item.preAvg && item.contDir > 0) ||
-      (avg > item.preAvg && item.contDir < 0)
+      (avg < cdata.preAvg && cdata.contDir > 0) ||
+      (avg > cdata.preAvg && cdata.contDir < 0)
     )
-      item.contDir = 0;
+      cdata.contDir = 0;
 
-    if (item.now > avg && item.avgzs >= 0) {
-      item.avgzs += 1;
-      item.upArgCount += 1;
-    } else if (item.now < avg && item.avgzs <= 0) {
-      item.avgzs -= 1;
+    if (item.now > avg && cdata.avgzs >= 0) {
+      cdata.avgzs += 1;
+      cdata.upArgCount += 1;
+    } else if (item.now < avg && cdata.avgzs <= 0) {
+      cdata.avgzs -= 1;
     } else if (
-      (item.now > avg && item.avgzs < 0) ||
-      (item.now < avg && item.avgzs > 0)
+      (item.now > avg && cdata.avgzs < 0) ||
+      (item.now < avg && cdata.avgzs > 0)
     ) {
-      item.avgzs = 0;
+      cdata.avgzs = 0;
     }
 
-    item.preAvg = avg;
+    cdata.preAvg = avg;
+    Object.assign(item, cache[name]);
   }
 }

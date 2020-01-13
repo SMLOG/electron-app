@@ -1,10 +1,8 @@
 import {
-  loadScripts,
   dateFormat,
   ConvertUnit,
-  getDate,
   split,
-  parse,
+  getLastReportDate,
   fetchEval,
   awaitTimeout,
   isObjectEmpty,
@@ -13,7 +11,7 @@ import {
 import { getCriterias } from "./criteria";
 
 import { getExcludeList } from "./exclude-list";
-import { getCache, putCache, getCacheData, cache } from "./db";
+import { updateCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
 import { getTechDatas } from "./tech";
 import { callFun } from "./tech-manager";
@@ -21,10 +19,9 @@ import { isTokenCharValid } from "builder-util";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables(items) {
-  let daystr = new Date().Format("yyyy-MM-dd");
   let tabs = [
-    await getXSJJTable() /*限售解禁*/,
-    await getTableGDZJC() /*增减持 */,
+    await getXSJJTable(),
+    await getTableGDZJC(),
     await getYZYGTable(),
     getExcludeList()
   ];
@@ -184,64 +181,82 @@ async function getTableGDZJC() {
 }
 
 async function getYZYGTable() {
-  if (window.yzyg) return window.yzyg;
+  return await getCacheData(new Date(), "tab_业绩预告", async () => {
+    let _varname = rid("_var");
+    let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=30&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
 
-  let url =
-    "http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=30&js=var%20yzygo%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D";
-
-  console.log(url);
-  //let text = await fetch(url ).then(resp=>resp.text());
-  //await loadScripts([url]);
-
-  window.yzygo = await getCacheData(new Date(), "tab_业绩预告", async () => {
     await fetchEval([url]);
-    console.log(window.yzygo);
-    return window.yzygo;
-  });
+    let yzyg = {};
+    if (window[_varname] && window[_varname].data)
+      for (let d of window[_varname].data) {
+        let mk = d.scode.substring(0, 1) == 6 ? "sh" : "sz";
 
-  console.log(window.yzygo);
+        d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
+        d.ndate = dateFormat(d.ndate, "yyyy-MM-dd");
 
-  let yzyg = {};
-  if (window.yzygo.data)
-    for (let d of window.yzygo.data) {
-      let mk = "sz";
-      if (d.scode.substring(0, 1) == 6) {
-        mk = "sh";
-      }
-      d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
-      d.ndate = dateFormat(d.ndate, "yyyy-MM-dd");
+        for (var key in d) {
+          try {
+            d[key] = decode(d[key], window[_varname].font.FontMapping);
+          } catch (err) {}
+        }
 
-      for (var key in d) {
-        var html = d[key];
-        try {
-          d[key] = decode(html, window.yzygo.font.FontMapping);
-        } catch (err) {}
+        d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}<br />${d.changereasondscrpt}`;
+        if (!yzyg[`${mk}${d.scode}`]) yzyg[`${mk}${d.scode}`] = [];
+        yzyg[`${mk}${d.scode}`].push(d);
       }
 
-      d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}<br />${d.changereasondscrpt}`;
-      if (!yzyg[`${mk}${d.scode}`]) yzyg[`${mk}${d.scode}`] = [];
-      yzyg[`${mk}${d.scode}`].push(d);
+    for (let code in yzyg) {
+      let exist = (await getCacheData(null, "yzyg_" + code)) || [];
+      exist.concat(yzyg[code]);
+      await updateCache("业绩预告_" + code, () => exist);
     }
-  return (window.yzyg = yzyg);
+    return yzyg;
+  });
 }
+async function getYYPLRQTable() {
+  return await getCacheData(new Date(), "tab_预约披露日期", async () => {
+    let _varname = rid("_var");
+    let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=50&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
 
+    await fetchEval([url]);
+    let yzyg = {};
+    if (window[_varname] && window[_varname].data)
+      for (let d of window[_varname].data) {
+        let mk = d.scode.substring(0, 1) == 6 ? "sh" : "sz";
+
+        d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
+        d.ndate = dateFormat(d.ndate, "yyyy-MM-dd");
+
+        for (var key in d) {
+          try {
+            d[key] = decode(d[key], window[_varname].font.FontMapping);
+          } catch (err) {}
+        }
+
+        d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}<br />${d.changereasondscrpt}`;
+        if (!yzyg[`${mk}${d.scode}`]) yzyg[`${mk}${d.scode}`] = [];
+        yzyg[`${mk}${d.scode}`].push(d);
+      }
+
+    for (let code in yzyg) {
+      let exist = (await getCacheData(null, "预约日期_" + code)) || [];
+      exist.concat(yzyg[code]);
+      await updateCache("预约日期_" + code, () => exist);
+    }
+    return yzyg;
+  });
+}
 async function getGXL() {
   if (window.qRSAJPRO) return window.qRSAJPRO;
 
   let url = `http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var%20qRSAJPRO&pagesize=50000&page=1&sr=-1&sortType=YAGGR&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod%3E=^${new Date().getFullYear() -
     1}-12-31^%20and%20ReportingPeriod%3C=^${new Date().getFullYear()}-12-31^)&rt=52460253`;
 
-  console.log(url);
-  //let text = await fetch(url ).then(resp=>resp.text());
-  //await loadScripts([url]);
-
   window.qRSAJPRO = await getCacheData(new Date(), "tab_fh3", async () => {
     await fetchEval([url]);
     console.log(window.qRSAJPRO);
     return window.qRSAJPRO;
   });
-
-  console.log(window.qRSAJPRO);
 
   if (window.qRSAJPRO.data)
     for (let d of window.qRSAJPRO.data) {

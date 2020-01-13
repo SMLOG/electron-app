@@ -24,20 +24,10 @@
           class="ng-pristine ng-valid"
         >
           <div id="basic-search-criteria" class="form-inline">
-            <div
-              v-for="(obj, type) in criteria.scope"
-              class="form-group"
-              :key="type"
-            >
+            <div v-for="(obj, type) in criteria.scope" class="form-group" :key="type">
               <label>{{ obj.label }}</label>
-              <select
-                class="form-control"
-                :data-factor="type"
-                :data-operator="obj.op"
-              >
-                <option v-for="(v, k) in obj.values" :value="k" :key="k">
-                  {{ v }}
-                </option>
+              <select class="form-control" :data-factor="type" :data-operator="obj.op">
+                <option v-for="(v, k) in obj.values" :value="k" :key="k">{{ v }}</option>
               </select>
             </div>
           </div>
@@ -254,5 +244,38 @@ i.arrow {
 .arrow.down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+  margin-bottom: 0.1em;
+}
+
+.arrow2 {
+  display: inline-block;
+  vertical-align: middle;
+}
+.arrow2:after {
+  content: "";
+  display: inline-block;
+
+  width: 0.4em;
+  height: 0.4em;
+  border-top: 0.15em solid #333;
+  border-right: 0.15em solid #333;
+  transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
+}
+.selected .arrow2:after {
+  border-top: 0.15em solid #fff;
+  border-right: 0.15em solid #fff;
+}
+.arrow2.left:after {
+  transform: rotate(-135deg);
+}
+.arrow2.right:after {
+  transform: rotate(45deg);
+}
+.arrow2.down:after {
+  transform: rotate(135deg);
+}
+.arrow2.up:after {
+  transform: rotate(225deg);
+  margin-bottom: 0.1em;
 }
 </style>

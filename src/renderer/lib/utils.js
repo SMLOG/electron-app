@@ -9,7 +9,8 @@ export function loadScripts(scripts) {
         script.onreadystatechange = script.onerror = function() {
           if (
             !this.readyState ||
-            this.readyState === "loaded" || this.readyState === "complete"
+            this.readyState === "loaded" ||
+            this.readyState === "complete"
           ) {
             reject();
           }
@@ -894,12 +895,13 @@ function vlookup(search, index, code, tbname, match) {
 export function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 export function getLastReportDate() {
   let d = new Date();
-  //3-31,6-30,9-30,12-31
-  //if(d.getMonth()>2)
-  let now =
-    ("0" + (d.getMonth() + 1)).substr(-2, 2) + ("0" + d.getDay()).substr(-2, 2);
+
+  let now = (d =>
+    ("0" + (d.getMonth() + 1)).substr(-2, 2) +
+    ("0" + d.getDate()).substr(-2, 2))(new Date());
   for (let e of ["09-30", "06-30", "03-31"]) {
     if (now > e) {
       return d.getFullYear() + "-" + e;

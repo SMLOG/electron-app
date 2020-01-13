@@ -153,6 +153,17 @@ export async function getCacheData(date, id, callback, mergeData) {
   return cache.data;
 }
 
+export async function updateCache(id, callback) {
+  await openDB(myDB.name, myDB.version);
+
+  let cache = {};
+  if (callback) cache.data = await callback();
+  cache.id = id;
+  cache.date = new Date();
+  await update2Cache(cache);
+  return cache.data;
+}
+
 window.getCacheData = getCacheData;
 
 export function getCache(id) {

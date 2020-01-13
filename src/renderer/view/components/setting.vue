@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="setting">
-      <span @click="showSetting=!showSetting"></span>
+    <div id="setting" ref="settings">
+      <span @click="showSetting=!showSetting" title="设置"></span>
       <div id="setting_contents" v-show="showSetting">
         <table border="0" cellspacing="0" cellpadding="0">
           <tbody>
@@ -37,6 +37,16 @@ export default {
       cols: getCheckFields(false)
     };
   },
+  mounted() {
+    window.addEventListener("click", e => {
+      if (this.$refs.settings) {
+        if (this.$refs.settings.contains(e.target)) {
+        } else {
+          this.showSetting = false;
+        }
+      }
+    });
+  },
   components: {
     draggable
   },
@@ -51,12 +61,16 @@ export default {
     },
     clearTechData() {
       store.setSetting("tech", +new Date());
+      this.showSetting = false;
     },
     ...mapActions(["setFields"])
   }
 };
 </script>
 <style scoped >
+a {
+  cursor: pointer;
+}
 #setting span {
   position: fixed;
   right: 5px;
@@ -81,5 +95,7 @@ export default {
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
+  max-height: calc(100vh - 60px);
+  overflow: auto;
 }
 </style>

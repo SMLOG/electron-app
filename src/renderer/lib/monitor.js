@@ -1,8 +1,7 @@
-import { getTechDatas, getTdatas } from "./tech";
+import { getTdatas } from "./tech";
 import { getTables, attachData, hl } from "./getTable";
 import { cache } from "./db";
 
-let queue = Promise.resolve();
 export function isNotTradeTime() {
   let d = new Date();
   let h = d.getHours();
@@ -16,15 +15,13 @@ export function isNotTradeTime() {
 }
 
 export async function monitor(items) {
+  let isTradeTime = !isNotTradeTime();
+
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     await hl(item);
 
     attachData(item);
-
-    queue = queue.then(() => {
-      return getTechDatas(item);
-    });
 
     let name = "monitor_" + item.code;
     if (!cache[name]) {
@@ -63,39 +60,34 @@ export async function monitor(items) {
         cdata.preAvg = t.avg_price;
       }
     }
+    if (isTradeTime) {
+      let avg = (item.amount / item.volume).toFixed(2);
+      let cdata = cache[name];
+
+      if (avg > cdata.preAvg && cdata.contDir >= 0) cdata.contDir += 1;
+      else if (avg < cdata.preAvg && cdata.contDir <= 0) cdata.contDir -= 1;
+      else if (
+        (avg < cdata.preAvg && cdata.contDir > 0) ||
+        (avg > cdata.preAvg && cdata.contDir < 0)
+      )
+        cdata.contDir = 0;
+
+      if (item.now > avg && cdata.avgzs >= 0) {
+        cdata.avgzs += 1;
+        cdata.upArgCount += 1;
+      } else if (item.now < avg && cdata.avgzs <= 0) {
+        cdata.avgzs -= 1;
+      } else if (
+        (item.now > avg && cdata.avgzs < 0) ||
+        (item.now < avg && cdata.avgzs > 0)
+      ) {
+        cdata.avgzs = 0;
+      }
+
+      cdata.preAvg = avg;
+    }
     Object.assign(item, cache[name]);
   }
 
   await getTables(items);
-
-  if (isNotTradeTime()) return;
-  for (let i = 0; i < items.length; i++) {
-    let cdata = cache[name];
-
-    let item = items[i];
-    let avg = (item.amount / item.volume).toFixed(2);
-
-    if (avg > cdata.preAvg && cdata.contDir >= 0) cdata.contDir += 1;
-    else if (avg < cdata.preAvg && cdata.contDir <= 0) cdata.contDir -= 1;
-    else if (
-      (avg < cdata.preAvg && cdata.contDir > 0) ||
-      (avg > cdata.preAvg && cdata.contDir < 0)
-    )
-      cdata.contDir = 0;
-
-    if (item.now > avg && cdata.avgzs >= 0) {
-      cdata.avgzs += 1;
-      cdata.upArgCount += 1;
-    } else if (item.now < avg && cdata.avgzs <= 0) {
-      cdata.avgzs -= 1;
-    } else if (
-      (item.now > avg && cdata.avgzs < 0) ||
-      (item.now < avg && cdata.avgzs > 0)
-    ) {
-      cdata.avgzs = 0;
-    }
-
-    cdata.preAvg = avg;
-    Object.assign(item, cache[name]);
-  }
 }

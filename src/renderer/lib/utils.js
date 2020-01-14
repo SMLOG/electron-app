@@ -908,7 +908,7 @@ export function getLastReportDate() {
     }
   }
 
-  return d.getFullYear() + "-12-31";
+  return d.getFullYear() - 1 + "-12-31";
 }
 //get historitical data for one code
 //http://quotes.money.163.com/service/chddata.html?code=0600900&start=20191001&end=20191014&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP

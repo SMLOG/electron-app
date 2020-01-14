@@ -237,7 +237,7 @@ async function getYYPLRQTable() {
             .filter(e => Object.prototype.toString.call(e) === "[object Date]")
         );
 
-        await updateCache("disclosure date_" + code, () => d);
+        await updateCache("disclosure date_" + `${mk}${d.scode}`, () => d);
       }
 
     return window[_varname];

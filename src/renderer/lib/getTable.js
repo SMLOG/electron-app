@@ -19,13 +19,12 @@ import { isTokenCharValid } from "builder-util";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
 export async function getTables() {
-  let tabs = [
-    await getXSJJTable(),
-    await getTableGDZJC(),
-    await getYZYGTable(),
-    await getYYPLRQTable(),
-    getExcludeList()
-  ];
+  await getYYPLRQTable();
+
+  await getXSJJTable();
+  await getTableGDZJC();
+  await getYZYGTable();
+  getExcludeList();
   /*for (let item of items) {
     if (window[`tables_${item.code}`]) continue;
     item.tables = window[`tables_${item.code}`] = [];
@@ -215,27 +214,32 @@ async function getYZYGTable() {
 }
 async function getYYPLRQTable() {
   return await getCacheData(new Date(), "disclosure date_", async () => {
-    let _varname = rid("_var");
+    let _varname = rid("var");
     let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=5000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
-
     await fetchEval([url]);
     if (window[_varname] && window[_varname].data)
       for (let i = 0, len = window[_varname].data.length; i < len; i++) {
         let d = window[_varname].data[i];
         let mk = d.scode.substring(0, 1) == 6 ? "sh" : "sz";
 
-        d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
-        for (let dt of ["frdate", "fcdate", "scdate", "tcdate", "radate"]) {
-          if (d[dt] && d[dt] != "-") d[dt] = dateFormat(d[dt], "yyyy-MM-dd");
+        try {
+          d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
+          for (let dt of ["frdate", "fcdate", "scdate", "tcdate", "radate"]) {
+            if (d[dt] && d[dt] != "-") d[dt] = dateFormat(d[dt], "yyyy-MM-dd");
+          }
+          d.last = Math.max.apply(
+            null,
+            ["frdate", "fcdate", "scdate", "tcdate", "radate"]
+              .map(function(e) {
+                return d[e];
+              })
+              .filter(
+                e => Object.prototype.toString.call(e) === "[object Date]"
+              )
+          );
+        } catch (e) {
+          console.err(e);
         }
-        d.last = Math.max.apply(
-          null,
-          ["frdate", "fcdate", "scdate", "tcdate", "radate"]
-            .map(function(e) {
-              return d[e];
-            })
-            .filter(e => Object.prototype.toString.call(e) === "[object Date]")
-        );
 
         await updateCache("disclosure date_" + `${mk}${d.scode}`, () => d);
       }

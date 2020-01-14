@@ -32,11 +32,27 @@ export let headers = [
     label: "Forecast",
     prop: "forecast",
     type: "string",
+    title: item => {
+      return item.forecast_title;
+    },
     fmt: (e, item) => {
       getCacheData(null, "Performance forecast_" + item.code).then(data => {
         item.forecast = data && data[0].forecasttype;
+        item.forecast_title = data && data[0].str;
       });
       return item.forecast;
+    }
+  },
+  {
+    label: "disclosure",
+    prop: "disclosure",
+    type: "string",
+
+    fmt: (e, item) => {
+      getCacheData(null, "disclosure date_" + item.code).then(data => {
+        item.disclosure = data && data.last;
+      });
+      return item.disclosure;
     }
   },
   /* {

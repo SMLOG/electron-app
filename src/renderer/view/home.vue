@@ -6,10 +6,7 @@
       style="position:fixed;top:0;left:0;width:180px;bottom:0;background:#222;z-index:-1; "
     ></div>
 
-    <iframe
-      src="static/tech2.html?sh000001"
-      style="width:100%;height:600px;display:none;"
-    ></iframe>
+    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap">
@@ -60,9 +57,7 @@
                   ascending: sortby === col.prop && !descending,
                   descending: sortby === col.prop && descending
                 }"
-              >
-                {{ col.label }}
-              </th>
+              >{{ col.label }}</th>
             </tr>
             <tr
               v-if="
@@ -71,9 +66,7 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span
-                    v-if="selectItem.tables && selectItem.tables.length > 0"
-                  >
+                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -99,11 +92,7 @@
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input
-                      type="checkbox"
-                      v-model="item.isFocus"
-                      @change="saveDatas(item)"
-                    />
+                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
                   </span>
                   <div
                     :title="item.code"
@@ -116,16 +105,14 @@
                     <span
                       :class="{ sz: item.mk == 'sz' }"
                       @click="openlink(item, $event)"
-                      >{{ item.name }}</span
-                    >
+                    >{{ item.name }}</span>
                     <span
                       title="最后持续平均线分钟(-下+上)"
                       @click="toggleDetail(item)"
                       :class="{
                         avggood: item.avgzs > 45 && item.upArgCount > 120
                       }"
-                      >{{ item.avgzs }}</span
-                    >
+                    >{{ item.avgzs }}</span>
                     <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
                     <span title="连续方向分钟数">/{{ item.contDir }}</span>
                   </div>
@@ -136,10 +123,9 @@
                 v-for="col in head"
                 :key="col.prop"
                 :class="col.class && col.class(item)"
+                :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-              >
-                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
-              </td>
+              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
             </tr>
           </draggable>
         </table>
@@ -157,11 +143,7 @@
           @click="closeview()"
         ></i>
       </div>
-      <webview
-        ref="webview"
-        id="figure"
-        style="width:100%;height:100%;"
-      ></webview>
+      <webview ref="webview" id="figure" style="width:100%;height:100%;"></webview>
     </div>
   </div>
 </template>
@@ -540,10 +522,7 @@ export default {
     sendRefresh() {
       this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
         win.isVisible() &&
-          win.webContents.send(
-            "refresh",
-            this.items.filter(e => e.isFocus)
-          );
+          win.webContents.send("refresh", this.items.filter(e => e.isFocus));
       });
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },

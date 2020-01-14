@@ -23,6 +23,7 @@ export async function getTables() {
     await getXSJJTable(),
     await getTableGDZJC(),
     await getYZYGTable(),
+    await getYYPLRQTable(),
     getExcludeList()
   ];
   /*for (let item of items) {
@@ -183,7 +184,7 @@ async function getTableGDZJC() {
 async function getYZYGTable() {
   return await getCacheData(new Date(), "Performance forecast_", async () => {
     let _varname = rid("_var");
-    let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=5000&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
+    let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=5000&filter=(enddate=^${getLastReportDate()}^)&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
 
     await fetchEval([url]);
     let yzyg = {};
@@ -213,38 +214,36 @@ async function getYZYGTable() {
   });
 }
 async function getYYPLRQTable() {
-  return await getCacheData(new Date(), "tab_预约披露日期", async () => {
+  return await getCacheData(new Date(), "disclosure date_", async () => {
     let _varname = rid("_var");
-    let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=50&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
+    let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=5000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
 
     await fetchEval([url]);
-    let yzyg = {};
     if (window[_varname] && window[_varname].data)
-      for (let d of window[_varname].data) {
+      for (let i = 0, len = window[_varname].data.length; i < len; i++) {
+        let d = window[_varname].data[i];
         let mk = d.scode.substring(0, 1) == 6 ? "sh" : "sz";
 
         d.enddate = dateFormat(d.enddate, "yyyy-MM-dd");
-        d.ndate = dateFormat(d.ndate, "yyyy-MM-dd");
-
-        for (var key in d) {
-          try {
-            d[key] = decode(d[key], window[_varname].font.FontMapping);
-          } catch (err) {}
+        for (let dt of ["frdate", "fcdate", "scdate", "tcdate", "radate"]) {
+          if (d[dt] && d[dt] != "-") d[dt] = dateFormat(d[dt], "yyyy-MM-dd");
         }
+        d.last = Math.max.apply(
+          null,
+          ["frdate", "fcdate", "scdate", "tcdate", "radate"]
+            .map(function(e) {
+              return d[e];
+            })
+            .filter(e => Object.prototype.toString.call(e) === "[object Date]")
+        );
 
-        d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}<br />${d.changereasondscrpt}`;
-        if (!yzyg[`${mk}${d.scode}`]) yzyg[`${mk}${d.scode}`] = [];
-        yzyg[`${mk}${d.scode}`].push(d);
+        await updateCache("disclosure date_" + code, () => d);
       }
 
-    for (let code in yzyg) {
-      let exist = (await getCacheData(null, "预约日期_" + code)) || [];
-      exist.concat(yzyg[code]);
-      await updateCache("预约日期_" + code, () => exist);
-    }
-    return yzyg;
+    return window[_varname];
   });
 }
+
 async function getGXL() {
   if (window.qRSAJPRO) return window.qRSAJPRO;
 

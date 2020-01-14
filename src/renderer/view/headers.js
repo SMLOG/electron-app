@@ -28,7 +28,17 @@ export let headers = [
       return item.hy;
     }
   },
-
+  {
+    label: "Forecast",
+    prop: "forecast",
+    type: "string",
+    fmt: (e, item) => {
+      getCacheData(null, "Performance forecast_" + item.code).then(data => {
+        item.forecast = data && data[0].forecasttype;
+      });
+      return item.forecast;
+    }
+  },
   /* {
     label: "V",
     prop: "vol",

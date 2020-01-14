@@ -18,14 +18,14 @@ import { callFun } from "./tech-manager";
 import { isTokenCharValid } from "builder-util";
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
-export async function getTables(items) {
+export async function getTables() {
   let tabs = [
     await getXSJJTable(),
     await getTableGDZJC(),
     await getYZYGTable(),
     getExcludeList()
   ];
-  for (let item of items) {
+  /*for (let item of items) {
     if (window[`tables_${item.code}`]) continue;
     item.tables = window[`tables_${item.code}`] = [];
 
@@ -34,7 +34,7 @@ export async function getTables(items) {
         item.tables = item.tables.concat(tab[item.code]);
       }
     }
-  }
+  }*/
 
   await getGXL();
 }
@@ -181,9 +181,9 @@ async function getTableGDZJC() {
 }
 
 async function getYZYGTable() {
-  return await getCacheData(new Date(), "tab_业绩预告", async () => {
+  return await getCacheData(new Date(), "Performance forecast_", async () => {
     let _varname = rid("_var");
-    let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=30&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
+    let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=5000&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
 
     await fetchEval([url]);
     let yzyg = {};
@@ -206,10 +206,9 @@ async function getYZYGTable() {
       }
 
     for (let code in yzyg) {
-      let exist = (await getCacheData(null, "yzyg_" + code)) || [];
-      exist.concat(yzyg[code]);
-      await updateCache("业绩预告_" + code, () => exist);
+      await updateCache("Performance forecast_" + code, () => yzyg[code]);
     }
+    console.log(yzyg);
     return yzyg;
   });
 }

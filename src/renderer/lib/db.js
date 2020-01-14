@@ -118,8 +118,12 @@ function remove(id) {
   });
 }
 window.removeCache = remove;
+const DAY_TIMES = 24 * 60 * 60 * 1000;
 function isNotBefore(d1, d2) {
-  return d1.getTime() >= d2.getTime();
+  if (Object.prototype.toString.call(d2) !== "[object Date]") d2 = new Date(d2);
+  return (
+    Math.floor(d1.getTime() / DAY_TIMES) >= Math.floor(d2.getTime() / DAY_TIMES)
+  );
 }
 export { cacheObj as cache };
 
@@ -134,7 +138,7 @@ export async function getCacheData(date, id, callback, mergeData) {
 
   if (
     cache &&
-    (!date || (cache.date && date && isNotBefore(cache.date, new Date(date))))
+    (!date || (cache.date && date && isNotBefore(cache.date, date)))
   ) {
     if (mergeData) {
       Object.assign(cache.data || {}, mergeData);

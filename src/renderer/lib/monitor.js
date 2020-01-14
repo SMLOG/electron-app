@@ -88,6 +88,6 @@ export async function monitor(items) {
     }
     Object.assign(item, cache[name]);
   }
-
-  await getTables(items);
 }
+
+getTables();

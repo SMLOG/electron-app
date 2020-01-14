@@ -182,7 +182,7 @@ async function getTableGDZJC() {
 
 async function getYZYGTable() {
   return await getCacheData(new Date(), "Performance forecast_", async () => {
-    let _varname = rid("_var");
+    let _varname = rid("var");
     let url = `http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=YJBB21_YJYG&token=70f12f2f4f091e459a279469fe49eca5&st=ndate&sr=-1&p=1&ps=5000&filter=(enddate=^${getLastReportDate()}^)&js=var%20${_varname}%3D%7Bpages%3A(tp)%2Cdata%3A(x)%2Cfont%3A(font)%7D`;
 
     await fetchEval([url]);
@@ -233,9 +233,7 @@ async function getYYPLRQTable() {
               .map(function(e) {
                 return d[e];
               })
-              .filter(
-                e => Object.prototype.toString.call(e) === "[object Date]"
-              )
+              .filter(e => e && e != "-" ).map(e=> new Date(e))
           );
         } catch (e) {
           console.err(e);
@@ -243,6 +241,7 @@ async function getYYPLRQTable() {
 
         await updateCache("disclosure date_" + `${mk}${d.scode}`, () => d);
       }
+    console.log(window[_varname].data);
 
     return window[_varname];
   });

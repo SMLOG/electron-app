@@ -203,7 +203,7 @@ async function getYZYGTable() {
           } catch (err) {}
         }
 
-        d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}<br />${d.changereasondscrpt}`;
+        d.str = `${d.ndate} 预告 ${d.enddate} 业绩 ${d.forecasttype} ${d.forecastcontent}\n${d.changereasondscrpt}`;
         if (!yzyg[`${mk}${d.scode}`]) yzyg[`${mk}${d.scode}`] = [];
         yzyg[`${mk}${d.scode}`].push(d);
       }

@@ -16,8 +16,11 @@ import { loadHQ } from "./hq";
 import { getTechDatas } from "./tech";
 import { callFun } from "./tech-manager";
 import { isTokenCharValid } from "builder-util";
+import { getAllInd } from "./ind";
+
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
+getAllInd();
 export async function getTables() {
   await getYYPLRQTable();
 
@@ -233,7 +236,8 @@ async function getYYPLRQTable() {
               .map(function(e) {
                 return d[e];
               })
-              .filter(e => e && e != "-" ).map(e=> new Date(e))
+              .filter(e => e && e != "-")
+              .map(e => new Date(e))
           );
         } catch (e) {
           console.err(e);
@@ -543,7 +547,59 @@ async function getHXList() {
 
   return datalist;
 }
-export async function getFindList(callback) {
+export function isNotTradeTime() {
+  let d = new Date();
+  let h = d.getHours();
+  let m = d.getMinutes();
+  if (h < 9 || h > 15) return true;
+  if (h == 9 && m < 30) return true;
+  if (h == 11 && m > 30) return true;
+  if (h > 11 && h < 13) return true;
+  if (h > 15) return true;
+  return false;
+}
+export async function updateHQ(items) {
+  if (!items || !items.length || isNotTradeTime()) return;
+
+  let datalist = await getHXList();
+  let dataMap = items.reduce((map, item) => {
+    map[item.code] = item;
+    return map;
+  }, {});
+  datalist = datalist.data.diff.map(e => {
+    return {
+      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
+      name: e.f14,
+      now: e.f2,
+      changePV: e.f3,
+      changeV: e.f4,
+      change: e.f4,
+      open: e.f17,
+      preClose: e.f18,
+      turnover: e.f8,
+      pe: e.f9,
+      volume: e.f5,
+      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
+      amount: e.f6,
+      high: e.f15,
+      low: e.f16,
+      zsz: (e.f20 / 100000000).toFixed(2),
+      lz: (e.f21 / 100000000).toFixed(2),
+      avg: (e.f6 / e.f5).toFixed(2),
+      zf60: e.f24,
+      zf250: e.f25,
+      firstDay: e.f26
+    };
+  });
+
+  for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
+    if (dataMap[item.code]) {
+      Object.assign(dataMap[item.code], item);
+    }
+  }
+}
+export async function getFilterList(callback) {
   let datalist = await getHXList();
   datalist = datalist.data.diff;
   datalist = datalist.map(e => {

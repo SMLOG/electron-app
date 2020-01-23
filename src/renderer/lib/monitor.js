@@ -1,18 +1,6 @@
 import { getTdatas } from "./tech";
-import { getTables, attachData, hl } from "./getTable";
+import { getTables, attachData, hl, isNotTradeTime } from "./getTable";
 import { cache } from "./db";
-
-export function isNotTradeTime() {
-  let d = new Date();
-  let h = d.getHours();
-  let m = d.getMinutes();
-  if (h < 9 || h > 15) return true;
-  if (h == 9 && m < 30) return true;
-  if (h == 11 && m > 30) return true;
-  if (h > 11 && h < 13) return true;
-  if (h > 15) return true;
-  return false;
-}
 
 export async function monitor(items) {
   let isTradeTime = !isNotTradeTime();

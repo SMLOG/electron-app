@@ -1,4 +1,4 @@
-import { getLastReportDate } from "../lib/utils";
+import { getLastReportDate, dateFormat } from "../lib/utils";
 import { cache, getCacheData } from "../lib/db";
 import { getFields } from "../store/modules/suspension";
 
@@ -44,13 +44,13 @@ export let headers = [
     }
   },
   {
-    label: "disclosure",
+    label: "披露日期",
     prop: "disclosure",
     type: "string",
 
     fmt: (e, item) => {
       getCacheData(null, "disclosure date_" + item.code).then(data => {
-        item.disclosure = data && data.last;
+        item.disclosure = data && dateFormat(new Date(data.last), "yyyy-MM-dd");
       });
       return item.disclosure;
     }

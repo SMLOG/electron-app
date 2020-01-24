@@ -32,7 +32,6 @@ xh5_define("utils.util", [], function() {
     }
 
     function getScript(url, onSuccess, onError, options) {
-      console.log(url);
       var r = !1,
         scriptTag = document.createElement("script"),
         o = document.getElementsByTagName("script")[0],

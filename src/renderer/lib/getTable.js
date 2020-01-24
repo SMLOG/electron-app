@@ -13,9 +13,7 @@ import { getCriterias } from "./criteria";
 import { getExcludeList } from "./exclude-list";
 import { updateCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
-import { getTechDatas } from "./tech";
 import { callFun } from "./tech-manager";
-import { isTokenCharValid } from "builder-util";
 import { getAllInd } from "./ind";
 
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
@@ -28,16 +26,6 @@ export async function getTables() {
   await getTableGDZJC();
   await getYZYGTable();
   getExcludeList();
-  /*for (let item of items) {
-    if (window[`tables_${item.code}`]) continue;
-    item.tables = window[`tables_${item.code}`] = [];
-
-    for (let tab of tabs) {
-      if (tab[item.code]) {
-        item.tables = item.tables.concat(tab[item.code]);
-      }
-    }
-  }*/
 
   await getGXL();
 }
@@ -179,7 +167,6 @@ async function getTableGDZJC() {
       if (!r[`${mk}${data[0]}`]) r[`${mk}${data[0]}`] = [];
       r[`${mk}${data[0]}`].push({ str: str });
     }
-  console.log(r);
   return (window.gdzjc = r);
 }
 

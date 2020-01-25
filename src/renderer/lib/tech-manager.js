@@ -56,7 +56,7 @@ const techMap = {
 
     return x1 && x2 && x3 && aa && bb && cc;
   },
-  Death: function({ item, kd, kw, km }) {
+  Deth: function({ item, kd, kw, km }) {
     return isMacdDeath(kd);
   }
 };

@@ -33,6 +33,10 @@ table {
   color: #fff;
 }
 
+#tbl table tbody tr:hover td:first-child {
+  background: #444;
+}
+
 #tbl table thead :nth-child(2) th {
   position: -webkit-sticky;
   position: sticky;

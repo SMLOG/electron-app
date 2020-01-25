@@ -1,5 +1,5 @@
 import { getTechDatas } from "./tech";
-function isMacdJC(techData) {
+function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
     techData.MACD[techData.MACD.length - 1].bar > 0 &&
@@ -10,20 +10,30 @@ function isMacdJC(techData) {
     techData.MACD[techData.MACD.length - 3].bar < 0
   );
 }
-
+function isMacdDeath(techData) {
+  return (
+    techData.MACD.length > 3 &&
+    techData.MACD[techData.MACD.length - 1].bar < 0 &&
+    techData.MACD[techData.MACD.length - 1].bar <
+      techData.MACD[techData.MACD.length - 2].bar &&
+    techData.MACD[techData.MACD.length - 2].bar <
+      techData.MACD[techData.MACD.length - 3].bar &&
+    techData.MACD[techData.MACD.length - 3].bar > 0
+  );
+}
 const techMap = {
   KMX: function({ item, kd, kw, km }) {
-    return isMacdJC(km);
+    return isMacdGolden(km);
   },
   KWX: function({ item, kd, kw, km }) {
-    return isMacdJC(kw);
+    return isMacdGolden(kw);
   },
   KDWX: function({ item, kd, kw, km }) {
     return (
       kw.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
       kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
-      isMacdJC(kd)
+      isMacdGolden(kd)
     );
   },
   粘合多头: function({ item, kd, kw, km }) {
@@ -45,6 +55,9 @@ const techMap = {
     let cc = m20 > ma1.ma20;
 
     return x1 && x2 && x3 && aa && bb && cc;
+  },
+  Death: function({ item, kd, kw, km }) {
+    return isMacdDeath(kd);
   }
 };
 

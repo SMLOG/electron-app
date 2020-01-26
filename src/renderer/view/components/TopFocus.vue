@@ -10,7 +10,9 @@
       <tr>
         <td v-for="(item, k) in items" :key="k">
           <div>
-            <a @click="openlink(item, $event)"
+            <a
+              @click="openlink(item, $event)"
+              :class="{ up: item.change > 0, down: item.change < 0 }"
               >{{ item.name }} {{ item.now }}({{ item.change }})</a
             >
           </div>
@@ -148,6 +150,12 @@ i.arrow {
   flex: 0;
   cursor: pointer;
   transition: transform 0.25s ease-in-out, color 0.25s ease-in-out;
+}
+.down {
+  color: green;
+}
+.up {
+  color: red;
 }
 
 .arrow.right {

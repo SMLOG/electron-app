@@ -36,6 +36,7 @@
           :r="selectFilter_r"
           :c="selectFilter_c"
         />
+        <TopFocus :items="focusItems" @openlink="openlink" />
       </div>
     </div>
     <div id="tbl">
@@ -174,6 +175,8 @@ import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
+import TopFocus from "@/view/components/TopFocus";
+
 import Sea from "@/view/components/Sea";
 import store from "@/localdata";
 import draggable from "vuedraggable";
@@ -278,7 +281,8 @@ export default {
     Setting,
     FilterItem,
     FilterCtrl,
-    Sea
+    Sea,
+    TopFocus
   },
   filters: {
     objectType(id) {
@@ -344,6 +348,9 @@ export default {
     },
     filteredItems: function() {
       return this.getfilterItems();
+    },
+    focusItems: function() {
+      return this.items.filter(e => e.isFocus);
     },
     ...mapGetters(["fields"]),
     ...mapGetters({ sfilters: "filters" })
@@ -411,11 +418,7 @@ export default {
           setTimeout(() => {
             webviewWrap.css("top", chartop - 1 + "px");
           }, 10);
-          //  console.log(event);
-          //   if (event.clientY > $(window).height() - chartop)
-          // this.scrollToItem(item);
         }
-        // $.scrollTo($(`a[name=${item.code}]`));
 
         webviewWrap.show();
         webview[0].style.height = "100%";

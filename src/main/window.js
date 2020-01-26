@@ -127,7 +127,7 @@ function createSuspensionWindow() {
   const winSize = win.getSize(); //获取窗口宽高
   win.setMenu(null);
   //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
-  win.setPosition(size.width - winSize[0], 100);
+  win.setPosition(size.width - winSize[0], 40);
   win.loadURL(winURL);
 
   win.once("ready-to-show", () => {

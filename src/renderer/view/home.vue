@@ -36,7 +36,7 @@
           :r="selectFilter_r"
           :c="selectFilter_c"
         />
-        <TopFocus :items="focusItems" @openlink="openlink" />
+        <!-- <TopFocus :items="focusItems" @openlink="openlink" /> -->
       </div>
     </div>
     <div id="tbl">

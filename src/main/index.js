@@ -145,8 +145,13 @@ app.on("ready", () => {
       ]
     },
     {
-      label: "帮助",
-      click: function() {}
+      label: "迷你窗口",
+      type: "checkbox",
+
+      click: function(menuItem, browserWindow, event) {
+        app.minwin.isVisible() ? app.minwin.hide() : app.minwin.show();
+        menuItem.checked = app.minwin.isVisible();
+      }
     },
     {
       label: "关于",

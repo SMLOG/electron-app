@@ -5,9 +5,7 @@ let template = `<div id="tody" ref="box">
 </div>`;
 export default {
   data() {
-    return {
-      dockLeft: true
-    };
+    return {};
   },
   provide() {
     return { child: this };
@@ -16,9 +14,10 @@ export default {
     super: {
       inject: ["child"],
       data() {
-        return {
-          dockLeft: true
-        };
+        return {};
+      },
+      props: {
+        dockLeft: Boolean
       },
       template: template,
       methods: {

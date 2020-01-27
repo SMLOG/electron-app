@@ -1,5 +1,5 @@
 <template>
-  <super>
+  <super :dockLeft="true">
     <div id="suspension" ref="box" @mouseleave="collapse(false)">
       <span
         id="rt"

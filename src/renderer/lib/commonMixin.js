@@ -47,7 +47,7 @@ export default {
             ) {
               if (this.dockLeft) {
                 win.setPosition(
-                  screen.getPrimaryDisplay().workAreaSize.width - 9,
+                  screen.getPrimaryDisplay().workAreaSize.width - 6,
                   win.getPosition()[1]
                 );
               }
@@ -58,9 +58,7 @@ export default {
           if (timerID) clearTimeout(timerID);
           if (this.dockLeft) {
             win.setPosition(
-              screen.getPrimaryDisplay().workAreaSize.width -
-                win.getSize()[0] +
-                9,
+              screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0],
               win.getPosition()[1]
             );
           }

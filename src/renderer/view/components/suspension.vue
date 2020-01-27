@@ -1,53 +1,64 @@
-
 <template>
-  <div id="suspension" ref="box" @mouseleave="collapse(false)">
-    <canvas
-      id="canvas"
-      ref="canvas"
-      style="position: absolute;top: 0;left: 0;right:0;bottom:0;z-index: 10;pointer-events:none;"
-    ></canvas>
-    <span id="rt" class="shrink2" @click="toggleShrinkTop" :class="{shrink:shrinkTop}"></span>
-    <div style="position:fixed;top:0;left:0;height:27px;width:100%;" class="item progress">
+  <super>
+    <div id="suspension" ref="box" @mouseleave="collapse(false)">
+      <span
+        id="rt"
+        class="shrink2"
+        @click="toggleShrinkTop"
+        :class="{ shrink: shrinkTop }"
+      ></span>
       <div
-        class="progress_bar"
-        :class="{up:indexPercent>0,down:indexPercent<0}"
-        :style="{width:progressBarWidth+'%'}"
-      ></div>
-    </div>
-    <div class="content_body">
-      <div
-        class="item etmf-void"
-        v-for="(item,i) in items"
-        :key="item.code"
-        v-show="!isCollapseH || (isCollapseH&&selectIndex==i)"
+        style="position:fixed;top:0;left:0;height:27px;width:100%;"
+        class="item progress"
       >
-        <div class="flex">
-          <span style="width:8px;" :class="upDown(item.now-item.pre)">{{item|nowPre}}</span>
-          <span
-            class="name"
-            :style="{textDecoration:item.nameColor=='red'&& 'underline'}"
-            :title="title(item)"
-            @click="openItem(item,$event)"
-          >{{item.name}}</span>
-          <span class="content" :class="upDown(item.now-item.preClose)">
-            <i>{{item.now}}</i>
-            <i>({{item.change}}){{item.turnover}}</i>
-          </span>
+        <div
+          class="progress_bar"
+          :class="{ up: indexPercent > 0, down: indexPercent < 0 }"
+          :style="{ width: progressBarWidth + '%' }"
+        ></div>
+      </div>
+      <div class="content_body">
+        <div
+          class="item etmf-void"
+          v-for="(item, i) in items"
+          :key="item.code"
+          v-show="!isCollapseH || (isCollapseH && selectIndex == i)"
+        >
+          <div class="flex">
+            <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
+              item | nowPre
+            }}</span>
+            <span
+              class="name"
+              :style="{
+                textDecoration: item.nameColor == 'red' && 'underline'
+              }"
+              :title="title(item)"
+              @click="openItem(item, $event)"
+              >{{ item.name }}</span
+            >
+            <span class="content" :class="upDown(item.now - item.preClose)">
+              <i>{{ item.now }}</i>
+              <i>({{ item.change }}){{ item.turnover }}</i>
+            </span>
+          </div>
         </div>
       </div>
+      <span
+        id="rd"
+        class="shrink2"
+        @mouseenter="unCollapseV"
+        @click="toggleShrinkBottom"
+        :class="{ shrink: shrinkBottom }"
+      ></span>
     </div>
-    <span
-      id="rd"
-      class="shrink2"
-      @mouseenter="unCollapseV"
-      @click="toggleShrinkBottom"
-      :class="{shrink:shrinkBottom}"
-    ></span>
-  </div>
+  </super>
 </template>
 <script>
 import store from "@/localdata";
 import jquery from "jquery";
+import commonMixin from "@/lib/commonMixin";
+
 import {
   loadScripts,
   parse,
@@ -69,6 +80,7 @@ import { setTimeout } from "timers";
 });*/
 export default {
   name: "suspension",
+  mixins: [commonMixin],
   data() {
     return {
       time: "--",
@@ -152,7 +164,7 @@ export default {
       }, 500);
     },
     toggleShrinkTop() {
-      // this.shrinkTop = !this.shrinkTop;
+      this.shrinkTop = !this.shrinkTop;
     },
     toggleShrinkBottom() {
       this.shrinkBottom = !this.shrinkBottom;
@@ -230,8 +242,7 @@ export default {
       this.isCollapseH = false;
       this.resizeWin();
       //requestAnimationFrame(this.resizeWin().bind(this));
-    },
-    trade() {}
+    }
   },
 
   mounted() {
@@ -258,10 +269,6 @@ export default {
         this.progressBarWidth = Math.abs(items[0].changePV / 1) * 100;
         this.indexPercent = items[0].changePV;
       }
-
-      /*setTimeout(() => {
-        drawMAs(this.$refs.canvas, this.items, 27);
-      }, 300);*/
     });
 
     this.$electron.ipcRenderer.on("ALT+Z", () => {

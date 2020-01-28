@@ -12,12 +12,7 @@
         ></div>
       </div>
       <div class="content_body">
-        <div
-          class="item etmf-void"
-          v-for="(item, i) in items"
-          :key="item.code"
-          v-show="!isCollapseH || (isCollapseH && selectIndex == i)"
-        >
+        <div class="item etmf-void" v-for="(item, i) in items" :key="item.code">
           <div class="flex">
             <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
               item | nowPre

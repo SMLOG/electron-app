@@ -12,16 +12,21 @@ export default {
 
 <style>
 /* CSS */
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
 ::-webkit-scrollbar {
   width: 3px;
-  height:3px;
+  height: 3px;
 }
- 
+
 ::-webkit-scrollbar-track {
   background: #ddd;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: #666; 
+  background: #666;
 }
 </style>

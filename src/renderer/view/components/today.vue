@@ -1,6 +1,5 @@
-
 <template>
-  <super>hello</super>
+  <Dock :dockLeft="false">hello</Dock>
 </template>
 <script>
 import store from "@/localdata";
@@ -13,13 +12,12 @@ import {
   time,
   ObjectType
 } from "@/lib/utils";
+import Dock from "@/view/components/Dock";
 
-import commonMixin from "@/lib/commonMixin";
 import { setTimeout } from "timers";
 
 export default {
   name: "tody",
-  mixins: [commonMixin],
   data() {
     return {
       time: "--",
@@ -33,6 +31,9 @@ export default {
       width: 0,
       height: 0
     };
+  },
+  components: {
+    Dock
   },
   filters: {
     nowPre(item) {
@@ -81,7 +82,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
   padding: 0;
   margin: 0;

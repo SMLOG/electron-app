@@ -40,7 +40,8 @@ export default {
         html.offsetHeight
       );
       console.log(height);
-      if (winSize[1] != height) this.setSize(winSize[0], height);
+      if (winSize[1] != height)
+        this.setSize(winSize[0], (win.isFrame ? 25 : 0) + height);
     },
     setSize(w, h) {
       let win = this.$electron.remote.getCurrentWindow();

@@ -238,6 +238,7 @@ function toggleWindow(type, cb) {
     transparent: false,
     alwaysOnTop: true
   });
+  win.isFrame = true;
   const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
   const winSize = win.getSize(); //获取窗口宽高
 

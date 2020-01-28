@@ -1,12 +1,6 @@
 <template>
-  <super :dockLeft="true">
-    <div id="suspension" ref="box" @mouseleave="collapse(false)">
-      <span
-        id="rt"
-        class="shrink2"
-        @click="toggleShrinkTop"
-        :class="{ shrink: shrinkTop }"
-      ></span>
+  <Dock>
+    <div id="suspension">
       <div
         style="position:fixed;top:0;left:0;height:27px;width:100%;"
         class="item progress"
@@ -44,20 +38,12 @@
           </div>
         </div>
       </div>
-      <span
-        id="rd"
-        class="shrink2"
-        @mouseenter="unCollapseV"
-        @click="toggleShrinkBottom"
-        :class="{ shrink: shrinkBottom }"
-      ></span>
     </div>
-  </super>
+  </Dock>
 </template>
 <script>
 import store from "@/localdata";
 import jquery from "jquery";
-import commonMixin from "@/lib/commonMixin";
 
 import {
   loadScripts,
@@ -73,6 +59,7 @@ import {
 } from "@/lib/utils";
 import { setTimeout } from "timers";
 //import { drawMAs } from "@/ma";
+import Dock from "@/view/components/Dock";
 
 /*import TransparencyMouseFix from "electron-transparency-mouse-fix";const fix = new TransparencyMouseFix({
   log: true,
@@ -80,7 +67,6 @@ import { setTimeout } from "timers";
 });*/
 export default {
   name: "suspension",
-  mixins: [commonMixin],
   data() {
     return {
       time: "--",
@@ -92,9 +78,11 @@ export default {
       indexCode: "sh000001",
       progressBarWidth: 0,
       indexPercent: 0,
-      selectIndex: 0,
-      isCollapseH: false
+      selectIndex: 0
     };
+  },
+  components: {
+    Dock
   },
   filters: {
     nowPre(item) {
@@ -163,12 +151,7 @@ export default {
         );
       }, 500);
     },
-    toggleShrinkTop() {
-      this.shrinkTop = !this.shrinkTop;
-    },
-    toggleShrinkBottom() {
-      this.shrinkBottom = !this.shrinkBottom;
-    },
+
     notify(item, message) {
       this.$electron.remote.app.notifywin.webContents.send("message", {
         id: +new Date(),
@@ -190,58 +173,6 @@ export default {
       if (val > 0) return "up";
       else if (val < 0) return "down";
       else return "";
-    },
-
-    resizeWin() {
-      let win = this.$electron.remote.getCurrentWindow();
-      let screen = this.$electron.remote.screen;
-      let winSize = win.getSize();
-      //  win.setSize(winSize[0], this.items.length * 27);
-      let body = document.body,
-        html = document.documentElement;
-
-      let height = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight,
-        27 * this.items.length
-      );
-      console.log(height);
-      if (winSize[1] != height) this.setSize(winSize[0], height);
-    },
-    setSize(w, h) {
-      let win = this.$electron.remote.getCurrentWindow();
-      win.setResizable(true);
-      win.setSize(w, h);
-      win.setResizable(false);
-    },
-    unCollapse(all) {
-      if (this.shrinkBottom) {
-        this.unCollapseV();
-      }
-    },
-    collapse(all) {
-      let win = this.$electron.remote.getCurrentWindow();
-      let screen = this.$electron.remote.screen;
-
-      let winSize = win.getSize();
-
-      if (this.shrinkBottom) {
-        this.setSize(winSize[0], 1 * 27);
-        this.isCollapseH = true;
-      }
-      if (this.shrinkTop) {
-        const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
-        win.setPosition(size.width - 6, win.getPosition()[1]);
-      }
-      //win.setIgnoreMouseEvents(true, { forward: true });
-    },
-    unCollapseV() {
-      this.isCollapseH = false;
-      this.resizeWin();
-      //requestAnimationFrame(this.resizeWin().bind(this));
     }
   },
 
@@ -292,8 +223,6 @@ export default {
         }, 3000);
       }
     });
-    this.unCollapse();
-    this.collapse();
     document.addEventListener("mousedown", function(e) {
       switch (e.button) {
         case 0:

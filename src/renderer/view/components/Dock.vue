@@ -17,12 +17,12 @@
 function animation(init, targetX, duration, callback) {
   let t1 = +new Date();
   let speed = (targetX - init) / duration;
+  let fun = targetX > init ? Math.min : Math.max;
 
   function step() {
     let t2 = +new Date();
-    init = Math.max(init + (t2 - t1) * speed, targetX);
-    callback(init);
-    if (init > targetX) {
+    init = fun(init + (t2 - t1) * speed, targetX);
+    if (callback(parseInt(init), targetX)) {
       window.requestAnimationFrame(step);
     }
   }
@@ -53,15 +53,20 @@ export default {
         27
       );
       let con = this.$electron.remote.getGlobal("console");
-      con.log(body.scrollHeight, body.offsetHeight, html.offsetHeight, height);
-      if (winSize[1] != height) this.setSize(winSize[0], height);
+      if (winSize[1] != height) {
+        let con = this.$electron.remote.getGlobal("console");
+
+        animation(winSize[1], height, 500, (cur, target) => {
+          this.setSize(winSize[0], cur);
+          con.log(winSize[1], cur, target);
+          return cur < target;
+        });
+      }
     },
     setSize(w, h) {
       let win = this.$electron.remote.getCurrentWindow();
       //win.setResizable(true);
       win.setSize(w, (win.isFrame ? 25 : 0) + h);
-      let con = this.$electron.remote.getGlobal("console");
-      con.log(h);
 
       // win.setResizable(false);
     }
@@ -85,6 +90,9 @@ export default {
           mpos.y < wPos[1] ||
           mpos.y > wPos[1] + wsize[1]
         ) {
+          clearInterval(timerID);
+          this.mouseleave = true;
+
           if (this.isDockLeft) {
             win.setPosition(
               screen.getPrimaryDisplay().workAreaSize.width - 3,
@@ -94,7 +102,6 @@ export default {
           if (this.isShrink) {
             this.setSize(wsize[0], 1 * 27);
           }
-          timerID && clearInterval(timerID);
         }
       }, 500);
     });
@@ -108,8 +115,9 @@ export default {
           screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
         let duration = 500;
 
-        animation(init, targetX, duration, cur => {
-          win.setPosition(parseInt(cur), win.getPosition()[1]);
+        animation(init, targetX, duration, (cur, target) => {
+          win.setPosition(cur, win.getPosition()[1]);
+          return cur > target;
         });
 
         /* win.setPosition(

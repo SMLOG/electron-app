@@ -119,24 +119,33 @@ export default {
 };
 </script>
 <style>
-.dock {
+.dock.shrink2:after {
   background: green !important;
 }
 .shrink2 {
-  width: 3px;
-  height: 3px;
-  border: 1px solid black;
-  border-radius: 8px;
+  width: 10px;
+  height: 10px;
   position: fixed;
   right: 10px;
+  border: none;
+
   cursor: pointer;
   z-index: 2;
+}
+.shrink2:after {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  border: 1px solid black;
 }
 .r {
   top: 10px;
 }
 .d {
-  bottom: 15px;
-  right: 15px;
+  bottom: 8px;
+  right: 10px;
 }
 </style>

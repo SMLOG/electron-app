@@ -14,10 +14,24 @@
   </div>
 </template>
 <script>
+function animation(init, targetX, duration, callback) {
+  let t1 = +new Date();
+  let speed = (targetX - init) / duration;
+
+  function step() {
+    let t2 = +new Date();
+    init = Math.max(init + (t2 - t1) * speed, targetX);
+    callback(init);
+    if (init > targetX) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  step();
+}
 export default {
   data() {
     return {
-      isDockLeft: false,
+      isDockLeft: true,
       isShrink: false
     };
   },
@@ -84,22 +98,19 @@ export default {
         }
       }, 500);
     });
+    let con = this.$electron.remote.getGlobal("console");
+
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
       if (this.isDockLeft) {
-        var x = win.getPosition()[0];
+        let init = win.getPosition()[0];
         let targetX =
           screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
-        let k = 1;
+        let duration = 500;
 
-        function step() {
-          x = Math.max(x - 10 * k++, targetX);
-          win.setPosition(x, win.getPosition()[1]);
-          if (x > targetX) {
-            window.requestAnimationFrame(step);
-          }
-        }
-        step();
+        animation(init, targetX, duration, cur => {
+          win.setPosition(parseInt(cur), win.getPosition()[1]);
+        });
 
         /* win.setPosition(
           screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0],

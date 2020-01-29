@@ -247,10 +247,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  padding: 0;
-  margin: 0;
-}
 .item {
   height: 27px;
   line-height: 27px;
@@ -298,29 +294,9 @@ export default {
 
   background-color: rgba(255, 255, 255, 0.6);
 }
-.shrink2 {
-  width: 3px;
-  height: 3px;
-  border: 1px solid black;
-  border-radius: 8px;
-  background: white;
-  position: fixed;
-  right: 5px;
-  cursor: pointer;
-  z-index: 2;
-}
-#rt {
-  top: 10px;
-}
-#rd {
-  bottom: 6px;
-}
-#suspension .shrink {
-  background: green;
-}
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
 }
 
 ::-webkit-scrollbar-track {
@@ -332,38 +308,6 @@ export default {
 }
 i {
   font-style: normal;
-}
-#arrow {
-  display: inline-block;
-  position: absolute;
-  left: -2px;
-  z-index: 0;
-}
-i.arrow {
-  display: inline-block;
-  border-style: solid;
-  border-width: 0 0 8px 8px;
-  border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
-  flex: 0;
-}
-.arrow.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.arrow.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
-
-.arrow.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.arrow.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
 }
 
 .flex {

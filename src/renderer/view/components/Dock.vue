@@ -17,12 +17,14 @@
 function animation(init, targetX, duration, callback) {
   let t1 = +new Date();
   let speed = (targetX - init) / duration;
-  let fun = targetX > init ? Math.min : Math.max;
+  let is_incr = targetX > init;
+  let fun = is_incr ? Math.min : Math.max;
 
   function step() {
     let t2 = +new Date();
     init = fun(init + (t2 - t1) * speed, targetX);
-    if (callback(parseInt(init), targetX)) {
+    callback(parseInt(init), targetX);
+    if ((is_incr && init < targetX) || (!is_incr && init > targetX)) {
       window.requestAnimationFrame(step);
     }
   }
@@ -60,8 +62,6 @@ export default {
           500,
           (cur, target) => {
             this.setSize(winSize[0], cur);
-            con.log(winSize[1], cur, target);
-            return cur < target;
           }
         );
       }
@@ -105,7 +105,6 @@ export default {
               500,
               (cur, target) => {
                 win.setPosition(cur, win.getPosition()[1]);
-                return cur < target;
               }
             );
           }
@@ -115,9 +114,7 @@ export default {
               27,
               500,
               (cur, target) => {
-                con.log(wsize[1] - (win.isFrame ? 27 : 0), cur, target);
                 this.setSize(wsize[0], cur);
-                return cur > target;
               }
             );
           }
@@ -135,7 +132,6 @@ export default {
 
         animation(init, targetX, duration, (cur, target) => {
           win.setPosition(cur, win.getPosition()[1]);
-          return cur > target;
         });
 
         /* win.setPosition(

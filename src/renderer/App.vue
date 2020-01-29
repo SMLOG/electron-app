@@ -18,10 +18,9 @@ body {
   margin: 0;
 }
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 0px;
+  height: 0px;
 }
-
 ::-webkit-scrollbar-track {
   background: #ddd;
 }

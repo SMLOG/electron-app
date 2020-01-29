@@ -42,7 +42,6 @@
 </template>
 <script>
 import store from "@/localdata";
-import jquery from "jquery";
 
 import {
   loadScripts,
@@ -192,11 +191,9 @@ export default {
     let openwin;
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
-      //this.loadDatas();
       let win = this.$electron.remote.getCurrentWindow();
       win.setAlwaysOnTop(true, true, 1);
       this.items = datas;
-      //this.unCollapse();
       let items = this.items.filter(it => it.code == this.indexCode);
 
       if (
@@ -209,11 +206,6 @@ export default {
       }
     });
 
-    this.$electron.ipcRenderer.on("ALT+Z", () => {
-      console.log("height:" + win.getSize()[1]);
-      if (win.getSize()[1] > 30) this.collapse(true);
-      else this.unCollapse(true);
-    });
     let displayNext = () => {
       this.selectIndex++;
       if (this.selectIndex >= this.items.length) this.selectIndex = 0;

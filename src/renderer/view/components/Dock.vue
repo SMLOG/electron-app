@@ -14,6 +14,8 @@
   </div>
 </template>
 <script>
+import jquery from "jquery";
+
 function animation(init, targetX, duration, callback) {
   let t1 = +new Date();
   let speed = (targetX - init) / duration;
@@ -96,7 +98,9 @@ export default {
     let timerID;
     let con = this.$electron.remote.getGlobal("console");
 
-    document.addEventListener("mouseleave", event => {
+    let onLeave = () => {
+      con.log("ALT+Z mouseleave");
+
       timerID = setInterval(() => {
         let wsize = win.getSize();
 
@@ -136,9 +140,13 @@ export default {
           );
         }
       }, 500);
+    };
+    document.addEventListener("mouseleave", event => {
+      onLeave();
     });
+    let onEnter = () => {
+      con.log("ALT+Z mouseenter");
 
-    document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
       let x = win.getPosition()[0];
       let x2 = x;
@@ -163,6 +171,14 @@ export default {
           this.setSize(winSize[0], curH);
         }
       );
+    };
+    document.addEventListener("mouseenter", event => {
+      onEnter();
+    });
+    this.$electron.ipcRenderer.on("ALT+Z", () => {
+      con.log("ALT+Z");
+      if (win.getSize()[1] > 30) onLeave();
+      else onEnter();
     });
 
     document.addEventListener("mousedown", e => {

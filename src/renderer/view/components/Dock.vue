@@ -150,8 +150,8 @@ export default {
       let h = winSize[1] - (win.isFrame ? 27 : 0);
       let h2 = h;
       if (this.isShrink) {
-        h2 = this.resizeWin();
         this.$emit("onCollapseH", false);
+        h2 = this.resizeWin();
       }
       animation2(
         [
@@ -159,7 +159,6 @@ export default {
           [h, h2]
         ],
         ([curx, curH]) => {
-          con.log(x, x2, curx, curH);
           win.setPosition(curx, win.getPosition()[1]);
           this.setSize(winSize[0], curH);
         }

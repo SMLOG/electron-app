@@ -13,9 +13,8 @@
       </div>
       <div class="content_body">
         <div
-          v-show="(isCollapseH && selectIndex == i) || !isCollapseH"
           class="item etmf-void"
-          v-for="(item, i) in items"
+          v-for="item in filteredItems"
           :key="item.code"
         >
           <div class="flex">
@@ -98,7 +97,11 @@ export default {
   },
   computed: {
     filteredItems() {
-      return this.items.filter(e => e.isFocus);
+      if (this.isCollapseH)
+        return this.items
+          .filter((e, i) => i == this.selectIndex)
+          .concat(this.items.filter((e, i) => i !== this.selectIndex));
+      else return this.items;
     }
   },
   methods: {

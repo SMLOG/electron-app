@@ -14,8 +14,6 @@
   </div>
 </template>
 <script>
-import jquery from "jquery";
-
 function animation(init, targetX, duration, callback) {
   let t1 = +new Date();
   let speed = (targetX - init) / duration;
@@ -100,6 +98,7 @@ export default {
 
     let onLeave = () => {
       con.log("ALT+Z mouseleave");
+      this.isleave = true;
 
       timerID = setInterval(() => {
         let wsize = win.getSize();
@@ -146,7 +145,7 @@ export default {
     });
     let onEnter = () => {
       con.log("ALT+Z mouseenter");
-
+      this.isleave = false;
       if (timerID) clearTimeout(timerID);
       let x = win.getPosition()[0];
       let x2 = x;
@@ -177,7 +176,7 @@ export default {
     });
     this.$electron.ipcRenderer.on("ALT+Z", () => {
       con.log("ALT+Z");
-      if (win.getSize()[1] > 30) onLeave();
+      if (!this.isleave) onLeave();
       else onEnter();
     });
 

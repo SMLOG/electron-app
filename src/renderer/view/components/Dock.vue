@@ -54,19 +54,22 @@ export default {
       );
       let con = this.$electron.remote.getGlobal("console");
       if (winSize[1] != height) {
-        let con = this.$electron.remote.getGlobal("console");
-
-        animation(winSize[1], height, 500, (cur, target) => {
-          this.setSize(winSize[0], cur);
-          con.log(winSize[1], cur, target);
-          return cur < target;
-        });
+        animation(
+          winSize[1] - (win.isFrame ? 27 : 0),
+          height,
+          500,
+          (cur, target) => {
+            this.setSize(winSize[0], cur);
+            con.log(winSize[1], cur, target);
+            return cur < target;
+          }
+        );
       }
     },
     setSize(w, h) {
       let win = this.$electron.remote.getCurrentWindow();
       //win.setResizable(true);
-      win.setSize(w, (win.isFrame ? 25 : 0) + h);
+      win.setSize(w, (win.isFrame ? 27 : 0) + h);
 
       // win.setResizable(false);
     }
@@ -94,13 +97,26 @@ export default {
           this.mouseleave = true;
 
           if (this.isDockLeft) {
-            win.setPosition(
+            animation(
+              win.getPosition()[0],
               screen.getPrimaryDisplay().workAreaSize.width - 3,
-              win.getPosition()[1]
+              500,
+              (cur, target) => {
+                win.setPosition(cur, win.getPosition()[1]);
+                return cur < target;
+              }
             );
           }
           if (this.isShrink) {
-            this.setSize(wsize[0], 1 * 27);
+            animation(
+              wsize[1] - (win.isFrame ? 27 : 0),
+              27,
+              500,
+              (cur, target) => {
+                this.setSize(wsize[0], cur);
+                return cur > target;
+              }
+            );
           }
         }
       }, 500);

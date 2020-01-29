@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-function animation(init, targetX, duration, callback) {
+function animation(init, targetX, callback, duration = 300) {
   let t1 = +new Date();
   let speed = (targetX - init) / duration;
   let is_incr = targetX > init;
@@ -79,6 +79,17 @@ export default {
         27
       );
       return height;
+    },
+    onResize() {
+      let win = this.$electron.remote.getCurrentWindow();
+
+      let winSize = win.getSize();
+      let h = winSize[1] - (win.isFrame ? 27 : 0);
+      let h2 = this.resizeWin();
+
+      animation2([[h, h2]], ([curH]) => {
+        this.setSize(winSize[0], curH);
+      });
     },
     setSize(w, h) {
       let win = this.$electron.remote.getCurrentWindow();
@@ -174,6 +185,7 @@ export default {
     document.addEventListener("mouseenter", event => {
       onEnter();
     });
+    onEnter();
     this.$electron.ipcRenderer.on("ALT+Z", () => {
       con.log("ALT+Z");
       if (!this.isleave) onLeave();

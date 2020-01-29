@@ -1,5 +1,5 @@
 <template>
-  <Dock @onCollapseH="onCollapseH">
+  <Dock @onCollapseH="onCollapseH" ref="dock">
     <div id="suspension">
       <div
         style="position:fixed;top:0;left:0;height:27px;width:100%;"
@@ -67,11 +67,7 @@ export default {
   name: "suspension",
   data() {
     return {
-      time: "--",
       items: [{ code: "sh000001" }],
-      shrinkBottom: true,
-      shrinkTop: false,
-      loadMDate: false,
       altKey: false,
       indexCode: "sh000001",
       progressBarWidth: 0,
@@ -103,6 +99,7 @@ export default {
       else return this.items;
     }
   },
+  watch: {},
   methods: {
     checkAltKey(e) {
       this.altKey = e.altKey == 1;
@@ -191,8 +188,12 @@ export default {
     let openwin;
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
-      let win = this.$electron.remote.getCurrentWindow();
-      win.setAlwaysOnTop(true, true, 1);
+      if (datas.length != this.items.length) {
+          window.requestAnimationFrame(()=>{
+            this.$refs.dock.onResize();
+        });
+
+      }
       this.items = datas;
       let items = this.items.filter(it => it.code == this.indexCode);
 

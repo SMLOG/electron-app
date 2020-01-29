@@ -81,16 +81,7 @@ export default {
         html.offsetHeight,
         27
       );
-      if (winSize[1] != height) {
-        animation(
-          winSize[1] - (win.isFrame ? 27 : 0),
-          height,
-          500,
-          (cur, target) => {
-            this.setSize(winSize[0], cur);
-          }
-        );
-      }
+      return height;
     },
     setSize(w, h) {
       let win = this.$electron.remote.getCurrentWindow();
@@ -152,24 +143,30 @@ export default {
 
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
+      let x = win.getPosition()[0];
+      let x2 = x;
       if (this.isDockLeft) {
-        let init = win.getPosition()[0];
-        let targetX =
-          screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
-        let duration = 500;
-
-        animation(init, targetX, duration, (cur, target) => {
-          win.setPosition(cur, win.getPosition()[1]);
-        });
-
-        /* win.setPosition(
-          screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0],
-          win.getPosition()[1]
-        );*/
+        x2 = screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
       }
+      let winSize = win.getSize();
+
+      let h = winSize[1] - (win.isFrame ? 27 : 0);
+      let h2 = h;
       if (this.isShrink) {
-        this.resizeWin();
+        h2 = this.resizeWin();
       }
+      animation2(
+        [
+          [x, x2],
+          [h, h2]
+        ],
+        ([curx, curH]) => {
+          con.log(x, x2, curx, curH);
+          win.setPosition(curx, win.getPosition()[1]);
+          this.setSize(winSize[0], curH);
+        },
+        500
+      );
     });
 
     document.addEventListener("mousedown", e => {

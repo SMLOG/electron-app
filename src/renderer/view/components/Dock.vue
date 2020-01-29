@@ -30,6 +30,33 @@ function animation(init, targetX, duration, callback) {
   }
   step();
 }
+function animation2(arr, callback, duration) {
+  let t1 = +new Date();
+  let arr_speed = arr.map(a => (a[1] - a[0]) / duration);
+  // let speed = (targetX - init) / duration;
+  let arr_is_incr = arr.map(a => a[1] > a[0]);
+  //let is_incr = targetX > init;
+  let arr_fun = arr_is_incr.map(is_incr => (is_incr ? Math.min : Math.max));
+  // let fun = is_incr ? Math.min : Math.max;
+
+  function step() {
+    let t2 = +new Date();
+    let arr_init = arr.map((a, i) =>
+      parseInt(arr_fun[i](a[0] + (t2 - t1) * arr_speed[i], a[1]))
+    );
+    //init = fun(init + (t2 - t1) * speed, targetX);
+    callback(arr_init);
+    let con_arr = arr.map(
+      (a, i) =>
+        (arr_is_incr[i] && arr_init[i] < a[1]) ||
+        (!arr_is_incr[i] && arr_init[i] > a[1])
+    );
+    if (con_arr.filter(e => e).length > 0) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  step();
+}
 export default {
   data() {
     return {
@@ -95,27 +122,30 @@ export default {
           mpos.y > wPos[1] + wsize[1]
         ) {
           clearInterval(timerID);
-
+          let x = win.getPosition()[0];
+          let x2 = x;
+          let h = wsize[1] - (win.isFrame ? 27 : 0);
+          let h2 = h;
           if (this.isDockLeft) {
-            animation(
-              win.getPosition()[0],
-              screen.getPrimaryDisplay().workAreaSize.width - 3,
-              500,
-              (cur, target) => {
-                win.setPosition(cur, win.getPosition()[1]);
-              }
-            );
+            x2 = screen.getPrimaryDisplay().workAreaSize.width - 3;
           }
           if (this.isShrink) {
-            animation(
-              wsize[1] - (win.isFrame ? 27 : 0),
-              27,
-              500,
-              (cur, target) => {
-                this.setSize(wsize[0], cur);
-              }
-            );
+            h2 = 27;
           }
+
+          animation2(
+            [
+              [x, x2],
+              [h, h2]
+            ],
+
+            ([curx, curh]) => {
+              con.log(curx, curh);
+              win.setPosition(curx, win.getPosition()[1]);
+              this.setSize(wsize[0], curh);
+            },
+            500
+          );
         }
       }, 500);
     });

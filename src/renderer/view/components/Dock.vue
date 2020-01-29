@@ -54,7 +54,6 @@ export default {
         html.offsetHeight,
         27
       );
-      let con = this.$electron.remote.getGlobal("console");
       if (winSize[1] != height) {
         animation(
           winSize[1] - (win.isFrame ? 27 : 0),
@@ -96,7 +95,6 @@ export default {
           mpos.y > wPos[1] + wsize[1]
         ) {
           clearInterval(timerID);
-          this.mouseleave = true;
 
           if (this.isDockLeft) {
             animation(

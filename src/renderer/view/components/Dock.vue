@@ -80,10 +80,12 @@ export default {
     let biasX = 0;
     let biasY = 0;
     let timerID;
+    let con = this.$electron.remote.getGlobal("console");
 
-    let wsize = win.getSize();
     document.addEventListener("mouseleave", event => {
       timerID = setInterval(() => {
+        let wsize = win.getSize();
+
         let mpos = this.$electron.screen.getCursorScreenPoint();
         let wPos = win.getPosition();
 
@@ -113,6 +115,7 @@ export default {
               27,
               500,
               (cur, target) => {
+                con.log(wsize[1] - (win.isFrame ? 27 : 0), cur, target);
                 this.setSize(wsize[0], cur);
                 return cur > target;
               }
@@ -121,7 +124,6 @@ export default {
         }
       }, 500);
     });
-    let con = this.$electron.remote.getGlobal("console");
 
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);

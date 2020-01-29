@@ -208,10 +208,10 @@ export default {
   background: green !important;
 }
 .shrink2 {
-  width: 10px;
-  height: 10px;
+  width: 5px;
+  height: 5px;
   position: fixed;
-  right: 10px;
+  right: 5px;
   border: none;
 
   cursor: pointer;
@@ -221,16 +221,16 @@ export default {
   position: absolute;
   content: "";
   display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 3px;
   border: 1px solid black;
 }
 .r {
-  top: 10px;
+  top: 5px;
 }
 .d {
-  bottom: 8px;
-  right: 10px;
+  bottom: 5px;
+  right: 5px;
 }
 </style>

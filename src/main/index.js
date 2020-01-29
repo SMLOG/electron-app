@@ -119,9 +119,15 @@ app.on("ready", () => {
   var trayMenuTemplate = [
     {
       label: "设置",
-      click: function() {
-        if (mainWindow.isVisible()) mainWindow.hide();
-        else mainWindow.show();
+      type: "checkbox",
+      click: function(menuItem, browserWindow, event) {
+        if (mainWindow.isVisible()) {
+          mainWindow.hide();
+          menuItem.checked = false;
+        } else {
+          mainWindow.show();
+          menuItem.checked = true;
+        }
       } //打开相应页面
     },
     {

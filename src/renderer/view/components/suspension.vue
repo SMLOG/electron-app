@@ -1,5 +1,5 @@
 <template>
-  <Dock>
+  <Dock @onCollapseH="onCollapseH">
     <div id="suspension">
       <div
         style="position:fixed;top:0;left:0;height:27px;width:100%;"
@@ -12,7 +12,12 @@
         ></div>
       </div>
       <div class="content_body">
-        <div class="item etmf-void" v-for="(item, i) in items" :key="item.code">
+        <div
+          v-show="(isCollapseH && selectIndex == i) || !isCollapseH"
+          class="item etmf-void"
+          v-for="(item, i) in items"
+          :key="item.code"
+        >
           <div class="flex">
             <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
               item | nowPre
@@ -73,7 +78,8 @@ export default {
       indexCode: "sh000001",
       progressBarWidth: 0,
       indexPercent: 0,
-      selectIndex: 0
+      selectIndex: 0,
+      isCollapseH: false
     };
   },
   components: {
@@ -98,6 +104,9 @@ export default {
   methods: {
     checkAltKey(e) {
       this.altKey = e.altKey == 1;
+    },
+    onCollapseH(b) {
+      this.isCollapseH = b;
     },
     altKeyShow(e) {
       if (e.altKey) {

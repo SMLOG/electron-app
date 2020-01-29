@@ -30,21 +30,17 @@ function animation(init, targetX, duration, callback) {
   }
   step();
 }
-function animation2(arr, callback, duration) {
+function animation2(arr, callback, duration = 300) {
   let t1 = +new Date();
   let arr_speed = arr.map(a => (a[1] - a[0]) / duration);
-  // let speed = (targetX - init) / duration;
   let arr_is_incr = arr.map(a => a[1] > a[0]);
-  //let is_incr = targetX > init;
   let arr_fun = arr_is_incr.map(is_incr => (is_incr ? Math.min : Math.max));
-  // let fun = is_incr ? Math.min : Math.max;
 
   function step() {
     let t2 = +new Date();
     let arr_init = arr.map((a, i) =>
       parseInt(arr_fun[i](a[0] + (t2 - t1) * arr_speed[i], a[1]))
     );
-    //init = fun(init + (t2 - t1) * speed, targetX);
     callback(arr_init);
     let con_arr = arr.map(
       (a, i) =>
@@ -64,6 +60,7 @@ export default {
       isShrink: false
     };
   },
+  watch: {},
   methods: {
     toggleLeft() {
       this.isDockLeft = !this.isDockLeft;
@@ -122,6 +119,7 @@ export default {
           }
           if (this.isShrink) {
             h2 = 27;
+            this.$emit("onCollapseH", true);
           }
 
           animation2(
@@ -134,8 +132,7 @@ export default {
               con.log(curx, curh);
               win.setPosition(curx, win.getPosition()[1]);
               this.setSize(wsize[0], curh);
-            },
-            500
+            }
           );
         }
       }, 500);
@@ -154,6 +151,7 @@ export default {
       let h2 = h;
       if (this.isShrink) {
         h2 = this.resizeWin();
+        this.$emit("onCollapseH", false);
       }
       animation2(
         [
@@ -164,8 +162,7 @@ export default {
           con.log(x, x2, curx, curH);
           win.setPosition(curx, win.getPosition()[1]);
           this.setSize(winSize[0], curH);
-        },
-        500
+        }
       );
     });
 

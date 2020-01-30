@@ -21,13 +21,13 @@ function isMacdDeath(techData) {
   );
 }
 const techMap = {
-  KMX: function({ item, kd, kw, km }) {
+  MX: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
-  KWX: function({ item, kd, kw, km }) {
+  WX: function({ item, kd, kw, km }) {
     return isMacdGolden(kw);
   },
-  KDWX: function({ item, kd, kw, km }) {
+  "D&WX": function({ item, kd, kw, km }) {
     return (
       kw.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
@@ -35,7 +35,7 @@ const techMap = {
       isMacdGolden(kd)
     );
   },
-  粘合多头: function({ item, kd, kw, km }) {
+  粘多: function({ item, kd, kw, km }) {
     //5,10,20日三线粘合 {取1%振幅内粘合}
     let m = item.now;
     if (kd.MA.length < 30) return false;

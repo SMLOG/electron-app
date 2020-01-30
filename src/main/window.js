@@ -114,7 +114,7 @@ function createSuspensionWindow() {
     type: "toolbar", //创建的窗口类型为工具栏窗口
     frame: false, //要创建无边框窗口
     autoHideMenuBar: true,
-    resizable: false, //禁止窗口大小缩放
+    resizable: true, //禁止窗口大小缩放
     show: false, //先不让窗口显示
     webPreferences: {
       // devTools: false, //关闭调试工具

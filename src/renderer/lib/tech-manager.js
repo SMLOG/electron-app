@@ -17,8 +17,7 @@ function isMacdDeath(techData) {
     techData.MACD[techData.MACD.length - 1].bar <
       techData.MACD[techData.MACD.length - 2].bar &&
     techData.MACD[techData.MACD.length - 2].bar <
-      techData.MACD[techData.MACD.length - 3].bar &&
-    techData.MACD[techData.MACD.length - 3].bar > 0
+      techData.MACD[techData.MACD.length - 3].bar
   );
 }
 const techMap = {

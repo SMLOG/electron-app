@@ -208,7 +208,7 @@ import {
   updateItem,
   getMeetList,
   getFilterList,
-  updateHQ
+  batchUpdateHQ
 } from "@/lib/getTable";
 import $ from "jquery";
 window.$ = $;
@@ -294,13 +294,6 @@ export default {
 
     this.reloadData();
     this.timerFn();
-    if (this.createSuspension === true) {
-      this.$electron.ipcRenderer.send("showSuspensionWindow");
-    }
-
-    this.$electron.ipcRenderer.on("hideSuspension", (e, data) => {
-      this.$store.dispatch("hideSuspension");
-    });
 
     document.addEventListener("keydown", e => {
       if (e.target && e.target.nodeName == "BODY") {
@@ -343,9 +336,6 @@ export default {
     }
   },
   computed: {
-    createSuspension() {
-      return this.$store.state.suspension.show;
-    },
     filteredItems: function() {
       return this.getfilterItems();
     },
@@ -371,20 +361,6 @@ export default {
         items = fc(items);
       }
       return items;
-    },
-    scrollToItem(item) {
-      window.scrollTo({
-        top:
-          $(`a[name=${item.code}]`)
-            .eq(0)
-            .offset().top -
-          $("table tr")
-            .eq(1)
-            .offset().top +
-          $("table tr")
-            .eq(0)
-            .height()
-      });
     },
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
@@ -471,15 +447,6 @@ export default {
       this.sendRefresh();
       monitor(this.items);
     },
-    newWindow() {
-      if (this.createSuspension === true) {
-        this.$store.dispatch("hideSuspension");
-        this.$electron.ipcRenderer.send("hideSuspensionWindow");
-      } else {
-        this.$store.dispatch("showSuspension");
-        this.$electron.ipcRenderer.send("showSuspensionWindow");
-      }
-    },
     timerFn() {
       (async () => {
         for (;;) {
@@ -514,7 +481,7 @@ export default {
 
       (async () => {
         for (;;) {
-          await updateHQ(this.items2);
+          await batchUpdateHQ(this.items2);
           await timeout(5000);
         }
       })();

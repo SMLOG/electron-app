@@ -308,7 +308,7 @@ function zzl(lrb, type, n) {
 export async function updateItem(item) {
   let lrb = await getCacheData(null, `tb_zycwzb${item.code}`);
 
-  if (!isObjectEmpty(lrb)) {
+  if (!isObjectEmpty(lrb) && lrb.reportDate && lrb.reportDate.length > 1) {
     putCache(`tb_zycwzb${item.code}`, lrb);
 
     let laste = parseFloat(lrb[mgsy][lrb.reportDate[1]]);
@@ -545,7 +545,7 @@ export function isNotTradeTime() {
   if (h > 15) return true;
   return false;
 }
-export async function updateHQ(items) {
+export async function batchUpdateHQ(items) {
   if (!items || !items.length || isNotTradeTime()) return;
 
   let datalist = await getHXList();

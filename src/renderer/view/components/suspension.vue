@@ -30,10 +30,21 @@
               @click="openItem(item, $event)"
               >{{ item.name }}</span
             >
-            <span class="content" :class="upDown(item.now - item.preClose)">
+            <span
+              style="flex-grow:1;text-align:left;"
+              class="content"
+              :class="upDown(item.now - item.preClose)"
+            >
               <i>{{ item.now }}</i>
               <i>({{ item.change }}){{ item.turnover }}</i>
             </span>
+            <i
+              v-if="item._Deth"
+              class="blink"
+              style="padding-right:10px;"
+              title="MACD 死叉"
+              >M</i
+            >
           </div>
         </div>
       </div>
@@ -189,10 +200,9 @@ export default {
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
       if (datas.length != this.items.length) {
-          window.requestAnimationFrame(()=>{
-            this.$refs.dock.onResize();
+        window.requestAnimationFrame(() => {
+          this.$refs.dock.onResize();
         });
-
       }
       this.items = datas;
       let items = this.items.filter(it => it.code == this.indexCode);

@@ -868,7 +868,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
 ;xh5_define("chart.h5k", ["cfgs.settinger", "utils.util", "utils.painter"], function(e, t, n) {
     "use strict";
     function a(a) {
-        function i(e, n) {
+        function Chart(e, n) {
             function i(e) {
                 O.setDataRange(e),
                 y && (y.linkData(e),
@@ -1988,11 +1988,11 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             i()
         }
         function M() {
-            var e, n, l, h, d = this, f = [], g = .05, y = function() {
-                var e, t, n = Number.MAX_VALUE, i = -Number.MAX_VALUE, o = f.length, s = o > 1 || "percent" == L.datas.scaleType;
+            var e, n, l, h, d = this, charts = [], g = .05, y = function() {
+                var e, t, n = Number.MAX_VALUE, i = -Number.MAX_VALUE, o = charts.length, s = o > 1 || "percent" == L.datas.scaleType;
                 L.custom.k_overlay && (s = !1);
                 for (var r, l, c, h, d = s ? "Percent" : "Price", u = o; u--; )
-                    e = f[u],
+                    e = charts[u],
                     a.scalerange ? c = a.scalerange : (h = e.getPriceTech(),
                     s || !h ? c = [i, n] : (t = h && h.getMaxMin(),
                     c = t || [i, n])),
@@ -2003,20 +2003,20 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 var p;
                 p = a.scalerange ? a.scalerange.concat(4) : 1 == a.pcm ? .0199 > i - n ? [i, n, 1] : v(i, n, 2, !1, !0) : v(i, n, a.nfloat, !1, !0, g);
                 for (var m = o; m--; )
-                    e = f[m],
+                    e = charts[m],
                     e.setPricePos(p, s)
             }, N = function() {
                 (V.start < 1 || !L.custom.smooth) && z.resetX();
-                for (var e = f.length; e--; )
-                    f[e].draw()
+                for (var e = charts.length; e--; )
+                    charts[e].draw()
             }, w = function() {
                 V.start = V.end = 0 / 0,
                 V.currentLength = 0 / 0,
                 n = void 0
             }, k = function(t) {
                 w();
-                for (var n, a = f.length, i = 0; a > i; i++)
-                    n = f[i],
+                for (var n, a = charts.length, i = 0; a > i; i++)
+                    n = charts[i],
                     n.onViewChange();
                 y(),
                 N(),
@@ -2035,8 +2035,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     !n && M.push(e.callback)
                 }
             }, C = function() {
-                for (var t, n = !0, a = f.length; a--; )
-                    t = f[a],
+                for (var t, n = !0, a = charts.length; a--; )
+                    t = charts[a],
                     t == e || I(t) || (n = !1,
                     S = !0);
                 return n
@@ -2060,7 +2060,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     Y.onViewPrice()
                 }
             }, H = function(t) {
-                (t || n && V.dataLength != n) && Y.onRange(e, f.length > 1),
+                (t || n && V.dataLength != n) && Y.onRange(e, charts.length > 1),
                 n = V.dataLength
             }, D = function(e) {
                 (e || V.end == V.dataLength) && (B.update(),
@@ -2074,8 +2074,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 !P && x.parentNode && "none" != x.style.display && (h = setTimeout(D, e || 200))
             }, T = function() {
                 if (!S)
-                    for (var e, t = f.length; t--; )
-                        e = f[t],
+                    for (var e, t = charts.length; t--; )
+                        e = charts[t],
                         e.doUpdate(K)
             }, U = function() {
                 if (clearInterval(l),
@@ -2250,7 +2250,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             ;
             this.h5tM = F,
             this.getAllStock = function() {
-                return f
+                return charts
             }
             ,
             this.getMainStock = function() {
@@ -2258,13 +2258,13 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             }
             ,
             this.getAllSymbols = function() {
-                for (var e = [], t = 0, n = f.length; n > t; t++)
-                    e.push(f[t].symbol);
+                for (var e = [], t = 0, n = charts.length; n > t; t++)
+                    e.push(charts[t].symbol);
                 return e
             }
             ;
             var $ = function() {
-                d.mM.togglePt(f.length > 1 ? {
+                d.mM.togglePt(charts.length > 1 ? {
                     v: !1
                 } : V.viewId == _.URLHASH.KCL || V.viewId == _.URLHASH.KCLF || V.viewId == _.URLHASH.KCLB ? {
                     v: !1
@@ -2278,8 +2278,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     V.start = t,
                     V.end = n,
                     V.currentLength = n - t;
-                    for (var s, r = f.length, l = 0; r > l; l++)
-                        s = f[l],
+                    for (var s, r = charts.length, l = 0; r > l; l++)
+                        s = charts[l],
                         s.setRange(i);
                     y(),
                     N(),
@@ -2297,9 +2297,9 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             this.moving = W,
             this.callSdDraw = N;
             var G = function(t, n) {
-                var a = t instanceof i ? t : new i(t,n);
+                var a = t instanceof Chart ? t : new Chart(t,n);
                 n && (e = a),
-                f.push(a),
+                charts.push(a),
                 $(),
                 R()
             }
@@ -2313,8 +2313,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 return !0
             };
             this.compare = function(e) {
-                for (var n = e.callback, a = f.length; a--; )
-                    if (f[a].symbol == e.symbol)
+                for (var n = e.callback, a = charts.length; a--; )
+                    if (charts[a].symbol == e.symbol)
                         return void (t.isFunc(n) && n({
                             code: 1,
                             msg: "comparing same symbol"
@@ -2328,10 +2328,10 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             this.removeCompare = function(e, t) {
                 for (var n, a, i = !1, o = e.length; o--; ) {
                     a = e[o];
-                    for (var s = f.length; s--; )
-                        if (a == f[s].symbol) {
+                    for (var s = charts.length; s--; )
+                        if (a == charts[s].symbol) {
                             i = !0,
-                            n = f.splice(s, 1)[0],
+                            n = charts.splice(s, 1)[0],
                             n.clear(t),
                             n = null;
                             break
@@ -2369,10 +2369,10 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     ne())
                 }
                 for (var a = e.length; a--; )
-                    for (var i = f.length; i--; )
-                        if (f[i].symbol === e[a].symbol && e[a].data) {
+                    for (var i = charts.length; i--; )
+                        if (charts[i].symbol === e[a].symbol && e[a].data) {
                             ee++,
-                            f[i].doUpdate(b(J, null, n), !1, e[a].data, e[a].market);
+                            charts[i].doUpdate(b(J, null, n), !1, e[a].data, e[a].market);
                             break
                         }
             }
@@ -2389,10 +2389,10 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     for (var a = n.length; a--; ) {
                         var i = n[a];
                         if (i.hasOwnProperty("symbol")) {
-                            for (var o = i.symbol, s = f.length; s--; )
-                                if (f[s].symbol == o) {
-                                    f[s].setLineStyle(i),
-                                    f[s].draw();
+                            for (var o = i.symbol, s = charts.length; s--; )
+                                if (charts[s].symbol == o) {
+                                    charts[s].setLineStyle(i),
+                                    charts[s].draw();
                                     break
                                 }
                         } else
@@ -2405,8 +2405,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             }
             ,
             this.onResize = function(e) {
-                for (var t = f.length; t--; )
-                    f[t].resize(e)
+                for (var t = charts.length; t--; )
+                    charts[t].resize(e)
             }
             ;
             var ae = -1
@@ -2536,9 +2536,9 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 }, n || {}),
                 !n.name)
                     return null;
-                for (var a, i, o = f.length; o--; )
-                    if (f[o].symbol === n.symbol) {
-                        a = f[o];
+                for (var a, i, o = charts.length; o--; )
+                    if (charts[o].symbol === n.symbol) {
+                        a = charts[o];
                         break
                     }
                 if (a) {
@@ -2555,8 +2555,8 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             this.dcReset = function() {
                 clearInterval(l),
                 clearTimeout(h);
-                for (var e, t = f.length; t--; )
-                    e = f.splice(t, 1)[0],
+                for (var e, t = charts.length; t--; )
+                    e = charts.splice(t, 1)[0],
                     e.clear(),
                     e = null
             }

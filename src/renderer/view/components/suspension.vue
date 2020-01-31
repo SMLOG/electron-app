@@ -30,13 +30,12 @@
               @click="openItem(item, $event)"
               >{{ item.name }}</span
             >
-            <span
-              style="flex-grow:1;text-align:left;"
-              class="content"
-              :class="upDown(item.now - item.preClose)"
-            >
-              <i>{{ item.now }}</i>
-              <i>({{ item.change }}){{ item.turnover }}</i>
+            <span style="flex-grow:1;text-align:left;" class="content">
+              <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
+              <i :class="upDown(item.now - item.preClose)"
+                >({{ item.change }}){{ item.changeP }}
+              </i>
+              <i>{{ item.turnover }}</i>
             </span>
             <i
               v-if="item._Deth"

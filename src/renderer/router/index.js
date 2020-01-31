@@ -17,6 +17,11 @@ export default new Router({
       component: () => import("@/view/components/today")
     },
     {
+      path: "/left",
+      name: "left",
+      component: () => import("@/view/components/left")
+    },
+    {
       path: "/pank",
       name: "pank",
       component: () => import("@/view/components/pank")

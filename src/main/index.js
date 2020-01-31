@@ -116,6 +116,23 @@ app.on("ready", () => {
 
   //系统托盘图标目录
   //let trayIcon = path.join(__dirname, 'app');//app是选取的目录
+
+  function createItemWindow(name, options, callback) {
+    return {
+      label: name,
+      // accelerator: "CmdOrCtrl+Z"
+      // ,role: "undo"
+      type: "checkbox",
+      click: function(menuItem, browserWindow, event) {
+        //showDlg(menuItem.label, menuItem.label, browserWindow);
+        toggleWindow(options, name, ret => {
+          menuItem.checked = ret;
+          callback && callback();
+        });
+      }
+    };
+  }
+
   var trayMenuTemplate = [
     {
       label: "设置",
@@ -136,18 +153,37 @@ app.on("ready", () => {
     {
       label: "Windows",
       submenu: [
-        {
-          label: "today",
-          // accelerator: "CmdOrCtrl+Z"
-          // ,role: "undo"
-          type: "checkbox",
-          click: function(menuItem, browserWindow, event) {
-            //showDlg(menuItem.label, menuItem.label, browserWindow);
-            toggleWindow("today", ret => {
-              menuItem.checked = ret;
-            });
-          }
-        }
+        createItemWindow("Left", {
+          useContentSize: true,
+          width: 180, //悬浮窗口的宽度 比实际DIV的宽度要多2px 因为有1px的边框
+          height: screen.getPrimaryDisplay().workAreaSize[1], //悬浮窗口的高度 比实际DIV的高度要多2px 因为有1px的边框
+          type: "toolbar", //创建的窗口类型为工具栏窗口
+          frame: false, //要创建无边框窗口
+          autoHideMenuBar: true,
+          resizable: true, //禁止窗口大小缩放
+          show: true, //先不让窗口显示
+          webPreferences: {
+            // devTools: false, //关闭调试工具
+            webSecurity: false
+          },
+          transparent: false, //设置透明
+          alwaysOnTop: true //窗口是否总是显示在其他窗口之前
+        }),
+        createItemWindow("today", {
+          width: 200,
+          height: 200,
+          type: "toolbar",
+          frame: true,
+          autoHideMenuBar: true,
+          resizable: true,
+          show: true,
+          webPreferences: {
+            //  devTools: false, //关闭调试工具
+            webSecurity: false
+          },
+          transparent: false,
+          alwaysOnTop: true
+        })
       ]
     },
     {
@@ -222,41 +258,29 @@ app.on("activate", () => {
   }
 });
 let windows = {};
-function toggleWindow(type, cb) {
+function toggleWindow(options, type, cb) {
   let win = windows[type];
   if (win) {
     if (win.isVisible()) win.hide(), cb && cb(false);
     else win.show(), cb && cb(true);
     return;
   }
-  win = new BrowserWindow({
-    width: 200,
-    height: 200,
-    type: "toolbar",
-    frame: true,
-    autoHideMenuBar: true,
-    resizable: true,
-    show: true,
-    webPreferences: {
-      //  devTools: false, //关闭调试工具
-      webSecurity: false
-    },
-    transparent: false,
-    alwaysOnTop: true
-  });
-  win.isFrame = true;
+  win = new BrowserWindow(options);
+  win.isFrame = options.frame;
   const size = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
   const winSize = win.getSize(); //获取窗口宽高
 
   //设置窗口的位置 注意x轴要桌面的宽度 - 窗口的宽度
   win.setPosition(size.width - winSize[0], size.height - winSize[1]);
 
-  const url =
-    process.env.NODE_ENV === "development"
-      ? `http://localhost:9080/#/${type}`
-      : `file://${__dirname}/index.html/#/${type}`;
+  if (!options.url) {
+    options.url =
+      process.env.NODE_ENV === "development"
+        ? `http://localhost:9080/#/${type}`
+        : `file://${__dirname}/index.html/#/${type}`;
+  }
 
-  win.loadURL(url);
+  win.loadURL(options.url);
   windows[type] = win;
 
   win.once("ready-to-show", () => {

@@ -396,4 +396,8 @@ ul h3 {
   padding: 0;
   margin: 0;
 }
+a {
+  cursor: pointer;
+  color: #003598;
+}
 </style>

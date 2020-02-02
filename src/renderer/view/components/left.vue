@@ -1,16 +1,6 @@
 <template>
   <Dock @onCollapseH="onCollapseH" ref="dock">
     <div id="suspension">
-      <div
-        style="position:fixed;top:0;left:0;height:27px;width:100%;"
-        class="item progress"
-      >
-        <div
-          class="progress_bar"
-          :class="{ up: indexPercent > 0, down: indexPercent < 0 }"
-          :style="{ width: progressBarWidth + '%' }"
-        ></div>
-      </div>
       <div class="content_body">
         <div
           class="item etmf-void"
@@ -48,11 +38,15 @@
         </div>
       </div>
     </div>
+    <ul id="news"></ul>
   </Dock>
 </template>
 <script>
-import store from "@/localdata";
+import Vue from "vue";
 
+import store from "@/localdata";
+import $ from "jquery";
+window.$ = $;
 import {
   loadScripts,
   parse,
@@ -65,14 +59,8 @@ import {
   time,
   ObjectType
 } from "@/lib/utils";
-import { setTimeout } from "timers";
-//import { drawMAs } from "@/ma";
 import Dock from "@/view/components/Dock";
 
-/*import TransparencyMouseFix from "electron-transparency-mouse-fix";const fix = new TransparencyMouseFix({
-  log: true,
-  fixPointerEvents: "auto"
-});*/
 export default {
   name: "suspension",
   data() {
@@ -83,7 +71,8 @@ export default {
       progressBarWidth: 0,
       indexPercent: 0,
       selectIndex: 0,
-      isCollapseH: false
+      isCollapseH: false,
+      news_html: ""
     };
   },
   components: {
@@ -109,7 +98,28 @@ export default {
       else return this.items;
     }
   },
-  watch: {},
+  watch: {
+    news_html() {
+      let el = $("<div/>").append(this.news_html);
+      let showDetail = this.showDetail;
+      el.find("a").each(function() {
+        $(this).attr("v-on:click", `click("${$(this).attr("href")}")`);
+        $(this).removeAttr("href");
+      });
+      var NewsCom = Vue.extend({
+        template: "<div>" + el.html() + "</div>",
+        methods: {
+          click(href) {
+            console.log(href);
+            showDetail(href);
+          }
+        }
+      });
+      let component = new NewsCom().$mount();
+
+      document.getElementById("news").appendChild(component.$el);
+    }
+  },
   methods: {
     checkAltKey(e) {
       this.altKey = e.altKey == 1;
@@ -131,48 +141,33 @@ export default {
         if (this.openwin && isCloseWin) this.openwin.close();
       } catch (e) {}
     },
-    showPK(item, style, event) {
+    showDetail(href) {
       this.timerID = setTimeout(() => {
         let url = `${
           window.location.href.split("#")[0]
-        }#/pank?item=${encodeURIComponent(
-          JSON.stringify({
-            code: item.code,
-            countryID: item.countryID,
-            orgCode: item.orgCode
-          })
-        )}&style=${style}`;
-        if (this.openwin) {
+        }#/pank?item=${encodeURIComponent(JSON.stringify({}))}&style=`;
+        url = href;
+        if (this.detailWin) {
           try {
-            /*if (this.openwin.location.indexOf("#/pank")) {
-            this.openwin.location = url;
+            this.detailWin.close();
+            delete this.detailWin;
             return;
-          }*/
-            this.openwin.close();
-            delete this.openwin;
-            delete window.openwin;
           } catch (e) {}
         }
         let win = this.$electron.remote.getCurrentWindow();
         let winPos = win.getPosition();
-        window.openwin = this.openwin = window.open(
+        let width = 400;
+        let height = 400;
+        this.detailWin = window.open(
           url,
           "item",
-          `left=${winPos[0] - 253}px,top=${
+          `left=${winPos[0] - width - 3}px,top=${
             winPos[1]
-          }px,width=250px,height=351px`
+          }px,width=${width}px,height=${height}px`
         );
-      }, 500);
+      }, 300);
     },
 
-    notify(item, message) {
-      this.$electron.remote.app.notifywin.webContents.send("message", {
-        id: +new Date(),
-        time: item.time,
-        item: item,
-        content: message
-      });
-    },
     openItem(item, event) {
       console.log(event);
       if (event.altKey) openWin(this, item);
@@ -202,6 +197,25 @@ export default {
       win.setSize(win.getSize()[0], scSize.height);
       win.show();
     }, 20);
+
+    let getNews = () => {
+      fetch("http://finance.eastmoney.com/")
+        .then(res => res.text())
+        .then(res => {
+          //console.log(res);
+
+          this.news_html =
+            $(res)
+              .find(".yaowen .content ul")
+              .html() +
+            $(res)
+              .find(".daodu .list_side")
+              .html();
+        });
+      setTimeout(getNews, 5 * 60 * 1000);
+    };
+
+    getNews();
 
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
       if (datas.length != this.items.length) {
@@ -273,6 +287,8 @@ export default {
   font-size: 12px;
   text-align: center;
   color: #666;
+  display: inline-block;
+  margin: 0 5px;
 }
 .item:hover {
   background-color: #eee;
@@ -358,5 +374,25 @@ i {
 }
 .click-through {
   pointer-events: none;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+}
+</style>
+<style>
+.right {
+  float: right;
+}
+.left {
+  word-wrap: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+ul h3 {
+  padding: 0;
+  margin: 0;
 }
 </style>

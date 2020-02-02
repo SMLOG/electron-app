@@ -1,0 +1,200 @@
+<template>
+  <div>
+    <div class="content_body" v-html="content"></div>
+  </div>
+</template>
+<script>
+import store from "@/localdata";
+import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/lib/utils";
+import $ from "jquery";
+window.$ = $;
+export default {
+  name: "NewsDetail",
+  data() {
+    return {
+      content: ""
+    };
+  },
+
+  methods: {},
+
+  mounted() {
+    let item = JSON.parse(decodeURIComponent(this.$route.query.item));
+    this.item = item;
+    let win = this.$electron.remote.getCurrentWindow();
+    let screen = this.$electron.remote.screen;
+    let biasX = 0;
+    let biasY = 0;
+
+    let resizeWin = () => {
+      setTimeout(() => {
+        let winSize = win.getSize();
+        let body = document.body,
+          html = document.documentElement;
+
+        let height = Math.max(
+          body.scrollHeight,
+          body.offsetHeight,
+          html.clientHeight,
+          html.scrollHeight,
+          html.offsetHeight
+        );
+        win.setSize(winSize[0], height);
+      }, 10);
+    };
+    fetch(item.href)
+      .then(res => res.text())
+      .then(res => {
+        let c = $(res).find("#ContentBody");
+        c.find(".AboutCtrl,.reading,.abstract,.b-review").remove();
+        let title = $(res)
+          .find(".newsContent h1")
+          .prop("outerHTML");
+        let info = $(res)
+          .find(".newsContent .Info")
+          .prop("outerHTML");
+        this.content = title + info + c.html();
+        console.log(item.href);
+        console.log(this.content);
+        resizeWin();
+      });
+
+    let electron = this.$electron;
+    let timerID;
+
+    document.addEventListener("mouseleave", event => {
+      let wsize = win.getSize();
+
+      timerID = setInterval(() => {
+        let mousePos = electron.screen.getCursorScreenPoint();
+        let wPos = win.getPosition();
+
+        if (
+          mousePos.x < wPos[0] ||
+          mousePos.x > wPos[0] + wsize[0] ||
+          mousePos.y < wPos[1] ||
+          mousePos.y > wPos[1] + wsize[1]
+        ) {
+          window.close();
+          if (timerID) clearTimeout(timerID);
+        }
+        //alert(mousePos.x)
+      }, 500);
+      //console.log(event);
+    });
+    document.addEventListener("mouseenter", event => {
+      if (timerID) clearTimeout(timerID);
+      //console.log(event);
+    });
+    document.addEventListener("mousedown", function(e) {
+      switch (e.button) {
+        case 0:
+          biasX = e.x;
+          biasY = e.y;
+          document.addEventListener("mousemove", moveEvent);
+          break;
+        case 2:
+          electron.ipcRenderer.send("createSuspensionMenu");
+          break;
+      }
+    });
+
+    document.addEventListener("mouseup", function() {
+      biasX = 0;
+      biasY = 0;
+      document.removeEventListener("mousemove", moveEvent);
+    });
+
+    function moveEvent(e) {
+      win.setPosition(e.screenX - biasX, e.screenY - biasY);
+    }
+  }
+};
+</script>
+
+<style>
+* {
+  padding: 0;
+  margin: 0;
+}
+.up {
+  color: #c00;
+}
+.down {
+  color: green;
+}
+.name {
+  display: inline-block;
+  color: #666;
+}
+.content {
+  display: inline-block;
+}
+.logo {
+  width: 3px;
+  background-size: 80%;
+}
+
+.content_body {
+  margin: 5px;
+}
+
+#suspension {
+  -webkit-user-select: none;
+  position: relative;
+}
+
+#suspension {
+  border-radius: 2px;
+  display: flex;
+  color: #666;
+  font-size: 12px;
+}
+.shrink2 {
+  width: 8px;
+  height: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background: white;
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+#rt {
+  top: 10px;
+}
+#rd {
+  bottom: 14px;
+}
+#suspension .shrink {
+  background: green;
+}
+.seperate {
+  border-top: 1px dashed rgba(255, 255, 255, 0.4);
+}
+.sepb {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+}
+.price span {
+  display: inline-block;
+}
+.price span:nth-child(1) {
+  width: 20%;
+  color: #666;
+}
+.price span:nth-child(2) {
+  width: 50%;
+  display: inline-block;
+}
+.price span:nth-child(3) {
+  width: 25%;
+  color: #666;
+}
+.now {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+}
+.c2 > * {
+  width: 49%;
+  display: inline-block;
+}
+</style>

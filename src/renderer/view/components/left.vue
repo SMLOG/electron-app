@@ -145,8 +145,9 @@ export default {
       this.timerID = setTimeout(() => {
         let url = `${
           window.location.href.split("#")[0]
-        }#/pank?item=${encodeURIComponent(JSON.stringify({}))}&style=`;
-        url = href;
+        }#/newsDetail?item=${encodeURIComponent(
+          JSON.stringify({ href: href })
+        )}&style=`;
         if (this.detailWin) {
           try {
             this.detailWin.close();
@@ -156,7 +157,7 @@ export default {
         }
         let win = this.$electron.remote.getCurrentWindow();
         let winPos = win.getPosition();
-        let width = 400;
+        let width = 600;
         let height = 400;
         this.detailWin = window.open(
           url,
@@ -220,7 +221,7 @@ export default {
     this.$electron.ipcRenderer.on("refresh", (event, datas) => {
       if (datas.length != this.items.length) {
         window.requestAnimationFrame(() => {
-          // this.$refs.dock.onResize();
+          this.$refs.dock.onResize();
         });
       }
       this.items = datas;

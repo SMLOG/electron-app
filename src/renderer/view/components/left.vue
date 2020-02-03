@@ -131,8 +131,10 @@ export default {
         }
       });
       let component = new NewsCom().$mount();
-
-      document.getElementById("news").appendChild(component.$el);
+      let news = document.getElementById("news");
+      if (news.childNodes.length > 0) {
+        news.replaceChild(component.$el, news.childNodes[0]);
+      } else news.appendChild(component.$el);
     }
   },
   methods: {
@@ -436,7 +438,8 @@ ul {
 .right {
   float: right;
 }
-.left {
+.left,
+li {
   word-wrap: normal;
   white-space: nowrap;
   text-overflow: ellipsis;

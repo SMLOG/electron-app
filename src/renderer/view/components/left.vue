@@ -1,44 +1,40 @@
 <template>
   <Dock @onCollapseH="onCollapseH" ref="dock">
-    <div id="suspension">
-      <div class="content_body">
-        <div
-          class="item etmf-void"
-          v-for="item in filteredItems"
-          :key="item.code"
-        >
-          <div class="flex">
-            <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
-              item | nowPre
-            }}</span>
-            <span
-              class="name"
-              :style="{
-                textDecoration: item.nameColor == 'red' && 'underline'
-              }"
-              :title="title(item)"
-              @click="openItem(item, $event)"
-              >{{ item.name }}</span
-            >
-            <span style="flex-grow:1;text-align:left;" class="content">
-              <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
-              <i :class="upDown(item.now - item.preClose)"
-                >({{ item.change }}){{ item.changeP }}
-              </i>
-              <i>{{ item.turnover }}</i>
-            </span>
-            <i
-              v-if="item._Deth"
-              class="blink"
-              style="padding-right:10px;"
-              title="MACD 死叉"
-              >M</i
-            >
+    <div>
+      <div id="suspension">
+        <div class="content_body">
+          <div
+            class="item etmf-void"
+            v-for="item in filteredItems"
+            :key="item.code"
+          >
+            <div class="flex">
+              <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
+                item | nowPre
+              }}</span>
+              <span
+                class="name"
+                :style="{
+                  textDecoration: item.nameColor == 'red' && 'underline'
+                }"
+                :title="title(item)"
+                @click="openItem(item, $event)"
+                >{{ item.name }}</span
+              >
+              <span style="flex-grow:1;text-align:left;" class="content">
+                <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
+                <i :class="upDown(item.now - item.preClose)"
+                  >({{ item.change }}){{ item.changeP }}
+                </i>
+                <i>{{ item.turnover }}</i>
+              </span>
+              <i v-if="item._Deth" class="blink" title="MACD 死叉">M</i>
+            </div>
           </div>
         </div>
       </div>
+      <ul id="news"></ul>
     </div>
-    <ul id="news"></ul>
   </Dock>
 </template>
 <script>
@@ -102,9 +98,11 @@ export default {
     news_html() {
       let el = $("<div/>").append(this.news_html);
       let showDetail = this.showDetail;
+
       el.find("a").each(function() {
         $(this).attr("v-on:click", `click("${$(this).attr("href")}")`);
-        $(this).removeAttr("href");
+        //$(this).removeAttr("href");
+        $(this).attr("onclick", "return false;");
       });
       var NewsCom = Vue.extend({
         template: "<div>" + el.html() + "</div>",
@@ -148,24 +146,22 @@ export default {
         }#/newsDetail?item=${encodeURIComponent(
           JSON.stringify({ href: href })
         )}&style=`;
-        if (this.detailWin) {
-          try {
-            this.detailWin.close();
-            delete this.detailWin;
-            return;
-          } catch (e) {}
-        }
+
         let win = this.$electron.remote.getCurrentWindow();
         let winPos = win.getPosition();
         let width = 600;
         let height = 400;
-        this.detailWin = window.open(
-          url,
-          "item",
-          `left=${winPos[0] - width - 3}px,top=${
-            winPos[1]
-          }px,width=${width}px,height=${height}px`
-        );
+        if (this.detailWin && !this.detailWin.closed) {
+          this.detailWin.location = url;
+        } else {
+          this.detailWin = window.open(
+            url,
+            "item",
+            `left=${winPos[0] - width - 3}px,top=${
+              winPos[1]
+            }px,width=${width}px,height=${height}px`
+          );
+        }
       }, 300);
     },
 
@@ -283,13 +279,13 @@ export default {
 
 <style scoped>
 .item {
-  height: 27px;
-  line-height: 27px;
+  height: 2em;
+  line-height: 2em;
   font-size: 12px;
   text-align: center;
   color: #666;
   display: inline-block;
-  margin: 0 5px;
+  margin-left: 5px;
 }
 .item:hover {
   background-color: #eee;
@@ -309,10 +305,6 @@ export default {
 .content {
   display: inline-block;
 }
-.logo {
-  width: 3px;
-  background-size: 80%;
-}
 
 .content_body {
   width: 100%;
@@ -327,9 +319,11 @@ export default {
 #suspension {
   border-radius: 3px;
   display: flex;
+  position: sticky;
   background-color: #eef4fe;
+  top: 0;
 
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 ::-webkit-scrollbar {
@@ -399,5 +393,13 @@ ul h3 {
 a {
   cursor: pointer;
   color: #003598;
+}
+a:visited,
+a:active,
+a:hover {
+  text-decoration: underline;
+}
+a:link {
+  text-decoration: none;
 }
 </style>

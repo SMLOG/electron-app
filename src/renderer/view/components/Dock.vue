@@ -56,7 +56,7 @@ function animation2(arr, callback, duration = 300) {
 export default {
   data() {
     return {
-      isDockLeft: true,
+      isDockLeft: false,
       isShrink: false
     };
   },

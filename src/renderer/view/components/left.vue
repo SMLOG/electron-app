@@ -24,9 +24,11 @@
                 class="content"
               >
                 <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
-                <i style="width:8px;" :class="upDown(item.now - item.pre)">{{
-                  item | nowPre
-                }}</i>
+                <i
+                  style="width:5px;display:inline-block;"
+                  :class="upDown(item.now - item.pre)"
+                  >{{ item | nowPre }}</i
+                >
                 <i :class="upDown(item.now - item.preClose)"
                   >({{ item.change }}){{ item.changeP }}
                 </i>
@@ -36,6 +38,13 @@
           </div>
         </div>
       </div>
+      <div>
+        <ul>
+          <li v-for="post in self_posts" :key="post.post_id">
+            {{ post.post_content }}
+          </li>
+        </ul>
+      </div>
       <div id="news"></div>
       <div id="status">最后更新 {{ fetchTimeStr }}</div>
     </div>
@@ -43,6 +52,7 @@
 </template>
 <script>
 import Vue from "vue";
+import fetchJsonp from "fetch-jsonp";
 
 import store from "@/localdata";
 import $ from "jquery";
@@ -57,7 +67,8 @@ import {
   openWin2,
   openSite,
   time,
-  ObjectType
+  ObjectType,
+  timeout
 } from "@/lib/utils";
 import Dock from "@/view/components/Dock";
 
@@ -73,7 +84,8 @@ export default {
       selectIndex: 0,
       isCollapseH: false,
       news_html: "",
-      fetchTimeStr: ""
+      fetchTimeStr: "",
+      self_posts: []
     };
   },
   components: {
@@ -200,24 +212,39 @@ export default {
       win.show();
     }, 20);
 
-    let getNews = () => {
-      fetch("http://finance.eastmoney.com/")
-        .then(res => res.text())
-        .then(res => {
-          //console.log(res);
+    let getNews = async () => {
+      for (;;) {
+        await fetch("http://finance.eastmoney.com/")
+          .then(res => res.text())
+          .then(res => {
+            //console.log(res);
 
-          this.news_html =
-            $(res)
-              .find(".yaowen .content ul")
-              .html() +
-            $(res)
-              .find(".daodu .list_side")
-              .html();
-        });
-      this.fetchTimeStr = (d => {
-        return d.getHours() + ":" + d.getMinutes();
-      })(new Date());
-      setTimeout(getNews, 1 * 60 * 1000);
+            this.news_html =
+              $(res)
+                .find(".yaowen .content ul")
+                .html() +
+              $(res)
+                .find(".daodu .list_side")
+                .html();
+          });
+        this.fetchTimeStr = (d => {
+          return d.getHours() + ":" + d.getMinutes();
+        })(new Date());
+
+        /* let jurl = `https://wap.eastmoney.com/info/guba/GetApiResultNewCore?url=webarticlelist%2Fapi%2FArticle%2FArticleListForMobile&query=${encodeURIComponent(
+          "code=sh600332&sorttype=0&ps=20&p=1"
+        )}&type=POST&cb=gubadata&callback=jsonp10`;
+
+        let result = await fetchJsonp(jurl, {
+          jsonpCallbackFunction: "gubadata"
+        })
+          .then(res => res.json())
+          .then(data => JSON.parse(data.Result));
+        console.log(result);
+        this.self_posts = result.re;*/
+
+        await timeout(1 * 60 * 1000);
+      }
     };
 
     getNews();

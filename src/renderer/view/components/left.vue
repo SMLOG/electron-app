@@ -1,6 +1,6 @@
 <template>
   <Dock @onCollapseH="onCollapseH" ref="dock">
-    <div>
+    <div class="wrap">
       <div id="suspension">
         <div class="content_body">
           <div
@@ -9,9 +9,6 @@
             :key="item.code"
           >
             <div class="flex">
-              <span style="width:8px;" :class="upDown(item.now - item.pre)">{{
-                item | nowPre
-              }}</span>
               <span
                 class="name"
                 :style="{
@@ -21,19 +18,26 @@
                 @click="openItem(item, $event)"
                 >{{ item.name }}</span
               >
-              <span style="flex-grow:1;text-align:left;" class="content">
+              <span
+                style="flex-grow:1;text-align:left;"
+                :class="{ blink: item._Deth }"
+                class="content"
+              >
                 <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
+                <i style="width:8px;" :class="upDown(item.now - item.pre)">{{
+                  item | nowPre
+                }}</i>
                 <i :class="upDown(item.now - item.preClose)"
                   >({{ item.change }}){{ item.changeP }}
                 </i>
                 <i>{{ item.turnover }}</i>
               </span>
-              <i v-if="item._Deth" class="blink" title="MACD 死叉">M</i>
             </div>
           </div>
         </div>
       </div>
-      <ul id="news"></ul>
+      <div id="news"></div>
+      <div id="status">最后更新 {{ fetchTimeStr }}</div>
     </div>
   </Dock>
 </template>
@@ -68,7 +72,8 @@ export default {
       indexPercent: 0,
       selectIndex: 0,
       isCollapseH: false,
-      news_html: ""
+      news_html: "",
+      fetchTimeStr: ""
     };
   },
   components: {
@@ -105,7 +110,7 @@ export default {
         $(this).attr("onclick", "return false;");
       });
       var NewsCom = Vue.extend({
-        template: "<div>" + el.html() + "</div>",
+        template: "<ul>" + el.html() + "</ul>",
         methods: {
           click(href) {
             console.log(href);
@@ -209,7 +214,10 @@ export default {
               .find(".daodu .list_side")
               .html();
         });
-      setTimeout(getNews, 5 * 60 * 1000);
+      this.fetchTimeStr = (d => {
+        return d.getHours() + ":" + d.getMinutes();
+      })(new Date());
+      setTimeout(getNews, 1 * 60 * 1000);
     };
 
     getNews();
@@ -277,7 +285,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .item {
   height: 2em;
   line-height: 2em;
@@ -322,7 +330,7 @@ export default {
   position: sticky;
   background-color: #eef4fe;
   top: 0;
-
+  border-bottom: 1px dashed #ccc;
   background-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -340,7 +348,20 @@ export default {
 i {
   font-style: normal;
 }
-
+li {
+  font-size: 15px;
+  height: 28px;
+  line-height: 28px;
+  *zoom: 1;
+}
+.left,
+a,
+h3 {
+  word-wrap: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .flex {
   display: flex;
   flex-direction: row;
@@ -374,6 +395,14 @@ ul {
   list-style: none;
   margin: 0;
   padding: 5px;
+}
+#status {
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  background: white;
+  font-size: 80%;
+  color: #ccc;
 }
 </style>
 <style>

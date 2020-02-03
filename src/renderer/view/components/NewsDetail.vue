@@ -46,16 +46,25 @@ export default {
       .then(res => res.text())
       .then(res => {
         let c = $(res).find("#ContentBody");
-        c.find(".AboutCtrl,.reading,.abstract,.b-review").remove();
-        let title = $(res)
-          .find(".newsContent h1")
-          .prop("outerHTML");
-        let info = $(res)
-          .find(".newsContent .Info")
-          .prop("outerHTML");
-        this.content = title + info + c.html();
+        if (c.length > 0) {
+          c.find(".AboutCtrl,.reading,.abstract,.b-review").remove();
+          let title = $(res)
+            .find(".newsContent h1")
+            .prop("outerHTML");
+          let info = $(res)
+            .find(".newsContent .Info")
+            .prop("outerHTML");
+          this.content = title + info + c.html();
+        } else {
+          let title = $(res)
+            .find("h1")
+            .prop("outerHTML");
+          let c = $(res)
+            .find(".article-body")
+            .prop("outerHTML");
+          this.content = title + c;
+        }
         console.log(item.href);
-        console.log(this.content);
         resizeWin();
       });
 
@@ -196,5 +205,56 @@ export default {
 .c2 > * {
   width: 49%;
   display: inline-block;
+}
+</style>
+<style>
+h1 {
+  border-bottom: 1px dashed #ccc;
+}
+p {
+  margin: 10px 10px;
+  font-family: "Microsoft YaHei";
+  font-size: 16px;
+  color: #474747;
+}
+.Info {
+  font-family: "宋体";
+  font-size: 12px;
+  height: 24px;
+  line-height: 14px;
+  text-align: left;
+  margin-bottom: 10px;
+  clear: both;
+}
+.Info .time-source {
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  margin-left: 10px;
+}
+.Info .time-source .time {
+  float: left;
+}
+.Info .time-source .author {
+  float: left;
+  margin-left: 10px;
+}
+.Info .time-source .source {
+  float: left;
+  margin: 0 10px;
+}
+h1 {
+  font-family: "SimHei";
+  letter-spacing: -1px;
+  font-weight: bold !important;
+  color: #3f3f3f;
+  text-align: left;
+  font-size: 28px;
+  line-height: 40px;
+  overflow: hidden;
+  padding-top: 15px;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  *padding-left: 5px;
 }
 </style>

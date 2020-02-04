@@ -357,7 +357,6 @@ export default {
   border-radius: 3px;
   display: flex;
   position: sticky;
-  background-color: #eef4fe;
   top: 0;
   border-bottom: 1px dashed #ccc;
   background-color: rgba(255, 255, 255, 0.9);

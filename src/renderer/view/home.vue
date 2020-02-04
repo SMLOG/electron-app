@@ -290,7 +290,7 @@ export default {
     }
   },
   mounted() {
-    initwebview();
+    initwebview(this.closeview.bind(this));
 
     this.reloadData();
     this.timerFn();

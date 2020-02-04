@@ -534,12 +534,19 @@ function setCookie(cname, cvalue, exdays) {
 }
 
 let timer = setInterval(() => {
+
    if( $("li[type=nav]").length>0)clearInterval(timer);
    else return;
    $("li[type=nav]").click(function(e) {
       let type = $(this).attr("data-view");
       if (type) {
-        setCookie("dataView", type);
+
+		if(getMyCookie("dataView")==type){
+			location = location.href+'#close';
+		}
+
+		setCookie("dataView", type);
+
       }
     });
 }, 100);

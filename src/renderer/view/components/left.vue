@@ -194,10 +194,13 @@ export default {
           })
         )}&style=`;
 
+        const screen = this.$electron.remote.screen;
+
+        const scSize = screen.getPrimaryDisplay().workAreaSize;
         let win = this.$electron.remote.getCurrentWindow();
         let winPos = win.getPosition();
-        let width = 800;
-        let height = 600;
+        let width = winPos[0] - 6;
+        let height = Math.min(1024, scSize.height);
         if (this.detailWin && !this.detailWin.closed) {
           this.detailWin.location = url;
         } else {

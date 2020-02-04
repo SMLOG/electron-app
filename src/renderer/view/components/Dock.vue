@@ -156,6 +156,7 @@ export default {
     });
     let onEnter = () => {
       con.log("ALT+Z mouseenter");
+      win.requestFocus();
       this.isleave = false;
       if (timerID) clearTimeout(timerID);
       let x = win.getPosition()[0];

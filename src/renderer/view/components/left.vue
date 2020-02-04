@@ -2,7 +2,7 @@
   <Dock @onCollapseH="onCollapseH" ref="dock">
     <div class="wrap">
       <div id="suspension">
-        <div class="content_body">
+        <div class="content_body" v-show="showHQ">
           <div
             class="item etmf-void"
             v-for="item in filteredItems"
@@ -38,8 +38,20 @@
             </div>
           </div>
         </div>
+        <div
+          @click="showHQ = !showHQ"
+          style="text-align:center;cursor:pointer;font-size:5px;"
+        >
+          <i
+            style="display: inline-block;
+    height: 5px;
+    width: 20px;
+    background: red;"
+          ></i>
+        </div>
       </div>
-      <div>
+
+      <div v-if="false">
         <ul>
           <li v-for="post in self_posts" :key="post.post_id">
             {{ post.post_content }}
@@ -86,7 +98,8 @@ export default {
       isCollapseH: false,
       news_html: "",
       fetchTimeStr: "",
-      self_posts: []
+      self_posts: [],
+      showHQ: true
     };
   },
   components: {
@@ -267,7 +280,9 @@ export default {
         this.fetchTimeStr = (d => {
           return d.getHours() + ":" + d.getMinutes();
         })(new Date());
-
+        window.requestAnimationFrame(() => {
+          this.$refs.dock.onResize();
+        });
         /* let jurl = `https://wap.eastmoney.com/info/guba/GetApiResultNewCore?url=webarticlelist%2Fapi%2FArticle%2FArticleListForMobile&query=${encodeURIComponent(
           "code=sh600332&sorttype=0&ps=20&p=1"
         )}&type=POST&cb=gubadata&callback=jsonp10`;
@@ -390,7 +405,6 @@ export default {
 
 #suspension {
   border-radius: 3px;
-  display: flex;
   position: sticky;
   top: 0;
   border-bottom: 1px dashed #ccc;

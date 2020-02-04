@@ -4,7 +4,7 @@
       id="dragBar"
       ref="dragBar"
       draggable="false"
-      style="position:fixed;top:0;left;0;bottom:0;width:6px;display: flex;"
+      style="position:fixed;top:0;left;0;bottom:0;width:6px;display: flex;z-index:100;"
       @click="toggle"
     >
       <i

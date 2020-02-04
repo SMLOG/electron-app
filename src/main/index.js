@@ -166,6 +166,7 @@ app.on("ready", () => {
             // devTools: false, //关闭调试工具
             webSecurity: false
           },
+          maximizable: false,
           maxWidth: screen.getPrimaryDisplay().workAreaSize[0],
           fullscreenable: false,
           transparent: false, //设置透明

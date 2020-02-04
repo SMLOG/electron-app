@@ -4,13 +4,19 @@
       id="dragBar"
       ref="dragBar"
       draggable="false"
-      style="position:fixed;top:0;left;0;bottom:0;width:6px;display: flex;z-index:100;"
+      style="position:fixed;
+      top:0;
+      left:0;
+      bottom:0;
+      width:6px;
+      display: flex;
+      cursor: pointer;
+      z-index:100;"
       @click="toggle"
     >
       <i
         style="width: 100%;
 display: block;
-cursor: pointer;
 align-self: center;
 background: green;
 border-left: 2px solid red;
@@ -18,7 +24,6 @@ border-right: 2px solid yellow;
 height: 30px;
 border-top: none;
 border-bottom: none;"
-        @click="toggle"
       ></i>
     </div>
     <span
@@ -296,6 +301,7 @@ export default {
 }
 .wrap {
   margin-left: 6px;
+  margin-right: 6px;
   background: white;
   border-radius: 3px;
   border-bottom: 1px dashed #ccc;

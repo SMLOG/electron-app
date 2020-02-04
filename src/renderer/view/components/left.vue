@@ -22,6 +22,7 @@
                 style="flex-grow:1;text-align:left;"
                 :class="{ blink: item._Deth }"
                 class="content"
+                @click="openK(item, $event)"
               >
                 <i :class="upDown(item.now - item.preClose)">{{ item.now }}</i>
                 <i
@@ -170,6 +171,33 @@ export default {
         let winPos = win.getPosition();
         let width = 600;
         let height = 400;
+        if (this.detailWin && !this.detailWin.closed) {
+          this.detailWin.location = url;
+        } else {
+          this.detailWin = window.open(
+            url,
+            "item",
+            `left=${winPos[0] - width - 3}px,top=${
+              winPos[1]
+            }px,width=${width}px,height=${height}px`
+          );
+        }
+      }, 300);
+    },
+    openK(item) {
+      this.timerID = setTimeout(() => {
+        let url = `${
+          window.location.href.split("#")[0]
+        }#/kline?item=${encodeURIComponent(
+          JSON.stringify({
+            link: `http://localhost:9080/static/tech.html?${item.code}&`
+          })
+        )}&style=`;
+
+        let win = this.$electron.remote.getCurrentWindow();
+        let winPos = win.getPosition();
+        let width = 800;
+        let height = 600;
         if (this.detailWin && !this.detailWin.closed) {
           this.detailWin.location = url;
         } else {

@@ -159,11 +159,7 @@
           @click="closeview()"
         ></i>
       </div>
-      <webview
-        ref="webview"
-        id="figure"
-        style="width:100%;height:100%;"
-      ></webview>
+      <WinView :link="link"> </WinView>
     </div>
   </div>
 </template>
@@ -176,6 +172,7 @@ import Setting from "@/view/components/setting";
 import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
 import TopFocus from "@/view/components/TopFocus";
+import WinView from "@/view/components/WinView";
 
 import Sea from "@/view/components/Sea";
 import store from "@/localdata";
@@ -235,7 +232,8 @@ export default {
       showSetting: false,
       filtersCount: filtersCount,
       selectFilter_r: -1,
-      selectFilter_c: -1
+      selectFilter_c: -1,
+      link: "about:blank"
     };
   },
   directives: {
@@ -282,7 +280,8 @@ export default {
     FilterItem,
     FilterCtrl,
     Sea,
-    TopFocus
+    TopFocus,
+    WinView
   },
   filters: {
     objectType(id) {
@@ -374,7 +373,7 @@ export default {
       link = "http://localhost:9080/static/tech.html?{{code}}"
     ) {
       this.openType = link;
-      let webview = $(this.$refs.webview);
+      let webview = $(document.querySelectorAll("webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
 
       let url = link.replace("{{code}}", item.code);
@@ -400,7 +399,8 @@ export default {
         webview[0].style.height = "100%";
         this.openCode = item.code;
       }
-      webview.attr("src", url);
+      this.link = url;
+      // webview.attr("src", url);
 
       console.log(url);
       //openKlineWindow(this, item);

@@ -32,6 +32,11 @@ export default new Router({
       component: () => import("@/view/components/NewsDetail")
     },
     {
+      path: "/kline",
+      name: "kline",
+      component: () => import("@/view/Kline")
+    },
+    {
       path: "/suspension",
       name: "suspension",
       component: () => import("@/view/components/suspension")

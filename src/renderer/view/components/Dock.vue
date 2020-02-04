@@ -295,7 +295,7 @@ export default {
   right: 5px;
 }
 .wrap {
-  margin-left: 10px;
+  margin-left: 6px;
   background: white;
   border-radius: 3px;
   border-bottom: 1px dashed #ccc;

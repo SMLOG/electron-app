@@ -172,7 +172,9 @@ export default {
         let width = 600;
         let height = 400;
         if (this.detailWin && !this.detailWin.closed) {
-          this.detailWin.location = url;
+          if (this.detailWin.location.indexOf(url) > -1) {
+            this.detailWin.close();
+          } else this.detailWin.location = url;
         } else {
           this.detailWin = window.open(
             url,
@@ -190,7 +192,7 @@ export default {
           window.location.href.split("#")[0]
         }#/kline?item=${encodeURIComponent(
           JSON.stringify({
-            link: `http://localhost:9080/static/tech.html?${item.code}&`
+            link: `/static/tech.html?${item.code}&`
           })
         )}&style=`;
 
@@ -202,7 +204,9 @@ export default {
         let width = winPos[0] - 6;
         let height = Math.min(1024, scSize.height);
         if (this.detailWin && !this.detailWin.closed) {
-          this.detailWin.location = url;
+          if (this.detailWin.location.indexOf(url) > -1) {
+            this.detailWin.close();
+          } else this.detailWin.location = url;
         } else {
           this.detailWin = window.open(
             url,

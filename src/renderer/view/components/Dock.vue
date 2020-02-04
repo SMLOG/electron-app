@@ -274,8 +274,8 @@ export default {
   background: green !important;
 }
 .shrink2 {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   position: fixed;
   right: 5px;
   border: none;

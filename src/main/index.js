@@ -166,7 +166,8 @@ app.on("ready", () => {
             // devTools: false, //关闭调试工具
             webSecurity: false
           },
-          transparent: false, //设置透明
+          fullscreenable: false,
+          transparent: true, //设置透明
           alwaysOnTop: true //窗口是否总是显示在其他窗口之前
         }),
         createItemWindow("today", {

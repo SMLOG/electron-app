@@ -47,6 +47,35 @@ body {
   -ms-animation: blink 1s linear infinite;
   -o-animation: blink 1s linear infinite;
 }
+i.arrow {
+  display: inline-block;
+  border-style: solid;
+  border-width: 0 0 8px 8px;
+  border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
+  flex: 0;
+}
+.arrow.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+.selected i.arrow {
+  border-color: transparent transparent rgba(255, 255, 255, 1) transparent;
+}
+
+.arrow.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.arrow.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.arrow.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
 /* 添加兼容性前缀 */
 @-webkit-keyframes blink {
   0% {

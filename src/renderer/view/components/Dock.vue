@@ -1,5 +1,26 @@
 <template>
   <div>
+    <div
+      id="dragBar"
+      ref="dragBar"
+      draggable="false"
+      style="position:fixed;top:0;left;0;bottom:0;width:6px;display: flex;"
+      @click="toggle"
+    >
+      <i
+        style="width: 100%;
+display: block;
+cursor: pointer;
+align-self: center;
+background: green;
+border-left: 2px solid red;
+border-right: 2px solid yellow;
+height: 30px;
+border-top: none;
+border-bottom: none;"
+        @click="toggle"
+      ></i>
+    </div>
     <span
       class="r shrink2"
       @click="toggleLeft"
@@ -62,8 +83,110 @@ export default {
   },
   watch: {},
   methods: {
+    toggle() {
+      let win = this.$electron.remote.getCurrentWindow();
+      let screen = this.$electron.remote.screen;
+      let x2 = screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
+      let x = win.getPosition()[0];
+
+      if (x <= x2) this.onLeave(true);
+      else this.onEnter(true);
+    },
     toggleLeft() {
       this.isDockLeft = !this.isDockLeft;
+    },
+    onEnter(force) {
+      let win = this.$electron.remote.getCurrentWindow();
+      let screen = this.$electron.remote.screen;
+      let biasX = 0;
+      let biasY = 0;
+      let timerID;
+      let con = this.$electron.remote.getGlobal("console");
+
+      con.log("ALT+Z mouseenter");
+      win.focus();
+      this.isleave = false;
+      if (timerID) clearTimeout(timerID);
+      let x = win.getPosition()[0];
+      let x2 = x;
+      if (force || this.isDockLeft) {
+        x2 = screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
+      }
+      let winSize = win.getSize();
+
+      let h = winSize[1] - (win.isFrame ? 27 : 0);
+      let h2 = h;
+      if (this.isShrink) {
+        this.$emit("onCollapseH", false);
+        h2 = this.resizeWin();
+      }
+      animation2(
+        [
+          [x, x2],
+          [h, h2]
+        ],
+        ([curx, curH]) => {
+          win.setPosition(curx, win.getPosition()[1]);
+          this.setSize(winSize[0], curH);
+        }
+      );
+    },
+    onLeave(force) {
+      let win = this.$electron.remote.getCurrentWindow();
+      let screen = this.$electron.remote.screen;
+      let biasX = 0;
+      let biasY = 0;
+      let timerID;
+      let con = this.$electron.remote.getGlobal("console");
+      con.log("ALT+Z mouseleave");
+      this.isleave = true;
+      let wsize = win.getSize();
+
+      let toLeft = () => {
+        let x = win.getPosition()[0];
+        let x2 = x;
+        let h = wsize[1] - (win.isFrame ? 27 : 0);
+        let h2 = h;
+        if (force || this.isDockLeft) {
+          x2 = screen.getPrimaryDisplay().workAreaSize.width - 3;
+        }
+        if (this.isShrink) {
+          h2 = 27;
+          this.$emit("onCollapseH", true);
+        }
+
+        animation2(
+          [
+            [x, x2],
+            [h, h2]
+          ],
+
+          ([curx, curh]) => {
+            con.log(curx, curh);
+            win.setPosition(curx, win.getPosition()[1]);
+            this.setSize(wsize[0], curh);
+          }
+        );
+      };
+      if (force) toLeft();
+      else {
+        timerID = setInterval(() => {
+          let wsize = win.getSize();
+
+          let mpos = this.$electron.screen.getCursorScreenPoint();
+          let wPos = win.getPosition();
+
+          if (
+            mpos.x < wPos[0] ||
+            mpos.x > wPos[0] + wsize[0] ||
+            mpos.y < wPos[1] ||
+            mpos.y > wPos[1] + wsize[1]
+          ) {
+            clearInterval(timerID);
+            toLeft();
+          }
+        }, 500);
+      }
     },
     resizeWin() {
       let win = this.$electron.remote.getCurrentWindow();
@@ -107,90 +230,16 @@ export default {
     let timerID;
     let con = this.$electron.remote.getGlobal("console");
 
-    let onLeave = () => {
-      con.log("ALT+Z mouseleave");
-      this.isleave = true;
-
-      timerID = setInterval(() => {
-        let wsize = win.getSize();
-
-        let mpos = this.$electron.screen.getCursorScreenPoint();
-        let wPos = win.getPosition();
-
-        if (
-          mpos.x < wPos[0] ||
-          mpos.x > wPos[0] + wsize[0] ||
-          mpos.y < wPos[1] ||
-          mpos.y > wPos[1] + wsize[1]
-        ) {
-          clearInterval(timerID);
-          let x = win.getPosition()[0];
-          let x2 = x;
-          let h = wsize[1] - (win.isFrame ? 27 : 0);
-          let h2 = h;
-          if (this.isDockLeft) {
-            x2 = screen.getPrimaryDisplay().workAreaSize.width - 3;
-          }
-          if (this.isShrink) {
-            h2 = 27;
-            this.$emit("onCollapseH", true);
-          }
-
-          animation2(
-            [
-              [x, x2],
-              [h, h2]
-            ],
-
-            ([curx, curh]) => {
-              con.log(curx, curh);
-              win.setPosition(curx, win.getPosition()[1]);
-              this.setSize(wsize[0], curh);
-            }
-          );
-        }
-      }, 500);
-    };
     document.addEventListener("mouseleave", event => {
-      onLeave();
+      this.onLeave();
     });
-    let onEnter = () => {
-      con.log("ALT+Z mouseenter");
-      win.requestFocus();
-      this.isleave = false;
-      if (timerID) clearTimeout(timerID);
-      let x = win.getPosition()[0];
-      let x2 = x;
-      if (this.isDockLeft) {
-        x2 = screen.getPrimaryDisplay().workAreaSize.width - win.getSize()[0];
-      }
-      let winSize = win.getSize();
 
-      let h = winSize[1] - (win.isFrame ? 27 : 0);
-      let h2 = h;
-      if (this.isShrink) {
-        this.$emit("onCollapseH", false);
-        h2 = this.resizeWin();
-      }
-      animation2(
-        [
-          [x, x2],
-          [h, h2]
-        ],
-        ([curx, curH]) => {
-          win.setPosition(curx, win.getPosition()[1]);
-          this.setSize(winSize[0], curH);
-        }
-      );
-    };
     document.addEventListener("mouseenter", event => {
-      onEnter();
+      this.onEnter();
     });
-    onEnter();
+    this.onEnter();
     this.$electron.ipcRenderer.on("ALT+Z", () => {
-      con.log("ALT+Z");
-      if (!this.isleave) onLeave();
-      else onEnter();
+      this.toggle();
     });
 
     document.addEventListener("mousedown", e => {
@@ -244,5 +293,14 @@ export default {
 .d {
   bottom: 5px;
   right: 5px;
+}
+.wrap {
+  margin-left: 10px;
+  background: white;
+  border-radius: 3px;
+  border-bottom: 1px dashed #ccc;
+}
+.arrow {
+  background: white;
 }
 </style>

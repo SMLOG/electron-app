@@ -436,7 +436,10 @@ export function attachData(item) {
       let code = item.code.replace("sz", "SZ").replace("sh", "SH");
       let url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0&code=${code}`;
       let json = await fetch(url).then(res => res.json());
-      json = fmtReportDatas(json);
+      console.log(json);
+      try {
+        json = fmtReportDatas(json);
+      } catch (e) {}
       return json;
     });
     window["zyzb_" + item.code] = zyzb;

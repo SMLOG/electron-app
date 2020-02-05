@@ -521,11 +521,15 @@ export default {
     },
     sendRefresh() {
       this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
-        win.isVisible() &&
-          win.webContents.send(
-            "refresh",
-            this.items.filter(e => e.isFocus)
-          );
+        try {
+          win.isVisible() &&
+            win.webContents.send(
+              "refresh",
+              this.items.filter(e => e.isFocus)
+            );
+        } catch (e) {
+          console.log(e);
+        }
       });
       //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
     },

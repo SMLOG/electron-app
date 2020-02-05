@@ -8,7 +8,7 @@
       top:0;
       left:0;
       bottom:0;
-      width:6px;
+      width:3px;
       display: flex;
       cursor: pointer;
       z-index:100;"
@@ -18,9 +18,9 @@
         style="width: 100%;
 display: block;
 align-self: center;
-background: green;
-border-left: 2px solid red;
-border-right: 2px solid yellow;
+background: #FFF;
+border-left: 1px solid #222;
+border-right: 1px solid #222;
 height: 30px;
 border-top: none;
 border-bottom: none;"

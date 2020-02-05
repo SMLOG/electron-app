@@ -1,6 +1,6 @@
 <template>
   <div style="position:fixed;top:0;left:0;right:0;bottom:0;">
-    <WinView :link="item.link"></WinView>
+    <WinView :item="item" :link="item.link"></WinView>
   </div>
 </template>
 <script>

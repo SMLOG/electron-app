@@ -159,7 +159,7 @@
           @click="closeview()"
         ></i>
       </div>
-      <WinView :link="link"> </WinView>
+      <WinView :item="item" :link="link"> </WinView>
     </div>
   </div>
 </template>
@@ -233,7 +233,8 @@ export default {
       filtersCount: filtersCount,
       selectFilter_r: -1,
       selectFilter_c: -1,
-      link: "about:blank"
+      link: "about:blank",
+      item: {}
     };
   },
   directives: {
@@ -375,7 +376,7 @@ export default {
       this.openType = link;
       let webview = $(document.querySelectorAll("webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
-
+      this.item = item;
       let url = link.replace("{{code}}", item.code);
 
       if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {

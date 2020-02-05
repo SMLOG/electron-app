@@ -22,7 +22,7 @@ function isMacdDeath(techData) {
 }
 const techMap = {
   "0&D": function({ item, kd, kw, km }) {
-    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.2;
+    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
   },
   "D&W": function({ item, kd, kw, km }) {
     return (

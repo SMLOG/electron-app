@@ -604,14 +604,15 @@ export function openWin2(target, item) {
   let url = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
     item.name.replace(/\s+/g, "")
   )}`;
-  let url2 = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
-    item.orgCode.replace(/[^0-9]+/g, "")
-  )}`;
+
   fetch(url)
     .then(res => res.json())
     .then(data => {
       if (data.TotalCount > 0) return data;
       else {
+        let url2 = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
+          item.orgCode.replace(/[^0-9]+/g, "")
+        )}`;
         return fetch(url2).then(res => res.json());
       }
     })

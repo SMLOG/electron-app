@@ -5,6 +5,8 @@
 </template>
 <script>
 import store from "@/localdata";
+import { mouseDragMenu } from "@/lib/WinUtils";
+
 import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/lib/utils";
 import $ from "jquery";
 window.$ = $;
@@ -95,28 +97,8 @@ export default {
       if (timerID) clearTimeout(timerID);
       //console.log(event);
     });
-    document.addEventListener("mousedown", function(e) {
-      switch (e.button) {
-        case 0:
-          biasX = e.x;
-          biasY = e.y;
-          document.addEventListener("mousemove", moveEvent);
-          break;
-        case 2:
-          electron.ipcRenderer.send("createSuspensionMenu");
-          break;
-      }
-    });
 
-    document.addEventListener("mouseup", function() {
-      biasX = 0;
-      biasY = 0;
-      document.removeEventListener("mousemove", moveEvent);
-    });
-
-    function moveEvent(e) {
-      win.setPosition(e.screenX - biasX, e.screenY - biasY);
-    }
+    mouseDragMenu(this.$electron, true);
   }
 };
 </script>

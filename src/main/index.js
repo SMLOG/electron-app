@@ -32,7 +32,7 @@ function createWindow() {
 
   const scSize = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
   mainWindow = new BrowserWindow({
-    height: scSize.height / 2,
+    height: scSize.height,
     useContentSize: true,
     width: scSize.width,
     icon: "app.ico",

@@ -1,5 +1,5 @@
 <template>
-  <Dock @onCollapseH="onCollapseH" ref="dock" left="true">
+  <Dock @onCollapseH="onCollapseH" ref="dock" :left="true">
     <div class="wrap">
       <div id="suspension">
         <div class="content_body" v-show="showHQ">
@@ -68,6 +68,7 @@
 <script>
 import Vue from "vue";
 import fetchJsonp from "fetch-jsonp";
+import { mouseDragMenu } from "@/lib/WinUtils";
 
 import store from "@/localdata";
 import $ from "jquery";
@@ -253,8 +254,7 @@ export default {
   mounted() {
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;
-    let biasX = 0;
-    let biasY = 0;
+
     let that = this;
     let openwin;
     const scSize = screen.getPrimaryDisplay().workAreaSize; //获取显示器的宽高
@@ -338,29 +338,8 @@ export default {
         }, 3000);
       }
     });
-    document.addEventListener("mousedown", function(e) {
-      switch (e.button) {
-        case 0:
-          biasX = e.x;
-          biasY = e.y;
-          document.addEventListener("mousemove", moveEvent);
-          break;
-        case 2:
-          that.$electron.ipcRenderer.send("createSuspensionMenu");
-          break;
-      }
-    });
+    mouseDragMenu(this.$electron, true);
 
-    document.addEventListener("mouseup", function() {
-      biasX = 0;
-      biasY = 0;
-      document.removeEventListener("mousemove", moveEvent);
-    });
-
-    function moveEvent(e) {
-      win.setPosition(e.screenX - biasX, e.screenY - biasY);
-    }
-    console.log(this);
     //this.timerFn();
   }
 };

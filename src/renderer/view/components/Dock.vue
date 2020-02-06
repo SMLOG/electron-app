@@ -235,8 +235,7 @@ export default {
     if (this.left) this.isDockLeft = true;
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;
-    let biasX = 0;
-    let biasY = 0;
+
     let timerID;
     let con = this.$electron.remote.getGlobal("console");
 
@@ -252,6 +251,8 @@ export default {
       this.toggle();
     });
 
+    let biasX = 0;
+    let biasY = 0;
     document.addEventListener("mousedown", e => {
       switch (e.button) {
         case 0:

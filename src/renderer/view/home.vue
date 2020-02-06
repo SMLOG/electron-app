@@ -179,6 +179,7 @@ import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
+import { mouseDragMenu } from "@/lib/WinUtils";
 import {
   ObjectType,
   parse,
@@ -291,6 +292,7 @@ export default {
   },
   mounted() {
     initwebview(this.closeview.bind(this));
+    mouseDragMenu(this.$electron, false);
 
     this.reloadData();
     this.timerFn();

@@ -52,6 +52,7 @@
 </template>
 <script>
 import store from "@/localdata";
+import { mouseDragMenu } from "@/lib/WinUtils";
 
 import {
   loadScripts,
@@ -192,8 +193,6 @@ export default {
   mounted() {
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;
-    let biasX = 0;
-    let biasY = 0;
     let that = this;
     let openwin;
 
@@ -232,29 +231,9 @@ export default {
         }, 3000);
       }
     });
-    document.addEventListener("mousedown", function(e) {
-      switch (e.button) {
-        case 0:
-          biasX = e.x;
-          biasY = e.y;
-          document.addEventListener("mousemove", moveEvent);
-          break;
-        case 2:
-          that.$electron.ipcRenderer.send("createSuspensionMenu");
-          break;
-      }
-    });
 
-    document.addEventListener("mouseup", function() {
-      biasX = 0;
-      biasY = 0;
-      document.removeEventListener("mousemove", moveEvent);
-    });
+    mouseDragMenu(this.$electron, true);
 
-    function moveEvent(e) {
-      win.setPosition(e.screenX - biasX, e.screenY - biasY);
-    }
-    console.log(this);
     //this.timerFn();
   }
 };

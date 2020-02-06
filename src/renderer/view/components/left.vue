@@ -1,5 +1,5 @@
 <template>
-  <Dock @onCollapseH="onCollapseH" ref="dock">
+  <Dock @onCollapseH="onCollapseH" ref="dock" left="true">
     <div class="wrap">
       <div id="suspension">
         <div class="content_body" v-show="showHQ">

@@ -87,6 +87,9 @@ export default {
       isShrink: false
     };
   },
+  props: {
+    left: Boolean
+  },
   watch: {},
   methods: {
     toggle() {
@@ -229,6 +232,7 @@ export default {
     }
   },
   mounted() {
+    if (this.left) this.isDockLeft = true;
     let win = this.$electron.remote.getCurrentWindow();
     let screen = this.$electron.remote.screen;
     let biasX = 0;

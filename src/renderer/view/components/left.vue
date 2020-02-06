@@ -44,9 +44,11 @@
         >
           <i
             style="display: inline-block;
-    height: 5px;
+    height: 1px;
     width: 20px;
-    background: red;"
+    background: white;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;"
           ></i>
         </div>
       </div>

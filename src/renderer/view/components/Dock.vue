@@ -8,7 +8,7 @@
       top:0;
       left:0;
       bottom:0;
-      width:3px;
+      width:9px;
       display: flex;
       cursor: pointer;
       z-index:100;"
@@ -19,8 +19,9 @@
 display: block;
 align-self: center;
 background: #FFF;
-border-left: 1px solid #222;
-border-right: 1px solid #222;
+width:1px;
+border-left: 1px solid #ccc;
+border-right: 1px solid #ccc;
 height: 30px;
 border-top: none;
 border-bottom: none;"

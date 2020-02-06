@@ -1612,7 +1612,10 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
                 },
                 tInitParam: {
                     rate: 20,
-                    theme: L.theme
+                    theme: L.theme,
+                    dim: {
+                        H_T_G: 125
+                    }
                 }
             },
             info: {

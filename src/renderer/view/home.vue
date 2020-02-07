@@ -293,7 +293,11 @@ export default {
   mounted() {
     initwebview(this.closeview.bind(this));
     mouseDragMenu(this.$electron, false);
-
+    document.ondblclick = () => {
+      let win = $electron.remote.getCurrentWindow();
+      win.setPosition(0, 0);
+      window.resizeTo(screen.availWidth, screen.availHeight);
+    };
     this.reloadData();
     this.timerFn();
 

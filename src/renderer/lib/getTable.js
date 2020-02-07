@@ -677,11 +677,12 @@ export async function getFilterList(callback) {
         item,
         ccArrList.map(a => a.filter(e => e.order == 2))
       )
-    )
+    ) {
       await getCacheData(null, item.code, null, item);
-    await hl(item);
+      await hl(item);
 
-    callback(item);
+      callback(item);
+    }
   }
   callback(null);
 

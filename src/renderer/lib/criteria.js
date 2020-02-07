@@ -226,8 +226,6 @@ export const criteria = {
           e.pe_ttm < 40 &&
           e.tbzz > 0
         ) {
-          await getCacheData(null, e.code, null, e);
-          await hl(e);
           return true;
         }
       }

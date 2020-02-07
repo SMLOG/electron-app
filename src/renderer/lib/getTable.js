@@ -671,13 +671,17 @@ export async function getFilterList(callback) {
   console.log("1:", datalist);
 
   for (let i = 0; i < datalist.length; i++) {
+    let item = datalist[i];
     if (
       await recursivFiltersTopAsync(
-        datalist[i],
+        item,
         ccArrList.map(a => a.filter(e => e.order == 2))
       )
     )
-      callback(datalist[i]);
+      await getCacheData(null, item.code, null, item);
+    await hl(item);
+
+    callback(item);
   }
   callback(null);
 

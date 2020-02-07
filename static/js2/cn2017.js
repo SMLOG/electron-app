@@ -1595,7 +1595,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
                             v: 20,
                             color: "#EE2F72"
                         }]
-                    }]
+                    },{name:"BOLL"}]
                 },
                 tChart: {
                     toggleExtend: "on",

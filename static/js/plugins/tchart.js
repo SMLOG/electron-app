@@ -2323,6 +2323,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         ];
         break;
       default:
+        //tech_
         defaultE = [
           [
             { name: "MA" },

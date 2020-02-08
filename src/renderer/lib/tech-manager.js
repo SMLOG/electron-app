@@ -35,6 +35,20 @@ const techMap = {
       isMacdGolden(kd)
     );
   },
+  "D&Boll": function({ item, kd, kw, km }) {
+    let boll = kd.BOLL;
+    if (boll && boll.lenght > 5) {
+      let arr = boll.slice(-5);
+      //连续下跌，MA20反转信号
+      if (
+        arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
+        arr[arr.length - 2].boll <= arr[arr.length - 3].boll
+      ) {
+        return true;
+      }
+    }
+    return false;
+  },
   W: function({ item, kd, kw, km }) {
     return isMacdGolden(kw);
   },

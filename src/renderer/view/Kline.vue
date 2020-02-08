@@ -99,7 +99,7 @@ export default {
       //console.log(event);
     });
 
-    mouseDragMenu(this.$electron, true);
+    mouseDragMenu(this.$electron, false);
   }
 };
 </script>

@@ -12,7 +12,7 @@
     ></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
-      <div id="menuWrap">
+      <div id="menuWrap" style="">
         <ul class="filters" id="menus">
           <Sea
             v-for="(k, filter) in afilters"

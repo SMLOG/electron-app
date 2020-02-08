@@ -265,6 +265,9 @@ tr.openlink .first > *:first-child {
   width: 100%;
   padding: 3px;
 }
+#menuWrap:hover {
+  z-index: 1000;
+}
 #menus {
   border: 1px solid #dadce0;
   border-radius: 8px;

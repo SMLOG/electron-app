@@ -41,9 +41,12 @@ const techMap = {
       let arr = boll;
       //连续下跌，MA20反转信号
       if (
-        arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
-        arr[arr.length - 2].boll <= arr[arr.length - 3].boll &&
-        arr[arr.length - 3].boll <= arr[arr.length - 4].boll
+        (arr[arr.length - 1].upper - arr[arr.length - 1].lower) /
+          arr[arr.length - 1].boll <
+          0.1 ||
+        (arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
+          arr[arr.length - 2].boll <= arr[arr.length - 3].boll &&
+          arr[arr.length - 3].boll <= arr[arr.length - 4].boll)
       ) {
         return true;
       }

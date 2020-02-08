@@ -1570,7 +1570,27 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
         var t = this
           , n = "\u9000\u5e02" == t.param.halt ? "kd" : getMyCookie('dataView','t1');
         "\u9000\u5e02" == t.param.halt ? t.delistList : t.tabList;
-
+        let pTechlist = document.cookie.split(';').map(e=>e.split('=')[0].trim()).filter(name=>{
+           return name.indexOf('dataView-')==0 && getMyCookie(name,'false')=='true'
+        }).map(e=>{
+            
+            if(e=='dataView-MA'){return {
+                name: "MA",
+                param: [{
+                    v: 5,
+                    color: "#FC9CB8"
+                }, {
+                    v: 10,
+                    color: "#12BDD9"
+                }, {
+                    v: 20,
+                    color: "#EE2F72"
+                }]
+            }} else return {
+                name:e.replace('dataView-','')
+            }
+        });
+console.log(pTechlist);
         KKE.api("plugins.sinaAppTKChart.get", {
             wrap: {
                 dom: e("#h5Chart")[0]
@@ -1583,19 +1603,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent)
                     theme: L.theme
                 },
                 kChart: {
-                    pCharts: [{
-                        name: "MA",
-                        param: [{
-                            v: 5,
-                            color: "#FC9CB8"
-                        }, {
-                            v: 10,
-                            color: "#12BDD9"
-                        }, {
-                            v: 20,
-                            color: "#EE2F72"
-                        }]
-                    },{name:"BOLL"}]
+                    pCharts: pTechlist
                 },
                 tChart: {
                     toggleExtend: "on",

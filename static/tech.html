@@ -548,7 +548,18 @@ let timer = setInterval(() => {
 		setCookie("dataView", type);
 
       }
-    });
+	});
+	
+	$("li").click(function(e) {
+		setTimeout(()=>{
+			let value = $(this).attr('value');
+		if(value){
+			setCookie("dataView-"+value, $(this).attr('selected'));
+		}
+		},500);
+
+	});
+
 }, 100);
 
 

@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { mouseDragMenu } from "@/lib/WinUtils";
+import { mouseDragMenu, animation2 } from "@/lib/WinUtils";
 import store from "@/localdata";
 import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/lib/utils";
 import WinView from "@/view/components/WinView";
@@ -96,6 +96,14 @@ export default {
     });
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
+
+      animation2(
+        [[window.outerWidth, window.screen.availWidth - 6]],
+        ([width]) => {
+          window.resizeTo(width, window.screen.availHeight);
+        }
+      );
+
       //console.log(event);
     });
 

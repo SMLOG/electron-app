@@ -73,28 +73,31 @@ export default {
     let electron = this.$electron;
     let timerID;
 
-    document.addEventListener("mouseleave", event => {
-      let wsize = win.getSize();
+    window.addEventListener("blur", event => {
+      this.timerID = setTimeout(() => {
+        let wsize = win.getSize();
 
-      timerID = setInterval(() => {
-        let mousePos = electron.screen.getCursorScreenPoint();
-        let wPos = win.getPosition();
+        timerID = setInterval(() => {
+          let mousePos = electron.screen.getCursorScreenPoint();
+          let wPos = win.getPosition();
 
-        if (
-          mousePos.x < wPos[0] ||
-          mousePos.x > wPos[0] + wsize[0] ||
-          mousePos.y < wPos[1] ||
-          mousePos.y > wPos[1] + wsize[1]
-        ) {
-          window.close();
-          if (timerID) clearTimeout(timerID);
-        }
-        //alert(mousePos.x)
-      }, 500);
-      //console.log(event);
+          if (
+            mousePos.x < wPos[0] ||
+            mousePos.x > wPos[0] + wsize[0] ||
+            mousePos.y < wPos[1] ||
+            mousePos.y > wPos[1] + wsize[1]
+          ) {
+            window.close();
+            if (timerID) clearTimeout(timerID);
+          }
+          //alert(mousePos.x)
+        }, 500);
+        //console.log(event);
+      }, 200);
     });
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
+      if (this.timerID) clearTimeout(this.timerID);
       //console.log(event);
     });
 

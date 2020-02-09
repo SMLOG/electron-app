@@ -11,7 +11,9 @@
       width:9px;
       display: flex;
       cursor: pointer;
-      z-index:100;"
+      z-index:100;
+      backgroud:white;
+      "
       @click="toggle"
     >
       <i

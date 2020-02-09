@@ -109,5 +109,8 @@ i.arrow {
     opacity: 0;
   }
 }
+#app {
+  background: white;
+}
 /* 定义blink类*/
 </style>

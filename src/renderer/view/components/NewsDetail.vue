@@ -66,9 +66,12 @@ export default {
             .prop("outerHTML");
           this.content = title + c;
         }
-        console.log(item.href);
-        resizeWin();
+        setTimeout(() => resizeWin(), 100);
       });
+
+    document.addEventListener("dblclick", () => {
+      resizeWin();
+    });
 
     let electron = this.$electron;
     let timerID;
@@ -241,5 +244,8 @@ h1 {
   margin-bottom: 15px;
   padding-left: 10px;
   *padding-left: 5px;
+}
+img {
+  max-width: 95% !important;
 }
 </style>

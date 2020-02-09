@@ -65,8 +65,9 @@ ipcMain.on("createSuspensionMenu", e => {
         // win.webContents.toggleDevTools({ mode: "bottom" });
         if (e.sender) {
           // e.sender.setSize(600, 600);
-
+          //{mode:'detach'}
           e.sender.webContents.toggleDevTools({ mode: "undocked" });
+          //e.sender.webContents.toggleDevTools({ mode: "docked" });
         }
       }
     },

@@ -1,13 +1,9 @@
 <template>
-  <Dock @onCollapseH="onCollapseH" ref="dock" :left="true">
+  <Dock @onCollapseH="onCollapseH" ref="dock" :left="true" :childsWind="[detailWin]">
     <div class="wrap">
       <div id="suspension">
         <div class="content_body" v-show="showHQ">
-          <div
-            class="item etmf-void"
-            v-for="item in filteredItems"
-            :key="item.code"
-          >
+          <div class="item etmf-void" v-for="item in filteredItems" :key="item.code">
             <div class="flex">
               <span
                 class="name"
@@ -16,8 +12,7 @@
                 }"
                 :title="title(item)"
                 @click="openItem(item, $event)"
-                >{{ item.name }}</span
-              >
+              >{{ item.name }}</span>
               <span
                 style="flex-grow:1;text-align:left;"
                 :class="{ blink: item._Deth }"
@@ -28,20 +23,14 @@
                 <i
                   style="width:5px;display:inline-block;"
                   :class="upDown(item.now - item.pre)"
-                  >{{ item | nowPre }}</i
-                >
-                <i :class="upDown(item.now - item.preClose)"
-                  >({{ item.change }}){{ item.changeP }}
-                </i>
+                >{{ item | nowPre }}</i>
+                <i :class="upDown(item.now - item.preClose)">({{ item.change }}){{ item.changeP }}</i>
                 <i>{{ item.turnover }}</i>
               </span>
             </div>
           </div>
         </div>
-        <div
-          @click="showHQ = !showHQ"
-          style="text-align:center;cursor:pointer;font-size:5px;"
-        >
+        <div @click="showHQ = !showHQ" style="text-align:center;cursor:pointer;font-size:5px;">
           <i
             style="display: inline-block;
     height: 1px;
@@ -55,9 +44,7 @@
 
       <div v-if="false">
         <ul>
-          <li v-for="post in self_posts" :key="post.post_id">
-            {{ post.post_content }}
-          </li>
+          <li v-for="post in self_posts" :key="post.post_id">{{ post.post_content }}</li>
         </ul>
       </div>
       <div id="news"></div>
@@ -102,7 +89,8 @@ export default {
       news_html: "",
       fetchTimeStr: "",
       self_posts: [],
-      showHQ: true
+      showHQ: true,
+      detailWin: null
     };
   },
   components: {
@@ -222,6 +210,7 @@ export default {
         if (this.detailWin && !this.detailWin.closed) {
           if (this.detailWin.location.indexOf(url) > -1) {
             this.detailWin.close();
+            return;
           } else this.detailWin.location = url;
         } else {
           this.detailWin = window.open(

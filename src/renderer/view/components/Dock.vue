@@ -42,7 +42,8 @@ export default {
     };
   },
   props: {
-    left: Boolean
+    left: Boolean,
+    childsWind: Array
   },
   watch: {},
   methods: {
@@ -101,6 +102,12 @@ export default {
       let biasY = 0;
       let timerID;
       let con = this.$electron.remote.getGlobal("console");
+      if (
+        this.childsWind &&
+        this.childsWind.filter(w => w && !w.closed).length > 0
+      ) {
+        return;
+      }
       con.log("ALT+Z mouseleave");
       this.isleave = true;
       let wsize = win.getSize();

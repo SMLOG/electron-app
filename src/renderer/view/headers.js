@@ -89,7 +89,7 @@ export let headers = [
       openlink(
         item,
         event,
-        "http://f10.eastmoney.com/ShareholderResearch/Index?type=web&code={{code}}#"
+        "http://f10.eastmoney.com/ShareholderResearch/Index?type=web&code={{code}}"
       );
     }
   },

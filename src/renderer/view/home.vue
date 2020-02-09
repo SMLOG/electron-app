@@ -391,7 +391,10 @@ export default {
         webview[0].style.height = "100%";
         this.openCode = item.code;
       }
-      this.link = url;
+      setTimeout(() => {
+        this.link = url;
+      }, 200);
+
       // webview.attr("src", url);
 
       console.log(url);

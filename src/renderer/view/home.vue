@@ -59,18 +59,20 @@
                 }"
               >
                 <span @click="sort(col.prop)">{{ col.label }}</span>
-                <span v-if="col.filterable" @click="showFilterable(col.prop)">#</span>
-                <div
-                  v-if="col.filterable&&filterables&&filter_prop==col.prop"
-                  style="position:fixed;color:blue;"
-                >
-                  <ul class="filterp">
-                    <li v-for="f in filterables" :key="f.value">
-                      <input type="checkbox" />
-                      {{f.value}}
-                    </li>
-                  </ul>
-                </div>
+                <span v-if="col.filterable" ref="filter_prop_ref">
+                  <span @click="showFilterable(col.prop)">#</span>
+                  <div
+                    v-if="col.filterable&&filterables&&show_filter_prop"
+                    style="position: fixed;color: blue;margin: 5px;padding: 5px;background: white;"
+                  >
+                    <ul class="filterp">
+                      <li v-for="f in filterables" :key="f.value">
+                        <input type="checkbox" v-model="f.select" />
+                        {{f.value}}
+                      </li>
+                    </ul>
+                  </div>
+                </span>
               </th>
             </tr>
             <tr
@@ -235,7 +237,8 @@ export default {
       link: "about:blank",
       item: {},
       filterables: [],
-      filter_prop: ""
+      filter_prop: "",
+      show_filter_prop: false
     };
   },
   directives: {
@@ -291,6 +294,15 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener("click", e => {
+      if (this.$refs.filter_prop_ref) {
+        if (this.$refs.filter_prop_ref.some(el => el.contains(e.target))) {
+        } else {
+          this.show_filter_prop = false;
+        }
+      }
+    });
+
     initwebview(this.closeview.bind(this));
     mouseDragMenu(this.$electron, false);
     document.ondblclick = () => {
@@ -343,6 +355,18 @@ export default {
   },
   computed: {
     filteredItems: function() {
+      if (
+        this.filter_prop &&
+        this.filterables &&
+        this.filterables.filter(e => e.select).length
+      ) {
+        let selectedValues = this.filterables
+          .filter(e => e.select)
+          .map(e => e.value);
+        return this.getfilterItems().filter(
+          e => selectedValues.indexOf(e[this.filter_prop]) > -1
+        );
+      }
       return this.getfilterItems();
     },
     focusItems: function() {
@@ -353,18 +377,24 @@ export default {
   },
   methods: {
     showFilterable(prop) {
-      if (this.filter_prop != prop) {
+      this.show_filter_prop = !this.show_filter_prop;
+
+      if (this.show_filter_prop) {
         let values = this.getfilterItems().map(item => item["_" + prop]);
         values = values.filter(function(item, index, arr) {
           return arr.indexOf(item, 0) === index;
         });
         this.filterables = values.map(e => {
-          return { value: e };
+          return {
+            value: e,
+            select:
+              this.filterables.filter(a => {
+                return a.value == e && a.select;
+              }).length > 0
+          };
         });
-        console.log(this.filterables);
-        this.filter_prop = prop;
-      } else {
-        this.filter_prop = "";
+        console.log(this.show_filter_prop, this.filter_prop, this.filterables);
+        this.filter_prop = "_" + prop;
       }
     },
     selectFilterChange(r, c) {

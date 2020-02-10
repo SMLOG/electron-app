@@ -303,8 +303,10 @@ ul.filterp {
   margin: 0;
   background: white;
   list-style: none;
+  width: 300px;
 }
 .filterp li {
   padding: 0;
   margin: 0;
+  float: left;
 }

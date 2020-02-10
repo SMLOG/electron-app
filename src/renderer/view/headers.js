@@ -1,6 +1,7 @@
 import { getLastReportDate, dateFormat } from "../lib/utils";
 import { cache, getCacheData } from "../lib/db";
 import { getFields } from "../store/modules/suspension";
+import storejs from "storejs";
 
 const reportDate = getLastReportDate();
 const fmtPercent = value => {
@@ -17,14 +18,12 @@ export let headers = [
   {
     label: "HY",
     prop: "hy",
+    filterable: true,
     type: "string",
     fmt: (e, item) => {
-      getCacheData(null, "ind_2" + item.code).then(data => {
-        item.hy =
-          data &&
-          cache[data.f12] &&
-          `${cache[data.f12].f14}(${cache[data.f12].f3}%)`;
-      });
+      item._hy = storejs.get(item.code);
+      if (item._hy) item.hy = `${item._hy}(${storejs.get(item._hy)}%)`;
+
       return item.hy;
     }
   },

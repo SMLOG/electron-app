@@ -298,3 +298,13 @@ tr.openlink .first > *:first-child {
   min-width: 170px;
   width: 170px;
 }
+ul.filterp {
+  padding: 0;
+  margin: 0;
+  background: white;
+  list-style: none;
+}
+.filterp li {
+  padding: 0;
+  margin: 0;
+}

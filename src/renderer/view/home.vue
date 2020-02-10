@@ -52,13 +52,26 @@
 
               <th
                 v-for="col in head"
-                @click="sort(col.prop)"
                 :key="col.prop"
                 :class="{
                   ascending: sortby === col.prop && !descending,
                   descending: sortby === col.prop && descending
                 }"
-              >{{ col.label }}</th>
+              >
+                <span @click="sort(col.prop)">{{ col.label }}</span>
+                <span v-if="col.filterable" @click="showFilterable(col.prop)">#</span>
+                <div
+                  v-if="col.filterable&&filterables&&filter_prop==col.prop"
+                  style="position:fixed;color:blue;"
+                >
+                  <ul class="filterp">
+                    <li v-for="f in filterables" :key="f.value">
+                      <input type="checkbox" />
+                      {{f.value}}
+                    </li>
+                  </ul>
+                </div>
+              </th>
             </tr>
             <tr
               v-if="
@@ -220,7 +233,9 @@ export default {
       selectFilter_r: -1,
       selectFilter_c: -1,
       link: "about:blank",
-      item: {}
+      item: {},
+      filterables: [],
+      filter_prop: ""
     };
   },
   directives: {
@@ -337,6 +352,21 @@ export default {
     ...mapGetters({ sfilters: "filters" })
   },
   methods: {
+    showFilterable(prop) {
+      if (this.filter_prop != prop) {
+        let values = this.getfilterItems().map(item => item["_" + prop]);
+        values = values.filter(function(item, index, arr) {
+          return arr.indexOf(item, 0) === index;
+        });
+        this.filterables = values.map(e => {
+          return { value: e };
+        });
+        console.log(this.filterables);
+        this.filter_prop = prop;
+      } else {
+        this.filter_prop = "";
+      }
+    },
     selectFilterChange(r, c) {
       this.selectFilter_r = r;
       this.selectFilter_c = c;

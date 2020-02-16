@@ -147,11 +147,7 @@
         </table>
       </div>
     </div>
-    <div
-      id="webviewWrap"
-      ref="webviewWrap"
-      style="position:fixed;left:180px;right:0;bottom:0;top:60%;display:none;z-index:4"
-    >
+    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{fullscreen:fullscreen}">
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
@@ -159,7 +155,7 @@
         ></i>
         <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
       </div>
-      <WinView :item="item" :link="link"></WinView>
+      <WinView :item="item" :link="link" @dblclick.native="fullscreen=!fullscreen"></WinView>
     </div>
   </div>
 </template>
@@ -238,7 +234,8 @@ export default {
       item: {},
       filterables: [],
       filter_prop: "",
-      show_filter_prop: false
+      show_filter_prop: false,
+      fullscreen: false
     };
   },
   directives: {

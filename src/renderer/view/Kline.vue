@@ -74,7 +74,7 @@ export default {
     let electron = this.$electron;
     let timerID;
 
-    document.addEventListener("mouseleave", event => {
+    window.addEventListener("blur", event => {
       let wsize = win.getSize();
 
       timerID = setInterval(() => {
@@ -96,6 +96,7 @@ export default {
     });
     document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
+      if (!window.oriWidth) window.oriWidth = window.outerWidth;
 
       animation2(
         [[window.outerWidth, window.screen.availWidth - 6]],
@@ -103,8 +104,22 @@ export default {
           window.resizeTo(width, window.screen.availHeight);
         }
       );
-
       //console.log(event);
+    });
+
+    document.addEventListener("dblclick", event => {
+      if (window.oriWidth && window.outerWidth > window.oriWidth) {
+        animation2([[window.outerWidth, window.oriWidth]], ([width]) => {
+          window.resizeTo(width, window.screen.availHeight);
+        });
+      } else {
+        animation2(
+          [[window.outerWidth, window.screen.availWidth - 6]],
+          ([width]) => {
+            window.resizeTo(width, window.screen.availHeight);
+          }
+        );
+      }
     });
 
     mouseDragMenu(this.$electron, false);

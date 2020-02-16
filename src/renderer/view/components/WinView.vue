@@ -2,7 +2,7 @@
   <table style="height:100%;width:100%;background:white;">
     <tr v-if="item">
       <td style="height:27px;">
-        <span>{{ item.hy }} </span>
+        <span>{{ item.hy }}</span>
         <span>{{ item.forecast }}</span>
         <span>披露:{{ item.disclosure }}</span>
         <span>52周%:{{ item["52weekPer"] }}</span>
@@ -15,12 +15,7 @@
     </tr>
     <tr>
       <td>
-        <webview
-          ref="webview"
-          id="figure"
-          style="width:100%;height:100%;"
-          :src="link"
-        ></webview>
+        <webview ref="webview" id="figure" style="width:100%;height:100%;" :src="link"></webview>
       </td>
     </tr>
   </table>

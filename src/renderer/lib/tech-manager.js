@@ -11,13 +11,12 @@ function isMacdGolden(techData) {
   );
 }
 function isMacdDeath(techData) {
+  let len = techData.MACD.length;
   return (
-    techData.MACD.length > 3 &&
-    techData.MACD[techData.MACD.length - 1].bar < 0 &&
-    techData.MACD[techData.MACD.length - 1].bar <
-      techData.MACD[techData.MACD.length - 2].bar &&
-    techData.MACD[techData.MACD.length - 2].bar <
-      techData.MACD[techData.MACD.length - 3].bar
+    len > 3 &&
+    techData.MACD[len - 1].bar < 0 &&
+    techData.MACD[len - 1].bar < techData.MACD[len - 2].bar &&
+    techData.MACD[len - 2].bar < techData.MACD[len - 3].bar
   );
 }
 const techMap = {
@@ -35,24 +34,49 @@ const techMap = {
       isMacdGolden(kd)
     );
   },
-  "D&Boll": function({ item, kd, kw, km }) {
+  "D&B": function({ item, kd, kw, km }) {
     let boll = kd.BOLL;
-    if (boll && boll.lenght > 5) {
+    if (boll && boll.length > 5) {
       let arr = boll;
       //连续下跌，MA20反转信号
-      if (
+      let nrValue =
         (arr[arr.length - 1].upper - arr[arr.length - 1].lower) /
-          arr[arr.length - 1].boll <
-          0.1 ||
-        (arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
+        arr[arr.length - 1].boll;
+
+      if (
+        nrValue <
+        0.1 /*&&
+        arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
           arr[arr.length - 2].boll <= arr[arr.length - 3].boll &&
-          arr[arr.length - 3].boll <= arr[arr.length - 4].boll)
+          arr[arr.length - 3].boll <= arr[arr.length - 4].boll*/
       ) {
         return true;
       }
     }
     return false;
   },
+  三小兵: function({ item, kd, kw, km }) {
+    let datas = kd.kdatas;
+    if (datas && datas.length > 3) {
+      let len = datas.length;
+      if (
+        datas[len - 1].percent > 0 &&
+        datas[len - 1].percent < 0.03 &&
+        datas[len - 2].percent > 0 &&
+        datas[len - 2].percent < 0.03 &&
+        datas[len - 3].percent > 0 &&
+        datas[len - 3].percent < 0.03 &&
+        datas[len - 1].percent +
+          datas[len - 2].percent +
+          datas[len - 3].percent <
+          0.05
+      ) {
+        return true;
+      }
+    }
+    return false;
+  },
+
   W: function({ item, kd, kw, km }) {
     return isMacdGolden(kw);
   },

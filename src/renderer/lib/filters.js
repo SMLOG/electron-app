@@ -1,6 +1,6 @@
 import { buildFilters } from "./tech-manager";
 import { getFilters } from "../store/modules/suspension";
-import { getFindList } from "@/lib/getTable";
+import { getFilterList } from "@/lib/getTable";
 import store from "../localdata";
 
 export const afilters = {
@@ -8,7 +8,7 @@ export const afilters = {
     name: "items2",
     is_search: true,
     get: async function(cb) {
-      await getFindList(e => {
+      await getFilterList(e => {
         this.items.push(e);
       });
     },

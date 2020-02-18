@@ -9,6 +9,7 @@ import {
   rid
 } from "./utils";
 import { getCriterias } from "./criteria";
+import storejs from "storejs";
 
 import { getExcludeList } from "./exclude-list";
 import { updateCache, putCache, getCacheData, cache } from "./db";
@@ -203,7 +204,7 @@ async function getYZYGTable() {
   });
 }
 async function getYYPLRQTable() {
-  return await getCacheData(new Date(), "disclosure date_", async () => {
+  return await getCacheData(new Date(), "disclosure_date_", async () => {
     let _varname = rid("var");
     let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=5000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
     await fetchEval([url]);
@@ -230,7 +231,9 @@ async function getYYPLRQTable() {
           console.err(e);
         }
 
-        await updateCache("disclosure date_" + `${mk}${d.scode}`, () => d);
+        storejs.set("disclosure_date_" + `${mk}${d.scode}`, d);
+
+        // await updateCache("disclosure date_" + `${mk}${d.scode}`, () => d);
       }
     console.log(window[_varname].data);
 

@@ -48,9 +48,11 @@ export let headers = [
     type: "string",
 
     fmt: (e, item) => {
-      getCacheData(null, "disclosure date_" + item.code).then(data => {
-        item.disclosure = data && dateFormat(new Date(data.last), "yyyy-MM-dd");
-      });
+      let data = storejs.get(`disclosure_date_${item.code}`);
+      if (data) {
+        item.disclosure = dateFormat(new Date(data.last), "yyyy-MM-dd");
+      }
+
       return item.disclosure;
     }
   },

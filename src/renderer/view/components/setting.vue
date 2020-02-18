@@ -81,7 +81,7 @@ a {
   background: gray;
   border-radius: 11px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 10000;
 }
 #setting_contents {
   position: fixed;

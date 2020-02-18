@@ -605,6 +605,7 @@ export async function getFilterList(callback) {
       change: e.f4,
       open: e.f17,
       preClose: e.f18,
+      preclose: e.f18,
       turnover: e.f8,
       pe: e.f9,
       volume: e.f5,
@@ -620,6 +621,9 @@ export async function getFilterList(callback) {
       firstDay: e.f26
     };
   });
+
+  window.datalist = datalist;
+
   let crs = getCriterias();
   let ccArrList = crs.map(cr => {
     return []

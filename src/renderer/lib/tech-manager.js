@@ -55,16 +55,19 @@ const techMap = {
     }
     return false;
   },
-  三小兵: function({ item, kd, kw, km }) {
+  三小: function({ item, kd, kw, km }) {
     let datas = kd.kdatas;
     if (datas && datas.length > 3) {
       let len = datas.length;
       if (
-        datas[len - 1].percent > 0 &&
+        datas[len - 1].close - datas[len - 1].open > 0 &&
+        datas[len - 2].close - datas[len - 2].open > 0 &&
+        datas[len - 3].close - datas[len - 3].open > 0 &&
+        datas[len - 1].percent >= 0 &&
+        datas[len - 2].percent >= 0 &&
+        datas[len - 3].percent >= 0 &&
         datas[len - 1].percent < 0.03 &&
-        datas[len - 2].percent > 0 &&
         datas[len - 2].percent < 0.03 &&
-        datas[len - 3].percent > 0 &&
         datas[len - 3].percent < 0.03 &&
         datas[len - 1].percent +
           datas[len - 2].percent +

@@ -13,7 +13,13 @@ export let headers = [
     label: "Now",
     prop: "now",
     type: "number",
-    fmt: (e, item) => `${e}(${item.changeP})`
+    fmt: (e, item) => `${e}(${item.changeP})`,
+    class: item => {
+      return {
+        up: item.change > 0,
+        down: item.change < 0
+      };
+    }
   },
   {
     label: "HY",

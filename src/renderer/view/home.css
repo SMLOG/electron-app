@@ -328,3 +328,9 @@ ul.filterp {
   top: 0 !important;
   left: 0 !important;
 }
+.up {
+  color: red;
+}
+.down {
+  color: green;
+}

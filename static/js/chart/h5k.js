@@ -988,13 +988,13 @@ xh5_define(
           y && y.removeChart(e);
         };
         this.initRs = function() {
-          (w = new o({
+          w = new o({
             stockData: stockDataA,
             setting: setting,
             rc: I.moving
-          })),
-            w.linkData(),
-            (E = w);
+          });
+          w.linkData();
+          E = w;
         };
         this.setLineStyle = S.setLineStyle;
         this.getLineStyle = S.getLineStyle;
@@ -1002,55 +1002,55 @@ xh5_define(
       }
       function k(e, a) {
         function i() {
-          if (y)
-            (r = setting.COLOR.K_N),
-              (s = setting.COLOR.K_FALL),
-              (l = setting.COLOR.K_RISE),
-              (c = setting.COLOR.K_CL);
-          else {
-            var a = o.linecolor,
-              i = a.K_N || "#" + util.randomColor();
-            (r = i),
-              (s = a.K_FALL || i),
-              (l = a.K_RISE || i),
-              (c = a.K_CL || i);
+          if (y) {
+            r = setting.COLOR.K_N;
+            s = setting.COLOR.K_FALL;
+            l = setting.COLOR.K_RISE;
+            c = setting.COLOR.K_CL;
+          } else {
+            var a = o.linecolor;
+            var i = a.K_N || "#" + util.randomColor();
+            r = i;
+            s = a.K_FALL || i;
+            l = a.K_RISE || i;
+            c = a.K_CL || i;
           }
-          (m.K_N = r),
-            (m.K_FALL = s),
-            (m.K_RISE = l),
-            (m.K_CL = c),
-            (d = new painter.xh5_ibPainter({
-              setting: setting,
-              sd: e,
-              ctn: C,
-              withHBg: y,
-              fixScale: !1,
-              reO: {
-                mh: setting.DIMENSION.H_MA4K
-              },
-              iMgr: B,
-              iTo: function(t, n, a, i) {
-                if (e && e.datas) {
-                  !h(t, B.iHLineO.body) && t.appendChild(B.iHLineO.body);
-                  var o =
-                    e.labelMaxP -
-                    (a / setting.DIMENSION.h_k) * (e.labelMaxP - e.labelMinP);
-                  B.iToD(
-                    {
-                      mark: o,
-                      x: n,
-                      y: a,
-                      oy: setting.DIMENSION.H_MA4K,
-                      ox: setting.DIMENSION.posX,
-                      e: i
-                    },
-                    !0,
-                    !1
-                  );
-                }
+          m.K_N = r;
+          m.K_FALL = s;
+          m.K_RISE = l;
+          m.K_CL = c;
+          d = new painter.xh5_ibPainter({
+            setting: setting,
+            sd: e,
+            ctn: C,
+            withHBg: y,
+            fixScale: !1,
+            reO: {
+              mh: setting.DIMENSION.H_MA4K
+            },
+            iMgr: B,
+            iTo: function(t, n, a, i) {
+              if (e && e.datas) {
+                !h(t, B.iHLineO.body) && t.appendChild(B.iHLineO.body);
+                var o =
+                  e.labelMaxP -
+                  (a / setting.DIMENSION.h_k) * (e.labelMaxP - e.labelMinP);
+                B.iToD(
+                  {
+                    mark: o,
+                    x: n,
+                    y: a,
+                    oy: setting.DIMENSION.H_MA4K,
+                    ox: setting.DIMENSION.posX,
+                    e: i
+                  },
+                  !0,
+                  !1
+                );
               }
-            })),
-            (u = d.getG());
+            }
+          });
+          u = d.getG();
         }
         var o,
           s,

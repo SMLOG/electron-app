@@ -3385,41 +3385,41 @@ xh5_define(
           o("tech", e, n), n && !n.noLog && (0 == D ? (D = 1) : util.sudaLog());
         };
         var O = 0;
-        (this.pCharts = function(e, n) {
+        this.pCharts = function(e, n) {
           o("price", e, n),
             n && !n.noLog && (0 == O ? (O = 1) : util.sudaLog());
-        }),
-          (this.showPCharts = function(e) {
-            e && (I.mM.togglePt(e), util.stc("k_sp", e));
-          }),
-          (this.getIndicators = function() {
-            var e = T ? T.getLog() : null,
-              t = U ? U.getLog() : null;
-            return {
-              tCharts: e,
-              pCharts: t
-            };
-          }),
-          (this.getIndicatorData = function() {
-            var e = T ? T.getExistingCharts() : null,
-              t = U ? U.getExistingCharts() : null;
-            return {
-              tCharts: e,
-              pCharts: t
-            };
-          });
+        };
+        this.showPCharts = function(e) {
+          e && (I.mM.togglePt(e), util.stc("k_sp", e));
+        };
+        this.getIndicators = function() {
+          var tCharts = T ? T.getLog() : null,
+            pCharts = U ? U.getLog() : null;
+          return {
+            tCharts: tCharts,
+            pCharts: pCharts
+          };
+        };
+        this.getIndicatorData = function() {
+          var tCharts = T ? T.getExistingCharts() : null,
+            pCharts = U ? U.getExistingCharts() : null;
+          return {
+            tCharts: tCharts,
+            pCharts: pCharts
+          };
+        };
         var z;
         this.showRangeSelector = function(e) {
-          (z = oc(
+          z = oc(
             {
               display: !0,
               from: void 0,
               to: void 0
             },
             e || {}
-          )),
-            I.mM.showRs(z),
-            util.stc("k_rs", e);
+          );
+          I.mM.showRs(z);
+          util.stc("k_rs", e);
         };
         this.dateFromTo = function(e, n, a) {
           E && (E.dateFromTo(e, n, a), util.stc("k_ft", [e, n, a]));
@@ -3436,20 +3436,24 @@ xh5_define(
         this.setDimension = fBind(a, this, "DIMENSION");
         this.getDimension = fBind(i, null, "DIMENSION", ["boolean"]);
         this.newSymbol = function(e) {
-          if (
-            (B.hideIUis(), B.iReset(), I.dcReset(), I.dcInit(e), q.hideTip(), T)
-          ) {
+          B.hideIUis();
+          B.iReset();
+          I.dcReset();
+          I.dcInit(e);
+          q.hideTip();
+          if (T) {
             var n = T.getLog();
-            (T = null), n && this.tCharts(n);
+            T = null;
+            n && this.tCharts(n);
           }
           if (U) {
             var a = U.getLog();
             U = null;
             a && this.pCharts(a);
           }
-          z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z)),
-            I.h5tM.resetHisT(),
-            util.stc("k_ns", e);
+          z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z));
+          I.h5tM.resetHisT();
+          util.stc("k_ns", e);
         };
         this.toggleExtend = function() {
           var e = setting.DIMENSION.extend_draw,

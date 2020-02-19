@@ -1823,7 +1823,7 @@ xh5_define(
             } else n = Math.max(n + o * Math.abs(o), 0);
             return n == ae && a == ie ? [-1] : ((ae = n), (ie = a), [n, a]);
           };
-        (this.onWheel = function(e) {
+        this.onWheel = function(e) {
           if (!h5tM.isShowing()) {
             var t = e.detail || -1 * e.wheelDelta;
             if (0 != t) {
@@ -1831,138 +1831,136 @@ xh5_define(
               moving(n[0], n[1]);
             }
           }
-        }),
-          (this.onKb = function(e) {
-            if ("keyup" == e.type) return void B.iToKb(null, !0);
-            var t = e.keyCode;
-            if (h5tM.isShowing()) return void (27 == t && h5tM.resetHisT());
-            switch (t) {
-              case 38:
-              case 40:
-                var n = oe(38 == t ? 1 : -1);
-                moving(n[0], n[1]);
-                break;
-              case 37:
-              case 39:
-                var a = B.iToKb(37 == t ? -1 : 1);
-                a &&
-                  (moving(viewState.start + a, viewState.end + a), B.iToKb(0));
-                break;
-              case 13:
-                h5tM.historyT();
-                break;
-              default:
-                return;
-            }
-            u.preventDefault(e);
-          }),
-          (this.zoomApi = function(e) {
-            var t = oe(e ? 1 : -1);
-            moving(t[0], t[1]);
-          }),
-          (this.moveApi = function(e) {
-            var t = viewState.start,
-              n = viewState.end;
-            (t += e),
-              (n += e),
-              n > viewState.dataLength &&
-                ((n = viewState.dataLength),
-                (t = viewState.start + n - viewState.end)),
-              0 > t && ((t = 0), (n = viewState.end - viewState.start)),
-              moving(t, n);
-          }),
-          (this.shareTo = function(e) {
-            e = p(
-              {
-                type: "weibo",
-                url: window.location.href,
-                wbtext: "",
-                qrwidth: 100,
-                qrheight: 100,
-                extra: void 0
-              },
-              e || {}
-            );
-            var n = String(e.type).toLowerCase();
-            switch (n) {
-              case "qrcode":
-                KKE.api(
-                  "utils.qrcode.createcanvas",
-                  {
-                    text: e.url,
-                    width: e.qrwidth,
-                    height: e.qrheight
-                  },
-                  function(e) {
-                    q.showTip({
-                      content: e,
-                      txt:
-                        '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
-                      parent: x,
-                      btnLb: "\u5173\u95ed"
-                    });
-                  }
-                );
-                break;
-              default:
-                util.grabM.shareTo({
-                  ctn: x,
-                  w: setting.DIMENSION.getStageW(),
-                  h: setting.DIMENSION.getStageH() - (O.clientHeight || 0),
-                  ignoreZIdxArr: [setting.PARAM.I_Z_INDEX],
-                  ignoreIdArr: [setting.PARAM.LOGO_ID],
-                  priorZIdx: setting.PARAM.G_Z_INDEX,
-                  nologo: !1,
-                  top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
-                  right:
-                    setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
-                  LOGO_W: setting.DIMENSION.LOGO_W,
-                  LOGO_H: setting.DIMENSION.LOGO_H,
-                  color: setting.COLOR.LOGO,
-                  bgColor: setting.COLOR.BG,
-                  txt: e.wbtext,
-                  url: e.url,
-                  extra: e.extra
-                });
-            }
-          }),
-          (this.getExtraData = function(n) {
-            if (
-              ((n = p(
+        };
+        this.onKb = function(e) {
+          if ("keyup" == e.type) return void B.iToKb(null, !0);
+          var t = e.keyCode;
+          if (h5tM.isShowing()) return void (27 == t && h5tM.resetHisT());
+          switch (t) {
+            case 38:
+            case 40:
+              var n = oe(38 == t ? 1 : -1);
+              moving(n[0], n[1]);
+              break;
+            case 37:
+            case 39:
+              var a = B.iToKb(37 == t ? -1 : 1);
+              a && (moving(viewState.start + a, viewState.end + a), B.iToKb(0));
+              break;
+            case 13:
+              h5tM.historyT();
+              break;
+            default:
+              return;
+          }
+          u.preventDefault(e);
+        };
+        this.zoomApi = function(e) {
+          var t = oe(e ? 1 : -1);
+          moving(t[0], t[1]);
+        };
+        this.moveApi = function(e) {
+          var t = viewState.start,
+            n = viewState.end;
+          (t += e),
+            (n += e),
+            n > viewState.dataLength &&
+              ((n = viewState.dataLength),
+              (t = viewState.start + n - viewState.end)),
+            0 > t && ((t = 0), (n = viewState.end - viewState.start)),
+            moving(t, n);
+        };
+        this.shareTo = function(e) {
+          e = p(
+            {
+              type: "weibo",
+              url: window.location.href,
+              wbtext: "",
+              qrwidth: 100,
+              qrheight: 100,
+              extra: void 0
+            },
+            e || {}
+          );
+          var n = String(e.type).toLowerCase();
+          switch (n) {
+            case "qrcode":
+              KKE.api(
+                "utils.qrcode.createcanvas",
                 {
-                  symbol: e.symbol,
-                  name: null,
-                  clone: !0
+                  text: e.url,
+                  width: e.qrwidth,
+                  height: e.qrheight
                 },
-                n || {}
-              )),
-              !n.name)
-            )
-              return null;
-            for (var a, i, o = f.length; o--; )
-              if (f[o].symbol === n.symbol) {
-                a = f[o];
-                break;
-              }
-            if (a) {
-              var s;
-              "currentK" == n.name
-                ? ((s = a.kDb.get()), (i = n.clone ? util.clone(s, null) : s))
-                : ((s = a.extraDataObj[n.name]),
-                  (i = n.clone ? util.clone(s, null) : s));
+                function(e) {
+                  q.showTip({
+                    content: e,
+                    txt:
+                      '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
+                    parent: x,
+                    btnLb: "\u5173\u95ed"
+                  });
+                }
+              );
+              break;
+            default:
+              util.grabM.shareTo({
+                ctn: x,
+                w: setting.DIMENSION.getStageW(),
+                h: setting.DIMENSION.getStageH() - (O.clientHeight || 0),
+                ignoreZIdxArr: [setting.PARAM.I_Z_INDEX],
+                ignoreIdArr: [setting.PARAM.LOGO_ID],
+                priorZIdx: setting.PARAM.G_Z_INDEX,
+                nologo: !1,
+                top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+                right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+                LOGO_W: setting.DIMENSION.LOGO_W,
+                LOGO_H: setting.DIMENSION.LOGO_H,
+                color: setting.COLOR.LOGO,
+                bgColor: setting.COLOR.BG,
+                txt: e.wbtext,
+                url: e.url,
+                extra: e.extra
+              });
+          }
+        };
+        this.getExtraData = function(n) {
+          if (
+            ((n = p(
+              {
+                symbol: e.symbol,
+                name: null,
+                clone: !0
+              },
+              n || {}
+            )),
+            !n.name)
+          )
+            return null;
+          for (var a, i, o = f.length; o--; )
+            if (f[o].symbol === n.symbol) {
+              a = f[o];
+              break;
             }
-            return i;
-          }),
-          (this.updateDataAll = U),
-          (this.outputNewRange = H),
-          (this.dcReset = function() {
-            clearInterval(l), clearTimeout(h);
-            for (var e, t = f.length; t--; )
-              (e = f.splice(t, 1)[0]), e.clear(), (e = null);
-          }),
-          (this.dcInit = function(e) {
-            G(e, !0), U();
-          });
+          if (a) {
+            var s;
+            "currentK" == n.name
+              ? ((s = a.kDb.get()), (i = n.clone ? util.clone(s, null) : s))
+              : ((s = a.extraDataObj[n.name]),
+                (i = n.clone ? util.clone(s, null) : s));
+          }
+          return i;
+        };
+        this.updateDataAll = U;
+        this.outputNewRange = H;
+        this.dcReset = function() {
+          clearInterval(l), clearTimeout(h);
+          for (var e, t = f.length; t--; )
+            (e = f.splice(t, 1)[0]), e.clear(), (e = null);
+        };
+        this.dcInit = function(e) {
+          G(e, !0), U();
+        };
       }
       util.xh5_EvtDispatcher.call(this);
       var M = this;

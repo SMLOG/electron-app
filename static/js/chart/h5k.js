@@ -2284,47 +2284,47 @@ xh5_define(
                 I.onResize(o);
                 B.onResize();
               }
-              (i.style.left = "1px"),
-                (i.style.top =
-                  setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px"),
-                d(),
-                m(),
-                util.stc("k_wh", [
-                  setting.DIMENSION.getStageW(),
-                  setting.DIMENSION.getStageH()
-                ]);
+              i.style.left = "1px";
+              i.style.top =
+                setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px";
+              d();
+              m();
+              util.stc("k_wh", [
+                setting.DIMENSION.getStageW(),
+                setting.DIMENSION.getStageH()
+              ]);
             },
             v = function() {
-              (A = $DOM(a.domid) || a.dom),
-                A || ((A = $C("div")), document.body.appendChild(A)),
-                (x = $C("div")),
-                (x.style.position = "relative"),
-                (x.style.outlineStyle = "none"),
-                (x.style.webkitUserSelect = x.style.userSelect = x.style.MozUserSelect =
-                  "none"),
-                (C = $C("div", "mainarea_" + setting.uid)),
-                (R = $C("div")),
-                C.appendChild(R),
-                (H = $C("div")),
-                (H.style.position = "absolute"),
-                (H.style.fontSize = H.style.lineHeight =
-                  setting.STYLE.FONT_SIZE + "px"),
-                (H.style.width = "100%"),
-                C.appendChild(H),
-                x.appendChild(C),
-                (D = $C("div")),
-                x.appendChild(D),
-                (O = $C("div")),
-                x.appendChild(O),
+              A = $DOM(a.domid) || a.dom;
+              A || ((A = $C("div")), document.body.appendChild(A));
+              x = $C("div");
+              x.style.position = "relative";
+              x.style.outlineStyle = "none";
+              x.style.webkitUserSelect = x.style.userSelect = x.style.MozUserSelect =
+                "none";
+              C = $C("div", "mainarea_" + setting.uid);
+              R = $C("div");
+              C.appendChild(R);
+              H = $C("div");
+              H.style.position = "absolute";
+              H.style.fontSize = H.style.lineHeight =
+                setting.STYLE.FONT_SIZE + "px";
+              H.style.width = "100%";
+              C.appendChild(H);
+              x.appendChild(C);
+              D = $C("div");
+              x.appendChild(D);
+              O = $C("div");
+              x.appendChild(O),
                 (e = new xh5_Canvas({
                   width: r,
                   height: setting.DIMENSION.H_TIME_PART
-                })),
-                (n = e.g),
-                (i = e.canvas),
-                (i.style.position = "absolute"),
-                x.appendChild(i),
-                A.appendChild(x);
+                }));
+              n = e.g;
+              i = e.canvas;
+              i.style.position = "absolute";
+              x.appendChild(i);
+              A.appendChild(x);
             },
             b = function(e) {
               var n = !1;

@@ -5035,6 +5035,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     };
   }
 
+  // end chart_list
+
   function pChart(configa) {
     function r() {
       var PCHART_MAP = {

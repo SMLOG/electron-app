@@ -2228,380 +2228,352 @@ xh5_define(
         };
       })();
       let j = new (function() {
-          var e,
-            n,
-            i,
-            o,
-            s,
-            r = 37,
-            h = function(e, t, n) {
-              var i = !1;
-              isNaN(e) && (e = a.w || A.offsetWidth),
-                isNaN(t) && (t = a.h || A.offsetHeight - a.mh);
-              for (
-                var o,
-                  s = O.clientHeight || 0,
-                  r = D.clientHeight || 0,
-                  l = setting.DIMENSION.getOneWholeTH(),
-                  c = 0,
-                  h = D.childNodes,
-                  d = h.length,
-                  u = 0,
-                  p = h.length;
-                p--;
+        var e,
+          n,
+          i,
+          o,
+          s,
+          r = 37,
+          h = function(e, t, n) {
+            var i = !1;
+            isNaN(e) && (e = a.w || A.offsetWidth),
+              isNaN(t) && (t = a.h || A.offsetHeight - a.mh);
+            for (
+              var o,
+                s = O.clientHeight || 0,
+                r = D.clientHeight || 0,
+                l = setting.DIMENSION.getOneWholeTH(),
+                c = 0,
+                h = D.childNodes,
+                d = h.length,
+                u = 0,
+                p = h.length;
+              p--;
 
+            ) {
+              o = h[p];
+              o.id.indexOf("blankctn") >= 0
+                ? ((c = o.offsetHeight), d--, (u += c))
+                : (u += l);
+            }
+            !isNaN(n) && (r -= n);
+            r / (t - s) > 1 && ((r = u), (i = !0));
+            setting.DIMENSION.setStageW(e);
+            1 == $
+              ? d > 0 &&
+                (setting.DIMENSION.setStageH(t, d * l + c + s),
+                (i = !0),
+                ($ = 0))
+              : setting.DIMENSION.setStageH(t, r + s);
+            return i;
+          },
+          d = function() {
+            s && (s.style.display = setting.custom.show_logo ? "" : "none");
+          },
+          p = function() {
+            F = new util.LoadingSign();
+            F.appendto(C);
+          },
+          m = function() {
+            F.setPosition();
+          },
+          f = function(e, n, a) {
+            var o = h(n, a, 0 / 0);
+            if (e || (n && a)) {
+              if (!I) return;
+              I.onResize(o);
+              B.onResize();
+            }
+            i.style.left = "1px";
+            i.style.top =
+              setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px";
+            d();
+            m();
+            util.stc("k_wh", [
+              setting.DIMENSION.getStageW(),
+              setting.DIMENSION.getStageH()
+            ]);
+          },
+          v = function() {
+            A = $DOM(a.domid) || a.dom;
+            A || ((A = $C("div")), document.body.appendChild(A));
+            x = $C("div");
+            x.style.position = "relative";
+            x.style.outlineStyle = "none";
+            x.style.webkitUserSelect = x.style.userSelect = x.style.MozUserSelect =
+              "none";
+            C = $C("div", "mainarea_" + setting.uid);
+            R = $C("div");
+            C.appendChild(R);
+            H = $C("div");
+            H.style.position = "absolute";
+            H.style.fontSize = H.style.lineHeight =
+              setting.STYLE.FONT_SIZE + "px";
+            H.style.width = "100%";
+            C.appendChild(H);
+            x.appendChild(C);
+            D = $C("div");
+            x.appendChild(D);
+            O = $C("div");
+            x.appendChild(O);
+            e = new xh5_Canvas({
+              width: r,
+              height: setting.DIMENSION.H_TIME_PART
+            });
+            n = e.g;
+            i = e.canvas;
+            i.style.position = "absolute";
+            x.appendChild(i);
+            A.appendChild(x);
+          },
+          initTheme = function(e) {
+            var n = !1;
+            if (e) {
+              E && (n = E.setTheme(e));
+              for (var a in e)
+                e.hasOwnProperty(a) &&
+                  setting.COLOR.hasOwnProperty(a) &&
+                  setting.COLOR[a] !== e[a] &&
+                  ((setting.COLOR[a] = e[a]), (n = !0));
+              util.stc("k_thm", e);
+            }
+
+            n &&
+              logoM.styleLogo({
+                logo: s,
+                color: setting.COLOR.LOGO
+              });
+            return n;
+          },
+          y = function(e) {
+            !setting.custom.mousewheel_zoom ||
+              (document.activeElement !== x &&
+                document.activeElement.parentNode !== x) ||
+              (I && I.onWheel(e),
+              xh5_EvtUtil.preventDefault(e),
+              xh5_EvtUtil.stopPropagation(e));
+          },
+          k = function(e) {
+            setting.custom.keyboard && I && I.onKb(e);
+          },
+          S = function() {
+            util.xh5_deviceUtil.istd ||
+              (xh5_BrowserUtil.info.name.match(/firefox/i)
+                ? xh5_EvtUtil.addHandler(x, "DOMMouseScroll", y)
+                : xh5_EvtUtil.addHandler(x, "mousewheel", y),
+              (x.tabIndex = 0),
+              xh5_EvtUtil.addHandler(x, "keyup", k),
+              xh5_EvtUtil.addHandler(x, "keydown", k));
+          },
+          M = function(e) {
+            s = e;
+            x.appendChild(e);
+          };
+        v();
+        p();
+        initTheme(a.theme);
+        f();
+        S();
+        logoM.getLogo({
+          cb: M,
+          id: setting.PARAM.LOGO_ID,
+          isShare: !1,
+          top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+          right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+          LOGO_W: setting.DIMENSION.LOGO_W,
+          LOGO_H: setting.DIMENSION.LOGO_H,
+          color: setting.COLOR.LOGO
+        });
+        xh5_BrowserUtil.noH5 &&
+          (q.showTip({
+            txt: a.nohtml5info || globalCfg.nohtml5info,
+            parent: x
+          }),
+          util.stc("k_nh5"));
+        this.resizeAll = f;
+        this.innerResize = function(e) {
+          I &&
+            (h(0 / 0, 0 / 0, e),
+            I.onResize(),
+            B.onResize(),
+            m(),
+            Y.onInnerResize({
+              height: setting.DIMENSION.h_k
+            }));
+        };
+        this.initTheme = initTheme;
+        this.drawReMark = function(t) {
+          if (t) {
+            i.style.display = "";
+            if (o == t) return;
+            let a = setting.DIMENSION.H_TIME_PART;
+            o = t;
+            e.resize({
+              width: r,
+              height: a,
+              hd: setting.PARAM.getHd()
+            });
+            n.font = "12px " + setting.STYLE.FONT_FAMILY;
+            n.textBaseline = "top";
+            n.fillStyle = setting.COLOR.REMARK_BG;
+            n.fillRect(0, 0, r, a);
+            n.fillStyle = setting.COLOR.REMARK_T;
+            n.fillText(t, 0, 0);
+          } else i.style.display = "none";
+        };
+      })();
+      let B = new (function() {
+        var e,
+          n,
+          iHLineO,
+          o,
+          s = util.market(a.symbol),
+          r = /^forex|^HF/.test(s),
+          d = isNaN(a.nfloat) ? 2 : a.nfloat,
+          u = 150;
+        let p = new (function() {
+          let showFloater = function(t) {
+            var n = e.body.style;
+            t && setting.custom.show_floater
+              ? ((n.backgroundColor = setting.COLOR.F_BG),
+                (n.color = setting.COLOR.F_T),
+                (n.border = "1px solid " + setting.COLOR.F_BR),
+                (n.display = ""))
+              : (n.display = "none");
+          };
+          this.pv = function(n) {
+            var a = e.body.style,
+              i = Math.max(setting.DIMENSION.posX, 55) + 9;
+            (a.left =
+              (n.x > setting.DIMENSION.getStageW() >> 1
+                ? i
+                : setting.DIMENSION.getStageW() - u - 9) + "px"),
+              (a.top = (n.y || 0) + "px"),
+              showFloater(!0);
+          };
+          this.showFloater = showFloater;
+        })();
+        let f = function() {
+            function a() {
+              var e,
+                n,
+                a =
+                  "border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0;border-collapse:collapse;border-spacing:0;text-align:center;",
+                i = "font-weight:normal;border:0;height:16px;text-align:center",
+                o =
+                  "text-align:left;font-weight:normal;border:0;height:16px;padding:0",
+                s = "text-align:right;border:0;height:16px;padding:0",
+                h = $C("div"),
+                p = h.style;
+              p.position = "absolute";
+              p.zIndex = setting.PARAM.I_Z_INDEX + 2;
+              p.padding = "2px";
+              p.width = u + "px";
+              p.lineHeight = "16px";
+              p.display = "none";
+              p.fontSize = "12px";
+              var f,
+                v,
+                g,
+                b,
+                N = $C("table"),
+                _ = $C("thead"),
+                w = $C("tbody");
+              N.style.cssText = a;
+              f = $C("tr");
+              v = $C("th");
+              v.setAttribute("colspan", "2");
+              v.style.cssText = i;
+              var k = $C("span");
+              v.appendChild(k);
+              f.appendChild(v);
+              _.appendChild(f);
+              f = $C("tr");
+              v = $C("th");
+              v.setAttribute("colspan", "2");
+              v.style.cssText = i;
+              var S = $C("span");
+              v.appendChild(S);
+              f.appendChild(v);
+              w.appendChild(f);
+              f = $C("tr");
+              v = $C("th");
+              v.style.cssText = o;
+              g = $C("td");
+              b = $C("span");
+              b.innerHTML = "\u5f00\u76d8";
+              var M = $C("span");
+              g.style.cssText = s;
+              v.appendChild(b);
+              g.appendChild(M);
+              f.appendChild(v);
+              f.appendChild(g);
+              w.appendChild(f);
+              f = $C("tr");
+              v = $C("th");
+              v.style.cssText = o;
+              g = $C("td");
+              b = $C("span");
+              b.innerHTML = "\u6700\u9ad8";
+              var I = $C("span");
+              g.style.cssText = s;
+              v.appendChild(b);
+              g.appendChild(I);
+              f.appendChild(v);
+              f.appendChild(g);
+              w.appendChild(f);
+              f = $C("tr");
+              (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u6700\u4f4e");
+              var A = $C("span");
+              (g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(A),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                (f = $C("tr")),
+                (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u6536\u76d8");
+              var x = $C("span");
+              (g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(x),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                (f = $C("tr")),
+                (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u6da8\u8dcc");
+              var C = $C("span");
+              if (
+                ((g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(C),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                !r)
               ) {
-                o = h[p];
-                o.id.indexOf("blankctn") >= 0
-                  ? ((c = o.offsetHeight), d--, (u += c))
-                  : (u += l);
-              }
-              !isNaN(n) && (r -= n);
-              r / (t - s) > 1 && ((r = u), (i = !0));
-              setting.DIMENSION.setStageW(e);
-              1 == $
-                ? d > 0 &&
-                  (setting.DIMENSION.setStageH(t, d * l + c + s),
-                  (i = !0),
-                  ($ = 0))
-                : setting.DIMENSION.setStageH(t, r + s);
-              return i;
-            },
-            d = function() {
-              s && (s.style.display = setting.custom.show_logo ? "" : "none");
-            },
-            p = function() {
-              F = new util.LoadingSign();
-              F.appendto(C);
-            },
-            m = function() {
-              F.setPosition();
-            },
-            f = function(e, n, a) {
-              var o = h(n, a, 0 / 0);
-              if (e || (n && a)) {
-                if (!I) return;
-                I.onResize(o);
-                B.onResize();
-              }
-              i.style.left = "1px";
-              i.style.top =
-                setting.DIMENSION.h_k + setting.DIMENSION.H_MA4K + "px";
-              d();
-              m();
-              util.stc("k_wh", [
-                setting.DIMENSION.getStageW(),
-                setting.DIMENSION.getStageH()
-              ]);
-            },
-            v = function() {
-              A = $DOM(a.domid) || a.dom;
-              A || ((A = $C("div")), document.body.appendChild(A));
-              x = $C("div");
-              x.style.position = "relative";
-              x.style.outlineStyle = "none";
-              x.style.webkitUserSelect = x.style.userSelect = x.style.MozUserSelect =
-                "none";
-              C = $C("div", "mainarea_" + setting.uid);
-              R = $C("div");
-              C.appendChild(R);
-              H = $C("div");
-              H.style.position = "absolute";
-              H.style.fontSize = H.style.lineHeight =
-                setting.STYLE.FONT_SIZE + "px";
-              H.style.width = "100%";
-              C.appendChild(H);
-              x.appendChild(C);
-              D = $C("div");
-              x.appendChild(D);
-              O = $C("div");
-              x.appendChild(O);
-              e = new xh5_Canvas({
-                width: r,
-                height: setting.DIMENSION.H_TIME_PART
-              });
-              n = e.g;
-              i = e.canvas;
-              i.style.position = "absolute";
-              x.appendChild(i);
-              A.appendChild(x);
-            },
-            initTheme = function(e) {
-              var n = !1;
-              if (e) {
-                E && (n = E.setTheme(e));
-                for (var a in e)
-                  e.hasOwnProperty(a) &&
-                    setting.COLOR.hasOwnProperty(a) &&
-                    setting.COLOR[a] !== e[a] &&
-                    ((setting.COLOR[a] = e[a]), (n = !0));
-                util.stc("k_thm", e);
-              }
-
-              n &&
-                logoM.styleLogo({
-                  logo: s,
-                  color: setting.COLOR.LOGO
-                });
-              return n;
-            },
-            y = function(e) {
-              !setting.custom.mousewheel_zoom ||
-                (document.activeElement !== x &&
-                  document.activeElement.parentNode !== x) ||
-                (I && I.onWheel(e),
-                xh5_EvtUtil.preventDefault(e),
-                xh5_EvtUtil.stopPropagation(e));
-            },
-            k = function(e) {
-              setting.custom.keyboard && I && I.onKb(e);
-            },
-            S = function() {
-              util.xh5_deviceUtil.istd ||
-                (xh5_BrowserUtil.info.name.match(/firefox/i)
-                  ? xh5_EvtUtil.addHandler(x, "DOMMouseScroll", y)
-                  : xh5_EvtUtil.addHandler(x, "mousewheel", y),
-                (x.tabIndex = 0),
-                xh5_EvtUtil.addHandler(x, "keyup", k),
-                xh5_EvtUtil.addHandler(x, "keydown", k));
-            },
-            M = function(e) {
-              s = e;
-              x.appendChild(e);
-            };
-          v();
-          p();
-          initTheme(a.theme);
-          f();
-          S();
-          logoM.getLogo({
-            cb: M,
-            id: setting.PARAM.LOGO_ID,
-            isShare: !1,
-            top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
-            right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
-            LOGO_W: setting.DIMENSION.LOGO_W,
-            LOGO_H: setting.DIMENSION.LOGO_H,
-            color: setting.COLOR.LOGO
-          });
-          xh5_BrowserUtil.noH5 &&
-            (q.showTip({
-              txt: a.nohtml5info || globalCfg.nohtml5info,
-              parent: x
-            }),
-            util.stc("k_nh5"));
-          this.resizeAll = f;
-          this.innerResize = function(e) {
-            I &&
-              (h(0 / 0, 0 / 0, e),
-              I.onResize(),
-              B.onResize(),
-              m(),
-              Y.onInnerResize({
-                height: setting.DIMENSION.h_k
-              }));
-          };
-          this.initTheme = initTheme;
-          this.drawReMark = function(t) {
-            if (t) {
-              if (((i.style.display = ""), o == t)) return;
-              let a = setting.DIMENSION.H_TIME_PART;
-              o = t;
-              e.resize({
-                width: r,
-                height: a,
-                hd: setting.PARAM.getHd()
-              });
-              n.font = "12px " + setting.STYLE.FONT_FAMILY;
-              n.textBaseline = "top";
-              n.fillStyle = setting.COLOR.REMARK_BG;
-              n.fillRect(0, 0, r, a);
-              n.fillStyle = setting.COLOR.REMARK_T;
-              n.fillText(t, 0, 0);
-            } else i.style.display = "none";
-          };
-        })(),
-        B = new (function() {
-          var e,
-            n,
-            iHLineO,
-            o,
-            s = util.market(a.symbol),
-            r = /^forex|^HF/.test(s),
-            d = isNaN(a.nfloat) ? 2 : a.nfloat,
-            u = 150,
-            p = new (function() {
-              var t = function(t) {
-                var n = e.body.style;
-                t && setting.custom.show_floater
-                  ? ((n.backgroundColor = setting.COLOR.F_BG),
-                    (n.color = setting.COLOR.F_T),
-                    (n.border = "1px solid " + setting.COLOR.F_BR),
-                    (n.display = ""))
-                  : (n.display = "none");
-              };
-              (this.pv = function(n) {
-                var a = e.body.style,
-                  i = Math.max(setting.DIMENSION.posX, 55) + 9;
-                (a.left =
-                  (n.x > setting.DIMENSION.getStageW() >> 1
-                    ? i
-                    : setting.DIMENSION.getStageW() - u - 9) + "px"),
-                  (a.top = (n.y || 0) + "px"),
-                  t(!0);
-              }),
-                (this.showFloater = t);
-            })(),
-            f = function() {
-              function a() {
-                var e,
-                  n,
-                  a =
-                    "border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0;border-collapse:collapse;border-spacing:0;text-align:center;",
-                  i =
-                    "font-weight:normal;border:0;height:16px;text-align:center",
-                  o =
-                    "text-align:left;font-weight:normal;border:0;height:16px;padding:0",
-                  s = "text-align:right;border:0;height:16px;padding:0",
-                  h = $C("div"),
-                  p = h.style;
-                (p.position = "absolute"),
-                  (p.zIndex = setting.PARAM.I_Z_INDEX + 2),
-                  (p.padding = "2px"),
-                  (p.width = u + "px"),
-                  (p.lineHeight = "16px"),
-                  (p.display = "none"),
-                  (p.fontSize = "12px");
-                var f,
-                  v,
-                  g,
-                  b,
-                  N = $C("table"),
-                  _ = $C("thead"),
-                  w = $C("tbody");
-                (N.style.cssText = a),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  v.setAttribute("colspan", "2"),
-                  (v.style.cssText = i);
-                var k = $C("span");
-                v.appendChild(k),
-                  f.appendChild(v),
-                  _.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  v.setAttribute("colspan", "2"),
-                  (v.style.cssText = i);
-                var S = $C("span");
-                v.appendChild(S),
-                  f.appendChild(v),
-                  w.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u5f00\u76d8");
-                var M = $C("span");
-                (g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(M),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u6700\u9ad8");
-                var I = $C("span");
-                (g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(I),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u6700\u4f4e");
-                var A = $C("span");
-                (g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(A),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u6536\u76d8");
-                var x = $C("span");
-                (g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(x),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u6da8\u8dcc");
-                var C = $C("span");
-                if (
-                  ((g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(C),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  !r)
-                ) {
-                  (f = $C("tr")),
-                    (v = $C("th")),
-                    (v.style.cssText = o),
-                    (g = $C("td")),
-                    (b = $C("span")),
-                    (b.innerHTML = "\u6210\u4ea4");
-                  var R = $C("span");
-                  (g.style.cssText = s),
-                    v.appendChild(b),
-                    g.appendChild(R),
-                    f.appendChild(v),
-                    f.appendChild(g),
-                    w.appendChild(f),
-                    (f = $C("tr")),
-                    (v = $C("th")),
-                    (v.style.cssText = o),
-                    (g = $C("td")),
-                    (b = $C("span")),
-                    (b.innerHTML = "\u6362\u624b");
-                  var H = $C("span");
-                  (g.style.cssText = s),
-                    v.appendChild(b),
-                    g.appendChild(H),
-                    f.appendChild(v),
-                    f.appendChild(g),
-                    w.appendChild(f),
-                    (H.innerHTML = "--");
-                }
                 (f = $C("tr")),
                   (v = $C("th")),
                   (v.style.cssText = o),
                   (g = $C("td")),
                   (b = $C("span")),
-                  (b.innerHTML = "\u632f\u5e45");
-                var D = $C("span");
+                  (b.innerHTML = "\u6210\u4ea4");
+                var R = $C("span");
                 (g.style.cssText = s),
                   v.appendChild(b),
-                  g.appendChild(D),
+                  g.appendChild(R),
                   f.appendChild(v),
                   f.appendChild(g),
                   w.appendChild(f),
@@ -2610,519 +2582,534 @@ xh5_define(
                   (v.style.cssText = o),
                   (g = $C("td")),
                   (b = $C("span")),
-                  (b.innerHTML = "\u76d8\u540e\u91cf");
-                var O = $C("span");
+                  (b.innerHTML = "\u6362\u624b");
+                var H = $C("span");
                 (g.style.cssText = s),
                   v.appendChild(b),
-                  g.appendChild(O),
+                  g.appendChild(H),
                   f.appendChild(v),
                   f.appendChild(g),
                   w.appendChild(f),
-                  (f.id = "__floatingPostVolume"),
-                  (f.style.display = "none"),
-                  (f = $C("tr")),
-                  (v = $C("th")),
-                  (v.style.cssText = o),
-                  (g = $C("td")),
-                  (b = $C("span")),
-                  (b.innerHTML = "\u76d8\u540e\u989d");
-                var K = $C("span");
-                (g.style.cssText = s),
-                  v.appendChild(b),
-                  g.appendChild(K),
-                  f.appendChild(v),
-                  f.appendChild(g),
-                  w.appendChild(f),
-                  (f.id = "__floatingPostAmount"),
-                  (f.style.display = "none"),
-                  (O.innerHTML = K.innerHTML = "--"),
-                  N.appendChild(_),
-                  N.appendChild(w),
-                  (N.style.width = "100%"),
-                  h.appendChild(N);
-                var T,
-                  U,
-                  E = function(e, t) {
-                    var n = setting.COLOR.F_N;
-                    return (
-                      e > t
-                        ? (n = setting.COLOR.F_RISE)
-                        : t > e && (n = setting.COLOR.F_FALL),
-                      n
-                    );
-                  },
-                  F = function(e, t) {
-                    return t
-                      ? "(" + (((e - t) / t) * 100).toFixed(2) + "%)"
-                      : "(--%)";
-                  };
-                (this.setFloaterData = function(a) {
-                  if (
-                    ((e = a.name || a.symbol || e || ""),
-                    (k.innerHTML = e),
-                    (T = a.data || n))
-                  ) {
-                    (n = T), (U = a.stock || U);
-                    var i = U.market,
-                      o = "";
-                    switch (i) {
-                      case "CN":
-                      case "OTC":
-                      case "REPO":
-                        o = util.isCNK(U.symbol) ? "\u80a1" : "\u624b";
-                        break;
-                      case "US":
-                      case "HK":
-                        o = "\u80a1";
-                        break;
-                      default:
-                        o = "";
-                    }
-                    var s = T.percent,
-                      c = T.open,
-                      h = T.close,
-                      u = T.high,
-                      p = T.low,
-                      f = h / (1 + s) || T.prevclose;
-                    S.innerHTML =
-                      dateUtil.ds(T.date, "/") +
-                      "/" +
-                      dateUtil.nw(T.date.getDay()) +
-                      (T.time || "");
-                    var v = 1 > f || 1 > u || 1 > p ? 4 : d;
-                    (M.innerHTML = c.toFixed(v) + F(c, f, v)),
-                      (I.innerHTML = u.toFixed(v) + F(u, f, v)),
-                      (A.innerHTML = p.toFixed(v) + F(p, f, v)),
-                      (x.innerHTML = h.toFixed(v) + F(h, f, v)),
-                      (s =
-                        isNaN(s) || !isFinite(s) ? "--" : (100 * s).toFixed(2)),
-                      (C.innerHTML = T.change.toFixed(v) + "(" + s + "%)");
-                    var g = isNaN(T.ampP) ? "--" : (100 * T.ampP).toFixed(2);
-                    if (
-                      (T.ampP === 1 / 0 && (g = "--"),
-                      (D.innerHTML = T.amplitude.toFixed(v) + "(" + g + "%)"),
-                      (C.style.color = E(s, 0)),
-                      (M.style.color = E(c, f)),
-                      (I.style.color = E(u, f)),
-                      (A.style.color = E(p, f)),
-                      (x.style.color = E(h, f)),
-                      r || (R.innerHTML = ps(T.volume, 2) + o),
-                      H && U)
-                    ) {
-                      var b = U.extraDataObj.rsAmount;
-                      if (b) {
-                        for (var N, _ = 0, w = b.length; w > _; _++)
-                          if (T.date >= b[_].date) {
-                            N = b[_].amount;
-                            break;
-                          }
-                        U.hq && U.hq.isKCB && N && (N *= 100),
-                          N && (H.innerHTML = (T.volume / N).toFixed(2) + "%");
-                      } else H.innerHTML = "--";
-                    }
-                    24 === viewState.viewId ||
-                    23 === viewState.viewId ||
-                    25 === viewState.viewId
-                      ? U.hq &&
-                        U.hq.isKCB &&
-                        (($DOM("__floatingPostVolume").style.display =
-                          "table-row"),
-                        ($DOM("__floatingPostAmount").style.display =
-                          "table-row"),
-                        T.postVol
-                          ? ((O.innerHTML = ps(T.postVol, 0) + o),
-                            (K.innerHTML = ps(T.postAmt, 2)))
-                          : ((K.innerHTML = "--"), (O.innerHTML = "--")))
-                      : (($DOM("__floatingPostVolume").style.display = "none"),
-                        ($DOM("__floatingPostAmount").style.display = "none"));
-                  }
-                }),
-                  (this.body = h),
-                  (this.reset = function() {
-                    (e = null), (n = null);
-                  });
+                  (H.innerHTML = "--");
               }
-              (n = new a()), (e = n);
-            },
-            v = function() {
-              function e(e) {
-                var t = $C("div"),
-                  n = $C("div"),
-                  a = $C("span"),
-                  i = 12,
-                  o = e.isH,
-                  s = function() {
-                    if (
-                      ((n.style.borderStyle = "dashed"),
-                      (n.style.borderColor = setting.COLOR.IVH_LINE),
-                      (a.style.backgroundColor = setting.COLOR[e.txtBgCN]),
-                      (a.style.color = setting.COLOR[e.txtCN]),
-                      o)
-                    )
-                      (n.style.borderWidth = "1px 0 0 0"),
-                        (t.style.width = n.style.width =
-                          setting.DIMENSION.getStageW() + "px"),
-                        (a.style.top = -(0.6 * setting.STYLE.FONT_SIZE) + "px"),
-                        (a.style.width = setting.DIMENSION.extend_draw
-                          ? ""
-                          : setting.DIMENSION.posX + "px"),
-                        (a.style.left = 0),
-                        (a.style.padding = "1px 0");
-                    else {
-                      n.style.borderWidth = "0 1px 0 0";
-                      var i,
-                        s,
-                        r = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
-                      setting.DIMENSION.getStageH() < 0
-                        ? ((i = D.clientHeight), (s = i - r))
-                        : ((i =
-                            setting.DIMENSION.getStageH() - O.clientHeight ||
-                            0),
-                          (s = setting.DIMENSION.h_k)),
-                        (i -= r),
-                        (i += setting.DIMENSION.I_V_O),
-                        (t.style.height = n.style.height = i + "px"),
-                        (a.style.top = s + "px"),
-                        (a.style.padding = "2px 2px 1px");
-                    }
-                  };
-
-                (t.style.position = "absolute"),
-                  (t.style.zIndex = setting.PARAM.I_Z_INDEX - 2),
-                  (a.style.position = n.style.position = "absolute"),
-                  (n.style.zIndex = 0),
-                  (a.style.zIndex = 1),
-                  (a.style.font =
-                    setting.STYLE.FONT_SIZE +
-                    "px " +
-                    setting.STYLE.FONT_FAMILY),
-                  (a.style.whiteSpace = "nowrap"),
-                  (a.style.lineHeight = i + "px"),
-                  e.txtA && (a.style.textAlign = e.txtA),
-                  s(),
-                  t.appendChild(a),
-                  t.appendChild(n);
-                var r = function(e) {
-                  e
-                    ? "" != t.style.display && (t.style.display = "")
-                    : "none" != t.style.display && (t.style.display = "none");
+              (f = $C("tr")),
+                (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u632f\u5e45");
+              var D = $C("span");
+              (g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(D),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                (f = $C("tr")),
+                (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u76d8\u540e\u91cf");
+              var O = $C("span");
+              (g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(O),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                (f.id = "__floatingPostVolume"),
+                (f.style.display = "none"),
+                (f = $C("tr")),
+                (v = $C("th")),
+                (v.style.cssText = o),
+                (g = $C("td")),
+                (b = $C("span")),
+                (b.innerHTML = "\u76d8\u540e\u989d");
+              var K = $C("span");
+              (g.style.cssText = s),
+                v.appendChild(b),
+                g.appendChild(K),
+                f.appendChild(v),
+                f.appendChild(g),
+                w.appendChild(f),
+                (f.id = "__floatingPostAmount"),
+                (f.style.display = "none"),
+                (O.innerHTML = K.innerHTML = "--"),
+                N.appendChild(_),
+                N.appendChild(w),
+                (N.style.width = "100%"),
+                h.appendChild(N);
+              var T,
+                U,
+                E = function(e, t) {
+                  var n = setting.COLOR.F_N;
+                  return (
+                    e > t
+                      ? (n = setting.COLOR.F_RISE)
+                      : t > e && (n = setting.COLOR.F_FALL),
+                    n
+                  );
+                },
+                F = function(e, t) {
+                  return t
+                    ? "(" + (((e - t) / t) * 100).toFixed(2) + "%)"
+                    : "(--%)";
                 };
-                (this.pv = function(e) {
-                  if (
-                    (!isNaN(e.y) && (t.style.top = e.y + (e.oy || 0) + "px"),
-                    (a.innerHTML = e.v || ""),
-                    !isNaN(e.x))
-                  ) {
-                    e.x < 0 && (e.x = 0);
-                    var n = e.x + (e.ox || 0),
-                      i = setting.DIMENSION.getStageW();
-                    (n = ~~(n + 0.5)), (n -= 1), (t.style.left = n + "px");
-                    var o = a.offsetWidth || 66,
-                      s = o >> 1;
-                    e.x < s ? (s = e.x) : n + s > i && (s = n + o - i),
-                      (a.style.left = -s + "px");
-                  }
-                  r(!0);
-                }),
-                  (this.display = r),
-                  (this.body = t),
-                  (this.resize = s),
-                  r(!1);
-              }
-              (iHLineO = new e({
-                isH: !0,
-                txtCN: "P_TC",
-                txtBgCN: "P_BG",
-                txtA: "right"
-              })),
-                (o = new e({
-                  isH: !1,
-                  txtCN: "T_TC",
-                  txtBgCN: "T_BG",
-                  txtA: "center"
-                })),
-                x.appendChild(o.body);
-            },
-            hideIUis = function() {
-              iHLineO.display(!1), o.display(!1), p.showFloater(!1);
-            },
-            b = function(e) {
-              T && T.indirectI(e), U && U.indirectI(e);
-            },
-            N = !1,
-            w = !1,
-            k = 0 / 0,
-            S = !1;
-          this.getInteractiveIdx = function() {
-            return k;
-          };
-          this.isIng = function() {
-            return N;
-          };
-          this.isMoving = function() {
-            return S;
-          };
-          var A = 0 / 0,
-            R = 0 / 0,
-            H = [];
-          this.iToD = function(t, n, a) {
-            if (!t.e || !w) {
-              var ix = t.x,
-                r = t.ox || 0,
-                l = t.y,
-                c = t.oy || 0,
-                h = t.e ? t.e.target : null;
-              if (!a) {
-                if (A == ix && R == l) return;
-                A = ix;
-                R = l;
-              }
-              if (h) {
-                var u = h.style.height.split("px")[0];
-                (0 > l || l > u) && ((ix = 0 / 0), (l = 0 / 0));
-              }
-              let curLen = viewState.currentLength,
-                f = Math.max(curLen, setting.PARAM.minCandleNum);
-              ix += setting.DIMENSION.w_k / f - z.x;
-              var v = Math.floor((ix * f) / setting.DIMENSION.w_k);
-              if (
-                (0 > v ? (v = 0) : v >= curLen && (v = curLen - 1),
-                !isNaN(v) && (k = v),
-                isNaN(ix) && isNaN(l))
-              ) {
-                N = !1;
-                hideIUis();
-                b(Number.MAX_VALUE);
-                return void Y.onViewPrice();
-              }
-              N = viewState.end != viewState.dataLength ? !0 : curLen - 1 > v;
-              for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
-                H.length--;
-              if (n) {
-                let allStock = I.getAllStock(),
-                  len = allStock.length,
-                  F = len > 1 || "percent" == setting.datas.scaleType;
-                setting.custom.k_overlay && (F = !1);
-                for (
-                  var P, $, q, j, B = Number.MAX_VALUE, W = 0;
-                  len > W;
-                  W++
-                ) {
-                  q = allStock[W];
-                  D = q.datas;
-                  !D ||
-                    D.length <= v ||
-                    ((P = q.getName()),
-                    ($ = D[v]),
-                    H.push({
-                      name: P,
-                      data: $,
-                      rangedata: D,
-                      symbol: q.symbol,
-                      color: q.getLineStyle().linecolor
-                    }),
-                    $.isFake ||
-                      ((j = Math.abs($.cy - l)),
-                      B > j &&
-                        ((B = j),
-                        (C = q),
-                        (x = $),
-                        (K = D),
-                        (S = P),
-                        (y = C.symbol))));
-                }
-                if (F) {
-                  O = 100 * T;
-                  O = Math.abs(O) > 999 ? Math.floor(O) : O.toFixed(2);
-                  O += "%";
-                } else if (
-                  ((O =
-                    T > 99999 ? Math.floor(T) : T.toFixed(T > 9999 ? 1 : d)),
-                  setting.custom.show_k_rangepercent && C)
-                ) {
-                  var G = ((T - C.prevclose) / C.prevclose) * 100;
-                  G = isNaN(G) || !isFinite(G) ? "--" : G.toFixed(d);
-                  O += "<br/>" + G + "%";
-                }
-              } else {
+              (this.setFloaterData = function(a) {
                 if (
-                  ((C = I.getMainStock()), (D = C.datas), !D || D.length <= v)
-                )
-                  return;
-                x = D[v];
-                K = D;
-                S = C.getName();
-                y = C.symbol;
-                var X = Math.abs(T);
-                O = X > 99999 ? Math.floor(T) : T.toFixed(X > 9999 ? 1 : d);
-                H.push({
-                  name: S,
-                  data: x,
-                  rangedata: K,
-                  symbol: y,
-                  color: C.getLineStyle().linecolor
+                  ((e = a.name || a.symbol || e || ""),
+                  (k.innerHTML = e),
+                  (T = a.data || n))
+                ) {
+                  (n = T), (U = a.stock || U);
+                  var i = U.market,
+                    o = "";
+                  switch (i) {
+                    case "CN":
+                    case "OTC":
+                    case "REPO":
+                      o = util.isCNK(U.symbol) ? "\u80a1" : "\u624b";
+                      break;
+                    case "US":
+                    case "HK":
+                      o = "\u80a1";
+                      break;
+                    default:
+                      o = "";
+                  }
+                  var s = T.percent,
+                    c = T.open,
+                    h = T.close,
+                    u = T.high,
+                    p = T.low,
+                    f = h / (1 + s) || T.prevclose;
+                  S.innerHTML =
+                    dateUtil.ds(T.date, "/") +
+                    "/" +
+                    dateUtil.nw(T.date.getDay()) +
+                    (T.time || "");
+                  var v = 1 > f || 1 > u || 1 > p ? 4 : d;
+                  (M.innerHTML = c.toFixed(v) + F(c, f, v)),
+                    (I.innerHTML = u.toFixed(v) + F(u, f, v)),
+                    (A.innerHTML = p.toFixed(v) + F(p, f, v)),
+                    (x.innerHTML = h.toFixed(v) + F(h, f, v)),
+                    (s =
+                      isNaN(s) || !isFinite(s) ? "--" : (100 * s).toFixed(2)),
+                    (C.innerHTML = T.change.toFixed(v) + "(" + s + "%)");
+                  var g = isNaN(T.ampP) ? "--" : (100 * T.ampP).toFixed(2);
+                  if (
+                    (T.ampP === 1 / 0 && (g = "--"),
+                    (D.innerHTML = T.amplitude.toFixed(v) + "(" + g + "%)"),
+                    (C.style.color = E(s, 0)),
+                    (M.style.color = E(c, f)),
+                    (I.style.color = E(u, f)),
+                    (A.style.color = E(p, f)),
+                    (x.style.color = E(h, f)),
+                    r || (R.innerHTML = ps(T.volume, 2) + o),
+                    H && U)
+                  ) {
+                    var b = U.extraDataObj.rsAmount;
+                    if (b) {
+                      for (var N, _ = 0, w = b.length; w > _; _++)
+                        if (T.date >= b[_].date) {
+                          N = b[_].amount;
+                          break;
+                        }
+                      U.hq && U.hq.isKCB && N && (N *= 100),
+                        N && (H.innerHTML = (T.volume / N).toFixed(2) + "%");
+                    } else H.innerHTML = "--";
+                  }
+                  24 === viewState.viewId ||
+                  23 === viewState.viewId ||
+                  25 === viewState.viewId
+                    ? U.hq &&
+                      U.hq.isKCB &&
+                      (($DOM("__floatingPostVolume").style.display =
+                        "table-row"),
+                      ($DOM("__floatingPostAmount").style.display =
+                        "table-row"),
+                      T.postVol
+                        ? ((O.innerHTML = ps(T.postVol, 0) + o),
+                          (K.innerHTML = ps(T.postAmt, 2)))
+                        : ((K.innerHTML = "--"), (O.innerHTML = "--")))
+                    : (($DOM("__floatingPostVolume").style.display = "none"),
+                      ($DOM("__floatingPostAmount").style.display = "none"));
+                }
+              }),
+                (this.body = h),
+                (this.reset = function() {
+                  (e = null), (n = null);
                 });
-              }
-              if (x) {
-                var Z = ix;
-                setting.custom.stick && (ix = x.ix || ix);
-                e &&
-                  (e.setFloaterData({
-                    symbol: y,
-                    name: S,
-                    data: x,
-                    stock: C,
-                    arr: H
-                  }),
-                  p.pv({
-                    x: Z,
-                    y: setting.DIMENSION.K_F_T
-                  }));
-                iHLineO.pv({
-                  y: l,
-                  v: O,
-                  oy: c
-                });
-                o.pv({
-                  x: ix,
-                  ox: r,
-                  y: setting.DIMENSION.H_MA4K,
-                  v: x.day + " " + (x.time || "")
-                });
-                b(v);
-                !S && (S = y || "--");
-                Y.onViewPrice(x, v, H, K, S, !0);
-                me.re(globalCfg.e.I_EVT, t.e);
-              }
             }
-          };
-          let mainStock, datas, name;
-          this.iToKb = function(e, t) {
-            if (t) return void (w = !1);
+            (n = new a()), (e = n);
+          },
+          v = function() {
+            function e(e) {
+              var t = $C("div"),
+                n = $C("div"),
+                a = $C("span"),
+                i = 12,
+                o = e.isH,
+                s = function() {
+                  if (
+                    ((n.style.borderStyle = "dashed"),
+                    (n.style.borderColor = setting.COLOR.IVH_LINE),
+                    (a.style.backgroundColor = setting.COLOR[e.txtBgCN]),
+                    (a.style.color = setting.COLOR[e.txtCN]),
+                    o)
+                  )
+                    (n.style.borderWidth = "1px 0 0 0"),
+                      (t.style.width = n.style.width =
+                        setting.DIMENSION.getStageW() + "px"),
+                      (a.style.top = -(0.6 * setting.STYLE.FONT_SIZE) + "px"),
+                      (a.style.width = setting.DIMENSION.extend_draw
+                        ? ""
+                        : setting.DIMENSION.posX + "px"),
+                      (a.style.left = 0),
+                      (a.style.padding = "1px 0");
+                  else {
+                    n.style.borderWidth = "0 1px 0 0";
+                    var i,
+                      s,
+                      r = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
+                    setting.DIMENSION.getStageH() < 0
+                      ? ((i = D.clientHeight), (s = i - r))
+                      : ((i =
+                          setting.DIMENSION.getStageH() - O.clientHeight || 0),
+                        (s = setting.DIMENSION.h_k)),
+                      (i -= r),
+                      (i += setting.DIMENSION.I_V_O),
+                      (t.style.height = n.style.height = i + "px"),
+                      (a.style.top = s + "px"),
+                      (a.style.padding = "2px 2px 1px");
+                  }
+                };
+
+              (t.style.position = "absolute"),
+                (t.style.zIndex = setting.PARAM.I_Z_INDEX - 2),
+                (a.style.position = n.style.position = "absolute"),
+                (n.style.zIndex = 0),
+                (a.style.zIndex = 1),
+                (a.style.font =
+                  setting.STYLE.FONT_SIZE + "px " + setting.STYLE.FONT_FAMILY),
+                (a.style.whiteSpace = "nowrap"),
+                (a.style.lineHeight = i + "px"),
+                e.txtA && (a.style.textAlign = e.txtA),
+                s(),
+                t.appendChild(a),
+                t.appendChild(n);
+              var r = function(e) {
+                e
+                  ? "" != t.style.display && (t.style.display = "")
+                  : "none" != t.style.display && (t.style.display = "none");
+              };
+              (this.pv = function(e) {
+                if (
+                  (!isNaN(e.y) && (t.style.top = e.y + (e.oy || 0) + "px"),
+                  (a.innerHTML = e.v || ""),
+                  !isNaN(e.x))
+                ) {
+                  e.x < 0 && (e.x = 0);
+                  var n = e.x + (e.ox || 0),
+                    i = setting.DIMENSION.getStageW();
+                  (n = ~~(n + 0.5)), (n -= 1), (t.style.left = n + "px");
+                  var o = a.offsetWidth || 66,
+                    s = o >> 1;
+                  e.x < s ? (s = e.x) : n + s > i && (s = n + o - i),
+                    (a.style.left = -s + "px");
+                }
+                r(!0);
+              }),
+                (this.display = r),
+                (this.body = t),
+                (this.resize = s),
+                r(!1);
+            }
+            (iHLineO = new e({
+              isH: !0,
+              txtCN: "P_TC",
+              txtBgCN: "P_BG",
+              txtA: "right"
+            })),
+              (o = new e({
+                isH: !1,
+                txtCN: "T_TC",
+                txtBgCN: "T_BG",
+                txtA: "center"
+              })),
+              x.appendChild(o.body);
+          },
+          hideIUis = function() {
+            iHLineO.display(!1), o.display(!1), p.showFloater(!1);
+          },
+          b = function(e) {
+            T && T.indirectI(e), U && U.indirectI(e);
+          },
+          N = !1,
+          w = !1,
+          k = 0 / 0,
+          S = !1;
+        this.getInteractiveIdx = function() {
+          return k;
+        };
+        this.isIng = function() {
+          return N;
+        };
+        this.isMoving = function() {
+          return S;
+        };
+        var A = 0 / 0,
+          R = 0 / 0,
+          H = [];
+        this.iToD = function(t, n, a) {
+          if (!t.e || !w) {
+            var ix = t.x,
+              r = t.ox || 0,
+              l = t.y,
+              c = t.oy || 0,
+              h = t.e ? t.e.target : null;
+            if (!a) {
+              if (A == ix && R == l) return;
+              A = ix;
+              R = l;
+            }
+            if (h) {
+              var u = h.style.height.split("px")[0];
+              (0 > l || l > u) && ((ix = 0 / 0), (l = 0 / 0));
+            }
+            let curLen = viewState.currentLength,
+              f = Math.max(curLen, setting.PARAM.minCandleNum);
+            ix += setting.DIMENSION.w_k / f - z.x;
+            var v = Math.floor((ix * f) / setting.DIMENSION.w_k);
             if (
-              ((w = !0),
-              (k += e),
-              !$CONTAINS(C, B.iHLineO.body) && C.appendChild(B.iHLineO.body),
-              (mainStock = I.getMainStock()),
-              (name = mainStock.getName()),
-              (datas = mainStock.datas),
-              !datas)
-            )
-              return void 0;
-            if (0 > k) return (k = 0), -1;
-            if (k >= datas.length) return (k = datas.length - 1), 1;
-            var n = datas[k];
-            if (!n) return void 0;
-            var a = {
-              mark:
-                mainStock.labelMaxP -
-                (n.cy / setting.DIMENSION.h_k) *
-                  (mainStock.labelMaxP - mainStock.labelMinP),
-              x: n.ix,
-              y: n.cy,
-              oy: setting.DIMENSION.H_MA4K,
-              ox: setting.DIMENSION.posX
-            };
-            return void this.iToD(a, !0, !0);
-          };
-          var P;
-          this.globalDragHandler = function(e, t, n, a, i) {
-            if (isNaN(e) && isNaN(t))
-              return (P = 0 / 0), (S = !1), void me.re(globalCfg.e.I_EVT, i);
-            hideIUis();
-            let start = viewState.start,
-              end = viewState.end,
-              r = end - start;
-            isNaN(P) && (P = e);
-            let l = t - P,
-              len = viewState.dataLength,
-              h = setting.DIMENSION.w_k / r;
-            if (Math.abs(l) < h) {
-              if (setting.custom.smooth && h > 4) {
-                if (end >= len && 0 > l) return;
-                if (1 > start && l > 0) return;
-                z.x = l;
-                I.callSdDraw();
+              (0 > v ? (v = 0) : v >= curLen && (v = curLen - 1),
+              !isNaN(v) && (k = v),
+              isNaN(ix) && isNaN(l))
+            ) {
+              N = !1;
+              hideIUis();
+              b(Number.MAX_VALUE);
+              return void Y.onViewPrice();
+            }
+            N = viewState.end != viewState.dataLength ? !0 : curLen - 1 > v;
+            for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
+              H.length--;
+            if (n) {
+              let allStock = I.getAllStock(),
+                len = allStock.length,
+                F = len > 1 || "percent" == setting.datas.scaleType;
+              setting.custom.k_overlay && (F = !1);
+              for (var P, $, q, j, B = Number.MAX_VALUE, W = 0; len > W; W++) {
+                q = allStock[W];
+                D = q.datas;
+                !D ||
+                  D.length <= v ||
+                  ((P = q.getName()),
+                  ($ = D[v]),
+                  H.push({
+                    name: P,
+                    data: $,
+                    rangedata: D,
+                    symbol: q.symbol,
+                    color: q.getLineStyle().linecolor
+                  }),
+                  $.isFake ||
+                    ((j = Math.abs($.cy - l)),
+                    B > j &&
+                      ((B = j),
+                      (C = q),
+                      (x = $),
+                      (K = D),
+                      (S = P),
+                      (y = C.symbol))));
+              }
+              if (F) {
+                O = 100 * T;
+                O = Math.abs(O) > 999 ? Math.floor(O) : O.toFixed(2);
+                O += "%";
+              } else if (
+                ((O = T > 99999 ? Math.floor(T) : T.toFixed(T > 9999 ? 1 : d)),
+                setting.custom.show_k_rangepercent && C)
+              ) {
+                var G = ((T - C.prevclose) / C.prevclose) * 100;
+                G = isNaN(G) || !isFinite(G) ? "--" : G.toFixed(d);
+                O += "<br/>" + G + "%";
               }
             } else {
-              P = t;
-              var d = Math.round((l * r) / setting.DIMENSION.w_k);
-              start -= d;
-              end -= d;
-              end >= len && ((end = len), (start = end - r));
-              0 > start && ((start = 0), (end = r));
-              (viewState.start != start || viewState.end != end) &&
-                (z.resetX(0),
-                (viewState.movY = a - n),
-                I.moving(start, end, !0),
-                (S = !0));
+              if (((C = I.getMainStock()), (D = C.datas), !D || D.length <= v))
+                return;
+              x = D[v];
+              K = D;
+              S = C.getName();
+              y = C.symbol;
+              var X = Math.abs(T);
+              O = X > 99999 ? Math.floor(T) : T.toFixed(X > 9999 ? 1 : d);
+              H.push({
+                name: S,
+                data: x,
+                rangedata: K,
+                symbol: y,
+                color: C.getLineStyle().linecolor
+              });
             }
+            if (x) {
+              var Z = ix;
+              setting.custom.stick && (ix = x.ix || ix);
+              e &&
+                (e.setFloaterData({
+                  symbol: y,
+                  name: S,
+                  data: x,
+                  stock: C,
+                  arr: H
+                }),
+                p.pv({
+                  x: Z,
+                  y: setting.DIMENSION.K_F_T
+                }));
+              iHLineO.pv({
+                y: l,
+                v: O,
+                oy: c
+              });
+              o.pv({
+                x: ix,
+                ox: r,
+                y: setting.DIMENSION.H_MA4K,
+                v: x.day + " " + (x.time || "")
+              });
+              b(v);
+              !S && (S = y || "--");
+              Y.onViewPrice(x, v, H, K, S, !0);
+              me.re(globalCfg.e.I_EVT, t.e);
+            }
+          }
+        };
+        let mainStock, datas, name;
+        this.iToKb = function(e, t) {
+          if (t) return void (w = !1);
+          if (
+            ((w = !0),
+            (k += e),
+            !$CONTAINS(C, B.iHLineO.body) && C.appendChild(B.iHLineO.body),
+            (mainStock = I.getMainStock()),
+            (name = mainStock.getName()),
+            (datas = mainStock.datas),
+            !datas)
+          )
+            return void 0;
+          if (0 > k) return (k = 0), -1;
+          if (k >= datas.length) return (k = datas.length - 1), 1;
+          var n = datas[k];
+          if (!n) return void 0;
+          var a = {
+            mark:
+              mainStock.labelMaxP -
+              (n.cy / setting.DIMENSION.h_k) *
+                (mainStock.labelMaxP - mainStock.labelMinP),
+            x: n.ix,
+            y: n.cy,
+            oy: setting.DIMENSION.H_MA4K,
+            ox: setting.DIMENSION.posX
           };
-          this.shortClickHandler = function() {
-            Y.shortClickHandler();
-          };
-          this.zoomView = function(e, t) {
-            var n = -Number(e);
-            0 == n && (n = 1);
-            var start = viewState.start,
-              end = viewState.end,
-              o = n * Math.ceil((end - start) / setting.PARAM.zoomUnit);
-            if (
-              (Math.abs(o) > setting.PARAM.zoomLimit &&
-                (o = n * setting.PARAM.zoomLimit),
-              setting.custom.centerZoom)
-            ) {
-              var s = Math.min.apply(Math, t),
-                r = s / setting.DIMENSION.w_k,
-                l = Math.max.apply(Math, t),
-                c = l / setting.DIMENSION.w_k;
-              r < setting.PARAM.zoomArea
-                ? (end = Math.min(end - o * Math.abs(o), viewState.dataLength))
-                : c > 1 - setting.PARAM.zoomArea
-                ? (start = Math.max(start + o * Math.abs(o), 0))
-                : ((start = Math.max(start + o * Math.abs(o), 0)),
-                  (end = Math.min(
-                    end - o * Math.abs(o),
-                    viewState.dataLength
-                  )));
-            } else start = Math.max(start + o * Math.abs(o), 0);
-            I.moving(start, end);
-          };
-          f();
-          v();
-          this.onResize = function() {
-            iHLineO.resize(), o.resize();
-          };
-          this.iHLineO = iHLineO;
-          this.hideIUis = hideIUis;
-          this.update = function() {
-            N || (b(Number.MAX_VALUE), e && e.setFloaterData({}));
-          };
-          this.iReset = function() {
-            e.reset && e.reset();
-          };
-          this.patcher = new (function() {
-            var a,
-              i = {},
-              switchFloater = function() {
-                if (a) {
-                  e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                  var t = "vid_" + viewState.viewId;
-                  if (a[t]) {
-                    var o;
-                    (o = i[t] ? i[t] : (i[t] = new a[t]())), (e = o);
-                  } else e = n;
+          return void this.iToD(a, !0, !0);
+        };
+        var P;
+        this.globalDragHandler = function(e, t, n, a, i) {
+          if (isNaN(e) && isNaN(t))
+            return (P = 0 / 0), (S = !1), void me.re(globalCfg.e.I_EVT, i);
+          hideIUis();
+          let start = viewState.start,
+            end = viewState.end,
+            r = end - start;
+          isNaN(P) && (P = e);
+          let l = t - P,
+            len = viewState.dataLength,
+            h = setting.DIMENSION.w_k / r;
+          if (Math.abs(l) < h) {
+            if (setting.custom.smooth && h > 4) {
+              if (end >= len && 0 > l) return;
+              if (1 > start && l > 0) return;
+              z.x = l;
+              I.callSdDraw();
+            }
+          } else {
+            P = t;
+            var d = Math.round((l * r) / setting.DIMENSION.w_k);
+            start -= d;
+            end -= d;
+            end >= len && ((end = len), (start = end - r));
+            0 > start && ((start = 0), (end = r));
+            (viewState.start != start || viewState.end != end) &&
+              (z.resetX(0),
+              (viewState.movY = a - n),
+              I.moving(start, end, !0),
+              (S = !0));
+          }
+        };
+        this.shortClickHandler = function() {
+          Y.shortClickHandler();
+        };
+        this.zoomView = function(e, t) {
+          var n = -Number(e);
+          0 == n && (n = 1);
+          var start = viewState.start,
+            end = viewState.end,
+            o = n * Math.ceil((end - start) / setting.PARAM.zoomUnit);
+          if (
+            (Math.abs(o) > setting.PARAM.zoomLimit &&
+              (o = n * setting.PARAM.zoomLimit),
+            setting.custom.centerZoom)
+          ) {
+            var s = Math.min.apply(Math, t),
+              r = s / setting.DIMENSION.w_k,
+              l = Math.max.apply(Math, t),
+              c = l / setting.DIMENSION.w_k;
+            r < setting.PARAM.zoomArea
+              ? (end = Math.min(end - o * Math.abs(o), viewState.dataLength))
+              : c > 1 - setting.PARAM.zoomArea
+              ? (start = Math.max(start + o * Math.abs(o), 0))
+              : ((start = Math.max(start + o * Math.abs(o), 0)),
+                (end = Math.min(end - o * Math.abs(o), viewState.dataLength)));
+          } else start = Math.max(start + o * Math.abs(o), 0);
+          I.moving(start, end);
+        };
+        f();
+        v();
+        this.onResize = function() {
+          iHLineO.resize(), o.resize();
+        };
+        this.iHLineO = iHLineO;
+        this.hideIUis = hideIUis;
+        this.update = function() {
+          N || (b(Number.MAX_VALUE), e && e.setFloaterData({}));
+        };
+        this.iReset = function() {
+          e.reset && e.reset();
+        };
+        this.patcher = new (function() {
+          var a,
+            i = {},
+            switchFloater = function() {
+              if (a) {
+                e.body.parentNode && e.body.parentNode.removeChild(e.body);
+                var t = "vid_" + viewState.viewId;
+                if (a[t]) {
+                  var o;
+                  (o = i[t] ? i[t] : (i[t] = new a[t]())), (e = o);
                 } else e = n;
-                !$CONTAINS(x, e.body) && x.appendChild(e.body);
-              };
-            this.customFloater = function(e) {
-              a = e;
-              switchFloater();
-              util.stc("k_fl", e);
+              } else e = n;
+              !$CONTAINS(x, e.body) && x.appendChild(e.body);
             };
-            this.switchFloater = switchFloater;
-          })();
+          this.customFloater = function(e) {
+            a = e;
+            switchFloater();
+            util.stc("k_fl", e);
+          };
+          this.switchFloater = switchFloater;
         })();
+      })();
       I = new S();
       var W = new (function() {
         var e = this;

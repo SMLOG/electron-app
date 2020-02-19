@@ -818,16 +818,21 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
             date.getDate()
           ].join("_");
           let h = "_" + o.kSb.replace(/\W/g, "") + ymdStr;
+          let url = o.kUrl
+            .replace("$symbol", o.kSb)
+            .replace("$rn", ymdStr)
+            .replace("$cb", "var%20" + h + "=");
+
+          console.log(url);
+
           loadScript(
-            o.kUrl
-              .replace("$symbol", o.kSb)
-              .replace("$rn", ymdStr)
-              .replace("$cb", "var%20" + h + "="),
+            url,
             function() {
               var t;
               if (o.isCompressData) {
                 var r = o.kSb.replace(".", "$");
-                (t = window["KLC_KL_" + r]), (t = s(t));
+                t = window["KLC_KL_" + r];
+                t = s(t);
               } else {
                 t = window[h];
                 var l = n.dataformatter || o.dayDataHandler || b;

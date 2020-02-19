@@ -380,7 +380,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function BIAS(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 6,
         color: "#FD9C35",
@@ -399,15 +399,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "bias3",
         idct: "BIAS3"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "BIAS"),
-      "k" != a.type && (this.sname = "T_" + this.name),
-      (this.vaObj = {
-        min: 0 / 0,
-        max: 0 / 0,
-        glv: 0
-      });
+    ];
+    techchart.call(this, i, a);
+    this.name = "BIAS";
+    "k" != a.type && (this.sname = "T_" + this.name);
+    this.vaObj = {
+      min: 0 / 0,
+      max: 0 / 0,
+      glv: 0
+    };
     var s = bt.calcMA,
       e = bt.getArr,
       h = bt.operateArr;
@@ -434,7 +434,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function BOLL(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 20,
         color: "#999999",
@@ -453,10 +453,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "lower",
         idct: "LOWER"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "BOLL"),
-      "k" != a.type && (this.sname = "T_" + this.name);
+    ];
+    techchart.call(this, i, a);
+    this.name = "BOLL";
+    "k" != a.type && (this.sname = "T_" + this.name);
     var s = bt.getArr,
       e = bt.calcMA,
       h = bt.calcSTD,
@@ -484,7 +484,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function BRAR(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 26,
         color: "#E297FF",
@@ -496,12 +496,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "ar",
         idct: "AR"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "BRAR"),
-      (this.vaObj = {
-        glv: 150
-      });
+    ];
+    techchart.call(this, i, a);
+    this.name = "BRAR";
+    this.vaObj = {
+      glv: 150
+    };
     var s = bt.calcSUM,
       e = bt.calcMAX,
       h = bt.calcREF,
@@ -533,21 +533,21 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function CCI(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 14,
         color: "#FFAC03",
         prop: "cci",
         idct: "CCI"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "CCI"),
-      (this.vaObj = {
-        upper: 100,
-        lower: -100,
-        glv: 0
-      });
+    ];
+    techchart.call(this, i, a);
+    this.name = "CCI";
+    this.vaObj = {
+      upper: 100,
+      lower: -100,
+      glv: 0
+    };
     var s = bt.calcAVEDEV,
       e = bt.calcMA,
       h = bt.operateArr,
@@ -571,148 +571,148 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function CHIPCOST(i, a, s) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 0 / 0,
         color: "#ff8400",
         prop: "value",
         idct: "筹码成本"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "CHIPCOST"),
-      (this.lw = 2),
-      (this.cb = s),
-      (this.selfDataUrl =
-        "http://finance.sina.com.cn/perspective/chip/$symbol.js?_=$rn");
+    ];
+    techchart.call(this, i, a);
+    this.name = "CHIPCOST";
+    this.lw = 2;
+    this.cb = s;
+    this.selfDataUrl =
+      "http://finance.sina.com.cn/perspective/chip/$symbol.js?_=$rn";
     var e = "chip_";
-    (this.selfDataUrlUpdate =
+    this.selfDataUrlUpdate =
       "http://" +
       dt +
       ".sinajs.cn/etag.php?_=" +
       new Date().getTime() +
       "&list=" +
       e +
-      "$symbol"),
-      (this.toReCalc = !0),
-      (this.loadedFlag = {}),
-      (this.loadedFromTo = void 0),
-      (this.loadUrlData = function() {
-        var i = this.getFromToM.get(this);
-        if (i) {
-          var r = this,
-            a = this.symbol,
-            s = "_touzi_chip_" + a,
-            e = this.selfDataUrl
-              .replace("$symbol", a)
-              .replace("$rn", String(new Date().getDate()));
-          this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
-            utils_util.load(e, function() {
-              var t = window[s];
-              r.urlData ||
-                (r.urlData = {
-                  day: []
-                });
-              var i = r.df(t),
-                a = r.urlData.day;
-              a.splice.apply(a, [0, 0].concat(i)),
-                a.sort(function(t, i) {
-                  return t.date - i.date;
-                }),
-                (r.toReCalc = !0),
-                r.cb(r);
-            });
-        }
-      }),
-      (this.df = function(t) {
-        var i = [];
-        if (t) {
-          var r = t;
-          for (var a in r)
-            r.hasOwnProperty(a) &&
-              i.push({
-                value: r[a],
-                date: lt.sd(a)
+      "$symbol";
+    this.toReCalc = !0;
+    this.loadedFlag = {};
+    this.loadedFromTo = void 0;
+    this.loadUrlData = function() {
+      var i = this.getFromToM.get(this);
+      if (i) {
+        var r = this,
+          a = this.symbol,
+          s = "_touzi_chip_" + a,
+          e = this.selfDataUrl
+            .replace("$symbol", a)
+            .replace("$rn", String(new Date().getDate()));
+        this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
+          utils_util.load(e, function() {
+            var t = window[s];
+            r.urlData ||
+              (r.urlData = {
+                day: []
               });
-        }
-        return i;
-      });
-    var h = !0;
-    (this.UPDATE_THRESHOLD = 3),
-      (this.update = function() {
-        if (h) h = !1;
-        else {
-          if (++this.updateCount < this.UPDATE_THRESHOLD) return;
-          this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
-        }
-        var i = this,
-          r = this.symbol,
-          a = "hq_str_" + e + r,
-          s = this.selfDataUrlUpdate.replace("$symbol", r);
-        this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
-          utils_util.load(s, function() {
-            var t = window[a],
-              r = i.udf(t);
-            r && i.doUpdate(r);
+            var i = r.df(t),
+              a = r.urlData.day;
+            a.splice.apply(a, [0, 0].concat(i)),
+              a.sort(function(t, i) {
+                return t.date - i.date;
+              }),
+              (r.toReCalc = !0),
+              r.cb(r);
           });
-      }),
-      (this.udf = function(t) {
-        if (t) {
-          var i,
-            r = t.split(",");
-          return (
-            r &&
-              r.length > 1 &&
-              (i = [
-                {
-                  date: lt.sd(r[0]),
-                  value: r[1]
-                }
-              ]),
-            i
-          );
-        }
-      }),
-      (this.updateData = function(t, i, r) {
-        if (t && i && !(i.length < 1)) {
-          var a = i[i.length - 1];
-          if ((t = t[0]))
-            if (lt.stbd(t.date, a.date))
-              for (var s in t)
-                t.hasOwnProperty(s) &&
-                  "undefined" != typeof a[s] &&
-                  (a[s] = t[s]);
-            else t.date > a.date && this.newData(i, t, r);
-        }
-      }),
-      (this.setPricePos = function(t) {
-        t &&
-          ((this.labelMaxP = t[0]),
-          (this.labelMinP = t[1]),
-          (this.pricePosArr = t)),
-          this.createPlayingData();
-      }),
-      (this.initAndCalcAll = function(i) {
-        if (((this.oriArr = i), this.urlData && this.toReCalc)) {
-          (this.toReCalc = !1),
-            !this.datas && (this.datas = []),
-            utils_util.ca(this.selfArr);
-          for (
-            var r,
-              a = this.urlData.day,
-              s = utils_util.kUtil.adbd(a, i, !1, !1),
-              e = 0,
-              h = i.length;
-            h > e;
-            e++
-          )
-            (r = s[e]),
-              this.selfArr.push({
-                value: Number(r.value)
-              });
-        }
-      }),
-      this.loadUrlData();
+      }
+    };
+    this.df = function(t) {
+      var i = [];
+      if (t) {
+        var r = t;
+        for (var a in r)
+          r.hasOwnProperty(a) &&
+            i.push({
+              value: r[a],
+              date: lt.sd(a)
+            });
+      }
+      return i;
+    };
+    var h = !0;
+    this.UPDATE_THRESHOLD = 3;
+    this.update = function() {
+      if (h) h = !1;
+      else {
+        if (++this.updateCount < this.UPDATE_THRESHOLD) return;
+        this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
+      }
+      var i = this,
+        r = this.symbol,
+        a = "hq_str_" + e + r,
+        s = this.selfDataUrlUpdate.replace("$symbol", r);
+      this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+        utils_util.load(s, function() {
+          var t = window[a],
+            r = i.udf(t);
+          r && i.doUpdate(r);
+        });
+    };
+    this.udf = function(t) {
+      if (t) {
+        var i,
+          r = t.split(",");
+        return (
+          r &&
+            r.length > 1 &&
+            (i = [
+              {
+                date: lt.sd(r[0]),
+                value: r[1]
+              }
+            ]),
+          i
+        );
+      }
+    };
+    this.updateData = function(t, i, r) {
+      if (t && i && !(i.length < 1)) {
+        var a = i[i.length - 1];
+        if ((t = t[0]))
+          if (lt.stbd(t.date, a.date))
+            for (var s in t)
+              t.hasOwnProperty(s) &&
+                "undefined" != typeof a[s] &&
+                (a[s] = t[s]);
+          else t.date > a.date && this.newData(i, t, r);
+      }
+    };
+    this.setPricePos = function(t) {
+      t &&
+        ((this.labelMaxP = t[0]),
+        (this.labelMinP = t[1]),
+        (this.pricePosArr = t)),
+        this.createPlayingData();
+    };
+    this.initAndCalcAll = function(i) {
+      if (((this.oriArr = i), this.urlData && this.toReCalc)) {
+        (this.toReCalc = !1),
+          !this.datas && (this.datas = []),
+          utils_util.ca(this.selfArr);
+        for (
+          var r,
+            a = this.urlData.day,
+            s = utils_util.kUtil.adbd(a, i, !1, !1),
+            e = 0,
+            h = i.length;
+          h > e;
+          e++
+        )
+          (r = s[e]),
+            this.selfArr.push({
+              value: Number(r.value)
+            });
+      }
+    };
+    this.loadUrlData();
   }
 
   function DITC(i, a, s) {
@@ -722,17 +722,17 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         (h.line.getCanvas().style.zIndex -= 2);
     }
     var h = this;
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 0 / 0,
         color: "#007cc8",
         prop: "ditc",
         idct: "DITC"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "DITC"),
-      (this.cb = s);
+    ];
+    techchart.call(this, i, a);
+    this.name = "DITC";
+    this.cb = s;
     var o,
       l,
       n = "#c2c2c2",
@@ -740,7 +740,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       d =
         "https://stock.sina.com.cn/stock/api/openapi.php/StockLevel2Service.getSummarize?symbol=$symbol&type=0&callback=$cb&dpc=1&retcode=0",
       f = i.DIMENSION.w_t / 2;
-    (this.loadUrlData = function(i) {
+    this.loadUrlData = function(i) {
       if (i) {
         var r = h.symbol,
           a = "_" + r + lt.ddt(new Date()).getFullYear();
@@ -760,70 +760,70 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             function() {}
           );
       }
-    }),
-      (this.initAndCalcAll = function() {
-        if (
-          !c &&
-          (this.datas || (e(), (this.datas = [])),
-          utils_util.ca(this.selfArr),
-          h.urlData)
-        ) {
-          var i,
-            r,
-            a,
-            s = 0,
-            o = h.urlData.length;
-          for (i = 0; o > i; i++) s = Math.max(h.urlData[i].volume, s);
-          for (i = 0; o > i; i++)
-            (a = h.urlData[i]),
-              (r = a.volume * (f / s)),
-              h.selfArr.push({
-                ditc: r,
-                trade: Number(a.trade)
-              });
-        }
-      }),
-      (this.setRange = function() {
-        if (!c && this.datas) {
-          for (var t = h.selfArr.length; this.datas.length > t; )
-            this.datas.length--;
-          for (; this.datas.length < t; ) this.datas.push({});
-        }
-      }),
-      (this.setPricePos = function(t) {
-        !t || this.separate > 0
-          ? ((this.labelMinP = l || this.minPrice),
-            (this.labelMaxP = o || this.maxPrice))
-          : ((this.labelMaxP = o = t[0]), (this.labelMinP = l = t[1])),
-          this.createPlayingData();
-      }),
-      (this.draw = function() {
-        if (this.datas) {
-          var t = this.line;
-          t.clear(!0, i.PARAM.getHd());
-          var r = this.viewState.start,
-            a = this.viewState.end;
-          if (4 == r || 5 == a) {
-            var s,
-              e = h.selfArr.length,
-              o = i.DIMENSION.h_t / e,
-              l = Math.min(0.6 * o, 2);
-            for (t.newStyle(n, !0, l), s = 0; e > s; s++) {
-              var c = h.selfArr[s],
-                d =
-                  (i.DIMENSION.h_t * (h.labelMaxP - c.trade)) /
-                  (h.labelMaxP - h.labelMinP);
-              t.moveTo(0, d), t.lineTo(c.ditc, d);
-            }
-            t.stroke();
+    };
+    this.initAndCalcAll = function() {
+      if (
+        !c &&
+        (this.datas || (e(), (this.datas = [])),
+        utils_util.ca(this.selfArr),
+        h.urlData)
+      ) {
+        var i,
+          r,
+          a,
+          s = 0,
+          o = h.urlData.length;
+        for (i = 0; o > i; i++) s = Math.max(h.urlData[i].volume, s);
+        for (i = 0; o > i; i++)
+          (a = h.urlData[i]),
+            (r = a.volume * (f / s)),
+            h.selfArr.push({
+              ditc: r,
+              trade: Number(a.trade)
+            });
+      }
+    };
+    this.setRange = function() {
+      if (!c && this.datas) {
+        for (var t = h.selfArr.length; this.datas.length > t; )
+          this.datas.length--;
+        for (; this.datas.length < t; ) this.datas.push({});
+      }
+    };
+    this.setPricePos = function(t) {
+      !t || this.separate > 0
+        ? ((this.labelMinP = l || this.minPrice),
+          (this.labelMaxP = o || this.maxPrice))
+        : ((this.labelMaxP = o = t[0]), (this.labelMinP = l = t[1])),
+        this.createPlayingData();
+    };
+    this.draw = function() {
+      if (this.datas) {
+        var t = this.line;
+        t.clear(!0, i.PARAM.getHd());
+        var r = this.viewState.start,
+          a = this.viewState.end;
+        if (4 == r || 5 == a) {
+          var s,
+            e = h.selfArr.length,
+            o = i.DIMENSION.h_t / e,
+            l = Math.min(0.6 * o, 2);
+          for (t.newStyle(n, !0, l), s = 0; e > s; s++) {
+            var c = h.selfArr[s],
+              d =
+                (i.DIMENSION.h_t * (h.labelMaxP - c.trade)) /
+                (h.labelMaxP - h.labelMinP);
+            t.moveTo(0, d), t.lineTo(c.ditc, d);
           }
+          t.stroke();
         }
-      }),
-      h.loadUrlData(!0);
+      }
+    };
+    h.loadUrlData(!0);
   }
 
   function DMA(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 10,
         desc: "快线移动平均"
@@ -840,13 +840,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "difma",
         idct: "DIFMA"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "DMA"),
-      "k" != a.type && (this.sname = "T_" + this.name),
-      (this.vaObj = {
-        glv: 0
-      });
+    ];
+    techchart.call(this, i, a);
+    this.name = "DMA";
+    "k" != a.type && (this.sname = "T_" + this.name);
+    this.vaObj = {
+      glv: 0
+    };
     var s = bt.calcMA,
       e = bt.operateArr,
       h = bt.getArr;

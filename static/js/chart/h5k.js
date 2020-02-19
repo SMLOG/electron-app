@@ -111,24 +111,30 @@ xh5_define(
           var extraDataObj = {
             rsAmount: void 0
           };
-          var initState = function(e, a, s, r, l) {
-            if (a) {
+          var initState = function(id, datas, s, r, l) {
+            if (datas) {
               if (n) {
                 if (
-                  (e == globalCfg.URLHASH.KD && (i = util.clone(a, null)),
+                  (id == globalCfg.URLHASH.KD && (i = util.clone(datas, null)),
                   r && window.datelist && stockDataA.hq)
                 ) {
                   var c = util.xh5_S_KLC_D(window.datelist);
-                  a = util.kUtil.ayd(a, c, !1, a[0].date, stockDataA.hq.date);
+                  datas = util.kUtil.ayd(
+                    datas,
+                    c,
+                    !1,
+                    datas[0].date,
+                    stockDataA.hq.date
+                  );
                 }
               } else
                 l ||
-                  (e == globalCfg.URLHASH.KD && (i = util.clone(a, null)),
-                  (a = util.kUtil.adbd(a, K.get(e), s, !1)));
-              o["k" + e] = a;
-              var d = a.length,
+                  (id == globalCfg.URLHASH.KD && (i = util.clone(datas, null)),
+                  (datas = util.kUtil.adbd(datas, K.get(id), s, !1)));
+              o["k" + id] = datas;
+              var d = datas.length,
                 u = r ? setting.PARAM.K_CL_NUM : setting.PARAM.defaultCandleNum;
-              (o["k" + e + "v"] = d > u ? d - u : 0), (o["k" + e + "b"] = d);
+              (o["k" + id + "v"] = d > u ? d - u : 0), (o["k" + id + "b"] = d);
             }
           };
           var l = function() {
@@ -172,13 +178,13 @@ xh5_define(
             return i;
           };
           this.initState = initState;
-          this.initDWMState = function(e, n) {
-            var a = util.clone(n.day, null);
-            initState(globalCfg.URLHASH.KD, n.day);
-            initState(globalCfg.URLHASH.KW, n.week);
-            initState(globalCfg.URLHASH.KM, n.month);
+          this.initDWMState = function(id, item) {
+            var a = util.clone(item.day, null);
+            initState(globalCfg.URLHASH.KD, item.day);
+            initState(globalCfg.URLHASH.KW, item.week);
+            initState(globalCfg.URLHASH.KM, item.month);
             initState(globalCfg.URLHASH.KCL, a, !1, !0);
-            initState(globalCfg.URLHASH.KY, n.year);
+            initState(globalCfg.URLHASH.KY, item.year);
           };
           this.extraDataObj = extraDataObj;
           this.initExtraData = function() {
@@ -654,42 +660,47 @@ xh5_define(
                 });
             },
             c = function(e, t) {
-              var s = globalCfg.URLHASH.gt(i),
-                r = "mink" == s.type ? kDb.initState : kDb.initDWMState;
-              F.show(),
-                "LSE" === u && (e.symbol = a.rawSymbol),
-                KKE.api("datas.k.get", e, function(a) {
-                  F.hide();
-                  var l = i;
-                  if (((i = 0 / 0), "error" == a.msg)) {
-                    if (((stockDataA.isErr = !0), n))
-                      if (a.data && a.data.hq) {
-                        var c;
-                        if (a.data.hq.status)
-                          switch (a.data.hq.status) {
-                            case 2:
-                              c = globalCfg.notlisted;
-                              break;
-                            case 3:
-                              c = globalCfg.delisted;
-                          }
-                        else c = globalCfg.norecord;
-                        c &&
-                          q.showTip({
-                            txt: c,
-                            parent: x,
-                            noBtn: !0
-                          });
-                      } else
+              let s = globalCfg.URLHASH.gt(i);
+              let initState =
+                "mink" == s.type ? kDb.initState : kDb.initDWMState;
+              F.show();
+              "LSE" === u && (e.symbol = a.rawSymbol);
+              KKE.api("datas.k.get", e, function(a) {
+                F.hide();
+                var l = i;
+                i = 0 / 0;
+                if ("error" == a.msg) {
+                  if (((stockDataA.isErr = !0), n))
+                    if (a.data && a.data.hq) {
+                      var c;
+                      if (a.data.hq.status)
+                        switch (a.data.hq.status) {
+                          case 2:
+                            c = globalCfg.notlisted;
+                            break;
+                          case 3:
+                            c = globalCfg.delisted;
+                        }
+                      else c = globalCfg.norecord;
+                      c &&
                         q.showTip({
-                          txt: globalCfg.nodata,
-                          parent: x
+                          txt: c,
+                          parent: x,
+                          noBtn: !0
                         });
-                  } else a.data.hq && (stockDataA.hq = a.data.hq), r(s.baseid, a.data, e.ismink);
-                  o(t, {
-                    viewId: l
-                  });
+                    } else
+                      q.showTip({
+                        txt: globalCfg.nodata,
+                        parent: x
+                      });
+                } else {
+                  a.data.hq && (stockDataA.hq = a.data.hq);
+                  initState(s.baseid, a.data, e.ismink);
+                }
+                o(t, {
+                  viewId: l
                 });
+              });
             },
             d = function(t) {
               KKE.api(

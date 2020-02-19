@@ -2121,111 +2121,113 @@ xh5_define(
                 Math.max(viewState.currentLength, setting.PARAM.minCandleNum)
               : e;
           }
-        },
-        q = new (function() {
-          var e;
-          (this.showTip = function(n) {
-            e || (e = new util.TipM(setting.COLOR)), e.genTip(n);
-          }),
-            (this.hideTip = function() {
-              e && e.hide();
+        };
+      let q = new (function() {
+        var e;
+        this.showTip = function(n) {
+          e || (e = new util.TipM(setting.COLOR));
+          e.genTip(n);
+        };
+        this.hideTip = function() {
+          e && e.hide();
+        };
+      })();
+      let Y = new (function() {
+        var e = function() {
+          var e = K.get(viewState.viewId);
+          return e ? e[e.length - 1] : null;
+        };
+        this.onRange = function(e, n) {
+          !P &&
+            util.isFunc(a.onrange) &&
+            a.onrange({
+              isCompare: n,
+              data: e.datas,
+              viewRangeState: util.clone(viewState, null),
+              width: setting.DIMENSION.w_k,
+              height: setting.DIMENSION.h_k,
+              left: setting.DIMENSION.posX,
+              top: setting.DIMENSION.H_MA4K,
+              range: [e.labelMaxP, e.labelMinP, e.labelMaxVol],
+              minCandleNum: setting.PARAM.minCandleNum
             });
-        })(),
-        Y = new (function() {
-          var e = function() {
-            var e = K.get(viewState.viewId);
-            return e ? e[e.length - 1] : null;
-          };
-          this.onRange = function(e, n) {
-            !P &&
-              util.isFunc(a.onrange) &&
-              a.onrange({
-                isCompare: n,
-                data: e.datas,
-                viewRangeState: util.clone(viewState, null),
-                width: setting.DIMENSION.w_k,
-                height: setting.DIMENSION.h_k,
+        };
+        var n = [];
+        this.onViewPrice = function(i, o, s, r, l, c) {
+          if (!P && util.isFunc(a.onviewprice)) {
+            if (!i) {
+              if (((i = e()), !i)) return;
+              o = viewState.currentLength - 1;
+            }
+            if (!s) {
+              for (; n.length; ) n.length--;
+              for (
+                var h, d, u, p, m = I.getAllStock(), f = 0, v = m.length;
+                v > f;
+                f++
+              ) {
+                p = m[f];
+                h = p.datas;
+                !h ||
+                  h.length <= o ||
+                  ((d = p.getName()),
+                  (u = h[o]),
+                  !r && m[f].isMain && (r = h),
+                  n.push({
+                    name: d,
+                    data: u,
+                    rangedata: h,
+                    symbol: p.symbol,
+                    color: p.getLineStyle().linecolor
+                  }));
+              }
+              s = n;
+            }
+            l || (l = I.getMainStock().getName()),
+              a.onviewprice({
+                data: util.clone(i, null),
+                rangedata: r,
+                idx: o,
                 left: setting.DIMENSION.posX,
                 top: setting.DIMENSION.H_MA4K,
-                range: [e.labelMaxP, e.labelMinP, e.labelMaxVol],
-                minCandleNum: setting.PARAM.minCandleNum
+                data_array: s,
+                curname: l,
+                interacting: !!c
               });
-          };
-          var n = [];
-          (this.onViewPrice = function(i, o, s, r, l, c) {
-            if (!P && util.isFunc(a.onviewprice)) {
-              if (!i) {
-                if (((i = e()), !i)) return;
-                o = viewState.currentLength - 1;
-              }
-              if (!s) {
-                for (; n.length; ) n.length--;
-                for (
-                  var h, d, u, p, m = I.getAllStock(), f = 0, v = m.length;
-                  v > f;
-                  f++
-                )
-                  (p = m[f]),
-                    (h = p.datas),
-                    !h ||
-                      h.length <= o ||
-                      ((d = p.getName()),
-                      (u = h[o]),
-                      !r && m[f].isMain && (r = h),
-                      n.push({
-                        name: d,
-                        data: u,
-                        rangedata: h,
-                        symbol: p.symbol,
-                        color: p.getLineStyle().linecolor
-                      }));
-                s = n;
-              }
-              l || (l = I.getMainStock().getName()),
-                a.onviewprice({
-                  data: util.clone(i, null),
-                  rangedata: r,
-                  idx: o,
-                  left: setting.DIMENSION.posX,
-                  top: setting.DIMENSION.H_MA4K,
-                  data_array: s,
-                  curname: l,
-                  interacting: !!c
-                });
-            }
-          }),
-            (this.onDataUpdate = function() {
-              if (util.isFunc(a.ondataupdate)) {
-                var n = e();
-                n &&
-                  a.ondataupdate({
-                    data: util.clone(n, null),
-                    idx: viewState.currentLength - 1,
-                    left: setting.DIMENSION.posX,
-                    top: setting.DIMENSION.H_MA4K
-                  });
-              }
-            }),
-            (this.onViewChanged = function() {
-              util.isFunc(a.onviewchanged) &&
-                a.onviewchanged({
-                  viewRangeState: util.clone(viewState, null)
-                });
-            }),
-            (this.onInnerResize = function(e) {
-              util.isFunc(a.oninnerresize) && a.oninnerresize(e);
-            }),
-            (this.onTechChanged = function(e) {
-              util.isFunc(a.ontechchanged) &&
-                a.ontechchanged({
-                  Indicator: e
-                });
-            }),
-            (this.shortClickHandler = function() {
-              util.isFunc(a.onshortclickmain) && a.onshortclickmain();
+          }
+        };
+        this.onDataUpdate = function() {
+          if (util.isFunc(a.ondataupdate)) {
+            var n = e();
+            n &&
+              a.ondataupdate({
+                data: util.clone(n, null),
+                idx: viewState.currentLength - 1,
+                left: setting.DIMENSION.posX,
+                top: setting.DIMENSION.H_MA4K
+              });
+          }
+        };
+        this.onViewChanged = function() {
+          util.isFunc(a.onviewchanged) &&
+            a.onviewchanged({
+              viewRangeState: util.clone(viewState, null)
             });
-        })(),
-        j = new (function() {
+        };
+        this.onInnerResize = function(e) {
+          util.isFunc(a.oninnerresize) && a.oninnerresize(e);
+        };
+        this.onTechChanged = function(e) {
+          util.isFunc(a.ontechchanged) &&
+            a.ontechchanged({
+              Indicator: e
+            });
+        };
+        this.shortClickHandler = function() {
+          util.isFunc(a.onshortclickmain) && a.onshortclickmain();
+        };
+      })();
+      let j = new (function() {
           var e,
             n,
             i,
@@ -2248,29 +2250,29 @@ xh5_define(
                   p = h.length;
                 p--;
 
-              )
-                (o = h[p]),
-                  o.id.indexOf("blankctn") >= 0
-                    ? ((c = o.offsetHeight), d--, (u += c))
-                    : (u += l);
-              return (
-                !isNaN(n) && (r -= n),
-                r / (t - s) > 1 && ((r = u), (i = !0)),
-                setting.DIMENSION.setStageW(e),
-                1 == $
-                  ? d > 0 &&
-                    (setting.DIMENSION.setStageH(t, d * l + c + s),
-                    (i = !0),
-                    ($ = 0))
-                  : setting.DIMENSION.setStageH(t, r + s),
-                i
-              );
+              ) {
+                o = h[p];
+                o.id.indexOf("blankctn") >= 0
+                  ? ((c = o.offsetHeight), d--, (u += c))
+                  : (u += l);
+              }
+              !isNaN(n) && (r -= n);
+              r / (t - s) > 1 && ((r = u), (i = !0));
+              setting.DIMENSION.setStageW(e);
+              1 == $
+                ? d > 0 &&
+                  (setting.DIMENSION.setStageH(t, d * l + c + s),
+                  (i = !0),
+                  ($ = 0))
+                : setting.DIMENSION.setStageH(t, r + s);
+              return i;
             },
             d = function() {
               s && (s.style.display = setting.custom.show_logo ? "" : "none");
             },
             p = function() {
-              (F = new util.LoadingSign()), F.appendto(C);
+              F = new util.LoadingSign();
+              F.appendto(C);
             },
             m = function() {
               F.setPosition();
@@ -2279,7 +2281,8 @@ xh5_define(
               var o = h(n, a, 0 / 0);
               if (e || (n && a)) {
                 if (!I) return;
-                I.onResize(o), B.onResize();
+                I.onResize(o);
+                B.onResize();
               }
               (i.style.left = "1px"),
                 (i.style.top =
@@ -2783,6 +2786,7 @@ xh5_define(
                         (a.style.padding = "2px 2px 1px");
                     }
                   };
+
                 (t.style.position = "absolute"),
                   (t.style.zIndex = setting.PARAM.I_Z_INDEX - 2),
                   (a.style.position = n.style.position = "absolute"),
@@ -2849,15 +2853,15 @@ xh5_define(
             w = !1,
             k = 0 / 0,
             S = !1;
-          (this.getInteractiveIdx = function() {
+          this.getInteractiveIdx = function() {
             return k;
-          }),
-            (this.isIng = function() {
-              return N;
-            }),
-            (this.isMoving = function() {
-              return S;
-            });
+          };
+          this.isIng = function() {
+            return N;
+          };
+          this.isMoving = function() {
+            return S;
+          };
           var A = 0 / 0,
             R = 0 / 0,
             H = [];
@@ -2870,18 +2874,19 @@ xh5_define(
                 h = t.e ? t.e.target : null;
               if (!a) {
                 if (A == ix && R == l) return;
-                (A = ix), (R = l);
+                A = ix;
+                R = l;
               }
               if (h) {
                 var u = h.style.height.split("px")[0];
                 (0 > l || l > u) && ((ix = 0 / 0), (l = 0 / 0));
               }
-              var m = viewState.currentLength,
-                f = Math.max(m, setting.PARAM.minCandleNum);
+              let curLen = viewState.currentLength,
+                f = Math.max(curLen, setting.PARAM.minCandleNum);
               ix += setting.DIMENSION.w_k / f - z.x;
               var v = Math.floor((ix * f) / setting.DIMENSION.w_k);
               if (
-                (0 > v ? (v = 0) : v >= m && (v = m - 1),
+                (0 > v ? (v = 0) : v >= curLen && (v = curLen - 1),
                 !isNaN(v) && (k = v),
                 isNaN(ix) && isNaN(l))
               ) {
@@ -2890,7 +2895,7 @@ xh5_define(
                 b(Number.MAX_VALUE);
                 return void Y.onViewPrice();
               }
-              N = viewState.end != viewState.dataLength ? !0 : m - 1 > v;
+              N = viewState.end != viewState.dataLength ? !0 : curLen - 1 > v;
               for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
                 H.length--;
               if (n) {

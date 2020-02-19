@@ -931,7 +931,7 @@ xh5_define(
             a && Y.onTechChanged(a[0]);
         };
         var G = void 0;
-        (this.initPt = function(e, i) {
+        this.initPt = function(e, i) {
           if (e) {
             !util.isArr(e) && (e = [e]);
             for (var o = e.length; o--; )
@@ -954,51 +954,51 @@ xh5_define(
               G && ((g = N.showHide(G)), (G = void 0))),
               N.createChart(e, i);
           }
-        }),
-          (this.removePt = function(e) {
-            if (e) {
-              !util.isArr(e) && (e = [e]);
-              for (var n = e.length; n--; )
-                if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
-                  e.splice(n, 1), (setting.custom.show_underlay_vol = !1);
-                  break;
-                }
-            } else setting.custom.show_underlay_vol = !1;
-            N && N.removeChart(e);
-          }),
-          (this.togglePt = function(e, t) {
-            N ? (g = N.showHide(e)) : !t && (G = e);
-          }),
-          (this.initTc = function(e, t) {
-            y ||
-              ((y = new r({
-                stockData: stockDataA,
-                iMgr: B,
-                cb: W,
-                subArea: D,
-                cfg: setting,
-                type: "k",
-                usrObj: a,
-                initMgr: j
-              })),
-              n && (T = y)),
-              y.createChart(e, t);
-          }),
-          (this.removeTc = function(e) {
-            y && y.removeChart(e);
-          }),
-          (this.initRs = function() {
-            (w = new o({
+        };
+        this.removePt = function(e) {
+          if (e) {
+            !util.isArr(e) && (e = [e]);
+            for (var n = e.length; n--; )
+              if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
+                e.splice(n, 1), (setting.custom.show_underlay_vol = !1);
+                break;
+              }
+          } else setting.custom.show_underlay_vol = !1;
+          N && N.removeChart(e);
+        };
+        this.togglePt = function(e, t) {
+          N ? (g = N.showHide(e)) : !t && (G = e);
+        };
+        this.initTc = function(e, t) {
+          y ||
+            ((y = new r({
               stockData: stockDataA,
-              setting: setting,
-              rc: I.moving
+              iMgr: B,
+              cb: W,
+              subArea: D,
+              cfg: setting,
+              type: "k",
+              usrObj: a,
+              initMgr: j
             })),
-              w.linkData(),
-              (E = w);
-          }),
-          (this.setLineStyle = S.setLineStyle),
-          (this.getLineStyle = S.getLineStyle),
-          c();
+            n && (T = y)),
+            y.createChart(e, t);
+        };
+        this.removeTc = function(e) {
+          y && y.removeChart(e);
+        };
+        this.initRs = function() {
+          (w = new o({
+            stockData: stockDataA,
+            setting: setting,
+            rc: I.moving
+          })),
+            w.linkData(),
+            (E = w);
+        };
+        this.setLineStyle = S.setLineStyle;
+        this.getLineStyle = S.getLineStyle;
+        c();
       }
       function k(e, a) {
         function i() {

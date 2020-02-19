@@ -253,7 +253,8 @@ xh5_define(
                 n = setting.DIMENSION.h_k,
                 a = n * setting.DIMENSION.P_HV,
                 i = n * (1 - setting.DIMENSION.P_HV);
-              (e = stockDataA.labelMinP), (t = stockDataA.labelMaxP);
+              e = stockDataA.labelMinP;
+              t = stockDataA.labelMaxP;
               for (
                 var o,
                   s = stockDataA.labelMaxVol,
@@ -266,13 +267,14 @@ xh5_define(
                   p = stockDataA.dataLen;
                 p > l;
                 l++
-              )
-                (o = stockDataA.datas[l]),
-                  (o.cy = d[u](o.close, e, t, n, r)),
-                  (o.oy = d[u](o.open, e, t, n, r)),
-                  (o.hy = d[u](o.high, e, t, n, r)),
-                  (o.ly = d[u](o.low, e, t, n, r)),
-                  c && (o.vy = d.vp(o.volume, s, a) + i);
+              ) {
+                o = stockDataA.datas[l];
+                o.cy = d[u](o.close, e, t, n, r);
+                o.oy = d[u](o.open, e, t, n, r);
+                o.hy = d[u](o.high, e, t, n, r);
+                o.ly = d[u](o.low, e, t, n, r);
+                c && (o.vy = d.vp(o.volume, s, a) + i);
+              }
             };
             this.setDataRange = function(n) {
               var i = C.get();

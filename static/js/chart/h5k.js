@@ -1541,7 +1541,7 @@ xh5_define(
               e && (e.togglePt(t, n), R());
             });
         })();
-        var F = new (function() {
+        var h5tM = new (function() {
           var n,
             i,
             o,
@@ -1652,18 +1652,17 @@ xh5_define(
               }
             });
         })();
-        (this.h5tM = F),
-          (this.getAllStock = function() {
-            return f;
-          }),
-          (this.getMainStock = function() {
-            return e;
-          }),
-          (this.getAllSymbols = function() {
-            for (var e = [], t = 0, n = f.length; n > t; t++)
-              e.push(f[t].symbol);
-            return e;
-          });
+        this.h5tM = h5tM;
+        this.getAllStock = function() {
+          return f;
+        };
+        this.getMainStock = function() {
+          return e;
+        };
+        this.getAllSymbols = function() {
+          for (var e = [], t = 0, n = f.length; n > t; t++) e.push(f[t].symbol);
+          return e;
+        };
         var $ = function() {
             d.mM.togglePt(
               f.length > 1
@@ -1825,7 +1824,7 @@ xh5_define(
             return n == ae && a == ie ? [-1] : ((ae = n), (ie = a), [n, a]);
           };
         (this.onWheel = function(e) {
-          if (!F.isShowing()) {
+          if (!h5tM.isShowing()) {
             var t = e.detail || -1 * e.wheelDelta;
             if (0 != t) {
               var n = oe(t, e);
@@ -1836,7 +1835,7 @@ xh5_define(
           (this.onKb = function(e) {
             if ("keyup" == e.type) return void B.iToKb(null, !0);
             var t = e.keyCode;
-            if (F.isShowing()) return void (27 == t && F.resetHisT());
+            if (h5tM.isShowing()) return void (27 == t && h5tM.resetHisT());
             switch (t) {
               case 38:
               case 40:
@@ -1849,7 +1848,7 @@ xh5_define(
                 a && (W(viewState.start + a, viewState.end + a), B.iToKb(0));
                 break;
               case 13:
-                F.historyT();
+                h5tM.historyT();
                 break;
               default:
                 return;

@@ -915,19 +915,19 @@ xh5_define(
             w && w.onResize();
         };
         this.clear = function(e) {
-          S.clear(e),
-            y && (y.clear(), (y = null)),
-            N && (N.clear(), (N = null)),
-            w && (w.clear(), (w = null)),
-            n && (E = null);
+          S.clear(e);
+          y && (y.clear(), (y = null));
+          N && (N.clear(), (N = null));
+          w && (w.clear(), (w = null));
+          n && (E = null);
         };
         this.getPriceTech = function() {
           return N || null;
         };
         var W = function(e, n, a) {
-          e && j.resizeAll(!0),
-            I.onChangeView(),
-            n && util.isFunc(n.callback) && n.callback(),
+          e && j.resizeAll(!0);
+          I.onChangeView();
+          n && util.isFunc(n.callback) && n.callback(),
             a && Y.onTechChanged(a[0]);
         };
         var G = void 0;

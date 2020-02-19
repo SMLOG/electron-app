@@ -510,7 +510,7 @@ xh5_define(
         var $ = new (function() {
           var i,
             o = function(e, n) {
-              M.re(globalCfg.e.K_DATA_LOADED, n), util.isFunc(e) && e();
+              me.re(globalCfg.e.K_DATA_LOADED, n), util.isFunc(e) && e();
             },
             s = function(e) {
               if (!stockDataA.hq || !stockDataA.hq.date) return null;
@@ -1976,7 +1976,7 @@ xh5_define(
         };
       }
       util.xh5_EvtDispatcher.call(this);
-      var M = this;
+      var me = this;
       a = oc(
         {
           candlenum: 0 / 0,
@@ -2975,7 +2975,7 @@ xh5_define(
                   b(v),
                   !S && (S = y || "--"),
                   Y.onViewPrice(x, v, H, K, S, !0),
-                  M.re(globalCfg.e.I_EVT, t.e);
+                  me.re(globalCfg.e.I_EVT, t.e);
               }
             }
           };
@@ -3010,7 +3010,7 @@ xh5_define(
           var P;
           (this.globalDragHandler = function(e, t, n, a, i) {
             if (isNaN(e) && isNaN(t))
-              return (P = 0 / 0), (S = !1), void M.re(globalCfg.e.I_EVT, i);
+              return (P = 0 / 0), (S = !1), void me.re(globalCfg.e.I_EVT, i);
             g();
             var o = viewState.start,
               s = viewState.end,
@@ -3409,7 +3409,7 @@ xh5_define(
             };
           });
         var z;
-        (this.showRangeSelector = function(e) {
+        this.showRangeSelector = function(e) {
           (z = oc(
             {
               display: !0,
@@ -3420,102 +3420,97 @@ xh5_define(
           )),
             I.mM.showRs(z),
             util.stc("k_rs", e);
-        }),
-          (this.dateFromTo = function(e, n, a) {
-            E && (E.dateFromTo(e, n, a), util.stc("k_ft", [e, n, a]));
-          }),
-          (this.setCustom = fBind(a, this, "custom")),
-          (this.setTheme = function(e) {
-            var t = j.initTheme(e);
-            t &&
-              (this.setLineStyle({
-                linecolor: e
-              }),
-              this.resize());
-          }),
-          (this.setDimension = fBind(a, this, "DIMENSION")),
-          (this.getDimension = fBind(i, null, "DIMENSION", ["boolean"])),
-          (this.newSymbol = function(e) {
-            if (
-              (B.hideIUis(),
-              B.iReset(),
-              I.dcReset(),
-              I.dcInit(e),
-              q.hideTip(),
-              T)
-            ) {
-              var n = T.getLog();
-              (T = null), n && this.tCharts(n);
-            }
-            if (U) {
-              var a = U.getLog();
-              (U = null), a && this.pCharts(a);
-            }
-            z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z)),
-              I.h5tM.resetHisT(),
-              util.stc("k_ns", e);
-          }),
-          (this.toggleExtend = function() {
-            var e = setting.DIMENSION.extend_draw,
-              t = setting.DIMENSION.posX;
-            a.call(this, "DIMENSION", {
-              extend_draw: !e,
-              posX: t > 9 ? 7 : 55
+        };
+        this.dateFromTo = function(e, n, a) {
+          E && (E.dateFromTo(e, n, a), util.stc("k_ft", [e, n, a]));
+        };
+        this.setCustom = fBind(a, this, "custom");
+        this.setTheme = function(e) {
+          var t = j.initTheme(e);
+          t &&
+            (this.setLineStyle({
+              linecolor: e
             }),
-              this.resize();
+            this.resize());
+        };
+        this.setDimension = fBind(a, this, "DIMENSION");
+        this.getDimension = fBind(i, null, "DIMENSION", ["boolean"]);
+        this.newSymbol = function(e) {
+          if (
+            (B.hideIUis(), B.iReset(), I.dcReset(), I.dcInit(e), q.hideTip(), T)
+          ) {
+            var n = T.getLog();
+            (T = null), n && this.tCharts(n);
+          }
+          if (U) {
+            var a = U.getLog();
+            (U = null), a && this.pCharts(a);
+          }
+          z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z)),
+            I.h5tM.resetHisT(),
+            util.stc("k_ns", e);
+        };
+        this.toggleExtend = function() {
+          var e = setting.DIMENSION.extend_draw,
+            t = setting.DIMENSION.posX;
+          a.call(this, "DIMENSION", {
+            extend_draw: !e,
+            posX: t > 9 ? 7 : 55
           }),
-          (this.shareTo = function(e) {
-            I.shareTo(e), util.stc("k_share", e);
-            var n = e && e.type ? e.type : "weibo";
-            util.suda("share", n);
-          }),
-          (this.getChartId = function() {
-            return setting.uid;
-          }),
+            this.resize();
+        };
+        this.shareTo = function(e) {
+          I.shareTo(e), util.stc("k_share", e);
+          var n = e && e.type ? e.type : "weibo";
+          util.suda("share", n);
+        };
+        (this.getChartId = function() {
+          return setting.uid;
+        }),
           (this.getSymbols = function() {
             return I.getAllSymbols();
-          }),
-          (this.patcher = {
-            iMgr: B.patcher
-          }),
-          (this.getExtraData = function(e) {
-            return I.getExtraData(e);
-          }),
-          (this.getCurrentData = function() {
-            var e = K.get(viewState.viewId);
-            return e && (e = e[e.length - 1]), util.clone(e, null);
-          }),
-          (this.getCurrentRange = function() {
-            for (
-              var e, t, n, a = [], i = I.getAllStock(), o = 0, s = i.length;
-              s > o;
-              o++
-            )
-              (n = i[o]),
-                (t = n.getName()),
-                (e = n.datas),
-                a.push({
-                  name: t,
-                  rangedata: e,
-                  symbol: n.symbol
-                });
-            return a;
-          }),
-          (this.zoom = function(e) {
-            I.zoomApi(e), util.stc("k_zoom", e, 9e3);
-          }),
-          (this.rangeMove = function(e, t) {
-            I.moving(e, t);
-          }),
-          (this.move = function(e) {
-            (e = parseInt(e)),
-              isNaN(e) || (I.moveApi(e), util.stc("k_move", e, 9e3));
-          }),
-          (this.update = function() {
-            I.updateDataAll(), util.stc("k_up", 9e3);
-          }),
-          (this.type = "h5k"),
-          (this.me = M);
+          });
+        this.patcher = {
+          iMgr: B.patcher
+        };
+        this.getExtraData = function(e) {
+          return I.getExtraData(e);
+        };
+        this.getCurrentData = function() {
+          var e = K.get(viewState.viewId);
+          return e && (e = e[e.length - 1]), util.clone(e, null);
+        };
+        this.getCurrentRange = function() {
+          for (
+            var e, t, n, a = [], i = I.getAllStock(), o = 0, s = i.length;
+            s > o;
+            o++
+          )
+            (n = i[o]),
+              (t = n.getName()),
+              (e = n.datas),
+              a.push({
+                name: t,
+                rangedata: e,
+                symbol: n.symbol
+              });
+          return a;
+        };
+        this.zoom = function(e) {
+          I.zoomApi(e), util.stc("k_zoom", e, 9e3);
+        };
+        this.rangeMove = function(e, t) {
+          I.moving(e, t);
+        };
+        this.move = function(e) {
+          (e = parseInt(e)),
+            isNaN(e) || (I.moveApi(e), util.stc("k_move", e, 9e3));
+        };
+        this.update = function() {
+          I.updateDataAll(), util.stc("k_up", 9e3);
+        };
+        this.type = "h5k";
+        this.me = me;
       })();
       I.dcInit(a);
       return W;
@@ -3524,7 +3519,8 @@ xh5_define(
       this.get = function(e, n) {
         util.stc("h5k_get");
         var i = new a(e);
-        util.isFunc(n) && n(i), util.suda("h5k_" + util.market(e.symbol));
+        util.isFunc(n) && n(i);
+        util.suda("h5k_" + util.market(e.symbol));
       };
       this.dual = function(e, n) {
         util.stc("h5k_dual");
@@ -3545,7 +3541,8 @@ xh5_define(
           });
         };
         i.me.al(globalCfg.e.K_DATA_LOADED, o, !1);
-        util.isFunc(n) && n(i), util.suda("dual_" + util.market(e.symbol));
+        util.isFunc(n) && n(i);
+        util.suda("dual_" + util.market(e.symbol));
       };
       this.tick = function(e, n) {
         util.stc("h5k_tick");

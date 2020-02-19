@@ -879,58 +879,58 @@ xh5_define(
         })();
         this.kDb = kDb;
         this.extraDataObj = kDb.extraDataObj;
-        (this.getYtdIndex = function(e) {
+        this.getYtdIndex = function(e) {
           var t = kDb.get(_.URLHASH.KD);
           if (!t) return null;
           var n = t[t.length - 1],
             a = n.date.getFullYear(),
             i = 0;
           return e && (a--, (i = n.date.getMonth())), l(new Date(a, i, 1));
-        }),
-          (this.initData = $.iInit),
-          (this.doUpdate = P.uUpdate),
-          (this.onViewChange = i),
-          (this.setPricePos = function(e, t) {
-            (stockDataA.labelMaxP = e[0]),
-              (stockDataA.labelMinP = e[1]),
-              (stockDataA.labelPriceCount = e[2]),
-              (stockDataA.isCompare = t),
-              rangeCtrl.createPlayingData(),
-              N && N.setPricePos(e);
-          }),
-          (this.setRange = function(e) {
-            rangeCtrl.setDataRange(),
-              y && y.setDataRange(),
-              N && N.setDataRange(),
-              w && w.setDataRange(e);
-          }),
-          (this.draw = function() {
-            S.draw(), y && y.allDraw(z.x), N && N.allDraw(z.x);
-          }),
-          (this.resize = function(e) {
+        };
+        this.initData = $.iInit;
+        this.doUpdate = P.uUpdate;
+        this.onViewChange = i;
+        this.setPricePos = function(e, t) {
+          (stockDataA.labelMaxP = e[0]),
+            (stockDataA.labelMinP = e[1]),
+            (stockDataA.labelPriceCount = e[2]),
+            (stockDataA.isCompare = t),
             rangeCtrl.createPlayingData(),
-              S.resize(),
-              y && y.onResize(e),
-              N && N.onResize(),
-              w && w.onResize();
-          }),
-          (this.clear = function(e) {
-            S.clear(e),
-              y && (y.clear(), (y = null)),
-              N && (N.clear(), (N = null)),
-              w && (w.clear(), (w = null)),
-              n && (E = null);
-          }),
-          (this.getPriceTech = function() {
-            return N || null;
-          });
+            N && N.setPricePos(e);
+        };
+        this.setRange = function(e) {
+          rangeCtrl.setDataRange(),
+            y && y.setDataRange(),
+            N && N.setDataRange(),
+            w && w.setDataRange(e);
+        };
+        this.draw = function() {
+          S.draw(), y && y.allDraw(z.x), N && N.allDraw(z.x);
+        };
+        this.resize = function(e) {
+          rangeCtrl.createPlayingData(),
+            S.resize(),
+            y && y.onResize(e),
+            N && N.onResize(),
+            w && w.onResize();
+        };
+        this.clear = function(e) {
+          S.clear(e),
+            y && (y.clear(), (y = null)),
+            N && (N.clear(), (N = null)),
+            w && (w.clear(), (w = null)),
+            n && (E = null);
+        };
+        this.getPriceTech = function() {
+          return N || null;
+        };
         var W = function(e, n, a) {
-            e && j.resizeAll(!0),
-              I.onChangeView(),
-              n && util.isFunc(n.callback) && n.callback(),
-              a && Y.onTechChanged(a[0]);
-          },
-          G = void 0;
+          e && j.resizeAll(!0),
+            I.onChangeView(),
+            n && util.isFunc(n.callback) && n.callback(),
+            a && Y.onTechChanged(a[0]);
+        };
+        var G = void 0;
         (this.initPt = function(e, i) {
           if (e) {
             !util.isArr(e) && (e = [e]);

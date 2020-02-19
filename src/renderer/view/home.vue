@@ -498,6 +498,10 @@ export default {
       //this.reloadData();
       this.sendRefresh();
       monitor(this.items);
+
+      let items = getOrFiltersItems(this.items2);
+      console.log("monitor:", items);
+      monitor(items);
     },
     timerFn() {
       (async () => {
@@ -511,6 +515,16 @@ export default {
         for (;;) {
           monitor(this.items);
           await timeout(60000);
+          let items = getOrFiltersItems(this.items2);
+
+          items = items.concat(
+            this.items2
+              .filter(e => e.turnover > 2)
+              .filter(v => !items.includes(v))
+          );
+
+          console.log("monitor:", items);
+          // monitor(items);
         }
       })();
       (async () => {

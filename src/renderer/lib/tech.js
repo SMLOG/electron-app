@@ -1,7 +1,6 @@
 import { timeout } from "./utils";
 import { getCacheData } from "./db";
-import { loadScripts, deepCopy } from "./utils";
-let seq = +new Date();
+import { loadScripts } from "./utils";
 export async function getTechDatas(item, cache = true) {
   let techId = "tech_" + item.code;
   let get = async () => {
@@ -13,6 +12,7 @@ export async function getTechDatas(item, cache = true) {
         resolve();
       };
     });
+    ifr.contentWindow["item"] = item;
     let result = {};
     for (let v of ["kd", "kw", "km"]) {
       ifr.contentWindow[techId] = null;

@@ -225,9 +225,10 @@ export let headers = [
     fmt: (e, item) => {
       if (window["zyzb_" + item.code]) {
         let data = window["zyzb_" + item.code];
-        return (item["毛利率(%)"] = parseFloat(
-          data["毛利率(%)"][data["reportDate"][1]]
-        ));
+        if (item["毛利率(%)"])
+          return (item["毛利率(%)"] = parseFloat(
+            data["毛利率(%)"][data["reportDate"][1]]
+          ));
       }
     }
   },

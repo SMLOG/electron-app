@@ -4,12 +4,12 @@ xh5_define(
   function(e, t, n) {
     "use strict";
     function a(a) {
-      function i(e, n) {
+      function Obji(e, n) {
         function i(e) {
-          O.setDataRange(e),
-            y && (y.linkData(e), y.setDataRange()),
-            N && (N.linkData(e), N.setDataRange()),
-            w && (w.linkData(e), w.setDataRange());
+          O.setDataRange(e);
+          y && (y.linkData(e), y.setDataRange());
+          N && (N.linkData(e), N.setDataRange());
+          w && (w.linkData(e), w.setDataRange());
         }
         function l(e, t) {
           var n,
@@ -54,10 +54,12 @@ xh5_define(
           },
           e || {}
         );
-        var h = this,
+        var stockDataA = this,
           u = t.market(e.symbol),
           g = !0;
-        (this.isErr = !1), (this.symbol = e.symbol), (this.market = u);
+        this.isErr = !1;
+        this.symbol = e.symbol;
+        this.market = u;
         var b;
         switch (u) {
           case "forex":
@@ -73,36 +75,36 @@ xh5_define(
           default:
             b = "09:30";
         }
-        (this.isMain = n),
-          (this.isCompare = !1),
-          (this.datas = null),
-          (this.dataLen = 0),
-          (this.nfloat = e.nfloat || 2),
-          (this.dataLenOffset = 0),
-          (this.prevclose = 0 / 0),
-          (this.labelMaxP = 0),
-          (this.labelMinP = Number.MAX_VALUE),
-          (this.maxPrice = 0),
-          (this.minPrice = Number.MAX_VALUE),
-          (this.rangeMax = 0),
-          (this.rangeMin = Number.MAX_VALUE),
-          (this.labelMaxVol = 0),
-          (this.maxVolume = 0),
-          (this.minPercent = Number.MAX_VALUE),
-          (this.maxPercent = -Number.MAX_VALUE),
-          (this.labelPriceCount = 0 / 0),
-          (this.isTotalRedraw = !0),
-          (this.hq = void 0),
-          (this.nco = void 0);
+        this.isMain = n;
+        this.isCompare = !1;
+        this.datas = null;
+        this.dataLen = 0;
+        this.nfloat = e.nfloat || 2;
+        this.dataLenOffset = 0;
+        this.prevclose = 0 / 0;
+        this.labelMaxP = 0;
+        this.labelMinP = Number.MAX_VALUE;
+        this.maxPrice = 0;
+        this.minPrice = Number.MAX_VALUE;
+        this.rangeMax = 0;
+        this.rangeMin = Number.MAX_VALUE;
+        this.labelMaxVol = 0;
+        this.maxVolume = 0;
+        this.minPercent = Number.MAX_VALUE;
+        this.maxPercent = -Number.MAX_VALUE;
+        this.labelPriceCount = 0 / 0;
+        this.isTotalRedraw = !0;
+        this.hq = void 0;
+        this.nco = void 0;
         var y,
           N,
           w,
           S = new k(this, e),
           A = e.name;
-        (this.getName = function() {
+        this.getName = function() {
           return A || "";
-        }),
-          (this.viewState = V);
+        };
+        this.viewState = viewState;
         var C = new (function() {
             var i,
               o = {},
@@ -114,10 +116,10 @@ xh5_define(
                   if (n) {
                     if (
                       (e == _.URLHASH.KD && (i = t.clone(a, null)),
-                      r && window.datelist && h.hq)
+                      r && window.datelist && stockDataA.hq)
                     ) {
                       var c = t.xh5_S_KLC_D(window.datelist);
-                      a = t.kUtil.ayd(a, c, !1, a[0].date, h.hq.date);
+                      a = t.kUtil.ayd(a, c, !1, a[0].date, stockDataA.hq.date);
                     }
                   } else
                     l ||
@@ -133,7 +135,7 @@ xh5_define(
                 }
               },
               l = function() {
-                var e = V.viewId;
+                var e = viewState.viewId;
                 switch (e) {
                   case _.URLHASH.KDF:
                   case _.URLHASH.KDB:
@@ -157,85 +159,91 @@ xh5_define(
                 }
                 return e;
               };
-            (this.get = function(e) {
+            this.get = function(e) {
               if (t.isStr(e)) {
                 var n = l();
                 return o["k" + n + e];
               }
-              return o["k" + (e || V.viewId)];
-            }),
-              (this.set = function(e, t) {
-                var n = l(),
-                  a = "k" + n + e;
-                "undefined" != typeof o[a] && (o[a] = t);
-              }),
-              (this.getOriDK = function() {
-                return i;
-              }),
-              (this.initState = initState),
-              (this.initDWMState = function(e, n) {
-                var a = t.clone(n.day, null);
-                initState(_.URLHASH.KD, n.day),
-                  initState(_.URLHASH.KW, n.week),
-                  initState(_.URLHASH.KM, n.month),
-                  initState(_.URLHASH.KCL, a, !1, !0),
-                  initState(_.URLHASH.KY, n.year);
-              }),
-              (this.extraDataObj = s),
-              (this.initExtraData = function() {
-                var n =
-                  "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
-                a.ssl && (n = t.getSUrl(n));
-                var i = "KKE_ShareAmount_" + e.symbol;
-                t.load(
-                  n
-                    .replace("$symbol", e.symbol)
-                    .replace("$rn", String(new Date().getDate()))
-                    .replace("$cb", "var%20" + i + "="),
-                  function() {
-                    var e = window[i];
-                    if (e) {
-                      for (var t, n = [], a = e.length; a--; )
-                        (t = e[a]),
-                          n.push({
-                            amount: Number(t.amount),
-                            date: m.sd(t.date)
-                          });
-                      n.length && (s.rsAmount = n);
-                    }
+              return o["k" + (e || viewState.viewId)];
+            };
+            this.set = function(e, t) {
+              var n = l(),
+                a = "k" + n + e;
+              "undefined" != typeof o[a] && (o[a] = t);
+            };
+            this.getOriDK = function() {
+              return i;
+            };
+            this.initState = initState;
+            this.initDWMState = function(e, n) {
+              var a = t.clone(n.day, null);
+              initState(_.URLHASH.KD, n.day),
+                initState(_.URLHASH.KW, n.week),
+                initState(_.URLHASH.KM, n.month),
+                initState(_.URLHASH.KCL, a, !1, !0),
+                initState(_.URLHASH.KY, n.year);
+            };
+            this.extraDataObj = s;
+            (this.initExtraData = function() {
+              var n =
+                "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
+              a.ssl && (n = t.getSUrl(n));
+              var i = "KKE_ShareAmount_" + e.symbol;
+              t.load(
+                n
+                  .replace("$symbol", e.symbol)
+                  .replace("$rn", String(new Date().getDate()))
+                  .replace("$cb", "var%20" + i + "="),
+                function() {
+                  var e = window[i];
+                  if (e) {
+                    for (var t, n = [], a = e.length; a--; )
+                      (t = e[a]),
+                        n.push({
+                          amount: Number(t.amount),
+                          date: m.sd(t.date)
+                        });
+                    n.length && (s.rsAmount = n);
                   }
-                );
-              }),
+                }
+              );
+            }),
               (this.gc = function() {
                 (o = null), (s = null);
               });
           })(),
           O = new (function() {
             var e = function() {
-                (h.minPrice = Number.MAX_VALUE),
-                  (h.maxPrice = -Number.MAX_VALUE),
-                  (h.minPercent = Number.MAX_VALUE),
-                  (h.maxPercent = -Number.MAX_VALUE),
-                  (h.maxVolume = 0),
-                  (h.rangeMax = 0),
-                  (h.rangeMin = Number.MAX_VALUE);
+                (stockDataA.minPrice = Number.MAX_VALUE),
+                  (stockDataA.maxPrice = -Number.MAX_VALUE),
+                  (stockDataA.minPercent = Number.MAX_VALUE),
+                  (stockDataA.maxPercent = -Number.MAX_VALUE),
+                  (stockDataA.maxVolume = 0),
+                  (stockDataA.rangeMax = 0),
+                  (stockDataA.rangeMin = Number.MAX_VALUE);
               },
               t = function() {
-                for (var e, t = 0, n = h.dataLen; n > t; t++)
-                  (e = h.datas[t]),
+                for (var e, t = 0, n = stockDataA.dataLen; n > t; t++)
+                  (e = stockDataA.datas[t]),
                     e.close <= 0 ||
-                      (e.high > h.maxPrice &&
-                        (h.maxPrice = h.rangeMax = e.high),
-                      e.low < h.minPrice && (h.minPrice = h.rangeMin = e.low),
-                      (h.maxVolume = Math.max(h.maxVolume, e.volume)));
-                var a = v(h.maxVolume, 0, 0, !0);
-                (h.labelMaxVol = a[0]),
-                  (h.maxPercent = Math.max(
-                    (h.maxPrice - h.prevclose) / h.prevclose,
+                      (e.high > stockDataA.maxPrice &&
+                        (stockDataA.maxPrice = stockDataA.rangeMax = e.high),
+                      e.low < stockDataA.minPrice &&
+                        (stockDataA.minPrice = stockDataA.rangeMin = e.low),
+                      (stockDataA.maxVolume = Math.max(
+                        stockDataA.maxVolume,
+                        e.volume
+                      )));
+                var a = v(stockDataA.maxVolume, 0, 0, !0);
+                (stockDataA.labelMaxVol = a[0]),
+                  (stockDataA.maxPercent = Math.max(
+                    (stockDataA.maxPrice - stockDataA.prevclose) /
+                      stockDataA.prevclose,
                     0
                   )),
-                  (h.minPercent = Math.min(
-                    (h.minPrice - h.prevclose) / h.prevclose,
+                  (stockDataA.minPercent = Math.min(
+                    (stockDataA.minPrice - stockDataA.prevclose) /
+                      stockDataA.prevclose,
                     0
                   ));
               };
@@ -245,19 +253,21 @@ xh5_define(
                 n = setting.DIMENSION.h_k,
                 a = n * setting.DIMENSION.P_HV,
                 i = n * (1 - setting.DIMENSION.P_HV);
-              (e = h.labelMinP), (t = h.labelMaxP);
+              (e = stockDataA.labelMinP), (t = stockDataA.labelMaxP);
               for (
                 var o,
-                  s = h.labelMaxVol,
-                  r = h.prevclose,
-                  l = h.isTotalRedraw ? 0 : h.dataLen - h.dataLenOffset,
+                  s = stockDataA.labelMaxVol,
+                  r = stockDataA.prevclose,
+                  l = stockDataA.isTotalRedraw
+                    ? 0
+                    : stockDataA.dataLen - stockDataA.dataLenOffset,
                   c = setting.custom.show_underlay_vol,
-                  u = h.isCompare ? "ppp" : "pp",
-                  p = h.dataLen;
+                  u = stockDataA.isCompare ? "ppp" : "pp",
+                  p = stockDataA.dataLen;
                 p > l;
                 l++
               )
-                (o = h.datas[l]),
+                (o = stockDataA.datas[l]),
                   (o.cy = d[u](o.close, e, t, n, r)),
                   (o.oy = d[u](o.open, e, t, n, r)),
                   (o.hy = d[u](o.high, e, t, n, r)),
@@ -267,46 +277,46 @@ xh5_define(
               (this.setDataRange = function(n) {
                 var i = C.get();
                 if (i) {
-                  V.dataLength = i.length;
-                  var o = V.start,
-                    s = V.end;
+                  viewState.dataLength = i.length;
+                  var o = viewState.start,
+                    s = viewState.end;
                   if (isNaN(o) || isNaN(s))
                     (s = C.get("b")),
                       (o = C.get("v")),
-                      (V.start = o),
-                      (V.end = s);
+                      (viewState.start = o),
+                      (viewState.end = s);
                   else {
                     if (n && s + 1 >= i.length) {
                       var r = i.length - s;
-                      (V.end = s = i.length),
-                        (1 == a.pcm || V.viewId == _.URLHASH.K1) &&
+                      (viewState.end = s = i.length),
+                        (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
                           (0 == o &&
                             s > 1 &&
                             s < setting.PARAM.minCandleNum &&
-                            ((o = s - 1), (V.start = o)),
+                            ((o = s - 1), (viewState.start = o)),
                           s - o >= setting.PARAM.defaultCandleNum &&
-                            ((o += r), (V.start = o)));
+                            ((o += r), (viewState.start = o)));
                     }
                     C.set("v", o), C.set("b", s);
                   }
                   switch (
-                    ((V.currentLength = s - o),
-                    (V.startDate = i[o].date),
-                    (V.endDate = i[s - 1].date),
+                    ((viewState.currentLength = s - o),
+                    (viewState.startDate = i[o].date),
+                    (viewState.endDate = i[s - 1].date),
                     a.pcm)
                   ) {
                     case 1:
-                      h.prevclose = i[0].prevclose;
+                      stockDataA.prevclose = i[0].prevclose;
                       break;
                     case 2:
-                      h.prevclose = i[o].close;
+                      stockDataA.prevclose = i[o].close;
                       break;
                     default:
-                      h.prevclose =
+                      stockDataA.prevclose =
                         o > 1 ? i[o - 1].close : i[0].prevclose || i[0].close;
                   }
-                  (h.datas = i.slice(o, s)),
-                    (h.dataLen = h.datas.length),
+                  (stockDataA.datas = i.slice(o, s)),
+                    (stockDataA.dataLen = stockDataA.datas.length),
                     e(),
                     t(n);
                 }
@@ -339,21 +349,21 @@ xh5_define(
                     if (1 == a) {
                       if (
                         s.time &&
-                        !t.kUtil.spk(s.time, e.time, b, n, h.market)
+                        !t.kUtil.spk(s.time, e.time, b, n, stockDataA.market)
                       ) {
                         if (
                           (t.kUtil.nc(i, e, n, {
                             price: e.price,
                             volume: e.volume
                           }),
-                          /^forex|^BTC/.test(h.market))
+                          /^forex|^BTC/.test(stockDataA.market))
                         )
                           n == _.URLHASH.K1 &&
                             ((s = i[i.length - 1]),
                             (s.prevclose = e.prevclose),
                             (s.change = e.price - e.prevclose),
                             (s.percent = s.change / e.prevclose));
-                        else if ("NF" == h.market);
+                        else if ("NF" == stockDataA.market);
                         else if (t.kUtil.spk("09:35", e.time, b, n)) {
                           if (n == _.URLHASH.K60) {
                             var l = e.time.split(":"),
@@ -375,21 +385,22 @@ xh5_define(
                         volume: 0
                       });
                     } else if (f(e.date, s.date))
-                      h.nco &&
-                        ("NF" == h.market
-                          ? m.dst(s.date) < h.nco.open &&
-                            e.time >= h.nco.open &&
-                            e.time > h.nco.close &&
+                      stockDataA.nco &&
+                        ("NF" == stockDataA.market
+                          ? m.dst(s.date) < stockDataA.nco.open &&
+                            e.time >= stockDataA.nco.open &&
+                            e.time > stockDataA.nco.close &&
                             t.kUtil.nc(i, e, n, null)
                           : r &&
-                            e.time >= h.nco.open &&
+                            e.time >= stockDataA.nco.open &&
                             ((r = !1), t.kUtil.nc(i, e, n, null)));
                     else {
                       if (!(e.date > s.date)) return;
-                      h.nco
-                        ? "NF" == h.market
-                          ? e.time >= h.nco.open && t.kUtil.nc(i, e, n, null)
-                          : e.time <= h.nco.close && (r = !0)
+                      stockDataA.nco
+                        ? "NF" == stockDataA.market
+                          ? e.time >= stockDataA.nco.open &&
+                            t.kUtil.nc(i, e, n, null)
+                          : e.time <= stockDataA.nco.close && (r = !0)
                         : t.kUtil.nc(i, e, n, null);
                     }
                     (s = i[i.length - 1]),
@@ -416,7 +427,7 @@ xh5_define(
                       ? (u = o ? e.prevclose : s.open)
                       : ((u = i[i.length - 2].close),
                         e.settlement && o && (u = e.settlement)),
-                      /^forex|^BTC/.test(h.market) &&
+                      /^forex|^BTC/.test(stockDataA.market) &&
                         (n == _.URLHASH.K1 || n == _.URLHASH.KD) &&
                         (u = e.prevclose),
                       (s.change = e.price - u),
@@ -454,13 +465,21 @@ xh5_define(
               d = new (function() {
                 this.check = function(e) {
                   if (n) return !0;
-                  var a = V.viewId,
+                  var a = viewState.viewId,
                     i = K.get(a);
                   if (!i || i.length < 1) return !1;
                   var o = i[i.length - 1];
                   if (e.date > o.date)
-                    if ("mink" == _.URLHASH.gt(V.viewId).type) {
-                      if (!t.kUtil.spk(o.time, e.time, "00:00", a, h.market))
+                    if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
+                      if (
+                        !t.kUtil.spk(
+                          o.time,
+                          e.time,
+                          "00:00",
+                          a,
+                          stockDataA.market
+                        )
+                      )
                         return !1;
                     } else if (!f(e.date, o.date)) return !1;
                   return !0;
@@ -479,7 +498,7 @@ xh5_define(
                   var o = a.dataObj[e.symbol];
                   if (o && o.date && s(o)) {
                     if (((A = A || o.name || ""), !d.check(o))) return;
-                    (h.hq = o), c(o), i(!0), t.isFunc(n) && n();
+                    (stockDataA.hq = o), c(o), i(!0), t.isFunc(n) && n();
                   }
                 });
             };
@@ -490,7 +509,7 @@ xh5_define(
                 M.re(_.e.K_DATA_LOADED, n), t.isFunc(e) && e();
               },
               s = function(e) {
-                if (!h.hq || !h.hq.date) return null;
+                if (!stockDataA.hq || !stockDataA.hq.date) return null;
                 for (var t = 0; !e[t].f; ) t++;
                 return {
                   factor: e[t].f
@@ -601,7 +620,7 @@ xh5_define(
                 }
               },
               l = function(t) {
-                var n = _.URLHASH.gt(V.viewId),
+                var n = _.URLHASH.gt(viewState.viewId),
                   i = n.dir,
                   l = {
                     symbol: e.symbol,
@@ -620,7 +639,7 @@ xh5_define(
                     }
                     n && r(-828, null, i),
                       o(t, {
-                        viewId: V.viewId
+                        viewId: viewState.viewId
                       });
                   });
               },
@@ -633,7 +652,7 @@ xh5_define(
                     F.hide();
                     var l = i;
                     if (((i = 0 / 0), "error" == a.msg)) {
-                      if (((h.isErr = !0), n))
+                      if (((stockDataA.isErr = !0), n))
                         if (a.data && a.data.hq) {
                           var c;
                           if (a.data.hq.status)
@@ -656,7 +675,7 @@ xh5_define(
                             txt: _.nodata,
                             parent: x
                           });
-                    } else a.data.hq && (h.hq = a.data.hq), r(s.baseid, a.data, e.ismink);
+                    } else a.data.hq && (stockDataA.hq = a.data.hq), r(s.baseid, a.data, e.ismink);
                     o(t, {
                       viewId: l
                     });
@@ -690,9 +709,9 @@ xh5_define(
                           kke_cs: 0
                         }
                       ];
-                    C.initState(V.viewId, i, !0),
+                    C.initState(viewState.viewId, i, !0),
                       o(t, {
-                        viewId: V.viewId
+                        viewId: viewState.viewId
                       });
                   }
                 );
@@ -700,9 +719,10 @@ xh5_define(
               p = function(t) {
                 var n,
                   i,
-                  o = V.viewId,
+                  o = viewState.viewId,
                   s = _.URLHASH.gt(o);
-                if (h.nco && h.nco.open) (i = h.nco.open), (b = i);
+                if (stockDataA.nco && stockDataA.nco.open)
+                  (i = stockDataA.nco.open), (b = i);
                 else {
                   var r = new Date(),
                     l = b.split(":");
@@ -720,7 +740,7 @@ xh5_define(
                     ((n = e.datas.min),
                     (d.ismink = !0),
                     (d.scale = o),
-                    /^forex|^BTC/.test(h.market))
+                    /^forex|^BTC/.test(stockDataA.market))
                   )
                     switch (((d.withsymbol = "sys_time"), o)) {
                       case _.URLHASH.K1:
@@ -740,14 +760,14 @@ xh5_define(
                   c(d, t);
               },
               f = function(e) {
-                (h.nco = {
+                (stockDataA.nco = {
                   open: "20:00",
                   close: "15:30"
                 }),
                   p(e);
               },
               v = function(e) {
-                (h.nco = {
+                (stockDataA.nco = {
                   open: "07:00",
                   close: "06:00"
                 }),
@@ -760,7 +780,7 @@ xh5_define(
                   },
                   i = "datas.k.";
                 (i += "loadGBInit"),
-                  (h.nco = {
+                  (stockDataA.nco = {
                     open: "15:00",
                     close: "23:30"
                   }),
@@ -770,8 +790,9 @@ xh5_define(
                       var a = n.time;
                       a &&
                         a.length > 0 &&
-                        ((h.nco.open = a[0][0] || h.nco.open),
-                        (h.nco.close = a[a.length - 1][1] || h.nco.close));
+                        ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
+                        (stockDataA.nco.close =
+                          a[a.length - 1][1] || stockDataA.nco.close));
                     }
                     p(t);
                   });
@@ -784,12 +805,12 @@ xh5_define(
                   o = "datas.k.";
                 n
                   ? ((o += "loadNFInit"),
-                    (h.nco = {
+                    (stockDataA.nco = {
                       open: "09:00",
                       close: "15:00"
                     }))
                   : ((o += "loadHFInit"),
-                    (h.nco = {
+                    (stockDataA.nco = {
                       open: "06:00",
                       close: "05:59"
                     })),
@@ -799,8 +820,9 @@ xh5_define(
                       var a = n.time;
                       a &&
                         a.length > 0 &&
-                        ((h.nco.open = a[0][0] || h.nco.open),
-                        (h.nco.close = a[a.length - 1][1] || h.nco.close));
+                        ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
+                        (stockDataA.nco.close =
+                          a[a.length - 1][1] || stockDataA.nco.close));
                     }
                     p(t);
                   });
@@ -810,18 +832,18 @@ xh5_define(
                   a = b.split(":");
                 n.setHours(a[0], a[1], 0), n.setMinutes(n.getMinutes() - 1);
                 var i = m.dst(n);
-                (h.nco = {
+                (stockDataA.nco = {
                   open: b,
                   close: i
                 }),
                   "rek" == t.type && C.get(_.URLHASH.KD) ? l(e) : p(e);
               };
             this.iInit = function(e) {
-              var t = V.viewId;
+              var t = viewState.viewId;
               if (i != t) {
                 i = t;
                 var n = _.URLHASH.gt(t);
-                switch (h.market) {
+                switch (stockDataA.market) {
                   case "HF":
                     y(e);
                     break;
@@ -866,10 +888,10 @@ xh5_define(
           (this.doUpdate = P.uUpdate),
           (this.onViewChange = i),
           (this.setPricePos = function(e, t) {
-            (h.labelMaxP = e[0]),
-              (h.labelMinP = e[1]),
-              (h.labelPriceCount = e[2]),
-              (h.isCompare = t),
+            (stockDataA.labelMaxP = e[0]),
+              (stockDataA.labelMinP = e[1]),
+              (stockDataA.labelPriceCount = e[2]),
+              (stockDataA.isCompare = t),
               O.createPlayingData(),
               N && N.setPricePos(e);
           }),
@@ -917,7 +939,7 @@ xh5_define(
             N ||
               ((N = new s({
                 iMgr: B,
-                stockData: h,
+                stockData: stockDataA,
                 chartArea: R,
                 titleArea: H,
                 cb: W,
@@ -947,7 +969,7 @@ xh5_define(
           (this.initTc = function(e, t) {
             y ||
               ((y = new r({
-                stockData: h,
+                stockData: stockDataA,
                 iMgr: B,
                 cb: W,
                 subArea: D,
@@ -964,7 +986,7 @@ xh5_define(
           }),
           (this.initRs = function() {
             (w = new o({
-              stockData: h,
+              stockData: stockDataA,
               setting: setting,
               rc: I.moving
             })),
@@ -1372,11 +1394,13 @@ xh5_define(
             for (var m = o; m--; ) (e = f[m]), e.setPricePos(p, s);
           },
           N = function() {
-            (V.start < 1 || !setting.custom.smooth) && z.resetX();
+            (viewState.start < 1 || !setting.custom.smooth) && z.resetX();
             for (var e = f.length; e--; ) f[e].draw();
           },
           w = function() {
-            (V.start = V.end = 0 / 0), (V.currentLength = 0 / 0), (n = void 0);
+            (viewState.start = viewState.end = 0 / 0),
+              (viewState.currentLength = 0 / 0),
+              (n = void 0);
           },
           k = function(t) {
             w();
@@ -1421,11 +1445,13 @@ xh5_define(
             }
           },
           H = function(t) {
-            (t || (n && V.dataLength != n)) && Y.onRange(e, f.length > 1),
-              (n = V.dataLength);
+            (t || (n && viewState.dataLength != n)) &&
+              Y.onRange(e, f.length > 1),
+              (n = viewState.dataLength);
           },
           D = function(e) {
-            (e || V.end == V.dataLength) && (B.update(), y(), N(), H(!0)),
+            (e || viewState.end == viewState.dataLength) &&
+              (B.update(), y(), N(), H(!0)),
               Y.onDataUpdate(),
               !B.isIng() && Y.onViewPrice();
           },
@@ -1639,9 +1665,9 @@ xh5_define(
                 ? {
                     v: !1
                   }
-                : V.viewId == _.URLHASH.KCL ||
-                  V.viewId == _.URLHASH.KCLF ||
-                  V.viewId == _.URLHASH.KCLB
+                : viewState.viewId == _.URLHASH.KCL ||
+                  viewState.viewId == _.URLHASH.KCLF ||
+                  viewState.viewId == _.URLHASH.KCLB
                 ? {
                     v: !1
                   }
@@ -1655,12 +1681,14 @@ xh5_define(
               (!a && z.resetX(),
               !(
                 n - t < setting.PARAM.minCandleNum ||
-                n > V.dataLength ||
+                n > viewState.dataLength ||
                 0 > t ||
                 n - t > setting.PARAM.maxCandleNum
               ))
             ) {
-              (V.start = t), (V.end = n), (V.currentLength = n - t);
+              (viewState.start = t),
+                (viewState.end = n),
+                (viewState.currentLength = n - t);
               for (var s, r = f.length, l = 0; r > l; l++)
                 (s = f[l]), s.setRange(i);
               y(), N(), o || Y.onRange(e, r > 1);
@@ -1668,18 +1696,18 @@ xh5_define(
           };
         (this.onChangeView = R),
           (this.showYTD = function(t, n) {
-            (V.viewId = _.URLHASH.KD + t), R(!0);
+            (viewState.viewId = _.URLHASH.KD + t), R(!0);
             var a = e.getYtdIndex(n);
             a && W(a[0], a[1] + 1);
           }),
           (this.moving = W),
           (this.callSdDraw = N);
         var G = function(t, n) {
-            var a = t instanceof i ? t : new i(t, n);
+            var a = t instanceof Obji ? t : new Obji(t, n);
             n && (e = a), f.push(a), $(), R();
           },
           X = function(n) {
-            if ("mink" == _.URLHASH.gt(V.viewId).type) {
+            if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
               var a = t.market(n.symbol),
                 i = t.market(e.symbol);
               if (a != i && ("US" == a || "US" == i)) return !1;
@@ -1717,7 +1745,7 @@ xh5_define(
           });
         var Z,
           J = function(e) {
-            e ? D() : V.end == V.dataLength && B.update();
+            e ? D() : viewState.end == viewState.dataLength && B.update();
           },
           Q = !1,
           ee = 0,
@@ -1772,8 +1800,8 @@ xh5_define(
         var ae = -1,
           ie = -1,
           oe = function(e, t) {
-            var n = V.start,
-              a = V.end,
+            var n = viewState.start,
+              a = viewState.end,
               i = e / Math.abs(e),
               o = i * Math.ceil((a - n) / setting.PARAM.zoomUnit);
             if (
@@ -1783,11 +1811,11 @@ xh5_define(
             ) {
               var s = t ? t.layerX / setting.DIMENSION.w_k : 0.5;
               s < setting.PARAM.zoomArea
-                ? (a = Math.min(a - o * Math.abs(o), V.dataLength))
+                ? (a = Math.min(a - o * Math.abs(o), viewState.dataLength))
                 : s > 1 - setting.PARAM.zoomArea
                 ? (n = Math.max(n + o * Math.abs(o), 0))
                 : ((n = Math.max(n + o * Math.abs(o), 0)),
-                  (a = Math.min(a - o * Math.abs(o), V.dataLength)));
+                  (a = Math.min(a - o * Math.abs(o), viewState.dataLength)));
             } else n = Math.max(n + o * Math.abs(o), 0);
             return n == ae && a == ie ? [-1] : ((ae = n), (ie = a), [n, a]);
           };
@@ -1813,7 +1841,7 @@ xh5_define(
               case 37:
               case 39:
                 var a = B.iToKb(37 == t ? -1 : 1);
-                a && (W(V.start + a, V.end + a), B.iToKb(0));
+                a && (W(viewState.start + a, viewState.end + a), B.iToKb(0));
                 break;
               case 13:
                 F.historyT();
@@ -1828,13 +1856,14 @@ xh5_define(
             W(t[0], t[1]);
           }),
           (this.moveApi = function(e) {
-            var t = V.start,
-              n = V.end;
+            var t = viewState.start,
+              n = viewState.end;
             (t += e),
               (n += e),
-              n > V.dataLength &&
-                ((n = V.dataLength), (t = V.start + n - V.end)),
-              0 > t && ((t = 0), (n = V.end - V.start)),
+              n > viewState.dataLength &&
+                ((n = viewState.dataLength),
+                (t = viewState.start + n - viewState.end)),
+              0 > t && ((t = 0), (n = viewState.end - viewState.start)),
               W(t, n);
           }),
           (this.shareTo = function(e) {
@@ -2057,7 +2086,7 @@ xh5_define(
         F,
         P = !1,
         $ = 0,
-        V = {
+        viewState = {
           viewId: _.URLHASH.vi(a.view || "kd"),
           dataLength: 0 / 0,
           start: 0 / 0,
@@ -2072,7 +2101,7 @@ xh5_define(
           resetX: function(e) {
             this.x = isNaN(e)
               ? setting.DIMENSION.w_k /
-                Math.max(V.currentLength, setting.PARAM.minCandleNum)
+                Math.max(viewState.currentLength, setting.PARAM.minCandleNum)
               : e;
           }
         },
@@ -2087,7 +2116,7 @@ xh5_define(
         })(),
         Y = new (function() {
           var e = function() {
-            var e = K.get(V.viewId);
+            var e = K.get(viewState.viewId);
             return e ? e[e.length - 1] : null;
           };
           this.onRange = function(e, n) {
@@ -2096,7 +2125,7 @@ xh5_define(
               a.onrange({
                 isCompare: n,
                 data: e.datas,
-                viewRangeState: t.clone(V, null),
+                viewRangeState: t.clone(viewState, null),
                 width: setting.DIMENSION.w_k,
                 height: setting.DIMENSION.h_k,
                 left: setting.DIMENSION.posX,
@@ -2110,7 +2139,7 @@ xh5_define(
             if (!P && t.isFunc(a.onviewprice)) {
               if (!i) {
                 if (((i = e()), !i)) return;
-                o = V.currentLength - 1;
+                o = viewState.currentLength - 1;
               }
               if (!s) {
                 for (; n.length; ) n.length--;
@@ -2154,7 +2183,7 @@ xh5_define(
                 n &&
                   a.ondataupdate({
                     data: t.clone(n, null),
-                    idx: V.currentLength - 1,
+                    idx: viewState.currentLength - 1,
                     left: setting.DIMENSION.posX,
                     top: setting.DIMENSION.H_MA4K
                   });
@@ -2163,7 +2192,7 @@ xh5_define(
             (this.onViewChanged = function() {
               t.isFunc(a.onviewchanged) &&
                 a.onviewchanged({
-                  viewRangeState: t.clone(V, null)
+                  viewRangeState: t.clone(viewState, null)
                 });
             }),
             (this.onInnerResize = function(e) {
@@ -2669,7 +2698,9 @@ xh5_define(
                           N && (H.innerHTML = (T.volume / N).toFixed(2) + "%");
                       } else H.innerHTML = "--";
                     }
-                    24 === V.viewId || 23 === V.viewId || 25 === V.viewId
+                    24 === viewState.viewId ||
+                    23 === viewState.viewId ||
+                    25 === viewState.viewId
                       ? U.hq &&
                         U.hq.isKCB &&
                         ((l("__floatingPostVolume").style.display =
@@ -2825,7 +2856,7 @@ xh5_define(
                 var u = h.style.height.split("px")[0];
                 (0 > l || l > u) && ((s = 0 / 0), (l = 0 / 0));
               }
-              var m = V.currentLength,
+              var m = viewState.currentLength,
                 f = Math.max(m, setting.PARAM.minCandleNum);
               s += setting.DIMENSION.w_k / f - z.x;
               var v = Math.floor((s * f) / setting.DIMENSION.w_k);
@@ -2835,7 +2866,7 @@ xh5_define(
                 isNaN(s) && isNaN(l))
               )
                 return (N = !1), g(), b(Number.MAX_VALUE), void Y.onViewPrice();
-              N = V.end != V.dataLength ? !0 : m - 1 > v;
+              N = viewState.end != viewState.dataLength ? !0 : m - 1 > v;
               for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
                 H.length--;
               if (n) {
@@ -2961,12 +2992,12 @@ xh5_define(
             if (isNaN(e) && isNaN(t))
               return (P = 0 / 0), (S = !1), void M.re(_.e.I_EVT, i);
             g();
-            var o = V.start,
-              s = V.end,
+            var o = viewState.start,
+              s = viewState.end,
               r = s - o;
             isNaN(P) && (P = e);
             var l = t - P,
-              c = V.dataLength,
+              c = viewState.dataLength,
               h = setting.DIMENSION.w_k / r;
             if (Math.abs(l) < h) {
               if (setting.custom.smooth && h > 4) {
@@ -2981,8 +3012,11 @@ xh5_define(
                 (s -= d),
                 s >= c && ((s = c), (o = s - r)),
                 0 > o && ((o = 0), (s = r)),
-                (V.start != o || V.end != s) &&
-                  (z.resetX(0), (V.movY = a - n), I.moving(o, s, !0), (S = !0));
+                (viewState.start != o || viewState.end != s) &&
+                  (z.resetX(0),
+                  (viewState.movY = a - n),
+                  I.moving(o, s, !0),
+                  (S = !0));
             }
           }),
             (this.shortClickHandler = function() {
@@ -2991,8 +3025,8 @@ xh5_define(
             (this.zoomView = function(e, t) {
               var n = -Number(e);
               0 == n && (n = 1);
-              var a = V.start,
-                i = V.end,
+              var a = viewState.start,
+                i = viewState.end,
                 o = n * Math.ceil((i - a) / setting.PARAM.zoomUnit);
               if (
                 (Math.abs(o) > setting.PARAM.zoomLimit &&
@@ -3004,11 +3038,11 @@ xh5_define(
                   l = Math.max.apply(Math, t),
                   c = l / setting.DIMENSION.w_k;
                 r < setting.PARAM.zoomArea
-                  ? (i = Math.min(i - o * Math.abs(o), V.dataLength))
+                  ? (i = Math.min(i - o * Math.abs(o), viewState.dataLength))
                   : c > 1 - setting.PARAM.zoomArea
                   ? (a = Math.max(a + o * Math.abs(o), 0))
                   : ((a = Math.max(a + o * Math.abs(o), 0)),
-                    (i = Math.min(i - o * Math.abs(o), V.dataLength)));
+                    (i = Math.min(i - o * Math.abs(o), viewState.dataLength)));
               } else a = Math.max(a + o * Math.abs(o), 0);
               I.moving(a, i);
             }),
@@ -3031,7 +3065,7 @@ xh5_define(
                 o = function() {
                   if (a) {
                     e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                    var t = "vid_" + V.viewId;
+                    var t = "vid_" + viewState.viewId;
                     if (a[t]) {
                       var o;
                       (o = i[t] ? i[t] : (i[t] = new a[t]())), (e = o);
@@ -3206,8 +3240,8 @@ xh5_define(
           },
           k = function(e) {
             "mink" == _.URLHASH.gt(e).type
-              ? ((V.viewId = e), f(), N())
-              : ((e += u), (V.viewId = e), f(u), y());
+              ? ((viewState.viewId = e), f(), N())
+              : ((e += u), (viewState.viewId = e), f(u), y());
           },
           S = new (function() {
             (this.isClMode = !1),
@@ -3291,7 +3325,7 @@ xh5_define(
           (this.setReK = function(e) {
             if (((e = parseInt(e)), !(isNaN(e) || Math.abs(e) > 1))) {
               u = e;
-              var n = _.URLHASH.gt(V.viewId);
+              var n = _.URLHASH.gt(viewState.viewId);
               t.stc("k_re", e);
               var a = e;
               "-1" == a && (a = "_1"),
@@ -3422,7 +3456,7 @@ xh5_define(
             return I.getExtraData(e);
           }),
           (this.getCurrentData = function() {
-            var e = K.get(V.viewId);
+            var e = K.get(viewState.viewId);
             return e && (e = e[e.length - 1]), t.clone(e, null);
           }),
           (this.getCurrentRange = function() {

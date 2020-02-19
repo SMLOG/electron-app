@@ -2421,7 +2421,7 @@ xh5_define(
         B = new (function() {
           var e,
             n,
-            i,
+            iHLineO,
             o,
             s = util.market(a.symbol),
             r = /^forex|^HF/.test(s),
@@ -2825,7 +2825,7 @@ xh5_define(
                   (this.resize = s),
                   r(!1);
               }
-              (i = new e({
+              (iHLineO = new e({
                 isH: !0,
                 txtCN: "P_TC",
                 txtBgCN: "P_BG",
@@ -2839,8 +2839,8 @@ xh5_define(
                 })),
                 x.appendChild(o.body);
             },
-            g = function() {
-              i.display(!1), o.display(!1), p.showFloater(!1);
+            hideIUis = function() {
+              iHLineO.display(!1), o.display(!1), p.showFloater(!1);
             },
             b = function(e) {
               T && T.indirectI(e), U && U.indirectI(e);
@@ -2885,7 +2885,12 @@ xh5_define(
                 !isNaN(v) && (k = v),
                 isNaN(s) && isNaN(l))
               )
-                return (N = !1), g(), b(Number.MAX_VALUE), void Y.onViewPrice();
+                return (
+                  (N = !1),
+                  hideIUis(),
+                  b(Number.MAX_VALUE),
+                  void Y.onViewPrice()
+                );
               N = viewState.end != viewState.dataLength ? !0 : m - 1 > v;
               for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
                 H.length--;
@@ -2961,7 +2966,7 @@ xh5_define(
                       x: Z,
                       y: setting.DIMENSION.K_F_T
                     })),
-                  i.pv({
+                  iHLineO.pv({
                     y: l,
                     v: O,
                     oy: c
@@ -3008,10 +3013,10 @@ xh5_define(
             return void this.iToD(a, !0, !0);
           };
           var P;
-          (this.globalDragHandler = function(e, t, n, a, i) {
+          this.globalDragHandler = function(e, t, n, a, i) {
             if (isNaN(e) && isNaN(t))
               return (P = 0 / 0), (S = !1), void me.re(globalCfg.e.I_EVT, i);
-            g();
+            hideIUis();
             var o = viewState.start,
               s = viewState.end,
               r = s - o;
@@ -3028,76 +3033,81 @@ xh5_define(
             } else {
               P = t;
               var d = Math.round((l * r) / setting.DIMENSION.w_k);
-              (o -= d),
-                (s -= d),
-                s >= c && ((s = c), (o = s - r)),
-                0 > o && ((o = 0), (s = r)),
-                (viewState.start != o || viewState.end != s) &&
-                  (z.resetX(0),
-                  (viewState.movY = a - n),
-                  I.moving(o, s, !0),
-                  (S = !0));
+              o -= d;
+              s -= d;
+              s >= c && ((s = c), (o = s - r));
+              0 > o && ((o = 0), (s = r));
+              (viewState.start != o || viewState.end != s) &&
+                (z.resetX(0),
+                (viewState.movY = a - n),
+                I.moving(o, s, !0),
+                (S = !0));
             }
-          }),
-            (this.shortClickHandler = function() {
-              Y.shortClickHandler();
-            }),
-            (this.zoomView = function(e, t) {
-              var n = -Number(e);
-              0 == n && (n = 1);
-              var a = viewState.start,
-                i = viewState.end,
-                o = n * Math.ceil((i - a) / setting.PARAM.zoomUnit);
-              if (
-                (Math.abs(o) > setting.PARAM.zoomLimit &&
-                  (o = n * setting.PARAM.zoomLimit),
-                setting.custom.centerZoom)
-              ) {
-                var s = Math.min.apply(Math, t),
-                  r = s / setting.DIMENSION.w_k,
-                  l = Math.max.apply(Math, t),
-                  c = l / setting.DIMENSION.w_k;
-                r < setting.PARAM.zoomArea
-                  ? (i = Math.min(i - o * Math.abs(o), viewState.dataLength))
-                  : c > 1 - setting.PARAM.zoomArea
-                  ? (a = Math.max(a + o * Math.abs(o), 0))
-                  : ((a = Math.max(a + o * Math.abs(o), 0)),
-                    (i = Math.min(i - o * Math.abs(o), viewState.dataLength)));
-              } else a = Math.max(a + o * Math.abs(o), 0);
-              I.moving(a, i);
-            }),
-            f(),
-            v(),
-            (this.onResize = function() {
-              i.resize(), o.resize();
-            }),
-            (this.iHLineO = i),
-            (this.hideIUis = g),
-            (this.update = function() {
-              N || (b(Number.MAX_VALUE), e && e.setFloaterData({}));
-            }),
-            (this.iReset = function() {
-              e.reset && e.reset();
-            }),
-            (this.patcher = new (function() {
-              var a,
-                i = {},
-                o = function() {
-                  if (a) {
-                    e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                    var t = "vid_" + viewState.viewId;
-                    if (a[t]) {
-                      var o;
-                      (o = i[t] ? i[t] : (i[t] = new a[t]())), (e = o);
-                    } else e = n;
+          };
+          this.shortClickHandler = function() {
+            Y.shortClickHandler();
+          };
+          this.zoomView = function(e, t) {
+            var n = -Number(e);
+            0 == n && (n = 1);
+            var start = viewState.start,
+              end = viewState.end,
+              o = n * Math.ceil((end - start) / setting.PARAM.zoomUnit);
+            if (
+              (Math.abs(o) > setting.PARAM.zoomLimit &&
+                (o = n * setting.PARAM.zoomLimit),
+              setting.custom.centerZoom)
+            ) {
+              var s = Math.min.apply(Math, t),
+                r = s / setting.DIMENSION.w_k,
+                l = Math.max.apply(Math, t),
+                c = l / setting.DIMENSION.w_k;
+              r < setting.PARAM.zoomArea
+                ? (end = Math.min(end - o * Math.abs(o), viewState.dataLength))
+                : c > 1 - setting.PARAM.zoomArea
+                ? (start = Math.max(start + o * Math.abs(o), 0))
+                : ((start = Math.max(start + o * Math.abs(o), 0)),
+                  (end = Math.min(
+                    end - o * Math.abs(o),
+                    viewState.dataLength
+                  )));
+            } else start = Math.max(start + o * Math.abs(o), 0);
+            I.moving(start, end);
+          };
+          f();
+          v();
+          this.onResize = function() {
+            iHLineO.resize(), o.resize();
+          };
+          this.iHLineO = iHLineO;
+          this.hideIUis = hideIUis;
+          this.update = function() {
+            N || (b(Number.MAX_VALUE), e && e.setFloaterData({}));
+          };
+          this.iReset = function() {
+            e.reset && e.reset();
+          };
+          this.patcher = new (function() {
+            var a,
+              i = {},
+              switchFloater = function() {
+                if (a) {
+                  e.body.parentNode && e.body.parentNode.removeChild(e.body);
+                  var t = "vid_" + viewState.viewId;
+                  if (a[t]) {
+                    var o;
+                    (o = i[t] ? i[t] : (i[t] = new a[t]())), (e = o);
                   } else e = n;
-                  !$CONTAINS(x, e.body) && x.appendChild(e.body);
-                };
-              (this.customFloater = function(e) {
-                (a = e), o(), util.stc("k_fl", e);
-              }),
-                (this.switchFloater = o);
-            })());
+                } else e = n;
+                !$CONTAINS(x, e.body) && x.appendChild(e.body);
+              };
+            this.customFloater = function(e) {
+              a = e;
+              switchFloater();
+              util.stc("k_fl", e);
+            };
+            this.switchFloater = switchFloater;
+          })();
         })();
       I = new S();
       var W = new (function() {

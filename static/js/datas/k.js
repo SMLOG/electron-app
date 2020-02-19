@@ -3,7 +3,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
   var loadScript = lib.load,
     n = lib.dateUtil,
     kUtil = lib.kUtil,
-    s = lib.xh5_S_KLC_D,
+    xh5_S_KLC_D = lib.xh5_S_KLC_D,
     o = 0 == location.protocol.indexOf("https:");
   return new (function() {
     this.VER = "2.7.0";
@@ -832,7 +832,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
               if (o.isCompressData) {
                 var r = o.kSb.replace(".", "$");
                 t = window["KLC_KL_" + r];
-                t = s(t);
+                t = xh5_S_KLC_D(t);
               } else {
                 t = window[h];
                 var l = n.dataformatter || o.dayDataHandler || b;

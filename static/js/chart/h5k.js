@@ -106,117 +106,110 @@ xh5_define(
         };
         this.viewState = viewState;
         var C = new (function() {
-            var i,
-              o = {},
-              s = {
-                rsAmount: void 0
-              },
-              initState = function(e, a, s, r, l) {
-                if (a) {
-                  if (n) {
-                    if (
-                      (e == _.URLHASH.KD && (i = util.clone(a, null)),
-                      r && window.datelist && stockDataA.hq)
-                    ) {
-                      var c = util.xh5_S_KLC_D(window.datelist);
-                      a = util.kUtil.ayd(
-                        a,
-                        c,
-                        !1,
-                        a[0].date,
-                        stockDataA.hq.date
-                      );
-                    }
-                  } else
-                    l ||
-                      (e == _.URLHASH.KD && (i = util.clone(a, null)),
-                      (a = util.kUtil.adbd(a, K.get(e), s, !1)));
-                  o["k" + e] = a;
-                  var d = a.length,
-                    u = r
-                      ? setting.PARAM.K_CL_NUM
-                      : setting.PARAM.defaultCandleNum;
-                  (o["k" + e + "v"] = d > u ? d - u : 0),
-                    (o["k" + e + "b"] = d);
-                }
-              },
-              l = function() {
-                var e = viewState.viewId;
-                switch (e) {
-                  case _.URLHASH.KDF:
-                  case _.URLHASH.KDB:
-                    e = _.URLHASH.KD;
-                    break;
-                  case _.URLHASH.KWF:
-                  case _.URLHASH.KWB:
-                    e = _.URLHASH.KW;
-                    break;
-                  case _.URLHASH.KMF:
-                  case _.URLHASH.KMB:
-                    e = _.URLHASH.KM;
-                    break;
-                  case _.URLHASH.KYF:
-                  case _.URLHASH.KYB:
-                    e = _.URLHASH.KY;
-                    break;
-                  case _.URLHASH.KCLF:
-                  case _.URLHASH.KCLB:
-                    e = _.URLHASH.KCL;
-                }
-                return e;
-              };
-            (this.get = function(e) {
+            var i;
+            var o = {};
+            var s = {
+              rsAmount: void 0
+            };
+            var initState = function(e, a, s, r, l) {
+              if (a) {
+                if (n) {
+                  if (
+                    (e == _.URLHASH.KD && (i = util.clone(a, null)),
+                    r && window.datelist && stockDataA.hq)
+                  ) {
+                    var c = util.xh5_S_KLC_D(window.datelist);
+                    a = util.kUtil.ayd(a, c, !1, a[0].date, stockDataA.hq.date);
+                  }
+                } else
+                  l ||
+                    (e == _.URLHASH.KD && (i = util.clone(a, null)),
+                    (a = util.kUtil.adbd(a, K.get(e), s, !1)));
+                o["k" + e] = a;
+                var d = a.length,
+                  u = r
+                    ? setting.PARAM.K_CL_NUM
+                    : setting.PARAM.defaultCandleNum;
+                (o["k" + e + "v"] = d > u ? d - u : 0), (o["k" + e + "b"] = d);
+              }
+            };
+            var l = function() {
+              var e = viewState.viewId;
+              switch (e) {
+                case _.URLHASH.KDF:
+                case _.URLHASH.KDB:
+                  e = _.URLHASH.KD;
+                  break;
+                case _.URLHASH.KWF:
+                case _.URLHASH.KWB:
+                  e = _.URLHASH.KW;
+                  break;
+                case _.URLHASH.KMF:
+                case _.URLHASH.KMB:
+                  e = _.URLHASH.KM;
+                  break;
+                case _.URLHASH.KYF:
+                case _.URLHASH.KYB:
+                  e = _.URLHASH.KY;
+                  break;
+                case _.URLHASH.KCLF:
+                case _.URLHASH.KCLB:
+                  e = _.URLHASH.KCL;
+              }
+              return e;
+            };
+            this.get = function(e) {
               if (util.isStr(e)) {
                 var n = l();
                 return o["k" + n + e];
               }
               return o["k" + (e || viewState.viewId)];
-            }),
-              (this.set = function(e, t) {
-                var n = l(),
-                  a = "k" + n + e;
-                "undefined" != typeof o[a] && (o[a] = t);
-              }),
-              (this.getOriDK = function() {
-                return i;
-              }),
-              (this.initState = initState),
-              (this.initDWMState = function(e, n) {
-                var a = util.clone(n.day, null);
-                initState(_.URLHASH.KD, n.day),
-                  initState(_.URLHASH.KW, n.week),
-                  initState(_.URLHASH.KM, n.month),
-                  initState(_.URLHASH.KCL, a, !1, !0),
-                  initState(_.URLHASH.KY, n.year);
-              }),
-              (this.extraDataObj = s),
-              (this.initExtraData = function() {
-                var n =
-                  "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
-                a.ssl && (n = util.getSUrl(n));
-                var i = "KKE_ShareAmount_" + e.symbol;
-                util.load(
-                  n
-                    .replace("$symbol", e.symbol)
-                    .replace("$rn", String(new Date().getDate()))
-                    .replace("$cb", "var%20" + i + "="),
-                  function() {
-                    var e = window[i];
-                    if (e) {
-                      for (var t, n = [], a = e.length; a--; )
-                        (t = e[a]),
-                          n.push({
-                            amount: Number(t.amount),
-                            date: m.sd(t.date)
-                          });
-                      n.length && (s.rsAmount = n);
-                    }
+            };
+            this.set = function(e, t) {
+              var n = l(),
+                a = "k" + n + e;
+              "undefined" != typeof o[a] && (o[a] = t);
+            };
+            this.getOriDK = function() {
+              return i;
+            };
+            this.initState = initState;
+            this.initDWMState = function(e, n) {
+              var a = util.clone(n.day, null);
+              initState(_.URLHASH.KD, n.day),
+                initState(_.URLHASH.KW, n.week),
+                initState(_.URLHASH.KM, n.month),
+                initState(_.URLHASH.KCL, a, !1, !0),
+                initState(_.URLHASH.KY, n.year);
+            };
+            this.extraDataObj = s;
+            this.initExtraData = function() {
+              var n =
+                "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
+              a.ssl && (n = util.getSUrl(n));
+              var i = "KKE_ShareAmount_" + e.symbol;
+              util.load(
+                n
+                  .replace("$symbol", e.symbol)
+                  .replace("$rn", String(new Date().getDate()))
+                  .replace("$cb", "var%20" + i + "="),
+                function() {
+                  var e = window[i];
+                  if (e) {
+                    for (var t, n = [], a = e.length; a--; )
+                      (t = e[a]),
+                        n.push({
+                          amount: Number(t.amount),
+                          date: m.sd(t.date)
+                        });
+                    n.length && (s.rsAmount = n);
                   }
-                );
-              }),
-              (this.gc = function() {
-                (o = null), (s = null);
-              });
+                }
+              );
+            };
+            this.gc = function() {
+              (o = null), (s = null);
+            };
           })(),
           rangeCtrl = new (function() {
             var e = function() {

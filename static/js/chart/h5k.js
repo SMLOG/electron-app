@@ -212,40 +212,42 @@ xh5_define(
         })();
         var rangeCtrl = new (function() {
             var e = function() {
-                stockDataA.minPrice = Number.MAX_VALUE;
-                stockDataA.maxPrice = -Number.MAX_VALUE;
-                stockDataA.minPercent = Number.MAX_VALUE;
-                stockDataA.maxPercent = -Number.MAX_VALUE;
-                stockDataA.maxVolume = 0;
-                stockDataA.rangeMax = 0;
-                stockDataA.rangeMin = Number.MAX_VALUE;
-              },
-              t = function() {
-                for (var e, t = 0, n = stockDataA.dataLen; n > t; t++)
-                  (e = stockDataA.datas[t]),
-                    e.close <= 0 ||
-                      (e.high > stockDataA.maxPrice &&
-                        (stockDataA.maxPrice = stockDataA.rangeMax = e.high),
-                      e.low < stockDataA.minPrice &&
-                        (stockDataA.minPrice = stockDataA.rangeMin = e.low),
-                      (stockDataA.maxVolume = Math.max(
-                        stockDataA.maxVolume,
-                        e.volume
-                      )));
-                var a = v(stockDataA.maxVolume, 0, 0, !0);
-                (stockDataA.labelMaxVol = a[0]),
-                  (stockDataA.maxPercent = Math.max(
-                    (stockDataA.maxPrice - stockDataA.prevclose) /
-                      stockDataA.prevclose,
-                    0
-                  )),
-                  (stockDataA.minPercent = Math.min(
-                    (stockDataA.minPrice - stockDataA.prevclose) /
-                      stockDataA.prevclose,
-                    0
-                  ));
-              };
-            (this.createPlayingData = function() {
+              stockDataA.minPrice = Number.MAX_VALUE;
+              stockDataA.maxPrice = -Number.MAX_VALUE;
+              stockDataA.minPercent = Number.MAX_VALUE;
+              stockDataA.maxPercent = -Number.MAX_VALUE;
+              stockDataA.maxVolume = 0;
+              stockDataA.rangeMax = 0;
+              stockDataA.rangeMin = Number.MAX_VALUE;
+            };
+            var t = function() {
+              for (var e, t = 0, n = stockDataA.dataLen; n > t; t++) {
+                e = stockDataA.datas[t];
+                e.close <= 0 ||
+                  (e.high > stockDataA.maxPrice &&
+                    (stockDataA.maxPrice = stockDataA.rangeMax = e.high),
+                  e.low < stockDataA.minPrice &&
+                    (stockDataA.minPrice = stockDataA.rangeMin = e.low),
+                  (stockDataA.maxVolume = Math.max(
+                    stockDataA.maxVolume,
+                    e.volume
+                  )));
+              }
+
+              var a = v(stockDataA.maxVolume, 0, 0, !0);
+              stockDataA.labelMaxVol = a[0];
+              stockDataA.maxPercent = Math.max(
+                (stockDataA.maxPrice - stockDataA.prevclose) /
+                  stockDataA.prevclose,
+                0
+              );
+              stockDataA.minPercent = Math.min(
+                (stockDataA.minPrice - stockDataA.prevclose) /
+                  stockDataA.prevclose,
+                0
+              );
+            };
+            this.createPlayingData = function() {
               var e,
                 t,
                 n = setting.DIMENSION.h_k,
@@ -271,54 +273,54 @@ xh5_define(
                   (o.hy = d[u](o.high, e, t, n, r)),
                   (o.ly = d[u](o.low, e, t, n, r)),
                   c && (o.vy = d.vp(o.volume, s, a) + i);
-            }),
-              (this.setDataRange = function(n) {
-                var i = C.get();
-                if (i) {
-                  viewState.dataLength = i.length;
-                  var o = viewState.start,
-                    s = viewState.end;
-                  if (isNaN(o) || isNaN(s))
-                    (s = C.get("b")),
-                      (o = C.get("v")),
-                      (viewState.start = o),
-                      (viewState.end = s);
-                  else {
-                    if (n && s + 1 >= i.length) {
-                      var r = i.length - s;
-                      (viewState.end = s = i.length),
-                        (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
-                          (0 == o &&
-                            s > 1 &&
-                            s < setting.PARAM.minCandleNum &&
-                            ((o = s - 1), (viewState.start = o)),
-                          s - o >= setting.PARAM.defaultCandleNum &&
-                            ((o += r), (viewState.start = o)));
-                    }
-                    C.set("v", o), C.set("b", s);
+            };
+            this.setDataRange = function(n) {
+              var i = C.get();
+              if (i) {
+                viewState.dataLength = i.length;
+                var o = viewState.start,
+                  s = viewState.end;
+                if (isNaN(o) || isNaN(s))
+                  (s = C.get("b")),
+                    (o = C.get("v")),
+                    (viewState.start = o),
+                    (viewState.end = s);
+                else {
+                  if (n && s + 1 >= i.length) {
+                    var r = i.length - s;
+                    (viewState.end = s = i.length),
+                      (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
+                        (0 == o &&
+                          s > 1 &&
+                          s < setting.PARAM.minCandleNum &&
+                          ((o = s - 1), (viewState.start = o)),
+                        s - o >= setting.PARAM.defaultCandleNum &&
+                          ((o += r), (viewState.start = o)));
                   }
-                  switch (
-                    ((viewState.currentLength = s - o),
-                    (viewState.startDate = i[o].date),
-                    (viewState.endDate = i[s - 1].date),
-                    a.pcm)
-                  ) {
-                    case 1:
-                      stockDataA.prevclose = i[0].prevclose;
-                      break;
-                    case 2:
-                      stockDataA.prevclose = i[o].close;
-                      break;
-                    default:
-                      stockDataA.prevclose =
-                        o > 1 ? i[o - 1].close : i[0].prevclose || i[0].close;
-                  }
-                  (stockDataA.datas = i.slice(o, s)),
-                    (stockDataA.dataLen = stockDataA.datas.length),
-                    e(),
-                    t(n);
+                  C.set("v", o), C.set("b", s);
                 }
-              });
+                switch (
+                  ((viewState.currentLength = s - o),
+                  (viewState.startDate = i[o].date),
+                  (viewState.endDate = i[s - 1].date),
+                  a.pcm)
+                ) {
+                  case 1:
+                    stockDataA.prevclose = i[0].prevclose;
+                    break;
+                  case 2:
+                    stockDataA.prevclose = i[o].close;
+                    break;
+                  default:
+                    stockDataA.prevclose =
+                      o > 1 ? i[o - 1].close : i[0].prevclose || i[0].close;
+                }
+                (stockDataA.datas = i.slice(o, s)),
+                  (stockDataA.dataLen = stockDataA.datas.length),
+                  e(),
+                  t(n);
+              }
+            };
           })(),
           P = new (function() {
             var o,

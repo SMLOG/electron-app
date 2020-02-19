@@ -1954,12 +1954,17 @@ xh5_define(
         this.updateDataAll = U;
         this.outputNewRange = H;
         this.dcReset = function() {
-          clearInterval(l), clearTimeout(h);
-          for (var e, t = f.length; t--; )
-            (e = f.splice(t, 1)[0]), e.clear(), (e = null);
+          clearInterval(l);
+          clearTimeout(h);
+          for (var e, t = f.length; t--; ) {
+            e = f.splice(t, 1)[0];
+            e.clear();
+            e = null;
+          }
         };
         this.dcInit = function(e) {
-          G(e, !0), U();
+          G(e, !0);
+          U();
         };
       }
       util.xh5_EvtDispatcher.call(this);

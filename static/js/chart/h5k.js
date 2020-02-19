@@ -1761,7 +1761,7 @@ xh5_define(
               ee > 0 && K(1), te();
             }, 500);
           };
-        (this.pushData = function(e, t) {
+        this.pushData = function(e, t) {
           var n = !1;
           switch (Number(t)) {
             case 0:
@@ -1779,28 +1779,28 @@ xh5_define(
                 ee++, f[i].doUpdate(b(J, null, n), !1, e[a].data, e[a].market);
                 break;
               }
-        }),
-          (this.setScale = function(e) {
-            (setting.datas.scaleType = e), y(), callSdDraw();
-          }),
-          (this.setLineStyle = function(n) {
-            if (n) {
-              !util.isArr(n) && (n = [n]);
-              for (var a = n.length; a--; ) {
-                var i = n[a];
-                if (i.hasOwnProperty("symbol")) {
-                  for (var o = i.symbol, s = f.length; s--; )
-                    if (f[s].symbol == o) {
-                      f[s].setLineStyle(i), f[s].draw();
-                      break;
-                    }
-                } else e.setLineStyle(i), e.draw();
-              }
-            } else e.setLineStyle(), e.draw();
-          }),
-          (this.onResize = function(e) {
-            for (var t = f.length; t--; ) f[t].resize(e);
-          });
+        };
+        this.setScale = function(e) {
+          (setting.datas.scaleType = e), y(), callSdDraw();
+        };
+        this.setLineStyle = function(n) {
+          if (n) {
+            !util.isArr(n) && (n = [n]);
+            for (var a = n.length; a--; ) {
+              var i = n[a];
+              if (i.hasOwnProperty("symbol")) {
+                for (var o = i.symbol, s = f.length; s--; )
+                  if (f[s].symbol == o) {
+                    f[s].setLineStyle(i), f[s].draw();
+                    break;
+                  }
+              } else e.setLineStyle(i), e.draw();
+            }
+          } else e.setLineStyle(), e.draw();
+        };
+        this.onResize = function(e) {
+          for (var t = f.length; t--; ) f[t].resize(e);
+        };
         var ae = -1,
           ie = -1,
           oe = function(e, t) {

@@ -85,3 +85,18 @@ export async function get5Tdatas(code) {
   });
 }
 window.get5Tdatas = get5Tdatas;
+
+export async function getKdatas(code) {
+  await loadscript;
+  return await new Promise((resolve, reject) => {
+    KKE.api(
+      "datas.k.get",
+      { symbol: "sh601900", newthour: "09:00", ssl: true },
+      function(datas) {
+        console.log(datas);
+        resolve(datas);
+      }
+    );
+  });
+}
+window.getKdatas = getKdatas;

@@ -742,9 +742,10 @@ xh5_define(
                 i,
                 o = viewState.viewId,
                 s = globalCfg.URLHASH.gt(o);
-              if (stockDataA.nco && stockDataA.nco.open)
-                (i = stockDataA.nco.open), (b = i);
-              else {
+              if (stockDataA.nco && stockDataA.nco.open) {
+                i = stockDataA.nco.open;
+                b = i;
+              } else {
                 var r = new Date(),
                   l = b.split(":");
                 r.setHours(l[0], l[1], 0),

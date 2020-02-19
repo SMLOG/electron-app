@@ -319,10 +319,10 @@ xh5_define(
                         ? i[start - 1].close
                         : i[0].prevclose || i[0].close;
                 }
-                (stockDataA.datas = i.slice(start, end)),
-                  (stockDataA.dataLen = stockDataA.datas.length),
-                  e(),
-                  t(n);
+                stockDataA.datas = i.slice(start, end);
+                stockDataA.dataLen = stockDataA.datas.length;
+                e();
+                t(n);
               }
             };
           })(),

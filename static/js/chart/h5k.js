@@ -3110,10 +3110,11 @@ xh5_define(
             if (setting.hasOwnProperty(n)) {
               for (var i in a)
                 if (a.hasOwnProperty(i) && util.isFunc(a[i])) return;
-              "DIMENSION" == n && ($ = 1),
-                oc(setting[n], a),
-                util.stc(n, a),
-                e.resize();
+
+              "DIMENSION" == n && ($ = 1);
+              oc(setting[n], a);
+              util.stc(n, a);
+              e.resize();
             }
           },
           i = function(e, n) {
@@ -3124,8 +3125,9 @@ xh5_define(
                 if (a.hasOwnProperty(i))
                   if (util.isFunc(a[i])) (a[i] = null), delete a[i];
                   else if (n)
-                    for (var o = n.length; o--; )
+                    for (var o = n.length; o--; ) {
                       typeof a[i] === n[o] && ((a[i] = null), delete a[i]);
+                    }
             }
             return a;
           },

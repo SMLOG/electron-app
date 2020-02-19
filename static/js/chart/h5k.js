@@ -212,13 +212,13 @@ xh5_define(
         })();
         var rangeCtrl = new (function() {
             var e = function() {
-                (stockDataA.minPrice = Number.MAX_VALUE),
-                  (stockDataA.maxPrice = -Number.MAX_VALUE),
-                  (stockDataA.minPercent = Number.MAX_VALUE),
-                  (stockDataA.maxPercent = -Number.MAX_VALUE),
-                  (stockDataA.maxVolume = 0),
-                  (stockDataA.rangeMax = 0),
-                  (stockDataA.rangeMin = Number.MAX_VALUE);
+                stockDataA.minPrice = Number.MAX_VALUE;
+                stockDataA.maxPrice = -Number.MAX_VALUE;
+                stockDataA.minPercent = Number.MAX_VALUE;
+                stockDataA.maxPercent = -Number.MAX_VALUE;
+                stockDataA.maxVolume = 0;
+                stockDataA.rangeMax = 0;
+                stockDataA.rangeMin = Number.MAX_VALUE;
               },
               t = function() {
                 for (var e, t = 0, n = stockDataA.dataLen; n > t; t++)

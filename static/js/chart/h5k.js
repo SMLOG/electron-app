@@ -3370,7 +3370,8 @@ xh5_define(
             for (var a = H(e), i = a.length; i--; )
               for (var o = g.length; o--; )
                 if (a[i] == g[o]) {
-                  g.splice(o, 1), v.splice(o, 1);
+                  g.splice(o, 1);
+                  v.splice(o, 1);
                   break;
                 }
             I.removeCompare(H(e));
@@ -3382,12 +3383,13 @@ xh5_define(
         };
         var D = 0;
         this.tCharts = function(e, n) {
-          o("tech", e, n), n && !n.noLog && (0 == D ? (D = 1) : util.sudaLog());
+          o("tech", e, n);
+          n && !n.noLog && (0 == D ? (D = 1) : util.sudaLog());
         };
         var O = 0;
         this.pCharts = function(e, n) {
-          o("price", e, n),
-            n && !n.noLog && (0 == O ? (O = 1) : util.sudaLog());
+          o("price", e, n);
+          n && !n.noLog && (0 == O ? (O = 1) : util.sudaLog());
         };
         this.showPCharts = function(e) {
           e && (I.mM.togglePt(e), util.stc("k_sp", e));

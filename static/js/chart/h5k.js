@@ -108,7 +108,7 @@ xh5_define(
         var C = new (function() {
             var i;
             var o = {};
-            var s = {
+            var extraDataObj = {
               rsAmount: void 0
             };
             var initState = function(e, a, s, r, l) {
@@ -176,13 +176,13 @@ xh5_define(
             this.initState = initState;
             this.initDWMState = function(e, n) {
               var a = util.clone(n.day, null);
-              initState(_.URLHASH.KD, n.day),
-                initState(_.URLHASH.KW, n.week),
-                initState(_.URLHASH.KM, n.month),
-                initState(_.URLHASH.KCL, a, !1, !0),
-                initState(_.URLHASH.KY, n.year);
+              initState(_.URLHASH.KD, n.day);
+              initState(_.URLHASH.KW, n.week);
+              initState(_.URLHASH.KM, n.month);
+              initState(_.URLHASH.KCL, a, !1, !0);
+              initState(_.URLHASH.KY, n.year);
             };
-            this.extraDataObj = s;
+            this.extraDataObj = extraDataObj;
             this.initExtraData = function() {
               var n =
                 "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
@@ -202,13 +202,13 @@ xh5_define(
                           amount: Number(t.amount),
                           date: m.sd(t.date)
                         });
-                    n.length && (s.rsAmount = n);
+                    n.length && (extraDataObj.rsAmount = n);
                   }
                 }
               );
             };
             this.gc = function() {
-              (o = null), (s = null);
+              (o = null), (extraDataObj = null);
             };
           })(),
           rangeCtrl = new (function() {

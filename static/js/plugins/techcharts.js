@@ -5,93 +5,93 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   "use strict";
 
   function techchart(cfg, i, r) {
-    (this.cfg = cfg),
-      (this.isSC = !0),
-      (this.proxyCfg = it(
-        {
-          iTo: function() {},
-          ctn: null,
-          titleCtn: null,
-          iMgr: void 0,
-          titleW: 0 / 0,
-          titleGap: 0 / 0,
-          withHBg: !0,
-          h: 0 / 0,
-          mh: 0 / 0,
-          eh: 0 / 0,
-          lz: 0 / 0,
-          fixIdctW: !1,
-          onClkMain: void 0,
-          stock: void 0,
-          usrObj: void 0,
-          initMgr: void 0
-        },
-        i
-      )),
-      (this.selfCfg = it(
-        {
-          nu: !1,
-          h: this.proxyCfg.h,
-          mh: this.proxyCfg.mh,
-          eh: this.proxyCfg.eh,
-          titleW: 0 / 0,
-          isBlank: !1,
-          ctnId: void 0,
-          allowrfs: !0
-        },
-        r
-      )),
-      (this.isBlank = this.selfCfg.isBlank),
-      (this.proxyCfg.titleW = this.selfCfg.titleW),
-      (this.symbol = this.proxyCfg.stock.symbol),
-      (this.aliasymbol = void 0),
-      (this.name = void 0),
-      (this.sname = void 0),
-      (this.alias = void 0),
-      (this.nu = this.selfCfg.nu),
-      (this.separate = 0),
-      (this.urlData = void 0),
-      (this.cb = void 0),
-      (this.toReCalc = !1),
-      (this.selfDataUrl = void 0),
-      (this.selfDataUrlUpdate = void 0),
-      (this.df = void 0),
-      (this.viewState = this.proxyCfg.stock.viewState),
-      (this.datas = null),
-      (this.wrap = void 0),
-      (this.titleCtn = void 0),
-      (this.titleO = void 0),
-      (this.indicatorArr = void 0),
-      (this.line = void 0),
-      (this.h = this.selfCfg.h),
-      (this.mh = this.selfCfg.mh),
-      (this.eh = this.selfCfg.eh),
-      (this.labelMaxP = 0 / 0),
-      (this.labelMinP = 0 / 0),
-      (this.maxPrice = 0 / 0),
-      (this.minPrice = 0 / 0),
-      (this.pricePosArr = void 0),
-      (this.labelPriceCount = 2),
-      (this.isMain = !0),
-      (this.oriArr = void 0),
-      (this.selfArr = []),
-      (this.disMod = 1),
-      (this.tkProp = {
-        close: "close"
-      }),
-      (this.customArr = void 0),
-      this.DEFAULT_ARR,
-      (this.updateId = void 0),
-      (this.updateCount = 0),
-      (this.UPDATE_THRESHOLD = 0),
-      (this.__iOffsetX = 0),
-      (this.asPChart = !1),
-      (this.vaObj = void 0),
-      (this.param = void 0),
-      (this.lw = 1.3),
-      this.ic({
-        h: this.h
-      });
+    this.cfg = cfg;
+    this.isSC = !0;
+    this.proxyCfg = it(
+      {
+        iTo: function() {},
+        ctn: null,
+        titleCtn: null,
+        iMgr: void 0,
+        titleW: 0 / 0,
+        titleGap: 0 / 0,
+        withHBg: !0,
+        h: 0 / 0,
+        mh: 0 / 0,
+        eh: 0 / 0,
+        lz: 0 / 0,
+        fixIdctW: !1,
+        onClkMain: void 0,
+        stock: void 0,
+        usrObj: void 0,
+        initMgr: void 0
+      },
+      i
+    );
+    this.selfCfg = it(
+      {
+        nu: !1,
+        h: this.proxyCfg.h,
+        mh: this.proxyCfg.mh,
+        eh: this.proxyCfg.eh,
+        titleW: 0 / 0,
+        isBlank: !1,
+        ctnId: void 0,
+        allowrfs: !0
+      },
+      r
+    );
+    this.isBlank = this.selfCfg.isBlank;
+    this.proxyCfg.titleW = this.selfCfg.titleW;
+    this.symbol = this.proxyCfg.stock.symbol;
+    this.aliasymbol = void 0;
+    this.name = void 0;
+    this.sname = void 0;
+    this.alias = void 0;
+    this.nu = this.selfCfg.nu;
+    this.separate = 0;
+    this.urlData = void 0;
+    this.cb = void 0;
+    this.toReCalc = !1;
+    this.selfDataUrl = void 0;
+    this.selfDataUrlUpdate = void 0;
+    this.df = void 0;
+    this.viewState = this.proxyCfg.stock.viewState;
+    this.datas = null;
+    this.wrap = void 0;
+    this.titleCtn = void 0;
+    this.titleO = void 0;
+    this.indicatorArr = void 0;
+    this.line = void 0;
+    this.h = this.selfCfg.h;
+    this.mh = this.selfCfg.mh;
+    this.eh = this.selfCfg.eh;
+    this.labelMaxP = 0 / 0;
+    this.labelMinP = 0 / 0;
+    this.maxPrice = 0 / 0;
+    this.minPrice = 0 / 0;
+    this.pricePosArr = void 0;
+    this.labelPriceCount = 2;
+    this.isMain = !0;
+    this.oriArr = void 0;
+    this.selfArr = [];
+    this.disMod = 1;
+    this.tkProp = {
+      close: "close"
+    };
+    this.customArr = void 0;
+    this.DEFAULT_ARR;
+    this.updateId = void 0;
+    this.updateCount = 0;
+    this.UPDATE_THRESHOLD = 0;
+    this.__iOffsetX = 0;
+    this.asPChart = !1;
+    this.vaObj = void 0;
+    this.param = void 0;
+    this.lw = 1.3;
+    this.ic({
+      h: this.h
+    });
   }
 
   function BLANKCTN(t, i) {
@@ -4982,62 +4982,60 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
           (this.labelMaxP = h), (this.labelMinP = 0), this.syncI();
         }
-      }),
-      (this.draw = function() {
-        if (this.datas) {
-          var t = this.line;
-          t.clear(!0, cfg.PARAM.getHd());
-          for (
-            var r,
-              a,
-              s,
-              e,
-              h = this.datas.length,
-              o = cfg.DIMENSION.w_t / h,
-              l = this.h,
-              n = o * gt,
-              c = -1,
-              d = 0;
-            3 > d;
-            d++
-          ) {
-            switch (c) {
-              case -1:
-                e = cfg.COLOR.T_FALL;
-                break;
-              case 0:
-                e = cfg.COLOR.T_N;
-                break;
-              case 1:
-                e = cfg.COLOR.T_RISE;
-            }
-            (r = 0), t.beginPath();
-            for (var f = 0; h > f; f++)
-              (s = this.datas[f]),
-                s.volume >= 0 &&
-                  ((a = s.voly),
-                  s.kke_cs == c && t.drawVStickC(r, a, n, l - a, e)),
-                (r += o);
-            t.stroke(), c++;
-          }
-          for (var u = 1, p = this.customArr.length; p > u; u++) {
-            var v = this.customArr[u].prop + "y";
-            (r = n), t.newStyle(this.customArr[u].color, !0, 1.3);
-            for (var A = 0; h > A; A++)
-              (s = this.datas[A]),
-                s.volume >= 0 &&
-                  (0 == A ? t.moveTo(r, s[v]) : t.lineTo(r, s[v])),
-                (r += o);
-            t.stroke();
-          }
-          t.drawBg();
-        }
       });
+    this.draw = function() {
+      if (this.datas) {
+        var t = this.line;
+        t.clear(!0, cfg.PARAM.getHd());
+        for (
+          var r,
+            a,
+            s,
+            e,
+            h = this.datas.length,
+            o = cfg.DIMENSION.w_t / h,
+            l = this.h,
+            n = o * gt,
+            c = -1,
+            d = 0;
+          3 > d;
+          d++
+        ) {
+          switch (c) {
+            case -1:
+              e = cfg.COLOR.T_FALL;
+              break;
+            case 0:
+              e = cfg.COLOR.T_N;
+              break;
+            case 1:
+              e = cfg.COLOR.T_RISE;
+          }
+          (r = 0), t.beginPath();
+          for (var f = 0; h > f; f++)
+            (s = this.datas[f]),
+              s.volume >= 0 &&
+                ((a = s.voly),
+                s.kke_cs == c && t.drawVStickC(r, a, n, l - a, e)),
+              (r += o);
+          t.stroke(), c++;
+        }
+        for (var u = 1, p = this.customArr.length; p > u; u++) {
+          var v = this.customArr[u].prop + "y";
+          r = n;
+          t.newStyle(this.customArr[u].color, !0, 1.3);
+          for (var A = 0; h > A; A++)
+            (s = this.datas[A]),
+              s.volume >= 0 && (0 == A ? t.moveTo(r, s[v]) : t.lineTo(r, s[v])),
+              (r += o);
+          t.stroke();
+        }
+        t.drawBg();
+      }
+    };
   }
 
   function pChart(configa) {
-    console.log(configa);
-
     function r() {
       var PCHART_MAP = {
         BBIBOLL: BBIBOLL,
@@ -7183,13 +7181,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     };
   })();
   return new (function() {
-    (this.VER = "6.6.5"),
-      (this.get = function(config, callback) {
-        utils_util.isFunc(callback) &&
-          callback({
-            tChart: tChart,
-            pChart: pChart
-          });
-      });
+    this.VER = "6.6.5";
+    this.get = function(config, callback) {
+      utils_util.isFunc(callback) &&
+        callback({
+          tChart: tChart,
+          pChart: pChart
+        });
+    };
   })();
 });

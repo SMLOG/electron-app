@@ -14,7 +14,7 @@ xh5_define(
         function l(e, t) {
           var n,
             a,
-            i = DB.get(_.URLHASH.KD),
+            i = kDb.get(_.URLHASH.KD),
             o = i.length;
           e || (n = 0), t || (a = o - 1);
           for (
@@ -28,11 +28,11 @@ xh5_define(
           return [n, a];
         }
         function c() {
-          n && (K = DB),
+          n && (K = kDb),
             P.uUpdate(null, !0),
             "CN" !== u ||
               /^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol) ||
-              DB.initExtraData();
+              kDb.initExtraData();
         }
         e = p(
           {
@@ -105,7 +105,7 @@ xh5_define(
           return A || "";
         };
         this.viewState = viewState;
-        var DB = new (function() {
+        var kDb = new (function() {
           var i;
           var o = {};
           var extraDataObj = {
@@ -212,687 +212,681 @@ xh5_define(
         })();
 
         var rangeCtrl = new (function() {
-            var e = function() {
-              stockDataA.minPrice = Number.MAX_VALUE;
-              stockDataA.maxPrice = -Number.MAX_VALUE;
-              stockDataA.minPercent = Number.MAX_VALUE;
-              stockDataA.maxPercent = -Number.MAX_VALUE;
-              stockDataA.maxVolume = 0;
-              stockDataA.rangeMax = 0;
-              stockDataA.rangeMin = Number.MAX_VALUE;
-            };
-            var t = function() {
-              for (var e, t = 0, n = stockDataA.dataLen; n > t; t++) {
-                e = stockDataA.datas[t];
-                e.close <= 0 ||
-                  (e.high > stockDataA.maxPrice &&
-                    (stockDataA.maxPrice = stockDataA.rangeMax = e.high),
-                  e.low < stockDataA.minPrice &&
-                    (stockDataA.minPrice = stockDataA.rangeMin = e.low),
-                  (stockDataA.maxVolume = Math.max(
-                    stockDataA.maxVolume,
-                    e.volume
-                  )));
-              }
+          var e = function() {
+            stockDataA.minPrice = Number.MAX_VALUE;
+            stockDataA.maxPrice = -Number.MAX_VALUE;
+            stockDataA.minPercent = Number.MAX_VALUE;
+            stockDataA.maxPercent = -Number.MAX_VALUE;
+            stockDataA.maxVolume = 0;
+            stockDataA.rangeMax = 0;
+            stockDataA.rangeMin = Number.MAX_VALUE;
+          };
+          var t = function() {
+            for (var e, t = 0, n = stockDataA.dataLen; n > t; t++) {
+              e = stockDataA.datas[t];
+              e.close <= 0 ||
+                (e.high > stockDataA.maxPrice &&
+                  (stockDataA.maxPrice = stockDataA.rangeMax = e.high),
+                e.low < stockDataA.minPrice &&
+                  (stockDataA.minPrice = stockDataA.rangeMin = e.low),
+                (stockDataA.maxVolume = Math.max(
+                  stockDataA.maxVolume,
+                  e.volume
+                )));
+            }
 
-              var a = v(stockDataA.maxVolume, 0, 0, !0);
-              stockDataA.labelMaxVol = a[0];
-              stockDataA.maxPercent = Math.max(
-                (stockDataA.maxPrice - stockDataA.prevclose) /
-                  stockDataA.prevclose,
-                0
-              );
-              stockDataA.minPercent = Math.min(
-                (stockDataA.minPrice - stockDataA.prevclose) /
-                  stockDataA.prevclose,
-                0
-              );
-            };
-            this.createPlayingData = function() {
-              var e,
-                t,
-                n = setting.DIMENSION.h_k,
-                a = n * setting.DIMENSION.P_HV,
-                i = n * (1 - setting.DIMENSION.P_HV);
-              e = stockDataA.labelMinP;
-              t = stockDataA.labelMaxP;
-              for (
-                var o,
-                  s = stockDataA.labelMaxVol,
-                  r = stockDataA.prevclose,
-                  l = stockDataA.isTotalRedraw
-                    ? 0
-                    : stockDataA.dataLen - stockDataA.dataLenOffset,
-                  c = setting.custom.show_underlay_vol,
-                  u = stockDataA.isCompare ? "ppp" : "pp",
-                  p = stockDataA.dataLen;
-                p > l;
-                l++
-              ) {
-                o = stockDataA.datas[l];
-                o.cy = d[u](o.close, e, t, n, r);
-                o.oy = d[u](o.open, e, t, n, r);
-                o.hy = d[u](o.high, e, t, n, r);
-                o.ly = d[u](o.low, e, t, n, r);
-                c && (o.vy = d.vp(o.volume, s, a) + i);
-              }
-            };
-            this.setDataRange = function(n) {
-              var i = DB.get();
-              if (i) {
-                viewState.dataLength = i.length;
-                var start = viewState.start;
-                var end = viewState.end;
-                if (isNaN(start) || isNaN(end)) {
-                  end = DB.get("b");
-                  start = DB.get("v");
-                  viewState.start = start;
-                  viewState.end = end;
-                } else {
-                  if (n && end + 1 >= i.length) {
-                    var r = i.length - end;
-                    viewState.end = end = i.length;
-                    (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
-                      (0 == start &&
-                        end > 1 &&
-                        end < setting.PARAM.minCandleNum &&
-                        ((start = end - 1), (viewState.start = start)),
-                      end - start >= setting.PARAM.defaultCandleNum &&
-                        ((start += r), (viewState.start = start)));
-                  }
-                  DB.set("v", start), DB.set("b", end);
+            var a = v(stockDataA.maxVolume, 0, 0, !0);
+            stockDataA.labelMaxVol = a[0];
+            stockDataA.maxPercent = Math.max(
+              (stockDataA.maxPrice - stockDataA.prevclose) /
+                stockDataA.prevclose,
+              0
+            );
+            stockDataA.minPercent = Math.min(
+              (stockDataA.minPrice - stockDataA.prevclose) /
+                stockDataA.prevclose,
+              0
+            );
+          };
+          this.createPlayingData = function() {
+            var e,
+              t,
+              n = setting.DIMENSION.h_k,
+              a = n * setting.DIMENSION.P_HV,
+              i = n * (1 - setting.DIMENSION.P_HV);
+            e = stockDataA.labelMinP;
+            t = stockDataA.labelMaxP;
+            for (
+              var o,
+                s = stockDataA.labelMaxVol,
+                r = stockDataA.prevclose,
+                l = stockDataA.isTotalRedraw
+                  ? 0
+                  : stockDataA.dataLen - stockDataA.dataLenOffset,
+                c = setting.custom.show_underlay_vol,
+                u = stockDataA.isCompare ? "ppp" : "pp",
+                p = stockDataA.dataLen;
+              p > l;
+              l++
+            ) {
+              o = stockDataA.datas[l];
+              o.cy = d[u](o.close, e, t, n, r);
+              o.oy = d[u](o.open, e, t, n, r);
+              o.hy = d[u](o.high, e, t, n, r);
+              o.ly = d[u](o.low, e, t, n, r);
+              c && (o.vy = d.vp(o.volume, s, a) + i);
+            }
+          };
+          this.setDataRange = function(n) {
+            var i = kDb.get();
+            if (i) {
+              viewState.dataLength = i.length;
+              var start = viewState.start;
+              var end = viewState.end;
+              if (isNaN(start) || isNaN(end)) {
+                end = kDb.get("b");
+                start = kDb.get("v");
+                viewState.start = start;
+                viewState.end = end;
+              } else {
+                if (n && end + 1 >= i.length) {
+                  var r = i.length - end;
+                  viewState.end = end = i.length;
+                  (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
+                    (0 == start &&
+                      end > 1 &&
+                      end < setting.PARAM.minCandleNum &&
+                      ((start = end - 1), (viewState.start = start)),
+                    end - start >= setting.PARAM.defaultCandleNum &&
+                      ((start += r), (viewState.start = start)));
                 }
-                viewState.currentLength = end - start;
-                viewState.startDate = i[start].date;
-                viewState.endDate = i[end - 1].date;
+                kDb.set("v", start), kDb.set("b", end);
+              }
+              viewState.currentLength = end - start;
+              viewState.startDate = i[start].date;
+              viewState.endDate = i[end - 1].date;
 
-                switch (a.pcm) {
-                  case 1:
-                    stockDataA.prevclose = i[0].prevclose;
-                    break;
-                  case 2:
-                    stockDataA.prevclose = i[start].close;
-                    break;
-                  default:
-                    stockDataA.prevclose =
-                      start > 1
-                        ? i[start - 1].close
-                        : i[0].prevclose || i[0].close;
-                }
-                stockDataA.datas = i.slice(start, end);
-                stockDataA.dataLen = stockDataA.datas.length;
-                e();
-                t(n);
+              switch (a.pcm) {
+                case 1:
+                  stockDataA.prevclose = i[0].prevclose;
+                  break;
+                case 2:
+                  stockDataA.prevclose = i[start].close;
+                  break;
+                default:
+                  stockDataA.prevclose =
+                    start > 1
+                      ? i[start - 1].close
+                      : i[0].prevclose || i[0].close;
               }
-            };
-          })(),
-          P = new (function() {
-            var o,
-              s = function(e) {
-                return (
-                  o
-                    ? ((e.volume = e.totalVolume - (o.totalVolume || 0)),
-                      (e.amount = e.volume * e.price))
-                    : ((o = {}), (e.volume = 0)),
-                  (o.totalVolume = e.totalVolume),
-                  (e.avg_price = e.totalAmount / e.totalVolume || e.price),
-                  !0
-                );
-              },
-              r = !1,
-              l = function(e, n, a) {
-                if (e.isUpdateTime) {
-                  var i = DB.get(n);
-                  if (i && !(i.length < 1)) {
-                    var o =
-                        n == _.URLHASH.KD ||
-                        n == _.URLHASH.KDF ||
-                        n == _.URLHASH.KCL ||
-                        n == _.URLHASH.KCLF,
-                      s = i[i.length - 1];
-                    if (1 == a) {
+              stockDataA.datas = i.slice(start, end);
+              stockDataA.dataLen = stockDataA.datas.length;
+              e();
+              t(n);
+            }
+          };
+        })();
+        var P = new (function() {
+          var o,
+            s = function(e) {
+              return (
+                o
+                  ? ((e.volume = e.totalVolume - (o.totalVolume || 0)),
+                    (e.amount = e.volume * e.price))
+                  : ((o = {}), (e.volume = 0)),
+                (o.totalVolume = e.totalVolume),
+                (e.avg_price = e.totalAmount / e.totalVolume || e.price),
+                !0
+              );
+            },
+            r = !1,
+            l = function(e, n, a) {
+              if (e.isUpdateTime) {
+                var i = kDb.get(n);
+                if (i && !(i.length < 1)) {
+                  var o =
+                      n == _.URLHASH.KD ||
+                      n == _.URLHASH.KDF ||
+                      n == _.URLHASH.KCL ||
+                      n == _.URLHASH.KCLF,
+                    s = i[i.length - 1];
+                  if (1 == a) {
+                    if (
+                      s.time &&
+                      !util.kUtil.spk(s.time, e.time, b, n, stockDataA.market)
+                    ) {
                       if (
-                        s.time &&
-                        !util.kUtil.spk(s.time, e.time, b, n, stockDataA.market)
-                      ) {
-                        if (
-                          (util.kUtil.nc(i, e, n, {
-                            price: e.price,
-                            volume: e.volume
-                          }),
-                          /^forex|^BTC/.test(stockDataA.market))
-                        )
-                          n == _.URLHASH.K1 &&
-                            ((s = i[i.length - 1]),
-                            (s.prevclose = e.prevclose),
-                            (s.change = e.price - e.prevclose),
-                            (s.percent = s.change / e.prevclose));
-                        else if ("NF" == stockDataA.market);
-                        else if (util.kUtil.spk("09:35", e.time, b, n)) {
-                          if (n == _.URLHASH.K60) {
-                            var l = e.time.split(":"),
-                              c = l[0],
-                              d = l[1];
-                            if (c > 10 || (10 == c && d > 30)) return;
-                          }
-                          (s = i[i.length - 1]),
-                            (s.open = e.open),
-                            s.open > s.high && (s.high = s.open),
-                            s.open < s.low && (s.low = s.open);
-                        }
-                        return;
-                      }
-                    } else if (2 == a) {
-                      if (!e.trstr) return;
-                      util.kUtil.nc(i, e, n, {
-                        price: e.price,
-                        volume: 0
-                      });
-                    } else if (f(e.date, s.date))
-                      stockDataA.nco &&
-                        ("NF" == stockDataA.market
-                          ? m.dst(s.date) < stockDataA.nco.open &&
-                            e.time >= stockDataA.nco.open &&
-                            e.time > stockDataA.nco.close &&
-                            util.kUtil.nc(i, e, n, null)
-                          : r &&
-                            e.time >= stockDataA.nco.open &&
-                            ((r = !1), util.kUtil.nc(i, e, n, null)));
-                    else {
-                      if (!(e.date > s.date)) return;
-                      stockDataA.nco
-                        ? "NF" == stockDataA.market
-                          ? e.time >= stockDataA.nco.open &&
-                            util.kUtil.nc(i, e, n, null)
-                          : e.time <= stockDataA.nco.close && (r = !0)
-                        : util.kUtil.nc(i, e, n, null);
-                    }
-                    (s = i[i.length - 1]),
-                      (s.close = e.price),
-                      (s.date = m.ddt(e.date)),
-                      (s.day = m.ds(s.date, "/")),
-                      n == _.URLHASH.KMS
-                        ? ((s.volume = e.trvolume || 0),
-                          (s.amount = e.tramount || 0),
-                          (s.trbs = e.trbs),
-                          (s.kke_cs = 0 == e.trbs ? -1 : 1))
-                        : (o
-                            ? ((s.open = e.open),
-                              (s.high = e.high),
-                              (s.low = e.low),
-                              (s.volume = e.totalVolume))
-                            : isNaN(s.volume)
-                            ? (s.volume = e.volume)
-                            : (s.volume += Number(e.volume)),
-                          (s.kke_cs =
-                            s.close > s.open ? 1 : s.open > s.close ? -1 : 0));
-                    var u;
-                    1 == i.length
-                      ? (u = o ? e.prevclose : s.open)
-                      : ((u = i[i.length - 2].close),
-                        e.settlement && o && (u = e.settlement)),
-                      /^forex|^BTC/.test(stockDataA.market) &&
-                        (n == _.URLHASH.K1 || n == _.URLHASH.KD) &&
-                        (u = e.prevclose),
-                      (s.change = e.price - u),
-                      (s.percent = s.change / u),
-                      e.price > s.high && (s.high = e.price),
-                      e.price < s.low && (s.low = e.price),
-                      (s.amplitude = s.high - s.low),
-                      (s.ampP = s.amplitude / u),
-                      (s.time = e.time),
-                      util.isCNK(e.symbol) &&
-                        ((s.postVol = e.postVolume),
-                        (s.postAmt = e.postAmount));
-                  }
-                }
-              },
-              c = function(e) {
-                l(e, _.URLHASH.KD, 0),
-                  l(e, _.URLHASH.KW, 0),
-                  l(e, _.URLHASH.KM, 0),
-                  l(e, _.URLHASH.KY, 0),
-                  l(e, _.URLHASH.KDF, 0),
-                  l(e, _.URLHASH.KWF, 0),
-                  l(e, _.URLHASH.KMF, 0),
-                  l(e, _.URLHASH.KYF, 0),
-                  l(e, _.URLHASH.KCL, 0),
-                  l(e, _.URLHASH.KCLF, 0),
-                  l(e, _.URLHASH.K1, 1),
-                  l(e, _.URLHASH.K5, 1),
-                  l(e, _.URLHASH.K15, 1),
-                  l(e, _.URLHASH.K30, 1),
-                  l(e, _.URLHASH.K60, 1),
-                  l(e, _.URLHASH.K240, 1),
-                  l(e, _.URLHASH.KMS, 2);
-              },
-              d = new (function() {
-                this.check = function(e) {
-                  if (n) return !0;
-                  var a = viewState.viewId,
-                    i = K.get(a);
-                  if (!i || i.length < 1) return !1;
-                  var o = i[i.length - 1];
-                  if (e.date > o.date)
-                    if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
-                      if (
-                        !util.kUtil.spk(
-                          o.time,
-                          e.time,
-                          "00:00",
-                          a,
-                          stockDataA.market
-                        )
+                        (util.kUtil.nc(i, e, n, {
+                          price: e.price,
+                          volume: e.volume
+                        }),
+                        /^forex|^BTC/.test(stockDataA.market))
                       )
-                        return !1;
-                    } else if (!f(e.date, o.date)) return !1;
-                  return !0;
-                };
-              })();
-            this.uUpdate = function(n, o, r, l) {
-              var u,
-                p = {
-                  symbol: e.symbol,
-                  ssl: a.ssl
-                };
-              r
-                ? ((u = "datas.hq.parse"), (p.hqStr = r), (p.market = l))
-                : ((u = "datas.hq.get"), (p.delay = !0), (p.cancelEtag = o)),
-                KKE.api(u, p, function(a) {
-                  var o = a.dataObj[e.symbol];
-                  if (o && o.date && s(o)) {
-                    if (((A = A || o.name || ""), !d.check(o))) return;
-                    (stockDataA.hq = o), c(o), i(!0), util.isFunc(n) && n();
+                        n == _.URLHASH.K1 &&
+                          ((s = i[i.length - 1]),
+                          (s.prevclose = e.prevclose),
+                          (s.change = e.price - e.prevclose),
+                          (s.percent = s.change / e.prevclose));
+                      else if ("NF" == stockDataA.market);
+                      else if (util.kUtil.spk("09:35", e.time, b, n)) {
+                        if (n == _.URLHASH.K60) {
+                          var l = e.time.split(":"),
+                            c = l[0],
+                            d = l[1];
+                          if (c > 10 || (10 == c && d > 30)) return;
+                        }
+                        (s = i[i.length - 1]),
+                          (s.open = e.open),
+                          s.open > s.high && (s.high = s.open),
+                          s.open < s.low && (s.low = s.open);
+                      }
+                      return;
+                    }
+                  } else if (2 == a) {
+                    if (!e.trstr) return;
+                    util.kUtil.nc(i, e, n, {
+                      price: e.price,
+                      volume: 0
+                    });
+                  } else if (f(e.date, s.date))
+                    stockDataA.nco &&
+                      ("NF" == stockDataA.market
+                        ? m.dst(s.date) < stockDataA.nco.open &&
+                          e.time >= stockDataA.nco.open &&
+                          e.time > stockDataA.nco.close &&
+                          util.kUtil.nc(i, e, n, null)
+                        : r &&
+                          e.time >= stockDataA.nco.open &&
+                          ((r = !1), util.kUtil.nc(i, e, n, null)));
+                  else {
+                    if (!(e.date > s.date)) return;
+                    stockDataA.nco
+                      ? "NF" == stockDataA.market
+                        ? e.time >= stockDataA.nco.open &&
+                          util.kUtil.nc(i, e, n, null)
+                        : e.time <= stockDataA.nco.close && (r = !0)
+                      : util.kUtil.nc(i, e, n, null);
                   }
-                });
-            };
-          })(),
-          $ = new (function() {
-            var i,
-              o = function(e, n) {
-                M.re(_.e.K_DATA_LOADED, n), util.isFunc(e) && e();
-              },
-              s = function(e) {
-                if (!stockDataA.hq || !stockDataA.hq.date) return null;
-                for (var t = 0; !e[t].f; ) t++;
-                return {
-                  factor: e[t].f
-                };
-              },
-              r = function(e, a, i, o) {
-                if (e) {
-                  var s,
-                    r,
-                    l,
-                    c,
-                    h,
-                    d,
-                    u,
-                    p,
-                    f,
-                    v,
-                    g,
-                    b,
-                    y = !(-828 === e),
-                    N = DB.getOriDK(),
-                    w = 0;
-                  if (
-                    ((r = "q" === i ? _.URLHASH.KDF : _.URLHASH.KDB),
-                    DB.initState(r, util.clone(N, null), !1, !1, !0),
-                    (s = DB.get(r)),
-                    (b = s.length),
-                    y)
-                  ) {
-                    for (g = b - 1; g >= 0; g--) {
-                      for (p = s[g], f = m.ds(p.date); f < a[w].d; ) w++;
-                      if (((v = Number(a[w].f)), "HK" === o)) {
-                        if (
-                          ((p.high *= v),
+                  (s = i[i.length - 1]),
+                    (s.close = e.price),
+                    (s.date = m.ddt(e.date)),
+                    (s.day = m.ds(s.date, "/")),
+                    n == _.URLHASH.KMS
+                      ? ((s.volume = e.trvolume || 0),
+                        (s.amount = e.tramount || 0),
+                        (s.trbs = e.trbs),
+                        (s.kke_cs = 0 == e.trbs ? -1 : 1))
+                      : (o
+                          ? ((s.open = e.open),
+                            (s.high = e.high),
+                            (s.low = e.low),
+                            (s.volume = e.totalVolume))
+                          : isNaN(s.volume)
+                          ? (s.volume = e.volume)
+                          : (s.volume += Number(e.volume)),
+                        (s.kke_cs =
+                          s.close > s.open ? 1 : s.open > s.close ? -1 : 0));
+                  var u;
+                  1 == i.length
+                    ? (u = o ? e.prevclose : s.open)
+                    : ((u = i[i.length - 2].close),
+                      e.settlement && o && (u = e.settlement)),
+                    /^forex|^BTC/.test(stockDataA.market) &&
+                      (n == _.URLHASH.K1 || n == _.URLHASH.KD) &&
+                      (u = e.prevclose),
+                    (s.change = e.price - u),
+                    (s.percent = s.change / u),
+                    e.price > s.high && (s.high = e.price),
+                    e.price < s.low && (s.low = e.price),
+                    (s.amplitude = s.high - s.low),
+                    (s.ampP = s.amplitude / u),
+                    (s.time = e.time),
+                    util.isCNK(e.symbol) &&
+                      ((s.postVol = e.postVolume), (s.postAmt = e.postAmount));
+                }
+              }
+            },
+            c = function(e) {
+              l(e, _.URLHASH.KD, 0),
+                l(e, _.URLHASH.KW, 0),
+                l(e, _.URLHASH.KM, 0),
+                l(e, _.URLHASH.KY, 0),
+                l(e, _.URLHASH.KDF, 0),
+                l(e, _.URLHASH.KWF, 0),
+                l(e, _.URLHASH.KMF, 0),
+                l(e, _.URLHASH.KYF, 0),
+                l(e, _.URLHASH.KCL, 0),
+                l(e, _.URLHASH.KCLF, 0),
+                l(e, _.URLHASH.K1, 1),
+                l(e, _.URLHASH.K5, 1),
+                l(e, _.URLHASH.K15, 1),
+                l(e, _.URLHASH.K30, 1),
+                l(e, _.URLHASH.K60, 1),
+                l(e, _.URLHASH.K240, 1),
+                l(e, _.URLHASH.KMS, 2);
+            },
+            d = new (function() {
+              this.check = function(e) {
+                if (n) return !0;
+                var a = viewState.viewId,
+                  i = K.get(a);
+                if (!i || i.length < 1) return !1;
+                var o = i[i.length - 1];
+                if (e.date > o.date)
+                  if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
+                    if (
+                      !util.kUtil.spk(
+                        o.time,
+                        e.time,
+                        "00:00",
+                        a,
+                        stockDataA.market
+                      )
+                    )
+                      return !1;
+                  } else if (!f(e.date, o.date)) return !1;
+                return !0;
+              };
+            })();
+          this.uUpdate = function(n, o, r, l) {
+            var u,
+              p = {
+                symbol: e.symbol,
+                ssl: a.ssl
+              };
+            r
+              ? ((u = "datas.hq.parse"), (p.hqStr = r), (p.market = l))
+              : ((u = "datas.hq.get"), (p.delay = !0), (p.cancelEtag = o)),
+              KKE.api(u, p, function(a) {
+                var o = a.dataObj[e.symbol];
+                if (o && o.date && s(o)) {
+                  if (((A = A || o.name || ""), !d.check(o))) return;
+                  (stockDataA.hq = o), c(o), i(!0), util.isFunc(n) && n();
+                }
+              });
+          };
+        })();
+        var $ = new (function() {
+          var i,
+            o = function(e, n) {
+              M.re(_.e.K_DATA_LOADED, n), util.isFunc(e) && e();
+            },
+            s = function(e) {
+              if (!stockDataA.hq || !stockDataA.hq.date) return null;
+              for (var t = 0; !e[t].f; ) t++;
+              return {
+                factor: e[t].f
+              };
+            },
+            r = function(e, a, i, o) {
+              if (e) {
+                var s,
+                  r,
+                  l,
+                  c,
+                  h,
+                  d,
+                  u,
+                  p,
+                  f,
+                  v,
+                  g,
+                  b,
+                  y = !(-828 === e),
+                  N = kDb.getOriDK(),
+                  w = 0;
+                if (
+                  ((r = "q" === i ? _.URLHASH.KDF : _.URLHASH.KDB),
+                  kDb.initState(r, util.clone(N, null), !1, !1, !0),
+                  (s = kDb.get(r)),
+                  (b = s.length),
+                  y)
+                ) {
+                  for (g = b - 1; g >= 0; g--) {
+                    for (p = s[g], f = m.ds(p.date); f < a[w].d; ) w++;
+                    if (((v = Number(a[w].f)), "HK" === o)) {
+                      if (
+                        ((p.high *= v),
+                        (p.low *= v),
+                        (p.open *= v),
+                        (p.close *= v),
+                        "h" === i)
+                      ) {
+                        var k = Number(a[w].c);
+                        (p.high += k),
+                          (p.low += k),
+                          (p.open += k),
+                          (p.close += k);
+                      }
+                    } else
+                      "US" === o
+                        ? ((p.high *= v),
                           (p.low *= v),
                           (p.open *= v),
-                          (p.close *= v),
-                          "h" === i)
-                        ) {
-                          var k = Number(a[w].c);
-                          (p.high += k),
-                            (p.low += k),
-                            (p.open += k),
-                            (p.close += k);
-                        }
-                      } else
-                        "US" === o
-                          ? ((p.high *= v),
-                            (p.low *= v),
-                            (p.open *= v),
-                            (p.close *= v))
-                          : "h" === i
-                          ? ((p.high *= v),
-                            (p.low *= v),
-                            (p.open *= v),
-                            (p.close *= v))
-                          : ((p.high /= v),
-                            (p.low /= v),
-                            (p.open /= v),
-                            (p.close /= v));
-                    }
-                    for (g = 0; b > g; g++)
-                      (p = s[g]),
-                        (v = Number(a[a.length - 1].f)),
-                        0 == g &&
-                          ((d = p.prevclose),
-                          isNaN(d) || 0 >= d
-                            ? (d = p.open)
-                            : ((d =
-                                "HK" === o
-                                  ? p.prevclose * v
-                                  : "h" === i
-                                  ? p.prevclose * v
-                                  : p.prevclose / v),
-                              (p.prevclose = d))),
-                        (p.amplitude = p.high - p.low),
-                        (p.ampP = p.amplitude / d),
-                        (p.change = p.close - d),
-                        (p.percent = p.change / d),
-                        (d = p.close);
+                          (p.close *= v))
+                        : "h" === i
+                        ? ((p.high *= v),
+                          (p.low *= v),
+                          (p.open *= v),
+                          (p.close *= v))
+                        : ((p.high /= v),
+                          (p.low /= v),
+                          (p.open /= v),
+                          (p.close /= v));
                   }
-                  var S;
-                  1 == b &&
-                    ((p = s[b - 1]),
-                    (S = {
-                      open: p.open,
-                      high: p.high,
-                      low: p.low,
-                      close: p.close,
-                      price: p.close,
-                      volume: p.volume,
-                      totalVolume: p.volume,
-                      date: m.dd(p.date)
-                    })),
-                    (l = util.kUtil.mw(s, S, null, null, 0 / 0)),
-                    (h = l[0]),
-                    (c = l[1]),
-                    (u = l[2]),
-                    util.kUtil.pd(h, null),
-                    util.kUtil.pd(c, null),
-                    util.kUtil.pd(u, null),
-                    DB.initState(_.URLHASH["q" == i ? "KWF" : "KWB"], h),
-                    DB.initState(_.URLHASH["q" == i ? "KMF" : "KMB"], c),
-                    DB.initState(_.URLHASH["q" == i ? "KYF" : "KYB"], u);
-                  var M = util.clone(s, null);
-                  DB.initState(
-                    _.URLHASH["q" == i ? "KCLF" : "KCLB"],
-                    M,
-                    !1,
-                    !0
-                  ),
-                    n || DB.initState(r, s);
+                  for (g = 0; b > g; g++)
+                    (p = s[g]),
+                      (v = Number(a[a.length - 1].f)),
+                      0 == g &&
+                        ((d = p.prevclose),
+                        isNaN(d) || 0 >= d
+                          ? (d = p.open)
+                          : ((d =
+                              "HK" === o
+                                ? p.prevclose * v
+                                : "h" === i
+                                ? p.prevclose * v
+                                : p.prevclose / v),
+                            (p.prevclose = d))),
+                      (p.amplitude = p.high - p.low),
+                      (p.ampP = p.amplitude / d),
+                      (p.change = p.close - d),
+                      (p.percent = p.change / d),
+                      (d = p.close);
                 }
-              },
-              l = function(t) {
-                var n = _.URLHASH.gt(viewState.viewId),
-                  i = n.dir,
-                  l = {
-                    symbol: e.symbol,
-                    market: u,
-                    dir: i,
-                    ssl: a.ssl
-                  };
-                F.show(),
-                  KKE.api("datas.k.loadReData", l, function(e) {
-                    F.hide();
-                    var n = !0,
-                      a = e.data;
-                    if (a) {
-                      var c = s(a);
-                      c && ((n = !1), r(c.factor, a, i, l.market));
-                    }
-                    n && r(-828, null, i),
-                      o(t, {
-                        viewId: viewState.viewId
-                      });
-                  });
-              },
-              c = function(e, t) {
-                var s = _.URLHASH.gt(i),
-                  r = "mink" == s.type ? DB.initState : DB.initDWMState;
-                F.show(),
-                  "LSE" === u && (e.symbol = a.rawSymbol),
-                  KKE.api("datas.k.get", e, function(a) {
-                    F.hide();
-                    var l = i;
-                    if (((i = 0 / 0), "error" == a.msg)) {
-                      if (((stockDataA.isErr = !0), n))
-                        if (a.data && a.data.hq) {
-                          var c;
-                          if (a.data.hq.status)
-                            switch (a.data.hq.status) {
-                              case 2:
-                                c = _.notlisted;
-                                break;
-                              case 3:
-                                c = _.delisted;
-                            }
-                          else c = _.norecord;
-                          c &&
-                            q.showTip({
-                              txt: c,
-                              parent: x,
-                              noBtn: !0
-                            });
-                        } else
-                          q.showTip({
-                            txt: _.nodata,
-                            parent: x
-                          });
-                    } else a.data.hq && (stockDataA.hq = a.data.hq), r(s.baseid, a.data, e.ismink);
-                    o(t, {
-                      viewId: l
-                    });
-                  });
-              },
-              d = function(t) {
-                KKE.api(
-                  "datas.hq.get",
-                  {
-                    symbol: e.symbol,
-                    cancelEtag: !0,
-                    ssl: a.ssl
-                  },
-                  function(n) {
-                    var a = n.dataObj[e.symbol],
-                      i = [
-                        {
-                          close: a.price,
-                          open: a.open,
-                          high: a.high,
-                          low: a.low,
-                          volume: 0,
-                          prevclose: a.prevclose,
-                          amplitude: a.high - a.low,
-                          ampP: (a.high - a.low) / a.prevclose,
-                          change: a.price - a.prevclose,
-                          date: a.date,
-                          day: m.ds(a.date, "/"),
-                          time: a.time,
-                          percent: a.price - a.prevclose / a.prevclose,
-                          kke_cs: 0
-                        }
-                      ];
-                    DB.initState(viewState.viewId, i, !0),
-                      o(t, {
-                        viewId: viewState.viewId
-                      });
-                  }
-                );
-              },
-              p = function(t) {
-                var n,
-                  i,
-                  o = viewState.viewId,
-                  s = _.URLHASH.gt(o);
-                if (stockDataA.nco && stockDataA.nco.open)
-                  (i = stockDataA.nco.open), (b = i);
-                else {
-                  var r = new Date(),
-                    l = b.split(":");
-                  r.setHours(l[0], l[1], 0),
-                    r.setMinutes(r.getMinutes() - 30),
-                    (i = m.dst(r));
-                }
-                var d = {
+                var S;
+                1 == b &&
+                  ((p = s[b - 1]),
+                  (S = {
+                    open: p.open,
+                    high: p.high,
+                    low: p.low,
+                    close: p.close,
+                    price: p.close,
+                    volume: p.volume,
+                    totalVolume: p.volume,
+                    date: m.dd(p.date)
+                  })),
+                  (l = util.kUtil.mw(s, S, null, null, 0 / 0)),
+                  (h = l[0]),
+                  (c = l[1]),
+                  (u = l[2]),
+                  util.kUtil.pd(h, null),
+                  util.kUtil.pd(c, null),
+                  util.kUtil.pd(u, null),
+                  kDb.initState(_.URLHASH["q" == i ? "KWF" : "KWB"], h),
+                  kDb.initState(_.URLHASH["q" == i ? "KMF" : "KMB"], c),
+                  kDb.initState(_.URLHASH["q" == i ? "KYF" : "KYB"], u);
+                var M = util.clone(s, null);
+                kDb.initState(_.URLHASH["q" == i ? "KCLF" : "KCLB"], M, !1, !0),
+                  n || kDb.initState(r, s);
+              }
+            },
+            l = function(t) {
+              var n = _.URLHASH.gt(viewState.viewId),
+                i = n.dir,
+                l = {
                   symbol: e.symbol,
-                  newthour: i,
+                  market: u,
+                  dir: i,
                   ssl: a.ssl
                 };
-                if ("mink" == s.type) {
-                  if (
-                    ((n = e.datas.min),
-                    (d.ismink = !0),
-                    (d.scale = o),
-                    /^forex|^BTC/.test(stockDataA.market))
-                  )
-                    switch (((d.withsymbol = "sys_time"), o)) {
-                      case _.URLHASH.K1:
-                        d.datalen = 1440;
-                        break;
-                      case _.URLHASH.K240:
-                        d.datalen = parseInt((60 / o) * 24 * 10);
-                        break;
-                      default:
-                        d.datalen = parseInt((60 / o) * 24 * 5);
-                    }
-                } else n = e.datas.day;
-                (d.dataurl = n.url),
-                  (d.dataformatter = n.dataformatter),
-                  (d.wfn = n.wfn),
-                  (d.staticdata = n.staticdata),
-                  c(d, t);
-              },
-              f = function(e) {
-                (stockDataA.nco = {
-                  open: "20:00",
-                  close: "15:30"
-                }),
-                  p(e);
-              },
-              v = function(e) {
-                (stockDataA.nco = {
-                  open: "07:00",
-                  close: "06:00"
-                }),
-                  p(e);
-              },
-              g = function(t) {
-                var n = {
-                    symbol: e.symbol,
-                    ssl: a.ssl
-                  },
-                  i = "datas.k.";
-                (i += "loadGBInit"),
-                  (stockDataA.nco = {
-                    open: "15:00",
-                    close: "23:30"
-                  }),
-                  KKE.api(i, n, function(e) {
-                    var n = e.data;
-                    if (n) {
-                      var a = n.time;
-                      a &&
-                        a.length > 0 &&
-                        ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
-                        (stockDataA.nco.close =
-                          a[a.length - 1][1] || stockDataA.nco.close));
-                    }
-                    p(t);
+              F.show(),
+                KKE.api("datas.k.loadReData", l, function(e) {
+                  F.hide();
+                  var n = !0,
+                    a = e.data;
+                  if (a) {
+                    var c = s(a);
+                    c && ((n = !1), r(c.factor, a, i, l.market));
+                  }
+                  n && r(-828, null, i),
+                    o(t, {
+                      viewId: viewState.viewId
+                    });
+                });
+            },
+            c = function(e, t) {
+              var s = _.URLHASH.gt(i),
+                r = "mink" == s.type ? kDb.initState : kDb.initDWMState;
+              F.show(),
+                "LSE" === u && (e.symbol = a.rawSymbol),
+                KKE.api("datas.k.get", e, function(a) {
+                  F.hide();
+                  var l = i;
+                  if (((i = 0 / 0), "error" == a.msg)) {
+                    if (((stockDataA.isErr = !0), n))
+                      if (a.data && a.data.hq) {
+                        var c;
+                        if (a.data.hq.status)
+                          switch (a.data.hq.status) {
+                            case 2:
+                              c = _.notlisted;
+                              break;
+                            case 3:
+                              c = _.delisted;
+                          }
+                        else c = _.norecord;
+                        c &&
+                          q.showTip({
+                            txt: c,
+                            parent: x,
+                            noBtn: !0
+                          });
+                      } else
+                        q.showTip({
+                          txt: _.nodata,
+                          parent: x
+                        });
+                  } else a.data.hq && (stockDataA.hq = a.data.hq), r(s.baseid, a.data, e.ismink);
+                  o(t, {
+                    viewId: l
                   });
-              },
-              y = function(t, n) {
-                var i = {
-                    symbol: e.symbol,
-                    ssl: a.ssl
-                  },
-                  o = "datas.k.";
-                n
-                  ? ((o += "loadNFInit"),
-                    (stockDataA.nco = {
-                      open: "09:00",
-                      close: "15:00"
-                    }))
-                  : ((o += "loadHFInit"),
-                    (stockDataA.nco = {
-                      open: "06:00",
-                      close: "05:59"
-                    })),
-                  KKE.api(o, i, function(e) {
-                    var n = e.data;
-                    if (n) {
-                      var a = n.time;
-                      a &&
-                        a.length > 0 &&
-                        ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
-                        (stockDataA.nco.close =
-                          a[a.length - 1][1] || stockDataA.nco.close));
-                    }
-                    p(t);
-                  });
-              },
-              N = function(e, t) {
-                var n = new Date(),
-                  a = b.split(":");
-                n.setHours(a[0], a[1], 0), n.setMinutes(n.getMinutes() - 1);
-                var i = m.dst(n);
-                (stockDataA.nco = {
-                  open: b,
-                  close: i
-                }),
-                  "rek" == t.type && DB.get(_.URLHASH.KD) ? l(e) : p(e);
-              };
-            this.iInit = function(e) {
-              var t = viewState.viewId;
-              if (i != t) {
-                i = t;
-                var n = _.URLHASH.gt(t);
-                switch (stockDataA.market) {
-                  case "HF":
-                    y(e);
-                    break;
-                  case "NF":
-                    y(e, !0);
-                    break;
-                  case "global_index":
-                    g(e);
-                    break;
-                  case "GOODS":
-                    f(e);
-                    break;
-                  case "MSCI":
-                    v(e);
-                    break;
-                  case "forex":
-                  case "forex_yt":
-                  case "BTC":
-                    N(e, n);
-                    break;
-                  default:
-                    "msk" == n.type
-                      ? d(e)
-                      : "rek" == n.type && DB.get(_.URLHASH.KD)
-                      ? l(e)
-                      : p(e);
+                });
+            },
+            d = function(t) {
+              KKE.api(
+                "datas.hq.get",
+                {
+                  symbol: e.symbol,
+                  cancelEtag: !0,
+                  ssl: a.ssl
+                },
+                function(n) {
+                  var a = n.dataObj[e.symbol],
+                    i = [
+                      {
+                        close: a.price,
+                        open: a.open,
+                        high: a.high,
+                        low: a.low,
+                        volume: 0,
+                        prevclose: a.prevclose,
+                        amplitude: a.high - a.low,
+                        ampP: (a.high - a.low) / a.prevclose,
+                        change: a.price - a.prevclose,
+                        date: a.date,
+                        day: m.ds(a.date, "/"),
+                        time: a.time,
+                        percent: a.price - a.prevclose / a.prevclose,
+                        kke_cs: 0
+                      }
+                    ];
+                  kDb.initState(viewState.viewId, i, !0),
+                    o(t, {
+                      viewId: viewState.viewId
+                    });
                 }
+              );
+            },
+            p = function(t) {
+              var n,
+                i,
+                o = viewState.viewId,
+                s = _.URLHASH.gt(o);
+              if (stockDataA.nco && stockDataA.nco.open)
+                (i = stockDataA.nco.open), (b = i);
+              else {
+                var r = new Date(),
+                  l = b.split(":");
+                r.setHours(l[0], l[1], 0),
+                  r.setMinutes(r.getMinutes() - 30),
+                  (i = m.dst(r));
               }
+              var d = {
+                symbol: e.symbol,
+                newthour: i,
+                ssl: a.ssl
+              };
+              if ("mink" == s.type) {
+                if (
+                  ((n = e.datas.min),
+                  (d.ismink = !0),
+                  (d.scale = o),
+                  /^forex|^BTC/.test(stockDataA.market))
+                )
+                  switch (((d.withsymbol = "sys_time"), o)) {
+                    case _.URLHASH.K1:
+                      d.datalen = 1440;
+                      break;
+                    case _.URLHASH.K240:
+                      d.datalen = parseInt((60 / o) * 24 * 10);
+                      break;
+                    default:
+                      d.datalen = parseInt((60 / o) * 24 * 5);
+                  }
+              } else n = e.datas.day;
+              (d.dataurl = n.url),
+                (d.dataformatter = n.dataformatter),
+                (d.wfn = n.wfn),
+                (d.staticdata = n.staticdata),
+                c(d, t);
+            },
+            f = function(e) {
+              (stockDataA.nco = {
+                open: "20:00",
+                close: "15:30"
+              }),
+                p(e);
+            },
+            v = function(e) {
+              (stockDataA.nco = {
+                open: "07:00",
+                close: "06:00"
+              }),
+                p(e);
+            },
+            g = function(t) {
+              var n = {
+                  symbol: e.symbol,
+                  ssl: a.ssl
+                },
+                i = "datas.k.";
+              (i += "loadGBInit"),
+                (stockDataA.nco = {
+                  open: "15:00",
+                  close: "23:30"
+                }),
+                KKE.api(i, n, function(e) {
+                  var n = e.data;
+                  if (n) {
+                    var a = n.time;
+                    a &&
+                      a.length > 0 &&
+                      ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
+                      (stockDataA.nco.close =
+                        a[a.length - 1][1] || stockDataA.nco.close));
+                  }
+                  p(t);
+                });
+            },
+            y = function(t, n) {
+              var i = {
+                  symbol: e.symbol,
+                  ssl: a.ssl
+                },
+                o = "datas.k.";
+              n
+                ? ((o += "loadNFInit"),
+                  (stockDataA.nco = {
+                    open: "09:00",
+                    close: "15:00"
+                  }))
+                : ((o += "loadHFInit"),
+                  (stockDataA.nco = {
+                    open: "06:00",
+                    close: "05:59"
+                  })),
+                KKE.api(o, i, function(e) {
+                  var n = e.data;
+                  if (n) {
+                    var a = n.time;
+                    a &&
+                      a.length > 0 &&
+                      ((stockDataA.nco.open = a[0][0] || stockDataA.nco.open),
+                      (stockDataA.nco.close =
+                        a[a.length - 1][1] || stockDataA.nco.close));
+                  }
+                  p(t);
+                });
+            },
+            N = function(e, t) {
+              var n = new Date(),
+                a = b.split(":");
+              n.setHours(a[0], a[1], 0), n.setMinutes(n.getMinutes() - 1);
+              var i = m.dst(n);
+              (stockDataA.nco = {
+                open: b,
+                close: i
+              }),
+                "rek" == t.type && kDb.get(_.URLHASH.KD) ? l(e) : p(e);
             };
-          })();
-        (this.kDb = DB),
-          (this.extraDataObj = DB.extraDataObj),
-          (this.getYtdIndex = function(e) {
-            var t = DB.get(_.URLHASH.KD);
-            if (!t) return null;
-            var n = t[t.length - 1],
-              a = n.date.getFullYear(),
-              i = 0;
-            return e && (a--, (i = n.date.getMonth())), l(new Date(a, i, 1));
-          }),
+          this.iInit = function(e) {
+            var t = viewState.viewId;
+            if (i != t) {
+              i = t;
+              var n = _.URLHASH.gt(t);
+              switch (stockDataA.market) {
+                case "HF":
+                  y(e);
+                  break;
+                case "NF":
+                  y(e, !0);
+                  break;
+                case "global_index":
+                  g(e);
+                  break;
+                case "GOODS":
+                  f(e);
+                  break;
+                case "MSCI":
+                  v(e);
+                  break;
+                case "forex":
+                case "forex_yt":
+                case "BTC":
+                  N(e, n);
+                  break;
+                default:
+                  "msk" == n.type
+                    ? d(e)
+                    : "rek" == n.type && kDb.get(_.URLHASH.KD)
+                    ? l(e)
+                    : p(e);
+              }
+            }
+          };
+        })();
+        this.kDb = kDb;
+        this.extraDataObj = kDb.extraDataObj;
+        (this.getYtdIndex = function(e) {
+          var t = kDb.get(_.URLHASH.KD);
+          if (!t) return null;
+          var n = t[t.length - 1],
+            a = n.date.getFullYear(),
+            i = 0;
+          return e && (a--, (i = n.date.getMonth())), l(new Date(a, i, 1));
+        }),
           (this.initData = $.iInit),
           (this.doUpdate = P.uUpdate),
           (this.onViewChange = i),

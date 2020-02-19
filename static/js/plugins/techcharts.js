@@ -101,27 +101,27 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       allowrfs: !1,
       h: t.DIMENSION.H_BLK
     };
-    techchart.call(this, t, i, a),
-      (this.name = "BLANKCTN"),
-      (this.newParam = function() {});
+    techchart.call(this, t, i, a);
+    this.name = "BLANKCTN";
+    this.newParam = function() {};
   }
 
   function ADL(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 0 / 0,
         color: "#007cc8",
         prop: "adl",
         idct: "ADL"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "ADL"),
-      (this.sname = "T_ADL"),
-      (this.disMod = i.datas.tDataLen);
+    ];
+    techchart.call(this, i, a);
+    this.name = "ADL";
+    this.sname = "T_ADL";
+    this.disMod = i.datas.tDataLen;
     var s = "#b82c0c",
       e = "#2ec196";
-    (this.initAndCalcAll = function(i) {
+    this.initAndCalcAll = function(i) {
       var r = this.gdsd(i);
       (this.oriArr = r),
         this.datas ? utils_util.ca(this.datas) : (this.datas = []),
@@ -133,43 +133,43 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         };
         (o[vt + "price"] = a.price), this.selfArr.push(o);
       }
-    }),
-      (this.draw = function() {
-        if (this.datas) {
-          var t = this.line;
-          t.clear(!0, i.PARAM.getHd());
+    };
+    this.draw = function() {
+      if (this.datas) {
+        var t = this.line;
+        t.clear(!0, i.PARAM.getHd());
+        for (
+          var r,
+            a,
+            h,
+            o = this.datas.length,
+            l = i.DIMENSION.w_t / o,
+            n = l * gt,
+            c = 0.5 * this.h,
+            d = 0;
+          2 > d;
+          d++
+        ) {
+          (a = l * gt), t.beginPath();
           for (
-            var r,
-              a,
-              h,
-              o = this.datas.length,
-              l = i.DIMENSION.w_t / o,
-              n = l * gt,
-              c = 0.5 * this.h,
-              d = 0;
-            2 > d;
-            d++
-          ) {
-            (a = l * gt), t.beginPath();
-            for (
-              var f = 0;
-              o > f && ((r = this.datas[f]), !(r.ignore_price < 0));
-              f++
-            )
-              (h = r.adly),
-                0 == d
-                  ? r.adl > 0 && t.drawVStickC(a, h, n, c - h, s)
-                  : r.adl < 0 && t.drawVStickC(a, h, n, c - h, e),
-                (a += l);
-            t.stroke();
-          }
-          t.drawBg();
+            var f = 0;
+            o > f && ((r = this.datas[f]), !(r.ignore_price < 0));
+            f++
+          )
+            (h = r.adly),
+              0 == d
+                ? r.adl > 0 && t.drawVStickC(a, h, n, c - h, s)
+                : r.adl < 0 && t.drawVStickC(a, h, n, c - h, e),
+              (a += l);
+          t.stroke();
         }
-      });
+        t.drawBg();
+      }
+    };
   }
 
   function ASI(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 26,
         color: "#75B2A3",
@@ -182,9 +182,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "asit",
         idct: "ASIT"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "ASI");
+    ];
+    techchart.call(this, i, a);
+    this.name = "ASI";
     var s = bt.calcREF,
       e = bt.calcABS,
       h = bt.calcMAX,
@@ -227,9 +227,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         O = c(c(c(M, 16, "*"), _, "/"), h(m, g), "*"),
         S = o(O, a),
         T = l(S, d);
-      (this.oriArr = i),
-        !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+      this.oriArr = i;
+      !this.datas && (this.datas = []);
+      utils_util.ca(this.selfArr);
       for (var N = 0, I = i.length; I > N; N++)
         this.selfArr[N] = {
           asi: S[N],
@@ -239,7 +239,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function BBIBOLL(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 11,
         color: "#999999",
@@ -258,10 +258,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "dwn",
         idct: "DWN"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "BBIBOLL"),
-      "k" != a.type && (this.sname = "T_" + this.name);
+    ];
+    techchart.call(this, i, a);
+    this.name = "BBIBOLL";
+    "k" != a.type && (this.sname = "T_" + this.name);
     var s = bt.calcMA,
       e = bt.calcSTD,
       h = bt.getArr,
@@ -278,21 +278,21 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         ),
         d = o(c, o(e(c, a), l, "*"), "+"),
         f = o(c, o(e(c, a), l, "*"), "-");
-      (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
+      this.oriArr = r;
+      this.datas ? utils_util.ca(this.datas) : (this.datas = []),
         utils_util.ca(this.selfArr);
       for (var u = 0, p = r.length; p > u; u++)
-        (this.selfArr[u] = {
+        this.selfArr[u] = {
           bbiboll: c[u],
           upr: d[u],
           dwn: f[u]
-        }),
-          (this.selfArr[u][At] = r[u].volume < 0);
+        };
+      this.selfArr[u][At] = r[u].volume < 0;
     };
   }
 
   function BF(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 22,
         color: "#fa6d6d",
@@ -302,12 +302,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#2b55ff"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "BF");
+    ];
+    techchart.call(this, i, a);
+    this.name = "BF";
     var s = bt.calcMA,
       e = bt.getArr;
-    (this.initAndCalcAll = function(i) {
+    this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
         h = e(i, "high"),
@@ -319,64 +319,64 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         this.selfArr[l] = {
           m: o[l]
         };
-    }),
-      (this.draw = function(r, a) {
-        function s(t, i, r) {
-          for (
-            var a = t.length, s = t[a - 1][i], e = a - 1, h = t.length;
-            h--;
+    };
+    this.draw = function(r, a) {
+      function s(t, i, r) {
+        for (
+          var a = t.length, s = t[a - 1][i], e = a - 1, h = t.length;
+          h--;
 
-          ) {
-            var o = t[h][i];
-            r ? o > s && ((s = o), (e = h)) : s > o && ((s = o), (e = h));
-          }
-          return e;
+        ) {
+          var o = t[h][i];
+          r ? o > s && ((s = o), (e = h)) : s > o && ((s = o), (e = h));
         }
-        if (((this.__iOffsetX = isNaN(a) ? this.__iOffsetX : a), this.datas)) {
-          var e = this.line;
-          e.clear(!0, i.PARAM.getHd());
-          for (
-            var h,
-              o,
-              l,
-              n = bt.calcREF,
-              c = bt.getArr,
-              d = c(this.selfArr, "m"),
-              f = n(d, 1),
-              u = this.viewState.start,
-              p = this.viewState.end,
-              v = utils_util.hex2dec(this.customArr[0].color, 0.5),
-              A = utils_util.hex2dec(this.customArr[1].color, 0.5),
-              m = u;
-            p > m;
-            m++
+        return e;
+      }
+      if (((this.__iOffsetX = isNaN(a) ? this.__iOffsetX : a), this.datas)) {
+        var e = this.line;
+        e.clear(!0, i.PARAM.getHd());
+        for (
+          var h,
+            o,
+            l,
+            n = bt.calcREF,
+            c = bt.getArr,
+            d = c(this.selfArr, "m"),
+            f = n(d, 1),
+            u = this.viewState.start,
+            p = this.viewState.end,
+            v = utils_util.hex2dec(this.customArr[0].color, 0.5),
+            A = utils_util.hex2dec(this.customArr[1].color, 0.5),
+            m = u;
+          p > m;
+          m++
+        ) {
+          if (
+            ("undefined" == typeof h &&
+              ((h = d[m] - f[m] >= 0 ? 1 : -1), (o = h), (l = m)),
+            (h = d[m] - f[m] >= 0 ? 1 : -1),
+            m == p - 1 && (h = -o),
+            h != o)
           ) {
-            if (
-              ("undefined" == typeof h &&
-                ((h = d[m] - f[m] >= 0 ? 1 : -1), (o = h), (l = m)),
-              (h = d[m] - f[m] >= 0 ? 1 : -1),
-              m == p - 1 && (h = -o),
-              h != o)
-            ) {
-              e.beginPath(),
-                e.moveTo(this.oriArr[m].ix, this.datas[m - u].my),
-                e.lineTo(this.oriArr[l].ix, this.datas[l - u].my);
-              var g;
-              -1 == h
-                ? ((g = s(this.oriArr.slice(l, m + 1), "high", !0) + l),
-                  e.lineTo(this.oriArr[g].ix, this.oriArr[g].hy),
-                  e.newFillStyle([v]))
-                : ((g = s(this.oriArr.slice(l, m + 1), "low", !1) + l),
-                  e.lineTo(this.oriArr[g].ix, this.oriArr[g].ly),
-                  e.newFillStyle([A])),
-                e.fill(),
-                (l = m);
-            }
-            o = h;
+            e.beginPath(),
+              e.moveTo(this.oriArr[m].ix, this.datas[m - u].my),
+              e.lineTo(this.oriArr[l].ix, this.datas[l - u].my);
+            var g;
+            -1 == h
+              ? ((g = s(this.oriArr.slice(l, m + 1), "high", !0) + l),
+                e.lineTo(this.oriArr[g].ix, this.oriArr[g].hy),
+                e.newFillStyle([v]))
+              : ((g = s(this.oriArr.slice(l, m + 1), "low", !1) + l),
+                e.lineTo(this.oriArr[g].ix, this.oriArr[g].ly),
+                e.newFillStyle([A])),
+              e.fill(),
+              (l = m);
           }
-          r && e.drawBg(this.__iOffsetX);
+          o = h;
         }
-      });
+        r && e.drawBg(this.__iOffsetX);
+      }
+    };
   }
 
   function BIAS(i, a) {

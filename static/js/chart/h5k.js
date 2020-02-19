@@ -3264,41 +3264,41 @@ xh5_define(
               : ((e += u), (viewState.viewId = e), f(u), y());
           },
           S = new (function() {
-            (this.isClMode = !1),
-              (this.exitClMode = function() {
-                (this.isClMode = !1),
-                  e.setLineStyle(n, !0),
-                  I.mM.togglePt({
-                    v: !0,
-                    ytd: !0
-                  });
-              }),
-              (this.enterClMode = function() {
-                this.isClMode = !0;
-                var t = n && "mountain" == n.linetype ? "mountain" : "line";
-                e.setLineStyle(
-                  {
-                    linetype: t,
-                    linecolor: {
-                      K_CL: setting.COLOR.T_P
-                    }
-                  },
-                  !0
-                ),
-                  I.mM.togglePt({
-                    v: !1,
-                    ytd: !0
-                  });
+            this.isClMode = !1;
+            this.exitClMode = function() {
+              this.isClMode = !1;
+              e.setLineStyle(n, !0);
+              I.mM.togglePt({
+                v: !0,
+                ytd: !0
               });
+            };
+            this.enterClMode = function() {
+              this.isClMode = !0;
+              var t = n && "mountain" == n.linetype ? "mountain" : "line";
+              e.setLineStyle(
+                {
+                  linetype: t,
+                  linecolor: {
+                    K_CL: setting.COLOR.T_P
+                  }
+                },
+                !0
+              );
+              I.mM.togglePt({
+                v: !1,
+                ytd: !0
+              });
+            };
           })(),
           C = !0;
         this.showView = function(e, n, a) {
-          B.hideIUis(),
-            C
-              ? setTimeout(function() {
-                  C = !1;
-                }, 99)
-              : F.hide();
+          B.hideIUis();
+          C
+            ? setTimeout(function() {
+                C = !1;
+              }, 99)
+            : F.hide();
           var i = util.isNum(e)
             ? globalCfg.URLHASH.vn(e)
             : globalCfg.URLHASH.vi(e);
@@ -3313,10 +3313,10 @@ xh5_define(
                   v: !1
                 });
             }
-            k(i),
-              I.onChangeView(!1, n),
-              util.stc("k_v", e),
-              !a && util.suda("vw", e);
+            k(i);
+            I.onChangeView(!1, n);
+            util.stc("k_v", e);
+            !a && util.suda("vw", e);
           }
         };
         var R = !1;

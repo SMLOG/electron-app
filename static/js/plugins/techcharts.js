@@ -5118,85 +5118,85 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v = function() {
           for (var t, i = r.length; i--; ) (t = r[i]), t.clearDraw();
         };
-      (this.linkData = function(t) {
+      this.linkData = function(t) {
         if (a) {
           var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
           if (i)
             for (var e, h = r.length; h--; )
               (e = r[h]), e.initAndCalcAll(i, t), t && e.update();
         }
-      }),
-        (this.setDataRange = function() {
-          if (a)
-            for (var t, i = r.length; i--; )
-              (t = r[i]), t.setRange(), t.selfDataUrl && t.loadUrlData();
-        }),
-        (this.getMaxMin = function() {
-          var t = Number.MAX_VALUE,
-            i = -Number.MAX_VALUE,
-            s = !1;
-          if (a)
-            for (var e, h = r.length; h--; )
-              (e = r[h]),
-                e.separate > 0 ||
-                  isNaN(e.minPrice) ||
-                  isNaN(e.maxPrice) ||
-                  ((t = Math.min(e.minPrice, t)),
-                  (i = Math.max(e.maxPrice, i)),
-                  (s = !0));
-          return s ? [i, t] : !1;
-        }),
-        (this.setPricePos = function(t) {
-          if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.setPricePos(t);
-        }),
-        (this.allDraw = function(t) {
-          if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.draw(!1, t);
-        }),
-        (this.onResize = function() {
+      };
+      this.setDataRange = function() {
+        if (a)
           for (var t, i = r.length; i--; )
-            (t = r[i]),
-              t.resize({
-                h: cfg.DIMENSION.h_k,
-                mh: cfg.DIMENSION.H_MA4K
-              }),
-              a && (t.createPlayingData(), t.draw());
-        }),
-        (this.indirectI = function(t, i, s) {
-          a || (t = 0 / 0);
-          for (var e, h = [], o = r.length; o--; )
-            (e = r[o]), h.push(e.interact(t, i, s));
-          return h;
-        }),
-        (this.getLog = function() {
-          return m.reverse() || null;
-        }),
-        (this.getExistingCharts = function() {
-          return r;
-        }),
-        (this.clear = function() {
-          for (var t = r.length; t--; ) p(r[t], !0);
-        }),
-        (this.createChart = function(i, r) {
-          !utils_util.isArr(i) && (i = [i]);
-          for (var a = 0, s = i.length; s > a; a++) l(i[a]);
-          cb(!0, r);
-        }),
-        (this.removeChart = function(i) {
-          if (!i) {
-            i = [];
-            for (var a = r.length; a--; )
-              i.push({
-                name: r[a].name
-              });
-          }
-          !utils_util.isArr(i) && (i = [i]);
-          for (var s = 0, e = i.length; e > s; s++) p(i[s]);
-          cb();
-        }),
-        (this.showHide = function(t) {
-          var i = t.v;
-          a !== i && ((a = i), a || v());
-        });
+            (t = r[i]), t.setRange(), t.selfDataUrl && t.loadUrlData();
+      };
+      this.getMaxMin = function() {
+        var t = Number.MAX_VALUE,
+          i = -Number.MAX_VALUE,
+          s = !1;
+        if (a)
+          for (var e, h = r.length; h--; )
+            (e = r[h]),
+              e.separate > 0 ||
+                isNaN(e.minPrice) ||
+                isNaN(e.maxPrice) ||
+                ((t = Math.min(e.minPrice, t)),
+                (i = Math.max(e.maxPrice, i)),
+                (s = !0));
+        return s ? [i, t] : !1;
+      };
+      this.setPricePos = function(t) {
+        if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.setPricePos(t);
+      };
+      this.allDraw = function(t) {
+        if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.draw(!1, t);
+      };
+      this.onResize = function() {
+        for (var t, i = r.length; i--; )
+          (t = r[i]),
+            t.resize({
+              h: cfg.DIMENSION.h_k,
+              mh: cfg.DIMENSION.H_MA4K
+            }),
+            a && (t.createPlayingData(), t.draw());
+      };
+      this.indirectI = function(t, i, s) {
+        a || (t = 0 / 0);
+        for (var e, h = [], o = r.length; o--; )
+          (e = r[o]), h.push(e.interact(t, i, s));
+        return h;
+      };
+      this.getLog = function() {
+        return m.reverse() || null;
+      };
+      this.getExistingCharts = function() {
+        return r;
+      };
+      this.clear = function() {
+        for (var t = r.length; t--; ) p(r[t], !0);
+      };
+      this.createChart = function(i, r) {
+        !utils_util.isArr(i) && (i = [i]);
+        for (var a = 0, s = i.length; s > a; a++) l(i[a]);
+        cb(!0, r);
+      };
+      this.removeChart = function(i) {
+        if (!i) {
+          i = [];
+          for (var a = r.length; a--; )
+            i.push({
+              name: r[a].name
+            });
+        }
+        !utils_util.isArr(i) && (i = [i]);
+        for (var s = 0, e = i.length; e > s; s++) p(i[s]);
+        cb();
+      };
+      this.showHide = function(t) {
+        var i = t.v;
+        a !== i && ((a = i), a || v());
+      };
     }
     var a,
       stockData = configa.stockData,
@@ -5218,7 +5218,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       },
       w = function(i, r) {
         if (cfg.custom.allow_indicator_edit)
-          if (tt)
+          if (tt) {
             tt.sendOriginalData(
               {
                 name: i.name,
@@ -5226,19 +5226,19 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 defaultData: i.DEFAULT_ARR
               },
               g
-            ),
-              utils_util.sudaLog(),
-              tt.show(r);
-          else {
+            );
+            utils_util.sudaLog();
+            tt.show(r);
+          } else {
             var a = cfg.custom.indicatorpanel_url;
-            usrObj.ssl && (a = utils_util.getSUrl(a, !0)),
-              (tt = new Q(
-                {
-                  url: a,
-                  z: 10001
-                },
-                at(w, null, i, r)
-              ));
+            usrObj.ssl && (a = utils_util.getSUrl(a, !0));
+            tt = new Q(
+              {
+                url: a,
+                z: 10001
+              },
+              at(w, null, i, r)
+            );
           }
       },
       D = {
@@ -5374,7 +5374,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             }
           }
         };
-      (this.linkData = function(t) {
+      this.linkData = function(t) {
         var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
         if (i) {
           let techs_datas = {};
@@ -5389,59 +5389,58 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
           window["tech_" + symbol] = techs_datas;
         }
-      }),
-        (this.setDataRange = function() {
-          for (var t, i = techChartList.length; i--; )
-            (t = techChartList[i]),
-              t.drawCalc(),
-              t.selfDataUrl && t.loadUrlData();
-        }),
-        (this.allDraw = function(t) {
-          for (var i, r = techChartList.length; r--; )
-            (i = techChartList[r]), i.draw(!0, t);
-        }),
-        (this.onResize = function(t) {
-          for (var i, r, a = techChartList.length; a--; )
-            (r = techChartList[a]),
-              (i = t ? cfg.DIMENSION.H_T_G : r.h),
-              r.resize({
-                h: i,
-                eh: cfg.DIMENSION.H_T_B
-              }),
-              r.drawCalc(),
-              r.draw(!0);
-        }),
-        (this.indirectI = function(t, i, r) {
-          for (var a, s = techChartList.length; s--; )
-            (a = techChartList[s]), a.interact(t, i, r);
-        }),
-        (this.getLog = function() {
-          return rt.reverse() || null;
-        }),
-        (this.getExistingCharts = function() {
-          return techChartList;
-        }),
-        (this.clear = function() {
-          for (var t = techChartList.length; t--; )
-            rmChart(techChartList[t], !0);
-        }),
-        (this.createChart = function(i, r) {
-          !utils_util.isArr(i) && (i = [i]);
-          for (var a = 0, s = i.length; s > a; a++) createChartWhat(i[a]);
-          cb(!0, r, i);
-        }),
-        (this.removeChart = function(i) {
-          if (!i) {
-            i = [];
-            for (var r = techChartList.length; r--; )
-              i.push({
-                name: techChartList[r].name
-              });
-          }
-          !utils_util.isArr(i) && (i = [i]);
-          for (var a = 0, s = i.length; s > a; a++) rmChart(i[a]);
-          cb(!0);
-        });
+      };
+      this.setDataRange = function() {
+        for (var t, i = techChartList.length; i--; )
+          (t = techChartList[i]),
+            t.drawCalc(),
+            t.selfDataUrl && t.loadUrlData();
+      };
+      this.allDraw = function(t) {
+        for (var i, r = techChartList.length; r--; )
+          (i = techChartList[r]), i.draw(!0, t);
+      };
+      this.onResize = function(t) {
+        for (var i, r, a = techChartList.length; a--; )
+          (r = techChartList[a]),
+            (i = t ? cfg.DIMENSION.H_T_G : r.h),
+            r.resize({
+              h: i,
+              eh: cfg.DIMENSION.H_T_B
+            }),
+            r.drawCalc(),
+            r.draw(!0);
+      };
+      this.indirectI = function(t, i, r) {
+        for (var a, s = techChartList.length; s--; )
+          (a = techChartList[s]), a.interact(t, i, r);
+      };
+      this.getLog = function() {
+        return rt.reverse() || null;
+      };
+      this.getExistingCharts = function() {
+        return techChartList;
+      };
+      this.clear = function() {
+        for (var t = techChartList.length; t--; ) rmChart(techChartList[t], !0);
+      };
+      this.createChart = function(i, r) {
+        !utils_util.isArr(i) && (i = [i]);
+        for (var a = 0, s = i.length; s > a; a++) createChartWhat(i[a]);
+        cb(!0, r, i);
+      };
+      this.removeChart = function(i) {
+        if (!i) {
+          i = [];
+          for (var r = techChartList.length; r--; )
+            i.push({
+              name: techChartList[r].name
+            });
+        }
+        !utils_util.isArr(i) && (i = [i]);
+        for (var a = 0, s = i.length; s > a; a++) rmChart(i[a]);
+        cb(!0);
+      };
     }
     var o,
       f,

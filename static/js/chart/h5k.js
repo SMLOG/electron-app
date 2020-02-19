@@ -3320,47 +3320,45 @@ xh5_define(
           }
         };
         var R = !1;
-        (this.showYTD = function(e, n) {
-          (R = !!e),
-            B.hideIUis(),
-            m ||
-              ((m = !0),
-              this.setLineStyle(
-                {
-                  linetype: "line",
-                  linecolor: {
-                    K_CL: setting.COLOR.T_P
-                  }
-                },
-                !0
-              ),
-              !R && this.showScale("percent"),
-              I.mM.togglePt({
-                v: !1,
-                ytd: !0
-              })),
-            f(u),
-            I.showYTD(u, R),
-            util.stc("k_v", globalCfg.URLHASH.NYTD),
-            !n && util.suda("vw", globalCfg.URLHASH.NYTD);
-        }),
-          (this.showYear = function() {
-            this.showYTD(!0);
-          }),
-          (this.setReK = function(e) {
-            if (((e = parseInt(e)), !(isNaN(e) || Math.abs(e) > 1))) {
-              u = e;
-              var n = globalCfg.URLHASH.gt(viewState.viewId);
-              util.stc("k_re", e);
-              var a = e;
-              "-1" == a && (a = "_1"),
-                util.suda("k_re", "k_re" + a),
-                "mink" != n.type &&
-                  (m
-                    ? this.showYTD(R, !0)
-                    : this.showView(n.baseid, void 0, !0));
-            }
-          });
+        this.showYTD = function(e, n) {
+          R = !!e;
+          B.hideIUis();
+          m ||
+            ((m = !0),
+            this.setLineStyle(
+              {
+                linetype: "line",
+                linecolor: {
+                  K_CL: setting.COLOR.T_P
+                }
+              },
+              !0
+            ),
+            !R && this.showScale("percent"),
+            I.mM.togglePt({
+              v: !1,
+              ytd: !0
+            }));
+          f(u);
+          I.showYTD(u, R);
+          util.stc("k_v", globalCfg.URLHASH.NYTD);
+          !n && util.suda("vw", globalCfg.URLHASH.NYTD);
+        };
+        this.showYear = function() {
+          this.showYTD(!0);
+        };
+        this.setReK = function(e) {
+          if (((e = parseInt(e)), !(isNaN(e) || Math.abs(e) > 1))) {
+            u = e;
+            var n = globalCfg.URLHASH.gt(viewState.viewId);
+            util.stc("k_re", e);
+            var a = e;
+            "-1" == a && (a = "_1");
+            util.suda("k_re", "k_re" + a);
+            "mink" != n.type &&
+              (m ? this.showYTD(R, !0) : this.showView(n.baseid, void 0, !0));
+          }
+        };
         var H = function(e) {
           var n;
           return (n = util.isStr(e) ? e.split(",") : [e.symbol]);

@@ -3130,7 +3130,7 @@ xh5_define(
             return a;
           },
           o = function(e, t, n) {
-            (n = oc(
+            n = oc(
               {
                 toremove: !1,
                 isexclusive: !1,
@@ -3138,22 +3138,22 @@ xh5_define(
                 addon: !1
               },
               n || {}
-            )),
-              n.toremove
-                ? I.mM.removeAC(t, e)
-                : n.isexclusive
-                ? (I.mM.removeAC(null, e), I.mM.newAC(t, e, n))
-                : I.mM.newAC(t, e, n);
+            );
+            n.toremove
+              ? I.mM.removeAC(t, e)
+              : n.isexclusive
+              ? (I.mM.removeAC(null, e), I.mM.newAC(t, e, n))
+              : I.mM.newAC(t, e, n);
           };
-        (this.setLineStyle = function(e, a) {
+        this.setLineStyle = function(e, a) {
           a || (n = e), I.setLineStyle(e), util.stc("k_style", e);
-        }),
-          (this.showScale = function(e) {
-            I.setScale(e), util.stc("k_scale", e);
-          }),
-          (this.pushData = function(e, n) {
-            !util.isArr(e) && (e = [e]), I.pushData(e, n);
-          });
+        };
+        this.showScale = function(e) {
+          I.setScale(e), util.stc("k_scale", e);
+        };
+        this.pushData = function(e, n) {
+          !util.isArr(e) && (e = [e]), I.pushData(e, n);
+        };
         var s,
           r,
           c = [],
@@ -3166,7 +3166,7 @@ xh5_define(
           d = function() {
             r = setInterval(h, 1);
           };
-        (this.pushTr = function(e) {
+        this.pushTr = function(e) {
           if (e && e.data) {
             for (
               var t,
@@ -3177,29 +3177,32 @@ xh5_define(
                 r = n.length;
               r > o;
               o++
-            )
-              (t = {
+            ) {
+              t = {
                 symbol: a,
                 data: n[o],
                 market: i
-              }),
-                c.push(t);
-            clearTimeout(s), (s = setTimeout(d, 20));
+              };
+              c.push(t);
+            }
+
+            clearTimeout(s);
+            s = setTimeout(d, 20);
           }
-        }),
-          (this.hide = function(e) {
-            (P = !0),
-              B.hideIUis(),
-              util.$CONTAINS(A, x) && A.removeChild(x),
-              e && I.dcReset();
-          }),
-          (this.show = function(e) {
-            (P = !1),
-              e && (util.isStr(e) && (e = $DOM(e)), (A = e)),
-              util.$CONTAINS(A, x) || (A.appendChild(x), j.resizeAll(!0)),
-              I.outputNewRange(!0),
-              Y.onViewPrice();
-          });
+        };
+        this.hide = function(e) {
+          P = !0;
+          B.hideIUis();
+          util.$CONTAINS(A, x) && A.removeChild(x);
+          e && I.dcReset();
+        };
+        this.show = function(e) {
+          P = !1;
+          e && (util.isStr(e) && (e = $DOM(e)), (A = e));
+          util.$CONTAINS(A, x) || (A.appendChild(x), j.resizeAll(!0));
+          I.outputNewRange(!0);
+          Y.onViewPrice();
+        };
         var u = 0,
           m = !1,
           f = function(e) {
@@ -3218,7 +3221,8 @@ xh5_define(
           y = function() {
             for (; v.length; ) {
               var e = v.pop();
-              g.length--, I.compare(e);
+              g.length--;
+              I.compare(e);
             }
           },
           N = function() {
@@ -3250,13 +3254,13 @@ xh5_define(
             g.length && I.removeCompare(g, !0);
           },
           w = function() {
-            (m = !1),
-              e.setLineStyle(void 0, !0),
-              e.showScale(void 0),
-              I.mM.togglePt({
-                v: !0,
-                ytd: !0
-              });
+            m = !1;
+            e.setLineStyle(void 0, !0);
+            e.showScale(void 0);
+            I.mM.togglePt({
+              v: !0,
+              ytd: !0
+            });
           },
           k = function(e) {
             "mink" == globalCfg.URLHASH.gt(e).type

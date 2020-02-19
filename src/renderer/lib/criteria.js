@@ -1,6 +1,6 @@
 import storejs from "storejs";
 import { getCacheData } from "./db";
-import { attachData, hl } from "./getTable";
+import { attachData } from "./getTable";
 export const criteria = {
   scope: {
     market: {

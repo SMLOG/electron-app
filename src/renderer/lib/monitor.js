@@ -1,5 +1,5 @@
 import { getTdatas } from "./tech";
-import { getTables, attachData, hl, isNotTradeTime } from "./getTable";
+import { getTables, attachData, techAnalyst, isNotTradeTime } from "./getTable";
 import { cache } from "./db";
 
 export async function monitor(items) {
@@ -7,7 +7,7 @@ export async function monitor(items) {
 
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
-    await hl(item);
+    await techAnalyst(item);
 
     attachData(item);
 

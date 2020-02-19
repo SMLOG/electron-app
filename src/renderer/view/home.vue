@@ -506,6 +506,7 @@ export default {
           await timeout(2000);
         }
       })();
+      //定时监控
       (async () => {
         for (;;) {
           monitor(this.items);
@@ -528,7 +529,7 @@ export default {
           }
         });
         // items.forEach(e => this.items2.push(e));
-        await timeout(60000);
+        //await timeout(60000);
       })();
 
       (async () => {

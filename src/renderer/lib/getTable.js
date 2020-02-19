@@ -592,6 +592,7 @@ export async function batchUpdateHQ(items) {
     }
   }
 }
+//基本面筛选
 export async function getFilterList(callback) {
   let datalist = await getHXList();
   datalist = datalist.data.diff;
@@ -686,7 +687,7 @@ export async function getFilterList(callback) {
       )
     ) {
       await getCacheData(null, item.code, null, item);
-      await hl(item);
+      await techAnalyst(item);
 
       callback(item);
     }
@@ -696,7 +697,7 @@ export async function getFilterList(callback) {
   return datalist;
 }
 
-export async function hl(item) {
+export async function techAnalyst(item) {
   await callFun(item);
 }
 function avg(arr) {

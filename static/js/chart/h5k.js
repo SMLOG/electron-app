@@ -2079,6 +2079,7 @@ xh5_define(
               util.isNum(setting.DIMENSION[n]) &&
               (setting.DIMENSION[n] = a.dim[n]);
       })();
+
       var I,
         A,
         x,
@@ -3503,57 +3504,58 @@ xh5_define(
           (this.type = "h5k"),
           (this.me = M);
       })();
-      return I.dcInit(a), W;
+      I.dcInit(a);
+      return W;
     }
     function i() {
-      (this.get = function(e, n) {
+      this.get = function(e, n) {
         util.stc("h5k_get");
         var i = new a(e);
         util.isFunc(n) && n(i), util.suda("h5k_" + util.market(e.symbol));
-      }),
-        (this.dual = function(e, n) {
-          util.stc("h5k_dual"), (e.linetype = "line");
-          var i = new a(e);
-          i.setCustom({
-            k_overlay: !0
-          });
-          var o = function(t) {
-            i.me.rl(t, o);
-            var n = e.dual;
-            i.compare({
-              symbol: n.symbol,
-              name: n.name,
-              datas: n.datas,
-              linetype: "line",
-              linecolor: n.theme
-            });
-          };
-          i.me.al(_.e.K_DATA_LOADED, o, !1),
-            util.isFunc(n) && n(i),
-            util.suda("dual_" + util.market(e.symbol));
-        }),
-        (this.tick = function(e, n) {
-          util.stc("h5k_tick"),
-            (e.pcm = 1),
-            (e.view = _.URLHASH.NKMS),
-            (e.rate = 600),
-            (e.linetype = "line");
-          var i = new a(e, !0);
-          util.isFunc(n) && n(i),
-            KKE.api(
-              "patch.atick.customfloater",
-              {
-                chart: i
-              },
-              function(e) {
-                i.patcher.iMgr.customFloater(e);
-              }
-            ),
-            i.setCustom({
-              smooth: !1
-            }),
-            util.suda("tick_" + util.market(e.symbol));
+      };
+      this.dual = function(e, n) {
+        util.stc("h5k_dual");
+        e.linetype = "line";
+        var i = new a(e);
+        i.setCustom({
+          k_overlay: !0
         });
+        var o = function(t) {
+          i.me.rl(t, o);
+          var n = e.dual;
+          i.compare({
+            symbol: n.symbol,
+            name: n.name,
+            datas: n.datas,
+            linetype: "line",
+            linecolor: n.theme
+          });
+        };
+        i.me.al(_.e.K_DATA_LOADED, o, !1);
+        util.isFunc(n) && n(i), util.suda("dual_" + util.market(e.symbol));
+      };
+      this.tick = function(e, n) {
+        util.stc("h5k_tick"),
+          (e.pcm = 1),
+          (e.view = _.URLHASH.NKMS),
+          (e.rate = 600),
+          (e.linetype = "line");
+        var i = new a(e, !0);
+        util.isFunc(n) && n(i),
+          KKE.api(
+            "patch.atick.customfloater",
+            {
+              chart: i
+            },
+            function(e) {
+              i.patcher.iMgr.customFloater(e);
+            }
+          ),
+          i.setCustom({
+            smooth: !1
+          }),
+          util.suda("tick_" + util.market(e.symbol));
+      };
     }
     var o,
       s,

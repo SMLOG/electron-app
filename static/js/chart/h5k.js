@@ -2884,56 +2884,60 @@ xh5_define(
                 (0 > v ? (v = 0) : v >= m && (v = m - 1),
                 !isNaN(v) && (k = v),
                 isNaN(ix) && isNaN(l))
-              )
-                return (
-                  (N = !1),
-                  hideIUis(),
-                  b(Number.MAX_VALUE),
-                  void Y.onViewPrice()
-                );
+              ) {
+                N = !1;
+                hideIUis();
+                b(Number.MAX_VALUE);
+                return void Y.onViewPrice();
+              }
               N = viewState.end != viewState.dataLength ? !0 : m - 1 > v;
               for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
                 H.length--;
               if (n) {
-                var U = I.getAllStock(),
-                  E = U.length,
-                  F = E > 1 || "percent" == setting.datas.scaleType;
+                let allStock = I.getAllStock(),
+                  len = allStock.length,
+                  F = len > 1 || "percent" == setting.datas.scaleType;
                 setting.custom.k_overlay && (F = !1);
-                for (var P, $, q, j, B = Number.MAX_VALUE, W = 0; E > W; W++)
-                  (q = U[W]),
-                    (D = q.datas),
-                    !D ||
-                      D.length <= v ||
-                      ((P = q.getName()),
-                      ($ = D[v]),
-                      H.push({
-                        name: P,
-                        data: $,
-                        rangedata: D,
-                        symbol: q.symbol,
-                        color: q.getLineStyle().linecolor
-                      }),
-                      $.isFake ||
-                        ((j = Math.abs($.cy - l)),
-                        B > j &&
-                          ((B = j),
-                          (C = q),
-                          (x = $),
-                          (K = D),
-                          (S = P),
-                          (y = C.symbol))));
-                if (F)
-                  (O = 100 * T),
-                    (O = Math.abs(O) > 999 ? Math.floor(O) : O.toFixed(2)),
-                    (O += "%");
-                else if (
+                for (
+                  var P, $, q, j, B = Number.MAX_VALUE, W = 0;
+                  len > W;
+                  W++
+                ) {
+                  q = allStock[W];
+                  D = q.datas;
+                  !D ||
+                    D.length <= v ||
+                    ((P = q.getName()),
+                    ($ = D[v]),
+                    H.push({
+                      name: P,
+                      data: $,
+                      rangedata: D,
+                      symbol: q.symbol,
+                      color: q.getLineStyle().linecolor
+                    }),
+                    $.isFake ||
+                      ((j = Math.abs($.cy - l)),
+                      B > j &&
+                        ((B = j),
+                        (C = q),
+                        (x = $),
+                        (K = D),
+                        (S = P),
+                        (y = C.symbol))));
+                }
+                if (F) {
+                  O = 100 * T;
+                  O = Math.abs(O) > 999 ? Math.floor(O) : O.toFixed(2);
+                  O += "%";
+                } else if (
                   ((O =
                     T > 99999 ? Math.floor(T) : T.toFixed(T > 9999 ? 1 : d)),
                   setting.custom.show_k_rangepercent && C)
                 ) {
                   var G = ((T - C.prevclose) / C.prevclose) * 100;
-                  (G = isNaN(G) || !isFinite(G) ? "--" : G.toFixed(d)),
-                    (O += "<br/>" + G + "%");
+                  G = isNaN(G) || !isFinite(G) ? "--" : G.toFixed(d);
+                  O += "<br/>" + G + "%";
                 }
               } else {
                 if (

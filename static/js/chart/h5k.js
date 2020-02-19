@@ -2405,19 +2405,19 @@ xh5_define(
           this.drawReMark = function(t) {
             if (t) {
               if (((i.style.display = ""), o == t)) return;
-              var a = setting.DIMENSION.H_TIME_PART;
-              (o = t),
-                e.resize({
-                  width: r,
-                  height: a,
-                  hd: setting.PARAM.getHd()
-                }),
-                (n.font = "12px " + setting.STYLE.FONT_FAMILY),
-                (n.textBaseline = "top"),
-                (n.fillStyle = setting.COLOR.REMARK_BG),
-                n.fillRect(0, 0, r, a),
-                (n.fillStyle = setting.COLOR.REMARK_T),
-                n.fillText(t, 0, 0);
+              let a = setting.DIMENSION.H_TIME_PART;
+              o = t;
+              e.resize({
+                width: r,
+                height: a,
+                hd: setting.PARAM.getHd()
+              });
+              n.font = "12px " + setting.STYLE.FONT_FAMILY;
+              n.textBaseline = "top";
+              n.fillStyle = setting.COLOR.REMARK_BG;
+              n.fillRect(0, 0, r, a);
+              n.fillStyle = setting.COLOR.REMARK_T;
+              n.fillText(t, 0, 0);
             } else i.style.display = "none";
           };
         })(),

@@ -1641,7 +1641,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function KDJ(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 9,
         color: "#888888",
@@ -1660,14 +1660,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         prop: "j",
         idct: "J"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "KDJ"),
-      (this.vaObj = {
-        glv: 50,
-        upper: 80,
-        lower: 20
-      });
+    ];
+    techchart.call(this, i, a);
+    this.name = "KDJ";
+    this.vaObj = {
+      glv: 50,
+      upper: 80,
+      lower: 20
+    };
     var s = bt.calcSMA,
       e = bt.calcLLV,
       h = bt.calcHHV,
@@ -5262,8 +5262,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function tChart(options) {
-    console.log(options);
-
     function tChart_instance() {
       var allAvailableChartsMap = {
         ASI: ASI,
@@ -5311,67 +5309,71 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       yt.auth(allAvailableChartsMap);
       var r;
       techChartList = [];
-      var o = function() {
-          for (; rt.length; ) rt.length--;
-          for (var t = techChartList.length; t--; ) {
-            var i = techChartList[t];
-            rt.push({
-              name: i.name,
-              param: i.param
-            });
+      let o = function() {
+        for (; rt.length; ) rt.length--;
+        for (var t = techChartList.length; t--; ) {
+          var i = techChartList[t];
+          rt.push({
+            name: i.name,
+            param: i.param
+          });
+        }
+      };
+      let f = function(t) {
+        var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
+        i && (t.initAndCalcAll(i), t.drawCalc(), t.draw(!0));
+      };
+      let getExistTechChart = function(techName) {
+        for (var i, r = techChartList.length; r--; )
+          if (techChartList[r].name == techName) {
+            i = techChartList[r];
+            break;
           }
-        },
-        f = function(t) {
-          var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-          i && (t.initAndCalcAll(i), t.drawCalc(), t.draw(!0));
-        },
-        getExistTechChart = function(techName) {
-          for (var i, r = techChartList.length; r--; )
-            if (techChartList[r].name == techName) {
-              i = techChartList[r];
-              break;
-            }
-          return i;
-        },
-        createChartWhat = function(s) {
-          if (s) {
-            var techName = s.name;
-            if (techName) {
-              (techName = techName.toUpperCase()),
-                "BLANKCTN" != techName && (ot = techName);
-              var h = getExistTechChart(techName);
-              if (!h) {
-                var chartf = allAvailableChartsMap[techName];
-                if (!utils_util.isFunc(chartf)) return;
-                chartf === BLANKCTN && r
-                  ? ((h = r), (h.wrap.style.display = ""))
-                  : ((h = new chartf(cfg, At, f)),
-                    chartf === BLANKCTN && (r = h)),
-                  techChartList.push(h),
-                  subArea.appendChild(h.wrap);
+        return i;
+      };
+      let createChartWhat = function(s) {
+        if (s) {
+          var techName = s.name;
+          if (techName) {
+            (techName = techName.toUpperCase()),
+              "BLANKCTN" != techName && (ot = techName);
+            var h = getExistTechChart(techName);
+            if (!h) {
+              var chartf = allAvailableChartsMap[techName];
+              if (!utils_util.isFunc(chartf)) return;
+              if (chartf === BLANKCTN && r) {
+                h = r;
+                h.wrap.style.display = "";
+              } else {
+                h = new chartf(cfg, At, f);
+                chartf === BLANKCTN && (r = h);
               }
-              h.newParam(s.param), o(), yt.doStc(s);
+
+              techChartList.push(h);
+              subArea.appendChild(h.wrap);
             }
+            h.newParam(s.param), o(), yt.doStc(s);
           }
-        },
-        rmChart = function(t, i) {
-          if (t) {
-            var r = t.name;
-            if (r) {
-              r = r.toUpperCase();
-              for (var a = techChartList.length; a--; )
-                if (techChartList[a].name == r) {
-                  var s = techChartList.splice(a, 1)[0];
-                  return (
-                    s.rfs(),
-                    s.getFromToM.reset(s),
-                    !i && o(),
-                    void yt.doStc(t, !0)
-                  );
-                }
-            }
+        }
+      };
+      let rmChart = function(t, i) {
+        if (t) {
+          var r = t.name;
+          if (r) {
+            r = r.toUpperCase();
+            for (var a = techChartList.length; a--; )
+              if (techChartList[a].name == r) {
+                var s = techChartList.splice(a, 1)[0];
+                return (
+                  s.rfs(),
+                  s.getFromToM.reset(s),
+                  !i && o(),
+                  void yt.doStc(t, !0)
+                );
+              }
           }
-        };
+        }
+      };
       this.linkData = function(t) {
         var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
         if (i) {
@@ -5487,99 +5489,100 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var ot,
       techChartList,
       nt,
-      ct = "BLANKCTN",
-      dt = function() {
-        if (cfg.custom.tchart_tap && techChartList && ot) {
-          var t = techChartList.length;
-          if (!(t > 2)) {
-            for (var i = t; i--; )
-              if (ct == String(techChartList[i].name)) {
-                nt = i;
-                break;
-              }
-            if ("undefined" != typeof nt || 2 != t) {
-              var r = f.length;
-              for (i = r; i--; )
-                if (ot == f[i]) {
-                  o.removeChart(), ++i >= r && (i = 0);
-                  var a = f[i];
-                  o.createChart(
-                    1 == t
-                      ? {
+      ct = "BLANKCTN";
+    let dt = function() {
+      if (cfg.custom.tchart_tap && techChartList && ot) {
+        var t = techChartList.length;
+        if (!(t > 2)) {
+          for (var i = t; i--; )
+            if (ct == String(techChartList[i].name)) {
+              nt = i;
+              break;
+            }
+          if ("undefined" != typeof nt || 2 != t) {
+            var r = f.length;
+            for (i = r; i--; )
+              if (ot == f[i]) {
+                o.removeChart(), ++i >= r && (i = 0);
+                var a = f[i];
+                o.createChart(
+                  1 == t
+                    ? {
+                        name: a
+                      }
+                    : 0 == nt
+                    ? [
+                        {
+                          name: ct
+                        },
+                        {
                           name: a
                         }
-                      : 0 == nt
-                      ? [
-                          {
-                            name: ct
-                          },
-                          {
-                            name: a
-                          }
-                        ]
-                      : [
-                          {
-                            name: a
-                          },
-                          {
-                            name: ct
-                          }
-                        ]
-                  );
-                  break;
-                }
-            }
+                      ]
+                    : [
+                        {
+                          name: a
+                        },
+                        {
+                          name: ct
+                        }
+                      ]
+                );
+                break;
+              }
           }
         }
+      }
+    };
+    let pt = {
+      edit: function(t) {
+        o.createChart(t);
       },
-      pt = {
-        edit: function(t) {
-          o.createChart(t);
-        },
-        remove: function(t) {
-          o.removeChart(t);
-        }
-      },
-      vt = function(i, r) {
-        if (cfg.custom.allow_indicator_edit)
-          if (tt)
-            tt.sendOriginalData(
+      remove: function(t) {
+        o.removeChart(t);
+      }
+    };
+    let vt = function(i, r) {
+      if (cfg.custom.allow_indicator_edit)
+        if (tt)
+          tt.sendOriginalData(
+            {
+              name: i.name,
+              data: i.customArr,
+              defaultData: i.DEFAULT_ARR
+            },
+            pt
+          ),
+            tt.show(r),
+            utils_util.sudaLog();
+        else {
+          var a = cfg.custom.indicatorpanel_url;
+          usrObj.ssl && (a = utils_util.getSUrl(a, !0)),
+            (tt = new Q(
               {
-                name: i.name,
-                data: i.customArr,
-                defaultData: i.DEFAULT_ARR
+                url: a,
+                z: 10001
               },
-              pt
-            ),
-              tt.show(r),
-              utils_util.sudaLog();
-          else {
-            var a = cfg.custom.indicatorpanel_url;
-            usrObj.ssl && (a = utils_util.getSUrl(a, !0)),
-              (tt = new Q(
-                {
-                  url: a,
-                  z: 10001
-                },
-                at(vt, null, i, r)
-              ));
-          }
-      },
-      At = {
-        fixIdctW: !0,
-        stock: stockData,
-        iTo: st,
-        iMgr: iMgr,
-        onClkTT: vt,
-        h: cfg.DIMENSION.H_T_G,
-        eh: cfg.DIMENSION.H_T_B,
-        withHBg: !0,
-        onClkMain: dt,
-        usrObj: usrObj,
-        type: type,
-        initMgr: initMgr
-      };
-    return (o = new tChart_instance());
+              at(vt, null, i, r)
+            ));
+        }
+    };
+    let At = {
+      fixIdctW: !0,
+      stock: stockData,
+      iTo: st,
+      iMgr: iMgr,
+      onClkTT: vt,
+      h: cfg.DIMENSION.H_T_G,
+      eh: cfg.DIMENSION.H_T_B,
+      withHBg: !0,
+      onClkMain: dt,
+      usrObj: usrObj,
+      type: type,
+      initMgr: initMgr
+    };
+    o = new tChart_instance();
+    return o;
   }
 
   function Q(i, r) {

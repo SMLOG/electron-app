@@ -1321,7 +1321,7 @@ xh5_define(
             }
             y && setting.custom.show_ext_marks && _(h, t);
           },
-          A = function() {
+          draw = function() {
             y && d.drawBg(z.x);
             var t = e.datas;
             if (t) {
@@ -1340,15 +1340,15 @@ xh5_define(
                 n ? k() : a ? S() : i ? I() : M();
             }
           };
-        (this.draw = A),
-          (this.clear = function(e) {
-            e ? d.clear(!1, setting.PARAM.getHd()) : (d.remove(), (d = null));
-          }),
+        this.draw = draw;
+        (this.clear = function(e) {
+          e ? d.clear(!1, setting.PARAM.getHd()) : (d.remove(), (d = null));
+        }),
           (this.resize = function() {
             d.resize({
               mh: setting.DIMENSION.H_MA4K
             }),
-              A();
+              draw();
           }),
           (this.setLineStyle = N),
           (this.getLineStyle = function() {

@@ -1065,7 +1065,7 @@ xh5_define(
           g = "solid",
           b = isNaN(a.nfloat) ? 2 : a.nfloat,
           y = e.isMain,
-          N = function(e) {
+          setLineStyle = function(e) {
             if (
               ((o = p(
                 {
@@ -1341,21 +1341,21 @@ xh5_define(
             }
           };
         this.draw = draw;
-        (this.clear = function(e) {
+        this.clear = function(e) {
           e ? d.clear(!1, setting.PARAM.getHd()) : (d.remove(), (d = null));
-        }),
-          (this.resize = function() {
-            d.resize({
-              mh: setting.DIMENSION.H_MA4K
-            }),
-              draw();
+        };
+        this.resize = function() {
+          d.resize({
+            mh: setting.DIMENSION.H_MA4K
           }),
-          (this.setLineStyle = N),
-          (this.getLineStyle = function() {
-            return o;
-          }),
-          N(a),
-          i();
+            draw();
+        };
+        this.setLineStyle = setLineStyle;
+        this.getLineStyle = function() {
+          return o;
+        };
+        setLineStyle(a);
+        i();
       }
       function S() {
         var e,

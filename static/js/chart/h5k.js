@@ -3444,7 +3444,8 @@ xh5_define(
           }
           if (U) {
             var a = U.getLog();
-            (U = null), a && this.pCharts(a);
+            U = null;
+            a && this.pCharts(a);
           }
           z && ((z.from = void 0), (z.to = void 0), I.mM.showRs(z)),
             I.h5tM.resetHisT(),
@@ -3464,12 +3465,12 @@ xh5_define(
           var n = e && e.type ? e.type : "weibo";
           util.suda("share", n);
         };
-        (this.getChartId = function() {
+        this.getChartId = function() {
           return setting.uid;
-        }),
-          (this.getSymbols = function() {
-            return I.getAllSymbols();
-          });
+        };
+        this.getSymbols = function() {
+          return I.getAllSymbols();
+        };
         this.patcher = {
           iMgr: B.patcher
         };
@@ -3478,22 +3479,24 @@ xh5_define(
         };
         this.getCurrentData = function() {
           var e = K.get(viewState.viewId);
-          return e && (e = e[e.length - 1]), util.clone(e, null);
+          e && (e = e[e.length - 1]);
+          return util.clone(e, null);
         };
         this.getCurrentRange = function() {
           for (
             var e, t, n, a = [], i = I.getAllStock(), o = 0, s = i.length;
             s > o;
             o++
-          )
-            (n = i[o]),
-              (t = n.getName()),
-              (e = n.datas),
-              a.push({
-                name: t,
-                rangedata: e,
-                symbol: n.symbol
-              });
+          ) {
+            n = i[o];
+            t = n.getName();
+            e = n.datas;
+            a.push({
+              name: t,
+              rangedata: e,
+              symbol: n.symbol
+            });
+          }
           return a;
         };
         this.zoom = function(e) {

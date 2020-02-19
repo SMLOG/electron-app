@@ -2315,18 +2315,18 @@ xh5_define(
               D = $C("div");
               x.appendChild(D);
               O = $C("div");
-              x.appendChild(O),
-                (e = new xh5_Canvas({
-                  width: r,
-                  height: setting.DIMENSION.H_TIME_PART
-                }));
+              x.appendChild(O);
+              e = new xh5_Canvas({
+                width: r,
+                height: setting.DIMENSION.H_TIME_PART
+              });
               n = e.g;
               i = e.canvas;
               i.style.position = "absolute";
               x.appendChild(i);
               A.appendChild(x);
             },
-            b = function(e) {
+            initTheme = function(e) {
               var n = !1;
               if (e) {
                 E && (n = E.setTheme(e));
@@ -2337,14 +2337,13 @@ xh5_define(
                     ((setting.COLOR[a] = e[a]), (n = !0));
                 util.stc("k_thm", e);
               }
-              return (
-                n &&
-                  logoM.styleLogo({
-                    logo: s,
-                    color: setting.COLOR.LOGO
-                  }),
-                n
-              );
+
+              n &&
+                logoM.styleLogo({
+                  logo: s,
+                  color: setting.COLOR.LOGO
+                });
+              return n;
             },
             y = function(e) {
               !setting.custom.mousewheel_zoom ||
@@ -2367,59 +2366,60 @@ xh5_define(
                 xh5_EvtUtil.addHandler(x, "keydown", k));
             },
             M = function(e) {
-              (s = e), x.appendChild(e);
+              s = e;
+              x.appendChild(e);
             };
-          v(),
-            p(),
-            b(a.theme),
-            f(),
-            S(),
-            logoM.getLogo({
-              cb: M,
-              id: setting.PARAM.LOGO_ID,
-              isShare: !1,
-              top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
-              right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
-              LOGO_W: setting.DIMENSION.LOGO_W,
-              LOGO_H: setting.DIMENSION.LOGO_H,
-              color: setting.COLOR.LOGO
+          v();
+          p();
+          initTheme(a.theme);
+          f();
+          S();
+          logoM.getLogo({
+            cb: M,
+            id: setting.PARAM.LOGO_ID,
+            isShare: !1,
+            top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+            right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+            LOGO_W: setting.DIMENSION.LOGO_W,
+            LOGO_H: setting.DIMENSION.LOGO_H,
+            color: setting.COLOR.LOGO
+          });
+          xh5_BrowserUtil.noH5 &&
+            (q.showTip({
+              txt: a.nohtml5info || globalCfg.nohtml5info,
+              parent: x
             }),
-            xh5_BrowserUtil.noH5 &&
-              (q.showTip({
-                txt: a.nohtml5info || globalCfg.nohtml5info,
-                parent: x
-              }),
-              util.stc("k_nh5")),
-            (this.resizeAll = f),
-            (this.innerResize = function(e) {
-              I &&
-                (h(0 / 0, 0 / 0, e),
-                I.onResize(),
-                B.onResize(),
-                m(),
-                Y.onInnerResize({
-                  height: setting.DIMENSION.h_k
-                }));
-            }),
-            (this.initTheme = b),
-            (this.drawReMark = function(t) {
-              if (t) {
-                if (((i.style.display = ""), o == t)) return;
-                var a = setting.DIMENSION.H_TIME_PART;
-                (o = t),
-                  e.resize({
-                    width: r,
-                    height: a,
-                    hd: setting.PARAM.getHd()
-                  }),
-                  (n.font = "12px " + setting.STYLE.FONT_FAMILY),
-                  (n.textBaseline = "top"),
-                  (n.fillStyle = setting.COLOR.REMARK_BG),
-                  n.fillRect(0, 0, r, a),
-                  (n.fillStyle = setting.COLOR.REMARK_T),
-                  n.fillText(t, 0, 0);
-              } else i.style.display = "none";
-            });
+            util.stc("k_nh5"));
+          this.resizeAll = f;
+          this.innerResize = function(e) {
+            I &&
+              (h(0 / 0, 0 / 0, e),
+              I.onResize(),
+              B.onResize(),
+              m(),
+              Y.onInnerResize({
+                height: setting.DIMENSION.h_k
+              }));
+          };
+          this.initTheme = initTheme;
+          this.drawReMark = function(t) {
+            if (t) {
+              if (((i.style.display = ""), o == t)) return;
+              var a = setting.DIMENSION.H_TIME_PART;
+              (o = t),
+                e.resize({
+                  width: r,
+                  height: a,
+                  hd: setting.PARAM.getHd()
+                }),
+                (n.font = "12px " + setting.STYLE.FONT_FAMILY),
+                (n.textBaseline = "top"),
+                (n.fillStyle = setting.COLOR.REMARK_BG),
+                n.fillRect(0, 0, r, a),
+                (n.fillStyle = setting.COLOR.REMARK_T),
+                n.fillText(t, 0, 0);
+            } else i.style.display = "none";
+          };
         })(),
         B = new (function() {
           var e,

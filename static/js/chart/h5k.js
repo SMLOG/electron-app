@@ -14,7 +14,7 @@ xh5_define(
         function l(e, t) {
           var n,
             a,
-            i = C.get(_.URLHASH.KD),
+            i = DB.get(_.URLHASH.KD),
             o = i.length;
           e || (n = 0), t || (a = o - 1);
           for (
@@ -28,11 +28,11 @@ xh5_define(
           return [n, a];
         }
         function c() {
-          n && (K = C),
+          n && (K = DB),
             P.uUpdate(null, !0),
             "CN" !== u ||
               /^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol) ||
-              C.initExtraData();
+              DB.initExtraData();
         }
         e = p(
           {
@@ -105,7 +105,7 @@ xh5_define(
           return A || "";
         };
         this.viewState = viewState;
-        var C = new (function() {
+        var DB = new (function() {
           var i;
           var o = {};
           var extraDataObj = {
@@ -210,6 +210,7 @@ xh5_define(
             extraDataObj = null;
           };
         })();
+
         var rangeCtrl = new (function() {
             var e = function() {
               stockDataA.minPrice = Number.MAX_VALUE;
@@ -277,47 +278,48 @@ xh5_define(
               }
             };
             this.setDataRange = function(n) {
-              var i = C.get();
+              var i = DB.get();
               if (i) {
                 viewState.dataLength = i.length;
-                var o = viewState.start,
-                  s = viewState.end;
-                if (isNaN(o) || isNaN(s))
-                  (s = C.get("b")),
-                    (o = C.get("v")),
-                    (viewState.start = o),
-                    (viewState.end = s);
-                else {
-                  if (n && s + 1 >= i.length) {
-                    var r = i.length - s;
-                    (viewState.end = s = i.length),
-                      (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
-                        (0 == o &&
-                          s > 1 &&
-                          s < setting.PARAM.minCandleNum &&
-                          ((o = s - 1), (viewState.start = o)),
-                        s - o >= setting.PARAM.defaultCandleNum &&
-                          ((o += r), (viewState.start = o)));
+                var start = viewState.start;
+                var end = viewState.end;
+                if (isNaN(start) || isNaN(end)) {
+                  end = DB.get("b");
+                  start = DB.get("v");
+                  viewState.start = start;
+                  viewState.end = end;
+                } else {
+                  if (n && end + 1 >= i.length) {
+                    var r = i.length - end;
+                    viewState.end = end = i.length;
+                    (1 == a.pcm || viewState.viewId == _.URLHASH.K1) &&
+                      (0 == start &&
+                        end > 1 &&
+                        end < setting.PARAM.minCandleNum &&
+                        ((start = end - 1), (viewState.start = start)),
+                      end - start >= setting.PARAM.defaultCandleNum &&
+                        ((start += r), (viewState.start = start)));
                   }
-                  C.set("v", o), C.set("b", s);
+                  DB.set("v", start), DB.set("b", end);
                 }
-                switch (
-                  ((viewState.currentLength = s - o),
-                  (viewState.startDate = i[o].date),
-                  (viewState.endDate = i[s - 1].date),
-                  a.pcm)
-                ) {
+                viewState.currentLength = end - start;
+                viewState.startDate = i[start].date;
+                viewState.endDate = i[end - 1].date;
+
+                switch (a.pcm) {
                   case 1:
                     stockDataA.prevclose = i[0].prevclose;
                     break;
                   case 2:
-                    stockDataA.prevclose = i[o].close;
+                    stockDataA.prevclose = i[start].close;
                     break;
                   default:
                     stockDataA.prevclose =
-                      o > 1 ? i[o - 1].close : i[0].prevclose || i[0].close;
+                      start > 1
+                        ? i[start - 1].close
+                        : i[0].prevclose || i[0].close;
                 }
-                (stockDataA.datas = i.slice(o, s)),
+                (stockDataA.datas = i.slice(start, end)),
                   (stockDataA.dataLen = stockDataA.datas.length),
                   e(),
                   t(n);
@@ -340,7 +342,7 @@ xh5_define(
               r = !1,
               l = function(e, n, a) {
                 if (e.isUpdateTime) {
-                  var i = C.get(n);
+                  var i = DB.get(n);
                   if (i && !(i.length < 1)) {
                     var o =
                         n == _.URLHASH.KD ||
@@ -532,12 +534,12 @@ xh5_define(
                     g,
                     b,
                     y = !(-828 === e),
-                    N = C.getOriDK(),
+                    N = DB.getOriDK(),
                     w = 0;
                   if (
                     ((r = "q" === i ? _.URLHASH.KDF : _.URLHASH.KDB),
-                    C.initState(r, util.clone(N, null), !1, !1, !0),
-                    (s = C.get(r)),
+                    DB.initState(r, util.clone(N, null), !1, !1, !0),
+                    (s = DB.get(r)),
                     (b = s.length),
                     y)
                   ) {
@@ -613,12 +615,17 @@ xh5_define(
                     util.kUtil.pd(h, null),
                     util.kUtil.pd(c, null),
                     util.kUtil.pd(u, null),
-                    C.initState(_.URLHASH["q" == i ? "KWF" : "KWB"], h),
-                    C.initState(_.URLHASH["q" == i ? "KMF" : "KMB"], c),
-                    C.initState(_.URLHASH["q" == i ? "KYF" : "KYB"], u);
+                    DB.initState(_.URLHASH["q" == i ? "KWF" : "KWB"], h),
+                    DB.initState(_.URLHASH["q" == i ? "KMF" : "KMB"], c),
+                    DB.initState(_.URLHASH["q" == i ? "KYF" : "KYB"], u);
                   var M = util.clone(s, null);
-                  C.initState(_.URLHASH["q" == i ? "KCLF" : "KCLB"], M, !1, !0),
-                    n || C.initState(r, s);
+                  DB.initState(
+                    _.URLHASH["q" == i ? "KCLF" : "KCLB"],
+                    M,
+                    !1,
+                    !0
+                  ),
+                    n || DB.initState(r, s);
                 }
               },
               l = function(t) {
@@ -647,7 +654,7 @@ xh5_define(
               },
               c = function(e, t) {
                 var s = _.URLHASH.gt(i),
-                  r = "mink" == s.type ? C.initState : C.initDWMState;
+                  r = "mink" == s.type ? DB.initState : DB.initDWMState;
                 F.show(),
                   "LSE" === u && (e.symbol = a.rawSymbol),
                   KKE.api("datas.k.get", e, function(a) {
@@ -711,7 +718,7 @@ xh5_define(
                           kke_cs: 0
                         }
                       ];
-                    C.initState(viewState.viewId, i, !0),
+                    DB.initState(viewState.viewId, i, !0),
                       o(t, {
                         viewId: viewState.viewId
                       });
@@ -838,7 +845,7 @@ xh5_define(
                   open: b,
                   close: i
                 }),
-                  "rek" == t.type && C.get(_.URLHASH.KD) ? l(e) : p(e);
+                  "rek" == t.type && DB.get(_.URLHASH.KD) ? l(e) : p(e);
               };
             this.iInit = function(e) {
               var t = viewState.viewId;
@@ -869,17 +876,17 @@ xh5_define(
                   default:
                     "msk" == n.type
                       ? d(e)
-                      : "rek" == n.type && C.get(_.URLHASH.KD)
+                      : "rek" == n.type && DB.get(_.URLHASH.KD)
                       ? l(e)
                       : p(e);
                 }
               }
             };
           })();
-        (this.kDb = C),
-          (this.extraDataObj = C.extraDataObj),
+        (this.kDb = DB),
+          (this.extraDataObj = DB.extraDataObj),
           (this.getYtdIndex = function(e) {
-            var t = C.get(_.URLHASH.KD);
+            var t = DB.get(_.URLHASH.KD);
             if (!t) return null;
             var n = t[t.length - 1],
               a = n.date.getFullYear(),

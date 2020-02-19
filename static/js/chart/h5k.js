@@ -2863,27 +2863,27 @@ xh5_define(
             H = [];
           this.iToD = function(t, n, a) {
             if (!t.e || !w) {
-              var s = t.x,
+              var ix = t.x,
                 r = t.ox || 0,
                 l = t.y,
                 c = t.oy || 0,
                 h = t.e ? t.e.target : null;
               if (!a) {
-                if (A == s && R == l) return;
-                (A = s), (R = l);
+                if (A == ix && R == l) return;
+                (A = ix), (R = l);
               }
               if (h) {
                 var u = h.style.height.split("px")[0];
-                (0 > l || l > u) && ((s = 0 / 0), (l = 0 / 0));
+                (0 > l || l > u) && ((ix = 0 / 0), (l = 0 / 0));
               }
               var m = viewState.currentLength,
                 f = Math.max(m, setting.PARAM.minCandleNum);
-              s += setting.DIMENSION.w_k / f - z.x;
-              var v = Math.floor((s * f) / setting.DIMENSION.w_k);
+              ix += setting.DIMENSION.w_k / f - z.x;
+              var v = Math.floor((ix * f) / setting.DIMENSION.w_k);
               if (
                 (0 > v ? (v = 0) : v >= m && (v = m - 1),
                 !isNaN(v) && (k = v),
-                isNaN(s) && isNaN(l))
+                isNaN(ix) && isNaN(l))
               )
                 return (
                   (N = !1),
@@ -2940,71 +2940,75 @@ xh5_define(
                   ((C = I.getMainStock()), (D = C.datas), !D || D.length <= v)
                 )
                   return;
-                (x = D[v]), (K = D), (S = C.getName()), (y = C.symbol);
+                x = D[v];
+                K = D;
+                S = C.getName();
+                y = C.symbol;
                 var X = Math.abs(T);
-                (O = X > 99999 ? Math.floor(T) : T.toFixed(X > 9999 ? 1 : d)),
-                  H.push({
-                    name: S,
-                    data: x,
-                    rangedata: K,
-                    symbol: y,
-                    color: C.getLineStyle().linecolor
-                  });
+                O = X > 99999 ? Math.floor(T) : T.toFixed(X > 9999 ? 1 : d);
+                H.push({
+                  name: S,
+                  data: x,
+                  rangedata: K,
+                  symbol: y,
+                  color: C.getLineStyle().linecolor
+                });
               }
               if (x) {
-                var Z = s;
-                setting.custom.stick && (s = x.ix || s),
-                  e &&
-                    (e.setFloaterData({
-                      symbol: y,
-                      name: S,
-                      data: x,
-                      stock: C,
-                      arr: H
-                    }),
-                    p.pv({
-                      x: Z,
-                      y: setting.DIMENSION.K_F_T
-                    })),
-                  iHLineO.pv({
-                    y: l,
-                    v: O,
-                    oy: c
+                var Z = ix;
+                setting.custom.stick && (ix = x.ix || ix);
+                e &&
+                  (e.setFloaterData({
+                    symbol: y,
+                    name: S,
+                    data: x,
+                    stock: C,
+                    arr: H
                   }),
-                  o.pv({
-                    x: s,
-                    ox: r,
-                    y: setting.DIMENSION.H_MA4K,
-                    v: x.day + " " + (x.time || "")
-                  }),
-                  b(v),
-                  !S && (S = y || "--"),
-                  Y.onViewPrice(x, v, H, K, S, !0),
-                  me.re(globalCfg.e.I_EVT, t.e);
+                  p.pv({
+                    x: Z,
+                    y: setting.DIMENSION.K_F_T
+                  }));
+                iHLineO.pv({
+                  y: l,
+                  v: O,
+                  oy: c
+                });
+                o.pv({
+                  x: ix,
+                  ox: r,
+                  y: setting.DIMENSION.H_MA4K,
+                  v: x.day + " " + (x.time || "")
+                });
+                b(v);
+                !S && (S = y || "--");
+                Y.onViewPrice(x, v, H, K, S, !0);
+                me.re(globalCfg.e.I_EVT, t.e);
               }
             }
           };
-          var K, E, F;
+          let mainStock, datas, name;
           this.iToKb = function(e, t) {
             if (t) return void (w = !1);
             if (
               ((w = !0),
               (k += e),
               !$CONTAINS(C, B.iHLineO.body) && C.appendChild(B.iHLineO.body),
-              (K = I.getMainStock()),
-              (F = K.getName()),
-              (E = K.datas),
-              !E)
+              (mainStock = I.getMainStock()),
+              (name = mainStock.getName()),
+              (datas = mainStock.datas),
+              !datas)
             )
               return void 0;
             if (0 > k) return (k = 0), -1;
-            if (k >= E.length) return (k = E.length - 1), 1;
-            var n = E[k];
+            if (k >= datas.length) return (k = datas.length - 1), 1;
+            var n = datas[k];
             if (!n) return void 0;
             var a = {
               mark:
-                K.labelMaxP -
-                (n.cy / setting.DIMENSION.h_k) * (K.labelMaxP - K.labelMinP),
+                mainStock.labelMaxP -
+                (n.cy / setting.DIMENSION.h_k) *
+                  (mainStock.labelMaxP - mainStock.labelMinP),
               x: n.ix,
               y: n.cy,
               oy: setting.DIMENSION.H_MA4K,
@@ -3017,30 +3021,31 @@ xh5_define(
             if (isNaN(e) && isNaN(t))
               return (P = 0 / 0), (S = !1), void me.re(globalCfg.e.I_EVT, i);
             hideIUis();
-            var o = viewState.start,
-              s = viewState.end,
-              r = s - o;
+            let start = viewState.start,
+              end = viewState.end,
+              r = end - start;
             isNaN(P) && (P = e);
-            var l = t - P,
-              c = viewState.dataLength,
+            let l = t - P,
+              len = viewState.dataLength,
               h = setting.DIMENSION.w_k / r;
             if (Math.abs(l) < h) {
               if (setting.custom.smooth && h > 4) {
-                if (s >= c && 0 > l) return;
-                if (1 > o && l > 0) return;
-                (z.x = l), I.callSdDraw();
+                if (end >= len && 0 > l) return;
+                if (1 > start && l > 0) return;
+                z.x = l;
+                I.callSdDraw();
               }
             } else {
               P = t;
               var d = Math.round((l * r) / setting.DIMENSION.w_k);
-              o -= d;
-              s -= d;
-              s >= c && ((s = c), (o = s - r));
-              0 > o && ((o = 0), (s = r));
-              (viewState.start != o || viewState.end != s) &&
+              start -= d;
+              end -= d;
+              end >= len && ((end = len), (start = end - r));
+              0 > start && ((start = 0), (end = r));
+              (viewState.start != start || viewState.end != end) &&
                 (z.resetX(0),
                 (viewState.movY = a - n),
-                I.moving(o, s, !0),
+                I.moving(start, end, !0),
                 (S = !0));
             }
           };

@@ -1396,7 +1396,7 @@ xh5_define(
               : v(i, n, a.nfloat, !1, !0, g);
             for (var m = o; m--; ) (e = f[m]), e.setPricePos(p, s);
           },
-          N = function() {
+          callSdDraw = function() {
             (viewState.start < 1 || !setting.custom.smooth) && z.resetX();
             for (var e = f.length; e--; ) f[e].draw();
           },
@@ -1409,7 +1409,7 @@ xh5_define(
             w();
             for (var n, a = f.length, i = 0; a > i; i++)
               (n = f[i]), n.onViewChange();
-            y(), N(), t || Y.onRange(e, a > 1);
+            y(), callSdDraw(), t || Y.onRange(e, a > 1);
           },
           S = [],
           M = !1,
@@ -1418,7 +1418,7 @@ xh5_define(
               ? (t !== e && d.removeCompare([t.symbol]), !0)
               : t.kDb.get()
               ? !0
-              : (t.initData(R), !1);
+              : (t.initData(onChangeView), !1);
           },
           A = function(e) {
             if (e && util.isFunc(e.callback)) {
@@ -1435,7 +1435,7 @@ xh5_define(
               (t = f[a]), t == e || I(t) || ((n = !1), (M = !0));
             return n;
           },
-          R = function(t, n) {
+          onChangeView = function(t, n) {
             if ((A(n), I(e))) {
               if (e.isErr) return void (e.isErr = !1);
               if ((B.patcher.switchFloater(), z.resetX(0), C()))
@@ -1454,7 +1454,7 @@ xh5_define(
           },
           D = function(e) {
             (e || viewState.end == viewState.dataLength) &&
-              (B.update(), y(), N(), H(!0)),
+              (B.update(), y(), callSdDraw(), H(!0)),
               Y.onDataUpdate(),
               !B.isIng() && Y.onViewPrice();
           },
@@ -1538,7 +1538,7 @@ xh5_define(
             (this.newAC = n),
             (this.removeAC = a),
             (this.togglePt = function(t, n) {
-              e && (e.togglePt(t, n), R());
+              e && (e.togglePt(t, n), onChangeView());
             });
         })();
         var h5tM = new (function() {
@@ -1664,61 +1664,61 @@ xh5_define(
           return e;
         };
         var $ = function() {
-            d.mM.togglePt(
-              f.length > 1
-                ? {
-                    v: !1
-                  }
-                : viewState.viewId == _.URLHASH.KCL ||
-                  viewState.viewId == _.URLHASH.KCLF ||
-                  viewState.viewId == _.URLHASH.KCLB
-                ? {
-                    v: !1
-                  }
-                : {
-                    v: !0
-                  }
-            );
-          },
-          W = function(t, n, a, i, o) {
-            if (
-              (!a && z.resetX(),
-              !(
-                n - t < setting.PARAM.minCandleNum ||
-                n > viewState.dataLength ||
-                0 > t ||
-                n - t > setting.PARAM.maxCandleNum
-              ))
-            ) {
-              (viewState.start = t),
-                (viewState.end = n),
-                (viewState.currentLength = n - t);
-              for (var s, r = f.length, l = 0; r > l; l++)
-                (s = f[l]), s.setRange(i);
-              y(), N(), o || Y.onRange(e, r > 1);
-            }
-          };
-        (this.onChangeView = R),
-          (this.showYTD = function(t, n) {
-            (viewState.viewId = _.URLHASH.KD + t), R(!0);
-            var a = e.getYtdIndex(n);
-            a && W(a[0], a[1] + 1);
-          }),
-          (this.moving = W),
-          (this.callSdDraw = N);
+          d.mM.togglePt(
+            f.length > 1
+              ? {
+                  v: !1
+                }
+              : viewState.viewId == _.URLHASH.KCL ||
+                viewState.viewId == _.URLHASH.KCLF ||
+                viewState.viewId == _.URLHASH.KCLB
+              ? {
+                  v: !1
+                }
+              : {
+                  v: !0
+                }
+          );
+        };
+        var moving = function(t, n, a, i, o) {
+          if (
+            (!a && z.resetX(),
+            !(
+              n - t < setting.PARAM.minCandleNum ||
+              n > viewState.dataLength ||
+              0 > t ||
+              n - t > setting.PARAM.maxCandleNum
+            ))
+          ) {
+            (viewState.start = t),
+              (viewState.end = n),
+              (viewState.currentLength = n - t);
+            for (var s, r = f.length, l = 0; r > l; l++)
+              (s = f[l]), s.setRange(i);
+            y(), callSdDraw(), o || Y.onRange(e, r > 1);
+          }
+        };
+        this.onChangeView = onChangeView;
+        this.showYTD = function(t, n) {
+          (viewState.viewId = _.URLHASH.KD + t), onChangeView(!0);
+          var a = e.getYtdIndex(n);
+          a && moving(a[0], a[1] + 1);
+        };
+        this.moving = moving;
+        this.callSdDraw = callSdDraw;
         var G = function(t, n) {
-            var a = t instanceof Obji ? t : new Obji(t, n);
-            n && (e = a), f.push(a), $(), R();
-          },
-          X = function(n) {
-            if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
-              var a = util.market(n.symbol),
-                i = util.market(e.symbol);
-              if (a != i && ("US" == a || "US" == i)) return !1;
-            }
-            return !0;
-          };
-        (this.compare = function(e) {
+          var a = t instanceof Obji ? t : new Obji(t, n);
+          n && (e = a), f.push(a), $(), onChangeView();
+        };
+        var X = function(n) {
+          if ("mink" == _.URLHASH.gt(viewState.viewId).type) {
+            var a = util.market(n.symbol),
+              i = util.market(e.symbol);
+            if (a != i && ("US" == a || "US" == i)) return !1;
+          }
+          return !0;
+        };
+        this.compare = function(e) {
           for (var n = e.callback, a = f.length; a--; )
             if (f[a].symbol == e.symbol)
               return void (
@@ -1735,18 +1735,18 @@ xh5_define(
                 code: 2,
                 msg: "invalid comparing market or period"
               });
-        }),
-          (this.removeCompare = function(e, t) {
-            for (var n, a, i = !1, o = e.length; o--; ) {
-              a = e[o];
-              for (var s = f.length; s--; )
-                if (a == f[s].symbol) {
-                  (i = !0), (n = f.splice(s, 1)[0]), n.clear(t), (n = null);
-                  break;
-                }
-            }
-            i && !t && ($(), y(), N());
-          });
+        };
+        this.removeCompare = function(e, t) {
+          for (var n, a, i = !1, o = e.length; o--; ) {
+            a = e[o];
+            for (var s = f.length; s--; )
+              if (a == f[s].symbol) {
+                (i = !0), (n = f.splice(s, 1)[0]), n.clear(t), (n = null);
+                break;
+              }
+          }
+          i && !t && ($(), y(), callSdDraw());
+        };
         var Z,
           J = function(e) {
             e ? D() : viewState.end == viewState.dataLength && B.update();
@@ -1781,7 +1781,7 @@ xh5_define(
               }
         }),
           (this.setScale = function(e) {
-            (setting.datas.scaleType = e), y(), N();
+            (setting.datas.scaleType = e), y(), callSdDraw();
           }),
           (this.setLineStyle = function(n) {
             if (n) {
@@ -1828,7 +1828,7 @@ xh5_define(
             var t = e.detail || -1 * e.wheelDelta;
             if (0 != t) {
               var n = oe(t, e);
-              W(n[0], n[1]);
+              moving(n[0], n[1]);
             }
           }
         }),
@@ -1840,12 +1840,13 @@ xh5_define(
               case 38:
               case 40:
                 var n = oe(38 == t ? 1 : -1);
-                W(n[0], n[1]);
+                moving(n[0], n[1]);
                 break;
               case 37:
               case 39:
                 var a = B.iToKb(37 == t ? -1 : 1);
-                a && (W(viewState.start + a, viewState.end + a), B.iToKb(0));
+                a &&
+                  (moving(viewState.start + a, viewState.end + a), B.iToKb(0));
                 break;
               case 13:
                 h5tM.historyT();
@@ -1857,7 +1858,7 @@ xh5_define(
           }),
           (this.zoomApi = function(e) {
             var t = oe(e ? 1 : -1);
-            W(t[0], t[1]);
+            moving(t[0], t[1]);
           }),
           (this.moveApi = function(e) {
             var t = viewState.start,
@@ -1868,7 +1869,7 @@ xh5_define(
                 ((n = viewState.dataLength),
                 (t = viewState.start + n - viewState.end)),
               0 > t && ((t = 0), (n = viewState.end - viewState.start)),
-              W(t, n);
+              moving(t, n);
           }),
           (this.shareTo = function(e) {
             e = p(

@@ -808,7 +808,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
       },
       L = function(n, a) {
         var o = getK(n);
-        var r = function(r) {
+        var processKdatas = function(r) {
           var c = r ? r.data[0] : void 0,
             u = l(),
             date = new Date();
@@ -863,14 +863,15 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
                       ytd: t[3] || null,
                       year: t[4]
                     })
-                  : (u.msg = "error"),
-                  lib.isFunc(a) && a(u);
-              } else
-                (u.msg = "error"),
-                  (u.data = {
-                    hq: c
-                  }),
-                  lib.isFunc(a) && a(u);
+                  : (u.msg = "error");
+                lib.isFunc(a) && a(u);
+              } else {
+                u.msg = "error";
+                u.data = {
+                  hq: c
+                };
+                lib.isFunc(a) && a(u);
+              }
             },
             {
               market: o.market,
@@ -880,7 +881,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
           );
         };
         "undefined" == typeof o.market || "UNKNOWN" === o.market
-          ? r()
+          ? processKdatas()
           : KKE.api(
               "datas.hq.get",
               {
@@ -889,7 +890,7 @@ xh5_define("datas.k", ["utils.util"], function(lib) {
                 withI: !0,
                 ssl: n.ssl
               },
-              r
+              processKdatas
             );
       },
       U = function(t, n) {

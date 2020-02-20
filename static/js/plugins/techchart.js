@@ -5368,10 +5368,9 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
             chart = techChartList[a];
             chart.initAndCalcAll(i);
             // t && chart.update();
-            techs_datas[chart.name] = chart.datas;
+            techs_datas[chart.name] = chart.selfArr;
             symbol = chart.symbol;
           }
-          console.log(techs_datas);
           window["tech_" + symbol] = techs_datas;
         }
       };
@@ -6848,3 +6847,21 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
     };
   })();
 });
+
+/**
+ KKE.api("plugins.techchart.get", "", tchar => {
+  var tm = tchar.tChart({ stockData: {} });
+  tm.createChart({ name: "MACD" });
+  console.log(tm);
+
+  KKE.api(
+    "datas.k.get",
+    { symbol: "sh600001", newthour: "09:00", ssl: true },
+    function(d) {
+      console.log(d);
+      tm.linkData(d.data.day);
+    }
+  );
+
+});
+ */

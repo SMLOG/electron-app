@@ -7,7 +7,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function techchart(cfg, i, r) {
     this.cfg = cfg;
     this.isSC = !0;
-    this.proxyCfg = it(
+    this.proxyCfg = oc(
       {
         iTo: function() {},
         ctn: null,
@@ -28,7 +28,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       },
       i
     );
-    this.selfCfg = it(
+    this.selfCfg = oc(
       {
         nu: !1,
         h: this.proxyCfg.h,
@@ -588,7 +588,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var e = "chip_";
     this.selfDataUrlUpdate =
       "http://" +
-      dt +
+      HQ_DOMAIN +
       ".sinajs.cn/etag.php?_=" +
       new Date().getTime() +
       "&list=" +
@@ -632,7 +632,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           r.hasOwnProperty(a) &&
             i.push({
               value: r[a],
-              date: lt.sd(a)
+              date: dateUtil.sd(a)
             });
       }
       return i;
@@ -665,7 +665,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             r.length > 1 &&
             (i = [
               {
-                date: lt.sd(r[0]),
+                date: dateUtil.sd(r[0]),
                 value: r[1]
               }
             ]),
@@ -677,7 +677,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (t && i && !(i.length < 1)) {
         var a = i[i.length - 1];
         if ((t = t[0]))
-          if (lt.stbd(t.date, a.date))
+          if (dateUtil.stbd(t.date, a.date))
             for (var s in t)
               t.hasOwnProperty(s) &&
                 "undefined" != typeof a[s] &&
@@ -743,7 +743,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.loadUrlData = function(i) {
       if (i) {
         var r = h.symbol,
-          a = "_" + r + lt.ddt(new Date()).getFullYear();
+          a = "_" + r + dateUtil.ddt(new Date()).getFullYear();
         (h.selfDataUrl = d),
           utils_util.load(
             h.selfDataUrl
@@ -1300,7 +1300,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         Math.random()),
       (this.selfDataUrlUpdate =
         "http://" +
-        dt +
+        HQ_DOMAIN +
         ".sinajs.cn/etag.php?_=" +
         new Date().getTime() +
         "&list=" +
@@ -1515,7 +1515,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.separate = 1),
       (this.selfDataUrl =
         "http://stock.finance.sina.com.cn/stock/api/jsonp_v2.php/$cb/StockMixService.getNewRateInfo?symbol=$symbol&___qn=3&from=$from&to=$to"),
-      (this.selfDataUrlUpdate = "http://" + dt + ".sinajs.cn/list=$symbol"),
+      (this.selfDataUrlUpdate =
+        "http://" + HQ_DOMAIN + ".sinajs.cn/list=$symbol"),
       (this.cb = s),
       (this.toReCalc = !0),
       (this.initAndCalcAll = function(i, r) {
@@ -1620,12 +1621,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           ms: Number(i[1]),
           sb: Number(i[2]),
           ss: Number(i[3]),
-          date: lt.sd(i[4])
+          date: dateUtil.sd(i[4])
         };
       }),
       (this.df = function(t) {
         for (var i = [], r = 0, a = t.length; a > r; r++) {
-          var s = lt.sd(t[r].d),
+          var s = dateUtil.sd(t[r].d),
             e = s.getDate();
           i.push({
             mb: e,
@@ -1734,7 +1735,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           ) {
             (i = s[h]), (r = i.split(","));
             var l = {
-              date: lt.sd(r[0])
+              date: dateUtil.sd(r[0])
             };
             (l[e] = Number(r[1])), a.push(l);
           }
@@ -1749,7 +1750,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           i = i.split(",");
           var r = Number(i[1]),
             a = {
-              date: lt.sd(i[0])
+              date: dateUtil.sd(i[0])
             };
           return (
             (a[e] = r),
@@ -1959,7 +1960,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               f = i.r2_out,
               u = i.r3_out;
             r.push({
-              date: lt.sd(i.date),
+              date: dateUtil.sd(i.date),
               super: h - c,
               big: o - d,
               mid: l - f,
@@ -1983,7 +1984,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               l = i.r2_out,
               n = i.r3_out;
             return {
-              date: lt.sd(i.date),
+              date: dateUtil.sd(i.date),
               super: r - h,
               big: a - o,
               mid: s - l,
@@ -2191,7 +2192,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           )
             (i = a[s]),
               r.push({
-                date: lt.sd(i.dt),
+                date: dateUtil.sd(i.dt),
                 buy: i.buy,
                 sell: i.sell,
                 total: i.buy + i.sell
@@ -2397,7 +2398,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           for (var i, r = [], a = t, s = 0, e = a.length; e > s; s++)
             (i = a[s]),
               r.push({
-                date: lt.sd(i.date),
+                date: dateUtil.sd(i.date),
                 bar: i.std_pchg,
                 dot: i.value
               });
@@ -3077,7 +3078,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       Math.random()),
       (this.selfDataUrlUpdate =
         "http://" +
-        dt +
+        HQ_DOMAIN +
         ".sinajs.cn/etag.php?_=" +
         new Date().getTime() +
         "&list=" +
@@ -3556,7 +3557,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               time: s[o].time,
               buy: Number(s[o].buy),
               sell: Number(s[o].sell),
-              date: lt.sd(s[o].dt)
+              date: dateUtil.sd(s[o].dt)
             });
           r = e(i, a.stock.hq.date, "CN", !0);
         }
@@ -3598,7 +3599,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 time: s[o][l].time,
                 buy: s[o][l].buy,
                 sell: s[o][l].sell,
-                date: lt.sd(s[o][l].dt)
+                date: dateUtil.sd(s[o][l].dt)
               });
             var n;
             (n = a.stock ? a.stock.hq.date : s[h - 1][0].date),
@@ -3812,7 +3813,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.loadUrlData = function(i) {
         if (i && a.stock.hq) {
           var r = e.symbol,
-            s = "_" + r + lt.ddt(new Date()).getFullYear();
+            s = "_" + r + dateUtil.ddt(new Date()).getFullYear();
           (e.selfDataUrl = o
             ? a.stock.dp
               ? e.urls.oned
@@ -4099,7 +4100,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var o = "dkfz_";
     (this.selfDataUrlUpdate =
       "http://" +
-      dt +
+      HQ_DOMAIN +
       ".sinajs.cn/etag.php?_=" +
       new Date().getTime() +
       "&list=" +
@@ -4117,7 +4118,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             r.hasOwnProperty(a) &&
               i.push({
                 flag: r[a],
-                date: lt.sd(a)
+                date: dateUtil.sd(a)
               });
         }
         return i;
@@ -4163,7 +4164,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               r.length > 1 &&
               (i = [
                 {
-                  date: lt.sd(r[0]),
+                  date: dateUtil.sd(r[0]),
                   flag: r[1]
                 }
               ]),
@@ -4194,7 +4195,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (t && i && !(i.length < 1)) {
           var a = i[i.length - 1];
           if ((t = t[0]))
-            if (lt.stbd(t.date, a.date))
+            if (dateUtil.stbd(t.date, a.date))
               for (var s in t)
                 t.hasOwnProperty(s) &&
                   ("undefined" != typeof a[s] && (a[s] = t[s]),
@@ -4686,13 +4687,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             color: "#12BDD9"
           }
         ];
-        nt.save({
+        bridge.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
           value: t
         });
       };
-      nt.load(
+      bridge.load(
         {
           uid: [
             s.cfg.uid,
@@ -4788,7 +4789,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             var d = this.oriArr[s];
             (e.date = d.date),
               (e.kke_cs = d.kke_cs),
-              (e.voly = ot.vp(d.volume, h, this.h));
+              (e.voly = xh5_PosUtil.vp(d.volume, h, this.h));
             for (var f = this.customArr.length; f--; ) {
               var u = this.customArr[f].prop;
               e[u + "y"] = (this.h * (h - e[u])) / c;
@@ -4866,13 +4867,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             color: "#12BDD9"
           }
         ];
-        nt.save({
+        bridge.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
           value: t
         });
       };
-      nt.load(
+      bridge.load(
         {
           uid: [
             s.cfg.uid,
@@ -4971,7 +4972,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (n = 0 == s ? c.prevclose || c.price : this.oriArr[s - 1].price),
             (e.kke_cs = c.price > n ? 1 : c.price < n ? -1 : 0),
             (e.price = c.price),
-            (e.voly = ot.vp(c.volume, h, this.h)),
+            (e.voly = xh5_PosUtil.vp(c.volume, h, this.h)),
             this.h - e.voly < 0.5 &&
               c.volume > 0 &&
               ((e.voly = Math.floor(e.voly)), (e.voly -= 1));
@@ -5262,7 +5263,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               url: a,
               z: 10001
             },
-            at(w, null, i, r)
+            fBind(w, null, i, r)
           );
         }
     };
@@ -5597,7 +5598,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               url: a,
               z: 10001
             },
-            at(vt, null, i, r)
+            fBind(vt, null, i, r)
           );
         }
     };
@@ -5646,8 +5647,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       u = 80,
       p = 35,
       v = 25;
-    ct &&
-      (ct.onok = function(t, i) {
+    colorPicker &&
+      (colorPicker.onok = function(t, i) {
         o &&
           o.contentWindow &&
           o.contentWindow.postMessage(
@@ -5672,12 +5673,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               r && r();
               break;
             case h.HIDE:
-              (o.style.display = "none"), ct && ct.hide();
+              (o.style.display = "none"), colorPicker && colorPicker.hide();
               break;
             case h.REMOVE:
             case h.EDIT:
               var a = i.cmd.split("~")[1];
-              l[a](i.data), ct && ct.hide();
+              l[a](i.data), colorPicker && colorPicker.hide();
               break;
             case h.DRAGSTART:
               (n = +o.style.left.replace(/[^0-9.]/g, "")),
@@ -5690,8 +5691,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               break;
             case h.PICKCOLOR:
               (s = i.data),
-                ct &&
-                  ct.show(
+                colorPicker &&
+                  colorPicker.show(
                     +s.x + +o.style.left.replace(/[^0-9.]/g, ""),
                     +s.y + +o.style.top.replace(/[^0-9.]/g, ""),
                     s.target,
@@ -5714,9 +5715,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               zIndex: i.z
             }
           })),
-          st.addHandler(window, "message", A));
+          xh5_EvtUtil.addHandler(window, "message", A));
       };
-    (this.sendOriginalData = function(i, r) {
+    this.sendOriginalData = function(i, r) {
       if (o) {
         l = r;
         var a = Math.min(i.data.length || 1, 5);
@@ -5727,60 +5728,60 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           case "EXPMA":
             f += v;
         }
-        (o.style.height = f + "px"),
-          o.contentWindow &&
-            o.contentWindow.postMessage(
-              JSON.stringify({
-                cmd: h.OPEN,
-                data: i
-              }),
-              "*"
-            ),
-          utils_util.stc(["inc", i.name].join("_"));
+        o.style.height = f + "px";
+        o.contentWindow &&
+          o.contentWindow.postMessage(
+            JSON.stringify({
+              cmd: h.OPEN,
+              data: i
+            }),
+            "*"
+          );
+        utils_util.stc(["inc", i.name].join("_"));
       }
-    }),
-      (this.show = function(i) {
-        if (o) {
-          var r, a;
-          i.changedTouches
-            ? ((r = i.changedTouches[0].clientX),
-              (a = i.changedTouches[0].clientY))
-            : ((r = i.clientX), (a = i.clientY));
-          var s =
-              window.innerHeight ||
-              document.documentElement.clientHeight ||
-              document.body.clientHeight,
-            e =
-              window.innerWidth ||
-              document.documentElement.clientWidth ||
-              document.body.clientWidth;
-          a + f + 30 > s && (a = Math.max(s - f - 30, 1)),
-            r + d + 3 > e && (r = 28),
-            (o.style.left = r + "px"),
-            (o.style.top =
-              (document.body.scrollTop
-                ? document.body.scrollTop
-                : document.documentElement.scrollTop) +
-              a +
-              "px"),
-            (o.style.display = ""),
-            utils_util.suda("show_indicator_param");
-        }
-      }),
-      m();
+    };
+    this.show = function(i) {
+      if (o) {
+        var r, a;
+        i.changedTouches
+          ? ((r = i.changedTouches[0].clientX),
+            (a = i.changedTouches[0].clientY))
+          : ((r = i.clientX), (a = i.clientY));
+        var s =
+            window.innerHeight ||
+            document.documentElement.clientHeight ||
+            document.body.clientHeight,
+          e =
+            window.innerWidth ||
+            document.documentElement.clientWidth ||
+            document.body.clientWidth;
+        a + f + 30 > s && (a = Math.max(s - f - 30, 1));
+        r + d + 3 > e && (r = 28);
+        o.style.left = r + "px";
+        o.style.top =
+          (document.body.scrollTop
+            ? document.body.scrollTop
+            : document.documentElement.scrollTop) +
+          a +
+          "px";
+        o.style.display = "";
+        utils_util.suda("show_indicator_param");
+      }
+    };
+    m();
   }
   var tt,
-    it = utils_util.oc,
-    rt = utils_util.$C,
-    at = utils_util.fBind,
-    st = utils_util.xh5_EvtUtil,
-    et = utils_painter.xh5_ibPainter,
-    ht = utils_painter.xh5_Canvas,
-    ot = utils_util.xh5_PosUtil,
-    lt = utils_util.dateUtil,
-    nt = utils_util.bridge,
-    ct = utils_util.colorPicker,
-    dt = utils_util.HQ_DOMAIN,
+    oc = utils_util.oc,
+    $C = utils_util.$C,
+    fBind = utils_util.fBind,
+    xh5_EvtUtil = utils_util.xh5_EvtUtil,
+    xh5_ibPainter = utils_painter.xh5_ibPainter,
+    xh5_Canvas = utils_painter.xh5_Canvas,
+    xh5_PosUtil = utils_util.xh5_PosUtil,
+    dateUtil = utils_util.dateUtil,
+    bridge = utils_util.bridge,
+    colorPicker = utils_util.colorPicker,
+    HQ_DOMAIN = utils_util.HQ_DOMAIN,
     ft = [
       "VOLUME",
       "MACD",
@@ -5829,7 +5830,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     STORAGE_PREFIX: "sinatkchart_indicators~",
     loadGlobalSetting: function() {
       var t = this;
-      nt.load(
+      bridge.load(
         {
           uid: [
             this.cfg.uid,
@@ -5855,7 +5856,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       );
     },
     saveGlobalSetting: function(t) {
-      nt.save({
+      bridge.save({
         uid: [this.cfg.uid, new Date().getTime()].join("|"),
         key:
           this.STORAGE_PREFIX +
@@ -5891,7 +5892,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
 
       function r() {
-        var t = rt("span");
+        var t = $C("span");
         return (
           (t.style.display = "block"),
           (t.style.cursor = "row-resize"),
@@ -5909,32 +5910,32 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         o = 40,
         l = void 0,
         n = function(t) {
-          st.preventDefault(t);
+          xh5_EvtUtil.preventDefault(t);
           var r = t.changedTouches ? t.changedTouches[0].pageY : t.pageY;
           isNaN(r) && (r = t.offsetY);
           var s = r - a;
           (a = r), s && i(s);
         },
         c = function() {
-          st.removeHandler(window, "mousemove", n),
-            st.removeHandler(window, "mouseup", c),
-            st.removeHandler(l, "touchmove", n),
-            st.removeHandler(l, "touchend", c),
+          xh5_EvtUtil.removeHandler(window, "mousemove", n),
+            xh5_EvtUtil.removeHandler(window, "mouseup", c),
+            xh5_EvtUtil.removeHandler(l, "touchmove", n),
+            xh5_EvtUtil.removeHandler(l, "touchend", c),
             utils_util.suda("indicator_reheight");
         },
         d = function(i) {
           (a = isNaN(i.pageY) ? i.offsetY : i.pageY),
             utils_util.xh5_deviceUtil.istd
-              ? (st.addHandler(l, "touchend", c),
-                st.addHandler(l, "touchmove", n))
-              : (st.addHandler(window, "mouseup", c),
-                st.addHandler(window, "mousemove", n),
+              ? (xh5_EvtUtil.addHandler(l, "touchend", c),
+                xh5_EvtUtil.addHandler(l, "touchmove", n))
+              : (xh5_EvtUtil.addHandler(window, "mouseup", c),
+                xh5_EvtUtil.addHandler(window, "mousemove", n),
                 utils_util.xh5_deviceUtil.allowt &&
-                  (st.addHandler(l, "touchend", c),
-                  st.addHandler(l, "touchmove", n)));
+                  (xh5_EvtUtil.addHandler(l, "touchend", c),
+                  xh5_EvtUtil.addHandler(l, "touchmove", n)));
         },
         f = function() {
-          (l = rt("div")),
+          (l = $C("div")),
             (l.style.position = "absolute"),
             (l.style.right = s.cfg.DIMENSION.K_RIGHT_W + o + "px"),
             (l.style.color = "#000"),
@@ -5942,14 +5943,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             (l.style.zIndex = s.cfg.PARAM.I_Z_INDEX + 2),
             (l.style.paddingTop = "3px"),
             utils_util.xh5_deviceUtil.istd
-              ? st.addHandler(l, "touchstart", d)
-              : (st.addHandler(l, "mousedown", d),
+              ? xh5_EvtUtil.addHandler(l, "touchstart", d)
+              : (xh5_EvtUtil.addHandler(l, "mousedown", d),
                 utils_util.xh5_deviceUtil.allowt &&
-                  st.addHandler(l, "touchstart", d),
-                st.addHandler(l, "mouseover", function() {
+                  xh5_EvtUtil.addHandler(l, "touchstart", d),
+                xh5_EvtUtil.addHandler(l, "mouseover", function() {
                   l.style.opacity = 1;
                 }),
-                st.addHandler(l, "mouseout", function() {
+                xh5_EvtUtil.addHandler(l, "mouseout", function() {
                   l.style.opacity = h;
                 }));
         },
@@ -5968,7 +5969,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
 
       function r(t) {
-        var i = rt("span");
+        var i = $C("span");
         return (
           (i.style.marginLeft = a.cfg.DIMENSION.K_RIGHT_W + "px"),
           (i.style.cursor = "pointer"),
@@ -5981,7 +5982,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         s = 0.1,
         e = void 0,
         h = function(t) {
-          st.preventDefault(t);
+          xh5_EvtUtil.preventDefault(t);
           var r = t.target;
           if (r) {
             var a = r.getAttribute("data-dir");
@@ -5989,21 +5990,21 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
         },
         o = function() {
-          (e = rt("div")),
+          (e = $C("div")),
             (e.style.position = "absolute"),
             (e.style.right = a.cfg.DIMENSION.K_RIGHT_W + "px"),
             (e.style.color = "#000"),
             (e.style.opacity = s),
             (e.style.zIndex = a.cfg.PARAM.I_Z_INDEX + 2),
             utils_util.xh5_deviceUtil.istd
-              ? st.addHandler(e, "touchend", h)
-              : (st.addHandler(e, "click", h),
+              ? xh5_EvtUtil.addHandler(e, "touchend", h)
+              : (xh5_EvtUtil.addHandler(e, "click", h),
                 utils_util.xh5_deviceUtil.allowt &&
-                  st.addHandler(e, "touchend", h),
-                st.addHandler(e, "mouseover", function() {
+                  xh5_EvtUtil.addHandler(e, "touchend", h),
+                xh5_EvtUtil.addHandler(e, "mouseover", function() {
                   e.style.opacity = 1;
                 }),
-                st.addHandler(e, "mouseout", function() {
+                xh5_EvtUtil.addHandler(e, "mouseout", function() {
                   e.style.opacity = s;
                 }));
         },
@@ -6026,7 +6027,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       var r = this.proxyCfg.iTo;
       (this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h),
         (this.customArr = utils_util.clone(this.DEFAULT_ARR, null)),
-        (this.wrap = rt("div")),
+        (this.wrap = $C("div")),
         this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
         (this.wrap.style.fontSize = this.wrap.style.lineHeight =
           this.cfg.STYLE.FONT_SIZE + "px");
@@ -6035,13 +6036,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (this.wrap.style[a] = this.proxyCfg.style[a]);
       if (this.proxyCfg.titleCtn) this.titleCtn = this.proxyCfg.titleCtn;
       else if (!this.isBlank) {
-        (this.titleCtn = rt("div")),
+        (this.titleCtn = $C("div")),
           (this.titleCtn.style.position = "absolute"),
           (this.titleCtn.style.zIndex = this.cfg.PARAM.I_Z_INDEX + 1);
         var s = this;
         if (
-          (st.addHandler(this.titleCtn, "touchstart", function(t) {
-            s.cfg.custom.touch_prevent && st.preventDefault(t);
+          (xh5_EvtUtil.addHandler(this.titleCtn, "touchstart", function(t) {
+            s.cfg.custom.touch_prevent && xh5_EvtUtil.preventDefault(t);
           }),
           (this.titleCtn.style.width = "100%"),
           !this.cfg.PARAM.isFlash)
@@ -6059,7 +6060,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
       this.isBlank
         ? (this.wrap.style.height = this.h + "px")
-        : ((this.line = new et({
+        : ((this.line = new xh5_ibPainter({
             setting: this.cfg,
             sd: this,
             withHBg: this.proxyCfg.withHBg,
@@ -6071,7 +6072,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             nu: this.nu,
             dt: !1,
             iMgr: this.proxyCfg.iMgr,
-            iTo: at(r, null, this),
+            iTo: fBind(r, null, this),
             iClk: this.proxyCfg.onClkMain
           })),
           !isNaN(this.proxyCfg.lz) &&
@@ -6181,13 +6182,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           if (1 == f) c.push(p), d.push(v);
           else {
             for (l = 1; f > l; l++) {
-              (u = a[l]), lt.gw(a[l - 1].date, u.date) || (c.push(p), (p = {}));
+              (u = a[l]),
+                dateUtil.gw(a[l - 1].date, u.date) || (c.push(p), (p = {}));
               for (n in A)
                 A.hasOwnProperty(n) &&
                   (p[n] = utils_util.isDate(u[n])
                     ? u[n]
                     : (1 * p[n] || 0) + 1 * u[n]);
-              lt.gm(a[l - 1].date, u.date) || (d.push(v), (v = {}));
+              dateUtil.gm(a[l - 1].date, u.date) || (d.push(v), (v = {}));
               for (n in A)
                 A.hasOwnProperty(n) &&
                   (v[n] = utils_util.isDate(u[n])
@@ -6207,8 +6209,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (t && !(t.length < 1)) {
         var a = t[t.length - 1];
         if (
-          (168 == r && lt.gw(a.date, i.date)) ||
-          (720 == r && lt.gm(a.date, i.date))
+          (168 == r && dateUtil.gw(a.date, i.date)) ||
+          (720 == r && dateUtil.gm(a.date, i.date))
         )
           return void (a.date = i.date);
         for (var s, e = {}, h = this.customArr.length; h--; )
@@ -6220,11 +6222,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (r && !(r.length < 1)) {
         var e = r[r.length - 1];
         if (s) {
-          if (!lt.stbd(e.date, i.date))
+          if (!dateUtil.stbd(e.date, i.date))
             return i.date > e.date ? void this.newData(r, i, a) : void 0;
           if (!utils_util.kUtil.spk(e.time, i.time, "00:00", a))
             return void this.newData(r, i, a);
-        } else if (!lt.stbd(i.date, e.date))
+        } else if (!dateUtil.stbd(i.date, e.date))
           return i.date > e.date ? void this.newData(r, i, a) : void 0;
         e = r[r.length - 1];
         for (var h, o = this.customArr.length; o--; ) {
@@ -6264,8 +6266,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         !(++this.updateCount < this.UPDATE_THRESHOLD)
       ) {
         this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
-        var i = lt.ddt(this.viewState.startDate).getFullYear(),
-          r = lt.ddt(this.viewState.endDate).getFullYear(),
+        var i = dateUtil.ddt(this.viewState.startDate).getFullYear(),
+          r = dateUtil.ddt(this.viewState.endDate).getFullYear(),
           a = [i, 1, 1].join("-"),
           s = [r, 12, 31].join("-"),
           e = this.aliasymbol || this.symbol,
@@ -6545,12 +6547,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     }),
     (techchart.prototype.genTitleCanvas = function(i) {
       function r() {
-        var r = new ht(),
+        var r = new xh5_Canvas(),
           a = r.g,
           o = s.cfg.datas.isT;
         if (((this.canvas = r.canvas), utils_util.isFunc(s.proxyCfg.onClkTT))) {
           var l = utils_util.xh5_deviceUtil.istd ? "touchend" : "click";
-          st.addHandler(this.canvas, l, at(s.proxyCfg.onClkTT, null, s));
+          xh5_EvtUtil.addHandler(
+            this.canvas,
+            l,
+            fBind(s.proxyCfg.onClkTT, null, s)
+          );
           var n = this.canvas.style;
           (n.cursor = "pointer"),
             (n.position = "relative"),
@@ -6650,22 +6656,34 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
 
       function a() {
-        var r = rt("div");
+        var r = $C("div");
         this.canvas = r;
-        var a = rt("div");
+        var a = $C("div");
         (a.style.cssFloat = "left"),
           (a.style.textAlign = "right"),
           (a.style.marginRight = "9px"),
           (a.style.overflow = "hidden");
-        var e = rt("div");
+        var e = $C("div");
         r.appendChild(a), r.appendChild(e);
         var o = r.style;
         utils_util.isFunc(s.proxyCfg.onClkTT) &&
           (utils_util.xh5_deviceUtil.istd
-            ? st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s))
-            : (st.addHandler(r, "click", at(s.proxyCfg.onClkTT, null, s)),
+            ? xh5_EvtUtil.addHandler(
+                r,
+                "click",
+                fBind(s.proxyCfg.onClkTT, null, s)
+              )
+            : (xh5_EvtUtil.addHandler(
+                r,
+                "click",
+                fBind(s.proxyCfg.onClkTT, null, s)
+              ),
               utils_util.xh5_deviceUtil.allowt &&
-                st.addHandler(r, "touchend", at(s.proxyCfg.onClkTT, null, s))),
+                xh5_EvtUtil.addHandler(
+                  r,
+                  "touchend",
+                  fBind(s.proxyCfg.onClkTT, null, s)
+                )),
           (o.cursor = "pointer"),
           (o.position = "relative"),
           (o.zIndex = s.cfg.PARAM.I_Z_INDEX + 1));

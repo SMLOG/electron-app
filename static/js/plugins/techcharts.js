@@ -5289,7 +5289,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function createTChart(options) {
-    function tChart_instance() {
+    function TChartManager() {
       var allAvailableChartsMap = {
         ASI: ASI,
         BBIBOLL: BBIBOLL,
@@ -5477,7 +5477,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         cb(!0);
       };
     }
-    var o,
+    var tchartMananger,
       f,
       stockData = options.stockData,
       iMgr = options.iMgr,
@@ -5489,11 +5489,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       initMgr = options.initMgr,
       rt = [],
       st = function(i, div, offsetX, offsetY, event) {
-        if (
-          (!utils_util.$CONTAINS(div, iMgr.iHLineO.body) &&
-            div.appendChild(iMgr.iHLineO.body),
-          i.datas)
-        ) {
+        !utils_util.$CONTAINS(div, iMgr.iHLineO.body) &&
+          div.appendChild(iMgr.iHLineO.body);
+        if (i.datas) {
           var h = i.labelMaxP - (offsetY / i.h) * (i.labelMaxP - i.labelMinP);
           if (i.nu) {
             var o = utils_util.strUtil.nu(i.labelMaxP);
@@ -5538,9 +5536,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             var r = f.length;
             for (i = r; i--; )
               if (chartName == f[i]) {
-                o.removeChart(), ++i >= r && (i = 0);
+                tchartMananger.removeChart();
+                ++i >= r && (i = 0);
                 var a = f[i];
-                o.createChart(
+                tchartMananger.createChart(
                   1 == t
                     ? {
                         name: a
@@ -5571,15 +5570,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     };
     let pt = {
       edit: function(t) {
-        o.createChart(t);
+        tchartMananger.createChart(t);
       },
       remove: function(t) {
-        o.removeChart(t);
+        tchartMananger.removeChart(t);
       }
     };
     let vt = function(i, r) {
       if (cfg.custom.allow_indicator_edit)
-        if (tt)
+        if (tt) {
           tt.sendOriginalData(
             {
               name: i.name,
@@ -5587,19 +5586,19 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               defaultData: i.DEFAULT_ARR
             },
             pt
-          ),
-            tt.show(r),
-            utils_util.sudaLog();
-        else {
+          );
+          tt.show(r);
+          utils_util.sudaLog();
+        } else {
           var a = cfg.custom.indicatorpanel_url;
-          usrObj.ssl && (a = utils_util.getSUrl(a, !0)),
-            (tt = new Q(
-              {
-                url: a,
-                z: 10001
-              },
-              at(vt, null, i, r)
-            ));
+          usrObj.ssl && (a = utils_util.getSUrl(a, !0));
+          tt = new Q(
+            {
+              url: a,
+              z: 10001
+            },
+            at(vt, null, i, r)
+          );
         }
     };
     let At = {
@@ -5616,8 +5615,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       type: type,
       initMgr: initMgr
     };
-    o = new tChart_instance();
-    return o;
+    tchartMananger = new TChartManager();
+    return tchartMananger;
   }
 
   function Q(i, r) {

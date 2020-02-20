@@ -7,7 +7,7 @@ xh5_define(
       function Stock(params, isMain) {
         function i(e) {
           rangeCtrl.setDataRange(e);
-          y && (y.linkData(e), y.setDataRange());
+          tchartObj && (tchartObj.linkData(e), tchartObj.setDataRange());
           N && (N.linkData(e), N.setDataRange());
           w && (w.linkData(e), w.setDataRange());
         }
@@ -96,7 +96,7 @@ xh5_define(
         this.isTotalRedraw = !0;
         this.hq = void 0;
         this.nco = void 0;
-        var y,
+        var tchartObj,
           N,
           w,
           S = new k(this, params),
@@ -920,23 +920,23 @@ xh5_define(
         };
         this.setRange = function(e) {
           rangeCtrl.setDataRange(),
-            y && y.setDataRange(),
+            tchartObj && tchartObj.setDataRange(),
             N && N.setDataRange(),
             w && w.setDataRange(e);
         };
         this.draw = function() {
-          S.draw(), y && y.allDraw(z.x), N && N.allDraw(z.x);
+          S.draw(), tchartObj && tchartObj.allDraw(z.x), N && N.allDraw(z.x);
         };
         this.resize = function(e) {
           rangeCtrl.createPlayingData(),
             S.resize(),
-            y && y.onResize(e),
+            tchartObj && tchartObj.onResize(e),
             N && N.onResize(),
             w && w.onResize();
         };
         this.clear = function(e) {
           S.clear(e);
-          y && (y.clear(), (y = null));
+          tchartObj && (tchartObj.clear(), (tchartObj = null));
           N && (N.clear(), (N = null));
           w && (w.clear(), (w = null));
           isMain && (E = null);
@@ -989,9 +989,9 @@ xh5_define(
         this.togglePt = function(e, t) {
           N ? (g = N.showHide(e)) : !t && (G = e);
         };
-        this.initTc = function(e, t) {
-          y ||
-            ((y = new tChart({
+        this.initTc = function(chartNames, options) {
+          tchartObj ||
+            ((tchartObj = new tChart({
               stockData: stockDataA,
               iMgr: iMgr,
               cb: W,
@@ -1001,11 +1001,11 @@ xh5_define(
               usrObj: usrObj,
               initMgr: initMgr
             })),
-            isMain && (T = y)),
-            y.createChart(e, t);
+            isMain && (mainTChartObj = tchartObj));
+          tchartObj.createChart(chartNames, options);
         };
         this.removeTc = function(e) {
-          y && y.removeChart(e);
+          tchartObj && tchartObj.removeChart(e);
         };
         this.initRs = function() {
           w = new o({
@@ -2142,7 +2142,7 @@ xh5_define(
         subArea,
         O,
         K,
-        T,
+        mainTChartObj,
         U,
         E,
         F,
@@ -2889,7 +2889,7 @@ xh5_define(
             iHLineO.display(!1), o.display(!1), p.showFloater(!1);
           },
           b = function(e) {
-            T && T.indirectI(e), U && U.indirectI(e);
+            mainTChartObj && mainTChartObj.indirectI(e), U && U.indirectI(e);
           },
           N = !1,
           w = !1,
@@ -3456,7 +3456,7 @@ xh5_define(
           e && (I.mM.togglePt(e), util.stc("k_sp", e));
         };
         this.getIndicators = function() {
-          var tCharts = T ? T.getLog() : null,
+          var tCharts = mainTChartObj ? mainTChartObj.getLog() : null,
             pCharts = U ? U.getLog() : null;
           return {
             tCharts: tCharts,
@@ -3464,7 +3464,9 @@ xh5_define(
           };
         };
         this.getIndicatorData = function() {
-          var tCharts = T ? T.getExistingCharts() : null,
+          var tCharts = mainTChartObj
+              ? mainTChartObj.getExistingCharts()
+              : null,
             pCharts = U ? U.getExistingCharts() : null;
           return {
             tCharts: tCharts,
@@ -3504,9 +3506,9 @@ xh5_define(
           I.dcReset();
           I.dcInit(e);
           q.hideTip();
-          if (T) {
-            var n = T.getLog();
-            T = null;
+          if (mainTChartObj) {
+            var n = mainTChartObj.getLog();
+            mainTChartObj = null;
             n && this.tCharts(n);
           }
           if (U) {

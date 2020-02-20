@@ -5070,64 +5070,71 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               param: i.param
             });
           }
-        },
-        o = function(t) {
-          if (a) {
-            var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
-            i &&
-              (t.initAndCalcAll(i, !1),
-              t.setRange(),
-              t.setPricePos(null),
-              t.draw());
-          }
-        },
-        l = function(a) {
-          if (a) {
-            var s = a.name;
-            if (s) {
-              s = s.toUpperCase();
-              for (var h, l = r.length; l--; )
-                if (r[l].name == s) {
-                  h = r[l];
-                  break;
-                }
-              if (!h) {
-                if (!utils_util.isFunc(PCHART_MAP[s])) return;
-                (h = new PCHART_MAP[s](cfg, D, o)),
-                  (h.asPChart = !0),
-                  r.push(h);
-              }
-              h.newParam(a.param), e(), yt.doStc(a);
-            }
-          }
-        },
-        p = function(t, i) {
-          if (t) {
-            var a = t.name;
-            if (a) {
-              a = a.toUpperCase();
-              for (var s = r.length; s--; )
-                if (r[s].name == a) {
-                  var h = r.splice(s, 1)[0];
-                  return (
-                    h.rfs(),
-                    h.getFromToM.reset(h),
-                    !i && e(),
-                    void yt.doStc(t, !0)
-                  );
-                }
-            }
-          }
-        },
-        v = function() {
-          for (var t, i = r.length; i--; ) (t = r[i]), t.clearDraw();
         };
+      let o = function(t) {
+        if (a) {
+          var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
+          i &&
+            (t.initAndCalcAll(i, !1),
+            t.setRange(),
+            t.setPricePos(null),
+            t.draw());
+        }
+      };
+      let l = function(a) {
+        if (a) {
+          var s = a.name;
+          if (s) {
+            s = s.toUpperCase();
+            for (var h, l = r.length; l--; )
+              if (r[l].name == s) {
+                h = r[l];
+                break;
+              }
+            if (!h) {
+              if (!utils_util.isFunc(PCHART_MAP[s])) return;
+              h = new PCHART_MAP[s](cfg, D, o);
+              h.asPChart = !0;
+              r.push(h);
+            }
+            h.newParam(a.param);
+            e();
+            yt.doStc(a);
+          }
+        }
+      };
+      let p = function(t, i) {
+        if (t) {
+          var a = t.name;
+          if (a) {
+            a = a.toUpperCase();
+            for (var s = r.length; s--; )
+              if (r[s].name == a) {
+                var h = r.splice(s, 1)[0];
+
+                h.rfs();
+                h.getFromToM.reset(h);
+                !i && e();
+                return void yt.doStc(t, !0);
+              }
+          }
+        }
+      };
+      let v = function() {
+        for (var t, i = r.length; i--; ) {
+          t = r[i];
+          t.clearDraw();
+        }
+      };
       this.linkData = function(t) {
         if (a) {
           var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
           if (i)
-            for (var e, h = r.length; h--; )
-              (e = r[h]), e.initAndCalcAll(i, t), t && e.update();
+            for (var e, h = r.length; h--; ) {
+              e = r[h];
+              e.initAndCalcAll(i, t);
+              t && e.update();
+            }
         }
       };
       this.setDataRange = function() {

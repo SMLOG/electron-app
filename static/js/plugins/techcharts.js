@@ -5288,7 +5288,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     return (pchartInstance = new PChart());
   }
 
-  function tChart(options) {
+  function createTChart(options) {
     function tChart_instance() {
       var allAvailableChartsMap = {
         ASI: ASI,
@@ -5358,12 +5358,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
         return i;
       };
-      let createChartWhat = function(s) {
-        if (s) {
-          var techName = s.name;
+      let addTChart = function(chart) {
+        if (chart) {
+          var techName = chart.name;
           if (techName) {
-            (techName = techName.toUpperCase()),
-              "BLANKCTN" != techName && (ot = techName);
+            techName = techName.toUpperCase();
+            "BLANKCTN" != techName && (chartName = techName);
             var h = getExistTechChart(techName);
             if (!h) {
               var chartf = allAvailableChartsMap[techName];
@@ -5379,11 +5379,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               techChartList.push(h);
               subArea.appendChild(h.wrap);
             }
-            h.newParam(s.param), o(), yt.doStc(s);
+            h.newParam(chart.param);
+            o();
+            yt.doStc(chart);
           }
         }
       };
-      let rmChart = function(t, i) {
+      let rmTChart = function(t, i) {
         if (t) {
           var r = t.name;
           if (r) {
@@ -5391,12 +5393,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             for (var a = techChartList.length; a--; )
               if (techChartList[a].name == r) {
                 var s = techChartList.splice(a, 1)[0];
-                return (
-                  s.rfs(),
-                  s.getFromToM.reset(s),
-                  !i && o(),
-                  void yt.doStc(t, !0)
-                );
+                s.rfs();
+                s.getFromToM.reset(s);
+                !i && o();
+                return void yt.doStc(t, !0);
               }
           }
         }
@@ -5409,7 +5409,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           techs_datas["kdatas"] = i;
           techs_datas["datas"] = i;
           for (var chart, a = techChartList.length; a--; ) {
-            (chart = techChartList[a]), chart.initAndCalcAll(i);
+            chart = techChartList[a];
+            chart.initAndCalcAll(i);
             // t && chart.update();
             techs_datas[chart.name] = chart.datas;
             symbol = chart.symbol;
@@ -5418,29 +5419,35 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         }
       };
       this.setDataRange = function() {
-        for (var t, i = techChartList.length; i--; )
-          (t = techChartList[i]),
-            t.drawCalc(),
-            t.selfDataUrl && t.loadUrlData();
+        for (var t, i = techChartList.length; i--; ) {
+          t = techChartList[i];
+          t.drawCalc();
+          t.selfDataUrl && t.loadUrlData();
+        }
       };
       this.allDraw = function(t) {
-        for (var i, r = techChartList.length; r--; )
-          (i = techChartList[r]), i.draw(!0, t);
+        for (var i, r = techChartList.length; r--; ) {
+          i = techChartList[r];
+          i.draw(!0, t);
+        }
       };
       this.onResize = function(t) {
-        for (var i, r, a = techChartList.length; a--; )
-          (r = techChartList[a]),
-            (i = t ? cfg.DIMENSION.H_T_G : r.h),
-            r.resize({
-              h: i,
-              eh: cfg.DIMENSION.H_T_B
-            }),
-            r.drawCalc(),
-            r.draw(!0);
+        for (var i, r, a = techChartList.length; a--; ) {
+          r = techChartList[a];
+          i = t ? cfg.DIMENSION.H_T_G : r.h;
+          r.resize({
+            h: i,
+            eh: cfg.DIMENSION.H_T_B
+          });
+          r.drawCalc();
+          r.draw(!0);
+        }
       };
       this.indirectI = function(t, i, r) {
-        for (var a, s = techChartList.length; s--; )
-          (a = techChartList[s]), a.interact(t, i, r);
+        for (var a, s = techChartList.length; s--; ) {
+          a = techChartList[s];
+          a.interact(t, i, r);
+        }
       };
       this.getLog = function() {
         return rt.reverse() || null;
@@ -5449,11 +5456,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         return techChartList;
       };
       this.clear = function() {
-        for (var t = techChartList.length; t--; ) rmChart(techChartList[t], !0);
+        for (var t = techChartList.length; t--; )
+          rmTChart(techChartList[t], !0);
       };
       this.createChart = function(i, r) {
         !utils_util.isArr(i) && (i = [i]);
-        for (var a = 0, s = i.length; s > a; a++) createChartWhat(i[a]);
+        for (var a = 0, s = i.length; s > a; a++) addTChart(i[a]);
         cb(!0, r, i);
       };
       this.removeChart = function(i) {
@@ -5465,7 +5473,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             });
         }
         !utils_util.isArr(i) && (i = [i]);
-        for (var a = 0, s = i.length; s > a; a++) rmChart(i[a]);
+        for (var a = 0, s = i.length; s > a; a++) rmTChart(i[a]);
         cb(!0);
       };
     }
@@ -5513,12 +5521,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var ht = usrObj.tchartobject.k;
         f = ht || ft;
     }
-    var ot,
+    var chartName,
       techChartList,
       nt,
       ct = "BLANKCTN";
     let dt = function() {
-      if (cfg.custom.tchart_tap && techChartList && ot) {
+      if (cfg.custom.tchart_tap && techChartList && chartName) {
         var t = techChartList.length;
         if (!(t > 2)) {
           for (var i = t; i--; )
@@ -5529,7 +5537,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           if ("undefined" != typeof nt || 2 != t) {
             var r = f.length;
             for (i = r; i--; )
-              if (ot == f[i]) {
+              if (chartName == f[i]) {
                 o.removeChart(), ++i >= r && (i = 0);
                 var a = f[i];
                 o.createChart(
@@ -7215,7 +7223,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.get = function(config, callback) {
       utils_util.isFunc(callback) &&
         callback({
-          tChart: tChart,
+          tChart: createTChart,
           pChart: create_pChart
         });
     };

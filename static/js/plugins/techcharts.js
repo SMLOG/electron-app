@@ -5825,7 +5825,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     At = vt + "istpre",
     mt = 0.4,
     gt = 0.5;
-  (techchart.prototype = {
+  techchart.prototype = {
     storageVer: "v1",
     STORAGE_PREFIX: "sinatkchart_indicators~",
     loadGlobalSetting: function() {
@@ -5879,955 +5879,941 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
       return i;
     }
-  }),
-    (techchart.prototype.mr = function() {
-      function i(t) {
-        var i = s.h - t;
-        if (i >= 0) {
-          var r =
-            "t" === s.proxyCfg.type ? s.cfg.DIMENSION.h_t : s.cfg.DIMENSION.h_k;
-          if (1 > r + t) return;
-          (s.h = i), e(t);
+  };
+  techchart.prototype.mr = function() {
+    function i(t) {
+      var i = s.h - t;
+      if (i >= 0) {
+        var r =
+          "t" === s.proxyCfg.type ? s.cfg.DIMENSION.h_t : s.cfg.DIMENSION.h_k;
+        if (1 > r + t) return;
+        (s.h = i), e(t);
+      }
+    }
+
+    function r() {
+      var t = $C("span");
+      return (
+        (t.style.display = "block"),
+        (t.style.cursor = "row-resize"),
+        (t.style.borderTop = "2px dotted #000"),
+        (t.style.borderBottom = "2px dotted #000"),
+        (t.style.width = "77px"),
+        (t.style.height = "2px"),
+        t
+      );
+    }
+    var a,
+      s = this,
+      e = this.proxyCfg.initMgr.innerResize,
+      h = 0.1,
+      o = 40,
+      l = void 0,
+      n = function(t) {
+        xh5_EvtUtil.preventDefault(t);
+        var r = t.changedTouches ? t.changedTouches[0].pageY : t.pageY;
+        isNaN(r) && (r = t.offsetY);
+        var s = r - a;
+        (a = r), s && i(s);
+      },
+      c = function() {
+        xh5_EvtUtil.removeHandler(window, "mousemove", n),
+          xh5_EvtUtil.removeHandler(window, "mouseup", c),
+          xh5_EvtUtil.removeHandler(l, "touchmove", n),
+          xh5_EvtUtil.removeHandler(l, "touchend", c),
+          utils_util.suda("indicator_reheight");
+      },
+      d = function(i) {
+        (a = isNaN(i.pageY) ? i.offsetY : i.pageY),
+          utils_util.xh5_deviceUtil.istd
+            ? (xh5_EvtUtil.addHandler(l, "touchend", c),
+              xh5_EvtUtil.addHandler(l, "touchmove", n))
+            : (xh5_EvtUtil.addHandler(window, "mouseup", c),
+              xh5_EvtUtil.addHandler(window, "mousemove", n),
+              utils_util.xh5_deviceUtil.allowt &&
+                (xh5_EvtUtil.addHandler(l, "touchend", c),
+                xh5_EvtUtil.addHandler(l, "touchmove", n)));
+      },
+      f = function() {
+        (l = $C("div")),
+          (l.style.position = "absolute"),
+          (l.style.right = s.cfg.DIMENSION.K_RIGHT_W + o + "px"),
+          (l.style.color = "#000"),
+          (l.style.opacity = h),
+          (l.style.zIndex = s.cfg.PARAM.I_Z_INDEX + 2),
+          (l.style.paddingTop = "3px"),
+          utils_util.xh5_deviceUtil.istd
+            ? xh5_EvtUtil.addHandler(l, "touchstart", d)
+            : (xh5_EvtUtil.addHandler(l, "mousedown", d),
+              utils_util.xh5_deviceUtil.allowt &&
+                xh5_EvtUtil.addHandler(l, "touchstart", d),
+              xh5_EvtUtil.addHandler(l, "mouseover", function() {
+                l.style.opacity = 1;
+              }),
+              xh5_EvtUtil.addHandler(l, "mouseout", function() {
+                l.style.opacity = h;
+              }));
+      },
+      u = function() {
+        var t = new r();
+        l.appendChild(t);
+      };
+    return f(), u(), l;
+  };
+  techchart.prototype.rab = function() {
+    function i(t) {
+      var i = a.wrap,
+        r = a.wrap.parentNode,
+        s = n(i, t);
+      s && ("-1" == t ? r.insertBefore(i, s) : r.insertBefore(s, i));
+    }
+
+    function r(t) {
+      var i = $C("span");
+      return (
+        (i.style.marginLeft = a.cfg.DIMENSION.K_RIGHT_W + "px"),
+        (i.style.cursor = "pointer"),
+        (i.innerHTML = t ? "▲" : "▼"),
+        i.setAttribute("data-dir", t ? "-1" : "1"),
+        i
+      );
+    }
+    var a = this,
+      s = 0.1,
+      e = void 0,
+      h = function(t) {
+        xh5_EvtUtil.preventDefault(t);
+        var r = t.target;
+        if (r) {
+          var a = r.getAttribute("data-dir");
+          null !== a && i(a);
+        }
+      },
+      o = function() {
+        (e = $C("div")),
+          (e.style.position = "absolute"),
+          (e.style.right = a.cfg.DIMENSION.K_RIGHT_W + "px"),
+          (e.style.color = "#000"),
+          (e.style.opacity = s),
+          (e.style.zIndex = a.cfg.PARAM.I_Z_INDEX + 2),
+          utils_util.xh5_deviceUtil.istd
+            ? xh5_EvtUtil.addHandler(e, "touchend", h)
+            : (xh5_EvtUtil.addHandler(e, "click", h),
+              utils_util.xh5_deviceUtil.allowt &&
+                xh5_EvtUtil.addHandler(e, "touchend", h),
+              xh5_EvtUtil.addHandler(e, "mouseover", function() {
+                e.style.opacity = 1;
+              }),
+              xh5_EvtUtil.addHandler(e, "mouseout", function() {
+                e.style.opacity = s;
+              }));
+      },
+      l = function() {
+        var t = new r(!0),
+          i = new r();
+        e.appendChild(t), e.appendChild(i);
+      },
+      n = function(t, i) {
+        var r;
+        return (
+          (r = -1 == i ? t.previousSibling : t.nextSibling),
+          r && 0 == r.id.indexOf("blankctn_") && (r = null),
+          r
+        );
+      };
+    return o(), l(), e;
+  };
+  techchart.prototype.ic = function(i) {
+    var r = this.proxyCfg.iTo;
+    (this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h),
+      (this.customArr = utils_util.clone(this.DEFAULT_ARR, null)),
+      (this.wrap = $C("div")),
+      this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
+      (this.wrap.style.fontSize = this.wrap.style.lineHeight =
+        this.cfg.STYLE.FONT_SIZE + "px");
+    for (var a in this.proxyCfg.style)
+      this.proxyCfg.style.hasOwnProperty(a) &&
+        (this.wrap.style[a] = this.proxyCfg.style[a]);
+    if (this.proxyCfg.titleCtn) this.titleCtn = this.proxyCfg.titleCtn;
+    else if (!this.isBlank) {
+      (this.titleCtn = $C("div")),
+        (this.titleCtn.style.position = "absolute"),
+        (this.titleCtn.style.zIndex = this.cfg.PARAM.I_Z_INDEX + 1);
+      var s = this;
+      if (
+        (xh5_EvtUtil.addHandler(this.titleCtn, "touchstart", function(t) {
+          s.cfg.custom.touch_prevent && xh5_EvtUtil.preventDefault(t);
+        }),
+        (this.titleCtn.style.width = "100%"),
+        !this.cfg.PARAM.isFlash)
+      ) {
+        if (this.cfg.custom.indicator_reorder) {
+          var e = this.rab();
+          this.titleCtn.appendChild(e);
+        }
+        if (this.cfg.custom.indicator_reheight) {
+          var h = this.mr();
+          this.titleCtn.appendChild(h);
         }
       }
-
-      function r() {
-        var t = $C("span");
-        return (
-          (t.style.display = "block"),
-          (t.style.cursor = "row-resize"),
-          (t.style.borderTop = "2px dotted #000"),
-          (t.style.borderBottom = "2px dotted #000"),
-          (t.style.width = "77px"),
-          (t.style.height = "2px"),
-          t
-        );
-      }
-      var a,
-        s = this,
-        e = this.proxyCfg.initMgr.innerResize,
-        h = 0.1,
-        o = 40,
-        l = void 0,
-        n = function(t) {
-          xh5_EvtUtil.preventDefault(t);
-          var r = t.changedTouches ? t.changedTouches[0].pageY : t.pageY;
-          isNaN(r) && (r = t.offsetY);
-          var s = r - a;
-          (a = r), s && i(s);
-        },
-        c = function() {
-          xh5_EvtUtil.removeHandler(window, "mousemove", n),
-            xh5_EvtUtil.removeHandler(window, "mouseup", c),
-            xh5_EvtUtil.removeHandler(l, "touchmove", n),
-            xh5_EvtUtil.removeHandler(l, "touchend", c),
-            utils_util.suda("indicator_reheight");
-        },
-        d = function(i) {
-          (a = isNaN(i.pageY) ? i.offsetY : i.pageY),
-            utils_util.xh5_deviceUtil.istd
-              ? (xh5_EvtUtil.addHandler(l, "touchend", c),
-                xh5_EvtUtil.addHandler(l, "touchmove", n))
-              : (xh5_EvtUtil.addHandler(window, "mouseup", c),
-                xh5_EvtUtil.addHandler(window, "mousemove", n),
-                utils_util.xh5_deviceUtil.allowt &&
-                  (xh5_EvtUtil.addHandler(l, "touchend", c),
-                  xh5_EvtUtil.addHandler(l, "touchmove", n)));
-        },
-        f = function() {
-          (l = $C("div")),
-            (l.style.position = "absolute"),
-            (l.style.right = s.cfg.DIMENSION.K_RIGHT_W + o + "px"),
-            (l.style.color = "#000"),
-            (l.style.opacity = h),
-            (l.style.zIndex = s.cfg.PARAM.I_Z_INDEX + 2),
-            (l.style.paddingTop = "3px"),
-            utils_util.xh5_deviceUtil.istd
-              ? xh5_EvtUtil.addHandler(l, "touchstart", d)
-              : (xh5_EvtUtil.addHandler(l, "mousedown", d),
-                utils_util.xh5_deviceUtil.allowt &&
-                  xh5_EvtUtil.addHandler(l, "touchstart", d),
-                xh5_EvtUtil.addHandler(l, "mouseover", function() {
-                  l.style.opacity = 1;
-                }),
-                xh5_EvtUtil.addHandler(l, "mouseout", function() {
-                  l.style.opacity = h;
-                }));
-        },
-        u = function() {
-          var t = new r();
-          l.appendChild(t);
-        };
-      return f(), u(), l;
-    }),
-    (techchart.prototype.rab = function() {
-      function i(t) {
-        var i = a.wrap,
-          r = a.wrap.parentNode,
-          s = n(i, t);
-        s && ("-1" == t ? r.insertBefore(i, s) : r.insertBefore(s, i));
-      }
-
-      function r(t) {
-        var i = $C("span");
-        return (
-          (i.style.marginLeft = a.cfg.DIMENSION.K_RIGHT_W + "px"),
-          (i.style.cursor = "pointer"),
-          (i.innerHTML = t ? "▲" : "▼"),
-          i.setAttribute("data-dir", t ? "-1" : "1"),
-          i
-        );
-      }
-      var a = this,
-        s = 0.1,
-        e = void 0,
-        h = function(t) {
-          xh5_EvtUtil.preventDefault(t);
-          var r = t.target;
-          if (r) {
-            var a = r.getAttribute("data-dir");
-            null !== a && i(a);
-          }
-        },
-        o = function() {
-          (e = $C("div")),
-            (e.style.position = "absolute"),
-            (e.style.right = a.cfg.DIMENSION.K_RIGHT_W + "px"),
-            (e.style.color = "#000"),
-            (e.style.opacity = s),
-            (e.style.zIndex = a.cfg.PARAM.I_Z_INDEX + 2),
-            utils_util.xh5_deviceUtil.istd
-              ? xh5_EvtUtil.addHandler(e, "touchend", h)
-              : (xh5_EvtUtil.addHandler(e, "click", h),
-                utils_util.xh5_deviceUtil.allowt &&
-                  xh5_EvtUtil.addHandler(e, "touchend", h),
-                xh5_EvtUtil.addHandler(e, "mouseover", function() {
-                  e.style.opacity = 1;
-                }),
-                xh5_EvtUtil.addHandler(e, "mouseout", function() {
-                  e.style.opacity = s;
-                }));
-        },
-        l = function() {
-          var t = new r(!0),
-            i = new r();
-          e.appendChild(t), e.appendChild(i);
-        },
-        n = function(t, i) {
-          var r;
-          return (
-            (r = -1 == i ? t.previousSibling : t.nextSibling),
-            r && 0 == r.id.indexOf("blankctn_") && (r = null),
-            r
-          );
-        };
-      return o(), l(), e;
-    }),
-    (techchart.prototype.ic = function(i) {
-      var r = this.proxyCfg.iTo;
-      (this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h),
-        (this.customArr = utils_util.clone(this.DEFAULT_ARR, null)),
-        (this.wrap = $C("div")),
-        this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
-        (this.wrap.style.fontSize = this.wrap.style.lineHeight =
-          this.cfg.STYLE.FONT_SIZE + "px");
-      for (var a in this.proxyCfg.style)
-        this.proxyCfg.style.hasOwnProperty(a) &&
-          (this.wrap.style[a] = this.proxyCfg.style[a]);
-      if (this.proxyCfg.titleCtn) this.titleCtn = this.proxyCfg.titleCtn;
-      else if (!this.isBlank) {
-        (this.titleCtn = $C("div")),
-          (this.titleCtn.style.position = "absolute"),
-          (this.titleCtn.style.zIndex = this.cfg.PARAM.I_Z_INDEX + 1);
-        var s = this;
-        if (
-          (xh5_EvtUtil.addHandler(this.titleCtn, "touchstart", function(t) {
-            s.cfg.custom.touch_prevent && xh5_EvtUtil.preventDefault(t);
-          }),
-          (this.titleCtn.style.width = "100%"),
-          !this.cfg.PARAM.isFlash)
-        ) {
-          if (this.cfg.custom.indicator_reorder) {
-            var e = this.rab();
-            this.titleCtn.appendChild(e);
-          }
-          if (this.cfg.custom.indicator_reheight) {
-            var h = this.mr();
-            this.titleCtn.appendChild(h);
-          }
-        }
-        this.wrap.appendChild(this.titleCtn);
-      }
-      this.isBlank
-        ? (this.wrap.style.height = this.h + "px")
-        : ((this.line = new xh5_ibPainter({
-            setting: this.cfg,
-            sd: this,
-            withHBg: this.proxyCfg.withHBg,
-            reO: {
-              h: this.h,
-              mh: this.mh,
-              eh: this.eh
-            },
-            nu: this.nu,
-            dt: !1,
-            iMgr: this.proxyCfg.iMgr,
-            iTo: fBind(r, null, this),
-            iClk: this.proxyCfg.onClkMain
-          })),
-          !isNaN(this.proxyCfg.lz) &&
-            (this.line.getCanvas().style.zIndex = this.proxyCfg.lz),
-          this.wrap.appendChild(this.line.getWrap())),
-        this.proxyCfg.ctn && this.proxyCfg.ctn.appendChild(this.wrap);
-    }),
-    (techchart.prototype.initAndCalcAll = function() {}),
-    (techchart.prototype.resize = function(t) {
-      (this.h = t.h),
-        (this.mh = t.mh),
-        (this.eh = t.eh),
-        this.line &&
-          this.line.resize({
+      this.wrap.appendChild(this.titleCtn);
+    }
+    this.isBlank
+      ? (this.wrap.style.height = this.h + "px")
+      : ((this.line = new xh5_ibPainter({
+          setting: this.cfg,
+          sd: this,
+          withHBg: this.proxyCfg.withHBg,
+          reO: {
             h: this.h,
             mh: this.mh,
             eh: this.eh
-          });
-    }),
-    (techchart.prototype.getFromToM = new (function() {
-      (this.reset = function(t) {
-        var i = t.loadedFlag;
-        if (i)
-          for (var r in i) i.hasOwnProperty(r) && ((i[r] = null), delete i[r]);
-        t.loadedFromTo = void 0;
-      }),
-        (this.get = function(t) {
-          if (!t.viewState.startDate || !t.viewState.endDate) return !1;
-          var i = t.loadedFlag,
-            r = t.loadedFromTo,
-            a = 1989,
-            s = 2099;
-          if (r) {
-            if (a >= r[0]) return;
-            s = r[0];
-          }
-          t.loadedFromTo = [a, s];
-          var e = i["_" + a],
-            h = i["_" + s];
-          if (e && h) return !1;
-          for (
-            h ? (s -= 1) : e && (a += 1),
-              e = [a, "01", "01"].join("-"),
-              h = [s, "12", "31"].join("-");
-            s >= a;
-
-          )
-            i["_" + a++] = !0;
-          return [e, h];
-        });
-    })()),
-    (techchart.prototype.loadUrlData = function() {
-      var i = this.getFromToM.get(this);
-      if (i) {
-        var r = i[0],
-          a = i[1],
-          s = this.aliasymbol || this.symbol,
-          e = "_" + s + "_" + new Date().getDate(),
-          h = this.selfDataUrl
-            .replace("$symbol", s)
-            .replace("$cb", "var%20" + e + "=")
-            .replace("$from", r)
-            .replace("$to", a);
-        this.proxyCfg.usrObj.ssl && (h = utils_util.getSUrl(h, !0));
-        var o = this;
-        utils_util.load(h, function() {
-          var i = window[e];
-          (window[e] = null),
-            o.urlData ||
-              (o.urlData = {
-                day: [],
-                week: [],
-                month: []
-              });
-          var r = o.df(i),
-            a = o.urlData.day;
-          if (a.length > 1) {
-            for (
-              var s = a[0].date, h = r.length;
-              h-- &&
-              !(
-                r[h].date.getFullYear() == s.getFullYear() &&
-                r[h].date.getMonth() == s.getMonth() &&
-                r[h].date.getDate() < s.getDate()
-              );
-
-            );
-            r.splice(h + 1, r.length - h - 1);
-          }
-          a.splice.apply(a, [0, 0].concat(r));
-          var l,
-            n,
-            c = [],
-            d = [],
-            f = a.length,
-            u = a[0],
-            p = {},
-            v = {},
-            A = {};
-          for (l = o.customArr.length; l--; ) A[o.customArr[l].prop] = void 0;
-          A.date = void 0;
-          for (n in A)
-            A.hasOwnProperty(n) &&
-              (utils_util.isDate(u[n])
-                ? ((p[n] = u[n]), (v[n] = u[n]))
-                : ((p[n] = 1 * u[n]), (v[n] = 1 * u[n])));
-          if (1 == f) c.push(p), d.push(v);
-          else {
-            for (l = 1; f > l; l++) {
-              (u = a[l]),
-                dateUtil.gw(a[l - 1].date, u.date) || (c.push(p), (p = {}));
-              for (n in A)
-                A.hasOwnProperty(n) &&
-                  (p[n] = utils_util.isDate(u[n])
-                    ? u[n]
-                    : (1 * p[n] || 0) + 1 * u[n]);
-              dateUtil.gm(a[l - 1].date, u.date) || (d.push(v), (v = {}));
-              for (n in A)
-                A.hasOwnProperty(n) &&
-                  (v[n] = utils_util.isDate(u[n])
-                    ? u[n]
-                    : (1 * v[n] || 0) + 1 * u[n]);
-            }
-            c.push(p), d.push(v);
-          }
-          (o.urlData.week = c),
-            (o.urlData.month = d),
-            (o.toReCalc = !0),
-            o.cb(o);
-        });
-      }
-    }),
-    (techchart.prototype.newData = function(t, i, r) {
-      if (t && !(t.length < 1)) {
-        var a = t[t.length - 1];
-        if (
-          (168 == r && dateUtil.gw(a.date, i.date)) ||
-          (720 == r && dateUtil.gm(a.date, i.date))
-        )
-          return void (a.date = i.date);
-        for (var s, e = {}, h = this.customArr.length; h--; )
-          (s = this.customArr[h].prop), (e[s] = i[s] || 0);
-        (e.date = i.date), t.push(e);
-      }
-    }),
-    (techchart.prototype.updateData = function(i, r, a, s) {
-      if (r && !(r.length < 1)) {
-        var e = r[r.length - 1];
-        if (s) {
-          if (!dateUtil.stbd(e.date, i.date))
-            return i.date > e.date ? void this.newData(r, i, a) : void 0;
-          if (!utils_util.kUtil.spk(e.time, i.time, "00:00", a))
-            return void this.newData(r, i, a);
-        } else if (!dateUtil.stbd(i.date, e.date))
-          return i.date > e.date ? void this.newData(r, i, a) : void 0;
-        e = r[r.length - 1];
-        for (var h, o = this.customArr.length; o--; ) {
-          h = this.customArr[o].prop;
-          var l = Number(i[h]);
-          if (utils_util.isNum(i[h]))
-            switch (a) {
-              case 167:
-              case 168:
-              case 169:
-              case 719:
-              case 720:
-              case 721:
-                e[h] += i[h + "update"] || 0;
-                break;
-              default:
-                e[h] = l;
-            }
-        }
-      }
-    }),
-    (techchart.prototype.doUpdate = function(t) {
-      t &&
-        this.urlData &&
-        (this.urlData.day && this.updateData(t, this.urlData.day, 24),
-        this.urlData.week && this.updateData(t, this.urlData.week, 168),
-        this.urlData.month && this.updateData(t, this.urlData.month, 720),
-        (this.toReCalc = !0),
-        this.cb(this));
-    }),
-    (techchart.prototype.udf = function(t) {
-      return t;
-    }),
-    (techchart.prototype.update = function() {
-      if (
-        this.selfDataUrlUpdate &&
-        !(++this.updateCount < this.UPDATE_THRESHOLD)
-      ) {
-        this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
-        var i = dateUtil.ddt(this.viewState.startDate).getFullYear(),
-          r = dateUtil.ddt(this.viewState.endDate).getFullYear(),
-          a = [i, 1, 1].join("-"),
-          s = [r, 12, 31].join("-"),
-          e = this.aliasymbol || this.symbol,
-          h = "_" + e + new Date().getTime(),
-          o = this.selfDataUrlUpdate
-            .replace("$symbol", e)
-            .replace("$cb", "var%20" + h + "=")
-            .replace("$from", a)
-            .replace("$to", s);
-        this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o, !0));
-        var l = this;
-        utils_util.load(o, function() {
-          var t = window[h];
-          window[h] = null;
-          var i = l.udf(t);
-          i && l.doUpdate(i);
-        });
-      }
-    }),
-    (techchart.prototype.createPlayingData = function() {
-      if (this.datas)
-        for (
-          var t,
-            i = this.labelMaxP - this.labelMinP,
-            r = 0,
-            a = this.datas.length;
-          a > r;
-          r++
-        ) {
-          t = this.datas[r];
-          for (var s = this.customArr.length; s--; ) {
-            var e = this.customArr[s].prop;
-            t[e + "y"] = (this.h * (this.labelMaxP - t[e])) / i;
-          }
-        }
-    }),
-    (techchart.prototype.setPricePos = function(t) {
-      !t || this.separate > 0
-        ? ((this.labelMinP = this.minPrice), (this.labelMaxP = this.maxPrice))
-        : ((this.labelMaxP = t[0]),
-          (this.labelMinP = t[1]),
-          (this.pricePosArr = t)),
-        this.createPlayingData();
-    }),
-    (techchart.prototype.generateSettings = function() {
-      if (this.param && this.param.length > 0)
-        for (
-          var i = 0, r = Math.min(this.param.length, this.DEFAULT_ARR.length);
-          r > i;
-          i++
-        ) {
-          var a = this.param[i],
-            s = Number(a.v);
-          (this.customArr[i].v = s > 0 ? s : this.DEFAULT_ARR[i].v),
-            (this.customArr[i].color = utils_util.isColor(a.color)
-              ? a.color
-              : this.DEFAULT_ARR[i].color);
-        }
-    }),
-    (techchart.prototype.newParam = function(i, r) {
-      var a = this.sname || this.name,
-        s = !1;
-      if (
-        (i
-          ? ((pt[a] = i), utils_util.stc("np_" + a, i))
-          : ((s = !0), (i = pt[a])),
-        (this.param = i),
-        this.generateSettings(),
-        this.genIndicator(
-          this.customArr,
-          this.asPChart ? "" : this.alias || this.name
-        ),
-        r)
-      ) {
-        var e = this.cfg.datas.isT
-          ? this.proxyCfg.stock.tDb.get()
-          : this.proxyCfg.stock.kDb.get();
-        return void (
-          e &&
-          (this.initAndCalcAll(e),
-          this.asPChart ? this.setPricePos(this.pricePosArr) : this.drawCalc(),
-          this.draw(!0))
-        );
-      }
-      if (this.cfg.custom.storage_lv > 0)
-        if (i) {
-          if (s) return;
-          this.cfg.custom.storage_lv > 1 && this.saveGlobalSetting(i);
-        } else this.loadGlobalSetting();
-    }),
-    (techchart.prototype.syncI = function() {
-      if (this.datas && this.proxyCfg.iMgr)
-        if (this.proxyCfg.iMgr.isIng())
-          this.proxyCfg.iMgr.isMoving() &&
-            this.indicatorI(this.datas[this.datas.length - 1]);
-        else if ("t" != this.proxyCfg.type)
-          this.indicatorI(this.datas[this.datas.length - 1]);
-        else if (this.proxyCfg.stock)
-          if (5 == this.proxyCfg.stock.viewState.end) {
-            var t;
-            (t =
-              this.proxyCfg.stock.realLen >= 0
-                ? this.proxyCfg.stock.realLen >= this.disMod
-                  ? 0 == this.proxyCfg.stock.realLen
-                    ? 0
-                    : this.proxyCfg.stock.realLen - 1
-                  : this.proxyCfg.stock.realLen
-                : this.disMod - 1),
-              4 != this.proxyCfg.stock.viewState.start &&
-                (t =
-                  (this.proxyCfg.stock.viewState.end -
-                    this.proxyCfg.stock.viewState.start -
-                    1) *
-                    this.disMod +
-                  t),
-              this.indicatorI(this.datas[t]);
-          } else this.indicatorI(this.datas[this.datas.length - 1]);
-    }),
-    (techchart.prototype.setRange = function() {
-      if (this.datas) {
-        for (
-          var t = this.viewState.start * this.disMod,
-            i = this.viewState.end * this.disMod,
-            r = i - t;
-          this.datas.length > r;
-
-        )
-          this.datas.length--;
-        for (; this.datas.length < r; ) this.datas.push({});
-        for (
-          var a = Number.MAX_VALUE, s = -Number.MAX_VALUE, e = t;
-          i > e;
-          e++
-        ) {
-          var h = this.datas[e - t];
-          if (
-            ((h.date = this.oriArr[e].date),
-            !this.selfArr[e] || !this.selfArr[e][At])
-          )
-            for (var o in this.selfArr[e])
-              if (this.selfArr[e].hasOwnProperty(o)) {
-                if (((h[o] = this.selfArr[e][o]), 0 == o.indexOf(vt))) continue;
-                h[o] > s && (s = h[o]), h[o] < a && (a = h[o]);
-              }
-        }
-        (this.minPrice = a), (this.maxPrice = s), this.syncI();
-      }
-    }),
-    (techchart.prototype.drawCalc = function() {
-      if (this.datas) {
-        for (
-          var t = this.viewState.start * this.disMod,
-            i = this.viewState.end * this.disMod,
-            r = i - t;
-          this.datas.length > r;
-
-        )
-          this.datas.length--;
-        for (; this.datas.length < r; ) this.datas.push({});
-        var a,
-          s,
-          e = Number.MAX_VALUE,
-          h = -Number.MAX_VALUE;
-        for (a = t; i > a; a++)
-          if (
-            ((s = this.datas[a - t]),
-            (s.date = this.oriArr[a].date),
-            !this.selfArr[a] || !this.selfArr[a][At])
-          )
-            for (var o in this.selfArr[a])
-              if (this.selfArr[a].hasOwnProperty(o)) {
-                if (((s[o] = this.selfArr[a][o]), 0 == o.indexOf(vt))) continue;
-                s[o] > h && (h = s[o]), s[o] < e && (e = s[o]);
-              }
-        switch (this.name) {
-          case "ADL":
-          case "MACD":
-            (h = Math.max(Math.abs(h), Math.abs(e))), (e = -h);
-            break;
-          case "BIAS":
-          case "BRAR":
-          case "DMA":
-          case "EMV":
-          case "KDJ":
-          case "ROC":
-          case "VR":
-          case "WVAD":
-            (this.vaObj.min = e), (this.vaObj.max = h);
-            break;
-          case "CCI":
-            e > 0 && (e = 0),
-              0 > h && (h = 0),
-              (this.vaObj.min = e),
-              (this.vaObj.max = h);
-            break;
-          case "TOR":
-            e = 0;
-            break;
-          default:
-            this.vaObj && ((h = this.vaObj.max), (e = this.vaObj.min));
-        }
-        (this.labelMaxP = h), (this.labelMinP = e);
-        var l = h - e;
-        for (a = 0; r > a; a++) {
-          s = this.datas[a];
-          for (var n = this.customArr.length; n--; ) {
-            var c = this.customArr[n].prop;
-            s[c + "y"] = (this.h * (h - s[c])) / l;
-          }
-        }
-        this.syncI();
-      }
-    }),
-    (techchart.prototype.clearDraw = function() {
-      this.line.clear(!1), this.interact(0 / 0);
-    }),
-    (techchart.prototype.draw = function(t, i) {
-      if (((this.__iOffsetX = isNaN(i) ? this.__iOffsetX : i), this.datas)) {
-        this.line.clear(!0, this.cfg.PARAM.getHd());
-        var r,
-          a,
-          s = this.datas.length;
-        this.cfg.datas.isT
-          ? ((r = this.cfg.DIMENSION.w_t / s), (a = r * gt))
-          : ((r =
-              this.cfg.DIMENSION.w_k /
-              Math.max(s, this.cfg.PARAM.minCandleNum)),
-            (a = this.__iOffsetX - r * mt));
-        for (var e, h = this.customArr.length; h--; ) {
-          var o = this.customArr[h].prop + "y";
-          (e = a), this.line.newStyle(this.customArr[h].color, !0, this.lw);
-          for (var l = 0; s > l; l++)
-            0 == l
-              ? this.line.moveTo(e, this.datas[l][o])
-              : this.line.lineTo(e, this.datas[l][o]),
-              (e += r);
-          this.line.stroke();
-        }
-        t && this.line.drawBg(this.__iOffsetX),
-          this.vaObj && this.drawValueRange();
-      }
-    }),
-    (techchart.prototype.drawValueRange = function() {
-      var i = this.line.getG();
-      i.globalCompositeOperation = "destination-over";
-      var r = this.vaObj.min,
-        a = this.vaObj.max,
-        s = a - r;
-      if (!isNaN(this.vaObj.upper) && !isNaN(this.vaObj.lower)) {
-        var e = this.vaObj.upper,
-          h = this.vaObj.lower,
-          o = (this.h * (a - e)) / s,
-          l = (this.h * (a - h)) / s,
-          n = l - o;
-        (i.fillStyle = utils_util.hex2dec(this.customArr[0].color, 0.2)),
-          i.fillRect(0, o, this.cfg.DIMENSION.w_k, n);
-      }
-      var c =
-        (this.h * (isNaN(this.vaObj.glv) ? a / 2 : a - this.vaObj.glv)) / s;
-      (c += 0.5),
-        this.line.newStyle(this.cfg.COLOR.GRID, !0, 1),
-        this.line.moveTo(0, c),
-        this.line.lineTo(this.cfg.DIMENSION.w_k, c),
-        i.stroke();
-    }),
-    (techchart.prototype.genIdctParam = function(t) {
-      t = t || {};
-      var i = isNaN(t.width)
-          ? this.proxyCfg.titleW || this.cfg.DIMENSION.getStageW()
-          : t.width,
-        r = isNaN(t.height) ? this.cfg.DIMENSION.H_T_T || 14 : t.height;
-      return {
-        hd: this.cfg.PARAM.getHd(),
-        width: i,
-        height: r
-      };
-    }),
-    (techchart.prototype.genTitleCanvas = function(i) {
-      function r() {
-        var r = new xh5_Canvas(),
-          a = r.g,
-          o = s.cfg.datas.isT;
-        if (((this.canvas = r.canvas), utils_util.isFunc(s.proxyCfg.onClkTT))) {
-          var l = utils_util.xh5_deviceUtil.istd ? "touchend" : "click";
-          xh5_EvtUtil.addHandler(
-            this.canvas,
-            l,
-            fBind(s.proxyCfg.onClkTT, null, s)
-          );
-          var n = this.canvas.style;
-          (n.cursor = "pointer"),
-            (n.position = "relative"),
-            (n.zIndex = s.cfg.PARAM.I_Z_INDEX + 1);
-        }
-        var c = function(t, i) {
-            r.resize(
-              s.genIdctParam({
-                width: t,
-                height: i
-              })
-            ),
-              (a.font =
-                s.cfg.STYLE.FONT_SIZE + "px " + s.cfg.STYLE.FONT_FAMILY),
-              (a.textBaseline = "top");
           },
-          d = 9,
-          f = 13,
-          u = 2;
-        (this.setTxt = function(r) {
-          var l = s.cfg.DIMENSION.posX,
-            n = o ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
-            p = s.cfg.DIMENSION.extend_draw,
-            v = a.measureText(i).width,
-            A = s.cfg.DIMENSION.getStageW(),
-            m = 0.35 * A,
-            g = "TFLOW" == s.name && 400 > n ? 55 : 80,
-            b = s.cfg.DIMENSION.H_T_T;
-          u > b && (b = 14);
-          var y = 1;
-          if (r) {
-            for (
-              var _, w, D, M = l + (v > 0 ? d : 0), O = [], S = r.length, T = 0;
-              S > T;
-              T++
-            )
-              if (((_ = r[T]), _.t || !isNaN(_.n))) {
-                switch (
-                  ((w =
-                    (_.t ? _.t + ": " : "") +
-                    (isNaN(_.n) ? "--" : utils_util.strUtil.ps(_.n, h.nfloat))),
-                  s.name)
-                ) {
-                  case "TFLOW":
-                    T == r.length - 1 && (w += "元");
-                    break;
-                  case "TZY":
-                  case "TZYS":
-                    w += "%";
-                }
-                (D = e
-                  ? Math.max(g, a.measureText(w).width || 0)
-                  : a.measureText(w).width || 0),
-                  O.push({
-                    str: w,
-                    w: D,
-                    color: _.c
-                  }),
-                  (M += D + f);
-              }
-            M -= f;
-            var N = Math.ceil(M / n);
-            N > S && (N = S),
-              N > 1 ? ((b *= N), (M = A)) : (M = Math.floor(Math.max(M, m))),
-              (M = Math.min(A, M));
-            var I;
-            p
-              ? ((I = l),
-                s.cfg.DIMENSION.H_T_T < u && (I += s.cfg.DIMENSION.W_T_L),
-                c(M, b))
-              : (c(M, b),
-                s.cfg.DIMENSION.H_T_T > u - 1 &&
-                  ((a.textAlign = "right"),
-                  (a.fillStyle = s.cfg.COLOR.T_T),
-                  a.fillText(i, l, y)),
-                (I = l + (v > 0 ? d : 0))),
-              (a.textAlign = "left");
-            for (
-              var C = I, R = 0, k = O.length;
-              k > R &&
-              ((_ = O[R]),
-              (a.fillStyle = _.color),
-              a.fillText(_.str, I, y),
-              (I += _.w + f),
-              !(R >= k - 1));
-              R++
-            )
-              I - l + O[R + 1].w > n && ((y += s.cfg.STYLE.FONT_SIZE), (I = C));
-          } else
-            s.cfg.DIMENSION.H_T_T < u && (l += s.cfg.DIMENSION.W_T_L),
-              c(l, b),
-              (a.fillStyle = s.cfg.COLOR.T_T),
-              (a.textAlign = p ? "left" : "right"),
-              a.fillText(i, l, y);
-        }),
-          this.setTxt();
-      }
+          nu: this.nu,
+          dt: !1,
+          iMgr: this.proxyCfg.iMgr,
+          iTo: fBind(r, null, this),
+          iClk: this.proxyCfg.onClkMain
+        })),
+        !isNaN(this.proxyCfg.lz) &&
+          (this.line.getCanvas().style.zIndex = this.proxyCfg.lz),
+        this.wrap.appendChild(this.line.getWrap())),
+      this.proxyCfg.ctn && this.proxyCfg.ctn.appendChild(this.wrap);
+  };
+  techchart.prototype.initAndCalcAll = function() {};
+  techchart.prototype.resize = function(t) {
+    (this.h = t.h),
+      (this.mh = t.mh),
+      (this.eh = t.eh),
+      this.line &&
+        this.line.resize({
+          h: this.h,
+          mh: this.mh,
+          eh: this.eh
+        });
+  };
+  techchart.prototype.getFromToM = new (function() {
+    (this.reset = function(t) {
+      var i = t.loadedFlag;
+      if (i)
+        for (var r in i) i.hasOwnProperty(r) && ((i[r] = null), delete i[r]);
+      t.loadedFromTo = void 0;
+    }),
+      (this.get = function(t) {
+        if (!t.viewState.startDate || !t.viewState.endDate) return !1;
+        var i = t.loadedFlag,
+          r = t.loadedFromTo,
+          a = 1989,
+          s = 2099;
+        if (r) {
+          if (a >= r[0]) return;
+          s = r[0];
+        }
+        t.loadedFromTo = [a, s];
+        var e = i["_" + a],
+          h = i["_" + s];
+        if (e && h) return !1;
+        for (
+          h ? (s -= 1) : e && (a += 1),
+            e = [a, "01", "01"].join("-"),
+            h = [s, "12", "31"].join("-");
+          s >= a;
 
-      function a() {
-        var r = $C("div");
-        this.canvas = r;
-        var a = $C("div");
-        (a.style.cssFloat = "left"),
-          (a.style.textAlign = "right"),
-          (a.style.marginRight = "9px"),
-          (a.style.overflow = "hidden");
-        var e = $C("div");
-        r.appendChild(a), r.appendChild(e);
-        var o = r.style;
-        utils_util.isFunc(s.proxyCfg.onClkTT) &&
-          (utils_util.xh5_deviceUtil.istd
-            ? xh5_EvtUtil.addHandler(
-                r,
-                "click",
-                fBind(s.proxyCfg.onClkTT, null, s)
-              )
-            : (xh5_EvtUtil.addHandler(
-                r,
-                "click",
-                fBind(s.proxyCfg.onClkTT, null, s)
-              ),
-              utils_util.xh5_deviceUtil.allowt &&
-                xh5_EvtUtil.addHandler(
-                  r,
-                  "touchend",
-                  fBind(s.proxyCfg.onClkTT, null, s)
-                )),
-          (o.cursor = "pointer"),
-          (o.position = "relative"),
-          (o.zIndex = s.cfg.PARAM.I_Z_INDEX + 1));
-        var l = s.cfg.datas.isT;
-        (this.setTxt = function(r) {
-          var n = l ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
-            c = "TFLOW" == s.name ? 400 : 350,
-            d = c > n ? 55 : 80,
-            f = s.cfg.DIMENSION.extend_draw;
-          (a.style.width = e.style.marginLeft = s.cfg.DIMENSION.posX + "px"),
-            (o.color = s.cfg.COLOR.T_T),
-            (o.fontSize = s.cfg.STYLE.FONT_SIZE + "px"),
-            (o.fontFamily = s.cfg.STYLE.FONT_FAMILY);
-          var u = i || "";
-          if (r) {
-            f
-              ? ((a.innerHTML = ""),
-                s.cfg.DIMENSION.H_T_T < 2 && (e.style.marginLeft = "50px"))
-              : (a.innerHTML = s.cfg.DIMENSION.H_T_T > 1 ? u : ""),
-              (e.innerHTML = "");
-            for (var p, v, A, m = 0, g = r.length; g > m; m++)
-              if (((v = r[m]), v.t || !isNaN(v.n))) {
-                switch (s.name) {
-                  case "DPDK":
-                  case "TZY":
-                    return;
-                  case "TZYS":
-                  case "DPDKS":
-                  case "SAR":
-                    if ("SAR" == s.name) {
-                      if (!s.asPChart && "SAR" != v.t) continue;
-                    } else if ("DPDKS" == s.name && "mn" == v.t) continue;
-                    var b = "<span style='color:#000;'>--";
-                    switch (v.t) {
-                      case "SAR":
-                        b += "</span>";
-                        break;
-                      default:
-                        b += "%</span>";
-                    }
-                    if (((A = (v.t ? v.t + ": " : "") + b), !isNaN(v.n))) {
-                      A = A.replace("--", utils_util.strUtil.ps(v.n, h.nfloat));
-                      var y;
-                      (y =
-                        "DPDK" == s.name || "SAR" == v.t
-                          ? v.c
-                          : v.n > 0
-                          ? s.cfg.COLOR.K_RISE
-                          : v.n < 0
-                          ? s.cfg.COLOR.K_FALL
-                          : s.cfg.COLOR.K_N),
-                        (A = A.replace("#000", y));
-                    }
-                    break;
-                  case "VOLUME":
-                  case "TVOL":
-                  case "MA":
-                    A =
-                      (v.t ? v.t + ": " : "") +
-                      (isNaN(v.n) ? 0 : v.n.toFixed(h.nfloat));
-                    break;
-                  case "SUNSPOT":
-                    A =
-                      "SUNSPOT" === v.t
-                        ? v.n
-                          ? (v.t ? v.t + ": " : "") +
-                            (isNaN(v.n)
-                              ? "--"
-                              : utils_util.strUtil.ps(v.n, 0)) +
-                            "级"
-                          : ""
-                        : (v.t ? v.t + ": " : "") +
-                          (isNaN(v.n)
-                            ? "--"
-                            : utils_util.strUtil.ps(v.n, h.nfloat));
-                    break;
-                  default:
-                    (A =
-                      (v.t ? v.t + ": " : "") +
-                      (isNaN(v.n)
-                        ? "--"
-                        : utils_util.strUtil.ps(v.n, h.nfloat))),
-                      "TFLOW" == s.name && m == r.length - 1 && (A += "元");
-                }
-                (p = 11),
-                  (e.innerHTML +=
-                    "<span style='float:left;min-width:" +
-                    d +
-                    "px;margin-right:" +
-                    p +
-                    "px;color:" +
-                    v.c +
-                    "'>" +
-                    A +
-                    "</span>");
-              }
-          } else (a.innerHTML = f ? "" : u), (e.innerHTML = "");
-        }),
-          this.setTxt();
-      }
-      var s = this,
-        e = this.proxyCfg.fixIdctW,
-        h = this.proxyCfg.usrObj;
-      return s.cfg.custom.indicator_cvs_title ? new r() : new a();
-    }),
-    (techchart.prototype.genIndicator = function(t, i) {
-      if (t) {
-        this.indicatorArr = [];
-        for (var r = 0, a = t.length; a > r; r++) this.indicatorArr.push(t[r]);
-        this.titleO ||
-          ((this.titleO = this.genTitleCanvas(i)),
-          this.titleCtn.appendChild(this.titleO.canvas));
-      }
-    }),
-    (techchart.prototype.indicatorI = function(t) {
-      if (this.indicatorArr) {
-        for (var i, r, a = [], s = 0, e = this.indicatorArr.length; e > s; s++)
-          (i = this.indicatorArr[s]),
-            (r = t[i.prop]),
-            "t" == this.proxyCfg.type &&
-              ("volume" == i.prop || /^tvol\w+$/.test(i.prop)) &&
-              t[i.prop] < 0 &&
-              (r = 0),
-            a.push({
-              n: r,
-              c: i.color,
-              t: i.idct
+        )
+          i["_" + a++] = !0;
+        return [e, h];
+      });
+  })();
+  techchart.prototype.loadUrlData = function() {
+    var i = this.getFromToM.get(this);
+    if (i) {
+      var r = i[0],
+        a = i[1],
+        s = this.aliasymbol || this.symbol,
+        e = "_" + s + "_" + new Date().getDate(),
+        h = this.selfDataUrl
+          .replace("$symbol", s)
+          .replace("$cb", "var%20" + e + "=")
+          .replace("$from", r)
+          .replace("$to", a);
+      this.proxyCfg.usrObj.ssl && (h = utils_util.getSUrl(h, !0));
+      var o = this;
+      utils_util.load(h, function() {
+        var i = window[e];
+        (window[e] = null),
+          o.urlData ||
+            (o.urlData = {
+              day: [],
+              week: [],
+              month: []
             });
-        return this.titleO && this.titleO.setTxt(a), a;
+        var r = o.df(i),
+          a = o.urlData.day;
+        if (a.length > 1) {
+          for (
+            var s = a[0].date, h = r.length;
+            h-- &&
+            !(
+              r[h].date.getFullYear() == s.getFullYear() &&
+              r[h].date.getMonth() == s.getMonth() &&
+              r[h].date.getDate() < s.getDate()
+            );
+
+          );
+          r.splice(h + 1, r.length - h - 1);
+        }
+        a.splice.apply(a, [0, 0].concat(r));
+        var l,
+          n,
+          c = [],
+          d = [],
+          f = a.length,
+          u = a[0],
+          p = {},
+          v = {},
+          A = {};
+        for (l = o.customArr.length; l--; ) A[o.customArr[l].prop] = void 0;
+        A.date = void 0;
+        for (n in A)
+          A.hasOwnProperty(n) &&
+            (utils_util.isDate(u[n])
+              ? ((p[n] = u[n]), (v[n] = u[n]))
+              : ((p[n] = 1 * u[n]), (v[n] = 1 * u[n])));
+        if (1 == f) c.push(p), d.push(v);
+        else {
+          for (l = 1; f > l; l++) {
+            (u = a[l]),
+              dateUtil.gw(a[l - 1].date, u.date) || (c.push(p), (p = {}));
+            for (n in A)
+              A.hasOwnProperty(n) &&
+                (p[n] = utils_util.isDate(u[n])
+                  ? u[n]
+                  : (1 * p[n] || 0) + 1 * u[n]);
+            dateUtil.gm(a[l - 1].date, u.date) || (d.push(v), (v = {}));
+            for (n in A)
+              A.hasOwnProperty(n) &&
+                (v[n] = utils_util.isDate(u[n])
+                  ? u[n]
+                  : (1 * v[n] || 0) + 1 * u[n]);
+          }
+          c.push(p), d.push(v);
+        }
+        (o.urlData.week = c), (o.urlData.month = d), (o.toReCalc = !0), o.cb(o);
+      });
+    }
+  };
+  techchart.prototype.newData = function(t, i, r) {
+    if (t && !(t.length < 1)) {
+      var a = t[t.length - 1];
+      if (
+        (168 == r && dateUtil.gw(a.date, i.date)) ||
+        (720 == r && dateUtil.gm(a.date, i.date))
+      )
+        return void (a.date = i.date);
+      for (var s, e = {}, h = this.customArr.length; h--; )
+        (s = this.customArr[h].prop), (e[s] = i[s] || 0);
+      (e.date = i.date), t.push(e);
+    }
+  };
+  techchart.prototype.updateData = function(i, r, a, s) {
+    if (r && !(r.length < 1)) {
+      var e = r[r.length - 1];
+      if (s) {
+        if (!dateUtil.stbd(e.date, i.date))
+          return i.date > e.date ? void this.newData(r, i, a) : void 0;
+        if (!utils_util.kUtil.spk(e.time, i.time, "00:00", a))
+          return void this.newData(r, i, a);
+      } else if (!dateUtil.stbd(i.date, e.date))
+        return i.date > e.date ? void this.newData(r, i, a) : void 0;
+      e = r[r.length - 1];
+      for (var h, o = this.customArr.length; o--; ) {
+        h = this.customArr[o].prop;
+        var l = Number(i[h]);
+        if (utils_util.isNum(i[h]))
+          switch (a) {
+            case 167:
+            case 168:
+            case 169:
+            case 719:
+            case 720:
+            case 721:
+              e[h] += i[h + "update"] || 0;
+              break;
+            default:
+              e[h] = l;
+          }
       }
-    }),
-    (techchart.prototype.interact = function(t) {
-      return !isNaN(t) && this.datas && this.datas.length
-        ? (t >= this.datas.length && (t = this.datas.length - 1),
-          this.indicatorI(this.datas[t]))
-        : (this.titleO && this.titleO.setTxt(null), null);
-    }),
-    (techchart.prototype.rfs = function() {
-      this.selfCfg.allowrfs
-        ? (this.titleO && utils_util.domGc(this.titleO.canvas),
-          utils_util.domGc(this.wrap),
-          clearInterval(this.updateId))
-        : (this.wrap.style.display = "none");
-    });
+    }
+  };
+  techchart.prototype.doUpdate = function(t) {
+    t &&
+      this.urlData &&
+      (this.urlData.day && this.updateData(t, this.urlData.day, 24),
+      this.urlData.week && this.updateData(t, this.urlData.week, 168),
+      this.urlData.month && this.updateData(t, this.urlData.month, 720),
+      (this.toReCalc = !0),
+      this.cb(this));
+  };
+  techchart.prototype.udf = function(t) {
+    return t;
+  };
+  techchart.prototype.update = function() {
+    if (
+      this.selfDataUrlUpdate &&
+      !(++this.updateCount < this.UPDATE_THRESHOLD)
+    ) {
+      this.updateCount >= this.UPDATE_THRESHOLD && (this.updateCount = 0);
+      var i = dateUtil.ddt(this.viewState.startDate).getFullYear(),
+        r = dateUtil.ddt(this.viewState.endDate).getFullYear(),
+        a = [i, 1, 1].join("-"),
+        s = [r, 12, 31].join("-"),
+        e = this.aliasymbol || this.symbol,
+        h = "_" + e + new Date().getTime(),
+        o = this.selfDataUrlUpdate
+          .replace("$symbol", e)
+          .replace("$cb", "var%20" + h + "=")
+          .replace("$from", a)
+          .replace("$to", s);
+      this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o, !0));
+      var l = this;
+      utils_util.load(o, function() {
+        var t = window[h];
+        window[h] = null;
+        var i = l.udf(t);
+        i && l.doUpdate(i);
+      });
+    }
+  };
+  techchart.prototype.createPlayingData = function() {
+    if (this.datas)
+      for (
+        var t,
+          i = this.labelMaxP - this.labelMinP,
+          r = 0,
+          a = this.datas.length;
+        a > r;
+        r++
+      ) {
+        t = this.datas[r];
+        for (var s = this.customArr.length; s--; ) {
+          var e = this.customArr[s].prop;
+          t[e + "y"] = (this.h * (this.labelMaxP - t[e])) / i;
+        }
+      }
+  };
+  techchart.prototype.setPricePos = function(t) {
+    !t || this.separate > 0
+      ? ((this.labelMinP = this.minPrice), (this.labelMaxP = this.maxPrice))
+      : ((this.labelMaxP = t[0]),
+        (this.labelMinP = t[1]),
+        (this.pricePosArr = t)),
+      this.createPlayingData();
+  };
+  techchart.prototype.generateSettings = function() {
+    if (this.param && this.param.length > 0)
+      for (
+        var i = 0, r = Math.min(this.param.length, this.DEFAULT_ARR.length);
+        r > i;
+        i++
+      ) {
+        var a = this.param[i],
+          s = Number(a.v);
+        (this.customArr[i].v = s > 0 ? s : this.DEFAULT_ARR[i].v),
+          (this.customArr[i].color = utils_util.isColor(a.color)
+            ? a.color
+            : this.DEFAULT_ARR[i].color);
+      }
+  };
+  techchart.prototype.newParam = function(i, r) {
+    var a = this.sname || this.name,
+      s = !1;
+    if (
+      (i
+        ? ((pt[a] = i), utils_util.stc("np_" + a, i))
+        : ((s = !0), (i = pt[a])),
+      (this.param = i),
+      this.generateSettings(),
+      this.genIndicator(
+        this.customArr,
+        this.asPChart ? "" : this.alias || this.name
+      ),
+      r)
+    ) {
+      var e = this.cfg.datas.isT
+        ? this.proxyCfg.stock.tDb.get()
+        : this.proxyCfg.stock.kDb.get();
+      return void (
+        e &&
+        (this.initAndCalcAll(e),
+        this.asPChart ? this.setPricePos(this.pricePosArr) : this.drawCalc(),
+        this.draw(!0))
+      );
+    }
+    if (this.cfg.custom.storage_lv > 0)
+      if (i) {
+        if (s) return;
+        this.cfg.custom.storage_lv > 1 && this.saveGlobalSetting(i);
+      } else this.loadGlobalSetting();
+  };
+  techchart.prototype.syncI = function() {
+    if (this.datas && this.proxyCfg.iMgr)
+      if (this.proxyCfg.iMgr.isIng())
+        this.proxyCfg.iMgr.isMoving() &&
+          this.indicatorI(this.datas[this.datas.length - 1]);
+      else if ("t" != this.proxyCfg.type)
+        this.indicatorI(this.datas[this.datas.length - 1]);
+      else if (this.proxyCfg.stock)
+        if (5 == this.proxyCfg.stock.viewState.end) {
+          var t;
+          (t =
+            this.proxyCfg.stock.realLen >= 0
+              ? this.proxyCfg.stock.realLen >= this.disMod
+                ? 0 == this.proxyCfg.stock.realLen
+                  ? 0
+                  : this.proxyCfg.stock.realLen - 1
+                : this.proxyCfg.stock.realLen
+              : this.disMod - 1),
+            4 != this.proxyCfg.stock.viewState.start &&
+              (t =
+                (this.proxyCfg.stock.viewState.end -
+                  this.proxyCfg.stock.viewState.start -
+                  1) *
+                  this.disMod +
+                t),
+            this.indicatorI(this.datas[t]);
+        } else this.indicatorI(this.datas[this.datas.length - 1]);
+  };
+  techchart.prototype.setRange = function() {
+    if (this.datas) {
+      for (
+        var t = this.viewState.start * this.disMod,
+          i = this.viewState.end * this.disMod,
+          r = i - t;
+        this.datas.length > r;
+
+      )
+        this.datas.length--;
+      for (; this.datas.length < r; ) this.datas.push({});
+      for (var a = Number.MAX_VALUE, s = -Number.MAX_VALUE, e = t; i > e; e++) {
+        var h = this.datas[e - t];
+        if (
+          ((h.date = this.oriArr[e].date),
+          !this.selfArr[e] || !this.selfArr[e][At])
+        )
+          for (var o in this.selfArr[e])
+            if (this.selfArr[e].hasOwnProperty(o)) {
+              if (((h[o] = this.selfArr[e][o]), 0 == o.indexOf(vt))) continue;
+              h[o] > s && (s = h[o]), h[o] < a && (a = h[o]);
+            }
+      }
+      (this.minPrice = a), (this.maxPrice = s), this.syncI();
+    }
+  };
+  techchart.prototype.drawCalc = function() {
+    if (this.datas) {
+      for (
+        var t = this.viewState.start * this.disMod,
+          i = this.viewState.end * this.disMod,
+          r = i - t;
+        this.datas.length > r;
+
+      )
+        this.datas.length--;
+      for (; this.datas.length < r; ) this.datas.push({});
+      var a,
+        s,
+        e = Number.MAX_VALUE,
+        h = -Number.MAX_VALUE;
+      for (a = t; i > a; a++)
+        if (
+          ((s = this.datas[a - t]),
+          (s.date = this.oriArr[a].date),
+          !this.selfArr[a] || !this.selfArr[a][At])
+        )
+          for (var o in this.selfArr[a])
+            if (this.selfArr[a].hasOwnProperty(o)) {
+              if (((s[o] = this.selfArr[a][o]), 0 == o.indexOf(vt))) continue;
+              s[o] > h && (h = s[o]), s[o] < e && (e = s[o]);
+            }
+      switch (this.name) {
+        case "ADL":
+        case "MACD":
+          (h = Math.max(Math.abs(h), Math.abs(e))), (e = -h);
+          break;
+        case "BIAS":
+        case "BRAR":
+        case "DMA":
+        case "EMV":
+        case "KDJ":
+        case "ROC":
+        case "VR":
+        case "WVAD":
+          (this.vaObj.min = e), (this.vaObj.max = h);
+          break;
+        case "CCI":
+          e > 0 && (e = 0),
+            0 > h && (h = 0),
+            (this.vaObj.min = e),
+            (this.vaObj.max = h);
+          break;
+        case "TOR":
+          e = 0;
+          break;
+        default:
+          this.vaObj && ((h = this.vaObj.max), (e = this.vaObj.min));
+      }
+      (this.labelMaxP = h), (this.labelMinP = e);
+      var l = h - e;
+      for (a = 0; r > a; a++) {
+        s = this.datas[a];
+        for (var n = this.customArr.length; n--; ) {
+          var c = this.customArr[n].prop;
+          s[c + "y"] = (this.h * (h - s[c])) / l;
+        }
+      }
+      this.syncI();
+    }
+  };
+  techchart.prototype.clearDraw = function() {
+    this.line.clear(!1), this.interact(0 / 0);
+  };
+  techchart.prototype.draw = function(t, i) {
+    if (((this.__iOffsetX = isNaN(i) ? this.__iOffsetX : i), this.datas)) {
+      this.line.clear(!0, this.cfg.PARAM.getHd());
+      var r,
+        a,
+        s = this.datas.length;
+      this.cfg.datas.isT
+        ? ((r = this.cfg.DIMENSION.w_t / s), (a = r * gt))
+        : ((r =
+            this.cfg.DIMENSION.w_k / Math.max(s, this.cfg.PARAM.minCandleNum)),
+          (a = this.__iOffsetX - r * mt));
+      for (var e, h = this.customArr.length; h--; ) {
+        var o = this.customArr[h].prop + "y";
+        (e = a), this.line.newStyle(this.customArr[h].color, !0, this.lw);
+        for (var l = 0; s > l; l++)
+          0 == l
+            ? this.line.moveTo(e, this.datas[l][o])
+            : this.line.lineTo(e, this.datas[l][o]),
+            (e += r);
+        this.line.stroke();
+      }
+      t && this.line.drawBg(this.__iOffsetX),
+        this.vaObj && this.drawValueRange();
+    }
+  };
+  techchart.prototype.drawValueRange = function() {
+    var i = this.line.getG();
+    i.globalCompositeOperation = "destination-over";
+    var r = this.vaObj.min,
+      a = this.vaObj.max,
+      s = a - r;
+    if (!isNaN(this.vaObj.upper) && !isNaN(this.vaObj.lower)) {
+      var e = this.vaObj.upper,
+        h = this.vaObj.lower,
+        o = (this.h * (a - e)) / s,
+        l = (this.h * (a - h)) / s,
+        n = l - o;
+      (i.fillStyle = utils_util.hex2dec(this.customArr[0].color, 0.2)),
+        i.fillRect(0, o, this.cfg.DIMENSION.w_k, n);
+    }
+    var c = (this.h * (isNaN(this.vaObj.glv) ? a / 2 : a - this.vaObj.glv)) / s;
+    (c += 0.5),
+      this.line.newStyle(this.cfg.COLOR.GRID, !0, 1),
+      this.line.moveTo(0, c),
+      this.line.lineTo(this.cfg.DIMENSION.w_k, c),
+      i.stroke();
+  };
+  techchart.prototype.genIdctParam = function(t) {
+    t = t || {};
+    var i = isNaN(t.width)
+        ? this.proxyCfg.titleW || this.cfg.DIMENSION.getStageW()
+        : t.width,
+      r = isNaN(t.height) ? this.cfg.DIMENSION.H_T_T || 14 : t.height;
+    return {
+      hd: this.cfg.PARAM.getHd(),
+      width: i,
+      height: r
+    };
+  };
+  techchart.prototype.genTitleCanvas = function(i) {
+    function r() {
+      var r = new xh5_Canvas(),
+        a = r.g,
+        o = s.cfg.datas.isT;
+      if (((this.canvas = r.canvas), utils_util.isFunc(s.proxyCfg.onClkTT))) {
+        var l = utils_util.xh5_deviceUtil.istd ? "touchend" : "click";
+        xh5_EvtUtil.addHandler(
+          this.canvas,
+          l,
+          fBind(s.proxyCfg.onClkTT, null, s)
+        );
+        var n = this.canvas.style;
+        (n.cursor = "pointer"),
+          (n.position = "relative"),
+          (n.zIndex = s.cfg.PARAM.I_Z_INDEX + 1);
+      }
+      var c = function(t, i) {
+          r.resize(
+            s.genIdctParam({
+              width: t,
+              height: i
+            })
+          ),
+            (a.font = s.cfg.STYLE.FONT_SIZE + "px " + s.cfg.STYLE.FONT_FAMILY),
+            (a.textBaseline = "top");
+        },
+        d = 9,
+        f = 13,
+        u = 2;
+      (this.setTxt = function(r) {
+        var l = s.cfg.DIMENSION.posX,
+          n = o ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
+          p = s.cfg.DIMENSION.extend_draw,
+          v = a.measureText(i).width,
+          A = s.cfg.DIMENSION.getStageW(),
+          m = 0.35 * A,
+          g = "TFLOW" == s.name && 400 > n ? 55 : 80,
+          b = s.cfg.DIMENSION.H_T_T;
+        u > b && (b = 14);
+        var y = 1;
+        if (r) {
+          for (
+            var _, w, D, M = l + (v > 0 ? d : 0), O = [], S = r.length, T = 0;
+            S > T;
+            T++
+          )
+            if (((_ = r[T]), _.t || !isNaN(_.n))) {
+              switch (
+                ((w =
+                  (_.t ? _.t + ": " : "") +
+                  (isNaN(_.n) ? "--" : utils_util.strUtil.ps(_.n, h.nfloat))),
+                s.name)
+              ) {
+                case "TFLOW":
+                  T == r.length - 1 && (w += "元");
+                  break;
+                case "TZY":
+                case "TZYS":
+                  w += "%";
+              }
+              (D = e
+                ? Math.max(g, a.measureText(w).width || 0)
+                : a.measureText(w).width || 0),
+                O.push({
+                  str: w,
+                  w: D,
+                  color: _.c
+                }),
+                (M += D + f);
+            }
+          M -= f;
+          var N = Math.ceil(M / n);
+          N > S && (N = S),
+            N > 1 ? ((b *= N), (M = A)) : (M = Math.floor(Math.max(M, m))),
+            (M = Math.min(A, M));
+          var I;
+          p
+            ? ((I = l),
+              s.cfg.DIMENSION.H_T_T < u && (I += s.cfg.DIMENSION.W_T_L),
+              c(M, b))
+            : (c(M, b),
+              s.cfg.DIMENSION.H_T_T > u - 1 &&
+                ((a.textAlign = "right"),
+                (a.fillStyle = s.cfg.COLOR.T_T),
+                a.fillText(i, l, y)),
+              (I = l + (v > 0 ? d : 0))),
+            (a.textAlign = "left");
+          for (
+            var C = I, R = 0, k = O.length;
+            k > R &&
+            ((_ = O[R]),
+            (a.fillStyle = _.color),
+            a.fillText(_.str, I, y),
+            (I += _.w + f),
+            !(R >= k - 1));
+            R++
+          )
+            I - l + O[R + 1].w > n && ((y += s.cfg.STYLE.FONT_SIZE), (I = C));
+        } else
+          s.cfg.DIMENSION.H_T_T < u && (l += s.cfg.DIMENSION.W_T_L),
+            c(l, b),
+            (a.fillStyle = s.cfg.COLOR.T_T),
+            (a.textAlign = p ? "left" : "right"),
+            a.fillText(i, l, y);
+      }),
+        this.setTxt();
+    }
+
+    function a() {
+      var r = $C("div");
+      this.canvas = r;
+      var a = $C("div");
+      (a.style.cssFloat = "left"),
+        (a.style.textAlign = "right"),
+        (a.style.marginRight = "9px"),
+        (a.style.overflow = "hidden");
+      var e = $C("div");
+      r.appendChild(a), r.appendChild(e);
+      var o = r.style;
+      utils_util.isFunc(s.proxyCfg.onClkTT) &&
+        (utils_util.xh5_deviceUtil.istd
+          ? xh5_EvtUtil.addHandler(
+              r,
+              "click",
+              fBind(s.proxyCfg.onClkTT, null, s)
+            )
+          : (xh5_EvtUtil.addHandler(
+              r,
+              "click",
+              fBind(s.proxyCfg.onClkTT, null, s)
+            ),
+            utils_util.xh5_deviceUtil.allowt &&
+              xh5_EvtUtil.addHandler(
+                r,
+                "touchend",
+                fBind(s.proxyCfg.onClkTT, null, s)
+              )),
+        (o.cursor = "pointer"),
+        (o.position = "relative"),
+        (o.zIndex = s.cfg.PARAM.I_Z_INDEX + 1));
+      var l = s.cfg.datas.isT;
+      (this.setTxt = function(r) {
+        var n = l ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
+          c = "TFLOW" == s.name ? 400 : 350,
+          d = c > n ? 55 : 80,
+          f = s.cfg.DIMENSION.extend_draw;
+        (a.style.width = e.style.marginLeft = s.cfg.DIMENSION.posX + "px"),
+          (o.color = s.cfg.COLOR.T_T),
+          (o.fontSize = s.cfg.STYLE.FONT_SIZE + "px"),
+          (o.fontFamily = s.cfg.STYLE.FONT_FAMILY);
+        var u = i || "";
+        if (r) {
+          f
+            ? ((a.innerHTML = ""),
+              s.cfg.DIMENSION.H_T_T < 2 && (e.style.marginLeft = "50px"))
+            : (a.innerHTML = s.cfg.DIMENSION.H_T_T > 1 ? u : ""),
+            (e.innerHTML = "");
+          for (var p, v, A, m = 0, g = r.length; g > m; m++)
+            if (((v = r[m]), v.t || !isNaN(v.n))) {
+              switch (s.name) {
+                case "DPDK":
+                case "TZY":
+                  return;
+                case "TZYS":
+                case "DPDKS":
+                case "SAR":
+                  if ("SAR" == s.name) {
+                    if (!s.asPChart && "SAR" != v.t) continue;
+                  } else if ("DPDKS" == s.name && "mn" == v.t) continue;
+                  var b = "<span style='color:#000;'>--";
+                  switch (v.t) {
+                    case "SAR":
+                      b += "</span>";
+                      break;
+                    default:
+                      b += "%</span>";
+                  }
+                  if (((A = (v.t ? v.t + ": " : "") + b), !isNaN(v.n))) {
+                    A = A.replace("--", utils_util.strUtil.ps(v.n, h.nfloat));
+                    var y;
+                    (y =
+                      "DPDK" == s.name || "SAR" == v.t
+                        ? v.c
+                        : v.n > 0
+                        ? s.cfg.COLOR.K_RISE
+                        : v.n < 0
+                        ? s.cfg.COLOR.K_FALL
+                        : s.cfg.COLOR.K_N),
+                      (A = A.replace("#000", y));
+                  }
+                  break;
+                case "VOLUME":
+                case "TVOL":
+                case "MA":
+                  A =
+                    (v.t ? v.t + ": " : "") +
+                    (isNaN(v.n) ? 0 : v.n.toFixed(h.nfloat));
+                  break;
+                case "SUNSPOT":
+                  A =
+                    "SUNSPOT" === v.t
+                      ? v.n
+                        ? (v.t ? v.t + ": " : "") +
+                          (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, 0)) +
+                          "级"
+                        : ""
+                      : (v.t ? v.t + ": " : "") +
+                        (isNaN(v.n)
+                          ? "--"
+                          : utils_util.strUtil.ps(v.n, h.nfloat));
+                  break;
+                default:
+                  (A =
+                    (v.t ? v.t + ": " : "") +
+                    (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, h.nfloat))),
+                    "TFLOW" == s.name && m == r.length - 1 && (A += "元");
+              }
+              (p = 11),
+                (e.innerHTML +=
+                  "<span style='float:left;min-width:" +
+                  d +
+                  "px;margin-right:" +
+                  p +
+                  "px;color:" +
+                  v.c +
+                  "'>" +
+                  A +
+                  "</span>");
+            }
+        } else (a.innerHTML = f ? "" : u), (e.innerHTML = "");
+      }),
+        this.setTxt();
+    }
+    var s = this,
+      e = this.proxyCfg.fixIdctW,
+      h = this.proxyCfg.usrObj;
+    return s.cfg.custom.indicator_cvs_title ? new r() : new a();
+  };
+  techchart.prototype.genIndicator = function(t, i) {
+    if (t) {
+      this.indicatorArr = [];
+      for (var r = 0, a = t.length; a > r; r++) this.indicatorArr.push(t[r]);
+      this.titleO ||
+        ((this.titleO = this.genTitleCanvas(i)),
+        this.titleCtn.appendChild(this.titleO.canvas));
+    }
+  };
+  techchart.prototype.indicatorI = function(t) {
+    if (this.indicatorArr) {
+      for (var i, r, a = [], s = 0, e = this.indicatorArr.length; e > s; s++)
+        (i = this.indicatorArr[s]),
+          (r = t[i.prop]),
+          "t" == this.proxyCfg.type &&
+            ("volume" == i.prop || /^tvol\w+$/.test(i.prop)) &&
+            t[i.prop] < 0 &&
+            (r = 0),
+          a.push({
+            n: r,
+            c: i.color,
+            t: i.idct
+          });
+      return this.titleO && this.titleO.setTxt(a), a;
+    }
+  };
+  techchart.prototype.interact = function(t) {
+    return !isNaN(t) && this.datas && this.datas.length
+      ? (t >= this.datas.length && (t = this.datas.length - 1),
+        this.indicatorI(this.datas[t]))
+      : (this.titleO && this.titleO.setTxt(null), null);
+  };
+  techchart.prototype.rfs = function() {
+    this.selfCfg.allowrfs
+      ? (this.titleO && utils_util.domGc(this.titleO.canvas),
+        utils_util.domGc(this.wrap),
+        clearInterval(this.updateId))
+      : (this.wrap.style.display = "none");
+  };
   var bt = (function() {
     function t(t) {
       return null === t

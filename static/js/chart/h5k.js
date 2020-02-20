@@ -3,7 +3,7 @@ xh5_define(
   ["cfgs.settinger", "utils.util", "utils.painter"],
   function(settinger, util, painter) {
     "use strict";
-    function a(a) {
+    function StockManager(usrObj) {
       function Stock(params, isMain) {
         function i(e) {
           rangeCtrl.setDataRange(e);
@@ -190,7 +190,7 @@ xh5_define(
           this.initExtraData = function() {
             var extraUrl =
               "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
-            a.ssl && (extraUrl = util.getSUrl(extraUrl));
+            usrObj.ssl && (extraUrl = util.getSUrl(extraUrl));
             var i = "KKE_ShareAmount_" + params.symbol;
             util.load(
               extraUrl
@@ -298,7 +298,8 @@ xh5_define(
                 if (n && end + 1 >= i.length) {
                   var r = i.length - end;
                   viewState.end = end = i.length;
-                  (1 == a.pcm || viewState.viewId == globalCfg.URLHASH.K1) &&
+                  (1 == usrObj.pcm ||
+                    viewState.viewId == globalCfg.URLHASH.K1) &&
                     (0 == start &&
                       end > 1 &&
                       end < setting.PARAM.minCandleNum &&
@@ -312,7 +313,7 @@ xh5_define(
               viewState.startDate = i[start].date;
               viewState.endDate = i[end - 1].date;
 
-              switch (a.pcm) {
+              switch (usrObj.pcm) {
                 case 1:
                   stockDataA.prevclose = i[0].prevclose;
                   break;
@@ -499,7 +500,7 @@ xh5_define(
             var u,
               p = {
                 symbol: params.symbol,
-                ssl: a.ssl
+                ssl: usrObj.ssl
               };
             r
               ? ((u = "datas.hq.parse"), (p.hqStr = r), (p.market = l))
@@ -642,7 +643,7 @@ xh5_define(
                   symbol: params.symbol,
                   market: u,
                   dir: i,
-                  ssl: a.ssl
+                  ssl: usrObj.ssl
                 };
               F.show(),
                 KKE.api("datas.k.loadReData", l, function(e) {
@@ -664,7 +665,7 @@ xh5_define(
               let initState =
                 "mink" == s.type ? kDb.initState : kDb.initDWMState;
               F.show();
-              "LSE" === u && (e.symbol = a.rawSymbol);
+              "LSE" === u && (e.symbol = usrObj.rawSymbol);
               KKE.api("datas.k.get", e, function(a) {
                 F.hide();
                 var l = i;
@@ -708,7 +709,7 @@ xh5_define(
                 {
                   symbol: params.symbol,
                   cancelEtag: !0,
-                  ssl: a.ssl
+                  ssl: usrObj.ssl
                 },
                 function(n) {
                   var a = n.dataObj[params.symbol],
@@ -755,7 +756,7 @@ xh5_define(
               var d = {
                 symbol: params.symbol,
                 newthour: i,
-                ssl: a.ssl
+                ssl: usrObj.ssl
               };
               if ("mink" == s.type) {
                 if (
@@ -798,7 +799,7 @@ xh5_define(
             g = function(t) {
               var n = {
                   symbol: params.symbol,
-                  ssl: a.ssl
+                  ssl: usrObj.ssl
                 },
                 i = "datas.k.";
               (i += "loadGBInit"),
@@ -822,7 +823,7 @@ xh5_define(
             y = function(t, n) {
               var i = {
                   symbol: params.symbol,
-                  ssl: a.ssl
+                  ssl: usrObj.ssl
                 },
                 o = "datas.k.";
               n
@@ -944,7 +945,7 @@ xh5_define(
           return N || null;
         };
         var W = function(e, n, a) {
-          e && j.resizeAll(!0);
+          e && initMgr.resizeAll(!0);
           I.onChangeView();
           n && util.isFunc(n.callback) && n.callback(),
             a && Y.onTechChanged(a[0]);
@@ -960,14 +961,14 @@ xh5_define(
               }
             N ||
               ((N = new pChart({
-                iMgr: B,
+                iMgr: iMgr,
                 stockData: stockDataA,
                 chartArea: R,
                 titleArea: H,
                 cb: W,
                 cfg: setting,
                 type: "k",
-                usrObj: a
+                usrObj: usrObj
               })),
               isMain && (U = N),
               G && ((g = N.showHide(G)), (G = void 0))),
@@ -992,13 +993,13 @@ xh5_define(
           y ||
             ((y = new tChart({
               stockData: stockDataA,
-              iMgr: B,
+              iMgr: iMgr,
               cb: W,
-              subArea: D,
+              subArea: subArea,
               cfg: setting,
               type: "k",
-              usrObj: a,
-              initMgr: j
+              usrObj: usrObj,
+              initMgr: initMgr
             })),
             isMain && (T = y)),
             y.createChart(e, t);
@@ -1047,14 +1048,15 @@ xh5_define(
             reO: {
               mh: setting.DIMENSION.H_MA4K
             },
-            iMgr: B,
+            iMgr: iMgr,
             iTo: function(t, n, a, i) {
               if (e && e.datas) {
-                !$CONTAINS(t, B.iHLineO.body) && t.appendChild(B.iHLineO.body);
+                !$CONTAINS(t, iMgr.iHLineO.body) &&
+                  t.appendChild(iMgr.iHLineO.body);
                 var o =
                   e.labelMaxP -
                   (a / setting.DIMENSION.h_k) * (e.labelMaxP - e.labelMinP);
-                B.iToD(
+                iMgr.iToD(
                   {
                     mark: o,
                     x: n,
@@ -1394,8 +1396,8 @@ xh5_define(
             setting.custom.k_overlay && (s = !1);
             for (var r, l, c, h, d = s ? "Percent" : "Price", u = o; u--; )
               (e = allStock[u]),
-                a.scalerange
-                  ? (c = a.scalerange)
+                usrObj.scalerange
+                  ? (c = usrObj.scalerange)
                   : ((h = e.getPriceTech()),
                     s || !h
                       ? (c = [i, n])
@@ -1406,13 +1408,13 @@ xh5_define(
                   isFinite(l) &&
                   ((n = Math.min(n, r, c[1])), (i = Math.max(i, l, c[0])));
             var p;
-            p = a.scalerange
-              ? a.scalerange.concat(4)
-              : 1 == a.pcm
+            p = usrObj.scalerange
+              ? usrObj.scalerange.concat(4)
+              : 1 == usrObj.pcm
               ? 0.0199 > i - n
                 ? [i, n, 1]
                 : xh5_ADJUST_HIGH_LOW_c(i, n, 2, !1, !0)
-              : xh5_ADJUST_HIGH_LOW_c(i, n, a.nfloat, !1, !0, g);
+              : xh5_ADJUST_HIGH_LOW_c(i, n, usrObj.nfloat, !1, !0, g);
             for (var m = o; m--; ) (e = allStock[m]), e.setPricePos(p, s);
           },
           callSdDraw = function() {
@@ -1457,7 +1459,7 @@ xh5_define(
           onChangeView = function(t, n) {
             if ((A(n), I(mainStock))) {
               if (mainStock.isErr) return void (mainStock.isErr = !1);
-              if ((B.patcher.switchFloater(), z.resetX(0), C()))
+              if ((iMgr.patcher.switchFloater(), z.resetX(0), C()))
                 for (M = !1, k(t); S.length; ) {
                   var a = S.shift();
                   a();
@@ -1473,9 +1475,9 @@ xh5_define(
           },
           D = function(e) {
             (e || viewState.end == viewState.dataLength) &&
-              (B.update(), y(), callSdDraw(), H(!0)),
+              (iMgr.update(), y(), callSdDraw(), H(!0)),
               Y.onDataUpdate(),
-              !B.isIng() && Y.onViewPrice();
+              !iMgr.isIng() && Y.onViewPrice();
           },
           K = function(e) {
             clearTimeout(h),
@@ -1490,8 +1492,8 @@ xh5_define(
                 (e = allStock[t]), e.doUpdate(K);
           },
           U = function() {
-            if ((clearInterval(l), !isNaN(a.rate))) {
-              var e = 1e3 * a.rate;
+            if ((clearInterval(l), !isNaN(usrObj.rate))) {
+              var e = 1e3 * usrObj.rate;
               e > 0 && (l = setTimeout(U, e));
             }
             T();
@@ -1558,7 +1560,7 @@ xh5_define(
                 ? (E
                     ? (E.sh(t), (t.from || t.to) && E.dateFromTo(t.from, t.to))
                     : (mainStock.initRs(), i(t), O.appendChild(E.getBody())),
-                  void j.resizeAll(!0))
+                  void initMgr.resizeAll(!0))
                 : void KKE.api("plugins.rangeselector.get", null, function(e) {
                     (o = e), i(t);
                   });
@@ -1641,7 +1643,7 @@ xh5_define(
                     {
                       symbol: mainStock.symbol,
                       dom: i,
-                      nfloat: a.nfloat
+                      nfloat: usrObj.nfloat
                     },
                     function(e) {
                       (n = e), (r = !1), u(t);
@@ -1657,7 +1659,7 @@ xh5_define(
             }),
             (this.historyT = function() {
               if ("CN" === util.market(mainStock.symbol)) {
-                s = B.getInteractiveIdx();
+                s = iMgr.getInteractiveIdx();
                 var n = mainStock.datas[s];
                 if (n) {
                   if (n.date.getFullYear() < 2008)
@@ -1793,7 +1795,7 @@ xh5_define(
         };
         var Z,
           J = function(e) {
-            e ? D() : viewState.end == viewState.dataLength && B.update();
+            e ? D() : viewState.end == viewState.dataLength && iMgr.update();
           },
           Q = !1,
           ee = 0,
@@ -1883,7 +1885,7 @@ xh5_define(
           }
         };
         this.onKb = function(e) {
-          if ("keyup" == e.type) return void B.iToKb(null, !0);
+          if ("keyup" == e.type) return void iMgr.iToKb(null, !0);
           var t = e.keyCode;
           if (h5tM.isShowing()) return void (27 == t && h5tM.resetHisT());
           switch (t) {
@@ -1894,8 +1896,9 @@ xh5_define(
               break;
             case 37:
             case 39:
-              var a = B.iToKb(37 == t ? -1 : 1);
-              a && (moving(viewState.start + a, viewState.end + a), B.iToKb(0));
+              var a = iMgr.iToKb(37 == t ? -1 : 1);
+              a &&
+                (moving(viewState.start + a, viewState.end + a), iMgr.iToKb(0));
               break;
             case 13:
               h5tM.historyT();
@@ -2019,7 +2022,7 @@ xh5_define(
       }
       util.xh5_EvtDispatcher.call(this);
       var me = this;
-      a = oc(
+      usrObj = oc(
         {
           candlenum: 0 / 0,
           datas: {
@@ -2072,7 +2075,7 @@ xh5_define(
           zoomlimit: 0 / 0,
           zoomunit: 0 / 0
         },
-        a || {
+        usrObj || {
           WANGXuan: "wangxuan2@staff.sina.com.cn",
           VER: "2.11.0"
         }
@@ -2080,54 +2083,54 @@ xh5_define(
       var setting;
       !(function() {
         if (
-          (!a.symbol && (a.symbol = "sh000001"),
-          (a.symbol = String(a.symbol)),
-          (a.rawSymbol = String(a.symbol)),
-          (a.symbol =
-            "LSE" === util.market(a.symbol)
-              ? util.strUtil.replaceStr(a.symbol)
-              : a.symbol.replace(".", "$")),
+          (!usrObj.symbol && (usrObj.symbol = "sh000001"),
+          (usrObj.symbol = String(usrObj.symbol)),
+          (usrObj.rawSymbol = String(usrObj.symbol)),
+          (usrObj.symbol =
+            "LSE" === util.market(usrObj.symbol)
+              ? util.strUtil.replaceStr(usrObj.symbol)
+              : usrObj.symbol.replace(".", "$")),
           (setting = settinger.getSetting(
             [
               "_",
-              a.symbol,
+              usrObj.symbol,
               "_",
               Math.floor(1234567890 * Math.random() + 1) +
                 Math.floor(9876543210 * Math.random() + 1)
             ].join("")
           )),
-          0 == location.protocol.indexOf("https:") && (a.ssl = !0),
-          isNaN(a.rate) && (a.rate = setting.PARAM.updateRate),
-          !isNaN(a.mincandlenum) &&
-            a.mincandlenum > 0 &&
-            (setting.PARAM.minCandleNum = a.mincandlenum),
-          !isNaN(a.candlenum) &&
-            a.candlenum >= setting.PARAM.minCandleNum &&
-            (setting.PARAM.defaultCandleNum = a.candlenum),
-          isNaN(a.maxcandlenum) ||
-            (setting.PARAM.maxCandleNum = a.maxcandlenum),
-          !isNaN(a.zoomunit) &&
-            a.zoomunit > setting.PARAM.minCandleNum &&
-            (setting.PARAM.zoomUnit = a.zoomunit),
-          !isNaN(a.zoomlimit) &&
-            a.zoomlimit > 0 &&
-            (setting.PARAM.zoomLimit = Math.round(a.zoomlimit)),
+          0 == location.protocol.indexOf("https:") && (usrObj.ssl = !0),
+          isNaN(usrObj.rate) && (usrObj.rate = setting.PARAM.updateRate),
+          !isNaN(usrObj.mincandlenum) &&
+            usrObj.mincandlenum > 0 &&
+            (setting.PARAM.minCandleNum = usrObj.mincandlenum),
+          !isNaN(usrObj.candlenum) &&
+            usrObj.candlenum >= setting.PARAM.minCandleNum &&
+            (setting.PARAM.defaultCandleNum = usrObj.candlenum),
+          isNaN(usrObj.maxcandlenum) ||
+            (setting.PARAM.maxCandleNum = usrObj.maxcandlenum),
+          !isNaN(usrObj.zoomunit) &&
+            usrObj.zoomunit > setting.PARAM.minCandleNum &&
+            (setting.PARAM.zoomUnit = usrObj.zoomunit),
+          !isNaN(usrObj.zoomlimit) &&
+            usrObj.zoomlimit > 0 &&
+            (setting.PARAM.zoomLimit = Math.round(usrObj.zoomlimit)),
           xh5_BrowserUtil.noH5)
         ) {
-          if ("undefined" == typeof FlashCanvas || a.fh5)
-            return void (util.isFunc(a.noh5) && a.noh5(a));
+          if ("undefined" == typeof FlashCanvas || usrObj.fh5)
+            return void (util.isFunc(usrObj.noh5) && usrObj.noh5(usrObj));
           setting.PARAM.isFlash = !0;
         }
         if (
           (setting.PARAM.isFlash && (setting.COLOR.F_BG = "#fff"),
-          a.reorder || (setting.custom.indicator_reorder = !1),
-          a.reheight || (setting.custom.indicator_reheight = !1),
-          a.dim)
+          usrObj.reorder || (setting.custom.indicator_reorder = !1),
+          usrObj.reheight || (setting.custom.indicator_reheight = !1),
+          usrObj.dim)
         )
-          for (var n in a.dim)
-            a.dim.hasOwnProperty(n) &&
+          for (var n in usrObj.dim)
+            usrObj.dim.hasOwnProperty(n) &&
               util.isNum(setting.DIMENSION[n]) &&
-              (setting.DIMENSION[n] = a.dim[n]);
+              (setting.DIMENSION[n] = usrObj.dim[n]);
       })();
 
       var I,
@@ -2136,7 +2139,7 @@ xh5_define(
         C,
         R,
         H,
-        D,
+        subArea,
         O,
         K,
         T,
@@ -2146,7 +2149,7 @@ xh5_define(
         P = !1,
         $ = 0,
         viewState = {
-          viewId: globalCfg.URLHASH.vi(a.view || "kd"),
+          viewId: globalCfg.URLHASH.vi(usrObj.view || "kd"),
           dataLength: 0 / 0,
           start: 0 / 0,
           end: 0 / 0,
@@ -2181,8 +2184,8 @@ xh5_define(
         };
         this.onRange = function(e, n) {
           !P &&
-            util.isFunc(a.onrange) &&
-            a.onrange({
+            util.isFunc(usrObj.onrange) &&
+            usrObj.onrange({
               isCompare: n,
               data: e.datas,
               viewRangeState: util.clone(viewState, null),
@@ -2196,7 +2199,7 @@ xh5_define(
         };
         var n = [];
         this.onViewPrice = function(i, o, s, r, l, c) {
-          if (!P && util.isFunc(a.onviewprice)) {
+          if (!P && util.isFunc(usrObj.onviewprice)) {
             if (!i) {
               if (((i = e()), !i)) return;
               o = viewState.currentLength - 1;
@@ -2226,7 +2229,7 @@ xh5_define(
               s = n;
             }
             l || (l = I.getMainStock().getName()),
-              a.onviewprice({
+              usrObj.onviewprice({
                 data: util.clone(i, null),
                 rangedata: r,
                 idx: o,
@@ -2239,10 +2242,10 @@ xh5_define(
           }
         };
         this.onDataUpdate = function() {
-          if (util.isFunc(a.ondataupdate)) {
+          if (util.isFunc(usrObj.ondataupdate)) {
             var n = e();
             n &&
-              a.ondataupdate({
+              usrObj.ondataupdate({
                 data: util.clone(n, null),
                 idx: viewState.currentLength - 1,
                 left: setting.DIMENSION.posX,
@@ -2251,25 +2254,25 @@ xh5_define(
           }
         };
         this.onViewChanged = function() {
-          util.isFunc(a.onviewchanged) &&
-            a.onviewchanged({
+          util.isFunc(usrObj.onviewchanged) &&
+            usrObj.onviewchanged({
               viewRangeState: util.clone(viewState, null)
             });
         };
         this.onInnerResize = function(e) {
-          util.isFunc(a.oninnerresize) && a.oninnerresize(e);
+          util.isFunc(usrObj.oninnerresize) && usrObj.oninnerresize(e);
         };
         this.onTechChanged = function(e) {
-          util.isFunc(a.ontechchanged) &&
-            a.ontechchanged({
+          util.isFunc(usrObj.ontechchanged) &&
+            usrObj.ontechchanged({
               Indicator: e
             });
         };
         this.shortClickHandler = function() {
-          util.isFunc(a.onshortclickmain) && a.onshortclickmain();
+          util.isFunc(usrObj.onshortclickmain) && usrObj.onshortclickmain();
         };
       })();
-      let j = new (function() {
+      let initMgr = new (function() {
         var e,
           n,
           i,
@@ -2278,15 +2281,15 @@ xh5_define(
           r = 37,
           h = function(e, t, n) {
             var i = !1;
-            isNaN(e) && (e = a.w || A.offsetWidth),
-              isNaN(t) && (t = a.h || A.offsetHeight - a.mh);
+            isNaN(e) && (e = usrObj.w || A.offsetWidth),
+              isNaN(t) && (t = usrObj.h || A.offsetHeight - usrObj.mh);
             for (
               var o,
                 s = O.clientHeight || 0,
-                r = D.clientHeight || 0,
+                r = subArea.clientHeight || 0,
                 l = setting.DIMENSION.getOneWholeTH(),
                 c = 0,
-                h = D.childNodes,
+                h = subArea.childNodes,
                 d = h.length,
                 u = 0,
                 p = h.length;
@@ -2324,7 +2327,7 @@ xh5_define(
             if (e || (n && a)) {
               if (!I) return;
               I.onResize(o);
-              B.onResize();
+              iMgr.onResize();
             }
             i.style.left = "1px";
             i.style.top =
@@ -2337,7 +2340,7 @@ xh5_define(
             ]);
           },
           v = function() {
-            A = $DOM(a.domid) || a.dom;
+            A = $DOM(usrObj.domid) || usrObj.dom;
             A || ((A = $C("div")), document.body.appendChild(A));
             x = $C("div");
             x.style.position = "relative";
@@ -2354,8 +2357,8 @@ xh5_define(
             H.style.width = "100%";
             C.appendChild(H);
             x.appendChild(C);
-            D = $C("div");
-            x.appendChild(D);
+            subArea = $C("div");
+            x.appendChild(subArea);
             O = $C("div");
             x.appendChild(O);
             e = new xh5_Canvas({
@@ -2413,7 +2416,7 @@ xh5_define(
           };
         v();
         p();
-        initTheme(a.theme);
+        initTheme(usrObj.theme);
         f();
         S();
         logoM.getLogo({
@@ -2428,7 +2431,7 @@ xh5_define(
         });
         xh5_BrowserUtil.noH5 &&
           (q.showTip({
-            txt: a.nohtml5info || globalCfg.nohtml5info,
+            txt: usrObj.nohtml5info || globalCfg.nohtml5info,
             parent: x
           }),
           util.stc("k_nh5"));
@@ -2437,7 +2440,7 @@ xh5_define(
           I &&
             (h(0 / 0, 0 / 0, e),
             I.onResize(),
-            B.onResize(),
+            iMgr.onResize(),
             m(),
             Y.onInnerResize({
               height: setting.DIMENSION.h_k
@@ -2464,14 +2467,14 @@ xh5_define(
           } else i.style.display = "none";
         };
       })();
-      let B = new (function() {
+      let iMgr = new (function() {
         var e,
           n,
           iHLineO,
           o,
-          s = util.market(a.symbol),
+          s = util.market(usrObj.symbol),
           r = /^forex|^HF/.test(s),
-          d = isNaN(a.nfloat) ? 2 : a.nfloat,
+          d = isNaN(usrObj.nfloat) ? 2 : usrObj.nfloat,
           u = 150;
         let p = new (function() {
           let showFloater = function(t) {
@@ -2816,7 +2819,7 @@ xh5_define(
                       s,
                       r = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
                     setting.DIMENSION.getStageH() < 0
-                      ? ((i = D.clientHeight), (s = i - r))
+                      ? ((i = subArea.clientHeight), (s = i - r))
                       : ((i =
                           setting.DIMENSION.getStageH() - O.clientHeight || 0),
                         (s = setting.DIMENSION.h_k)),
@@ -3034,7 +3037,8 @@ xh5_define(
           if (
             ((w = !0),
             (k += e),
-            !$CONTAINS(C, B.iHLineO.body) && C.appendChild(B.iHLineO.body),
+            !$CONTAINS(C, iMgr.iHLineO.body) &&
+              C.appendChild(iMgr.iHLineO.body),
             (mainStock = I.getMainStock()),
             (name = mainStock.getName()),
             (datas = mainStock.datas),
@@ -3156,7 +3160,7 @@ xh5_define(
       var W = new (function() {
         var e = this;
         this.resize = function(e, t) {
-          j.resizeAll(!0, e, t);
+          initMgr.resizeAll(!0, e, t);
         };
         var n,
           a = function(n, a) {
@@ -3247,14 +3251,14 @@ xh5_define(
         };
         this.hide = function(e) {
           P = !0;
-          B.hideIUis();
+          iMgr.hideIUis();
           util.$CONTAINS(A, x) && A.removeChild(x);
           e && I.dcReset();
         };
         this.show = function(e) {
           P = !1;
           e && (util.isStr(e) && (e = $DOM(e)), (A = e));
-          util.$CONTAINS(A, x) || (A.appendChild(x), j.resizeAll(!0));
+          util.$CONTAINS(A, x) || (A.appendChild(x), initMgr.resizeAll(!0));
           I.outputNewRange(!0);
           Y.onViewPrice();
         };
@@ -3269,7 +3273,7 @@ xh5_define(
               case -1:
                 t = "\u524d\u590d\u6743";
             }
-            j.drawReMark(t);
+            initMgr.drawReMark(t);
           },
           v = [],
           g = [],
@@ -3352,7 +3356,7 @@ xh5_define(
           })(),
           C = !0;
         this.showView = function(e, n, a) {
-          B.hideIUis();
+          iMgr.hideIUis();
           C
             ? setTimeout(function() {
                 C = !1;
@@ -3381,7 +3385,7 @@ xh5_define(
         var R = !1;
         this.showYTD = function(e, n) {
           R = !!e;
-          B.hideIUis();
+          iMgr.hideIUis();
           m ||
             ((m = !0),
             this.setLineStyle(
@@ -3485,7 +3489,7 @@ xh5_define(
         };
         this.setCustom = fBind(a, this, "custom");
         this.setTheme = function(e) {
-          var t = j.initTheme(e);
+          var t = initMgr.initTheme(e);
           t &&
             (this.setLineStyle({
               linecolor: e
@@ -3495,8 +3499,8 @@ xh5_define(
         this.setDimension = fBind(a, this, "DIMENSION");
         this.getDimension = fBind(i, null, "DIMENSION", ["boolean"]);
         this.newSymbol = function(e) {
-          B.hideIUis();
-          B.iReset();
+          iMgr.hideIUis();
+          iMgr.iReset();
           I.dcReset();
           I.dcInit(e);
           q.hideTip();
@@ -3535,7 +3539,7 @@ xh5_define(
           return I.getAllSymbols();
         };
         this.patcher = {
-          iMgr: B.patcher
+          iMgr: iMgr.patcher
         };
         this.getExtraData = function(e) {
           return I.getExtraData(e);
@@ -3578,20 +3582,20 @@ xh5_define(
         this.type = "h5k";
         this.me = me;
       })();
-      I.dcInit(a);
+      I.dcInit(usrObj);
       return W;
     }
     function i() {
       this.get = function(e, n) {
         util.stc("h5k_get");
-        var i = new a(e);
+        var i = new StockManager(e);
         util.isFunc(n) && n(i);
         util.suda("h5k_" + util.market(e.symbol));
       };
       this.dual = function(e, n) {
         util.stc("h5k_dual");
         e.linetype = "line";
-        var i = new a(e);
+        var i = new StockManager(e);
         i.setCustom({
           k_overlay: !0
         });
@@ -3616,7 +3620,7 @@ xh5_define(
         e.view = globalCfg.URLHASH.NKMS;
         e.rate = 600;
         e.linetype = "line";
-        var i = new a(e, !0);
+        var i = new StockManager(e, !0);
         util.isFunc(n) && n(i);
         KKE.api(
           "patch.atick.customfloater",
@@ -3651,7 +3655,7 @@ xh5_define(
       xh5_Canvas = painter.xh5_Canvas,
       globalCfg = settinger.globalCfg,
       logoM = util.logoM;
-    util.fInherit(a, util.xh5_EvtDispatcher);
+    util.fInherit(StockManager, util.xh5_EvtDispatcher);
     return i;
   }
 );

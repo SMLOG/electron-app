@@ -5362,7 +5362,6 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
         if (i) {
           let techs_datas = {};
           let symbol;
-          techs_datas["kdatas"] = i;
           techs_datas["datas"] = i;
           for (var chart, a = techChartList.length; a--; ) {
             chart = techChartList[a];
@@ -5371,7 +5370,8 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
             techs_datas[chart.name] = chart.selfArr;
             symbol = chart.symbol;
           }
-          window["tech_" + symbol] = techs_datas;
+          return techs_datas;
+          //window["tech_" + symbol] = techs_datas;
         }
       };
       this.setDataRange = function() {

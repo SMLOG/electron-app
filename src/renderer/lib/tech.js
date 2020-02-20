@@ -86,17 +86,30 @@ export async function get5Tdatas(code) {
 }
 window.get5Tdatas = get5Tdatas;
 
-export async function getKdatas(code) {
+export async function getTech(code) {
   await loadscript;
-  return await new Promise((resolve, reject) => {
+
+  let tm = await new Promise((resolve, reject) => {
+    KKE.api("plugins.techchart.get", "", tchar => {
+      var tm = tchar.tChart({ stockData: {} });
+      tm.createChart({ name: "MACD" });
+      tm.createChart({ name: "kDJ" });
+      tm.createChart({ name: "BOLL" });
+      console.log(tm);
+      resolve(tm);
+    });
+  });
+  let datas = await new Promise((resolve, reject) => {
     KKE.api(
       "datas.k.get",
-      { symbol: "sh601900", newthour: "09:00", ssl: true },
-      function(datas) {
-        console.log(datas);
-        resolve(datas);
+      { symbol: code, newthour: "09:00", ssl: true },
+      function(d) {
+        console.log(d);
+        resolve(d);
       }
     );
   });
+
+  return tm.linkData(datas.data.day);
 }
-window.getKdatas = getKdatas;
+window.getTech = getTech;

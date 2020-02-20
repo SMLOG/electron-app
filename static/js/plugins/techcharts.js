@@ -5223,7 +5223,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         a !== i && ((a = i), a || clearPChartsDraw());
       };
     }
-    var a,
+    var pchartInstance,
       stockData = configa.stockData,
       iMgr = configa.iMgr,
       titleArea = configa.titleArea,
@@ -5235,10 +5235,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       m = [],
       g = {
         edit: function(t) {
-          a.createChart(t);
+          pchartInstance.createChart(t);
         },
         remove: function(t) {
-          a.removeChart(t);
+          pchartInstance.removeChart(t);
         }
       };
     let w = function(i, r) {
@@ -5285,7 +5285,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       usrObj: usrObj,
       type: type
     };
-    return (a = new PChart());
+    return (pchartInstance = new PChart());
   }
 
   function tChart(options) {

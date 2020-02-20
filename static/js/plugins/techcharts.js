@@ -4844,13 +4844,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
 
   function TVOL(cfg, at) {
-    (this.storageVer = "v2"),
-      techchart.call(this, cfg, at, {
-        nu: !0
-      }),
-      (this.name = "TVOL"),
-      (this.sname = "T_TVOL"),
-      (this.alias = "成交");
+    this.storageVer = "v2";
+    techchart.call(this, cfg, at, {
+      nu: !0
+    });
+    this.name = "TVOL";
+    this.sname = "T_TVOL";
+    this.alias = "成交";
     var s = this,
       e = "volume",
       h = "MA",
@@ -4886,103 +4886,105 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         !0
       );
-    })(),
-      (this.generateSettings = function() {
-        var i = s.name.toLowerCase(),
-          r = "MA",
-          a = o;
-        if (((s.customArr = []), s.param && s.param.length > 0)) {
-          a = s.param[0].color || o;
-          for (var l = 0, n = s.param.length; n > l; l++) {
-            var c = s.param[l].v;
-            !isNaN(c) &&
-              c > 0 &&
-              s.customArr.push({
-                v: c,
-                color: s.param[l].color || "#" + utils_util.randomColor(),
-                prop: i + c,
-                idct: r + c,
-                desc: h
-              });
-          }
+    })();
+    this.generateSettings = function() {
+      var i = s.name.toLowerCase(),
+        r = "MA",
+        a = o;
+      if (((s.customArr = []), s.param && s.param.length > 0)) {
+        a = s.param[0].color || o;
+        for (var l = 0, n = s.param.length; n > l; l++) {
+          var c = s.param[l].v;
+          !isNaN(c) &&
+            c > 0 &&
+            s.customArr.push({
+              v: c,
+              color: s.param[l].color || "#" + utils_util.randomColor(),
+              prop: i + c,
+              idct: r + c,
+              desc: h
+            });
         }
-        s.customArr.reverse(),
-          s.customArr.push({
-            v: 0 / 0,
-            color: a,
-            prop: e,
-            idct: "VOL"
-          }),
-          s.customArr.reverse();
-      }),
-      (this.initAndCalcAll = function(i) {
-        var r = this.gdsd(i);
-        (this.oriArr = r),
-          !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+      }
+      s.customArr.reverse(),
+        s.customArr.push({
+          v: 0 / 0,
+          color: a,
+          prop: e,
+          idct: "VOL"
+        }),
+        s.customArr.reverse();
+    };
+    this.initAndCalcAll = function(i) {
+      var r = this.gdsd(i);
+      this.oriArr = r;
+      !this.datas && (this.datas = []);
+      utils_util.ca(this.selfArr);
+      for (
+        var a = s.name.toLowerCase(),
+          h = r.length,
+          o = 0,
+          l = this.customArr.length;
+        l > o;
+        o++
+      )
+        for (var n, c = 0, d = this.customArr[o].v, f = 0; d && h > f; f++) {
+          var u = r[f];
+          if (((c += Number(u[e])), f >= d - 1)) {
+            n = c / d;
+            var p = r[f - d + 1];
+            c -= Number(p[e]);
+          } else n = c / (f + 1);
+          var v = (this.selfArr[f] = this.selfArr[f] || {});
+          v[a + d] = n;
+        }
+    };
+    this.drawCalc = function() {
+      if (this.datas) {
         for (
-          var a = s.name.toLowerCase(),
-            h = r.length,
-            o = 0,
-            l = this.customArr.length;
-          l > o;
-          o++
-        )
-          for (var n, c = 0, d = this.customArr[o].v, f = 0; d && h > f; f++) {
-            var u = r[f];
-            if (((c += Number(u[e])), f >= d - 1)) {
-              n = c / d;
-              var p = r[f - d + 1];
-              c -= Number(p[e]);
-            } else n = c / (f + 1);
-            var v = (this.selfArr[f] = this.selfArr[f] || {});
-            v[a + d] = n;
-          }
-      }),
-      (this.drawCalc = function() {
-        if (this.datas) {
-          for (
-            var i = this.viewState.start * this.disMod,
-              r = this.viewState.end * this.disMod,
-              a = r - i;
-            this.datas.length > a;
+          var i = this.viewState.start * this.disMod,
+            r = this.viewState.end * this.disMod,
+            a = r - i;
+          this.datas.length > a;
 
-          )
-            this.datas.length--;
-          for (; this.datas.length < a; ) this.datas.push({});
-          var s,
-            e,
-            h = -Number.MAX_VALUE;
-          for (s = i; r > s; s++) {
-            (e = this.datas[s - i]),
-              (e.volume = this.oriArr[s].volume),
-              e.volume > h && (h = e.volume);
-            for (var o in this.selfArr[s])
-              this.selfArr[s].hasOwnProperty(o) &&
-                ((e[o] = this.selfArr[s][o]), e[o] > h && (h = e[o]));
-          }
-          0 > h && (h = 0);
-          var l = utils_util.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
-          h = l[0];
-          var n;
-          for (s = i; r > s; s++) {
-            e = this.datas[s - i];
-            var c = this.oriArr[s];
-            (n = 0 == s ? c.prevclose || c.price : this.oriArr[s - 1].price),
-              (e.kke_cs = c.price > n ? 1 : c.price < n ? -1 : 0),
-              (e.price = c.price),
-              (e.voly = ot.vp(c.volume, h, this.h)),
-              this.h - e.voly < 0.5 &&
-                c.volume > 0 &&
-                ((e.voly = Math.floor(e.voly)), (e.voly -= 1));
-            for (var d = this.customArr.length; d--; ) {
-              var f = this.customArr[d].prop;
-              e[f + "y"] = (this.h * (h - e[f])) / h;
-            }
-          }
-          (this.labelMaxP = h), (this.labelMinP = 0), this.syncI();
+        )
+          this.datas.length--;
+        for (; this.datas.length < a; ) this.datas.push({});
+        var s,
+          e,
+          h = -Number.MAX_VALUE;
+        for (s = i; r > s; s++) {
+          (e = this.datas[s - i]),
+            (e.volume = this.oriArr[s].volume),
+            e.volume > h && (h = e.volume);
+          for (var o in this.selfArr[s])
+            this.selfArr[s].hasOwnProperty(o) &&
+              ((e[o] = this.selfArr[s][o]), e[o] > h && (h = e[o]));
         }
-      });
+        0 > h && (h = 0);
+        var l = utils_util.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
+        h = l[0];
+        var n;
+        for (s = i; r > s; s++) {
+          e = this.datas[s - i];
+          var c = this.oriArr[s];
+          (n = 0 == s ? c.prevclose || c.price : this.oriArr[s - 1].price),
+            (e.kke_cs = c.price > n ? 1 : c.price < n ? -1 : 0),
+            (e.price = c.price),
+            (e.voly = ot.vp(c.volume, h, this.h)),
+            this.h - e.voly < 0.5 &&
+              c.volume > 0 &&
+              ((e.voly = Math.floor(e.voly)), (e.voly -= 1));
+          for (var d = this.customArr.length; d--; ) {
+            var f = this.customArr[d].prop;
+            e[f + "y"] = (this.h * (h - e[f])) / h;
+          }
+        }
+        this.labelMaxP = h;
+        this.labelMinP = 0;
+        this.syncI();
+      }
+    };
     this.draw = function() {
       if (this.datas) {
         var t = this.line;
@@ -5011,14 +5013,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             case 1:
               e = cfg.COLOR.T_RISE;
           }
-          (r = 0), t.beginPath();
-          for (var f = 0; h > f; f++)
-            (s = this.datas[f]),
-              s.volume >= 0 &&
-                ((a = s.voly),
-                s.kke_cs == c && t.drawVStickC(r, a, n, l - a, e)),
-              (r += o);
-          t.stroke(), c++;
+          r = 0;
+          t.beginPath();
+          for (var f = 0; h > f; f++) {
+            s = this.datas[f];
+            s.volume >= 0 &&
+              ((a = s.voly), s.kke_cs == c && t.drawVStickC(r, a, n, l - a, e));
+            r += o;
+            t.stroke();
+            c++;
+          }
         }
         for (var u = 1, p = this.customArr.length; p > u; u++) {
           var v = this.customArr[u].prop + "y";

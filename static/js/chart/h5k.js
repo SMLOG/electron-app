@@ -4,7 +4,7 @@ xh5_define(
   function(settinger, util, painter) {
     "use strict";
     function a(a) {
-      function Stock(e, n) {
+      function Stock(params, isMain) {
         function i(e) {
           rangeCtrl.setDataRange(e);
           y && (y.linkData(e), y.setDataRange());
@@ -28,13 +28,13 @@ xh5_define(
           return [n, a];
         }
         function c() {
-          n && (K = kDb),
+          isMain && (K = kDb),
             P.uUpdate(null, !0),
             "CN" !== u ||
-              /^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol) ||
+              /^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(params.symbol) ||
               kDb.initExtraData();
         }
-        e = oc(
+        params = oc(
           {
             symbol: void 0,
             datas: {
@@ -52,13 +52,13 @@ xh5_define(
               }
             }
           },
-          e || {}
+          params || {}
         );
         var stockDataA = this;
-        var u = util.market(e.symbol);
+        var u = util.market(params.symbol);
         var g = !0;
         this.isErr = !1;
-        this.symbol = e.symbol;
+        this.symbol = params.symbol;
         this.market = u;
         var b;
         switch (u) {
@@ -75,11 +75,11 @@ xh5_define(
           default:
             b = "09:30";
         }
-        this.isMain = n;
+        this.isMain = isMain;
         this.isCompare = !1;
         this.datas = null;
         this.dataLen = 0;
-        this.nfloat = e.nfloat || 2;
+        this.nfloat = params.nfloat || 2;
         this.dataLenOffset = 0;
         this.prevclose = 0 / 0;
         this.labelMaxP = 0;
@@ -99,8 +99,8 @@ xh5_define(
         var y,
           N,
           w,
-          S = new k(this, e),
-          A = e.name;
+          S = new k(this, params),
+          A = params.name;
         this.getName = function() {
           return A || "";
         };
@@ -113,7 +113,7 @@ xh5_define(
           };
           var initState = function(id, datas, s, r, l) {
             if (datas) {
-              if (n) {
+              if (isMain) {
                 if (
                   (id == globalCfg.URLHASH.KD && (i = util.clone(datas, null)),
                   r && window.datelist && stockDataA.hq)
@@ -191,10 +191,10 @@ xh5_define(
             var extraUrl =
               "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol";
             a.ssl && (extraUrl = util.getSUrl(extraUrl));
-            var i = "KKE_ShareAmount_" + e.symbol;
+            var i = "KKE_ShareAmount_" + params.symbol;
             util.load(
               extraUrl
-                .replace("$symbol", e.symbol)
+                .replace("$symbol", params.symbol)
                 .replace("$rn", String(new Date().getDate()))
                 .replace("$cb", "var%20" + i + "="),
               function() {
@@ -474,7 +474,7 @@ xh5_define(
             },
             d = new (function() {
               this.check = function(e) {
-                if (n) return !0;
+                if (isMain) return !0;
                 var a = viewState.viewId,
                   i = K.get(a);
                 if (!i || i.length < 1) return !1;
@@ -498,14 +498,14 @@ xh5_define(
           this.uUpdate = function(n, o, r, l) {
             var u,
               p = {
-                symbol: e.symbol,
+                symbol: params.symbol,
                 ssl: a.ssl
               };
             r
               ? ((u = "datas.hq.parse"), (p.hqStr = r), (p.market = l))
               : ((u = "datas.hq.get"), (p.delay = !0), (p.cancelEtag = o)),
               KKE.api(u, p, function(a) {
-                var o = a.dataObj[e.symbol];
+                var o = a.dataObj[params.symbol];
                 if (o && o.date && s(o)) {
                   if (((A = A || o.name || ""), !d.check(o))) return;
                   (stockDataA.hq = o), c(o), i(!0), util.isFunc(n) && n();
@@ -632,14 +632,14 @@ xh5_define(
                   !1,
                   !0
                 ),
-                  n || kDb.initState(r, s);
+                  isMain || kDb.initState(r, s);
               }
             },
             l = function(t) {
               var n = globalCfg.URLHASH.gt(viewState.viewId),
                 i = n.dir,
                 l = {
-                  symbol: e.symbol,
+                  symbol: params.symbol,
                   market: u,
                   dir: i,
                   ssl: a.ssl
@@ -670,7 +670,7 @@ xh5_define(
                 var l = i;
                 i = 0 / 0;
                 if ("error" == a.msg) {
-                  if (((stockDataA.isErr = !0), n))
+                  if (((stockDataA.isErr = !0), isMain))
                     if (a.data && a.data.hq) {
                       var c;
                       if (a.data.hq.status)
@@ -706,12 +706,12 @@ xh5_define(
               KKE.api(
                 "datas.hq.get",
                 {
-                  symbol: e.symbol,
+                  symbol: params.symbol,
                   cancelEtag: !0,
                   ssl: a.ssl
                 },
                 function(n) {
-                  var a = n.dataObj[e.symbol],
+                  var a = n.dataObj[params.symbol],
                     i = [
                       {
                         close: a.price,
@@ -753,13 +753,13 @@ xh5_define(
                   (i = dateUtil.dst(r));
               }
               var d = {
-                symbol: e.symbol,
+                symbol: params.symbol,
                 newthour: i,
                 ssl: a.ssl
               };
               if ("mink" == s.type) {
                 if (
-                  ((n = e.datas.min),
+                  ((n = params.datas.min),
                   (d.ismink = !0),
                   (d.scale = o),
                   /^forex|^BTC/.test(stockDataA.market))
@@ -774,7 +774,7 @@ xh5_define(
                     default:
                       d.datalen = parseInt((60 / o) * 24 * 5);
                   }
-              } else n = e.datas.day;
+              } else n = params.datas.day;
               (d.dataurl = n.url),
                 (d.dataformatter = n.dataformatter),
                 (d.wfn = n.wfn),
@@ -797,7 +797,7 @@ xh5_define(
             },
             g = function(t) {
               var n = {
-                  symbol: e.symbol,
+                  symbol: params.symbol,
                   ssl: a.ssl
                 },
                 i = "datas.k.";
@@ -821,7 +821,7 @@ xh5_define(
             },
             y = function(t, n) {
               var i = {
-                  symbol: e.symbol,
+                  symbol: params.symbol,
                   ssl: a.ssl
                 },
                 o = "datas.k.";
@@ -938,7 +938,7 @@ xh5_define(
           y && (y.clear(), (y = null));
           N && (N.clear(), (N = null));
           w && (w.clear(), (w = null));
-          n && (E = null);
+          isMain && (E = null);
         };
         this.getPriceTech = function() {
           return N || null;
@@ -969,7 +969,7 @@ xh5_define(
                 type: "k",
                 usrObj: a
               })),
-              n && (U = N),
+              isMain && (U = N),
               G && ((g = N.showHide(G)), (G = void 0))),
               N.createChart(e, i);
           }
@@ -1000,7 +1000,7 @@ xh5_define(
               usrObj: a,
               initMgr: j
             })),
-            n && (T = y)),
+            isMain && (T = y)),
             y.createChart(e, t);
         };
         this.removeTc = function(e) {
@@ -1741,9 +1741,12 @@ xh5_define(
         };
         this.moving = moving;
         this.callSdDraw = callSdDraw;
-        var G = function(t, n) {
-          var a = t instanceof Stock ? t : new Stock(t, n);
-          n && (mainStock = a);
+        var G = function(stockParams, isMain) {
+          var a =
+            stockParams instanceof Stock
+              ? stockParams
+              : new Stock(stockParams, isMain);
+          isMain && (mainStock = a);
           allStock.push(a);
           $();
           onChangeView();

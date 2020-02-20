@@ -5967,13 +5967,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
 
     function r(t) {
       var i = $C("span");
-      return (
-        (i.style.marginLeft = a.cfg.DIMENSION.K_RIGHT_W + "px"),
-        (i.style.cursor = "pointer"),
-        (i.innerHTML = t ? "▲" : "▼"),
-        i.setAttribute("data-dir", t ? "-1" : "1"),
-        i
-      );
+      i.style.marginLeft = a.cfg.DIMENSION.K_RIGHT_W + "px";
+      i.style.cursor = "pointer";
+      i.innerHTML = t ? "▲" : "▼";
+      i.setAttribute("data-dir", t ? "-1" : "1");
+      return i;
     }
     var a = this,
       s = 0.1,

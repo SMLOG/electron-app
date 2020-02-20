@@ -5041,8 +5041,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
 
   // end chart_list
 
-  function pChart(configa) {
-    function r() {
+  function create_pChart(configa) {
+    function PChart() {
       var PCHART_MAP = {
         BBIBOLL: BBIBOLL,
         BOLL: BOLL,
@@ -5059,12 +5059,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         TECHFLOW: TECHFLOW
       };
       yt.auth(PCHART_MAP);
-      var r = [],
+      var pchartList = [],
         a = !0,
         e = function() {
           for (; m.length; ) m.length--;
-          for (var t = r.length; t--; ) {
-            var i = r[t];
+          for (var t = pchartList.length; t--; ) {
+            var i = pchartList[t];
             m.push({
               name: i.name,
               param: i.param
@@ -5081,37 +5081,36 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             t.draw());
         }
       };
-      let l = function(a) {
-        if (a) {
-          var s = a.name;
+      let addPChart = function(chart) {
+        if (chart) {
+          var s = chart.name;
           if (s) {
             s = s.toUpperCase();
-            for (var h, l = r.length; l--; )
-              if (r[l].name == s) {
-                h = r[l];
+            for (var h, l = pchartList.length; l--; )
+              if (pchartList[l].name == s) {
+                h = pchartList[l];
                 break;
               }
             if (!h) {
               if (!utils_util.isFunc(PCHART_MAP[s])) return;
-              h = new PCHART_MAP[s](cfg, D, o);
+              h = new PCHART_MAP[s](cfg, chartOptions, o);
               h.asPChart = !0;
-              r.push(h);
+              pchartList.push(h);
             }
-            h.newParam(a.param);
+            h.newParam(chart.param);
             e();
-            yt.doStc(a);
+            yt.doStc(chart);
           }
         }
       };
-      let p = function(t, i) {
+      let removePChart = function(t, i) {
         if (t) {
           var a = t.name;
           if (a) {
             a = a.toUpperCase();
-            for (var s = r.length; s--; )
-              if (r[s].name == a) {
-                var h = r.splice(s, 1)[0];
-
+            for (var s = pchartList.length; s--; )
+              if (pchartList[s].name == a) {
+                var h = pchartList.splice(s, 1)[0];
                 h.rfs();
                 h.getFromToM.reset(h);
                 !i && e();
@@ -5120,9 +5119,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
         }
       };
-      let v = function() {
-        for (var t, i = r.length; i--; ) {
-          t = r[i];
+      let clearPChartsDraw = function() {
+        for (var t, i = pchartList.length; i--; ) {
+          t = pchartList[i];
           t.clearDraw();
         }
       };
@@ -5130,8 +5129,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (a) {
           var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
           if (i)
-            for (var e, h = r.length; h--; ) {
-              e = r[h];
+            for (var e, h = pchartList.length; h--; ) {
+              e = pchartList[h];
               e.initAndCalcAll(i, t);
               t && e.update();
             }
@@ -5139,74 +5138,89 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       };
       this.setDataRange = function() {
         if (a)
-          for (var t, i = r.length; i--; )
-            (t = r[i]), t.setRange(), t.selfDataUrl && t.loadUrlData();
+          for (var t, i = pchartList.length; i--; ) {
+            t = pchartList[i];
+            t.setRange();
+            t.selfDataUrl && t.loadUrlData();
+          }
       };
       this.getMaxMin = function() {
         var t = Number.MAX_VALUE,
           i = -Number.MAX_VALUE,
           s = !1;
         if (a)
-          for (var e, h = r.length; h--; )
-            (e = r[h]),
-              e.separate > 0 ||
-                isNaN(e.minPrice) ||
-                isNaN(e.maxPrice) ||
-                ((t = Math.min(e.minPrice, t)),
-                (i = Math.max(e.maxPrice, i)),
-                (s = !0));
+          for (var e, h = pchartList.length; h--; ) {
+            e = pchartList[h];
+            e.separate > 0 ||
+              isNaN(e.minPrice) ||
+              isNaN(e.maxPrice) ||
+              ((t = Math.min(e.minPrice, t)),
+              (i = Math.max(e.maxPrice, i)),
+              (s = !0));
+          }
         return s ? [i, t] : !1;
       };
       this.setPricePos = function(t) {
-        if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.setPricePos(t);
+        if (a)
+          for (var i, s = pchartList.length; s--; ) {
+            i = pchartList[s];
+            i.setPricePos(t);
+          }
       };
       this.allDraw = function(t) {
-        if (a) for (var i, s = r.length; s--; ) (i = r[s]), i.draw(!1, t);
+        if (a)
+          for (var i, s = pchartList.length; s--; ) {
+            i = pchartList[s];
+            i.draw(!1, t);
+          }
       };
       this.onResize = function() {
-        for (var t, i = r.length; i--; )
-          (t = r[i]),
-            t.resize({
-              h: cfg.DIMENSION.h_k,
-              mh: cfg.DIMENSION.H_MA4K
-            }),
-            a && (t.createPlayingData(), t.draw());
+        for (var t, i = pchartList.length; i--; ) {
+          t = pchartList[i];
+          t.resize({
+            h: cfg.DIMENSION.h_k,
+            mh: cfg.DIMENSION.H_MA4K
+          });
+          a && (t.createPlayingData(), t.draw());
+        }
       };
       this.indirectI = function(t, i, s) {
         a || (t = 0 / 0);
-        for (var e, h = [], o = r.length; o--; )
-          (e = r[o]), h.push(e.interact(t, i, s));
+        for (var e, h = [], o = pchartList.length; o--; ) {
+          e = pchartList[o];
+          h.push(e.interact(t, i, s));
+        }
         return h;
       };
       this.getLog = function() {
         return m.reverse() || null;
       };
       this.getExistingCharts = function() {
-        return r;
+        return pchartList;
       };
       this.clear = function() {
-        for (var t = r.length; t--; ) p(r[t], !0);
+        for (var t = pchartList.length; t--; ) removePChart(pchartList[t], !0);
       };
       this.createChart = function(i, r) {
         !utils_util.isArr(i) && (i = [i]);
-        for (var a = 0, s = i.length; s > a; a++) l(i[a]);
+        for (var a = 0, s = i.length; s > a; a++) addPChart(i[a]);
         cb(!0, r);
       };
       this.removeChart = function(i) {
         if (!i) {
           i = [];
-          for (var a = r.length; a--; )
+          for (var a = pchartList.length; a--; )
             i.push({
-              name: r[a].name
+              name: pchartList[a].name
             });
         }
         !utils_util.isArr(i) && (i = [i]);
-        for (var s = 0, e = i.length; e > s; s++) p(i[s]);
+        for (var s = 0, e = i.length; e > s; s++) removePChart(i[s]);
         cb();
       };
       this.showHide = function(t) {
         var i = t.v;
-        a !== i && ((a = i), a || v());
+        a !== i && ((a = i), a || clearPChartsDraw());
       };
     }
     var a,
@@ -5226,52 +5240,52 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         remove: function(t) {
           a.removeChart(t);
         }
-      },
-      w = function(i, r) {
-        if (cfg.custom.allow_indicator_edit)
-          if (tt) {
-            tt.sendOriginalData(
-              {
-                name: i.name,
-                data: i.customArr,
-                defaultData: i.DEFAULT_ARR
-              },
-              g
-            );
-            utils_util.sudaLog();
-            tt.show(r);
-          } else {
-            var a = cfg.custom.indicatorpanel_url;
-            usrObj.ssl && (a = utils_util.getSUrl(a, !0));
-            tt = new Q(
-              {
-                url: a,
-                z: 10001
-              },
-              at(w, null, i, r)
-            );
-          }
-      },
-      D = {
-        stock: stockData,
-        cbInDC: cb,
-        onClkTT: w,
-        ctn: chartArea,
-        titleCtn: titleArea,
-        titleW: 0 / 0,
-        titleGap: 5,
-        style: {
-          position: "absolute",
-          top: 0
-        },
-        iMgr: iMgr,
-        withHBg: !1,
-        mh: cfg.DIMENSION.H_MA4K,
-        lz: cfg.PARAM.G_Z_INDEX + 1,
-        usrObj: usrObj,
-        type: type
       };
-    return (a = new r());
+    let w = function(i, r) {
+      if (cfg.custom.allow_indicator_edit)
+        if (tt) {
+          tt.sendOriginalData(
+            {
+              name: i.name,
+              data: i.customArr,
+              defaultData: i.DEFAULT_ARR
+            },
+            g
+          );
+          utils_util.sudaLog();
+          tt.show(r);
+        } else {
+          var a = cfg.custom.indicatorpanel_url;
+          usrObj.ssl && (a = utils_util.getSUrl(a, !0));
+          tt = new Q(
+            {
+              url: a,
+              z: 10001
+            },
+            at(w, null, i, r)
+          );
+        }
+    };
+    let chartOptions = {
+      stock: stockData,
+      cbInDC: cb,
+      onClkTT: w,
+      ctn: chartArea,
+      titleCtn: titleArea,
+      titleW: 0 / 0,
+      titleGap: 5,
+      style: {
+        position: "absolute",
+        top: 0
+      },
+      iMgr: iMgr,
+      withHBg: !1,
+      mh: cfg.DIMENSION.H_MA4K,
+      lz: cfg.PARAM.G_Z_INDEX + 1,
+      usrObj: usrObj,
+      type: type
+    };
+    return (a = new PChart());
   }
 
   function tChart(options) {
@@ -7202,7 +7216,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       utils_util.isFunc(callback) &&
         callback({
           tChart: tChart,
-          pChart: pChart
+          pChart: create_pChart
         });
     };
   })();

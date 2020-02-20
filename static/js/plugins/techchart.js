@@ -1,4 +1,4 @@
-xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
+xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
   util,
   utils_painter
 ) {
@@ -7,48 +7,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function techchart(cfg, i, r) {
     this.cfg = cfg;
     this.isSC = !0;
-    this.proxyCfg = oc(
-      {
-        iTo: function() {},
-        ctn: null,
-        titleCtn: null,
-        iMgr: void 0,
-        titleW: 0 / 0,
-        titleGap: 0 / 0,
-        withHBg: !0,
-        h: 0 / 0,
-        mh: 0 / 0,
-        eh: 0 / 0,
-        lz: 0 / 0,
-        fixIdctW: !1,
-        onClkMain: void 0,
-        stock: void 0,
-        usrObj: void 0,
-        initMgr: void 0
-      },
-      i
-    );
-    this.selfCfg = oc(
-      {
-        nu: !1,
-        h: this.proxyCfg.h,
-        mh: this.proxyCfg.mh,
-        eh: this.proxyCfg.eh,
-        titleW: 0 / 0,
-        isBlank: !1,
-        ctnId: void 0,
-        allowrfs: !0
-      },
-      r
-    );
-    this.isBlank = this.selfCfg.isBlank;
-    this.proxyCfg.titleW = this.selfCfg.titleW;
-    this.symbol = this.proxyCfg.stock.symbol;
+
     this.aliasymbol = void 0;
     this.name = void 0;
     this.sname = void 0;
     this.alias = void 0;
-    this.nu = this.selfCfg.nu;
     this.separate = 0;
     this.urlData = void 0;
     this.cb = void 0;
@@ -56,16 +19,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.selfDataUrl = void 0;
     this.selfDataUrlUpdate = void 0;
     this.df = void 0;
-    this.viewState = this.proxyCfg.stock.viewState;
     this.datas = null;
     this.wrap = void 0;
     this.titleCtn = void 0;
     this.titleO = void 0;
     this.indicatorArr = void 0;
     this.line = void 0;
-    this.h = this.selfCfg.h;
-    this.mh = this.selfCfg.mh;
-    this.eh = this.selfCfg.eh;
+
     this.labelMaxP = 0 / 0;
     this.labelMinP = 0 / 0;
     this.maxPrice = 0 / 0;
@@ -4704,58 +4664,58 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         !0
       );
-    })();
-    this.generateSettings = function() {
-      var i = s.name.toLowerCase(),
-        r = "MA",
-        a = o;
-      if (((s.customArr = []), s.param && s.param.length > 0)) {
-        a = s.param[0].color || o;
-        for (var l = 0, n = s.param.length; n > l; l++) {
-          var c = s.param[l].v;
-          !isNaN(c) &&
-            c > 0 &&
-            s.customArr.push({
-              v: c,
-              color: s.param[l].color || "#" + util.randomColor(),
-              prop: i + c,
-              idct: r + c,
-              desc: h
-            });
+    })(),
+      (this.generateSettings = function() {
+        var i = s.name.toLowerCase(),
+          r = "MA",
+          a = o;
+        if (((s.customArr = []), s.param && s.param.length > 0)) {
+          a = s.param[0].color || o;
+          for (var l = 0, n = s.param.length; n > l; l++) {
+            var c = s.param[l].v;
+            !isNaN(c) &&
+              c > 0 &&
+              s.customArr.push({
+                v: c,
+                color: s.param[l].color || "#" + util.randomColor(),
+                prop: i + c,
+                idct: r + c,
+                desc: h
+              });
+          }
         }
-      }
-      s.customArr.reverse(),
-        s.customArr.push({
-          v: 0 / 0,
-          color: a,
-          prop: e,
-          idct: "VOL"
-        }),
-        s.customArr.reverse();
-    };
-    (this.initAndCalcAll = function(i) {
-      (this.oriArr = i),
-        !this.datas && (this.datas = []),
-        util.ca(this.selfArr);
-      for (
-        var r = s.name.toLowerCase(),
-          a = i.length,
-          h = 0,
-          o = this.customArr.length;
-        o > h;
-        h++
-      )
-        for (var l, n = 0, c = this.customArr[h].v, d = 0; c && a > d; d++) {
-          var f = i[d];
-          if (((n += Number(f[e])), d >= c - 1)) {
-            l = n / c;
-            var u = i[d - c + 1];
-            n -= Number(u[e]);
-          } else l = n / (d + 1);
-          var p = (this.selfArr[d] = this.selfArr[d] || {});
-          p[r + c] = l;
-        }
-    }),
+        s.customArr.reverse(),
+          s.customArr.push({
+            v: 0 / 0,
+            color: a,
+            prop: e,
+            idct: "VOL"
+          }),
+          s.customArr.reverse();
+      }),
+      (this.initAndCalcAll = function(i) {
+        (this.oriArr = i),
+          !this.datas && (this.datas = []),
+          util.ca(this.selfArr);
+        for (
+          var r = s.name.toLowerCase(),
+            a = i.length,
+            h = 0,
+            o = this.customArr.length;
+          o > h;
+          h++
+        )
+          for (var l, n = 0, c = this.customArr[h].v, d = 0; c && a > d; d++) {
+            var f = i[d];
+            if (((n += Number(f[e])), d >= c - 1)) {
+              l = n / c;
+              var u = i[d - c + 1];
+              n -= Number(u[e]);
+            } else l = n / (d + 1);
+            var p = (this.selfArr[d] = this.selfArr[d] || {});
+            p[r + c] = l;
+          }
+      }),
       (this.drawCalc = function() {
         if (this.datas) {
           for (
@@ -5375,11 +5335,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               }
 
               techChartList.push(h);
-              subArea.appendChild(h.wrap);
             }
             h.newParam(chart.param);
             o();
-            logger.doStc(chart);
           }
         }
       };
@@ -5399,8 +5357,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
         }
       };
-      this.linkData = function(t) {
-        var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
+      this.linkData = function(i) {
+        //var i = cfg.datas.isT ? stockData.tDb.get() : stockData.kDb.get();
         if (i) {
           let techs_datas = {};
           let symbol;
@@ -5413,6 +5371,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             techs_datas[chart.name] = chart.datas;
             symbol = chart.symbol;
           }
+          console.log(techs_datas);
           window["tech_" + symbol] = techs_datas;
         }
       };
@@ -5460,7 +5419,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       this.createChart = function(i, r) {
         !util.isArr(i) && (i = [i]);
         for (var a = 0, s = i.length; s > a; a++) addTChart(i[a]);
-        cb(!0, r, i);
       };
       this.removeChart = function(i) {
         if (!i) {
@@ -5514,8 +5472,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         f = ["LB", "POSITION", "TVOL", "MACD"];
         break;
       default:
-        var ht = usrObj.tchartobject.k;
-        f = ht || ft;
+        f = ft;
     }
     var chartName,
       techChartList,
@@ -5599,20 +5556,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           );
         }
     };
-    let At = {
-      fixIdctW: !0,
-      stock: stockData,
-      iTo: st,
-      iMgr: iMgr,
-      onClkTT: vt,
-      h: cfg.DIMENSION.H_T_G,
-      eh: cfg.DIMENSION.H_T_B,
-      withHBg: !0,
-      onClkMain: dt,
-      usrObj: usrObj,
-      type: type,
-      initMgr: initMgr
-    };
+
     tchartMananger = new TChartManager();
     return tchartMananger;
   }
@@ -5865,7 +5809,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     },
     gdsd: function(datasArr) {
       var i;
-      if ("k" === this.proxyCfg.type)
+      if ("k" === "k" /*this.proxyCfg.type*/)
         (this.disMod = 1), (this.tkProp.close = "close"), (i = datasArr);
       else {
         (this.disMod = this.cfg.datas.tDataLen),
@@ -6018,75 +5962,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       };
     return o(), l(), e;
   };
+
   techchart.prototype.ic = function(i) {
-    var r = this.proxyCfg.iTo;
-    (this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h),
-      (this.customArr = util.clone(this.DEFAULT_ARR, null)),
-      (this.wrap = $C("div")),
-      this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
-      (this.wrap.style.fontSize = this.wrap.style.lineHeight =
-        this.cfg.STYLE.FONT_SIZE + "px");
-    for (var a in this.proxyCfg.style)
-      this.proxyCfg.style.hasOwnProperty(a) &&
-        (this.wrap.style[a] = this.proxyCfg.style[a]);
-    if (this.proxyCfg.titleCtn) this.titleCtn = this.proxyCfg.titleCtn;
-    else if (!this.isBlank) {
-      (this.titleCtn = $C("div")),
-        (this.titleCtn.style.position = "absolute"),
-        (this.titleCtn.style.zIndex = this.cfg.PARAM.I_Z_INDEX + 1);
-      var s = this;
-      if (
-        (xh5_EvtUtil.addHandler(this.titleCtn, "touchstart", function(t) {
-          s.cfg.custom.touch_prevent && xh5_EvtUtil.preventDefault(t);
-        }),
-        (this.titleCtn.style.width = "100%"),
-        !this.cfg.PARAM.isFlash)
-      ) {
-        if (this.cfg.custom.indicator_reorder) {
-          var e = this.rab();
-          this.titleCtn.appendChild(e);
-        }
-        if (this.cfg.custom.indicator_reheight) {
-          var h = this.mr();
-          this.titleCtn.appendChild(h);
-        }
-      }
-      this.wrap.appendChild(this.titleCtn);
-    }
-    this.isBlank
-      ? (this.wrap.style.height = this.h + "px")
-      : ((this.line = new xh5_ibPainter({
-          setting: this.cfg,
-          sd: this,
-          withHBg: this.proxyCfg.withHBg,
-          reO: {
-            h: this.h,
-            mh: this.mh,
-            eh: this.eh
-          },
-          nu: this.nu,
-          dt: !1,
-          iMgr: this.proxyCfg.iMgr,
-          iTo: fBind(r, null, this),
-          iClk: this.proxyCfg.onClkMain
-        })),
-        !isNaN(this.proxyCfg.lz) &&
-          (this.line.getCanvas().style.zIndex = this.proxyCfg.lz),
-        this.wrap.appendChild(this.line.getWrap())),
-      this.proxyCfg.ctn && this.proxyCfg.ctn.appendChild(this.wrap);
+    this.customArr = util.clone(this.DEFAULT_ARR, null);
   };
+
   techchart.prototype.initAndCalcAll = function() {};
-  techchart.prototype.resize = function(t) {
-    (this.h = t.h),
-      (this.mh = t.mh),
-      (this.eh = t.eh),
-      this.line &&
-        this.line.resize({
-          h: this.h,
-          mh: this.mh,
-          eh: this.eh
-        });
-  };
+
   techchart.prototype.getFromToM = new (function() {
     (this.reset = function(t) {
       var i = t.loadedFlag;
@@ -6322,10 +6204,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (i ? ((pt[a] = i), util.stc("np_" + a, i)) : ((s = !0), (i = pt[a])),
       (this.param = i),
       this.generateSettings(),
-      this.genIndicator(
-        this.customArr,
-        this.asPChart ? "" : this.alias || this.name
-      ),
       r)
     ) {
       var e = this.cfg.datas.isT
@@ -6338,11 +6216,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         this.draw(!0))
       );
     }
-    if (this.cfg.custom.storage_lv > 0)
-      if (i) {
-        if (s) return;
-        this.cfg.custom.storage_lv > 1 && this.saveGlobalSetting(i);
-      } else this.loadGlobalSetting();
   };
   techchart.prototype.syncI = function() {
     if (this.datas && this.proxyCfg.iMgr)
@@ -6525,252 +6398,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       height: r
     };
   };
-  techchart.prototype.genTitleCanvas = function(i) {
-    function r() {
-      var r = new xh5_Canvas(),
-        a = r.g,
-        o = s.cfg.datas.isT;
-      if (((this.canvas = r.canvas), util.isFunc(s.proxyCfg.onClkTT))) {
-        var l = util.xh5_deviceUtil.istd ? "touchend" : "click";
-        xh5_EvtUtil.addHandler(
-          this.canvas,
-          l,
-          fBind(s.proxyCfg.onClkTT, null, s)
-        );
-        var n = this.canvas.style;
-        (n.cursor = "pointer"),
-          (n.position = "relative"),
-          (n.zIndex = s.cfg.PARAM.I_Z_INDEX + 1);
-      }
-      var c = function(t, i) {
-          r.resize(
-            s.genIdctParam({
-              width: t,
-              height: i
-            })
-          ),
-            (a.font = s.cfg.STYLE.FONT_SIZE + "px " + s.cfg.STYLE.FONT_FAMILY),
-            (a.textBaseline = "top");
-        },
-        d = 9,
-        f = 13,
-        u = 2;
-      (this.setTxt = function(r) {
-        var l = s.cfg.DIMENSION.posX,
-          n = o ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
-          p = s.cfg.DIMENSION.extend_draw,
-          v = a.measureText(i).width,
-          A = s.cfg.DIMENSION.getStageW(),
-          m = 0.35 * A,
-          g = "TFLOW" == s.name && 400 > n ? 55 : 80,
-          b = s.cfg.DIMENSION.H_T_T;
-        u > b && (b = 14);
-        var y = 1;
-        if (r) {
-          for (
-            var _, w, D, M = l + (v > 0 ? d : 0), O = [], S = r.length, T = 0;
-            S > T;
-            T++
-          )
-            if (((_ = r[T]), _.t || !isNaN(_.n))) {
-              switch (
-                ((w =
-                  (_.t ? _.t + ": " : "") +
-                  (isNaN(_.n) ? "--" : util.strUtil.ps(_.n, h.nfloat))),
-                s.name)
-              ) {
-                case "TFLOW":
-                  T == r.length - 1 && (w += "元");
-                  break;
-                case "TZY":
-                case "TZYS":
-                  w += "%";
-              }
-              (D = e
-                ? Math.max(g, a.measureText(w).width || 0)
-                : a.measureText(w).width || 0),
-                O.push({
-                  str: w,
-                  w: D,
-                  color: _.c
-                }),
-                (M += D + f);
-            }
-          M -= f;
-          var N = Math.ceil(M / n);
-          N > S && (N = S),
-            N > 1 ? ((b *= N), (M = A)) : (M = Math.floor(Math.max(M, m))),
-            (M = Math.min(A, M));
-          var I;
-          p
-            ? ((I = l),
-              s.cfg.DIMENSION.H_T_T < u && (I += s.cfg.DIMENSION.W_T_L),
-              c(M, b))
-            : (c(M, b),
-              s.cfg.DIMENSION.H_T_T > u - 1 &&
-                ((a.textAlign = "right"),
-                (a.fillStyle = s.cfg.COLOR.T_T),
-                a.fillText(i, l, y)),
-              (I = l + (v > 0 ? d : 0))),
-            (a.textAlign = "left");
-          for (
-            var C = I, R = 0, k = O.length;
-            k > R &&
-            ((_ = O[R]),
-            (a.fillStyle = _.color),
-            a.fillText(_.str, I, y),
-            (I += _.w + f),
-            !(R >= k - 1));
-            R++
-          )
-            I - l + O[R + 1].w > n && ((y += s.cfg.STYLE.FONT_SIZE), (I = C));
-        } else
-          s.cfg.DIMENSION.H_T_T < u && (l += s.cfg.DIMENSION.W_T_L),
-            c(l, b),
-            (a.fillStyle = s.cfg.COLOR.T_T),
-            (a.textAlign = p ? "left" : "right"),
-            a.fillText(i, l, y);
-      }),
-        this.setTxt();
-    }
 
-    function a() {
-      var r = $C("div");
-      this.canvas = r;
-      var a = $C("div");
-      (a.style.cssFloat = "left"),
-        (a.style.textAlign = "right"),
-        (a.style.marginRight = "9px"),
-        (a.style.overflow = "hidden");
-      var e = $C("div");
-      r.appendChild(a), r.appendChild(e);
-      var o = r.style;
-      util.isFunc(s.proxyCfg.onClkTT) &&
-        (util.xh5_deviceUtil.istd
-          ? xh5_EvtUtil.addHandler(
-              r,
-              "click",
-              fBind(s.proxyCfg.onClkTT, null, s)
-            )
-          : (xh5_EvtUtil.addHandler(
-              r,
-              "click",
-              fBind(s.proxyCfg.onClkTT, null, s)
-            ),
-            util.xh5_deviceUtil.allowt &&
-              xh5_EvtUtil.addHandler(
-                r,
-                "touchend",
-                fBind(s.proxyCfg.onClkTT, null, s)
-              )),
-        (o.cursor = "pointer"),
-        (o.position = "relative"),
-        (o.zIndex = s.cfg.PARAM.I_Z_INDEX + 1));
-      var l = s.cfg.datas.isT;
-      (this.setTxt = function(r) {
-        var n = l ? s.cfg.DIMENSION.w_t : s.cfg.DIMENSION.w_k,
-          c = "TFLOW" == s.name ? 400 : 350,
-          d = c > n ? 55 : 80,
-          f = s.cfg.DIMENSION.extend_draw;
-        (a.style.width = e.style.marginLeft = s.cfg.DIMENSION.posX + "px"),
-          (o.color = s.cfg.COLOR.T_T),
-          (o.fontSize = s.cfg.STYLE.FONT_SIZE + "px"),
-          (o.fontFamily = s.cfg.STYLE.FONT_FAMILY);
-        var u = i || "";
-        if (r) {
-          f
-            ? ((a.innerHTML = ""),
-              s.cfg.DIMENSION.H_T_T < 2 && (e.style.marginLeft = "50px"))
-            : (a.innerHTML = s.cfg.DIMENSION.H_T_T > 1 ? u : ""),
-            (e.innerHTML = "");
-          for (var p, v, A, m = 0, g = r.length; g > m; m++)
-            if (((v = r[m]), v.t || !isNaN(v.n))) {
-              switch (s.name) {
-                case "DPDK":
-                case "TZY":
-                  return;
-                case "TZYS":
-                case "DPDKS":
-                case "SAR":
-                  if ("SAR" == s.name) {
-                    if (!s.asPChart && "SAR" != v.t) continue;
-                  } else if ("DPDKS" == s.name && "mn" == v.t) continue;
-                  var b = "<span style='color:#000;'>--";
-                  switch (v.t) {
-                    case "SAR":
-                      b += "</span>";
-                      break;
-                    default:
-                      b += "%</span>";
-                  }
-                  if (((A = (v.t ? v.t + ": " : "") + b), !isNaN(v.n))) {
-                    A = A.replace("--", util.strUtil.ps(v.n, h.nfloat));
-                    var y;
-                    (y =
-                      "DPDK" == s.name || "SAR" == v.t
-                        ? v.c
-                        : v.n > 0
-                        ? s.cfg.COLOR.K_RISE
-                        : v.n < 0
-                        ? s.cfg.COLOR.K_FALL
-                        : s.cfg.COLOR.K_N),
-                      (A = A.replace("#000", y));
-                  }
-                  break;
-                case "VOLUME":
-                case "TVOL":
-                case "MA":
-                  A =
-                    (v.t ? v.t + ": " : "") +
-                    (isNaN(v.n) ? 0 : v.n.toFixed(h.nfloat));
-                  break;
-                case "SUNSPOT":
-                  A =
-                    "SUNSPOT" === v.t
-                      ? v.n
-                        ? (v.t ? v.t + ": " : "") +
-                          (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, 0)) +
-                          "级"
-                        : ""
-                      : (v.t ? v.t + ": " : "") +
-                        (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, h.nfloat));
-                  break;
-                default:
-                  (A =
-                    (v.t ? v.t + ": " : "") +
-                    (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, h.nfloat))),
-                    "TFLOW" == s.name && m == r.length - 1 && (A += "元");
-              }
-              (p = 11),
-                (e.innerHTML +=
-                  "<span style='float:left;min-width:" +
-                  d +
-                  "px;margin-right:" +
-                  p +
-                  "px;color:" +
-                  v.c +
-                  "'>" +
-                  A +
-                  "</span>");
-            }
-        } else (a.innerHTML = f ? "" : u), (e.innerHTML = "");
-      }),
-        this.setTxt();
-    }
-    var s = this,
-      e = this.proxyCfg.fixIdctW,
-      h = this.proxyCfg.usrObj;
-    return s.cfg.custom.indicator_cvs_title ? new r() : new a();
-  };
-  techchart.prototype.genIndicator = function(t, i) {
-    if (t) {
-      this.indicatorArr = [];
-      for (var r = 0, a = t.length; a > r; r++) this.indicatorArr.push(t[r]);
-      this.titleO ||
-        ((this.titleO = this.genTitleCanvas(i)),
-        this.titleCtn.appendChild(this.titleO.canvas));
-    }
-  };
   techchart.prototype.indicatorI = function(t) {
     if (this.indicatorArr) {
       for (var i, r, a = [], s = 0, e = this.indicatorArr.length; e > s; s++)

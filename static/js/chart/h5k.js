@@ -959,7 +959,7 @@ xh5_define(
                 break;
               }
             N ||
-              ((N = new s({
+              ((N = new pChart({
                 iMgr: B,
                 stockData: stockDataA,
                 chartArea: R,
@@ -990,7 +990,7 @@ xh5_define(
         };
         this.initTc = function(e, t) {
           y ||
-            ((y = new r({
+            ((y = new tChart({
               stockData: stockDataA,
               iMgr: B,
               cb: W,
@@ -1495,18 +1495,22 @@ xh5_define(
             T();
           };
         this.mM = new (function() {
-          var n = function(a, i, o) {
-              var l, c;
-              switch (i) {
+          var n = function(charts, type, options) {
+              var chartFun, initMethod;
+              switch (type) {
                 case "price":
-                  if (((l = s), (c = "initPt"), util.isObj(a)))
-                    a.name &&
-                      "TZY" === String(a.name).toUpperCase() &&
+                  if (
+                    ((chartFun = pChart),
+                    (initMethod = "initPt"),
+                    util.isObj(charts))
+                  )
+                    charts.name &&
+                      "TZY" === String(charts.name).toUpperCase() &&
                       (g = 0.2);
-                  else if (util.isArr(a))
-                    for (var h, d = a.length; d--; )
+                  else if (util.isArr(charts))
+                    for (var h, d = charts.length; d--; )
                       if (
-                        ((h = a[d]),
+                        ((h = charts[d]),
                         h && h.name && "TZY" === String(h.name).toUpperCase())
                       ) {
                         g = 0.2;
@@ -1514,18 +1518,21 @@ xh5_define(
                       }
                   break;
                 case "tech":
-                  (l = r), (c = "initTc");
+                  chartFun = tChart;
+                  initMethod = "initTc";
               }
-              c &&
-                (l
-                  ? e[c](a, o)
+              initMethod &&
+                (chartFun
+                  ? e[initMethod](charts, options)
                   : KKE.api(
                       "plugins.techcharts.get",
                       {
-                        type: i
+                        type: type
                       },
                       function(e) {
-                        (r = e.tChart), (s = e.pChart), n(a, i, o);
+                        tChart = e.tChart;
+                        pChart = e.pChart;
+                        n(charts, type, options);
                       }
                     ));
             },
@@ -3604,8 +3611,8 @@ xh5_define(
       };
     }
     var o,
-      s,
-      r,
+      pChart,
+      tChart,
       $DOM = util.$DOM,
       $C = util.$C,
       $CONTAINS = util.$CONTAINS,

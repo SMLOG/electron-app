@@ -1,5 +1,5 @@
 xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
-  utils_util,
+  util,
   utils_painter
 ) {
   "use strict";
@@ -124,8 +124,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var a, s, e = 0, h = r.length; h > e; e++) {
         (a = r[e]), (s = a.price - (a.avg_price || 0));
         var o = {
@@ -229,7 +229,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         T = l(S, d);
       this.oriArr = i;
       !this.datas && (this.datas = []);
-      utils_util.ca(this.selfArr);
+      util.ca(this.selfArr);
       for (var N = 0, I = i.length; I > N; N++)
         this.selfArr[N] = {
           asi: S[N],
@@ -279,8 +279,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         d = o(c, o(e(c, a), l, "*"), "+"),
         f = o(c, o(e(c, a), l, "*"), "-");
       this.oriArr = r;
-      this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+      this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var u = 0, p = r.length; p > u; u++)
         this.selfArr[u] = {
           bbiboll: c[u],
@@ -314,7 +314,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         o = s(h, a);
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var l = 0, n = i.length; n > l; l++)
         this.selfArr[l] = {
           m: o[l]
@@ -345,8 +345,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             f = n(d, 1),
             u = this.viewState.start,
             p = this.viewState.end,
-            v = utils_util.hex2dec(this.customArr[0].color, 0.5),
-            A = utils_util.hex2dec(this.customArr[1].color, 0.5),
+            v = util.hex2dec(this.customArr[0].color, 0.5),
+            A = util.hex2dec(this.customArr[1].color, 0.5),
             m = u;
           p > m;
           m++
@@ -421,8 +421,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         d = h(h(h(n, s(n, o), "-"), s(n, o), "/"), 100, "*"),
         f = h(h(h(n, s(n, l), "-"), s(n, l), "/"), 100, "*");
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var u = 0, p = r.length; p > u; u++)
         (this.selfArr[u] = {
           bias1: c[u],
@@ -471,8 +471,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         f = o(c, d, "+"),
         u = o(c, d, "-");
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var p = 0, v = r.length; v > p; p++)
         (this.selfArr[p] = {
           boll: c[p],
@@ -523,7 +523,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v = l(l(s(l(n, d, "-"), a), s(l(d, f, "-"), a), "/"), 100, "*");
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var A = 0, m = i.length; m > A; A++)
         this.selfArr[A] = {
           br: p[A],
@@ -562,7 +562,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         f = h(h(d, e(d, a), "-"), h(s(d, a), 0.015, "*"), "/");
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var u = 0, p = i.length; p > u; u++)
         this.selfArr[u] = {
           cci: f[u]
@@ -606,8 +606,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           e = this.selfDataUrl
             .replace("$symbol", a)
             .replace("$rn", String(new Date().getDate()));
-        this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
-          utils_util.load(e, function() {
+        this.proxyCfg.usrObj.ssl && (e = util.getSUrl(e)),
+          util.load(e, function() {
             var t = window[s];
             r.urlData ||
               (r.urlData = {
@@ -649,8 +649,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         r = this.symbol,
         a = "hq_str_" + e + r,
         s = this.selfDataUrlUpdate.replace("$symbol", r);
-      this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
-        utils_util.load(s, function() {
+      this.proxyCfg.usrObj.ssl && (s = util.getSUrl(s)),
+        util.load(s, function() {
           var t = window[a],
             r = i.udf(t);
           r && i.doUpdate(r);
@@ -696,11 +696,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (((this.oriArr = i), this.urlData && this.toReCalc)) {
         (this.toReCalc = !1),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         for (
           var r,
             a = this.urlData.day,
-            s = utils_util.kUtil.adbd(a, i, !1, !1),
+            s = util.kUtil.adbd(a, i, !1, !1),
             e = 0,
             h = i.length;
           h > e;
@@ -745,7 +745,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var r = h.symbol,
           a = "_" + r + dateUtil.ddt(new Date()).getFullYear();
         (h.selfDataUrl = d),
-          utils_util.load(
+          util.load(
             h.selfDataUrl
               .replace("$symbol", r)
               .replace("$cb", "var%20" + a + "="),
@@ -765,7 +765,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (
         !c &&
         (this.datas || (e(), (this.datas = [])),
-        utils_util.ca(this.selfArr),
+        util.ca(this.selfArr),
         h.urlData)
       ) {
         var i,
@@ -858,8 +858,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         n = e(o, l, "-"),
         c = s(n, this.customArr[2].v);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var d = 0, f = r.length; f > d; d++)
         (this.selfArr[d] = {
           dif: n[d],
@@ -937,7 +937,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         O = s(M, d);
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var S = 0, T = i.length; T > S; S++)
         this.selfArr[S] = {
           pdi: w[S],
@@ -992,7 +992,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         })();
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var p = 0, v = i.length; v > p; p++)
         (this.selfArr[p] = {
           flag: u[p]
@@ -1083,8 +1083,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               c,
               d = this.viewState.start,
               f = this.viewState.end,
-              u = utils_util.hex2dec(this.customArr[0].color),
-              p = utils_util.hex2dec(this.customArr[1].color),
+              u = util.hex2dec(this.customArr[0].color),
+              p = util.hex2dec(this.customArr[1].color),
               v = 0;
             2 > v;
             v++
@@ -1271,7 +1271,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         m = s(A, l);
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var g = 0, b = i.length; b > g; g++)
         this.selfArr[g] = {
           emv: A[g],
@@ -1327,10 +1327,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           .replace("$symbol", i)
           .replace("$cb", "var%20" + r + "=")
           .replace("$rn", String(new Date().getDate()));
-      this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+      this.proxyCfg.usrObj.ssl && (s = util.getSUrl(s)),
         n ||
-          ((l = utils_util.tUtil.gata(a.usrObj.market)),
-          utils_util.load(s, function() {
+          ((l = util.tUtil.gata(a.usrObj.market)),
+          util.load(s, function() {
             var t = window[r];
             (window[r] = null),
               (o.urlData = {
@@ -1362,8 +1362,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var i = this.symbol,
           r = "hq_str_" + h + i,
           a = this.selfDataUrlUpdate.replace("$symbol", i);
-        this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
-          utils_util.load(a, function() {
+        this.proxyCfg.usrObj.ssl && (a = util.getSUrl(a)),
+          util.load(a, function() {
             var t = window[r];
             window[r] = null;
             var i = o.udf(t);
@@ -1376,8 +1376,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           if ((i = i[0])) {
             if (s.time <= i.time)
               for (
-                var e = utils_util.arrIndexOf(l, i.time),
-                  h = utils_util.arrIndexOf(l, s.time),
+                var e = util.arrIndexOf(l, i.time),
+                  h = util.arrIndexOf(l, s.time),
                   n = h;
                 e >= n;
                 n++
@@ -1398,7 +1398,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (this.urlData) {
           (this.oriArr = this.gdsd(i)),
             !this.datas && (this.datas = []),
-            utils_util.ca(this.selfArr);
+            util.ca(this.selfArr);
           var r,
             s = this.urlData.time,
             e = a.stock.realLen;
@@ -1434,7 +1434,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             a > 0 &&
             s.customArr.push({
               v: a,
-              color: s.param[i].color || e[i] || "#" + utils_util.randomColor(),
+              color: s.param[i].color || e[i] || "#" + util.randomColor(),
               prop: o + a,
               idct: h + a,
               desc: h
@@ -1464,8 +1464,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (
         var a = l(r, this.tkProp.close),
           s = [],
@@ -1521,7 +1521,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.toReCalc = !0),
       (this.initAndCalcAll = function(i, r) {
         if (!r && ((this.oriArr = i), this.urlData)) {
-          !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+          !this.datas && (this.datas = []), util.ca(this.selfArr);
           var a;
           switch (this.viewState.viewId) {
             case 24:
@@ -1534,7 +1534,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               a = this.urlData.month;
           }
           for (
-            var s, e = utils_util.kUtil.adbd(a, i, !1, !0), h = 0, o = i.length;
+            var s, e = util.kUtil.adbd(a, i, !1, !0), h = 0, o = i.length;
             o > h;
             h++
           )
@@ -1688,7 +1688,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         m = o(o(v, 3, "*"), o(A, 2, "*"), "-");
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var g = 0, b = i.length; b > g; g++)
         this.selfArr[g] = {
           k: v[g],
@@ -1766,7 +1766,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var o;
     (this.initAndCalcAll = function(i) {
       if (((this.oriArr = i), this.urlData)) {
-        !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+        !this.datas && (this.datas = []), util.ca(this.selfArr);
         var r;
         switch (this.viewState.viewId) {
           case 364:
@@ -1795,7 +1795,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               }
             ];
         }
-        o = utils_util.kUtil.adbd(r, i, !1, !0);
+        o = util.kUtil.adbd(r, i, !1, !0);
         for (var a, s = 0, h = i.length; h > s; s++) {
           a = o[s];
           var l = {};
@@ -1997,7 +1997,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var e;
     (this.initAndCalcAll = function(i) {
       if (((this.oriArr = i), this.urlData)) {
-        !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+        !this.datas && (this.datas = []), util.ca(this.selfArr);
         var r;
         switch (this.viewState.viewId) {
           case 364:
@@ -2030,7 +2030,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               }
             ];
         }
-        e = utils_util.kUtil.adbd(r, i, !1, !0);
+        e = util.kUtil.adbd(r, i, !1, !0);
         for (var a, s = 0, h = i.length; h > s; s++) {
           a = e[s];
           var o = {
@@ -2203,7 +2203,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var e;
     (this.initAndCalcAll = function(i) {
       if (((this.oriArr = i), this.urlData)) {
-        !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+        !this.datas && (this.datas = []), util.ca(this.selfArr);
         var r;
         switch (this.viewState.viewId) {
           case 364:
@@ -2233,7 +2233,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               }
             ];
         }
-        e = utils_util.kUtil.adbd(r, i, !1, !0);
+        e = util.kUtil.adbd(r, i, !1, !0);
         for (var a, s = 0, h = i.length; h > s; s++)
           (a = e[s]),
             this.selfArr.push({
@@ -2375,8 +2375,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             a = this.symbol,
             s = "tzy_sunstock_kx_" + a,
             e = this.selfDataUrl.replace("$symbol", a);
-          this.proxyCfg.usrObj.ssl && (e = utils_util.getSUrl(e)),
-            utils_util.load(e, function() {
+          this.proxyCfg.usrObj.ssl && (e = util.getSUrl(e)),
+            util.load(e, function() {
               var t = window[s];
               r.urlData ||
                 (r.urlData = {
@@ -2408,7 +2408,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var e;
     (this.initAndCalcAll = function(i) {
       if (((this.oriArr = i), this.urlData)) {
-        !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+        !this.datas && (this.datas = []), util.ca(this.selfArr);
         var r;
         switch (this.viewState.viewId) {
           case 364:
@@ -2428,7 +2428,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               }
             ];
         }
-        e = utils_util.kUtil.adbd(r, i, !1, !0);
+        e = util.kUtil.adbd(r, i, !1, !0);
         for (var a, s = 0, h = i.length; h > s; s++)
           (a = e[s]),
             this.selfArr.push({
@@ -2547,7 +2547,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.initAndCalcAll = function(i) {
         (this.oriArr = this.gdsd(i)),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         for (var r, a, s = 0, e = i.length, h = 0; e > s; s++) {
           (a = 5e4),
             (r = 0),
@@ -2613,7 +2613,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             a > 0 &&
             s.customArr.push({
               v: a,
-              color: s.param[i].color || e[i] || "#" + utils_util.randomColor(),
+              color: s.param[i].color || e[i] || "#" + util.randomColor(),
               prop: o + a,
               idct: h + a,
               desc: h
@@ -2662,8 +2662,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.initAndCalcAll = function(i) {
         var r = this.gdsd(i);
         (this.oriArr = r),
-          this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-          utils_util.ca(this.selfArr);
+          this.datas ? util.ca(this.datas) : (this.datas = []),
+          util.ca(this.selfArr);
         for (
           var a = this.tkProp.close,
             s = r.length,
@@ -2732,8 +2732,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         dea = ema(diff, bar9Day),
         f = operateArr(operateArr(diff, dea, "-"), 2, "*");
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var u = 0, p = r.length; p > u; u++)
         (this.selfArr[u] = {
           dif: diff[u],
@@ -2824,7 +2824,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.initAndCalcAll = function(i) {
         (this.oriArr = i),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         var r,
           a,
           s,
@@ -2889,7 +2889,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var r = this.gdsd(i);
         (this.oriArr = r),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         for (var a = 0, s = r.length; s > a; a++) {
           var e = r[a].inventory || r[a].holdPosition;
           this.selfArr.push({
@@ -3027,7 +3027,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.initAndCalcAll = function(i) {
         (this.oriArr = i),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         var r = this.customArr[0].v,
           a = this.customArr[1].v,
           s = i[0],
@@ -3105,10 +3105,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           .replace("$symbol", i)
           .replace("$cb", "var%20" + r + "=")
           .replace("$rn", String(new Date().getDate()));
-      this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+      this.proxyCfg.usrObj.ssl && (s = util.getSUrl(s)),
         n ||
-          ((l = utils_util.tUtil.gata(a.usrObj.market)),
-          utils_util.load(s, function() {
+          ((l = util.tUtil.gata(a.usrObj.market)),
+          util.load(s, function() {
             var t = window[r];
             o.urlData = {
               time: []
@@ -3139,8 +3139,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var i = this.symbol,
           r = "hq_str_" + h + i,
           a = this.selfDataUrlUpdate.replace("$symbol", i);
-        this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
-          utils_util.load(a, function() {
+        this.proxyCfg.usrObj.ssl && (a = util.getSUrl(a)),
+          util.load(a, function() {
             var t = window[r];
             window[r] = null;
             var i = o.udf(t);
@@ -3153,8 +3153,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           if ((i = i[0])) {
             if (s.time < i.time)
               for (
-                var e = utils_util.arrIndexOf(l, i.time),
-                  h = utils_util.arrIndexOf(l, s.time),
+                var e = util.arrIndexOf(l, i.time),
+                  h = util.arrIndexOf(l, s.time),
                   n = h;
                 e >= n;
                 n++
@@ -3174,7 +3174,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (this.urlData) {
           (this.oriArr = this.gdsd(i)),
             !this.datas && (this.datas = []),
-            utils_util.ca(this.selfArr);
+            util.ca(this.selfArr);
           var r,
             s = this.urlData.time,
             e = a.stock.realLen;
@@ -3273,8 +3273,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         c = o(o(o(n, e(n, a), "-"), 100, "*"), e(n, a), "/"),
         d = s(c, l);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var f = 0, u = r.length; u > f; f++)
         (this.selfArr[f] = {
           roc: c[f],
@@ -3334,8 +3334,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         g = l(l(h(v, c, 1), h(A, c, 1), "/"), 100, "*"),
         b = l(l(h(v, d, 1), h(A, d, 1), "/"), 100, "*");
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var y = 0, _ = r.length; _ > y; y++)
         (this.selfArr[y] = {
           rsi1: m[y],
@@ -3386,7 +3386,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         a = h(i, r[0].v, r[1].v, r[2].v);
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var s = 0, e = i.length; e > s; s++)
         this.selfArr[s] = {
           ignore_minmax: a.direction[s],
@@ -3532,15 +3532,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         }
       ],
       l = "top_trade_",
-      n = utils_util.tUtil;
+      n = util.tUtil;
     (this.generateSettings = function() {
       if (h.param && h.param.length > 0) {
         h.customArr = [];
         for (var i = 0, r = h.param.length; r > i; i++)
           h.customArr.push({
             vol: 0 / 0,
-            color:
-              h.param[i].color || o[i].color || "#" + utils_util.randomColor(),
+            color: h.param[i].color || o[i].color || "#" + util.randomColor(),
             prop: o[i].prop,
             idct: o[i].idct
           });
@@ -3573,10 +3572,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             .replace("$symbol", i)
             .replace("$cb", "var%20" + r + "=")
             .replace("$rn", String(new Date().getDate()));
-        this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
+        this.proxyCfg.usrObj.ssl && (s = util.getSUrl(s)),
           d ||
-            ((c = utils_util.tUtil.gata(a.usrObj.market)),
-            utils_util.load(s, function() {
+            ((c = util.tUtil.gata(a.usrObj.market)),
+            util.load(s, function() {
               var t = window[r];
               h.urlData = {
                 time: []
@@ -3614,8 +3613,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             .replace("$symbol", i)
             .replace("$cb", "var " + r + "=")
             .replace("$rn", String(new Date().getDate()));
-        this.proxyCfg.usrObj.ssl && (a = utils_util.getSUrl(a)),
-          utils_util.load(a, function() {
+        this.proxyCfg.usrObj.ssl && (a = util.getSUrl(a)),
+          util.load(a, function() {
             var t = window[r];
             window[r] = null;
             var i = h.udf(t);
@@ -3636,7 +3635,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (this.urlData) {
           (this.oriArr = this.gdsd(i)),
             !this.datas && (this.datas = []),
-            utils_util.ca(this.selfArr);
+            util.ca(this.selfArr);
           var r,
             s,
             e,
@@ -3753,14 +3752,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       d = null;
     this.generateSettings = function() {
       for (var i in e.urls)
-        e.urls.hasOwnProperty(i) && (e.urls[i] = utils_util.getSUrl(e.urls[i]));
+        e.urls.hasOwnProperty(i) && (e.urls[i] = util.getSUrl(e.urls[i]));
       if (e.param && e.param.length > 0) {
         e.customArr = [];
         for (var r = 0, a = e.param.length; a > r; r++)
           e.customArr.push({
             v: 0 / 0,
-            color:
-              e.param[r].color || c[r].color || "#" + utils_util.randomColor(),
+            color: e.param[r].color || c[r].color || "#" + util.randomColor(),
             prop: c[r].prop,
             idct: c[r].idct
           });
@@ -3823,7 +3821,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             : e.urls.c),
             a.stock.hq.isUpdateTime ||
               (clearInterval(this.updateId), (this.updateId = null)),
-            utils_util.load(
+            util.load(
               e.selfDataUrl
                 .replace("$symbol", r)
                 .replace("$cb", "var%20" + s + "="),
@@ -3853,7 +3851,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (this.oriArr = this.gdsd(i)),
           1 != n && this.urlData)
         ) {
-          !this.datas && (this.datas = []), utils_util.ca(this.selfArr);
+          !this.datas && (this.datas = []), util.ca(this.selfArr);
           var r,
             s,
             h = i.length,
@@ -3865,8 +3863,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               i[r][0] &&
               i[r][0].date &&
               this.urlData[r][0] &&
-              utils_util.dateUtil.ds(i[r][0].date, "-") ==
-                this.urlData[r][0].date
+              util.dateUtil.ds(i[r][0].date, "-") == this.urlData[r][0].date
                 ? (d++, o.push(this.urlData[s]))
                 : s >= c - 1 && o.push([]);
           for (r = 0; h > r; r++)
@@ -3993,7 +3990,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (e) {
         (this.oriArr = i),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         for (var r, h, o = 0, l = i.length; l > o; o++) {
           r = i[o];
           for (var n = 0, c = e.length; c > n; n++)
@@ -4048,8 +4045,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         u = o(o(o(d, f, "-"), f, "/"), 100, "*"),
         p = s(u, n);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var v = 0, A = r.length; A > v; v++)
         (this.selfArr[v] = {
           trix: u[v],
@@ -4137,8 +4134,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               .replace("$from", r)
               .replace("$to", a)
               .replace("$rn", String(new Date().getDate()));
-          this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o)),
-            utils_util.load(o, function() {
+          this.proxyCfg.usrObj.ssl && (o = util.getSUrl(o)),
+            util.load(o, function() {
               var t = window[h];
               s.urlData ||
                 (s.urlData = {
@@ -4184,8 +4181,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           r = this.symbol,
           a = "hq_str_" + o + r,
           s = this.selfDataUrlUpdate.replace("$symbol", r);
-        this.proxyCfg.usrObj.ssl && (s = utils_util.getSUrl(s)),
-          utils_util.load(s, function() {
+        this.proxyCfg.usrObj.ssl && (s = util.getSUrl(s)),
+          util.load(s, function() {
             var t = window[a],
               r = i.udf(t);
             r && i.doUpdate(r);
@@ -4207,11 +4204,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         if (((this.oriArr = i), this.urlData && this.toReCalc)) {
           (this.toReCalc = !1),
             !this.datas && (this.datas = []),
-            utils_util.ca(this.selfArr);
+            util.ca(this.selfArr);
           for (
             var r,
               a = this.urlData.day,
-              s = utils_util.kUtil.adbd(a, i, !1, !1),
+              s = util.kUtil.adbd(a, i, !1, !1),
               e = 0,
               h = i.length;
             h > e;
@@ -4321,8 +4318,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             c,
             d = this.viewState.start,
             f = this.viewState.end,
-            u = utils_util.hex2dec(this.customArr[0].color, 0.5),
-            p = utils_util.hex2dec(this.customArr[1].color, 0.5);
+            u = util.hex2dec(this.customArr[0].color, 0.5),
+            p = util.hex2dec(this.customArr[1].color, 0.5);
           (c = d), (n = this.datas[0].flag);
           for (var v = d; f > v; v++)
             if (this.datas[v - d].isFake && v != f - 1) c = v;
@@ -4557,8 +4554,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         ),
         b = s(g, n);
       (this.oriArr = r),
-        this.datas ? utils_util.ca(this.datas) : (this.datas = []),
-        utils_util.ca(this.selfArr);
+        this.datas ? util.ca(this.datas) : (this.datas = []),
+        util.ca(this.selfArr);
       for (var y = 0, _ = r.length; _ > y; y++)
         (this.selfArr[y] = {
           vr: g[y],
@@ -4606,7 +4603,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         u = o(o(o(s(c, l), n, "-"), 100, "*"), o(s(c, l), e(d, l), "-"), "/");
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var p = 0, v = i.length; v > p; p++)
         this.selfArr[p] = {
           wr1: f[p],
@@ -4652,7 +4649,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v = e(p, l);
       (this.oriArr = i),
         !this.datas && (this.datas = []),
-        utils_util.ca(this.selfArr);
+        util.ca(this.selfArr);
       for (var A = 0, m = i.length; m > A; A++)
         this.selfArr[A] = {
           wvad: p[A],
@@ -4720,7 +4717,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               c > 0 &&
               s.customArr.push({
                 v: c,
-                color: s.param[l].color || "#" + utils_util.randomColor(),
+                color: s.param[l].color || "#" + util.randomColor(),
                 prop: i + c,
                 idct: r + c,
                 desc: h
@@ -4739,7 +4736,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.initAndCalcAll = function(i) {
         (this.oriArr = i),
           !this.datas && (this.datas = []),
-          utils_util.ca(this.selfArr);
+          util.ca(this.selfArr);
         for (
           var r = s.name.toLowerCase(),
             a = i.length,
@@ -4781,7 +4778,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 ((e[l] = this.selfArr[s][l]), e[l] > h && (h = e[l]));
           }
           0 > h && (h = 0);
-          var n = utils_util.xh5_ADJUST_HIGH_LOW.c(h, o, 0, !0);
+          var n = util.xh5_ADJUST_HIGH_LOW.c(h, o, 0, !0);
           h = n[0];
           var c = h - o;
           for (s = i; r > s; s++) {
@@ -4900,7 +4897,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             c > 0 &&
             s.customArr.push({
               v: c,
-              color: s.param[l].color || "#" + utils_util.randomColor(),
+              color: s.param[l].color || "#" + util.randomColor(),
               prop: i + c,
               idct: r + c,
               desc: h
@@ -4920,7 +4917,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       var r = this.gdsd(i);
       this.oriArr = r;
       !this.datas && (this.datas = []);
-      utils_util.ca(this.selfArr);
+      util.ca(this.selfArr);
       for (
         var a = s.name.toLowerCase(),
           h = r.length,
@@ -4963,7 +4960,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               ((e[o] = this.selfArr[s][o]), e[o] > h && (h = e[o]));
         }
         0 > h && (h = 0);
-        var l = utils_util.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
+        var l = util.xh5_ADJUST_HIGH_LOW.c(h, 0, 0, !0);
         h = l[0];
         var n;
         for (s = i; r > s; s++) {
@@ -5093,7 +5090,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 break;
               }
             if (!h) {
-              if (!utils_util.isFunc(PCHART_MAP[s])) return;
+              if (!util.isFunc(PCHART_MAP[s])) return;
               h = new PCHART_MAP[s](cfg, chartOptions, o);
               h.asPChart = !0;
               pchartList.push(h);
@@ -5203,7 +5200,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         for (var t = pchartList.length; t--; ) removePChart(pchartList[t], !0);
       };
       this.createChart = function(i, r) {
-        !utils_util.isArr(i) && (i = [i]);
+        !util.isArr(i) && (i = [i]);
         for (var a = 0, s = i.length; s > a; a++) addPChart(i[a]);
         cb(!0, r);
       };
@@ -5215,7 +5212,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               name: pchartList[a].name
             });
         }
-        !utils_util.isArr(i) && (i = [i]);
+        !util.isArr(i) && (i = [i]);
         for (var s = 0, e = i.length; e > s; s++) removePChart(i[s]);
         cb();
       };
@@ -5253,11 +5250,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             },
             g
           );
-          utils_util.sudaLog();
+          util.sudaLog();
           tt.show(r);
         } else {
           var a = cfg.custom.indicatorpanel_url;
-          usrObj.ssl && (a = utils_util.getSUrl(a, !0));
+          usrObj.ssl && (a = util.getSUrl(a, !0));
           tt = new Q(
             {
               url: a,
@@ -5368,7 +5365,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             var h = getExistTechChart(techName);
             if (!h) {
               var chartf = allAvailableChartsMap[techName];
-              if (!utils_util.isFunc(chartf)) return;
+              if (!util.isFunc(chartf)) return;
               if (chartf === BLANKCTN && r) {
                 h = r;
                 h.wrap.style.display = "";
@@ -5461,7 +5458,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           rmTChart(techChartList[t], !0);
       };
       this.createChart = function(i, r) {
-        !utils_util.isArr(i) && (i = [i]);
+        !util.isArr(i) && (i = [i]);
         for (var a = 0, s = i.length; s > a; a++) addTChart(i[a]);
         cb(!0, r, i);
       };
@@ -5473,7 +5470,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               name: techChartList[r].name
             });
         }
-        !utils_util.isArr(i) && (i = [i]);
+        !util.isArr(i) && (i = [i]);
         for (var a = 0, s = i.length; s > a; a++) rmTChart(i[a]);
         cb(!0);
       };
@@ -5490,12 +5487,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       initMgr = options.initMgr,
       rt = [],
       st = function(i, div, offsetX, offsetY, event) {
-        !utils_util.$CONTAINS(div, iMgr.iHLineO.body) &&
+        !util.$CONTAINS(div, iMgr.iHLineO.body) &&
           div.appendChild(iMgr.iHLineO.body);
         if (i.datas) {
           var h = i.labelMaxP - (offsetY / i.h) * (i.labelMaxP - i.labelMinP);
           if (i.nu) {
-            var o = utils_util.strUtil.nu(i.labelMaxP);
+            var o = util.strUtil.nu(i.labelMaxP);
             h /= o[0];
           }
           iMgr.iToD({
@@ -5589,10 +5586,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             pt
           );
           tt.show(r);
-          utils_util.sudaLog();
+          util.sudaLog();
         } else {
           var a = cfg.custom.indicatorpanel_url;
-          usrObj.ssl && (a = utils_util.getSUrl(a, !0));
+          usrObj.ssl && (a = util.getSUrl(a, !0));
           tt = new Q(
             {
               url: a,
@@ -5702,7 +5699,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       },
       m = function() {
         o ||
-          ((o = utils_util.iframer({
+          ((o = util.iframer({
             attribute: {
               id: s,
               src: i.url
@@ -5737,7 +5734,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             }),
             "*"
           );
-        utils_util.stc(["inc", i.name].join("_"));
+        util.stc(["inc", i.name].join("_"));
       }
     };
     this.show = function(i) {
@@ -5765,23 +5762,23 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           a +
           "px";
         o.style.display = "";
-        utils_util.suda("show_indicator_param");
+        util.suda("show_indicator_param");
       }
     };
     m();
   }
   var tt,
-    oc = utils_util.oc,
-    $C = utils_util.$C,
-    fBind = utils_util.fBind,
-    xh5_EvtUtil = utils_util.xh5_EvtUtil,
+    oc = util.oc,
+    $C = util.$C,
+    fBind = util.fBind,
+    xh5_EvtUtil = util.xh5_EvtUtil,
     xh5_ibPainter = utils_painter.xh5_ibPainter,
     xh5_Canvas = utils_painter.xh5_Canvas,
-    xh5_PosUtil = utils_util.xh5_PosUtil,
-    dateUtil = utils_util.dateUtil,
-    bridge = utils_util.bridge,
-    colorPicker = utils_util.colorPicker,
-    HQ_DOMAIN = utils_util.HQ_DOMAIN,
+    xh5_PosUtil = util.xh5_PosUtil,
+    dateUtil = util.dateUtil,
+    bridge = util.bridge,
+    colorPicker = util.colorPicker,
+    HQ_DOMAIN = util.HQ_DOMAIN,
     ft = [
       "VOLUME",
       "MACD",
@@ -5921,16 +5918,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           xh5_EvtUtil.removeHandler(window, "mouseup", c),
           xh5_EvtUtil.removeHandler(l, "touchmove", n),
           xh5_EvtUtil.removeHandler(l, "touchend", c),
-          utils_util.suda("indicator_reheight");
+          util.suda("indicator_reheight");
       },
       d = function(i) {
         (a = isNaN(i.pageY) ? i.offsetY : i.pageY),
-          utils_util.xh5_deviceUtil.istd
+          util.xh5_deviceUtil.istd
             ? (xh5_EvtUtil.addHandler(l, "touchend", c),
               xh5_EvtUtil.addHandler(l, "touchmove", n))
             : (xh5_EvtUtil.addHandler(window, "mouseup", c),
               xh5_EvtUtil.addHandler(window, "mousemove", n),
-              utils_util.xh5_deviceUtil.allowt &&
+              util.xh5_deviceUtil.allowt &&
                 (xh5_EvtUtil.addHandler(l, "touchend", c),
                 xh5_EvtUtil.addHandler(l, "touchmove", n)));
       },
@@ -5942,10 +5939,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (l.style.opacity = h),
           (l.style.zIndex = s.cfg.PARAM.I_Z_INDEX + 2),
           (l.style.paddingTop = "3px"),
-          utils_util.xh5_deviceUtil.istd
+          util.xh5_deviceUtil.istd
             ? xh5_EvtUtil.addHandler(l, "touchstart", d)
             : (xh5_EvtUtil.addHandler(l, "mousedown", d),
-              utils_util.xh5_deviceUtil.allowt &&
+              util.xh5_deviceUtil.allowt &&
                 xh5_EvtUtil.addHandler(l, "touchstart", d),
               xh5_EvtUtil.addHandler(l, "mouseover", function() {
                 l.style.opacity = 1;
@@ -5996,10 +5993,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (e.style.color = "#000"),
           (e.style.opacity = s),
           (e.style.zIndex = a.cfg.PARAM.I_Z_INDEX + 2),
-          utils_util.xh5_deviceUtil.istd
+          util.xh5_deviceUtil.istd
             ? xh5_EvtUtil.addHandler(e, "touchend", h)
             : (xh5_EvtUtil.addHandler(e, "click", h),
-              utils_util.xh5_deviceUtil.allowt &&
+              util.xh5_deviceUtil.allowt &&
                 xh5_EvtUtil.addHandler(e, "touchend", h),
               xh5_EvtUtil.addHandler(e, "mouseover", function() {
                 e.style.opacity = 1;
@@ -6026,7 +6023,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   techchart.prototype.ic = function(i) {
     var r = this.proxyCfg.iTo;
     (this.h = isNaN(i.h) ? this.cfg.DIMENSION.h_k : i.h),
-      (this.customArr = utils_util.clone(this.DEFAULT_ARR, null)),
+      (this.customArr = util.clone(this.DEFAULT_ARR, null)),
       (this.wrap = $C("div")),
       this.selfCfg.ctnId && (this.wrap.id = this.selfCfg.ctnId),
       (this.wrap.style.fontSize = this.wrap.style.lineHeight =
@@ -6136,9 +6133,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           .replace("$cb", "var%20" + e + "=")
           .replace("$from", r)
           .replace("$to", a);
-      this.proxyCfg.usrObj.ssl && (h = utils_util.getSUrl(h, !0));
+      this.proxyCfg.usrObj.ssl && (h = util.getSUrl(h, !0));
       var o = this;
-      utils_util.load(h, function() {
+      util.load(h, function() {
         var i = window[e];
         (window[e] = null),
           o.urlData ||
@@ -6176,7 +6173,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         A.date = void 0;
         for (n in A)
           A.hasOwnProperty(n) &&
-            (utils_util.isDate(u[n])
+            (util.isDate(u[n])
               ? ((p[n] = u[n]), (v[n] = u[n]))
               : ((p[n] = 1 * u[n]), (v[n] = 1 * u[n])));
         if (1 == f) c.push(p), d.push(v);
@@ -6186,15 +6183,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               dateUtil.gw(a[l - 1].date, u.date) || (c.push(p), (p = {}));
             for (n in A)
               A.hasOwnProperty(n) &&
-                (p[n] = utils_util.isDate(u[n])
-                  ? u[n]
-                  : (1 * p[n] || 0) + 1 * u[n]);
+                (p[n] = util.isDate(u[n]) ? u[n] : (1 * p[n] || 0) + 1 * u[n]);
             dateUtil.gm(a[l - 1].date, u.date) || (d.push(v), (v = {}));
             for (n in A)
               A.hasOwnProperty(n) &&
-                (v[n] = utils_util.isDate(u[n])
-                  ? u[n]
-                  : (1 * v[n] || 0) + 1 * u[n]);
+                (v[n] = util.isDate(u[n]) ? u[n] : (1 * v[n] || 0) + 1 * u[n]);
           }
           c.push(p), d.push(v);
         }
@@ -6221,7 +6214,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       if (s) {
         if (!dateUtil.stbd(e.date, i.date))
           return i.date > e.date ? void this.newData(r, i, a) : void 0;
-        if (!utils_util.kUtil.spk(e.time, i.time, "00:00", a))
+        if (!util.kUtil.spk(e.time, i.time, "00:00", a))
           return void this.newData(r, i, a);
       } else if (!dateUtil.stbd(i.date, e.date))
         return i.date > e.date ? void this.newData(r, i, a) : void 0;
@@ -6229,7 +6222,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       for (var h, o = this.customArr.length; o--; ) {
         h = this.customArr[o].prop;
         var l = Number(i[h]);
-        if (utils_util.isNum(i[h]))
+        if (util.isNum(i[h]))
           switch (a) {
             case 167:
             case 168:
@@ -6274,9 +6267,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           .replace("$cb", "var%20" + h + "=")
           .replace("$from", a)
           .replace("$to", s);
-      this.proxyCfg.usrObj.ssl && (o = utils_util.getSUrl(o, !0));
+      this.proxyCfg.usrObj.ssl && (o = util.getSUrl(o, !0));
       var l = this;
-      utils_util.load(o, function() {
+      util.load(o, function() {
         var t = window[h];
         window[h] = null;
         var i = l.udf(t);
@@ -6319,7 +6312,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var a = this.param[i],
           s = Number(a.v);
         (this.customArr[i].v = s > 0 ? s : this.DEFAULT_ARR[i].v),
-          (this.customArr[i].color = utils_util.isColor(a.color)
+          (this.customArr[i].color = util.isColor(a.color)
             ? a.color
             : this.DEFAULT_ARR[i].color);
       }
@@ -6328,9 +6321,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     var a = this.sname || this.name,
       s = !1;
     if (
-      (i
-        ? ((pt[a] = i), utils_util.stc("np_" + a, i))
-        : ((s = !0), (i = pt[a])),
+      (i ? ((pt[a] = i), util.stc("np_" + a, i)) : ((s = !0), (i = pt[a])),
       (this.param = i),
       this.generateSettings(),
       this.genIndicator(
@@ -6514,7 +6505,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         o = (this.h * (a - e)) / s,
         l = (this.h * (a - h)) / s,
         n = l - o;
-      (i.fillStyle = utils_util.hex2dec(this.customArr[0].color, 0.2)),
+      (i.fillStyle = util.hex2dec(this.customArr[0].color, 0.2)),
         i.fillRect(0, o, this.cfg.DIMENSION.w_k, n);
     }
     var c = (this.h * (isNaN(this.vaObj.glv) ? a / 2 : a - this.vaObj.glv)) / s;
@@ -6541,8 +6532,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       var r = new xh5_Canvas(),
         a = r.g,
         o = s.cfg.datas.isT;
-      if (((this.canvas = r.canvas), utils_util.isFunc(s.proxyCfg.onClkTT))) {
-        var l = utils_util.xh5_deviceUtil.istd ? "touchend" : "click";
+      if (((this.canvas = r.canvas), util.isFunc(s.proxyCfg.onClkTT))) {
+        var l = util.xh5_deviceUtil.istd ? "touchend" : "click";
         xh5_EvtUtil.addHandler(
           this.canvas,
           l,
@@ -6587,7 +6578,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               switch (
                 ((w =
                   (_.t ? _.t + ": " : "") +
-                  (isNaN(_.n) ? "--" : utils_util.strUtil.ps(_.n, h.nfloat))),
+                  (isNaN(_.n) ? "--" : util.strUtil.ps(_.n, h.nfloat))),
                 s.name)
               ) {
                 case "TFLOW":
@@ -6656,8 +6647,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       var e = $C("div");
       r.appendChild(a), r.appendChild(e);
       var o = r.style;
-      utils_util.isFunc(s.proxyCfg.onClkTT) &&
-        (utils_util.xh5_deviceUtil.istd
+      util.isFunc(s.proxyCfg.onClkTT) &&
+        (util.xh5_deviceUtil.istd
           ? xh5_EvtUtil.addHandler(
               r,
               "click",
@@ -6668,7 +6659,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               "click",
               fBind(s.proxyCfg.onClkTT, null, s)
             ),
-            utils_util.xh5_deviceUtil.allowt &&
+            util.xh5_deviceUtil.allowt &&
               xh5_EvtUtil.addHandler(
                 r,
                 "touchend",
@@ -6715,7 +6706,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                       b += "%</span>";
                   }
                   if (((A = (v.t ? v.t + ": " : "") + b), !isNaN(v.n))) {
-                    A = A.replace("--", utils_util.strUtil.ps(v.n, h.nfloat));
+                    A = A.replace("--", util.strUtil.ps(v.n, h.nfloat));
                     var y;
                     (y =
                       "DPDK" == s.name || "SAR" == v.t
@@ -6740,18 +6731,16 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                     "SUNSPOT" === v.t
                       ? v.n
                         ? (v.t ? v.t + ": " : "") +
-                          (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, 0)) +
+                          (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, 0)) +
                           "级"
                         : ""
                       : (v.t ? v.t + ": " : "") +
-                        (isNaN(v.n)
-                          ? "--"
-                          : utils_util.strUtil.ps(v.n, h.nfloat));
+                        (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, h.nfloat));
                   break;
                 default:
                   (A =
                     (v.t ? v.t + ": " : "") +
-                    (isNaN(v.n) ? "--" : utils_util.strUtil.ps(v.n, h.nfloat))),
+                    (isNaN(v.n) ? "--" : util.strUtil.ps(v.n, h.nfloat))),
                     "TFLOW" == s.name && m == r.length - 1 && (A += "元");
               }
               (p = 11),
@@ -6809,8 +6798,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   };
   techchart.prototype.rfs = function() {
     this.selfCfg.allowrfs
-      ? (this.titleO && utils_util.domGc(this.titleO.canvas),
-        utils_util.domGc(this.wrap),
+      ? (this.titleO && util.domGc(this.titleO.canvas),
+        util.domGc(this.wrap),
         clearInterval(this.updateId))
       : (this.wrap.style.display = "none");
   };
@@ -7105,54 +7094,54 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       operateArr: operateArr
     };
   })();
-  utils_util.fInherit(BLANKCTN, techchart),
-    utils_util.fInherit(ADL, techchart),
-    utils_util.fInherit(ASI, techchart),
-    utils_util.fInherit(BBIBOLL, techchart),
-    utils_util.fInherit(BF, techchart),
-    utils_util.fInherit(BIAS, techchart),
-    utils_util.fInherit(BOLL, techchart),
-    utils_util.fInherit(BRAR, techchart),
-    utils_util.fInherit(CCI, techchart),
-    utils_util.fInherit(CHIPCOST, techchart),
-    utils_util.fInherit(DITC, techchart),
-    utils_util.fInherit(DMA, techchart),
-    utils_util.fInherit(DMI, techchart),
-    utils_util.fInherit(DPDK, techchart),
-    utils_util.fInherit(DPDKS, DPDK),
-    utils_util.fInherit(EMV, techchart),
-    utils_util.fInherit(EWI, techchart),
-    utils_util.fInherit(EXPMA, techchart),
-    utils_util.fInherit(TECHFLOW, techchart),
-    utils_util.fInherit(KDJ, techchart),
-    utils_util.fInherit(KFLOW, techchart),
-    utils_util.fInherit(KKFLOW, techchart),
-    utils_util.fInherit(KGSTRADE, techchart),
-    utils_util.fInherit(SUNSPOT, techchart),
-    utils_util.fInherit(LB, techchart),
-    utils_util.fInherit(MA, techchart),
-    utils_util.fInherit(MACD, techchart),
-    utils_util.fInherit(OBV, techchart),
-    utils_util.fInherit(PKFLOW, KFLOW),
-    utils_util.fInherit(POSITION, techchart),
-    utils_util.fInherit(Press, techchart),
-    utils_util.fInherit(PSY, techchart),
-    utils_util.fInherit(RGL, techchart),
-    utils_util.fInherit(ROC, techchart),
-    utils_util.fInherit(RSI, techchart),
-    utils_util.fInherit(SAR, techchart),
-    utils_util.fInherit(TTOPTRADE, techchart),
-    utils_util.fInherit(TFLOW, techchart),
-    utils_util.fInherit(TOR, techchart),
-    utils_util.fInherit(TRIX, techchart),
-    utils_util.fInherit(TTFLOW, TFLOW),
-    utils_util.fInherit(TZY, techchart),
-    utils_util.fInherit(TZYS, TZY),
-    utils_util.fInherit(VR, techchart),
-    utils_util.fInherit(WR, techchart),
-    utils_util.fInherit(WVAD, techchart),
-    utils_util.fInherit(VOLUME, techchart),
-    utils_util.fInherit(TVOL, techchart);
+  util.fInherit(BLANKCTN, techchart),
+    util.fInherit(ADL, techchart),
+    util.fInherit(ASI, techchart),
+    util.fInherit(BBIBOLL, techchart),
+    util.fInherit(BF, techchart),
+    util.fInherit(BIAS, techchart),
+    util.fInherit(BOLL, techchart),
+    util.fInherit(BRAR, techchart),
+    util.fInherit(CCI, techchart),
+    util.fInherit(CHIPCOST, techchart),
+    util.fInherit(DITC, techchart),
+    util.fInherit(DMA, techchart),
+    util.fInherit(DMI, techchart),
+    util.fInherit(DPDK, techchart),
+    util.fInherit(DPDKS, DPDK),
+    util.fInherit(EMV, techchart),
+    util.fInherit(EWI, techchart),
+    util.fInherit(EXPMA, techchart),
+    util.fInherit(TECHFLOW, techchart),
+    util.fInherit(KDJ, techchart),
+    util.fInherit(KFLOW, techchart),
+    util.fInherit(KKFLOW, techchart),
+    util.fInherit(KGSTRADE, techchart),
+    util.fInherit(SUNSPOT, techchart),
+    util.fInherit(LB, techchart),
+    util.fInherit(MA, techchart),
+    util.fInherit(MACD, techchart),
+    util.fInherit(OBV, techchart),
+    util.fInherit(PKFLOW, KFLOW),
+    util.fInherit(POSITION, techchart),
+    util.fInherit(Press, techchart),
+    util.fInherit(PSY, techchart),
+    util.fInherit(RGL, techchart),
+    util.fInherit(ROC, techchart),
+    util.fInherit(RSI, techchart),
+    util.fInherit(SAR, techchart),
+    util.fInherit(TTOPTRADE, techchart),
+    util.fInherit(TFLOW, techchart),
+    util.fInherit(TOR, techchart),
+    util.fInherit(TRIX, techchart),
+    util.fInherit(TTFLOW, TFLOW),
+    util.fInherit(TZY, techchart),
+    util.fInherit(TZYS, TZY),
+    util.fInherit(VR, techchart),
+    util.fInherit(WR, techchart),
+    util.fInherit(WVAD, techchart),
+    util.fInherit(VOLUME, techchart),
+    util.fInherit(TVOL, techchart);
   var logger = (function() {
     var auth = function(t) {
       var i = function() {
@@ -7214,17 +7203,18 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       var a = i.name,
         s = i.param,
         e = r ? "r_" : "s_";
-      utils_util.stc(e + a, s);
+      util.stc(e + a, s);
     };
     return {
       doStc: doStc,
       auth: auth
     };
   })();
+
   return new (function() {
     this.VER = "6.6.5";
     this.get = function(config, callback) {
-      utils_util.isFunc(callback) &&
+      util.isFunc(callback) &&
         callback({
           tChart: createTChart,
           pChart: create_pChart

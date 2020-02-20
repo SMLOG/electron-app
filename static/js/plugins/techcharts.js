@@ -185,13 +185,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     ];
     techchart.call(this, i, a);
     this.name = "ASI";
-    var s = bt.calcREF,
-      e = bt.calcABS,
-      h = bt.calcMAX,
-      o = bt.calcSUM,
-      l = bt.calcMA,
-      n = bt.getArr,
-      c = bt.operateArr;
+    var s = cacFuns.calcREF,
+      e = cacFuns.calcABS,
+      h = cacFuns.calcMAX,
+      o = cacFuns.calcSUM,
+      l = cacFuns.calcMA,
+      n = cacFuns.getArr,
+      c = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       for (
         var r = this.customArr,
@@ -262,10 +262,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     techchart.call(this, i, a);
     this.name = "BBIBOLL";
     "k" != a.type && (this.sname = "T_" + this.name);
-    var s = bt.calcMA,
-      e = bt.calcSTD,
-      h = bt.getArr,
-      o = bt.operateArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.calcSTD,
+      h = cacFuns.getArr,
+      o = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -305,8 +305,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     ];
     techchart.call(this, i, a);
     this.name = "BF";
-    var s = bt.calcMA,
-      e = bt.getArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -339,8 +339,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           var h,
             o,
             l,
-            n = bt.calcREF,
-            c = bt.getArr,
+            n = cacFuns.calcREF,
+            c = cacFuns.getArr,
             d = c(this.selfArr, "m"),
             f = n(d, 1),
             u = this.viewState.start,
@@ -408,9 +408,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       max: 0 / 0,
       glv: 0
     };
-    var s = bt.calcMA,
-      e = bt.getArr,
-      h = bt.operateArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.getArr,
+      h = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -457,10 +457,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     techchart.call(this, i, a);
     this.name = "BOLL";
     "k" != a.type && (this.sname = "T_" + this.name);
-    var s = bt.getArr,
-      e = bt.calcMA,
-      h = bt.calcSTD,
-      o = bt.operateArr;
+    var s = cacFuns.getArr,
+      e = cacFuns.calcMA,
+      h = cacFuns.calcSTD,
+      o = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -502,11 +502,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.vaObj = {
       glv: 150
     };
-    var s = bt.calcSUM,
-      e = bt.calcMAX,
-      h = bt.calcREF,
-      o = bt.getArr,
-      l = bt.operateArr;
+    var s = cacFuns.calcSUM,
+      e = cacFuns.calcMAX,
+      h = cacFuns.calcREF,
+      o = cacFuns.getArr,
+      l = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -548,10 +548,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       lower: -100,
       glv: 0
     };
-    var s = bt.calcAVEDEV,
-      e = bt.calcMA,
-      h = bt.operateArr,
-      o = bt.getArr;
+    var s = cacFuns.calcAVEDEV,
+      e = cacFuns.calcMA,
+      h = cacFuns.operateArr,
+      o = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -847,9 +847,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     this.vaObj = {
       glv: 0
     };
-    var s = bt.calcMA,
-      e = bt.operateArr,
-      h = bt.getArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.operateArr,
+      h = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = h(r, this.tkProp.close),
@@ -898,12 +898,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     ]),
       techchart.call(this, i, a),
       (this.name = "DMI");
-    var s = bt.calcEMA,
-      e = bt.calcMAX,
-      h = bt.calcABS,
-      o = bt.calcREF,
-      l = bt.getArr,
-      n = bt.operateArr;
+    var s = cacFuns.calcEMA,
+      e = cacFuns.calcMAX,
+      h = cacFuns.calcABS,
+      o = cacFuns.calcREF,
+      l = cacFuns.getArr,
+      n = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       for (
         var r,
@@ -974,9 +974,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       techchart.call(this, i, a),
       (this.name = "DPDK"),
       (this.alias = "大盘多空");
-    var o = bt.getArr,
-      l = bt.calcSUM,
-      n = bt.operateArr;
+    var o = cacFuns.getArr,
+      l = cacFuns.calcSUM,
+      n = cacFuns.operateArr;
     (this.initAndCalcAll = function(i) {
       var r = 48,
         a = o(i, "close"),
@@ -1014,8 +1014,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               o = 0,
               l = 0,
               n = this.selfArr[t].flag,
-              c = bt.calcA,
-              d = bt.getArr,
+              c = cacFuns.calcA,
+              d = cacFuns.getArr,
               f = 10,
               u = t;
             i > u;
@@ -1252,10 +1252,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.vaObj = {
         glv: 0
       });
-    var s = bt.calcMA,
-      e = bt.calcREF,
-      h = bt.getArr,
-      o = bt.operateArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.calcREF,
+      h = cacFuns.getArr,
+      o = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -1459,8 +1459,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           }
         ]);
     };
-    var l = bt.getArr,
-      n = bt.calcEMA;
+    var l = cacFuns.getArr,
+      n = cacFuns.calcEMA;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i);
       (this.oriArr = r),
@@ -1669,11 +1669,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       upper: 80,
       lower: 20
     };
-    var s = bt.calcSMA,
-      e = bt.calcLLV,
-      h = bt.calcHHV,
-      o = bt.operateArr,
-      l = bt.getArr;
+    var s = cacFuns.calcSMA,
+      e = cacFuns.calcLLV,
+      h = cacFuns.calcHHV,
+      o = cacFuns.operateArr,
+      l = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -2715,9 +2715,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "k" != a.type && (this.sname = "T_" + this.name);
     var s = "#b82c0c",
       e = "#2ec196",
-      ema = bt.calcEMA,
-      operateArr = bt.operateArr,
-      getArr = bt.getArr;
+      ema = cacFuns.calcEMA,
+      operateArr = cacFuns.operateArr,
+      getArr = cacFuns.getArr;
     (this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         dif12Day = this.customArr[0].v,
@@ -3261,10 +3261,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.vaObj = {
         glv: 0
       });
-    var s = bt.calcMA,
-      e = bt.calcREF,
-      h = bt.getArr,
-      o = bt.operateArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.calcREF,
+      h = cacFuns.getArr,
+      o = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -3314,12 +3314,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         upper: 70,
         lower: 30
       });
-    var s = bt.calcREF,
-      e = bt.calcMAX,
-      h = bt.calcSMA,
-      o = bt.calcABS,
-      l = bt.operateArr,
-      n = bt.getArr;
+    var s = cacFuns.calcREF,
+      e = cacFuns.calcMAX,
+      h = cacFuns.calcSMA,
+      o = cacFuns.calcABS,
+      l = cacFuns.operateArr,
+      n = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -3380,7 +3380,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     ]),
       techchart.call(this, i, a),
       (this.name = "SAR");
-    var h = bt.calcSAR;
+    var h = cacFuns.calcSAR;
     (this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = h(i, r[0].v, r[1].v, r[2].v);
@@ -4033,11 +4033,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       techchart.call(this, i, a),
       (this.name = "TRIX"),
       "k" != a.type && (this.sname = "T_" + this.name);
-    var s = bt.calcMA,
-      e = bt.calcEMA,
-      h = bt.getArr,
-      o = bt.operateArr,
-      l = bt.calcREF;
+    var s = cacFuns.calcMA,
+      e = cacFuns.calcEMA,
+      h = cacFuns.getArr,
+      o = cacFuns.operateArr,
+      l = cacFuns.calcREF;
     this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         a = this.customArr[0].v,
@@ -4237,8 +4237,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             var a = 0,
               s = 0,
               o = this.selfArr[t].flag,
-              l = bt.calcA,
-              n = bt.getArr,
+              l = cacFuns.calcA,
+              n = cacFuns.getArr,
               c = 10,
               d = t;
             i > d;
@@ -4525,11 +4525,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         lower: 70,
         glv: 350
       });
-    var s = bt.calcMA,
-      e = bt.calcSUM,
-      h = bt.calcREF,
-      o = bt.getArr,
-      l = bt.operateArr;
+    var s = cacFuns.calcMA,
+      e = cacFuns.calcSUM,
+      h = cacFuns.calcREF,
+      o = cacFuns.getArr,
+      l = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       for (
         var r = this.gdsd(i),
@@ -4591,10 +4591,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         upper: 80,
         lower: 20
       });
-    var s = bt.calcHHV,
-      e = bt.calcLLV,
-      h = bt.getArr,
-      o = bt.operateArr;
+    var s = cacFuns.calcHHV,
+      e = cacFuns.calcLLV,
+      h = cacFuns.getArr,
+      o = cacFuns.operateArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -4635,10 +4635,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.vaObj = {
         glv: 0
       });
-    var s = bt.calcSUM,
-      e = bt.calcMA,
-      h = bt.operateArr,
-      o = bt.getArr;
+    var s = cacFuns.calcSUM,
+      e = cacFuns.calcMA,
+      h = cacFuns.operateArr,
+      o = cacFuns.getArr;
     this.initAndCalcAll = function(i) {
       var r = this.customArr,
         a = r[0].v,
@@ -5059,7 +5059,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         RGL: RGL,
         TECHFLOW: TECHFLOW
       };
-      yt.auth(PCHART_MAP);
+      logger.auth(PCHART_MAP);
       var pchartList = [],
         a = !0,
         e = function() {
@@ -5100,7 +5100,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             }
             h.newParam(chart.param);
             e();
-            yt.doStc(chart);
+            logger.doStc(chart);
           }
         }
       };
@@ -5115,7 +5115,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 h.rfs();
                 h.getFromToM.reset(h);
                 !i && e();
-                return void yt.doStc(t, !0);
+                return void logger.doStc(t, !0);
               }
           }
         }
@@ -5334,7 +5334,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         TTOPTRADE: TTOPTRADE,
         BLANKCTN: BLANKCTN
       };
-      yt.auth(allAvailableChartsMap);
+      logger.auth(allAvailableChartsMap);
       var r;
       techChartList = [];
       let o = function() {
@@ -5382,7 +5382,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             }
             h.newParam(chart.param);
             o();
-            yt.doStc(chart);
+            logger.doStc(chart);
           }
         }
       };
@@ -5397,7 +5397,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 s.rfs();
                 s.getFromToM.reset(s);
                 !i && o();
-                return void yt.doStc(t, !0);
+                return void logger.doStc(t, !0);
               }
           }
         }
@@ -6814,7 +6814,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         clearInterval(this.updateId))
       : (this.wrap.style.display = "none");
   };
-  var bt = (function() {
+  var cacFuns = (function() {
     function t(t) {
       return null === t
         ? "Null"
@@ -6850,8 +6850,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       o = function(t) {
         for (var i = 0, r = t.length; r--; ) i += t[r];
         return i;
-      },
-      calcMA = function(t, i) {
+      };
+    let calcMA = function(t, i) {
         for (var r, a = [], s = 0, e = 0, h = t.length; h > s; s++)
           t[s] && (e += t[s]),
             s >= i - 1
@@ -6874,8 +6874,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         for (var r = [], a = 0; i > a; a++) r.push(null);
         for (var s = t.length; s > a; a++) r.push(t[a - i]);
         return r;
-      },
-      calcSAR = function(t, i, r, a) {
+      };
+    let calcSAR = function(t, i, r, a) {
         function s(t) {
           if (!(t >= n))
             if (
@@ -7153,69 +7153,69 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     utils_util.fInherit(WVAD, techchart),
     utils_util.fInherit(VOLUME, techchart),
     utils_util.fInherit(TVOL, techchart);
-  var yt = (function() {
+  var logger = (function() {
     var auth = function(t) {
-        var i = function() {
-            for (
-              var t,
-                linkItem,
-                r = {
-                  BF: BF
+      var i = function() {
+          for (
+            var t,
+              linkItem,
+              r = {
+                BF: BF
+              },
+              links = [
+                {
+                  h: "http://127.0.0.1",
+                  a: r
                 },
-                links = [
-                  {
-                    h: "http://127.0.0.1",
-                    a: r
-                  },
-                  {
-                    h: "http://localhost",
-                    a: r
-                  },
-                  {
-                    h: "http://xuan.sina.com.cn",
-                    a: r
-                  },
-                  {
-                    h: "http://tmp.sina.com.cn",
-                    a: r
-                  },
-                  {
-                    h: "https://touzi.sina.cn/",
-                    a: r
-                  },
-                  {
-                    h: "http://touzi.sina.cn/",
-                    a: r
-                  },
-                  {
-                    h: "https://touzi.sina.com.cn/",
-                    a: r
-                  },
-                  {
-                    h: "http://touzi.sina.com.cn/",
-                    a: r
-                  }
-                ],
-                href = document.location.href,
-                e = links.length;
-              e--;
+                {
+                  h: "http://localhost",
+                  a: r
+                },
+                {
+                  h: "http://xuan.sina.com.cn",
+                  a: r
+                },
+                {
+                  h: "http://tmp.sina.com.cn",
+                  a: r
+                },
+                {
+                  h: "https://touzi.sina.cn/",
+                  a: r
+                },
+                {
+                  h: "http://touzi.sina.cn/",
+                  a: r
+                },
+                {
+                  h: "https://touzi.sina.com.cn/",
+                  a: r
+                },
+                {
+                  h: "http://touzi.sina.com.cn/",
+                  a: r
+                }
+              ],
+              href = document.location.href,
+              e = links.length;
+            e--;
 
-            )
-              if (((linkItem = links[e]), 0 === href.indexOf(linkItem.h))) {
-                t = linkItem.a;
-                break;
-              }
-            return t;
-          },
-          r = i();
-        if (r && t) for (var a in r) r.hasOwnProperty(a) && (t[a] = r[a]);
-      },
-      doStc = function(i, r) {
-        var a = i.name,
-          s = i.param,
-          e = r ? "r_" : "s_";
-        utils_util.stc(e + a, s);
-      };
+          )
+            if (((linkItem = links[e]), 0 === href.indexOf(linkItem.h))) {
+              t = linkItem.a;
+              break;
+            }
+          return t;
+        },
+        r = i();
+      if (r && t) for (var a in r) r.hasOwnProperty(a) && (t[a] = r[a]);
+    };
+    let doStc = function(i, r) {
+      var a = i.name,
+        s = i.param,
+        e = r ? "r_" : "s_";
+      utils_util.stc(e + a, s);
+    };
     return {
       doStc: doStc,
       auth: auth

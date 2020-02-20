@@ -125,11 +125,7 @@ export async function callFun(item) {
   let techDatas = await getTechDatas(item);
 
   for (let name in techMap) {
-    item[`_${name}`] = techMap[name]({
-      item: item,
-      kd: techDatas.kd,
-      kw: techDatas.kw,
-      km: techDatas.km
-    });
+    techDatas.item = item;
+    item[`_${name}`] = techMap[name](techDatas);
   }
 }

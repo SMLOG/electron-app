@@ -2650,7 +2650,7 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
   }
 
   function MACD(i, a) {
-    (this.DEFAULT_ARR = [
+    this.DEFAULT_ARR = [
       {
         v: 12,
         color: "#5465ff",
@@ -2669,16 +2669,16 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
         prop: "bar",
         idct: "MACD"
       }
-    ]),
-      techchart.call(this, i, a),
-      (this.name = "MACD"),
-      "k" != a.type && (this.sname = "T_" + this.name);
+    ];
+    techchart.call(this, i, a);
+    this.name = "MACD";
+    "k" != a.type && (this.sname = "T_" + this.name);
     var s = "#b82c0c",
       e = "#2ec196",
       ema = cacFuns.calcEMA,
       operateArr = cacFuns.operateArr,
       getArr = cacFuns.getArr;
-    (this.initAndCalcAll = function(i) {
+    this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         dif12Day = this.customArr[0].v,
         dea26Day = this.customArr[1].v,
@@ -2701,63 +2701,61 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
           bar: f[u]
         }),
           (this.selfArr[u][At] = r[u].volume < 0);
-    }),
-      (this.draw = function(t, r) {
-        if (((this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r), this.datas)) {
-          var h = this.line;
-          h.clear(!0, i.PARAM.getHd());
-          var o, l;
-          "k" == a.type
-            ? ((o = i.DIMENSION.w_k), (l = i.PARAM.minCandleNum))
-            : ((o = i.DIMENSION.w_t), (l = 1));
+    };
+    this.draw = function(t, r) {
+      if (((this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r), this.datas)) {
+        var h = this.line;
+        h.clear(!0, i.PARAM.getHd());
+        var o, l;
+        "k" == a.type
+          ? ((o = i.DIMENSION.w_k), (l = i.PARAM.minCandleNum))
+          : ((o = i.DIMENSION.w_t), (l = 1));
+        for (
+          var n,
+            c,
+            d = this.datas.length,
+            f = o / Math.max(d, l),
+            u = "k" == a.type ? this.__iOffsetX - f * mt : f * gt,
+            p = 0;
+          2 > p;
+          p++
+        ) {
+          var v = this.customArr[p].prop + "y";
           for (
-            var n,
-              c,
-              d = this.datas.length,
-              f = o / Math.max(d, l),
-              u = "k" == a.type ? this.__iOffsetX - f * mt : f * gt,
-              p = 0;
-            2 > p;
-            p++
-          ) {
-            var v = this.customArr[p].prop + "y";
-            for (
-              c = u,
-                this.line.newStyle(this.customArr[p].color, !0, 1.3),
-                n = 0;
-              d > n;
-              n++
-            )
-              0 == n
-                ? this.line.moveTo(c, this.datas[n][v])
-                : this.line.lineTo(c, this.datas[n][v]),
-                (c += f);
-            this.line.stroke();
-          }
-          var A,
-            m = (this.labelMaxP / (this.labelMaxP - this.labelMinP)) * this.h;
-          c = u;
-          var g,
-            b = 1;
-          for (h.newStyle(s, !0, b), n = 0; d > n; n++)
-            (A = this.datas[n].bary),
-              m >= A &&
-                ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
+            c = u, this.line.newStyle(this.customArr[p].color, !0, 1.3), n = 0;
+            d > n;
+            n++
+          )
+            0 == n
+              ? this.line.moveTo(c, this.datas[n][v])
+              : this.line.lineTo(c, this.datas[n][v]),
               (c += f);
-          for (h.stroke(), c = u, h.newStyle(e, !0, b), n = 0; d > n; n++)
-            (A = this.datas[n].bary),
-              A > m &&
-                ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
-              (c += f);
-          h.stroke();
-          var y = this.h / 2 - 0.5;
-          h.newStyle(this.cfg.COLOR.GRID, !0, 1),
-            h.moveTo(0, y),
-            h.lineTo(this.cfg.DIMENSION.w_k, y),
-            h.stroke(),
-            h.drawBg(this.__iOffsetX);
+          this.line.stroke();
         }
-      });
+        var A,
+          m = (this.labelMaxP / (this.labelMaxP - this.labelMinP)) * this.h;
+        c = u;
+        var g,
+          b = 1;
+        for (h.newStyle(s, !0, b), n = 0; d > n; n++)
+          (A = this.datas[n].bary),
+            m >= A &&
+              ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
+            (c += f);
+        for (h.stroke(), c = u, h.newStyle(e, !0, b), n = 0; d > n; n++)
+          (A = this.datas[n].bary),
+            A > m &&
+              ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
+            (c += f);
+        h.stroke();
+        var y = this.h / 2 - 0.5;
+        h.newStyle(this.cfg.COLOR.GRID, !0, 1),
+          h.moveTo(0, y),
+          h.lineTo(this.cfg.DIMENSION.w_k, y),
+          h.stroke(),
+          h.drawBg(this.__iOffsetX);
+      }
+    };
   }
 
   function OBV(i, a) {
@@ -5367,7 +5365,7 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
             chart = techChartList[a];
             chart.initAndCalcAll(i);
             // t && chart.update();
-            techs_datas[chart.name] = chart.selfArr;
+            techs_datas[chart.name] = chart.selfArr.slice();
             symbol = chart.symbol;
           }
           return techs_datas;

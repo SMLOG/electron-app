@@ -86,15 +86,16 @@ export async function get5Tdatas(code) {
 }
 window.get5Tdatas = get5Tdatas;
 
-export async function getTech(code) {
+export async function getTech(item) {
   await loadscript;
 
   let tm = await new Promise((resolve, reject) => {
     KKE.api("plugins.techchart.get", "", tchar => {
-      var tm = tchar.tChart({ stockData: {} });
+      var tm = tchar.tChart({});
       tm.createChart({ name: "MACD" });
-      tm.createChart({ name: "kDJ" });
+      //tm.createChart({ name: "kDJ" });
       tm.createChart({ name: "BOLL" });
+      tm.createChart({ name: "MA" });
       console.log(tm);
       resolve(tm);
     });
@@ -102,7 +103,7 @@ export async function getTech(code) {
   let datas = await new Promise((resolve, reject) => {
     KKE.api(
       "datas.k.get",
-      { symbol: code, newthour: "09:00", ssl: true },
+      { symbol: item.code, newthour: "09:00", ssl: true },
       function(d) {
         console.log(d);
         resolve(d);
@@ -110,6 +111,10 @@ export async function getTech(code) {
     );
   });
 
-  return tm.linkData(datas.data.day);
+  return {
+    kd: tm.linkData(datas.data.day),
+    kw: tm.linkData(datas.data.week),
+    km: tm.linkData(datas.data.month)
+  };
 }
 window.getTech = getTech;

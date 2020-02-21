@@ -131,7 +131,7 @@ export async function getCacheData(date, id, callback, mergeData) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
 
-  //console.log(id, cache, callback, mergeData);
+  //console.log(id, cache, callback, mergeData);ZSZZZZ
   if (cache && cache.date && localStore.isShouldRemove(id, cache.date)) {
     await remove(id);
     cache = null;

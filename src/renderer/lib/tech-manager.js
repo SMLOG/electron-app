@@ -1,4 +1,4 @@
-import { getTech as getTechDatas } from "./tech";
+import { getTechDatas } from "./tech";
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&

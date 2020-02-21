@@ -107,7 +107,8 @@ xh5_define(
         this.viewState = viewState;
         var kDb = new (function() {
           var i;
-          var o = {};
+          var DataSources = {};
+          window.DS = DataSources;
           var extraDataObj = {
             rsAmount: void 0
           };
@@ -131,10 +132,11 @@ xh5_define(
                 l ||
                   (id == globalCfg.URLHASH.KD && (i = util.clone(datas, null)),
                   (datas = util.kUtil.adbd(datas, K.get(id), s, !1)));
-              o["k" + id] = datas;
+              DataSources["k" + id] = datas;
               var d = datas.length,
                 u = r ? setting.PARAM.K_CL_NUM : setting.PARAM.defaultCandleNum;
-              (o["k" + id + "v"] = d > u ? d - u : 0), (o["k" + id + "b"] = d);
+              (DataSources["k" + id + "v"] = d > u ? d - u : 0),
+                (DataSources["k" + id + "b"] = d);
             }
           };
           var l = function() {
@@ -165,14 +167,14 @@ xh5_define(
           this.get = function(e) {
             if (util.isStr(e)) {
               var n = l();
-              return o["k" + n + e];
+              return DataSources["k" + n + e];
             }
-            return o["k" + (e || viewState.viewId)];
+            return DataSources["k" + (e || viewState.viewId)];
           };
           this.set = function(e, t) {
             var n = l(),
               a = "k" + n + e;
-            "undefined" != typeof o[a] && (o[a] = t);
+            "undefined" != typeof DataSources[a] && (DataSources[a] = t);
           };
           this.getOriDK = function() {
             return i;
@@ -212,7 +214,7 @@ xh5_define(
             );
           };
           this.gc = function() {
-            o = null;
+            DataSources = null;
             extraDataObj = null;
           };
         })();
@@ -526,7 +528,7 @@ xh5_define(
                 factor: e[t].f
               };
             },
-            r = function(e, a, i, o) {
+            rejustRight = function(e, a, i, o) {
               if (e) {
                 var s,
                   r,
@@ -636,7 +638,7 @@ xh5_define(
                   isMain || kDb.initState(r, s);
               }
             },
-            l = function(t) {
+            loadAndReRight = function(t) {
               var n = globalCfg.URLHASH.gt(viewState.viewId),
                 i = n.dir,
                 l = {
@@ -652,9 +654,9 @@ xh5_define(
                     a = e.data;
                   if (a) {
                     var c = s(a);
-                    c && ((n = !1), r(c.factor, a, i, l.market));
+                    c && ((n = !1), rejustRight(c.factor, a, i, l.market));
                   }
-                  n && r(-828, null, i),
+                  n && rejustRight(-828, null, i),
                     o(t, {
                       viewId: viewState.viewId
                     });
@@ -859,7 +861,9 @@ xh5_define(
                 open: b,
                 close: i
               }),
-                "rek" == t.type && kDb.get(globalCfg.URLHASH.KD) ? l(e) : p(e);
+                "rek" == t.type && kDb.get(globalCfg.URLHASH.KD)
+                  ? loadAndReRight(e)
+                  : p(e);
             };
           this.iInit = function(e) {
             var t = viewState.viewId;
@@ -891,7 +895,7 @@ xh5_define(
                   "msk" == n.type
                     ? d(e)
                     : "rek" == n.type && kDb.get(globalCfg.URLHASH.KD)
-                    ? l(e)
+                    ? loadAndReRight(e)
                     : p(e);
               }
             }

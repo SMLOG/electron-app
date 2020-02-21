@@ -106,6 +106,7 @@ export async function getTech(item) {
   let techId = "tech_1" + item.code;
 
   let itemDatas = await getCacheData(item.date, techId);
+  console.log(moment(item.date).format("YYYY-MM-DD"));
   if (
     itemDatas &&
     itemDatas.kd.datas &&
@@ -116,15 +117,15 @@ export async function getTech(item) {
     for (let j = 0; j < ps.length; j++) {
       let type = ps[j];
       let macd = itemDatas[type].MACD;
-      let i = macd.ema12.length - 2;
-      let ema12 = (macd.ema12[i] * 11) / 13 + (item.now * 2) / 13;
-      let ema26 = (macd.ema26[i] * 25) / 27 + (item.now * 2) / 27;
+      let i = macd.length - 2;
+      let ema12 = (macd[i].ema12 * 11) / 13 + (item.now * 2) / 13;
+      let ema26 = (macd[i].ema26 * 25) / 27 + (item.now * 2) / 27;
 
       let diff = ema12 - ema26;
-      let dea = (macd.dea[i] * 8) / 10 + (diff * 2) / 10;
-      macd.diff[i + 1] = diff;
-      macd.dea[i + 1] = dea;
-      macd.bar[i + 1] = (diff - dea) * 2;
+      let dea = (macd[i].dea * 8) / 10 + (diff * 2) / 10;
+      macd[i + 1].diff = diff;
+      macd[i + 1].dea = dea;
+      macd[i + 1].bar = (diff - dea) * 2;
     }
 
     return itemDatas;
@@ -144,6 +145,8 @@ export async function getTech(item) {
       kw: tm.linkData(datas.data.week),
       km: tm.linkData(datas.data.month)
     };
+    console.log(item.date, techId, ret);
+
     await getCacheData(item.date, techId, null, ret);
     return ret;
   }

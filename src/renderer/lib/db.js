@@ -131,25 +131,29 @@ export async function getCacheData(date, id, callback, mergeData) {
   await openDB(myDB.name, myDB.version);
   let cache = await getCacheItem(id);
 
+  //console.log(id, cache, callback, mergeData);
   if (cache && cache.date && localStore.isShouldRemove(id, cache.date)) {
     await remove(id);
     cache = null;
+    //console.log(`remove ${id}`);
   }
 
   if (
     cache &&
     (!date || (cache.date && date && isNotBefore(cache.date, date)))
   ) {
+    //console.log(mergeData);
     if (mergeData) {
-      Object.assign(cache.data || {}, mergeData);
+      cache.data = Object.assign(cache.data || {}, mergeData);
       await update2Cache(cache);
     }
     return cache.data;
   }
+  //console.log(callback, mergeData);
   if (!callback && !mergeData) return null;
   cache = {};
   if (callback) cache.data = await callback();
-  if (mergeData) Object.assign(cache.data || {}, mergeData);
+  if (mergeData) cache.data = Object.assign(cache.data || {}, mergeData);
   cache.id = id;
   cache.date = new Date();
 

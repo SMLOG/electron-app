@@ -2684,23 +2684,30 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
         dea26Day = this.customArr[1].v,
         bar9Day = this.customArr[2].v,
         closeArr = getArr(r, this.tkProp.close),
-        diff = operateArr(
+        ema12 = ema(closeArr, dif12Day),
+        ema26 = ema(closeArr, dea26Day),
+        diff = operateArr(ema12, ema26, "-"),
+        /*diff = operateArr(
           ema(closeArr, dif12Day),
           ema(closeArr, dea26Day),
           "-"
-        ),
+        ),*/
         dea = ema(diff, bar9Day),
         f = operateArr(operateArr(diff, dea, "-"), 2, "*");
-      (this.oriArr = r),
-        this.datas ? util.ca(this.datas) : (this.datas = []),
-        util.ca(this.selfArr);
-      for (var u = 0, p = r.length; p > u; u++)
-        (this.selfArr[u] = {
+      this.oriArr = r;
+      this.datas ? util.ca(this.datas) : (this.datas = []);
+      util.ca(this.selfArr);
+      for (var u = 0, p = r.length; p > u; u++) {
+        this.selfArr[u] = {
           dif: diff[u],
           dea: dea[u],
-          bar: f[u]
-        }),
-          (this.selfArr[u][At] = r[u].volume < 0);
+          bar: f[u],
+          ema12: ema12[u],
+          ema26: ema26[u]
+        };
+
+        this.selfArr[u][At] = r[u].volume < 0;
+      }
     };
     this.draw = function(t, r) {
       if (((this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r), this.datas)) {

@@ -1,6 +1,7 @@
 import { timeout } from "./utils";
 import { getCacheData } from "./db";
 import { loadScripts } from "./utils";
+import moment from "moment";
 export async function getTechDatas(item, cache = true) {
   let techId = "tech_" + item.code;
   let get = async () => {
@@ -85,11 +86,9 @@ export async function get5Tdatas(code) {
   });
 }
 window.get5Tdatas = get5Tdatas;
-
-export async function getTech(item) {
+let tmpromise = async () => {
   await loadscript;
-
-  let tm = await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     KKE.api("plugins.techchart.get", "", tchar => {
       var tm = tchar.tChart({});
       tm.createChart({ name: "MACD" });
@@ -100,21 +99,53 @@ export async function getTech(item) {
       resolve(tm);
     });
   });
-  let datas = await new Promise((resolve, reject) => {
-    KKE.api(
-      "datas.k.get",
-      { symbol: item.code, newthour: "09:00", ssl: true },
-      function(d) {
-        console.log(d);
-        resolve(d);
-      }
-    );
-  });
+};
+export async function getTech(item) {
+  await loadscript;
+  let tm = await tmpromise();
+  let techId = "tech_1" + item.code;
 
-  return {
-    kd: tm.linkData(datas.data.day),
-    kw: tm.linkData(datas.data.week),
-    km: tm.linkData(datas.data.month)
-  };
+  let itemDatas = await getCacheData(item.date, techId);
+  if (
+    itemDatas &&
+    itemDatas.kd.datas &&
+    moment(item.date).format("YYYY-MM-DD") ==
+      moment(itemDatas.kd.datas.slice(-1)[0].date).format("YYYY-MM-DD")
+  ) {
+    let ps = ["kd", "kw", "km"];
+    for (let j = 0; j < ps.length; j++) {
+      let type = ps[j];
+      let macd = itemDatas[type].MACD;
+      let i = macd.ema12.length - 2;
+      let ema12 = (macd.ema12[i] * 11) / 13 + (item.now * 2) / 13;
+      let ema26 = (macd.ema26[i] * 25) / 27 + (item.now * 2) / 27;
+
+      let diff = ema12 - ema26;
+      let dea = (macd.dea[i] * 8) / 10 + (diff * 2) / 10;
+      macd.diff[i + 1] = diff;
+      macd.dea[i + 1] = dea;
+      macd.bar[i + 1] = (diff - dea) * 2;
+    }
+
+    return itemDatas;
+  } else {
+    let datas = await new Promise((resolve, reject) => {
+      KKE.api(
+        "datas.k.get",
+        { symbol: item.code, newthour: "09:00", ssl: true },
+        function(d) {
+          console.log(d);
+          resolve(d);
+        }
+      );
+    });
+    let ret = {
+      kd: tm.linkData(datas.data.day),
+      kw: tm.linkData(datas.data.week),
+      km: tm.linkData(datas.data.month)
+    };
+    await getCacheData(item.date, techId, null, ret);
+    return ret;
+  }
 }
 window.getTech = getTech;

@@ -1,4 +1,4 @@
-import { getTechDatas } from "./tech";
+import { getTech as getTechDatas } from "./tech";
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -56,7 +56,7 @@ const techMap = {
     return false;
   },
   三小: function({ item, kd, kw, km }) {
-    let datas = kd.kdatas;
+    let datas = kd.datas;
     if (datas && datas.length > 3) {
       let len = datas.length;
       if (

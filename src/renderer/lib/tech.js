@@ -86,7 +86,7 @@ export async function get5Tdatas(code) {
   });
 }
 window.get5Tdatas = get5Tdatas;
-let tmpromise = async () => {
+let tmpromise = (async () => {
   await loadscript;
   return new Promise((resolve, reject) => {
     KKE.api("plugins.techchart.get", "", tchar => {
@@ -99,14 +99,13 @@ let tmpromise = async () => {
       resolve(tm);
     });
   });
-};
+})();
 export async function getTech(item) {
   await loadscript;
-  let tm = await tmpromise();
+  let tm = await tmpromise;
   let techId = "tech_1" + item.code;
 
   let itemDatas = await getCacheData(item.date, techId);
-  console.log(moment(item.date).format("YYYY-MM-DD"));
   if (
     itemDatas &&
     itemDatas.kd.datas &&
@@ -114,6 +113,7 @@ export async function getTech(item) {
       moment(itemDatas.kd.datas.slice(-1)[0].date).format("YYYY-MM-DD")
   ) {
     let ps = ["kd", "kw", "km"];
+
     for (let j = 0; j < ps.length; j++) {
       let type = ps[j];
       let macd = itemDatas[type].MACD;
@@ -135,7 +135,6 @@ export async function getTech(item) {
         "datas.k.get",
         { symbol: item.code, newthour: "09:00", ssl: true },
         function(d) {
-          console.log(d);
           resolve(d);
         }
       );
@@ -145,7 +144,6 @@ export async function getTech(item) {
       kw: tm.linkData(datas.data.week),
       km: tm.linkData(datas.data.month)
     };
-    console.log(item.date, techId, ret);
 
     await getCacheData(item.date, techId, null, ret);
     return ret;

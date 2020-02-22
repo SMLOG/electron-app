@@ -6,10 +6,7 @@
       style="position:fixed;top:0;left:0;width:180px;bottom:0;background:#222;z-index:-1; "
     ></div>
 
-    <iframe
-      src="static/tech2.html?sh000001"
-      style="width:100%;height:600px;display:none;"
-    ></iframe>
+    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap" style>
@@ -85,9 +82,7 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span
-                    v-if="selectItem.tables && selectItem.tables.length > 0"
-                  >
+                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -113,11 +108,7 @@
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input
-                      type="checkbox"
-                      v-model="item.isFocus"
-                      @change="saveDatas(item)"
-                    />
+                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
                   </span>
                   <div
                     :title="item.code"
@@ -130,16 +121,14 @@
                     <span
                       :class="{ sz: item.mk == 'sz' }"
                       @click="openlink(item, $event)"
-                      >{{ item.name }}</span
-                    >
+                    >{{ item.name }}</span>
                     <span
                       title="最后持续平均线分钟(-下+上)"
                       @click="toggleDetail(item)"
                       :class="{
                         avggood: item.avgzs > 45 && item.upArgCount > 120
                       }"
-                      >{{ item.avgzs }}</span
-                    >
+                    >{{ item.avgzs }}</span>
                     <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
                     <span title="连续方向分钟数">/{{ item.contDir }}</span>
                   </div>
@@ -152,42 +141,28 @@
                 :class="col.class && col.class(item)"
                 :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-              >
-                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
-              </td>
+              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div
-      id="webviewWrap"
-      ref="webviewWrap"
-      class="webview"
-      :class="{ fullscreen: fullscreen }"
-    >
+    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullscreen: fullscreen }">
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
           style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
         ></i>
-        <i
-          v-if="false"
-          class="arrow down"
-          style="position:relative;top:-10px;cursor:pointer;"
-        ></i>
+        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
       </div>
-      <WinView
-        :item="item"
-        :link="link"
-        @dblclick.native="fullscreen = !fullscreen"
-      ></WinView>
+      <WinView :item="item" :link="link" @dblclick.native="fullscreen = !fullscreen"></WinView>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import { callFun } from "@/lib/tech-manager";
 
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
@@ -546,6 +521,12 @@ export default {
           );
 
           console.log("monitor:", items);
+
+          for (let i = 0; i < items.length; i++) {
+            await callFun(items[i]);
+          }
+          updateFiltersCount();
+
           // monitor(items);
         }
       })();

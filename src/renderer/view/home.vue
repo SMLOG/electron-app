@@ -203,7 +203,8 @@ import {
   updateItem,
   getMeetList,
   getFilterList,
-  batchUpdateHQ
+  batchUpdateHQ,
+  isNotTradeTime
 } from "@/lib/getTable";
 import $ from "jquery";
 window.$ = $;
@@ -512,21 +513,23 @@ export default {
         for (;;) {
           monitor(this.items);
           await timeout(60000);
-          let items = getOrFiltersItems(this.items2);
 
-          items = items.concat(
-            this.items2
-              .filter(e => e.turnover > 2)
-              .filter(v => !items.includes(v))
-          );
+          if (!isNotTradeTime()) {
+            let items = getOrFiltersItems(this.items2);
 
-          console.log("monitor:", items);
+            items = items.concat(
+              this.items2
+                .filter(e => e.turnover > 2)
+                .filter(v => !items.includes(v))
+            );
 
-          for (let i = 0; i < items.length; i++) {
-            await callFun(items[i]);
+            console.log("monitor:", items);
+
+            for (let i = 0; i < items.length; i++) {
+              await callFun(items[i]);
+            }
+            updateFiltersCount();
           }
-          updateFiltersCount();
-
           // monitor(items);
         }
       })();

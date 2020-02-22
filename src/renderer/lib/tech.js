@@ -228,7 +228,7 @@ export async function getTech(item) {
   let [tm, util] = await tmpromise;
   let techId = "tech_1" + item.code;
 
-  let itemDatas = await getCacheData(item.date, techId);
+  let itemDatas = window[techId] || (await getCacheData(item.date, techId));
   if (
     itemDatas &&
     itemDatas.kd.datas &&
@@ -250,8 +250,7 @@ export async function getTech(item) {
       macd[i + 1].dea = dea;
       macd[i + 1].bar = (diff - dea) * 2;
     }
-
-    return itemDatas;
+    return (window[techId] = itemDatas);
   } else {
     let datas = await new Promise((resolve, reject) => {
       KKE.api(
@@ -288,7 +287,7 @@ export async function getTech(item) {
     };
 
     await getCacheData(item.date, techId, null, ret);
-    return ret;
+    return (window[techId] = ret);
   }
 }
 window.getTech = getTech;

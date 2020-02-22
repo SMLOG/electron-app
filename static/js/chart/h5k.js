@@ -528,8 +528,8 @@ xh5_define(
                 factor: e[t].f
               };
             },
-            rejustRight = function(e, a, i, o) {
-              if (e) {
+            rejustRight = function(factor, datas, dir, market) {
+              if (factor) {
                 var s,
                   r,
                   l,
@@ -542,68 +542,72 @@ xh5_define(
                   v,
                   g,
                   b,
-                  y = !(-828 === e),
+                  y = !(-828 === factor),
                   N = kDb.getOriDK(),
                   w = 0;
-                if (
-                  ((r =
-                    "q" === i ? globalCfg.URLHASH.KDF : globalCfg.URLHASH.KDB),
-                  kDb.initState(r, util.clone(N, null), !1, !1, !0),
-                  (s = kDb.get(r)),
-                  (b = s.length),
-                  y)
-                ) {
+                r = "q" === dir ? globalCfg.URLHASH.KDF : globalCfg.URLHASH.KDB;
+                kDb.initState(r, util.clone(N, null), !1, !1, !0);
+                s = kDb.get(r);
+                b = s.length;
+                if (y) {
                   for (g = b - 1; g >= 0; g--) {
-                    for (p = s[g], f = dateUtil.ds(p.date); f < a[w].d; ) w++;
-                    if (((v = Number(a[w].f)), "HK" === o)) {
+                    for (p = s[g], f = dateUtil.ds(p.date); f < datas[w].d; )
+                      w++;
+                    if (((v = Number(datas[w].f)), "HK" === market)) {
                       if (
                         ((p.high *= v),
                         (p.low *= v),
                         (p.open *= v),
                         (p.close *= v),
-                        "h" === i)
+                        "h" === dir)
                       ) {
-                        var k = Number(a[w].c);
+                        var k = Number(datas[w].c);
                         (p.high += k),
                           (p.low += k),
                           (p.open += k),
                           (p.close += k);
                       }
-                    } else
-                      "US" === o
-                        ? ((p.high *= v),
+                    } else {
+                      if ("US" === market) {
+                        (p.high *= v),
                           (p.low *= v),
                           (p.open *= v),
-                          (p.close *= v))
-                        : "h" === i
-                        ? ((p.high *= v),
-                          (p.low *= v),
-                          (p.open *= v),
-                          (p.close *= v))
-                        : ((p.high /= v),
-                          (p.low /= v),
-                          (p.open /= v),
-                          (p.close /= v));
+                          (p.close *= v);
+                      } else {
+                        if ("h" === dir) {
+                          p.high *= v;
+                          p.low *= v;
+                          p.open *= v;
+                          p.close *= v;
+                        } else {
+                          p.high /= v;
+                          p.low /= v;
+                          p.open /= v;
+                          p.close /= v;
+                        }
+                      }
+                    }
                   }
-                  for (g = 0; b > g; g++)
-                    (p = s[g]),
-                      (v = Number(a[a.length - 1].f)),
-                      0 == g &&
-                        ((d = p.prevclose),
-                        isNaN(d) || 0 >= d
-                          ? (d = p.open)
-                          : ((d =
-                              "HK" === o
-                                ? p.prevclose * v
-                                : "h" === i
-                                ? p.prevclose * v
-                                : p.prevclose / v),
-                            (p.prevclose = d))),
-                      (p.amplitude = p.high - p.low),
-                      (p.ampP = p.amplitude / d),
-                      (p.change = p.close - d),
-                      (p.percent = p.change / d),
-                      (d = p.close);
+                  for (g = 0; b > g; g++) {
+                    p = s[g];
+                    v = Number(datas[datas.length - 1].f);
+                    0 == g &&
+                      ((d = p.prevclose),
+                      isNaN(d) || 0 >= d
+                        ? (d = p.open)
+                        : ((d =
+                            "HK" === market
+                              ? p.prevclose * v
+                              : "h" === dir
+                              ? p.prevclose * v
+                              : p.prevclose / v),
+                          (p.prevclose = d)));
+                    p.amplitude = p.high - p.low;
+                    p.ampP = p.amplitude / d;
+                    p.change = p.close - d;
+                    p.percent = p.change / d;
+                    d = p.close;
+                  }
                 }
                 var S;
                 1 == b &&
@@ -621,16 +625,16 @@ xh5_define(
                   (l = util.kUtil.mw(s, S, null, null, 0 / 0)),
                   (h = l[0]),
                   (c = l[1]),
-                  (u = l[2]),
-                  util.kUtil.pd(h, null),
-                  util.kUtil.pd(c, null),
-                  util.kUtil.pd(u, null),
-                  kDb.initState(globalCfg.URLHASH["q" == i ? "KWF" : "KWB"], h),
-                  kDb.initState(globalCfg.URLHASH["q" == i ? "KMF" : "KMB"], c),
-                  kDb.initState(globalCfg.URLHASH["q" == i ? "KYF" : "KYB"], u);
+                  (u = l[2]);
+                util.kUtil.pd(h, null);
+                util.kUtil.pd(c, null);
+                util.kUtil.pd(u, null);
+                kDb.initState(globalCfg.URLHASH["q" == dir ? "KWF" : "KWB"], h);
+                kDb.initState(globalCfg.URLHASH["q" == dir ? "KMF" : "KMB"], c);
+                kDb.initState(globalCfg.URLHASH["q" == dir ? "KYF" : "KYB"], u);
                 var M = util.clone(s, null);
                 kDb.initState(
-                  globalCfg.URLHASH["q" == i ? "KCLF" : "KCLB"],
+                  globalCfg.URLHASH["q" == dir ? "KCLF" : "KCLB"],
                   M,
                   !1,
                   !0

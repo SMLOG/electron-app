@@ -6847,7 +6847,8 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
       util.isFunc(callback) &&
         callback({
           tChart: createTChart,
-          pChart: create_pChart
+          pChart: create_pChart,
+          util
         });
     };
   })();

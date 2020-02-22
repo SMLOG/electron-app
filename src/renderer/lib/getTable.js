@@ -396,43 +396,39 @@ function fmtReportDatas(json) {
   map["reportDate"] = reportDate;
   return map;
 }
-export function attachData(item) {
+export function loadReports(item) {
   return (async () => {
-    /*if (!getCache(`${item.code}_240`)) {
-      let cache240 = await getCacheData(
-        new Date(),
-        `${item.code}_240`,
-        async () => {
-          await fetchEval([
-            `https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20${item.code}_240=/CN_MarketDataService.getKLineData?symbol=${item.code}&scale=240&ma=no&datalen=6`
-          ]);
-          return window[`${item.code}_240`];
-        }
-      );
-      putCache(`${item.code}_240`, cache240);
-    }*/
-
     for (let i = 0; i < tbls.length; i++) {
       let tbname = tbls[i];
       const tbVarName = "tb_" + tbname + item.code;
-      let data = await getCacheData(null, tbVarName, async () => {
-        let blob = await fetch(
-          `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
-            /[^0-9]/g,
-            ""
-          )}.html`
-        ).then(res => res.blob());
+      let disclose = storejs.get(`disclosure_date_${item.code}`);
 
-        return await new Promise((resolve, rejct) => {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            var text = reader.result;
-            let tbDatas = csvJSON(text);
-            resolve(tbDatas);
-          };
-          reader.readAsText(blob, "GBK");
-        });
-      });
+      let data = await getCacheData(
+        disclose &&
+          new Date().getTime() >= disclose.last &&
+          new Date().getTime() - disclose.last < 2 * 24 * 60 * 60 * 1000
+          ? new Date()
+          : null,
+        tbVarName,
+        async () => {
+          let blob = await fetch(
+            `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
+              /[^0-9]/g,
+              ""
+            )}.html`
+          ).then(res => res.blob());
+
+          return await new Promise((resolve, rejct) => {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              var text = reader.result;
+              let tbDatas = csvJSON(text);
+              resolve(tbDatas);
+            };
+            reader.readAsText(blob, "GBK");
+          });
+        }
+      );
       window[tbVarName] = data;
     }
     let zyzb = await getCacheData(null, "zyzb_" + item.code, async () => {

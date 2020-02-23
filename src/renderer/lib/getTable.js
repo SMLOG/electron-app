@@ -15,11 +15,9 @@ import { getExcludeList } from "./exclude-list";
 import { updateCache, putCache, getCacheData, cache } from "./db";
 import { loadHQ } from "./hq";
 import { callFun } from "./tech-manager";
-import { getAllInd } from "./ind";
 
 //const dict = {1: 'YJBB', 2: 'YJKB', 3: 'YJYG',4: 'YYPL', 5: 'ZCFZB', 6: 'LRB', 7: 'XJLLB',XSJJ_NJ_PC}
 
-getAllInd();
 export async function getTables() {
   await getYYPLRQTable();
 

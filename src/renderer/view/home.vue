@@ -66,9 +66,14 @@
                     style="position: fixed;color: blue;margin: 5px;padding: 5px;background: white;"
                   >
                     <ul class="filterp">
-                      <li v-for="f in filterables" :key="f.value">
+                      <li
+                        v-for="f in filterables"
+                        :key="f.value"
+                        @click="f.select=!f.select"
+                        :class="{up:indMap[f.value]>0,down:indMap[f.value]<0}"
+                      >
                         <input type="checkbox" v-model="f.select" />
-                        {{ f.value }}
+                        {{ f.value }}({{ indMap[f.value] }}%)
                       </li>
                     </ul>
                   </div>
@@ -177,6 +182,8 @@ import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import { mouseDragMenu } from "@/lib/WinUtils";
+import { getAllInd } from "@/lib/ind";
+
 import {
   ObjectType,
   parse,
@@ -237,7 +244,8 @@ export default {
       filterables: [],
       filter_prop: "",
       show_filter_prop: false,
-      fullscreen: false
+      fullscreen: false,
+      indMap: {}
     };
   },
   directives: {
@@ -301,6 +309,8 @@ export default {
         }
       }
     });
+
+    getAllInd(this.indMap);
 
     initwebview(this.closeview.bind(this));
     mouseDragMenu(this.$electron, false);

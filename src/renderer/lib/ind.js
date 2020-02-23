@@ -3,7 +3,7 @@ import { isNotTradeTime } from "./getTable";
 
 import storejs from "storejs";
 
-export async function getAllInd() {
+export async function getAllInd(indMap) {
   let getIndItems = async ([indCode, indName]) => {
     let cb = rid("indi");
 
@@ -41,6 +41,7 @@ export async function getAllInd() {
     for (let i = 0; i < resp.data.diff.length; i++) {
       let item = resp.data.diff[i];
       storejs.set(item.f14, item.f3);
+      indMap[item.f14] = item.f3;
     }
     return resp.data.diff;
   };

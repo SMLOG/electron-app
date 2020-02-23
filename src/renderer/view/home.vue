@@ -393,15 +393,20 @@ export default {
         values = values.filter(function(item, index, arr) {
           return arr.indexOf(item, 0) === index;
         });
-        this.filterables = values.map(e => {
-          return {
-            value: e,
-            select:
-              this.filterables.filter(a => {
-                return a.value == e && a.select;
-              }).length > 0
-          };
-        });
+        this.filterables = values
+          .map(e => {
+            return {
+              value: e,
+              changeP: this.indMap[e],
+              select:
+                this.filterables.filter(a => {
+                  return a.value == e && a.select;
+                }).length > 0
+            };
+          })
+          .sort((a, b) =>
+            a.changeP < b.changeP ? 1 : a.changeP > b.changeP ? -1 : 0
+          );
         console.log(this.show_filter_prop, this.filter_prop, this.filterables);
         this.filter_prop = "_" + prop;
       }

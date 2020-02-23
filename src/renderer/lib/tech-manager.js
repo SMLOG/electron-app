@@ -1,4 +1,5 @@
 import { getTech as getTechDatas } from "./tech";
+import { max } from "moment";
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -38,17 +39,20 @@ const techMap = {
     let boll = kd.BOLL;
     if (boll && boll.length > 5) {
       let arr = boll;
+      let i = arr.length - 1;
       //连续下跌，MA20反转信号
-      let nrValue =
-        (arr[arr.length - 1].upper - arr[arr.length - 1].lower) /
-        arr[arr.length - 1].boll;
-
+      let nrValue = (arr[i].upper - arr[i].lower) / arr[i].boll;
+      let last3 = kd.datas.slice(-5);
       if (
-        nrValue <
-        0.1 /*&&
-        arr[arr.length - 1].boll >= arr[arr.length - 2].boll &&
-          arr[arr.length - 2].boll <= arr[arr.length - 3].boll &&
-          arr[arr.length - 3].boll <= arr[arr.length - 4].boll*/
+        nrValue < 0.1 &&
+        Math.min.apply(
+          null,
+          last3.map(e => e.low)
+        ) <= arr[i].lower &&
+        Math.max.apply(
+          null,
+          last3.map(e => e.high)
+        ) >= arr[i].boll
       ) {
         return true;
       }

@@ -58,6 +58,7 @@ export const filtersCount = [];
   }
 }
 export function toFiltersCount(item, src, type = "+") {
+  if (!item) return;
   for (let cn = 0; cn < filtersCount.length; cn++) {
     for (let ri = 0; ri < filtersCount.length - cn; ri++) {
       let it = filtersCount[ri][cn];

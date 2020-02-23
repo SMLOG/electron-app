@@ -498,7 +498,7 @@ export default {
       this.sendRefresh();
     },
     reloadData() {
-      this.items = store.fetch();
+      this.items = store.fetch().filter(e => e);
       this.items.forEach(e => toFiltersCount(e, SELF));
     },
     addItem(selectItem) {

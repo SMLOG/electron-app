@@ -2,9 +2,12 @@
   <div>
     <Setting />
     <div class="selectDate" ref="choose_date_ref">
-      <span @click="showChooseDate = !showChooseDate">
-        {{ chooseDate || "选择日期" }}</span
-      >
+      <div>
+        <span v-show="chooseDate" @click="chooseDate = ''">清除</span>
+        <span @click="showChooseDate = !showChooseDate">
+          {{ chooseDate || "选择日期" }}</span
+        >
+      </div>
       <div v-show="showChooseDate">
         <Calendar @choseDay="choseDay"></Calendar>
       </div>
@@ -221,7 +224,8 @@ import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import { mouseDragMenu } from "@/lib/WinUtils";
 import { getAllInd } from "@/lib/ind";
-import Calendar from "vue-calendar-component";
+//import Calendar from "vue-calendar-component";
+import Calendar from "@/view/components/calendar";
 
 import {
   ObjectType,

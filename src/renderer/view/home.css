@@ -334,3 +334,10 @@ ul.filterp {
 .down {
   color: green;
 }
+.selectDate {
+  position: absolute;
+  top: 5px;
+  right: 35px;
+  z-index: 10000;
+  text-align: right;
+}

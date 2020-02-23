@@ -57,6 +57,7 @@
     "moment": "^2.24.0",
     "storejs": "^1.0.20",
     "vue": "^2.5.16",
+    "vue-calendar-component": "^2.8.2",
     "vue-electron": "^1.0.6",
     "vue-resize-split-pane": "^0.1.5",
     "vue-router": "^3.0.1",

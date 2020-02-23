@@ -1,12 +1,23 @@
 <template>
   <div>
     <Setting />
+    <div class="selectDate" ref="choose_date_ref">
+      <span @click="showChooseDate = !showChooseDate">
+        {{ chooseDate || "选择日期" }}</span
+      >
+      <div v-show="showChooseDate">
+        <Calendar @choseDay="choseDay"></Calendar>
+      </div>
+    </div>
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:180px;bottom:0;background:#222;z-index:-1; "
     ></div>
 
-    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+    <iframe
+      src="static/tech2.html?sh000001"
+      style="width:100%;height:600px;display:none;"
+    ></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap" style>
@@ -33,6 +44,7 @@
           :r="selectFilter_r"
           :c="selectFilter_c"
         />
+
         <!-- <TopFocus :items="focusItems" @openlink="openlink" /> -->
       </div>
     </div>
@@ -69,8 +81,11 @@
                       <li
                         v-for="f in filterables"
                         :key="f.value"
-                        @click="f.select=!f.select"
-                        :class="{up:indMap[f.value]>0,down:indMap[f.value]<0}"
+                        @click="f.select = !f.select"
+                        :class="{
+                          up: indMap[f.value] > 0,
+                          down: indMap[f.value] < 0
+                        }"
                       >
                         <input type="checkbox" v-model="f.select" />
                         {{ f.value }}({{ indMap[f.value] }}%)
@@ -87,7 +102,9 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
+                  <span
+                    v-if="selectItem.tables && selectItem.tables.length > 0"
+                  >
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -113,7 +130,11 @@
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveDatas(item)"
+                    />
                   </span>
                   <div
                     :title="item.code"
@@ -126,14 +147,16 @@
                     <span
                       :class="{ sz: item.mk == 'sz' }"
                       @click="openlink(item, $event)"
-                    >{{ item.name }}</span>
+                      >{{ item.name }}</span
+                    >
                     <span
                       title="最后持续平均线分钟(-下+上)"
                       @click="toggleDetail(item)"
                       :class="{
                         avggood: item.avgzs > 45 && item.upArgCount > 120
                       }"
-                    >{{ item.avgzs }}</span>
+                      >{{ item.avgzs }}</span
+                    >
                     <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
                     <span title="连续方向分钟数">/{{ item.contDir }}</span>
                   </div>
@@ -146,21 +169,36 @@
                 :class="col.class && col.class(item)"
                 :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullscreen: fullscreen }">
+    <div
+      id="webviewWrap"
+      ref="webviewWrap"
+      class="webview"
+      :class="{ fullscreen: fullscreen }"
+    >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
           style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
         ></i>
-        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+        <i
+          v-if="false"
+          class="arrow down"
+          style="position:relative;top:-10px;cursor:pointer;"
+        ></i>
       </div>
-      <WinView :item="item" :link="link" @dblclick.native="fullscreen = !fullscreen"></WinView>
+      <WinView
+        :item="item"
+        :link="link"
+        @dblclick.native="fullscreen = !fullscreen"
+      ></WinView>
     </div>
   </div>
 </template>
@@ -183,6 +221,7 @@ import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import { mouseDragMenu } from "@/lib/WinUtils";
 import { getAllInd } from "@/lib/ind";
+import Calendar from "vue-calendar-component";
 
 import {
   ObjectType,
@@ -245,7 +284,9 @@ export default {
       filter_prop: "",
       show_filter_prop: false,
       fullscreen: false,
-      indMap: {}
+      indMap: {},
+      chooseDate: null,
+      showChooseDate: false
     };
   },
   directives: {
@@ -293,7 +334,8 @@ export default {
     FilterCtrl,
     Sea,
     TopFocus,
-    WinView
+    WinView,
+    Calendar
   },
   filters: {
     objectType(id) {
@@ -306,6 +348,13 @@ export default {
         if (this.$refs.filter_prop_ref.some(el => el.contains(e.target))) {
         } else {
           this.show_filter_prop = false;
+        }
+      }
+
+      if (this.$refs.choose_date_ref) {
+        if (this.$refs.choose_date_ref.contains(e.target)) {
+        } else {
+          this.showChooseDate = false;
         }
       }
     });
@@ -385,6 +434,10 @@ export default {
     ...mapGetters({ sfilters: "filters" })
   },
   methods: {
+    choseDay(str) {
+      this.showChooseDate = false;
+      this.chooseDate = str;
+    },
     showFilterable(prop) {
       this.show_filter_prop = !this.show_filter_prop;
 

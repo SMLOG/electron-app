@@ -134,7 +134,7 @@ export function buildFilters() {
   }
   return filters;
 }
-export async function callFun(item) {
+export async function callFun(item, chooseDate) {
   let techDatas = await getTechDatas(item);
 
   for (let name in techMap) {

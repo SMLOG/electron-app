@@ -404,6 +404,16 @@ export default {
     });
   },
   watch: {
+    chooseDate() {
+      (async () => {
+        let items = this.items2;
+        for (let i = 0; i < items.length; i++) {
+          await callFun(items[i], this.chooseDate);
+          toFiltersCount(items[i], "海选");
+        }
+        updateFiltersCount();
+      })();
+    },
     focus() {
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);

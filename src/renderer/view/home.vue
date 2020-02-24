@@ -406,10 +406,16 @@ export default {
   watch: {
     chooseDate() {
       (async () => {
-        let items = this.items2;
+        let fmtDate =
+          this.chooseDate &&
+          this.chooseDate
+            .split("/")
+            .map(e => (e.length == 1 ? "0" + e : e))
+            .join("/");
+        let items = this.items.filter(e => e.isFocus);
         for (let i = 0; i < items.length; i++) {
-          await callFun(items[i], this.chooseDate);
-          toFiltersCount(items[i], "海选");
+          await callFun(items[i], fmtDate);
+          toFiltersCount(items[i], SELF);
         }
         updateFiltersCount();
       })();

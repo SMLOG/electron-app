@@ -137,7 +137,23 @@ export function buildFilters() {
 export async function callFun(item, chooseDate) {
   let techDatas = await getTechDatas(item);
   if (chooseDate) {
-    let i = techDatas.kd.datas.filter(d => d.day <= chooseDate).length;
+    let ntechDatas = {};
+    for (let p of ["kd", "kw", "km"]) {
+      let i = techDatas[p].datas.filter(d => d.day <= chooseDate).length;
+      let nk = techDatas[p].datas.slice(0, i);
+      ntechDatas[p] = {};
+      for (let k in techDatas[p]) {
+        if (k == "datas") ntechDatas[p][k] = nk;
+        else {
+          ntechDatas[p][k] = techDatas[p][k].slice(0, nk.length);
+        }
+      }
+    }
+    techDatas = ntechDatas;
+    let citem = ntechDatas.kd.datas.slice(-1);
+    item = Object.assign(item, { now: citem.close });
+    item = Object.assign(item, citem);
+    techDatas.item = item;
   }
 
   for (let name in techMap) {

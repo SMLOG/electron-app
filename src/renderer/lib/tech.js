@@ -243,7 +243,7 @@ export async function getTech(item) {
       let i = macd.length - 2;
       let ema12 = (macd[i].ema12 * 11) / 13 + (item.now * 2) / 13;
       let ema26 = (macd[i].ema26 * 25) / 27 + (item.now * 2) / 27;
-
+      itemDatas[type].datas[i + 1].close = item.now;
       let diff = ema12 - ema26;
       let dea = (macd[i].dea * 8) / 10 + (diff * 2) / 10;
       macd[i + 1].diff = diff;

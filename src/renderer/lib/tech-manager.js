@@ -136,6 +136,9 @@ export function buildFilters() {
 }
 export async function callFun(item, chooseDate) {
   let techDatas = await getTechDatas(item);
+  if (chooseDate) {
+    let i = techDatas.kd.datas.filter(d => d.day <= chooseDate).length;
+  }
 
   for (let name in techMap) {
     techDatas.item = item;

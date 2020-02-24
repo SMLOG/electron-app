@@ -599,7 +599,7 @@ export default {
       //定时监控
       (async () => {
         for (;;) {
-          monitor(this.items);
+          if (!this.chooseDate) monitor(this.items);
           await timeout(60000);
 
           if (!isNotTradeTime()) {

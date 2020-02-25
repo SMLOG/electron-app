@@ -152,16 +152,19 @@
                       @click="openlink(item, $event)"
                       >{{ item.name }}</span
                     >
-                    <span
-                      title="最后持续平均线分钟(-下+上)"
-                      @click="toggleDetail(item)"
-                      :class="{
-                        avggood: item.avgzs > 45 && item.upArgCount > 120
-                      }"
-                      >{{ item.avgzs }}</span
-                    >
-                    <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
-                    <span title="连续方向分钟数">/{{ item.contDir }}</span>
+                    <span>{{ item.now }}({{ item.changeP }})</span>
+                    <div v-if="false">
+                      <span
+                        title="最后持续平均线分钟(-下+上)"
+                        @click="toggleDetail(item)"
+                        :class="{
+                          avggood: item.avgzs > 45 && item.upArgCount > 120
+                        }"
+                        >{{ item.avgzs }}</span
+                      >
+                      <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
+                      <span title="连续方向分钟数">/{{ item.contDir }}</span>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -380,7 +383,7 @@ export default {
         let items = this.getfilterItems();
 
         switch (event.keyCode) {
-          case 37:
+          //case 37:
           case 38:
             if (this.focus === null) {
               this.focus = 0;
@@ -389,7 +392,7 @@ export default {
             }
             break;
 
-          case 39:
+          //case 39:
           case 40:
             if (this.focus === null) {
               this.focus = 0;
@@ -421,6 +424,9 @@ export default {
       })();
     },
     focus() {
+      let webviewWrap = $(this.$refs.webviewWrap);
+      if (!webviewWrap.is(":visible")) return;
+
       let items = this.getfilterItems();
       this.openlink(items[this.focus], null, this.openType);
     },
@@ -506,11 +512,8 @@ export default {
       $(this.$refs.top).css("margin-bottom", "0");
       this.openCode = null;
     },
-    openlink(
-      item,
-      event,
-      link = "http://localhost:9080/static/tech.html?{{code}}"
-    ) {
+    openlink(item, event, link) {
+      link || (link = "http://localhost:9080/static/tech.html?{{code}}");
       this.openType = link;
       let webview = $(document.querySelectorAll("webview"));
       let webviewWrap = $(this.$refs.webviewWrap);

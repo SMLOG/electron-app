@@ -341,3 +341,51 @@ ul.filterp {
   z-index: 10000;
   text-align: right;
 }
+
+.zui-table {
+  border: none;
+  border-right: solid 1px #ddefef;
+  border-collapse: separate;
+  border-spacing: 0;
+  font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+  background-color: #ddefef;
+  border: none;
+  color: #336b6b;
+  padding: 10px;
+  text-align: left;
+  text-shadow: 1px 1px 1px #fff;
+  white-space: nowrap;
+}
+.zui-table tbody td {
+  border-bottom: solid 1px #ddefef;
+  color: #333;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+  white-space: nowrap;
+}
+.zui-wrapper {
+  position: relative;
+}
+.zui-scroller {
+  margin-left: 230px;
+  overflow-x: scroll;
+  overflow-y: visible;
+  padding-bottom: 5px;
+  width: 300px;
+}
+.zui-table .zui-sticky-col {
+  border-left: solid 1px #ddefef;
+  left: 0;
+  position: absolute;
+  top: auto;
+  width: 120px;
+}
+.zui-table .zui-sticky-col2 {
+  border-right: solid 1px #ddefef;
+  left: 140px;
+  position: absolute;
+  top: auto;
+  width: 70px;
+}

@@ -24,6 +24,12 @@ export default {
   methods: {},
 
   mounted() {
+    const webview = document.querySelector("webview");
+    webview.addEventListener("did-navigate-in-page", event => {
+      if (webview.src && webview.src.indexOf("close")) window.close();
+      event.preventDefault();
+      return false;
+    });
     let item = JSON.parse(decodeURIComponent(this.$route.query.item));
     this.item = item;
     let win = this.$electron.remote.getCurrentWindow();

@@ -14,7 +14,7 @@
     </div>
     <div
       id="bg"
-      style="position:fixed;top:0;left:0;width:180px;bottom:0;background:#222;z-index:-1; "
+      style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
     ></div>
 
     <iframe
@@ -152,7 +152,6 @@
                       @click="openlink(item, $event)"
                       >{{ item.name }}</span
                     >
-                    <span>{{ item.now }}({{ item.changeP }})</span>
                     <div v-if="false">
                       <span
                         title="最后持续平均线分钟(-下+上)"

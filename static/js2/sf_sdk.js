@@ -8857,19 +8857,82 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               (xPos += perWidth);
           this.line.stroke();
         }
-        let tIndex = this.datas.filter(e => e.date < new Date("2020-01-15"))
-          .length;
 
-        var el = document.createElement("div");
-        el.innerHTML = `<div id="sp" style="
-    position: absolute;
-    left: ${45 + (tIndex - 1) * perWidth - perWidth / 4}px;
-    top: 0;
-    bottom: 0;
-    width: ${perWidth}px;
-    background: #eee;
-"></div>`;
-        this.wrap.appendChild(el);
+        let chooseDate = getMyCookie("chooseDate", null);
+        if (chooseDate) {
+          let tIndex = this.datas.filter(e => e.date < new Date(chooseDate))
+            .length;
+          let isDrag = false;
+
+          if (!this.chooseDateEl) {
+            var el = document.createElement("div");
+
+            this.wrap.appendChild(el);
+            this.chooseDateEl = el;
+            el.style.cssText = `position: absolute;
+            left: ${45 + tIndex * perWidth}px;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background:rgba(0,0,0,0.1);
+            `;
+            let dtext = document.createElement("span");
+            el.appendChild(dtext);
+
+            dtext.innerText = chooseDate;
+            this.dtext = dtext;
+
+            var el2 = document.createElement("div");
+            el2.style.cssText = `position: absolute;left: ${45 +
+              tIndex * perWidth}px;
+            top: 0;
+            bottom: 0;
+            width:3px;
+            background:rgba(0,0,0,0.2);
+            z-index:1000;
+            cursor:col-resize;`;
+            this.wrap.appendChild(el2);
+            this.chooseDateEl2 = el2;
+            let _this = this;
+            function drag() {
+              el2.onmousedown = function(e) {
+                //鼠标按下，计算当前元素距离可视区的距离
+                let disX = e.clientX - el2.offsetLeft;
+                let disY = e.clientY - el2.offsetTop;
+                let l;
+                isDrag = true;
+                document.onmousemove = function(e) {
+                  //通过事件委托，计算移动的距离
+                  l = e.clientX - disX;
+                  let t = e.clientY - disY;
+                  //移动当前元素
+                  if (l <= 45) l = 45;
+                  el2.style.left = el.style.left = l + "px";
+                };
+                document.onmouseup = function(e) {
+                  document.onmousemove = null;
+                  document.onmouseup = null;
+                  let i = Math.floor((l - 45) / perWidth);
+                  let date = (d =>
+                    `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)(
+                    _this.datas[i].date
+                  );
+                  setCookie("chooseDate", date);
+                  dtext.innerText = date;
+
+                  isDrag = false;
+                };
+                return false;
+              };
+            }
+            drag();
+          }
+          if (!isDrag) {
+            this.chooseDateEl.style.left = `${45 + tIndex * perWidth}px`;
+            this.chooseDateEl2.style.left = `${45 + tIndex * perWidth}px`;
+          }
+        }
+
         var A,
           m = (this.labelMaxP / (this.labelMaxP - this.labelMinP)) * this.h;
         xPos = u;

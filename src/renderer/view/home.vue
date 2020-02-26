@@ -4,9 +4,11 @@
     <div class="selectDate" ref="choose_date_ref">
       <div>
         <span v-show="chooseDate" @click="chooseDate = ''">清除</span>
+        <span v-show="chooseDate">前一天</span>
         <span @click="showChooseDate = !showChooseDate">
           {{ chooseDate || "选择日期" }}</span
         >
+        <span v-show="chooseDate">后一天</span>
       </div>
       <div v-show="showChooseDate">
         <Calendar @choseDay="choseDay"></Calendar>
@@ -419,6 +421,7 @@ export default {
           await callFun(items[i], fmtDate);
           toFiltersCount(items[i], SELF);
         }
+        setCookie("chooseDate", this.chooseDate, 1);
         updateFiltersCount();
       })();
     },

@@ -17,7 +17,8 @@ export let headers = [
     class: item => {
       return {
         up: item.change > 0,
-        down: item.change < 0
+        down: item.change < 0,
+        click: true
       };
     },
     click: (item, event, openlink) => {

@@ -385,3 +385,7 @@ ul.filterp {
   top: auto;
   width: 70px;
 }
+
+.click {
+  cursor: pointer;
+}

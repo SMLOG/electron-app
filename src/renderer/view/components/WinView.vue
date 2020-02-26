@@ -45,7 +45,7 @@
               v-for="(v, f) in filters"
               :key="f"
               style="display:inline-block;margin:5px;margin-right;10px;"
-              :class="{ y: item['_' + f] }"
+              :class="{ y: aitem['_' + f] }"
             >
               {{ f }}
             </li>
@@ -88,7 +88,8 @@ export default {
       showChooseDate: false,
       chooseDate: "",
       showChooseDate2: false,
-      filters: filters
+      filters: filters,
+      aitem: {}
     };
   },
   props: {
@@ -136,8 +137,9 @@ export default {
             .split(/[/\-]/)
             .map(e => (e.length == 1 ? "0" + e : e))
             .join("/");
-        await callFun(this.item, fmtDate);
-        console.log(this.item);
+        this.aitem = Object.assign(this.aitem, this.item);
+        await callFun(this.aitem, fmtDate);
+        console.log(this.aitem);
       })();
     },
     dbclick() {

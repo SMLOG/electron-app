@@ -1,569 +1,828 @@
-
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="always" name="referrer" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimal-ui, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="format-detection" content="telephone=no" />
+    <!--    <meta name="browsermode" content="application" />-->
+    <!--    <meta name="x5-page-mode" content="default|app" />-->
+    <meta name="screen-orientation" content="portrait" />
 
-<head>
-	<meta charset="UTF-8">
-	<meta content="always" name="referrer">
-	<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<meta name="msapplication-tap-highlight" content="no" />
-	<meta name="format-detection" content="telephone=no" />
-	<!--    <meta name="browsermode" content="application" />-->
-	<!--    <meta name="x5-page-mode" content="default|app" />-->
-	<meta name="screen-orientation" content="portrait" />
-
-	<meta name="keywords" content="手机新浪网,新浪财经,新闻资讯,新浪新闻">
-	<meta name="description" content="手机新浪网是新浪网的手机门户网站，为亿万用户打造一个手机联通世界的超级平台，提供24小时全面及时的中文资讯，内容覆盖国内外突发新闻事件、体坛赛事、娱乐时尚、产业资讯、实用信息等。手机新浪网 - sina.cn">
-	<!--<link rel="stylesheet" type="text/css" href="//n.sinaimg.cn/finance/201706cn/cn2017.css?20170621">-->
-	<link rel="stylesheet" type="text/css" href="//i2.sinaimg.cn/cj/finance/cn/wap/res/cn2017.css?hsw=7.32">
-	<link rel="stylesheet" type="text/css" href="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataStyle.css?hsw=7.32">
-    <link rel="stylesheet" type="text/css" href="//n.sinaimg.cn/finance/201706cn/cwIndexF10.css?hsw=7.32">
-	<!-- head头添加分享图片 -->
+    <meta name="keywords" content="手机新浪网,新浪财经,新闻资讯,新浪新闻" />
+    <meta
+      name="description"
+      content="手机新浪网是新浪网的手机门户网站，为亿万用户打造一个手机联通世界的超级平台，提供24小时全面及时的中文资讯，内容覆盖国内外突发新闻事件、体坛赛事、娱乐时尚、产业资讯、实用信息等。手机新浪网 - sina.cn"
+    />
+    <!--<link rel="stylesheet" type="text/css" href="//n.sinaimg.cn/finance/201706cn/cn2017.css?20170621">-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//i2.sinaimg.cn/cj/finance/cn/wap/res/cn2017.css?hsw=7.32"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataStyle.css?hsw=7.32"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//n.sinaimg.cn/finance/201706cn/cwIndexF10.css?hsw=7.32"
+    />
+    <!-- head头添加分享图片 -->
 
     <script type="text/javascript">
-    function getMyCookie(cname,def) {
-  var name = cname + "=";
-  var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i].trim();
-    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-  }
-  return def;
-}
-		try {
-			document.domain = "sina.cn";
-		} catch (event) {}
-		(function(doc, win) {
-			var MAX_WIDTH = 400.0125;
-			var resizing = null;
-			var dpr, rem, scale;
-			var metaEl = doc.querySelector('meta[name="viewport"]');
-			win.onresize = function() {
-				if (resizing) {
-					clearTimeout(resizing);
-				}
-				resizing = setTimeout(adjustBase, 100);
-			};
-
-			function adjustBase() {
-				var clientWidth = doc.body.clientWidth || doc.documentElement.clientWidth;
-				if (clientWidth > MAX_WIDTH) {
-					clientWidth = MAX_WIDTH;
-				}
-				doc.querySelector('html').style['font-size'] = (clientWidth / 750) * 10000 / 16 + '%';
-				resizing = null;
-			}
-			if (!doc.documentElement.addEventListener) return;
-			doc.addEventListener('DOMContentLoaded', adjustBase, false);
-		})(document, window);
-	</script>
-	<script>
-		var relateSymbol = 'sh000001,sz399001,sz399006,b_SPX,hkHSI';//,b_SX5E';//相关代码
-		var paperCode=document.location.href.split("?")[1].split('&')[0];
-        var isIndex = '0';
-	</script>
-
-</head>
-
-
-<body>
-<!-- 微信分享 -->
-<div class="wx_img" style="width: 0; height: 0; overflow: hidden; font-size: 0; line-height: 0px;">
-    <img src="https://n.sinaimg.cn/finance/hqcenter_sharepic/hqcenter_300x300.jpg" width="400" height="400" alt="">
-</div>
-	<div id='hqMain'>
-		<!--财经APP头部推广位 start-->
-		<!--<div class="app-header" id="cnTopBanner" data-position="topBanner">-->
-			<!--<a suda-uatrack="key=hq_center_hs&value=top_banner"></a>-->
-			<!--<b class="banner-title">新浪财经</b>-->
-			<!--<span class="banner-txt">在 "新浪财经" APP 中查看</span>-->
-		<!--</div>-->
-		<!--财经APP头部推广位   end-->
-		<div class="js-app-header" id="tbanner" data-position="topBanner">
-			<a suda-uatrack="key=hq_center_hs&value=top_banner"></a>
-		</div>
-
-		<header class="cn-header" id="cn_head" style="display: none;">
-			<nav class="cn-header-routes">
-				<p class="logo" >
-					<a href="//finance.sina.cn" suda-uatrack="key=hq_center_hs&value=navfin">
-						<img src="//n.sinaimg.cn/finance/hqcenter_v2_20160101/sina-logo.png" alt="" class="logo-sina">
-					</a>
-					<a href="//gu.sina.cn/m/#/stock/index" suda-uatrack="key=hq_center_hs&value=navhq">
-						<span>沪深行情</span>
-					</a>
-				</p>
-			</nav>
-			<a href="//quotes.sina.cn/search/" class="search">
-				<section class="search-box">
-					<p>
-						<i class="cn-icon-search"></i>&nbsp;代码／拼音／首字母等
-					</p>
-				</section>
-			</a>
-
-		</header>
-        <!--<section class="app-open">-->
-           <!--<img src="//n.sinaimg.cn/finance/2017us/banner_app_new.jpg"/>-->
-        <!--</section>-->
-		<nav class="cn-nav" style="display: none;">
-			<ul>
-				<li><a href="http://finance.sina.cn/stock" title="股票频道" suda-uatrack="key=hq_center_hs&value=navstock">股票频道</a></li>
-				<li><a href="http://watchlist.sina.cn/#/MyStock/All" title="我的自选" suda-uatrack="key=hq_center_hs&value=navmystock">我的自选</a></li>
-				<!-- 持仓收益，没有改suda -->
-				<li><a href="//watchlist.sina.cn/earn/" title="持仓收益" suda-uatrack="key=hq_center_hs&value=navmarket">持仓收益</a></li>
-                <li>
-										<a href="//guba.sina.cn/list_sh600031.html" title="股票评论" suda-uatrack="key=hq_center_hs&value=navpoint">股票评论</a>
-									</li>
-            </ul>
-		</nav>
-		<!-- header end -->
-
-		<!-- 顶部导航 start -->
-		<section class="hqhead-link">
-		</section>
-		<!-- 顶部导航 end -->
-
-		<!-- 实时行情组件 start -->
-		<section id="cn_hqdata" class="hq_hqdata" style="display: none;">
-		</section>
-		<!-- 实时行情组件 end -->
-
-		<!-- 行情图组件 start -->
-		<section class="cn-chart">
-			<div class="cn-chart-box" id="h5Chart"></div>
-		</section>
-		<!-- 行情图组件 end -->
-
-				<!--日历start-->
-		<div class="da-calendar" id="da-calendar" style="display: none;">
-			<div class="clearfix calendar-title">
-				<p class="time">
-					<i class="icon-cal"></i>
-					<span>财经日历</span>
-				</p>
-				<p class="hintme">
-						<span>提 醒
-							<i class="icon-hint"></i>
-						</span>
-				</p>
-			</div>
-			<div class="calendar-wp">
-				<div data-role="InfiniteScroll" class="calendar-scroll" data-relate="#da-calendar"></div>
-			</div>
-		</div>
-		<!--日历end-->
-		
-        		<!-- 五档盘口个股具有 -->
-		<!-- 五档盘口 start -->
-		<section id="cn_position_section" style="display: none;">
-			<div class="cn-pos-head">
-				<div id="cn_position_close" suda-uatrack="key=hq_center_hs&value=handicapopen">五档盘口/成交明细
-					<div class="cn-pos-arrow">
-						<div class="cn-arrow-close"></div>
-					</div>
-				</div>
-
-				<div id="cn_position_open" style="display:none;" suda-uatrack="key=hq_center_hs&value=handicapclose">
-					<ul class="cn-pos-close">
-						<li>五档盘口</li>
-						<li>成交明细</li>
-					</ul>
-					<div class="cn-pos-arrow">
-						<div class="cn-arrow-open"></div>
-					</div>
-				</div>
-
-			</div>
-			<div id="cn_position_cont" class="cn-pos-cont" style="display: none;">
-				<div class="cn-pos-left">
-					<ul>
-						<li>
-							<ul class="cn-pos cn-pos-title">
-								<li>盘口</li>
-								<li>价格</li>
-								<li>成交量</li>
-							</ul>
-						</li>
-					</ul>
-					<ul id="cn_position">
-					</ul>
-				</div>
-				<div class="cn-pos-right" style="display: none;">
-					<ul>
-						<li>
-							<ul class="cn-detail cn-pos-title">
-								<li>时间</li>
-								<li>价格</li>
-								<li>成交量</li>
-							</ul>
-						</li>
-					</ul>
-					<ul id="cn_detail">
-					</ul>
-				</div>
-			</div>
-		</section>
-		<!-- 五档盘口 end -->
-        		<header class="cn-header" id="fix_header" style="position:fixed;z-index:999;display: none;">
-			<header class="cn-header" style="position:fixed;z-index:999;">
-                <nav class="cn-header-routes">
-                   <div id="cn_floating_h" class="cn-header-fix-de">
-                      <span style="">@name</span>
-                      <span style="padding: 2px;" id="cn_floating_price_h">@price</span>
-                      <span style="padding: 2px;" id="cn_floating_zdf_h">@zdf</span>
-                   </div>
-                </nav>
-                <a href="//quotes.sina.cn/search/" class="icon">
-                   <i class="cn-icon-searchlarge"></i>
-                </a>
-            </header>
-		</header>
-
-		<div class="cn-news-title-floating" id="fix_floating" style="display: none;">
-
-			<header class="cn-header" style="z-index:999;">
-				<nav class="cn-header-routes">
-					<div id="cn_floating" class="cn-header-fix-de">
-						<span style="">@name</span>
-						<span style="padding: 2px;" id="cn-floating-price">@price</span>
-						<span style="padding: 2px;" id="cn-floating-zdf">@zdf</span>
-					</div>
-				</nav>
-				<a href="//quotes.sina.cn/search/" class="icon">
-					<i class="cn-icon-searchlarge"></i>
-				</a>
-
-			</header>
-            			<!-- 个股具有 start-->
-			<div class="cn-title-scroll" style="width: 100%; text-align: center;" style="display: none;">
-				<div class="cn-stock-tab">
-                    <ul class="cn-tab" style="display: flex;" id="cn_f_up">
-                       <li class="cn-stock-flex"><a id="cn_tab_relate_f" suda-uatrack="key=hq_center_hs&value=relate">关联</a></li>
-                       <li class="cn-stock-flex"><a id="cn_tab_news_f" suda-uatrack="key=hq_center_hs&value=news">新闻</a></li>
-                       <li class="cn-stock-flex"><a id="cn_tab_money_f" suda-uatrack="key=hq_center_hs&value=money">资金</a></li>
-<!--                       <li class="cn-stock-flex"><a href="//stocks.sina.cn/sh/abstr?code=sh600031" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>-->
-                      <li class="cn-stock-flex"><a id="cn_tab_finance_f" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>
-						<li class="cn-stock-flex"><a id="cn_tab_f10_f" suda-uatrack="key=hq_center_hs&value=f10">F10</a></li>
-                       <li class="cn-stock-halfFlex" id="cn_tab_f">
-                          <div class="cn-pos-arrow" id="cn_f_close">
-                             <div class="cn-arrow-close"></div>
-                          </div>
-                          <div class="cn-pos-arrow" id="cn_f_open" style="display: none;">
-                             <div class="cn-arrow-open"></div>
-                          </div>
-                       </li>
-                    </ul>
-                    <div style="display: none;" id="cn_f_con">
-                       <ul class="cn-tab" style="display: flex;">
-						   <li class="cn-stock-flex"><a id="cn_tab_notice_f" suda-uatrack="key=hq_center_hs&value=notice">公告</a></li>
-						   <li class="cn-stock-flex"><a id="cn_tab_report_f" suda-uatrack="key=hq_center_hs&value=paper">研报</a></li>
-                          <li class="cn-stock-flex"><a href="//finance.sina.com.cn/tzy/diagnose/sh600031/app_public.html" suda-uatrack="key=hq_center_hs&value=diag">诊股</a></li>
-                          <li class="cn-stock-flex"><a id="cn_tab_comment_f" suda-uatrack="key=hq_center_hs&value=comment">股市汇</a></li>
-                          <!--<li class="cn-stock-flex"></li>-->
-                          <!--<li class="cn-stock-halfFlex"></li>-->
-                       </ul>
-                    </div>
-                 </div>
-			</div>
-			<!-- 个股具有 start-->
-            		</div>
-
-		<!-- 新闻 start -->
-		<section id="cn-news-c" class="cn-news">
-            			<!-- 个股具有 start-->
-            <div class="cn-title-scroll" style="width: 100%; text-align: center;" id="cn_tab">
-                <div id="cn_news" class="cn-stock-tab">
-                   <ul class="cn-tab" style="display: flex;" id="cn_news_up">
-                      <li class="cn-stock-flex"><a id="cn_tab_relate" suda-uatrack="key=hq_center_hs&value=relate">关联</a></li>
-                      <li class="cn-stock-flex"><a id="cn_tab_news" suda-uatrack="key=hq_center_hs&value=news">新闻</a></li>
-                      <li class="cn-stock-flex"><a id="cn_tab_money" suda-uatrack="key=hq_center_hs&value=money">资金</a></li>
-<!--                      <li class="cn-stock-flex"><a href="//stocks.sina.cn/sh/abstr?code=sh600031" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>-->
-                      <li class="cn-stock-flex"><a id="cn_tab_finance" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>
-					   <li class="cn-stock-flex"><a id="cn_tab_f10" suda-uatrack="key=hq_center_hs&value=f10">F10</a></li>
-                      <li class="cn-stock-halfFlex" id="cn_news_tab">
-                         <div class="cn-pos-arrow" id="cn_news_tab_close">
-                            <div class="cn-arrow-close"></div>
-                         </div>
-                         <div class="cn-pos-arrow" id="cn_news_tab_open" style="display: none;">
-                            <div class="cn-arrow-open"></div>
-                         </div>
-                      </li>
-                   </ul>
-                   <div style="display: none;" id="cn_news_tab_con">
-                      <ul class="cn-tab" style="display: flex;">
-						  <li class="cn-stock-flex"><a id="cn_tab_notice" suda-uatrack="key=hq_center_hs&value=notice">公告</a></li>
-						  <li class="cn-stock-flex"><a id="cn_tab_report" suda-uatrack="key=hq_center_hs&value=paper">研报</a></li>
-                         <li class="cn-stock-flex"><a href="//finance.sina.com.cn/tzy/diagnose/sh600031/app_public.html" suda-uatrack="key=hq_center_hs&value=diag">诊股</a></li>
-                         <li class="cn-stock-flex"><a id="cn_tab_comment" suda-uatrack="key=hq_center_hs&value=comment">股市汇</a></li>
-                         <!--<li class="cn-stock-flex"></li>-->
-                         <!--<li class="cn-stock-halfFlex"></li>-->
-                      </ul>
-                   </div>
-                </div>
-			</div>
-			<!-- 个股具有 end-->
-            
-						<section id="cn_news_cont" class="cn-news-cont">
-				<ul>
-				</ul>
-
-				<div class="cn-refresh" id="cn_news_refresh">
-					<span><i class="cn-refresh-icon"></i>正在加载</span>
-				</div>
-				<p class="cn-more" id="cn_news_more" suda-uatrack="key=hq_center_hs&value=newsmore">查看更多<i class="cn-refresh-arrow"></i></p>
-			</section>
-			
-            <section id="cn_finance_cont" style="display: none;">
-                <div id="cn_finance_vue"></div>
-            </section>
-			<section id="cn_f10_cont" style="display: none;">
-				<div id="cn_f10_vue"></div>
-			</section>
-
-			<section id="cn_notice_cont" style="display: none;">
-				<div id="cn_notice_vue"></div>
-			</section>
-
-			<section id="cn_report_cont" style="display: none;">
-				<div id="cn_report_vue"></div>
-			</section>
-            <section id="cn_money_cont" class="cn-money-cont" style="display: none;">
-                <!--today-->
-                <div class="money-part">
-                   <div class="title">今日资金净流入（万元）</div>
-                   <div class="chart" id="canvasCtn"></div>
-                   <div class="table" id="money_in"></div>
-                </div>
-                <!--today detail-->
-                <div class="money-detail">
-                   <div class="title money-font-weight" id="money_detail">流入流出详情（万元）
-                      <div class="cn-pos-arrow" id="money_arrow_open">
-                         <div class="cn-arrow-close money-right"></div>
-                      </div>
-                      <div class="cn-pos-arrow"  id="money_arrow_close" style="display: none;">
-                         <div class="cn-arrow-open money-right"></div>
-                      </div>
-                   </div>
-                   <div id="money_detail_con">
-                      <div class="chart-legend">
-                         <div>
-                            <div class="icon money-red-back"></div>
-                            <div class="text">流入</div>
-                            <div class="icon money-green-back"></div>
-                            <div class="text">流出</div>
-                         </div>
-                      </div>
-                      <div class="chart" id="canvasDetail"></div>
-                   </div>
-                </div>
-                <!--5day-->
-                <div class="money-five">
-                   <div class="title">近5日主力净流入(万元)</div>
-                   <div class="chart-legend">
-                      <div>
-                         <div class="icon money-red-back"></div>
-                         <div class="text">资金</div>
-                         <div class="pic"></div>
-                         <div class="text">股价涨跌幅</div>
-                      </div>
-                   </div>
-                   <div class="chart" id="canvasFive"></div>
-                   <div class="list">
-                      <div class="icon">
-                         <ul>
-                            <li></li>
-                            <li>
-                               <p class="rect money-red-back"></p></li>
-                            <li>
-                               <p class="pic"></p></li>
-                         </ul>
-                      </div>
-                      <div class="right" id="money_five">
-                         <section class="date"></section>
-                         <section class="earn"></section>
-                         <section class="percent"></section>
-                      </div>
-                   </div>
-                </div>
-                <!--compare-->
-                <div class="money-compare">
-                   <div class="title">
-                      <p>
-                         同行业今日主力资金流向(万元)
-                      </p>
-                      <div class="link-more">
-                         <a class="link" id="money_link">
-                            <i class="icon-more"></i>
-                         </a>
-                      </div>
-                   </div>
-
-                   <div class="trade trade-three">
-                      <div id="money_bk"></div>
-                   </div>
-                   <div class="rank">
-                      <ul class="rank-line">
-                         <li>排序</li>
-                         <li>名称</li>
-                         <li>主力净流入</li>
-                         <li>成交额</li>
-                      </ul>
-
-                      <div id="money_list"></div>
-                   </div>
-                </div>
-
-                <div class="money-comment">
-                   <a href="//finance.sina.com.cn/stock/t/2017-05-31/doc-ifyfuvpm6784035.shtml">
-                      <p class="title money-font-weight">注：资金流向功能说明请查看<span>此处</span>。
-                      </p>
-                   </a>
-                </div>
-            </section>
-			<section id="cn_relate_cont" class="cn-relate-cont" style="display: none;">
-                				<!-- 个股具有 start-->
-                <div id="cn_bk_gp_c" class="cn-bk-news">
-                    <div class="cn-pop">
-                       <span class="panel">
-                          通过分析近期新浪财经数万篇新闻，挖掘出个股之间的相关关系。</span>
-                       <div class="arrow"></div>
-                    </div>
-
-                    <span class="cn-bk-title">
-                       <span class="cn-bk-icon-l">新闻同关注</span>
-                       <span class="cn-bk-icon-r" id="follow_icon">
-                          <span class="cn-bk-icon"></span>
-                       </span>
-                    </span>
-                    <div id="cn_bk_gp" suda-uatrack="key=hq_center_hs&value=news_related_stock">
-                        <div class="cn-wrapper">
-                           <div class="follow">
-                              <ul id="follow">
-                              </ul>
-                           </div>
-                        </div>
-                    </div>
-                </div>
-				<div id="cn_bk_hy_c">
-					<span class="cn-bk-title">所属行业</span>
-					<ul id="cn_bk_hy" suda-uatrack="key=hq_center_hs&value=hy">
-					</ul>
-				</div>
-				<div id="cn_bk_bk_c">
-					<span class="cn-bk-title">所属概念</span>
-					<ul id="cn_bk_gn" suda-uatrack="key=hq_center_hs&value=gn">
-					</ul>
-				</div>
-
-				<div id="cn_visit_cont" suda-uatrack="key=hq_center_hs&value=history">
-					<span class="cn-bk-title">最近访问</span>
-					<ul>
-						<li data-role="histroy2app"></li>
-					</ul>
-				</div>
-				<!-- 个股具有 end-->
-                				<div id="cn_blank" class="cn-blank"></div>
-			</section>
-
-			<section id="cn_comment_cont" class="cn-comment" style="display: none;">
-				<ul>
-					<li></li>
-				</ul>
-				<div class="cn-refresh" id="cn_comment_refresh">
-					<span><i class="cn-refresh-icon"></i>正在加载</span>
-				</div>
-				<div id="cn_comment_tw" class="cn-expert-tw"></div>
-
-				<p class="cn-more" id="cn_comment_more">查看更多<i class="cn-refresh-arrow"></i></p>
-			</section>
-		</section>
-		<!-- 新闻 end -->
-
-		<!-- footer start -->
-		<footer class="cn-footer">
-			<div class="cn-footer-links">
-				<a href="//sina.cn/?urlHistory=sina" suda-uatrack="key=hq_center_hs&value=footerzhalang">新浪首页</a>
-				<a href="http://watchlist.sina.cn/#/MyStock/All" suda-uatrack="key=hq_center_hs&value=footermystock">自选股</a>
-				<a href="//gu.sina.cn/m/feedback" suda-uatrack="key=hq_center_hs&value=footerfeedback">意见反馈</a>
-			</div> <i class="cn-icon-backtop" suda-uatrack="key=hq_center_hs&value=footergotop"></i>
-		</footer>
-		<!--<footer class="hq-tui">-->
-			<!--<div class="hq-tui-download">-->
-                <!--<a href="https://itunes.apple.com/cn/app/xin-lang-cai-jing-zheng-quan/id430165157?mt=8" class="hq-tui-download-ios" suda-uatrack="key=hq_center_hs&value=bottom_ios">-->
-                   <!--<i></i>iPhone下载</a>-->
-                <!--<a href="http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk" class="hq-tui-download-android"  suda-uatrack="key=hq_center_hs&value=bottom_android">-->
-                   <!--<i></i>Android下载</a>-->
-             <!--</div>-->
-			<!--<div class="hq-tui-msg">-->
-				<!--<p>全球市场行情，沪深港股美股全覆盖</p>-->
-				<!--<p>7*24解读财经新闻，关注全球金融风向</p>-->
-				<!--<p>财经大咖在线政策解读，掌握投资先机</p>-->
-				<!--<p>自选股智能预警、公告、研报及时推送</p>-->
-			<!--</div>-->
-		<!--</footer>-->
-
-		<footer id="cnBottomBanner" data-position="bottomBanner">
-			<img class="app-footer-sina" />
-		</footer>
-
-		<!-- footer end-->
-	</div>
-	<div id="hq_chart"></div>
-
-
-
-<!-- 实时行情套件 -->
-	<script type="text/javascript" charset="utf-8" src="//mjs.sinaimg.cn/wap/public/suda/201705021130/suda_log.min.js"></script>
-    <script type="text/javascript" src="//mjs.sinaimg.cn/wap/public/suda/201704271600/suda_map.min.js"></script>
-	<script type="text/javascript" src="//woocall.sina.com.cn/lib/IO.WebPush4.js"></script>
-	<!--//n.sinaimg.cn/finance/hqbasic_component/HQ_DataApps.js-->
-	<script type="text/javascript" src="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataApps.js?hsw=7.32"></script>
-	<script type="text/javascript" src="//n.sinaimg.cn/finance/wap/h5/hq/js/zepto.min.js"></script>
-	<script type="text/javascript" src="//localhost:9080/static/js2/sf_sdk.js"></script>
-	<script type="text/javascript" src="//finance.sina.com.cn/other/src/app/build.callUpApp.min.js?hsw=7.32"></script>
-
-    <script type="text/javascript" charset="GBK" src="//localhost:9080/static/js2/sinaAppTKChart.js"></script>
-    <script type="text/javascript" charset="GBK" src="//localhost:9080/static/js2/cn2017.js?hsw=7.32"></script>
-<script>
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-let timer = setInterval(() => {
-
-   if( $("li[type=nav]").length>0)clearInterval(timer);
-   else return;
-   $("li[type=nav]").click(function(e) {
-      let type = $(this).attr("data-view");
-      if (type) {
-
-		if(getMyCookie("dataView")==type){
-			location = location.href+'#close';
-		}
-
-		setCookie("dataView", type);
-
+      function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
       }
-	});
-	
-	$("li").click(function(e) {
-		setTimeout(()=>{
-			let value = $(this).attr('value');
-		if(value){
-			setCookie("dataView-"+value, $(this).attr('selected'));
-		}
-		},500);
+      function getMyCookie(cname, def) {
+        var name = cname + "=";
+        var ca = document.cookie.split(";");
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i].trim();
+          if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+        return def;
+      }
+      try {
+        document.domain = "sina.cn";
+      } catch (event) {}
+      (function(doc, win) {
+        var MAX_WIDTH = 400.0125;
+        var resizing = null;
+        var dpr, rem, scale;
+        var metaEl = doc.querySelector('meta[name="viewport"]');
+        win.onresize = function() {
+          if (resizing) {
+            clearTimeout(resizing);
+          }
+          resizing = setTimeout(adjustBase, 100);
+        };
 
-	});
+        function adjustBase() {
+          var clientWidth =
+            doc.body.clientWidth || doc.documentElement.clientWidth;
+          if (clientWidth > MAX_WIDTH) {
+            clientWidth = MAX_WIDTH;
+          }
+          doc.querySelector("html").style["font-size"] =
+            ((clientWidth / 750) * 10000) / 16 + "%";
+          resizing = null;
+        }
+        if (!doc.documentElement.addEventListener) return;
+        doc.addEventListener("DOMContentLoaded", adjustBase, false);
+      })(document, window);
+    </script>
+    <script>
+      var relateSymbol = "sh000001,sz399001,sz399006,b_SPX,hkHSI"; //,b_SX5E';//相关代码
+      var q = document.location.href.split("?")[1];
+      var paperCode = q.split("&")[0];
+      var type = q.split("&").length > 1 && q.split("&")[1];
+      if (type) {
+        setCookie("dataView", type);
+      }
 
-}, 100);
+      var isIndex = "0";
+    </script>
+  </head>
 
+  <body>
+    <!-- 微信分享 -->
+    <div
+      class="wx_img"
+      style="width: 0; height: 0; overflow: hidden; font-size: 0; line-height: 0px;"
+    >
+      <img
+        src="https://n.sinaimg.cn/finance/hqcenter_sharepic/hqcenter_300x300.jpg"
+        width="400"
+        height="400"
+        alt=""
+      />
+    </div>
+    <div id="hqMain">
+      <!--财经APP头部推广位 start-->
+      <!--<div class="app-header" id="cnTopBanner" data-position="topBanner">-->
+      <!--<a suda-uatrack="key=hq_center_hs&value=top_banner"></a>-->
+      <!--<b class="banner-title">新浪财经</b>-->
+      <!--<span class="banner-txt">在 "新浪财经" APP 中查看</span>-->
+      <!--</div>-->
+      <!--财经APP头部推广位   end-->
+      <div class="js-app-header" id="tbanner" data-position="topBanner">
+        <a suda-uatrack="key=hq_center_hs&value=top_banner"></a>
+      </div>
 
-</script>
-</body>
+      <header class="cn-header" id="cn_head" style="display: none;">
+        <nav class="cn-header-routes">
+          <p class="logo">
+            <a
+              href="//finance.sina.cn"
+              suda-uatrack="key=hq_center_hs&value=navfin"
+            >
+              <img
+                src="//n.sinaimg.cn/finance/hqcenter_v2_20160101/sina-logo.png"
+                alt=""
+                class="logo-sina"
+              />
+            </a>
+            <a
+              href="//gu.sina.cn/m/#/stock/index"
+              suda-uatrack="key=hq_center_hs&value=navhq"
+            >
+              <span>沪深行情</span>
+            </a>
+          </p>
+        </nav>
+        <a href="//quotes.sina.cn/search/" class="search">
+          <section class="search-box">
+            <p><i class="cn-icon-search"></i>&nbsp;代码／拼音／首字母等</p>
+          </section>
+        </a>
+      </header>
+      <!--<section class="app-open">-->
+      <!--<img src="//n.sinaimg.cn/finance/2017us/banner_app_new.jpg"/>-->
+      <!--</section>-->
+      <nav class="cn-nav" style="display: none;">
+        <ul>
+          <li>
+            <a
+              href="http://finance.sina.cn/stock"
+              title="股票频道"
+              suda-uatrack="key=hq_center_hs&value=navstock"
+              >股票频道</a
+            >
+          </li>
+          <li>
+            <a
+              href="http://watchlist.sina.cn/#/MyStock/All"
+              title="我的自选"
+              suda-uatrack="key=hq_center_hs&value=navmystock"
+              >我的自选</a
+            >
+          </li>
+          <!-- 持仓收益，没有改suda -->
+          <li>
+            <a
+              href="//watchlist.sina.cn/earn/"
+              title="持仓收益"
+              suda-uatrack="key=hq_center_hs&value=navmarket"
+              >持仓收益</a
+            >
+          </li>
+          <li>
+            <a
+              href="//guba.sina.cn/list_sh600031.html"
+              title="股票评论"
+              suda-uatrack="key=hq_center_hs&value=navpoint"
+              >股票评论</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <!-- header end -->
 
+      <!-- 顶部导航 start -->
+      <section class="hqhead-link"></section>
+      <!-- 顶部导航 end -->
+
+      <!-- 实时行情组件 start -->
+      <section
+        id="cn_hqdata"
+        class="hq_hqdata"
+        style="display: none;"
+      ></section>
+      <!-- 实时行情组件 end -->
+
+      <!-- 行情图组件 start -->
+      <section class="cn-chart">
+        <div class="cn-chart-box" id="h5Chart"></div>
+      </section>
+      <!-- 行情图组件 end -->
+
+      <!--日历start-->
+      <div class="da-calendar" id="da-calendar" style="display: none;">
+        <div class="clearfix calendar-title">
+          <p class="time">
+            <i class="icon-cal"></i>
+            <span>财经日历</span>
+          </p>
+          <p class="hintme">
+            <span
+              >提 醒
+              <i class="icon-hint"></i>
+            </span>
+          </p>
+        </div>
+        <div class="calendar-wp">
+          <div
+            data-role="InfiniteScroll"
+            class="calendar-scroll"
+            data-relate="#da-calendar"
+          ></div>
+        </div>
+      </div>
+      <!--日历end-->
+
+      <!-- 五档盘口个股具有 -->
+      <!-- 五档盘口 start -->
+      <section id="cn_position_section" style="display: none;">
+        <div class="cn-pos-head">
+          <div
+            id="cn_position_close"
+            suda-uatrack="key=hq_center_hs&value=handicapopen"
+          >
+            五档盘口/成交明细
+            <div class="cn-pos-arrow">
+              <div class="cn-arrow-close"></div>
+            </div>
+          </div>
+
+          <div
+            id="cn_position_open"
+            style="display:none;"
+            suda-uatrack="key=hq_center_hs&value=handicapclose"
+          >
+            <ul class="cn-pos-close">
+              <li>五档盘口</li>
+              <li>成交明细</li>
+            </ul>
+            <div class="cn-pos-arrow">
+              <div class="cn-arrow-open"></div>
+            </div>
+          </div>
+        </div>
+        <div id="cn_position_cont" class="cn-pos-cont" style="display: none;">
+          <div class="cn-pos-left">
+            <ul>
+              <li>
+                <ul class="cn-pos cn-pos-title">
+                  <li>盘口</li>
+                  <li>价格</li>
+                  <li>成交量</li>
+                </ul>
+              </li>
+            </ul>
+            <ul id="cn_position"></ul>
+          </div>
+          <div class="cn-pos-right" style="display: none;">
+            <ul>
+              <li>
+                <ul class="cn-detail cn-pos-title">
+                  <li>时间</li>
+                  <li>价格</li>
+                  <li>成交量</li>
+                </ul>
+              </li>
+            </ul>
+            <ul id="cn_detail"></ul>
+          </div>
+        </div>
+      </section>
+      <!-- 五档盘口 end -->
+      <header
+        class="cn-header"
+        id="fix_header"
+        style="position:fixed;z-index:999;display: none;"
+      >
+        <header class="cn-header" style="position:fixed;z-index:999;">
+          <nav class="cn-header-routes">
+            <div id="cn_floating_h" class="cn-header-fix-de">
+              <span style="">@name</span>
+              <span style="padding: 2px;" id="cn_floating_price_h">@price</span>
+              <span style="padding: 2px;" id="cn_floating_zdf_h">@zdf</span>
+            </div>
+          </nav>
+          <a href="//quotes.sina.cn/search/" class="icon">
+            <i class="cn-icon-searchlarge"></i>
+          </a>
+        </header>
+      </header>
+
+      <div
+        class="cn-news-title-floating"
+        id="fix_floating"
+        style="display: none;"
+      >
+        <header class="cn-header" style="z-index:999;">
+          <nav class="cn-header-routes">
+            <div id="cn_floating" class="cn-header-fix-de">
+              <span style="">@name</span>
+              <span style="padding: 2px;" id="cn-floating-price">@price</span>
+              <span style="padding: 2px;" id="cn-floating-zdf">@zdf</span>
+            </div>
+          </nav>
+          <a href="//quotes.sina.cn/search/" class="icon">
+            <i class="cn-icon-searchlarge"></i>
+          </a>
+        </header>
+        <!-- 个股具有 start-->
+        <div
+          class="cn-title-scroll"
+          style="width: 100%; text-align: center;"
+          style="display: none;"
+        >
+          <div class="cn-stock-tab">
+            <ul class="cn-tab" style="display: flex;" id="cn_f_up">
+              <li class="cn-stock-flex">
+                <a
+                  id="cn_tab_relate_f"
+                  suda-uatrack="key=hq_center_hs&value=relate"
+                  >关联</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a id="cn_tab_news_f" suda-uatrack="key=hq_center_hs&value=news"
+                  >新闻</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a
+                  id="cn_tab_money_f"
+                  suda-uatrack="key=hq_center_hs&value=money"
+                  >资金</a
+                >
+              </li>
+              <!--                       <li class="cn-stock-flex"><a href="//stocks.sina.cn/sh/abstr?code=sh600031" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>-->
+              <li class="cn-stock-flex">
+                <a
+                  id="cn_tab_finance_f"
+                  suda-uatrack="key=hq_center_hs&value=finance"
+                  >财务</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a id="cn_tab_f10_f" suda-uatrack="key=hq_center_hs&value=f10"
+                  >F10</a
+                >
+              </li>
+              <li class="cn-stock-halfFlex" id="cn_tab_f">
+                <div class="cn-pos-arrow" id="cn_f_close">
+                  <div class="cn-arrow-close"></div>
+                </div>
+                <div class="cn-pos-arrow" id="cn_f_open" style="display: none;">
+                  <div class="cn-arrow-open"></div>
+                </div>
+              </li>
+            </ul>
+            <div style="display: none;" id="cn_f_con">
+              <ul class="cn-tab" style="display: flex;">
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_notice_f"
+                    suda-uatrack="key=hq_center_hs&value=notice"
+                    >公告</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_report_f"
+                    suda-uatrack="key=hq_center_hs&value=paper"
+                    >研报</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    href="//finance.sina.com.cn/tzy/diagnose/sh600031/app_public.html"
+                    suda-uatrack="key=hq_center_hs&value=diag"
+                    >诊股</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_comment_f"
+                    suda-uatrack="key=hq_center_hs&value=comment"
+                    >股市汇</a
+                  >
+                </li>
+                <!--<li class="cn-stock-flex"></li>-->
+                <!--<li class="cn-stock-halfFlex"></li>-->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- 个股具有 start-->
+      </div>
+
+      <!-- 新闻 start -->
+      <section id="cn-news-c" class="cn-news">
+        <!-- 个股具有 start-->
+        <div
+          class="cn-title-scroll"
+          style="width: 100%; text-align: center;"
+          id="cn_tab"
+        >
+          <div id="cn_news" class="cn-stock-tab">
+            <ul class="cn-tab" style="display: flex;" id="cn_news_up">
+              <li class="cn-stock-flex">
+                <a
+                  id="cn_tab_relate"
+                  suda-uatrack="key=hq_center_hs&value=relate"
+                  >关联</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a id="cn_tab_news" suda-uatrack="key=hq_center_hs&value=news"
+                  >新闻</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a id="cn_tab_money" suda-uatrack="key=hq_center_hs&value=money"
+                  >资金</a
+                >
+              </li>
+              <!--                      <li class="cn-stock-flex"><a href="//stocks.sina.cn/sh/abstr?code=sh600031" suda-uatrack="key=hq_center_hs&value=finance">财务</a></li>-->
+              <li class="cn-stock-flex">
+                <a
+                  id="cn_tab_finance"
+                  suda-uatrack="key=hq_center_hs&value=finance"
+                  >财务</a
+                >
+              </li>
+              <li class="cn-stock-flex">
+                <a id="cn_tab_f10" suda-uatrack="key=hq_center_hs&value=f10"
+                  >F10</a
+                >
+              </li>
+              <li class="cn-stock-halfFlex" id="cn_news_tab">
+                <div class="cn-pos-arrow" id="cn_news_tab_close">
+                  <div class="cn-arrow-close"></div>
+                </div>
+                <div
+                  class="cn-pos-arrow"
+                  id="cn_news_tab_open"
+                  style="display: none;"
+                >
+                  <div class="cn-arrow-open"></div>
+                </div>
+              </li>
+            </ul>
+            <div style="display: none;" id="cn_news_tab_con">
+              <ul class="cn-tab" style="display: flex;">
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_notice"
+                    suda-uatrack="key=hq_center_hs&value=notice"
+                    >公告</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_report"
+                    suda-uatrack="key=hq_center_hs&value=paper"
+                    >研报</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    href="//finance.sina.com.cn/tzy/diagnose/sh600031/app_public.html"
+                    suda-uatrack="key=hq_center_hs&value=diag"
+                    >诊股</a
+                  >
+                </li>
+                <li class="cn-stock-flex">
+                  <a
+                    id="cn_tab_comment"
+                    suda-uatrack="key=hq_center_hs&value=comment"
+                    >股市汇</a
+                  >
+                </li>
+                <!--<li class="cn-stock-flex"></li>-->
+                <!--<li class="cn-stock-halfFlex"></li>-->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- 个股具有 end-->
+
+        <section id="cn_news_cont" class="cn-news-cont">
+          <ul></ul>
+
+          <div class="cn-refresh" id="cn_news_refresh">
+            <span><i class="cn-refresh-icon"></i>正在加载</span>
+          </div>
+          <p
+            class="cn-more"
+            id="cn_news_more"
+            suda-uatrack="key=hq_center_hs&value=newsmore"
+          >
+            查看更多<i class="cn-refresh-arrow"></i>
+          </p>
+        </section>
+
+        <section id="cn_finance_cont" style="display: none;">
+          <div id="cn_finance_vue"></div>
+        </section>
+        <section id="cn_f10_cont" style="display: none;">
+          <div id="cn_f10_vue"></div>
+        </section>
+
+        <section id="cn_notice_cont" style="display: none;">
+          <div id="cn_notice_vue"></div>
+        </section>
+
+        <section id="cn_report_cont" style="display: none;">
+          <div id="cn_report_vue"></div>
+        </section>
+        <section
+          id="cn_money_cont"
+          class="cn-money-cont"
+          style="display: none;"
+        >
+          <!--today-->
+          <div class="money-part">
+            <div class="title">今日资金净流入（万元）</div>
+            <div class="chart" id="canvasCtn"></div>
+            <div class="table" id="money_in"></div>
+          </div>
+          <!--today detail-->
+          <div class="money-detail">
+            <div class="title money-font-weight" id="money_detail">
+              流入流出详情（万元）
+              <div class="cn-pos-arrow" id="money_arrow_open">
+                <div class="cn-arrow-close money-right"></div>
+              </div>
+              <div
+                class="cn-pos-arrow"
+                id="money_arrow_close"
+                style="display: none;"
+              >
+                <div class="cn-arrow-open money-right"></div>
+              </div>
+            </div>
+            <div id="money_detail_con">
+              <div class="chart-legend">
+                <div>
+                  <div class="icon money-red-back"></div>
+                  <div class="text">流入</div>
+                  <div class="icon money-green-back"></div>
+                  <div class="text">流出</div>
+                </div>
+              </div>
+              <div class="chart" id="canvasDetail"></div>
+            </div>
+          </div>
+          <!--5day-->
+          <div class="money-five">
+            <div class="title">近5日主力净流入(万元)</div>
+            <div class="chart-legend">
+              <div>
+                <div class="icon money-red-back"></div>
+                <div class="text">资金</div>
+                <div class="pic"></div>
+                <div class="text">股价涨跌幅</div>
+              </div>
+            </div>
+            <div class="chart" id="canvasFive"></div>
+            <div class="list">
+              <div class="icon">
+                <ul>
+                  <li></li>
+                  <li>
+                    <p class="rect money-red-back"></p>
+                  </li>
+                  <li>
+                    <p class="pic"></p>
+                  </li>
+                </ul>
+              </div>
+              <div class="right" id="money_five">
+                <section class="date"></section>
+                <section class="earn"></section>
+                <section class="percent"></section>
+              </div>
+            </div>
+          </div>
+          <!--compare-->
+          <div class="money-compare">
+            <div class="title">
+              <p>
+                同行业今日主力资金流向(万元)
+              </p>
+              <div class="link-more">
+                <a class="link" id="money_link">
+                  <i class="icon-more"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="trade trade-three">
+              <div id="money_bk"></div>
+            </div>
+            <div class="rank">
+              <ul class="rank-line">
+                <li>排序</li>
+                <li>名称</li>
+                <li>主力净流入</li>
+                <li>成交额</li>
+              </ul>
+
+              <div id="money_list"></div>
+            </div>
+          </div>
+
+          <div class="money-comment">
+            <a
+              href="//finance.sina.com.cn/stock/t/2017-05-31/doc-ifyfuvpm6784035.shtml"
+            >
+              <p class="title money-font-weight">
+                注：资金流向功能说明请查看<span>此处</span>。
+              </p>
+            </a>
+          </div>
+        </section>
+        <section
+          id="cn_relate_cont"
+          class="cn-relate-cont"
+          style="display: none;"
+        >
+          <!-- 个股具有 start-->
+          <div id="cn_bk_gp_c" class="cn-bk-news">
+            <div class="cn-pop">
+              <span class="panel">
+                通过分析近期新浪财经数万篇新闻，挖掘出个股之间的相关关系。</span
+              >
+              <div class="arrow"></div>
+            </div>
+
+            <span class="cn-bk-title">
+              <span class="cn-bk-icon-l">新闻同关注</span>
+              <span class="cn-bk-icon-r" id="follow_icon">
+                <span class="cn-bk-icon"></span>
+              </span>
+            </span>
+            <div
+              id="cn_bk_gp"
+              suda-uatrack="key=hq_center_hs&value=news_related_stock"
+            >
+              <div class="cn-wrapper">
+                <div class="follow">
+                  <ul id="follow"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="cn_bk_hy_c">
+            <span class="cn-bk-title">所属行业</span>
+            <ul id="cn_bk_hy" suda-uatrack="key=hq_center_hs&value=hy"></ul>
+          </div>
+          <div id="cn_bk_bk_c">
+            <span class="cn-bk-title">所属概念</span>
+            <ul id="cn_bk_gn" suda-uatrack="key=hq_center_hs&value=gn"></ul>
+          </div>
+
+          <div id="cn_visit_cont" suda-uatrack="key=hq_center_hs&value=history">
+            <span class="cn-bk-title">最近访问</span>
+            <ul>
+              <li data-role="histroy2app"></li>
+            </ul>
+          </div>
+          <!-- 个股具有 end-->
+          <div id="cn_blank" class="cn-blank"></div>
+        </section>
+
+        <section id="cn_comment_cont" class="cn-comment" style="display: none;">
+          <ul>
+            <li></li>
+          </ul>
+          <div class="cn-refresh" id="cn_comment_refresh">
+            <span><i class="cn-refresh-icon"></i>正在加载</span>
+          </div>
+          <div id="cn_comment_tw" class="cn-expert-tw"></div>
+
+          <p class="cn-more" id="cn_comment_more">
+            查看更多<i class="cn-refresh-arrow"></i>
+          </p>
+        </section>
+      </section>
+      <!-- 新闻 end -->
+
+      <!-- footer start -->
+      <footer class="cn-footer">
+        <div class="cn-footer-links">
+          <a
+            href="//sina.cn/?urlHistory=sina"
+            suda-uatrack="key=hq_center_hs&value=footerzhalang"
+            >新浪首页</a
+          >
+          <a
+            href="http://watchlist.sina.cn/#/MyStock/All"
+            suda-uatrack="key=hq_center_hs&value=footermystock"
+            >自选股</a
+          >
+          <a
+            href="//gu.sina.cn/m/feedback"
+            suda-uatrack="key=hq_center_hs&value=footerfeedback"
+            >意见反馈</a
+          >
+        </div>
+        <i
+          class="cn-icon-backtop"
+          suda-uatrack="key=hq_center_hs&value=footergotop"
+        ></i>
+      </footer>
+      <!--<footer class="hq-tui">-->
+      <!--<div class="hq-tui-download">-->
+      <!--<a href="https://itunes.apple.com/cn/app/xin-lang-cai-jing-zheng-quan/id430165157?mt=8" class="hq-tui-download-ios" suda-uatrack="key=hq_center_hs&value=bottom_ios">-->
+      <!--<i></i>iPhone下载</a>-->
+      <!--<a href="http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk" class="hq-tui-download-android"  suda-uatrack="key=hq_center_hs&value=bottom_android">-->
+      <!--<i></i>Android下载</a>-->
+      <!--</div>-->
+      <!--<div class="hq-tui-msg">-->
+      <!--<p>全球市场行情，沪深港股美股全覆盖</p>-->
+      <!--<p>7*24解读财经新闻，关注全球金融风向</p>-->
+      <!--<p>财经大咖在线政策解读，掌握投资先机</p>-->
+      <!--<p>自选股智能预警、公告、研报及时推送</p>-->
+      <!--</div>-->
+      <!--</footer>-->
+
+      <footer id="cnBottomBanner" data-position="bottomBanner">
+        <img class="app-footer-sina" />
+      </footer>
+
+      <!-- footer end-->
+    </div>
+    <div id="hq_chart"></div>
+
+    <!-- 实时行情套件 -->
+    <script
+      type="text/javascript"
+      charset="utf-8"
+      src="//mjs.sinaimg.cn/wap/public/suda/201705021130/suda_log.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//mjs.sinaimg.cn/wap/public/suda/201704271600/suda_map.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//woocall.sina.com.cn/lib/IO.WebPush4.js"
+    ></script>
+    <!--//n.sinaimg.cn/finance/hqbasic_component/HQ_DataApps.js-->
+    <script
+      type="text/javascript"
+      src="//i2.sinaimg.cn/cj/finance/hqcenter/res/HQ_DataApps.js?hsw=7.32"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//n.sinaimg.cn/finance/wap/h5/hq/js/zepto.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//localhost:9080/static/js2/sf_sdk.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//finance.sina.com.cn/other/src/app/build.callUpApp.min.js?hsw=7.32"
+    ></script>
+
+    <script
+      type="text/javascript"
+      charset="GBK"
+      src="//localhost:9080/static/js2/sinaAppTKChart.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="GBK"
+      src="//localhost:9080/static/js2/cn2017.js?hsw=7.32"
+    ></script>
+    <script>
+      function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+      }
+
+      let timer = setInterval(() => {
+        if ($("li[type=nav]").length > 0) clearInterval(timer);
+        else return;
+        $("li[type=nav]").click(function(e) {
+          let type = $(this).attr("data-view");
+          if (type) {
+            if (getMyCookie("dataView") == type) {
+              location = location.href + "#close";
+            }
+
+            setCookie("dataView", type);
+          }
+        });
+
+        $("li").click(function(e) {
+          setTimeout(() => {
+            let value = $(this).attr("value");
+            if (value) {
+              setCookie("dataView-" + value, $(this).attr("selected"));
+            }
+          }, 500);
+        });
+      }, 100);
+    </script>
+  </body>
 </html>

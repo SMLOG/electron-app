@@ -2917,36 +2917,45 @@ xh5_define(
           H = [];
         this.iToD = function(t, n, a) {
           if (!t.e || !w) {
-            var ix = t.x,
-              r = t.ox || 0,
-              l = t.y,
-              c = t.oy || 0,
-              h = t.e ? t.e.target : null;
+            var width = t.x,
+              offsetX = t.ox || 0,
+              height = t.y,
+              offsetY = t.oy || 0,
+              canvas = t.e ? t.e.target : null;
             if (!a) {
-              if (A == ix && R == l) return;
-              A = ix;
-              R = l;
+              if (A == width && R == height) return;
+              A = width;
+              R = height;
             }
-            if (h) {
-              var u = h.style.height.split("px")[0];
-              (0 > l || l > u) && ((ix = 0 / 0), (l = 0 / 0));
+            if (canvas) {
+              var u = canvas.style.height.split("px")[0];
+              (0 > height || height > u) && ((width = 0 / 0), (height = 0 / 0));
             }
             let curLen = viewState.currentLength,
-              f = Math.max(curLen, setting.PARAM.minCandleNum);
-            ix += setting.DIMENSION.w_k / f - z.x;
-            var v = Math.floor((ix * f) / setting.DIMENSION.w_k);
+              candleNum = Math.max(curLen, setting.PARAM.minCandleNum);
+            width += setting.DIMENSION.w_k / candleNum - z.x;
+            var mIndex = Math.floor(
+              (width * candleNum) / setting.DIMENSION.w_k
+            );
             if (
-              (0 > v ? (v = 0) : v >= curLen && (v = curLen - 1),
-              !isNaN(v) && (k = v),
-              isNaN(ix) && isNaN(l))
+              (0 > mIndex
+                ? (mIndex = 0)
+                : mIndex >= curLen && (mIndex = curLen - 1),
+              !isNaN(mIndex) && (k = mIndex),
+              isNaN(width) && isNaN(height))
             ) {
               N = !1;
               hideIUis();
               b(Number.MAX_VALUE);
               return void Y.onViewPrice();
             }
-            N = viewState.end != viewState.dataLength ? !0 : curLen - 1 > v;
-            for (var y, S, x, C, D, O, K, T = Number(t.mark); H.length; )
+            N =
+              viewState.end != viewState.dataLength ? !0 : curLen - 1 > mIndex;
+            for (
+              var y, S, mDate, C, datas, O, K, T = Number(t.mark);
+              H.length;
+
+            )
               H.length--;
             if (n) {
               let allStock = I.getAllStock(),
@@ -2955,25 +2964,25 @@ xh5_define(
               setting.custom.k_overlay && (F = !1);
               for (var P, $, q, j, B = Number.MAX_VALUE, W = 0; len > W; W++) {
                 q = allStock[W];
-                D = q.datas;
-                !D ||
-                  D.length <= v ||
+                datas = q.datas;
+                !datas ||
+                  datas.length <= mIndex ||
                   ((P = q.getName()),
-                  ($ = D[v]),
+                  ($ = datas[mIndex]),
                   H.push({
                     name: P,
                     data: $,
-                    rangedata: D,
+                    rangedata: datas,
                     symbol: q.symbol,
                     color: q.getLineStyle().linecolor
                   }),
                   $.isFake ||
-                    ((j = Math.abs($.cy - l)),
+                    ((j = Math.abs($.cy - height)),
                     B > j &&
                       ((B = j),
                       (C = q),
-                      (x = $),
-                      (K = D),
+                      (mDate = $),
+                      (K = datas),
                       (S = P),
                       (y = C.symbol))));
               }
@@ -2990,30 +2999,34 @@ xh5_define(
                 O += "<br/>" + G + "%";
               }
             } else {
-              if (((C = I.getMainStock()), (D = C.datas), !D || D.length <= v))
+              if (
+                ((C = I.getMainStock()),
+                (datas = C.datas),
+                !datas || datas.length <= mIndex)
+              )
                 return;
-              x = D[v];
-              K = D;
+              mDate = datas[mIndex];
+              K = datas;
               S = C.getName();
               y = C.symbol;
               var X = Math.abs(T);
               O = X > 99999 ? Math.floor(T) : T.toFixed(X > 9999 ? 1 : d);
               H.push({
                 name: S,
-                data: x,
+                data: mDate,
                 rangedata: K,
                 symbol: y,
                 color: C.getLineStyle().linecolor
               });
             }
-            if (x) {
-              var Z = ix;
-              setting.custom.stick && (ix = x.ix || ix);
+            if (mDate) {
+              var Z = width;
+              setting.custom.stick && (width = mDate.ix || width);
               e &&
                 (e.setFloaterData({
                   symbol: y,
                   name: S,
-                  data: x,
+                  data: mDate,
                   stock: C,
                   arr: H
                 }),
@@ -3022,19 +3035,19 @@ xh5_define(
                   y: setting.DIMENSION.K_F_T
                 }));
               iHLineO.pv({
-                y: l,
+                y: height,
                 v: O,
-                oy: c
+                oy: offsetY
               });
               o.pv({
-                x: ix,
-                ox: r,
+                x: width,
+                ox: offsetX,
                 y: setting.DIMENSION.H_MA4K,
-                v: x.day + " " + (x.time || "")
+                v: mDate.day + " " + (mDate.time || "")
               });
-              b(v);
+              b(mIndex);
               !S && (S = y || "--");
-              Y.onViewPrice(x, v, H, K, S, !0);
+              Y.onViewPrice(mDate, mIndex, H, K, S, !0);
               me.re(globalCfg.e.I_EVT, t.e);
             }
           }

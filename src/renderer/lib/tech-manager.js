@@ -20,12 +20,13 @@ function isMacdDeath(techData) {
   );
 }
 const techMap = {
-  "0&D": function({ item, kd, kw, km }) {
-    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
-  },
   D: function({ item, kd, kw, km }) {
     return isMacdGolden(kd);
   },
+  "0&D": function({ item, kd, kw, km }) {
+    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
+  },
+
   "D&W": function({ item, kd, kw, km }) {
     return (
       kw.MACD.length > 4 &&
@@ -41,25 +42,25 @@ const techMap = {
       let i = arr.length - 1;
       //连续下跌，MA20反转信号
       let nrValue = (arr[i].upper - arr[i].lower) / arr[i].boll;
-      let last3 = kd.datas.slice(-5);
-      let lastb5 = boll.slice(-5);
+      let kd5 = kd.datas.slice(-5);
+      let boll5 = boll.slice(-5);
       if (
         nrValue < 0.1 &&
         ((Math.min.apply(
           null,
-          last3.map(e => e.low)
+          kd5.map(e => e.low)
         ) <=
           Math.max.apply(
             null,
-            lastb5.map(e => e.lower)
+            boll5.map(e => e.lower)
           ) &&
           Math.max.apply(
             null,
-            last3.map(e => e.high)
+            kd5.map(e => e.high)
           ) >=
             Math.min.apply(
               null,
-              lastb5.map(e => e.boll)
+              boll5.map(e => e.boll)
             )) ||
           kd.datas[i].low > arr[i].upper)
       ) {

@@ -19,6 +19,13 @@ export let headers = [
         up: item.change > 0,
         down: item.change < 0
       };
+    },
+    click: (item, event, openlink) => {
+      openlink(
+        item,
+        event,
+        "http://localhost:9080/static/tech.html?{{code}}&t1"
+      );
     }
   },
   {

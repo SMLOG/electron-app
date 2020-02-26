@@ -2718,7 +2718,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       ema = cacFuns.calcEMA,
       operateArr = cacFuns.operateArr,
       getArr = cacFuns.getArr;
-    (this.initAndCalcAll = function(i) {
+    this.initAndCalcAll = function(i) {
       var r = this.gdsd(i),
         dif12Day = this.customArr[0].v,
         dea26Day = this.customArr[1].v,
@@ -2741,63 +2741,84 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           bar: f[u]
         }),
           (this.selfArr[u][At] = r[u].volume < 0);
-    }),
-      (this.draw = function(t, r) {
-        if (((this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r), this.datas)) {
-          var h = this.line;
-          h.clear(!0, i.PARAM.getHd());
-          var o, l;
-          "k" == a.type
-            ? ((o = i.DIMENSION.w_k), (l = i.PARAM.minCandleNum))
-            : ((o = i.DIMENSION.w_t), (l = 1));
+    };
+    this.draw = function(t, r) {
+      this.__iOffsetX = isNaN(r) ? this.__iOffsetX : r;
+      if (this.datas) {
+        var h = this.line;
+        h.clear(!0, i.PARAM.getHd());
+        var w_k, candleNum;
+        "k" == a.type
+          ? ((w_k = i.DIMENSION.w_k), (candleNum = i.PARAM.minCandleNum))
+          : ((w_k = i.DIMENSION.w_t), (candleNum = 1));
+        for (
+          var n,
+            xPost,
+            len = this.datas.length,
+            perWidth = w_k / Math.max(len, candleNum),
+            u = "k" == a.type ? this.__iOffsetX - perWidth * mt : perWidth * gt,
+            p = 0;
+          2 > p;
+          p++
+        ) {
+          var propY = this.customArr[p].prop + "y";
           for (
-            var n,
-              c,
-              d = this.datas.length,
-              f = o / Math.max(d, l),
-              u = "k" == a.type ? this.__iOffsetX - f * mt : f * gt,
-              p = 0;
-            2 > p;
-            p++
+            xPost = u,
+              this.line.newStyle(this.customArr[p].color, !0, 1.3),
+              n = 0;
+            len > n;
+            n++
           ) {
-            var v = this.customArr[p].prop + "y";
-            for (
-              c = u,
-                this.line.newStyle(this.customArr[p].color, !0, 1.3),
-                n = 0;
-              d > n;
-              n++
-            )
-              0 == n
-                ? this.line.moveTo(c, this.datas[n][v])
-                : this.line.lineTo(c, this.datas[n][v]),
-                (c += f);
-            this.line.stroke();
+            0 == n
+              ? this.line.moveTo(xPost, this.datas[n][propY])
+              : this.line.lineTo(xPost, this.datas[n][propY]);
+            xPost += perWidth;
           }
-          var A,
-            m = (this.labelMaxP / (this.labelMaxP - this.labelMinP)) * this.h;
-          c = u;
-          var g,
-            b = 1;
-          for (h.newStyle(s, !0, b), n = 0; d > n; n++)
-            (A = this.datas[n].bary),
-              m >= A &&
-                ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
-              (c += f);
-          for (h.stroke(), c = u, h.newStyle(e, !0, b), n = 0; d > n; n++)
-            (A = this.datas[n].bary),
-              A > m &&
-                ((g = ~~(c + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A)),
-              (c += f);
-          h.stroke();
-          var y = this.h / 2 - 0.5;
-          h.newStyle(this.cfg.COLOR.GRID, !0, 1),
-            h.moveTo(0, y),
-            h.lineTo(this.cfg.DIMENSION.w_k, y),
-            h.stroke(),
-            h.drawBg(this.__iOffsetX);
+          this.line.stroke();
         }
-      });
+        let tIndex = this.datas.filter(e => e.date < new Date("2020-01-15"))
+          .length;
+
+        var el = document.createElement("div");
+        el.innerHTML = `<div id="sp" style="
+    position: absolute;
+    left: ${55 + (tIndex - 1) * perWidth + perWidth / 2}px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #eee;
+"></div>`;
+        this.wrap.appendChild(el);
+        var A,
+          m = (this.labelMaxP / (this.labelMaxP - this.labelMinP)) * this.h;
+        xPost = u;
+        var g,
+          b = 1;
+        for (h.newStyle(s, !0, b), n = 0; len > n; n++)
+          (A = this.datas[n].bary),
+            m >= A &&
+              ((g = ~~(xPost + 0.5)),
+              (g -= 0.5),
+              h.moveTo(g, m),
+              h.lineTo(g, A)),
+            (xPost += perWidth);
+        for (h.stroke(), xPost = u, h.newStyle(e, !0, b), n = 0; len > n; n++)
+          (A = this.datas[n].bary),
+            A > m &&
+              ((g = ~~(xPost + 0.5)),
+              (g -= 0.5),
+              h.moveTo(g, m),
+              h.lineTo(g, A)),
+            (xPost += perWidth);
+        h.stroke();
+        var y = this.h / 2 - 0.5;
+        h.newStyle(this.cfg.COLOR.GRID, !0, 1),
+          h.moveTo(0, y),
+          h.lineTo(this.cfg.DIMENSION.w_k, y),
+          h.stroke(),
+          h.drawBg(this.__iOffsetX);
+      }
+    };
   }
 
   function OBV(i, a) {

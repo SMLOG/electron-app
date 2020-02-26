@@ -512,7 +512,7 @@ export default {
       this.openCode = null;
     },
     openlink(item, event, link) {
-      link || (link = "http://localhost:9080/static/tech.html?{{code}}");
+      link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
       this.openType = link;
       let webview = $(document.querySelectorAll("webview"));
       let webviewWrap = $(this.$refs.webviewWrap);

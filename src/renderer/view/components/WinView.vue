@@ -62,7 +62,13 @@ export default {
     // initwebview(this.closeview.bind(this));
 
     const webview = document.querySelector("webview");
-
+    webview.addEventListener("dom-ready", e => {
+      webview
+        .getWebContents()
+        .executeJavaScript(
+          `window.showChooseDate=${this.showChooseDate};window.chooseDate=${this.chooseDate};window.dispatchEvent(new Event('resize'))`
+        );
+    });
     webview.addEventListener("did-navigate-in-page", event => {
       if (webview.src && webview.src.indexOf("chooseDate")) {
         setTimeout(() => {

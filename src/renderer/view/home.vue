@@ -1,19 +1,6 @@
 <template>
   <div>
     <Setting />
-    <div class="selectDate" ref="choose_date_ref">
-      <div>
-        <span v-show="chooseDate" @click="chooseDate = ''">清除</span>
-        <span v-show="chooseDate">前一天</span>
-        <span @click="showChooseDate = !showChooseDate">
-          {{ chooseDate || "选择日期" }}</span
-        >
-        <span v-show="chooseDate">后一天</span>
-      </div>
-      <div v-show="showChooseDate">
-        <Calendar @choseDay="choseDay"></Calendar>
-      </div>
-    </div>
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
@@ -204,7 +191,7 @@
       <WinView
         :item="item"
         :link="link"
-        @dblclick.native="fullscreen = !fullscreen"
+        @dBclick="fullscreen = !fullscreen"
       ></WinView>
     </div>
   </div>
@@ -292,9 +279,7 @@ export default {
       filter_prop: "",
       show_filter_prop: false,
       fullscreen: false,
-      indMap: {},
-      chooseDate: null,
-      showChooseDate: false
+      indMap: {}
     };
   },
   directives: {
@@ -342,8 +327,7 @@ export default {
     FilterCtrl,
     Sea,
     TopFocus,
-    WinView,
-    Calendar
+    WinView
   },
   filters: {
     objectType(id) {
@@ -356,13 +340,6 @@ export default {
         if (this.$refs.filter_prop_ref.some(el => el.contains(e.target))) {
         } else {
           this.show_filter_prop = false;
-        }
-      }
-
-      if (this.$refs.choose_date_ref) {
-        if (this.$refs.choose_date_ref.contains(e.target)) {
-        } else {
-          this.showChooseDate = false;
         }
       }
     });
@@ -462,10 +439,6 @@ export default {
     ...mapGetters({ sfilters: "filters" })
   },
   methods: {
-    choseDay(str) {
-      this.showChooseDate = false;
-      this.chooseDate = str;
-    },
     showFilterable(prop) {
       this.show_filter_prop = !this.show_filter_prop;
 

@@ -8865,11 +8865,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             tIndex = this.datas.filter(
               e => e.date < new Date(window.chooseDate)
             ).length;
+          } else {
+            tIndex = Math.floor(this.datas.length / 2);
           }
 
           if (!this.chooseDateEl) {
-            let tIndex = Math.floor(this.datas.length / 2);
-
             var el = document.createElement("div");
             this.wrap.appendChild(el);
             this.chooseDateEl = el;
@@ -8896,7 +8896,22 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             cursor:col-resize;`;
             this.wrap.appendChild(el2);
             this.chooseDateEl2 = el2;
-            let _this = this;
+            let setChooseDate = () => {
+              let date = (d =>
+                `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)(
+                this.datas[tIndex].date
+              );
+              window.chooseDate = date;
+              dtext.innerText = date;
+              let nlink =
+                window.location.href.replace(/#chooseDate=.*/, "") +
+                "#chooseDate=" +
+                date;
+              location = nlink;
+              window.dispatchEvent(new Event("resize"));
+            };
+            setChooseDate();
+
             function drag() {
               el2.onmousedown = function(e) {
                 //鼠标按下，计算当前元素距离可视区的距离
@@ -8915,20 +8930,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 document.onmouseup = function(e) {
                   document.onmousemove = null;
                   document.onmouseup = null;
-                  let i = Math.floor((l - 45) / perWidth);
-                  let date = (d =>
-                    `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)(
-                    _this.datas[i].date
-                  );
-                  dtext.innerText = date;
-                  window.chooseDate = date;
-
-                  let nlink =
-                    window.location.href.replace(/#chooseDate=.*/, "") +
-                    "#chooseDate=" +
-                    date;
-                  location = nlink;
-                  window.dispatchEvent(new Event("resize"));
+                  tIndex = Math.floor((l - 45) / perWidth);
+                  setChooseDate();
                   isDrag = false;
                 };
                 return false;

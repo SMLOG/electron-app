@@ -3,20 +3,32 @@
     <tr v-if="item">
       <td style="height:27px;">
         <div>
-          <span>{{ item.hy }}</span>
-          <span>{{ item.forecast }}</span>
-          <span>披露:{{ item.disclosure }}</span>
-          <span>52周%:{{ item["52weekPer"] }}</span>
-          <span>流通/亿:{{ item["ltg"] }}</span>
-          <span>流/总:{{ item["lz"] }}</span>
-          <span>TTM:{{ item["pe_ttm"] }}</span>
-          <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
-          <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
+          <div @dblclick="dbclick" style="float:left;">
+            <span>{{ item.hy }}</span>
+            <span>{{ item.forecast }}</span>
+            <span>披露:{{ item.disclosure }}</span>
+            <span>52周%:{{ item["52weekPer"] }}</span>
+            <span>流通/亿:{{ item["ltg"] }}</span>
+            <span>流/总:{{ item["lz"] }}</span>
+            <span>TTM:{{ item["pe_ttm"] }}</span>
+            <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
+            <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
+          </div>
           <div style="float:right;margin-right:10px;">
-            <span>{{ chooseDate || "--" }}</span>
+            <span @click="showChooseDate2 = !showChooseDate2">{{
+              chooseDate || "--"
+            }}</span>
 
             <input type="checkbox" v-model="showChooseDate" />
             <span>分析</span>
+            <div
+              class="selectDate"
+              ref="choose_date_ref"
+              style="position:absolute;right:10px;"
+              v-show="showChooseDate2"
+            >
+              <Calendar @choseDay="choseDay"></Calendar>
+            </div>
           </div>
         </div>
       </td>
@@ -36,6 +48,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import Calendar from "@/view/components/calendar";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
@@ -51,23 +64,24 @@ export default {
       openCode: null,
       openType: null,
       showChooseDate: false,
-      chooseDate: ""
+      chooseDate: "",
+      showChooseDate2: false
     };
   },
   props: {
     link: String,
-    item: Object
+    item: Object,
+    dBclick: Function
+  },
+  components: {
+    Calendar
   },
   mounted() {
     // initwebview(this.closeview.bind(this));
 
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", e => {
-      webview
-        .getWebContents()
-        .executeJavaScript(
-          `window.showChooseDate=${this.showChooseDate};window.chooseDate=${this.chooseDate};window.dispatchEvent(new Event('resize'))`
-        );
+      this.sendValue();
     });
     webview.addEventListener("did-navigate-in-page", event => {
       if (webview.src && webview.src.indexOf("chooseDate")) {
@@ -82,16 +96,33 @@ export default {
   },
   watch: {
     showChooseDate() {
-      const webview = document.querySelector("webview");
-      webview
-        .getWebContents()
-        .executeJavaScript(
-          `window.showChooseDate=${this.showChooseDate};window.dispatchEvent(new Event('resize'))`
-        );
+      this.sendValue();
+    },
+    chooseDate() {
+      this.sendValue();
     }
   },
   computed: {},
   methods: {
+    dbclick() {
+      this.$emit("dBclick");
+    },
+    sendValue() {
+      const webview = document.querySelector("webview");
+      webview
+        .getWebContents()
+        .executeJavaScript(
+          `window.showChooseDate=${
+            this.showChooseDate ? 1 : 0
+          };window.chooseDate='${
+            this.chooseDate
+          }';window.dispatchEvent(new Event('resize'))`
+        );
+    },
+    choseDay(d) {
+      this.chooseDate = d;
+      this.showChooseDate2 = false;
+    },
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();

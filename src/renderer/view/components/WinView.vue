@@ -31,6 +31,26 @@
             </div>
           </div>
         </div>
+        <div v-if="showChooseDate">
+          <ul
+            style="
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    clear:both;
+    display:block;
+"
+          >
+            <li
+              v-for="(v, f) in filters"
+              :key="f"
+              style="display:inline-block;margin:5px;margin-right;10px;"
+              :class="{ y: item['_' + f] }"
+            >
+              {{ f }}
+            </li>
+          </ul>
+        </div>
       </td>
     </tr>
     <tr>
@@ -53,6 +73,8 @@ import Calendar from "@/view/components/calendar";
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
+import { filters, getCheckFilters, afilters } from "@/lib/filters";
+import { callFun } from "@/lib/tech-manager";
 
 import $ from "jquery";
 window.$ = $;
@@ -65,7 +87,8 @@ export default {
       openType: null,
       showChooseDate: false,
       chooseDate: "",
-      showChooseDate2: false
+      showChooseDate2: false,
+      filters: filters
     };
   },
   props: {
@@ -100,10 +123,23 @@ export default {
     },
     chooseDate() {
       this.sendValue();
+      this.analyst();
     }
   },
   computed: {},
   methods: {
+    analyst() {
+      (async () => {
+        let fmtDate =
+          this.chooseDate &&
+          this.chooseDate
+            .split(/[/\-]/)
+            .map(e => (e.length == 1 ? "0" + e : e))
+            .join("/");
+        await callFun(this.item, fmtDate);
+        console.log(this.item);
+      })();
+    },
     dbclick() {
       this.$emit("dBclick");
     },
@@ -140,5 +176,8 @@ export default {
   cursor: row-resize;
   text-align: center;
   border-top: 1px solid #1bc07d;
+}
+.y {
+  color: red;
 }
 </style>

@@ -8858,15 +8858,19 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           this.line.stroke();
         }
 
-        let chooseDate = getMyCookie("chooseDate", null);
-        if (chooseDate) {
-          let tIndex = this.datas.filter(e => e.date < new Date(chooseDate))
-            .length;
+        {
           let isDrag = false;
+          let tIndex;
+          if (window.chooseDate) {
+            tIndex = this.datas.filter(
+              e => e.date < new Date(window.chooseDate)
+            ).length;
+          }
 
           if (!this.chooseDateEl) {
-            var el = document.createElement("div");
+            let tIndex = Math.floor(this.datas.length / 2);
 
+            var el = document.createElement("div");
             this.wrap.appendChild(el);
             this.chooseDateEl = el;
             el.style.cssText = `position: absolute;
@@ -8879,7 +8883,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             let dtext = document.createElement("span");
             el.appendChild(dtext);
 
-            dtext.innerText = chooseDate;
             this.dtext = dtext;
 
             var el2 = document.createElement("div");
@@ -8917,9 +8920,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                     `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)(
                     _this.datas[i].date
                   );
-                  setCookie("chooseDate", date);
                   dtext.innerText = date;
+                  window.chooseDate = date;
 
+                  let nlink =
+                    window.location.href.replace(/#chooseDate=.*/, "") +
+                    "#chooseDate=" +
+                    date;
+                  location = nlink;
+                  window.dispatchEvent(new Event("resize"));
                   isDrag = false;
                 };
                 return false;
@@ -8928,9 +8937,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             drag();
           }
           if (!isDrag) {
-            this.chooseDateEl.style.left = `${45 + tIndex * perWidth}px`;
-            this.chooseDateEl2.style.left = `${45 + tIndex * perWidth}px`;
+            this.chooseDateEl2.style.left = this.chooseDateEl.style.left = `${45 +
+              tIndex * perWidth}px`;
           }
+          this.chooseDateEl.style.display = this.chooseDateEl2.style.display = window.showChooseDate
+            ? ""
+            : "none";
         }
 
         var A,

@@ -12,6 +12,12 @@
           <span>TTM:{{ item["pe_ttm"] }}</span>
           <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
           <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
+          <div style="float:right;margin-right:10px;">
+            <span>{{ chooseDate || "--" }}</span>
+
+            <input type="checkbox" v-model="showChooseDate" />
+            <span>分析</span>
+          </div>
         </div>
       </td>
     </tr>
@@ -43,7 +49,9 @@ export default {
   data: function() {
     return {
       openCode: null,
-      openType: null
+      openType: null,
+      showChooseDate: false,
+      chooseDate: ""
     };
   },
   props: {
@@ -51,9 +59,31 @@ export default {
     item: Object
   },
   mounted() {
-    initwebview(this.closeview.bind(this));
+    // initwebview(this.closeview.bind(this));
+
+    const webview = document.querySelector("webview");
+
+    webview.addEventListener("did-navigate-in-page", event => {
+      if (webview.src && webview.src.indexOf("chooseDate")) {
+        setTimeout(() => {
+          this.chooseDate = webview.src.split("chooseDate=")[1];
+        }, 100);
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    });
   },
-  watch: {},
+  watch: {
+    showChooseDate() {
+      const webview = document.querySelector("webview");
+      webview
+        .getWebContents()
+        .executeJavaScript(
+          `window.showChooseDate=${this.showChooseDate};window.dispatchEvent(new Event('resize'))`
+        );
+    }
+  },
   computed: {},
   methods: {
     closeview() {

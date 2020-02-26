@@ -1,7 +1,9 @@
 export function initwebview(closeview) {
   const webview = document.querySelector("webview");
   webview.addEventListener("did-navigate-in-page", event => {
-    if (webview.src && webview.src.indexOf("close")) closeview();
+    if (webview.src && webview.src.indexOf("close") > -1) {
+      closeview();
+    }
     event.preventDefault();
     return false;
   });

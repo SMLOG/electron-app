@@ -26,7 +26,7 @@ export default {
   mounted() {
     const webview = document.querySelector("webview");
     webview.addEventListener("did-navigate-in-page", event => {
-      if (webview.src && webview.src.indexOf("close")) window.close();
+      if (webview.src && webview.src.indexOf("close") > -1) window.close();
       event.preventDefault();
       return false;
     });
@@ -100,7 +100,7 @@ export default {
       }, 500);
       //console.log(event);
     });
-    document.addEventListener("mouseenter", event => {
+    /*document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
       if (!window.oriWidth) window.oriWidth = window.outerWidth;
 
@@ -111,7 +111,7 @@ export default {
         }
       );
       //console.log(event);
-    });
+    });*/
 
     document.addEventListener("dblclick", event => {
       if (window.oriWidth && window.outerWidth > window.oriWidth) {

@@ -559,6 +559,7 @@ export async function batchUpdateHQ(items) {
       name: e.f14,
       now: e.f2,
       changePV: e.f3,
+      changeP: e.f3 + "%",
       changeV: e.f4,
       change: e.f4,
       open: e.f17,

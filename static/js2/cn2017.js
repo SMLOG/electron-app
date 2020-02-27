@@ -1945,7 +1945,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   (D.initChart = function() {
     var t = this,
       dataView =
-        "\u9000\u5e02" == t.param.halt ? "kd" : getMyCookie("dataView", "t1");
+        "\u9000\u5e02" == t.param.halt
+          ? "kd"
+          : location.href.indexOf("&t1") > -1
+          ? "t1"
+          : getMyCookie("dataView", "t1");
     "\u9000\u5e02" == t.param.halt ? t.delistList : t.tabList;
     let pTechlist = document.cookie
       .split(";")

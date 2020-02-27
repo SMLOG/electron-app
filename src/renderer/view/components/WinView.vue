@@ -89,7 +89,12 @@ export default {
       chooseDate: "",
       showChooseDate2: false,
       filters: filters,
-      aitem: {}
+      aitem: Object.keys(filters)
+        .map(e => "_" + e)
+        .reduce((p, c) => {
+          p[c] = false;
+          return p;
+        }, {})
     };
   },
   props: {
@@ -137,9 +142,8 @@ export default {
             .split(/[/\-]/)
             .map(e => (e.length == 1 ? "0" + e : e))
             .join("/");
-        this.aitem = Object.assign(this.aitem, this.item);
+        Object.assign(this.aitem, { code: this.item.code });
         await callFun(this.aitem, fmtDate);
-        console.log(this.aitem);
       })();
     },
     dbclick() {

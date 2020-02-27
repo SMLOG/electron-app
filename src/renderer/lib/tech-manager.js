@@ -7,7 +7,9 @@ function isMacdGolden(techData) {
       techData.MACD[techData.MACD.length - 2].bar &&
     techData.MACD[techData.MACD.length - 2].bar >
       techData.MACD[techData.MACD.length - 3].bar &&
-    techData.MACD[techData.MACD.length - 3].bar < 0
+    (techData.MACD[techData.MACD.length - 3].bar < 0 ||
+      techData.MACD[techData.MACD.length - 4].bar < 0 ||
+      techData.MACD[techData.MACD.length - 5].bar < 0)
   );
 }
 function isMacdDeath(techData) {

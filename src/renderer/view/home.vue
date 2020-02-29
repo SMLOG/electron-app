@@ -4,6 +4,7 @@
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
+      @click="closeview"
     ></div>
 
     <iframe

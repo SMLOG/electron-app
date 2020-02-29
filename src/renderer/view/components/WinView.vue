@@ -15,9 +15,11 @@
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
           </div>
           <div style="float:right;margin-right:10px;">
-            <span @click="showChooseDate2 = !showChooseDate2">{{
+            <span @click="showChooseDate2 = !showChooseDate2">
+              {{
               chooseDate || "--"
-            }}</span>
+              }}
+            </span>
 
             <input type="checkbox" v-model="showChooseDate" />
             <span>分析</span>
@@ -46,21 +48,14 @@
               :key="f"
               style="display:inline-block;margin:5px;margin-right;10px;"
               :class="{ y: aitem['_' + f] }"
-            >
-              {{ f }}
-            </li>
+            >{{ f }}</li>
           </ul>
         </div>
       </td>
     </tr>
     <tr>
       <td>
-        <webview
-          ref="webview"
-          id="figure"
-          style="width:100%;height:100%;"
-          :src="link"
-        ></webview>
+        <webview ref="webview" id="figure" style="width:100%;height:100%;" :src="link"></webview>
       </td>
     </tr>
   </table>
@@ -111,6 +106,7 @@ export default {
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", e => {
       this.sendValue();
+      this.analyst();
     });
     webview.addEventListener("did-navigate-in-page", event => {
       if (webview.src && webview.src.indexOf("chooseDate")) {
@@ -126,6 +122,7 @@ export default {
   watch: {
     showChooseDate() {
       this.sendValue();
+      this.analyst();
     },
     chooseDate() {
       this.sendValue();
@@ -135,16 +132,18 @@ export default {
   computed: {},
   methods: {
     analyst() {
-      (async () => {
-        let fmtDate =
-          this.chooseDate &&
-          this.chooseDate
-            .split(/[/\-]/)
-            .map(e => (e.length == 1 ? "0" + e : e))
-            .join("/");
-        Object.assign(this.aitem, { code: this.item.code });
-        await callFun(this.aitem, fmtDate);
-      })();
+      if (this.showChooseDate) {
+        (async () => {
+          let fmtDate =
+            this.chooseDate &&
+            this.chooseDate
+              .split(/[/\-]/)
+              .map(e => (e.length == 1 ? "0" + e : e))
+              .join("/");
+          Object.assign(this.aitem, { code: this.item.code });
+          await callFun(this.aitem, fmtDate);
+        })();
+      }
     },
     dbclick() {
       this.$emit("dBclick");

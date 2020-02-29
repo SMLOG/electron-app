@@ -8866,7 +8866,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               e => e.date < new Date(window.chooseDate)
             ).length;
           } else {
-            tIndex = Math.floor(this.datas.length / 2);
+            tIndex = this.datas.length - 1;
           }
 
           if (!this.chooseDateEl) {

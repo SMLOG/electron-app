@@ -8833,11 +8833,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         "k" == a.type
           ? ((w_k = i.DIMENSION.w_k), (candleNum = i.PARAM.minCandleNum))
           : ((w_k = i.DIMENSION.w_t), (candleNum = 1));
+
+        let d = this.datas.length;
+        let perWidth = w_k / Math.max(d, candleNum);
+        window.perWidth = perWidth;
         for (
           var n,
             xPos,
-            d = this.datas.length,
-            perWidth = w_k / Math.max(d, candleNum),
             u = "k" == a.type ? this.__iOffsetX - perWidth * mt : perWidth * gt,
             p = 0;
           2 > p;
@@ -8930,7 +8932,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 document.onmouseup = function(e) {
                   document.onmousemove = null;
                   document.onmouseup = null;
-                  tIndex = Math.floor((l - 45) / perWidth);
+
+                  tIndex = Math.floor((l - 45) / window.perWidth);
                   setChooseDate();
                   isDrag = false;
                 };

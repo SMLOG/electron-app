@@ -3,17 +3,6 @@
     <tr v-if="item">
       <td style="height:27px;">
         <div>
-          <div @dblclick="dbclick" style="float:left;">
-            <span>{{ item.hy }}</span>
-            <span>{{ item.forecast }}</span>
-            <span>披露:{{ item.disclosure }}</span>
-            <span>52周%:{{ item["52weekPer"] }}</span>
-            <span>流通/亿:{{ item["ltg"] }}</span>
-            <span>流/总:{{ item["lz"] }}</span>
-            <span>TTM:{{ item["pe_ttm"] }}</span>
-            <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
-            <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
-          </div>
           <div style="float:right;margin-right:10px;">
             <span @click="showChooseDate2 = !showChooseDate2">
               {{
@@ -31,6 +20,17 @@
             >
               <Calendar @choseDay="choseDay"></Calendar>
             </div>
+          </div>
+          <div @dblclick="dbclick">
+            <span>{{ item.hy }}</span>
+            <span>{{ item.forecast }}</span>
+            <span>披露:{{ item.disclosure }}</span>
+            <span>52周%:{{ item["52weekPer"] }}</span>
+            <span>流通/亿:{{ item["ltg"] }}</span>
+            <span>流/总:{{ item["lz"] }}</span>
+            <span>TTM:{{ item["pe_ttm"] }}</span>
+            <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
+            <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
           </div>
         </div>
         <div v-if="showChooseDate">

@@ -1,6 +1,6 @@
 <template>
   <div style="position:fixed;top:0;left:0;right:0;bottom:0;">
-    <WinView :item="item" :link="item.link"></WinView>
+    <WinView :item="item" :link="item.link" @dBclick="dblclick"></WinView>
   </div>
 </template>
 <script>
@@ -21,7 +21,22 @@ export default {
   components: {
     WinView
   },
-  methods: {},
+  methods: {
+    dblclick(event) {
+      if (window.oriWidth && window.outerWidth > window.oriWidth) {
+        animation2([[window.outerWidth, window.oriWidth]], ([width]) => {
+          window.resizeTo(width, window.screen.availHeight);
+        });
+      } else {
+        animation2(
+          [[window.outerWidth, window.screen.availWidth - 6]],
+          ([width]) => {
+            window.resizeTo(width, window.screen.availHeight);
+          }
+        );
+      }
+    }
+  },
 
   mounted() {
     const webview = document.querySelector("webview");
@@ -100,6 +115,15 @@ export default {
       }, 500);
       //console.log(event);
     });
+
+    window.addEventListener("keyup", event => {
+      switch (event.keyCode) {
+        case 27:
+          window.close();
+          break;
+        default:
+      }
+    });
     /*document.addEventListener("mouseenter", event => {
       if (timerID) clearTimeout(timerID);
       if (!window.oriWidth) window.oriWidth = window.outerWidth;
@@ -112,21 +136,7 @@ export default {
       );
       //console.log(event);
     });*/
-
-    document.addEventListener("dblclick", event => {
-      if (window.oriWidth && window.outerWidth > window.oriWidth) {
-        animation2([[window.outerWidth, window.oriWidth]], ([width]) => {
-          window.resizeTo(width, window.screen.availHeight);
-        });
-      } else {
-        animation2(
-          [[window.outerWidth, window.screen.availWidth - 6]],
-          ([width]) => {
-            window.resizeTo(width, window.screen.availHeight);
-          }
-        );
-      }
-    });
+    if (!window.oriWidth) window.oriWidth = window.outerWidth;
 
     mouseDragMenu(this.$electron, false);
   }
@@ -137,6 +147,7 @@ export default {
 * {
   padding: 0;
   margin: 0;
+  user-select: none;
 }
 .up {
   color: #c00;

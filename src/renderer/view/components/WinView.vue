@@ -12,6 +12,9 @@
 
             <input type="checkbox" v-model="showChooseDate" />
             <span>分析</span>
+
+            <input type="checkbox" v-model="cutChooseDate" />
+            <span>截断</span>
             <div
               class="selectDate"
               ref="choose_date_ref"
@@ -83,6 +86,7 @@ export default {
       showChooseDate: false,
       chooseDate: "",
       showChooseDate2: false,
+      cutChooseDate: false,
       filters: filters,
       aitem: Object.keys(filters)
         .map(e => "_" + e)
@@ -127,6 +131,10 @@ export default {
     chooseDate() {
       this.sendValue();
       this.analyst();
+    },
+    cutChooseDate() {
+      this.sendValue();
+      this.analyst();
     }
   },
   computed: {},
@@ -155,9 +163,9 @@ export default {
         .executeJavaScript(
           `window.showChooseDate=${
             this.showChooseDate ? 1 : 0
-          };window.chooseDate='${
-            this.chooseDate
-          }';window.dispatchEvent(new Event('resize'))`
+          };window.chooseDate='${this.chooseDate}';window.cutChooseDate=${
+            this.cutChooseDate ? 1 : 0
+          };window.dispatchEvent(new Event('resize'))`
         );
     },
     choseDay(d) {

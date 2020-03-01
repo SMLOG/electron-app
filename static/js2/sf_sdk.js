@@ -8860,7 +8860,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           this.line.stroke();
         }
 
-        {
+        if ("k" == a.type) {
           let isDrag = false;
           let tIndex;
           if (window.chooseDate) {

@@ -1624,7 +1624,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     }
     function w() {
       e(window).on("resize", function() {
-        q.resizeChart(T), q && q.chart && q.chart.resize();
+        sss && sss.resizeChart(T), sss && sss.chart && sss.chart.resize();
       });
     }
     function C() {
@@ -1732,7 +1732,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                 data: e
               }),
               (i = 1)),
-            q || (q = new o(e));
+            sss || (sss = new o(e));
         }
       })),
         a(),
@@ -1746,7 +1746,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       M,
       F,
       U,
-      q,
+      sss,
       B,
       A,
       P,

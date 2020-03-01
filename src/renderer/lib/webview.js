@@ -9,7 +9,7 @@ export function initwebview(closeview) {
   });
 
   webview.addEventListener("dom-ready", e => {
-    webview.openDevTools();
+    //webview.openDevTools();
   });
   /*const webview = document.querySelector("webview");
 

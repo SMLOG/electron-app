@@ -4,10 +4,24 @@
       <td style="height:27px;">
         <div>
           <div style="float:right;margin-right:10px;">
-            <span @click="showChooseDate2 = !showChooseDate2">
+            <span
+              class="button"
+              v-if="chooseDate&&(showChooseDate||cutChooseDate)"
+              @click="prevChooseDate()"
+            >前</span>
+
+            <span
+              class="button"
+              v-if="chooseDate&&(showChooseDate||cutChooseDate)"
+              @click="nextChooseDate()"
+            >后</span>
+            <span
+              @click="showChooseDate2 = !showChooseDate2"
+              style="display:inline-block;width:120px;text-align:center;border-bottom:1px solid;"
+            >
               {{
               chooseDate || "--"
-              }}
+              }} {{weekday}}
             </span>
 
             <input type="checkbox" v-model="showChooseDate" />
@@ -73,6 +87,7 @@ import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
 import { filters, getCheckFilters, afilters } from "@/lib/filters";
 import { callFun } from "@/lib/tech-manager";
+import moment from "moment";
 
 import $ from "jquery";
 window.$ = $;
@@ -137,8 +152,26 @@ export default {
       this.analyst();
     }
   },
-  computed: {},
+  computed: {
+    weekday() {
+      return this.chooseDate && moment(this.chooseDate).format("ddd");
+    }
+  },
   methods: {
+    prevChooseDate() {
+      let m = moment(this.chooseDate);
+      do {
+        m.subtract(1, "day");
+      } while (m.isoWeekday() > 5);
+      this.chooseDate = m.format("YYYY-MM-DD");
+    },
+    nextChooseDate() {
+      let m = moment(this.chooseDate);
+      do {
+        m.add(1, "day");
+      } while (m.isoWeekday() > 5);
+      this.chooseDate = m.format("YYYY-MM-DD");
+    },
     analyst() {
       if (this.showChooseDate) {
         (async () => {
@@ -192,5 +225,15 @@ export default {
 }
 .y {
   color: red;
+}
+.button {
+  border: none;
+  cursor: pointer;
+  padding: 0px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-bottom: 1px solid;
 }
 </style>

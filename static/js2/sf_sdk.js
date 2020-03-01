@@ -8865,7 +8865,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           let tIndex;
           if (window.chooseDate) {
             tIndex = this.datas.filter(
-              e => e.date < new Date(window.chooseDate)
+              e =>
+                e.date <
+                new Date(
+                  new Date(window.chooseDate).getTime() + 24 * 3600 * 1000
+                )
             ).length;
           } else {
             tIndex = this.datas.length - 1;
@@ -13549,7 +13553,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             kSb: N,
             dayDataHandler: h,
             minDataHandler: l,
-            endDay: "2019-12-25" || window.chooseDate || endDay,
+            endDay: endDay,
             kUrl: n,
             isCompressData: r,
             vu: i,
@@ -13994,8 +13998,9 @@ xh5_define(
 
               let ret = o["k" + (e || V.viewId)];
               if (ret && window.chooseDate && window.cutChooseDate) {
-                let dt = new Date(window.chooseDate).getTime();
-                return ret.filter(d => d.date.getTime() <= dt);
+                let dt =
+                  new Date(window.chooseDate).getTime() + 24 * 3600 * 1000;
+                return ret.filter(d => d.date.getTime() < dt);
               }
 
               return ret;

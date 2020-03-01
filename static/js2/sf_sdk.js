@@ -13939,7 +13939,7 @@ xh5_define(
         (this.getName = function() {
           return x || "";
         }),
-          (this.viewState = V);
+          (this.viewState = viewState);
         var _ = new (function() {
             var a,
               o = {},
@@ -13966,7 +13966,7 @@ xh5_define(
                 }
               },
               l = function() {
-                var e = V.viewId;
+                var e = viewState.viewId;
                 switch (e) {
                   case b.URLHASH.KDF:
                   case b.URLHASH.KDB:
@@ -13996,11 +13996,14 @@ xh5_define(
                 return o["k" + n + e];
               }
 
-              let ret = o["k" + (e || V.viewId)];
+              let ret = o["k" + (e || viewState.viewId)];
               if (ret && window.chooseDate && window.cutChooseDate) {
                 let dt =
                   new Date(window.chooseDate).getTime() + 24 * 3600 * 1000;
-                return ret.filter(d => d.date.getTime() < dt);
+                let ds = ret.filter(d => d.date.getTime() < dt);
+                viewState.start = ds.length - viewState.currentLength;
+                viewState.end = ds.length;
+                return ds;
               }
 
               return ret;
@@ -14108,32 +14111,32 @@ xh5_define(
               (this.setDataRange = function(n) {
                 var a = _.get();
                 if (a) {
-                  V.dataLength = a.length;
-                  var o = V.start,
-                    s = V.end;
+                  viewState.dataLength = a.length;
+                  var o = viewState.start,
+                    s = viewState.end;
                   if (isNaN(o) || isNaN(s))
                     (s = _.get("b")),
                       (o = _.get("v")),
-                      (V.start = o),
-                      (V.end = s);
+                      (viewState.start = o),
+                      (viewState.end = s);
                   else {
                     if (n && s + 1 >= a.length) {
                       var r = a.length - s;
-                      (V.end = s = a.length),
-                        (1 == i.pcm || V.viewId == b.URLHASH.K1) &&
+                      (viewState.end = s = a.length),
+                        (1 == i.pcm || viewState.viewId == b.URLHASH.K1) &&
                           (0 == o &&
                             s > 1 &&
                             s < I.PARAM.minCandleNum &&
-                            ((o = s - 1), (V.start = o)),
+                            ((o = s - 1), (viewState.start = o)),
                           s - o >= I.PARAM.defaultCandleNum &&
-                            ((o += r), (V.start = o)));
+                            ((o += r), (viewState.start = o)));
                     }
                     _.set("v", o), _.set("b", s);
                   }
                   switch (
-                    ((V.currentLength = s - o),
-                    (V.startDate = a[o].date),
-                    (V.endDate = a[s - 1].date),
+                    ((viewState.currentLength = s - o),
+                    (viewState.startDate = a[o].date),
+                    (viewState.endDate = a[s - 1].date),
                     i.pcm)
                   ) {
                     case 1:
@@ -14292,12 +14295,12 @@ xh5_define(
               d = new (function() {
                 this.check = function(e) {
                   if (n) return !0;
-                  var i = V.viewId,
+                  var i = viewState.viewId,
                     a = T.get(i);
                   if (!a || a.length < 1) return !1;
                   var o = a[a.length - 1];
                   if (e.date > o.date)
-                    if ("mink" == b.URLHASH.gt(V.viewId).type) {
+                    if ("mink" == b.URLHASH.gt(viewState.viewId).type) {
                       if (!t.kUtil.spk(o.time, e.time, "00:00", i, h.market))
                         return !1;
                     } else if (!f(e.date, o.date)) return !1;
@@ -14435,7 +14438,7 @@ xh5_define(
                 }
               },
               l = function(t) {
-                var n = b.URLHASH.gt(V.viewId),
+                var n = b.URLHASH.gt(viewState.viewId),
                   a = n.dir,
                   l = { symbol: e.symbol, market: u, dir: a, ssl: i.ssl };
                 P.show(),
@@ -14447,7 +14450,7 @@ xh5_define(
                       var c = s(i);
                       c && ((n = !1), r(c.factor, i, a, l.market));
                     }
-                    n && r(-828, null, a), o(t, { viewId: V.viewId });
+                    n && r(-828, null, a), o(t, { viewId: viewState.viewId });
                   });
               },
               c = function(e, t) {
@@ -14501,14 +14504,15 @@ xh5_define(
                           kke_cs: 0
                         }
                       ];
-                    _.initState(V.viewId, a, !0), o(t, { viewId: V.viewId });
+                    _.initState(viewState.viewId, a, !0),
+                      o(t, { viewId: viewState.viewId });
                   }
                 );
               },
               p = function(t) {
                 var n,
                   a,
-                  o = V.viewId,
+                  o = viewState.viewId,
                   s = b.URLHASH.gt(o);
                 if (h.nco && h.nco.open) (a = h.nco.open), (y = a);
                 else {
@@ -14595,7 +14599,7 @@ xh5_define(
                   "rek" == t.type && _.get(b.URLHASH.KD) ? l(e) : p(e);
               };
             this.iInit = function(e) {
-              var t = V.viewId;
+              var t = viewState.viewId;
               if (a != t) {
                 a = t;
                 var n = b.URLHASH.gt(t);
@@ -15118,11 +15122,13 @@ xh5_define(
             for (var m = o; m--; ) (e = f[m]), e.setPricePos(p, s);
           },
           N = function() {
-            (V.start < 1 || !I.custom.smooth) && Y.resetX();
+            (viewState.start < 1 || !I.custom.smooth) && Y.resetX();
             for (var e = f.length; e--; ) f[e].draw();
           },
           S = function() {
-            (V.start = V.end = 0 / 0), (V.currentLength = 0 / 0), (n = void 0);
+            (viewState.start = viewState.end = 0 / 0),
+              (viewState.currentLength = 0 / 0),
+              (n = void 0);
           },
           w = function(t) {
             S();
@@ -15167,11 +15173,13 @@ xh5_define(
             }
           },
           O = function(t) {
-            (t || (n && V.dataLength != n)) && W.onRange(e, f.length > 1),
-              (n = V.dataLength);
+            (t || (n && viewState.dataLength != n)) &&
+              W.onRange(e, f.length > 1),
+              (n = viewState.dataLength);
           },
           R = function(e) {
-            (e || V.end == V.dataLength) && (q.update(), M(), N(), O(!0)),
+            (e || viewState.end == viewState.dataLength) &&
+              (q.update(), M(), N(), O(!0)),
               W.onDataUpdate(),
               !q.isIng() && W.onViewPrice();
           },
@@ -15359,9 +15367,9 @@ xh5_define(
             d.mM.togglePt(
               f.length > 1
                 ? { v: !1 }
-                : V.viewId == b.URLHASH.KCL ||
-                  V.viewId == b.URLHASH.KCLF ||
-                  V.viewId == b.URLHASH.KCLB
+                : viewState.viewId == b.URLHASH.KCL ||
+                  viewState.viewId == b.URLHASH.KCLF ||
+                  viewState.viewId == b.URLHASH.KCLB
                 ? { v: !1 }
                 : { v: !0 }
             );
@@ -15371,12 +15379,14 @@ xh5_define(
               (!i && Y.resetX(),
               !(
                 n - t < I.PARAM.minCandleNum ||
-                n > V.dataLength ||
+                n > viewState.dataLength ||
                 0 > t ||
                 n - t > I.PARAM.maxCandleNum
               ))
             ) {
-              (V.start = t), (V.end = n), (V.currentLength = n - t);
+              (viewState.start = t),
+                (viewState.end = n),
+                (viewState.currentLength = n - t);
               for (var s, r = f.length, l = 0; r > l; l++)
                 (s = f[l]), s.setRange(a);
               M(), N(), o || W.onRange(e, r > 1);
@@ -15384,7 +15394,7 @@ xh5_define(
           };
         (this.onChangeView = C),
           (this.showYTD = function(t, n) {
-            (V.viewId = b.URLHASH.KD + t), C(!0);
+            (viewState.viewId = b.URLHASH.KD + t), C(!0);
             var i = e.getYtdIndex(n);
             i && G(i[0], i[1] + 1);
           }),
@@ -15395,7 +15405,7 @@ xh5_define(
             n && (e = i), f.push(i), z(), C();
           },
           $ = function(n) {
-            if ("mink" == b.URLHASH.gt(V.viewId).type) {
+            if ("mink" == b.URLHASH.gt(viewState.viewId).type) {
               var i = t.market(n.symbol),
                 a = t.market(e.symbol);
               if (i != a && ("US" == i || "US" == a)) return !1;
@@ -15426,7 +15436,7 @@ xh5_define(
           });
         var j,
           J = function(e) {
-            e ? R() : V.end == V.dataLength && q.update();
+            e ? R() : viewState.end == viewState.dataLength && q.update();
           },
           Q = !1,
           ee = 0,
@@ -15481,8 +15491,8 @@ xh5_define(
         var ie = -1,
           ae = -1,
           oe = function(e, t) {
-            var n = V.start,
-              i = V.end,
+            var n = viewState.start,
+              i = viewState.end,
               a = e / Math.abs(e),
               o = a * Math.ceil((i - n) / I.PARAM.zoomUnit);
             if (
@@ -15491,11 +15501,11 @@ xh5_define(
             ) {
               var s = t ? t.layerX / I.DIMENSION.w_k : 0.5;
               s < I.PARAM.zoomArea
-                ? (i = Math.min(i - o * Math.abs(o), V.dataLength))
+                ? (i = Math.min(i - o * Math.abs(o), viewState.dataLength))
                 : s > 1 - I.PARAM.zoomArea
                 ? (n = Math.max(n + o * Math.abs(o), 0))
                 : ((n = Math.max(n + o * Math.abs(o), 0)),
-                  (i = Math.min(i - o * Math.abs(o), V.dataLength)));
+                  (i = Math.min(i - o * Math.abs(o), viewState.dataLength)));
             } else n = Math.max(n + o * Math.abs(o), 0);
             return n == ie && i == ae ? [-1] : ((ie = n), (ae = i), [n, i]);
           };
@@ -15521,7 +15531,7 @@ xh5_define(
               case 37:
               case 39:
                 var i = q.iToKb(37 == t ? -1 : 1);
-                i && (G(V.start + i, V.end + i), q.iToKb(0));
+                i && (G(viewState.start + i, viewState.end + i), q.iToKb(0));
                 break;
               case 13:
                 P.historyT();
@@ -15536,13 +15546,14 @@ xh5_define(
             G(t[0], t[1]);
           }),
           (this.moveApi = function(e) {
-            var t = V.start,
-              n = V.end;
+            var t = viewState.start,
+              n = viewState.end;
             (t += e),
               (n += e),
-              n > V.dataLength &&
-                ((n = V.dataLength), (t = V.start + n - V.end)),
-              0 > t && ((t = 0), (n = V.end - V.start)),
+              n > viewState.dataLength &&
+                ((n = viewState.dataLength),
+                (t = viewState.start + n - viewState.end)),
+              0 > t && ((t = 0), (n = viewState.end - viewState.start)),
               G(t, n);
           }),
           (this.shareTo = function(e) {
@@ -15746,7 +15757,7 @@ xh5_define(
         P,
         F = !1,
         z = 0,
-        V = {
+        viewState = {
           viewId: b.URLHASH.vi(i.view || "kd"),
           dataLength: 0 / 0,
           start: 0 / 0,
@@ -15761,7 +15772,7 @@ xh5_define(
           resetX: function(e) {
             this.x = isNaN(e)
               ? I.DIMENSION.w_k /
-                Math.max(V.currentLength, I.PARAM.minCandleNum)
+                Math.max(viewState.currentLength, I.PARAM.minCandleNum)
               : e;
           }
         },
@@ -15776,7 +15787,7 @@ xh5_define(
         })(),
         W = new (function() {
           var e = function() {
-            var e = T.get(V.viewId);
+            var e = T.get(viewState.viewId);
             return e ? e[e.length - 1] : null;
           };
           this.onRange = function(e, n) {
@@ -15785,7 +15796,7 @@ xh5_define(
               i.onrange({
                 isCompare: n,
                 data: e.datas,
-                viewRangeState: t.clone(V, null),
+                viewRangeState: t.clone(viewState, null),
                 width: I.DIMENSION.w_k,
                 height: I.DIMENSION.h_k,
                 left: I.DIMENSION.posX,
@@ -15799,7 +15810,7 @@ xh5_define(
             if (!F && t.isFunc(i.onviewprice)) {
               if (!a) {
                 if (((a = e()), !a)) return;
-                o = V.currentLength - 1;
+                o = viewState.currentLength - 1;
               }
               if (!s) {
                 for (; n.length; ) n.length--;
@@ -15843,7 +15854,7 @@ xh5_define(
                 n &&
                   i.ondataupdate({
                     data: t.clone(n, null),
-                    idx: V.currentLength - 1,
+                    idx: viewState.currentLength - 1,
                     left: I.DIMENSION.posX,
                     top: I.DIMENSION.H_MA4K
                   });
@@ -15851,7 +15862,7 @@ xh5_define(
             }),
             (this.onViewChanged = function() {
               t.isFunc(i.onviewchanged) &&
-                i.onviewchanged({ viewRangeState: t.clone(V, null) });
+                i.onviewchanged({ viewRangeState: t.clone(viewState, null) });
             }),
             (this.onInnerResize = function(e) {
               t.isFunc(i.oninnerresize) && i.oninnerresize(e);
@@ -16331,7 +16342,9 @@ xh5_define(
                           N && (O.innerHTML = (E.volume / N).toFixed(2) + "%");
                       } else O.innerHTML = "--";
                     }
-                    24 === V.viewId || 23 === V.viewId || 25 === V.viewId
+                    24 === viewState.viewId ||
+                    23 === viewState.viewId ||
+                    25 === viewState.viewId
                       ? K.hq &&
                         K.hq.isKCB &&
                         ((l("__floatingPostVolume").style.display =
@@ -16483,7 +16496,7 @@ xh5_define(
                 var u = h.style.height.split("px")[0];
                 (0 > l || l > u) && ((s = 0 / 0), (l = 0 / 0));
               }
-              var m = V.currentLength,
+              var m = viewState.currentLength,
                 f = Math.max(m, I.PARAM.minCandleNum);
               s += I.DIMENSION.w_k / f - Y.x;
               var v = Math.floor((s * f) / I.DIMENSION.w_k);
@@ -16493,7 +16506,7 @@ xh5_define(
                 isNaN(s) && isNaN(l))
               )
                 return (N = !1), g(), y(Number.MAX_VALUE), void W.onViewPrice();
-              N = V.end != V.dataLength ? !0 : m - 1 > v;
+              N = viewState.end != viewState.dataLength ? !0 : m - 1 > v;
               for (var M, L, H, _, R, D, T, E = Number(t.mark); O.length; )
                 O.length--;
               if (n) {
@@ -16612,12 +16625,12 @@ xh5_define(
             if (isNaN(e) && isNaN(t))
               return (F = 0 / 0), (L = !1), void A.re(b.e.I_EVT, a);
             g();
-            var o = V.start,
-              s = V.end,
+            var o = viewState.start,
+              s = viewState.end,
               r = s - o;
             isNaN(F) && (F = e);
             var l = t - F,
-              c = V.dataLength,
+              c = viewState.dataLength,
               h = I.DIMENSION.w_k / r;
             if (Math.abs(l) < h) {
               if (I.custom.smooth && h > 4) {
@@ -16632,8 +16645,11 @@ xh5_define(
                 (s -= d),
                 s >= c && ((s = c), (o = s - r)),
                 0 > o && ((o = 0), (s = r)),
-                (V.start != o || V.end != s) &&
-                  (Y.resetX(0), (V.movY = i - n), k.moving(o, s, !0), (L = !0));
+                (viewState.start != o || viewState.end != s) &&
+                  (Y.resetX(0),
+                  (viewState.movY = i - n),
+                  k.moving(o, s, !0),
+                  (L = !0));
             }
           }),
             (this.shortClickHandler = function() {
@@ -16642,8 +16658,8 @@ xh5_define(
             (this.zoomView = function(e, t) {
               var n = -Number(e);
               0 == n && (n = 1);
-              var i = V.start,
-                a = V.end,
+              var i = viewState.start,
+                a = viewState.end,
                 o = n * Math.ceil((a - i) / I.PARAM.zoomUnit);
               if (
                 (Math.abs(o) > I.PARAM.zoomLimit && (o = n * I.PARAM.zoomLimit),
@@ -16654,11 +16670,11 @@ xh5_define(
                   l = Math.max.apply(Math, t),
                   c = l / I.DIMENSION.w_k;
                 r < I.PARAM.zoomArea
-                  ? (a = Math.min(a - o * Math.abs(o), V.dataLength))
+                  ? (a = Math.min(a - o * Math.abs(o), viewState.dataLength))
                   : c > 1 - I.PARAM.zoomArea
                   ? (i = Math.max(i + o * Math.abs(o), 0))
                   : ((i = Math.max(i + o * Math.abs(o), 0)),
-                    (a = Math.min(a - o * Math.abs(o), V.dataLength)));
+                    (a = Math.min(a - o * Math.abs(o), viewState.dataLength)));
               } else i = Math.max(i + o * Math.abs(o), 0);
               k.moving(i, a);
             }),
@@ -16681,7 +16697,7 @@ xh5_define(
                 o = function() {
                   if (i) {
                     e.body.parentNode && e.body.parentNode.removeChild(e.body);
-                    var t = "vid_" + V.viewId;
+                    var t = "vid_" + viewState.viewId;
                     if (i[t]) {
                       var o;
                       (o = a[t] ? a[t] : (a[t] = new i[t]())), (e = o);
@@ -16840,8 +16856,8 @@ xh5_define(
           },
           w = function(e) {
             "mink" == b.URLHASH.gt(e).type
-              ? ((V.viewId = e), f(), N())
-              : ((e += u), (V.viewId = e), f(u), M());
+              ? ((viewState.viewId = e), f(), N())
+              : ((e += u), (viewState.viewId = e), f(u), M());
           },
           L = new (function() {
             (this.isClMode = !1),
@@ -16903,7 +16919,7 @@ xh5_define(
           (this.setReK = function(e) {
             if (((e = parseInt(e)), !(isNaN(e) || Math.abs(e) > 1))) {
               u = e;
-              var n = b.URLHASH.gt(V.viewId);
+              var n = b.URLHASH.gt(viewState.viewId);
               t.stc("k_re", e);
               var i = e;
               "-1" == i && (i = "_1"),
@@ -17012,7 +17028,7 @@ xh5_define(
             return k.getExtraData(e);
           }),
           (this.getCurrentData = function() {
-            var e = T.get(V.viewId);
+            var e = T.get(viewState.viewId);
             return e && (e = e[e.length - 1]), t.clone(e, null);
           }),
           (this.getCurrentRange = function() {

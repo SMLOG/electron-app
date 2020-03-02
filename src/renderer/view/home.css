@@ -389,3 +389,18 @@ ul.filterp {
 .click {
   cursor: pointer;
 }
+.post {
+  border-bottom: 1px dashed #aaa;
+  margin: 5px;
+  clear: both;
+}
+.post .post_title {
+  float: left;
+}
+.post .post_time {
+  float: right;
+}
+.post_content {
+  clear: both;
+  margin: 10px;
+}

@@ -112,7 +112,7 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a :name="item.code">{{ index + 1 }}</a>
+                    <a :name="item.code" @click="showMessage(item)">{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -169,6 +169,28 @@
       </div>
       <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
     </div>
+    <div
+      ref="m_posts"
+      v-show="m_posts_item"
+      style="position: fixed;top: 0px;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
+    >
+      <div
+        v-if="m_posts_item"
+        style="color:#FFF;font-weight:bold;background:#666;top:0;position:fixed;"
+      >{{m_posts_item.name}}({{m_posts_item.code}})</div>
+      <div
+        v-for="(post,i) in m_posts"
+        :key="i"
+        class="post"
+        v-if="'东方财富网'!=post.post_user.user_nickname"
+      >
+        <div>
+          <span class="post_title">{{post.post_user.user_nickname}}:</span>
+          <span class="post_time">{{post.post_publish_time}}</span>
+        </div>
+        <div class="post_content">{{post.post_content}}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -215,6 +237,8 @@ import {
   updateFiltersCount,
   getOrFiltersItems
 } from "@/lib/filters";
+import fetchJsonp from "fetch-jsonp";
+
 import {
   updateItem,
   getMeetList,
@@ -254,7 +278,9 @@ export default {
       filter_prop: "",
       show_filter_prop: false,
       fullscreen: false,
-      indMap: {}
+      indMap: {},
+      m_posts: [],
+      m_posts_item: null
     };
   },
   directives: {
@@ -314,8 +340,28 @@ export default {
       switch (event.keyCode) {
         case 27:
           this.closeview();
+          this.m_posts_item = null;
           break;
         default:
+      }
+    });
+
+    let time = 0;
+    this.$refs.m_posts.addEventListener("scroll", event => {
+      console.log(
+        this.$refs.m_posts.scrollTop,
+        this.$refs.m_posts.clientHeight,
+        this.$refs.m_posts.scrollHeight,
+        event
+      );
+      if (
+        this.$refs.m_posts.scrollTop + this.$refs.m_posts.clientHeight >=
+        this.$refs.m_posts.scrollHeight - 30
+      ) {
+        if (+new Date() - time > 1000) {
+          time = +new Date();
+          this.loadPosts(this.m_posts_item);
+        }
       }
     });
 
@@ -405,7 +451,52 @@ export default {
     ...mapGetters(["fields"]),
     ...mapGetters({ sfilters: "filters" })
   },
+
   methods: {
+    loadPosts(item) {
+      (async () => {
+        let p = this.m_posts ? Math.floor(this.m_posts.length / 20) + 1 : 1;
+        let jurl = `https://wap.eastmoney.com/info/guba/GetApiResultNewCore?url=webarticlelist%2Fapi%2FArticle%2FArticleListForMobile&query=${encodeURIComponent(
+          "code=" + item.code + "&sorttype=0&ps=20&p=" + p
+        )}&type=POST&cb=gubadata&callback=jsonp10`;
+        let result = await fetch(jurl).then(res => res.text());
+        window.gubadata = p => {
+          if (!this.m_posts) {
+            this.m_posts = [];
+          }
+          this.m_posts = this.m_posts.concat(JSON.parse(p.Result).re);
+          console.log(JSON.parse(p.Result).re);
+
+          this.m_posts_item = item;
+          console.log(this.m_posts);
+        };
+        eval(result);
+
+        //  .then(res => res.json())
+        //.then(data => JSON.parse(data.Result));
+        //this.m_posts = result.re;
+      })();
+    },
+    showMessage(item) {
+      if (this.m_posts_item == item) {
+        return (this.m_posts_item = null);
+      }
+      this.m_posts_item = item;
+      this.m_posts = null;
+      this.loadPosts(item);
+
+      /*
+        let url=`http://mguba.eastmoney.com/interface/GetData.aspx?mt=0.6259930282217008`;
+
+       let data = await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json'
+    }, 
+    body: JSON.stringify({path:'/reply/api/Reply/ArticleReplyList',env:2,param:'postid=908679981&type=0&sort=1&ps=30&p=1&replyid='})
+});*/
+    },
     showFilterable(prop) {
       this.show_filter_prop = !this.show_filter_prop;
 

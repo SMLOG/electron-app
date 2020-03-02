@@ -28,7 +28,12 @@ const techMap = {
   "0&D": function({ item, kd, kw, km }) {
     return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
   },
-
+  DU: function({ item, kd, kw, km }) {
+    return (
+      kw.MACD.length > 4 &&
+      kw.MACD[kw.MACD.length - 1].bar >= kw.MACD[kw.MACD.length - 2].bar
+    );
+  },
   "D&W": function({ item, kd, kw, km }) {
     return (
       kw.MACD.length > 4 &&

@@ -16,12 +16,20 @@
               @click="nextChooseDate()"
             >后</span>
             <span
+              ref="choose_date_ref"
               @click="showChooseDate2 = !showChooseDate2"
               style="display:inline-block;width:120px;text-align:center;border-bottom:1px solid;"
             >
               {{
               chooseDate || "--"
               }} {{weekday}}
+              <div
+                class="selectDate"
+                style="position:absolute;right:10px;"
+                v-show="showChooseDate2"
+              >
+                <Calendar @choseDay="choseDay"></Calendar>
+              </div>
             </span>
 
             <input type="checkbox" v-model="showChooseDate" />
@@ -29,14 +37,6 @@
 
             <input type="checkbox" v-model="cutChooseDate" />
             <span>截断</span>
-            <div
-              class="selectDate"
-              ref="choose_date_ref"
-              style="position:absolute;right:10px;"
-              v-show="showChooseDate2"
-            >
-              <Calendar @choseDay="choseDay"></Calendar>
-            </div>
           </div>
           <div @dblclick="dbclick">
             <span>{{ item.hy }}</span>
@@ -121,7 +121,14 @@ export default {
   },
   mounted() {
     // initwebview(this.closeview.bind(this));
-
+    window.addEventListener("click", e => {
+      if (this.$refs.choose_date_ref) {
+        if (this.$refs.choose_date_ref.contains(e.target)) {
+        } else {
+          this.showChooseDate2 = false;
+        }
+      }
+    });
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", e => {
       this.sendValue();

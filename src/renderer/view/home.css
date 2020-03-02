@@ -393,6 +393,7 @@ ul.filterp {
   border-bottom: 1px dashed #aaa;
   margin: 5px;
   clear: both;
+  font-size: 12px;
 }
 .post .post_title {
   float: left;

@@ -112,7 +112,7 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a :name="item.code" @click="showMessage(item)">{{ index + 1 }}</a>
+                    <a class="post_bt" :name="item.code" @click="showMessage(item)">{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -371,6 +371,13 @@ export default {
         } else {
           this.show_filter_prop = false;
         }
+      }
+      if (
+        this.$refs.m_posts &&
+        !this.$refs.m_posts.contains(e.target) &&
+        e.target.className.indexOf("post_bt") == -1
+      ) {
+        this.m_posts_item = null;
       }
     });
 

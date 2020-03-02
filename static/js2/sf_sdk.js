@@ -3702,7 +3702,7 @@ xh5_define("cfgs.settinger", [], function() {
       }),
       (this.PARAM = {
         K_CL_NUM: 260,
-        updateRate: 5,
+        updateRate: 1,
         T_RATE: 120,
         minCandleNum: 25,
         maxCandleNum: 0 / 0,

@@ -8,7 +8,8 @@ import {
   screen
 } from "electron";
 import * as path from "path";
-
+import fetch from "electron-fetch";
+global.fetch = fetch;
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html

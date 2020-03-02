@@ -7,7 +7,10 @@
       @click="closeview"
     ></div>
 
-    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+    <iframe
+      src="static/tech2.html?sh000001"
+      style="width:100%;height:600px;display:none;"
+    ></iframe>
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap" style>
@@ -92,7 +95,9 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
+                  <span
+                    v-if="selectItem.tables && selectItem.tables.length > 0"
+                  >
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -112,13 +117,22 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a class="post_bt" :name="item.code" @click="showMessage(item)">{{ index + 1 }}</a>
+                    <a
+                      class="post_bt"
+                      :name="item.code"
+                      @click="showMessage(item)"
+                      >{{ index + 1 }}</a
+                    >
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveDatas(item)"
+                    />
                   </span>
                   <div
                     :title="item.code"
@@ -131,7 +145,8 @@
                     <span
                       :class="{ sz: item.mk == 'sz' }"
                       @click="openlink(item, $event)"
-                    >{{ item.name }}</span>
+                      >{{ item.name }}</span
+                    >
                     <div v-if="false">
                       <span
                         title="最后持续平均线分钟(-下+上)"
@@ -139,7 +154,8 @@
                         :class="{
                           avggood: item.avgzs > 45 && item.upArgCount > 120
                         }"
-                      >{{ item.avgzs }}</span>
+                        >{{ item.avgzs }}</span
+                      >
                       <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
                       <span title="连续方向分钟数">/{{ item.contDir }}</span>
                     </div>
@@ -153,21 +169,36 @@
                 :class="col.class && col.class(item)"
                 :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullscreen: fullscreen }">
+    <div
+      id="webviewWrap"
+      ref="webviewWrap"
+      class="webview"
+      :class="{ fullscreen: fullscreen }"
+    >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
           style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
         ></i>
-        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+        <i
+          v-if="false"
+          class="arrow down"
+          style="position:relative;top:-10px;cursor:pointer;"
+        ></i>
       </div>
-      <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
+      <WinView
+        :item="item"
+        :link="link"
+        @dBclick="fullscreen = !fullscreen"
+      ></WinView>
     </div>
     <div
       ref="m_posts"
@@ -177,18 +208,20 @@
       <div
         v-if="m_posts_item"
         style="color:#FFF;font-weight:bold;background:#666;top:0;position:fixed;"
-      >{{m_posts_item.name}}({{m_posts_item.code}})</div>
+      >
+        {{ m_posts_item.name }}({{ m_posts_item.code }})
+      </div>
       <div
-        v-for="(post,i) in m_posts"
+        v-for="(post, i) in m_posts"
         :key="i"
         class="post"
-        v-if="'东方财富网'!=post.post_user.user_nickname"
+        v-if="'东方财富网' != post.post_user.user_nickname"
       >
         <div>
-          <span class="post_title">{{post.post_user.user_nickname}}:</span>
-          <span class="post_time">{{post.post_publish_time}}</span>
+          <span class="post_title">{{ post.post_user.user_nickname }}:</span>
+          <span class="post_time">{{ post.post_publish_time }}</span>
         </div>
-        <div class="post_content">{{post.post_content}}</div>
+        <div class="post_content">{{ post.post_content }}</div>
       </div>
     </div>
   </div>
@@ -247,9 +280,9 @@ import {
   isNotTradeTime
 } from "@/lib/getTable";
 import $ from "jquery";
+
 window.$ = $;
 const SELF = "自选";
-
 export default {
   name: "home",
   data: function() {
@@ -336,6 +369,8 @@ export default {
     }
   },
   mounted() {
+    window.cfetch = this.$electron.remote.getGlobal("fetch");
+
     window.addEventListener("keyup", event => {
       switch (event.keyCode) {
         case 27:
@@ -503,6 +538,65 @@ export default {
     }, 
     body: JSON.stringify({path:'/reply/api/Reply/ArticleReplyList',env:2,param:'postid=908679981&type=0&sort=1&ps=30&p=1&replyid='})
 });*/
+      this.getArcContent();
+    },
+    getArcContent() {
+      let n = {};
+      n.url = "http://mguba.eastmoney.com/interface/GetData.aspx";
+      n.data = {};
+      n.data.path = "/reply/api/Reply/ArticleReplyList";
+      n.data.env = 2;
+      n.type = "POST";
+      var l = "postid=908679981&type=0&sort=1&ps=30&p=1&replyid=";
+      n.data.param = encodeURIComponent(l);
+      this.ajax(n);
+    },
+    ajax(e) {
+      var t = (e = e || {}).type || "GET";
+      t = t.toUpperCase();
+      var s = e.url,
+        o = e.async || !0,
+        a = e.contentType || "application/x-www-form-urlencoded;charset=UTF-8",
+        i = e.data || "",
+        n = [];
+      for (var r in i) n.push(r + "=" + i[r]);
+      var l = "";
+      n.length > 0 && (l = n.join("&"));
+      var c,
+        p = {
+          successCall: null,
+          success: function(e) {
+            return (p.successCall = e), p;
+          },
+          errorCall: null,
+          error: function(e) {
+            return (p.errorCall = e), p;
+          },
+          request: null
+        };
+      try {
+        c = new XMLHttpRequest();
+      } catch (e) {}
+      return (
+        c &&
+          ("GET" == t
+            ? (c.open(t, s + "?" + l + "&mt=" + Math.random(), o),
+              (c.withCredentials = !0),
+              c.send(null))
+            : (c.open(t, s + "?mt=" + Math.random(), o),
+              (c.withCredentials = !0),
+              c.setRequestHeader("Content-Type", a),
+              c.send(l)),
+          (c.onreadystatechange = function() {
+            if (4 == c.readyState)
+              if (200 == c.status) {
+                var e = c.responseText;
+                p.successCall && p.successCall(e);
+              } else p.errorCall && p.errorCall(c);
+          })),
+        (p.request = c),
+        p
+      );
     },
     showFilterable(prop) {
       this.show_filter_prop = !this.show_filter_prop;

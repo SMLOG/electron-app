@@ -29,9 +29,17 @@ border-top: none;
 border-bottom: none;"
       ></i>
     </div>
-    <span class="r shrink2" @click="toggleLeft" :class="{ dock: isDockLeft }"></span>
+    <span
+      class="r shrink2"
+      @click="toggleLeft"
+      :class="{ dock: isDockLeft }"
+    ></span>
     <slot />
-    <span class="d shrink2" @click="isShrink = !isShrink" :class="{ dock: isShrink }"></span>
+    <span
+      class="d shrink2"
+      @click="isShrink = !isShrink"
+      :class="{ dock: isShrink }"
+    ></span>
   </div>
 </template>
 <script>

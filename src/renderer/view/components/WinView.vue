@@ -6,23 +6,27 @@
           <div style="float:right;margin-right:10px;">
             <span
               class="button"
-              v-if="chooseDate&&(showChooseDate||cutChooseDate)"
+              v-if="chooseDate && (showChooseDate || cutChooseDate)"
               @click="prevChooseDate()"
-            >前</span>
+              >前</span
+            >
 
             <span
               class="button"
-              v-if="chooseDate&&(showChooseDate||cutChooseDate)"
+              v-if="chooseDate && (showChooseDate || cutChooseDate)"
               @click="nextChooseDate()"
-            >后</span>
+              :class="{ gray: item.date <= chooseDate }"
+              >后</span
+            >
             <span
               ref="choose_date_ref"
-              @click="showChooseDate2 = !showChooseDate2"
               style="display:inline-block;width:120px;text-align:center;border-bottom:1px solid;"
             >
-              {{
-              chooseDate || "--"
-              }} {{weekday}}
+              <span
+                style="width:100%;display:inline-block;"
+                @click="showChooseDate2 = !showChooseDate2"
+                >{{ chooseDate || "--" }} {{ weekday }}</span
+              >
               <div
                 class="selectDate"
                 style="position:absolute;right:10px;"
@@ -65,14 +69,21 @@
               :key="f"
               style="display:inline-block;margin:5px;margin-right;10px;"
               :class="{ y: aitem['_' + f] }"
-            >{{ f }}</li>
+            >
+              {{ f }}
+            </li>
           </ul>
         </div>
       </td>
     </tr>
     <tr>
       <td>
-        <webview ref="webview" id="figure" style="width:100%;height:100%;" :src="link"></webview>
+        <webview
+          ref="webview"
+          id="figure"
+          style="width:100%;height:100%;"
+          :src="link"
+        ></webview>
       </td>
     </tr>
   </table>
@@ -173,6 +184,7 @@ export default {
       this.chooseDate = m.format("YYYY-MM-DD");
     },
     nextChooseDate() {
+      if (item.date <= this.chooseDate) return;
       let m = moment(this.chooseDate);
       do {
         m.add(1, "day");
@@ -209,8 +221,8 @@ export default {
         );
     },
     choseDay(d) {
-      this.chooseDate = d;
       this.showChooseDate2 = false;
+      this.chooseDate = d;
     },
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
@@ -242,5 +254,8 @@ export default {
   display: inline-block;
   font-size: 12px;
   border-bottom: 1px solid;
+}
+.gray {
+  color: gray;
 }
 </style>

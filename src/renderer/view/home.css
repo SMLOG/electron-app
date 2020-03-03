@@ -405,3 +405,8 @@ ul.filterp {
   clear: both;
   margin: 10px;
 }
+.replies {
+  background-color: #bbb;
+  padding: 5px;
+  margin: 5px;
+}

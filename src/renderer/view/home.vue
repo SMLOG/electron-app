@@ -203,7 +203,7 @@
     <div
       ref="m_posts"
       v-show="m_posts_item"
-      style="position: fixed;top: 0px;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
+      style="position: fixed;top: 0px;right:0;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
     >
       <div
         v-if="m_posts_item"
@@ -222,6 +222,13 @@
           <span class="post_time">{{ post.post_publish_time }}</span>
         </div>
         <div class="post_content">{{ post.post_content }}</div>
+        <div v-if="post.replies" class="replies">
+          <div v-for="rep in post.replies.re" :key="rep.reply_id" class="reply">
+            <span>{{ rep.reply_user.user_nickname }}</span
+            >:
+            <span>{{ rep.reply_text }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -283,6 +290,33 @@ import $ from "jquery";
 
 window.$ = $;
 const SELF = "自选";
+
+function getPosts(id, type = 1) {
+  const data = {
+    path: "/content/api/Post/ArticleContent",
+    env: "2",
+    param: `postid=${id}&type=0`
+  };
+  if (type == 2) {
+    data.path = "/reply/api/Reply/ArticleReplyList";
+    data.param = `postid=${id}&type=0&sort=1&ps=30&p=1&replyid=`;
+  }
+  return axios({
+    method: "post",
+    url:
+      "http://mguba.eastmoney.com/interface/GetData.aspx?mt=" + Math.random(),
+    headers: {
+      Referer: `http://mguba.eastmoney.com/mguba/article/0/${id}`
+    },
+    data: Object.keys(data)
+      .map(k => `${k}=${encodeURIComponent(data[k])}`)
+      .join("&")
+  }).then(function(response) {
+    return response.data;
+  });
+}
+
+window.getPosts = getPosts;
 export default {
   name: "home",
   data: function() {
@@ -369,7 +403,7 @@ export default {
     }
   },
   mounted() {
-    window.cfetch = this.$electron.remote.getGlobal("fetch");
+    window.axios = this.$electron.remote.getGlobal("axios");
 
     window.addEventListener("keyup", event => {
       switch (event.keyCode) {
@@ -502,17 +536,30 @@ export default {
           "code=" + item.code + "&sorttype=0&ps=20&p=" + p
         )}&type=POST&cb=gubadata&callback=jsonp10`;
         let result = await fetch(jurl).then(res => res.text());
+        let posts = null;
         window.gubadata = p => {
           if (!this.m_posts) {
             this.m_posts = [];
           }
-          this.m_posts = this.m_posts.concat(JSON.parse(p.Result).re);
-          console.log(JSON.parse(p.Result).re);
+          posts = JSON.parse(p.Result).re;
+          this.m_posts = this.m_posts.concat(posts);
+          console.log(posts);
 
           this.m_posts_item = item;
           console.log(this.m_posts);
         };
         eval(result);
+
+        if (posts) {
+          for (let i = 0; i < posts.length; i++) {
+            let post = posts[i];
+            if (post.post_comment_count) {
+              let replies = await getPosts(post.post_id, 2);
+              post.replies = replies;
+              console.log(post);
+            }
+          }
+        }
 
         //  .then(res => res.json())
         //.then(data => JSON.parse(data.Result));

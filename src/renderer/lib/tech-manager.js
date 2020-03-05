@@ -31,7 +31,8 @@ const techMap = {
   DU: function({ item, kd, kw, km }) {
     return (
       kd.MACD.length > 4 &&
-      kd.MACD[kd.MACD.length - 1].bar > kd.MACD[kd.MACD.length - 2].bar
+      kd.MACD[kd.MACD.length - 1].bar > kd.MACD[kd.MACD.length - 2].bar &&
+      item.now > item.open
     );
   },
   "D&W": function({ item, kd, kw, km }) {
@@ -52,25 +53,38 @@ const techMap = {
       let kd5 = kd.datas.slice(-5);
       let boll5 = boll.slice(-5);
       if (
-        nrValue < 0.1 &&
-        ((Math.min.apply(
-          null,
-          kd5.map(e => e.low)
-        ) <=
-          Math.max.apply(
+        (nrValue < 0.1 &&
+          ((Math.min.apply(
             null,
-            boll5.map(e => e.lower)
-          ) &&
-          Math.max.apply(
-            null,
-            kd5.map(e => e.high)
-          ) >=
-            Math.min.apply(
+            kd5.map(e => e.low)
+          ) <=
+            Math.max.apply(
               null,
-              boll5.map(e => e.boll)
-            )) ||
-          kd.datas[i].low > arr[i].upper)
+              boll5.map(e => e.lower)
+            ) &&
+            Math.max.apply(
+              null,
+              kd5.map(e => e.high)
+            ) >=
+              Math.min.apply(
+                null,
+                boll5.map(e => e.boll)
+              )) ||
+            kd.datas[i].low > arr[i].upper)) ||
+        kd.now >= arr[i].boll
       ) {
+        return true;
+      }
+    }
+    return false;
+  },
+  B: function({ item, kd, kw, km }) {
+    let boll = kd.BOLL;
+    if (boll) {
+      let arr = boll;
+      let i = arr.length - 1;
+
+      if (item.now >= arr[i].boll || item.turnover >= 2) {
         return true;
       }
     }

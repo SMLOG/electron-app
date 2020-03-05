@@ -203,11 +203,11 @@
     <div
       ref="m_posts"
       v-show="m_posts_item"
-      style="position: fixed;top: 0px;right:0;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
+      style="position: fixed;top: 35px;right:0;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
     >
       <div
         v-if="m_posts_item"
-        style="color:#FFF;font-weight:bold;background:#666;top:0;position:fixed;"
+        style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;"
       >
         {{ m_posts_item.name }}({{ m_posts_item.code }})
       </div>

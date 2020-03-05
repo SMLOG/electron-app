@@ -1,4 +1,21 @@
 import { getTech as getTechDatas } from "./tech";
+
+function getMill() {
+  let total = Math.floor((new Date().getTime() % 86400000) + 28800000);
+  let t9_30 = 34200000; //new Date("2020-01-01 09:30:00") - new Date("2020-01-01 00:00:00");
+  let t11_30 = 41400000; // new Date("2020-01-01 11:30:00") - new Date("2020-01-01 00:00:00");
+  let t13_00 = 46800000; //new Date("2020-01-01 13:00:00") - new Date("2020-01-01 00:00:00");
+  let t15_00 = 54000000; // new Date("2020-01-01 15:00:00") - new Date("2020-01-01 00:00:00");
+  if (total <= t9_30) return 0;
+  if (total < t11_30) return total - t9_30;
+  if (total <= t13_00) return t11_30 - t9_30;
+  if (total <= t15_00) return total - t13_00 + t11_30 - t9_30;
+  if (total > t15_00) return t15_00 - t13_00 + t11_30 - t9_30;
+}
+let timeRatio = 0;
+setInterval(() => {
+  timeRatio = getMill() / 1000 / 14400;
+}, 30000);
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -84,7 +101,11 @@ const techMap = {
       let arr = boll;
       let i = arr.length - 1;
 
-      if (item.now >= arr[i].boll || item.turnover >= 2) {
+      if (
+        item.now >= arr[i].boll &&
+        ((timeRatio == 0 && item.turnover >= 2) ||
+          item.turnover / timeRatio >= 0.000138)
+      ) {
         return true;
       }
     }

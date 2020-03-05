@@ -52,6 +52,7 @@
             <span>TTM:{{ item["pe_ttm"] }}</span>
             <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
+            <span>换手率:{{ item["turnover"] }}%</span>
           </div>
         </div>
         <div v-if="showChooseDate">

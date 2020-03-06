@@ -12,10 +12,13 @@ function getMill() {
   if (total <= t15_00) return total - t13_00 + t11_30 - t9_30;
   if (total > t15_00) return t15_00 - t13_00 + t11_30 - t9_30;
 }
+window.getMill = getMill;
 let timeRatio = 0;
+let turnover = 0;
 setInterval(() => {
-  timeRatio = getMill() / 1000 / 14400;
-}, 30000);
+  timeRatio = getMill() / 1000;
+  turnover = timeRatio * 0.000138;
+}, 2000);
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -103,8 +106,8 @@ const techMap = {
 
       if (
         item.now >= arr[i].boll &&
-        ((timeRatio == 0 && item.turnover >= 2) ||
-          item.turnover / timeRatio >= 0.000138)
+        item.turnover > turnover &&
+        item.now > item.open
       ) {
         return true;
       }

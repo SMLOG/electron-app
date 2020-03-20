@@ -42,12 +42,6 @@ function isMacdDeath(techData) {
   );
 }
 const techMap = {
-  D: function({ item, kd, kw, km }) {
-    return isMacdGolden(kd);
-  },
-  "0&D": function({ item, kd, kw, km }) {
-    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
-  },
   DU: function({ item, kd, kw, km }) {
     return (
       kd.MACD.length > 4 &&
@@ -55,14 +49,46 @@ const techMap = {
       item.now > item.open
     );
   },
-  "D&W": function({ item, kd, kw, km }) {
+  D: function({ item, kd, kw, km }) {
+    return isMacdGolden(kd);
+  } /*
+  "0&D": function({ item, kd, kw, km }) {
+    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
+  },*/,
+
+  WU: function({ item, kd, kw, km }) {
     return (
-      kw.MACD.length > 4 &&
+      km.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
-      kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
-      isMacdGolden(kd)
+      kw.datas[kw.MACD.length - 1].close > kw.datas[kw.MACD.length - 1].open
     );
   },
+  W2: function({ item, kd, kw, km }) {
+    return (
+      km.MACD.length > 4 &&
+      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
+      kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar &&
+      kw.MACD[kw.MACD.length - 3].bar >= kw.MACD[kw.MACD.length - 4].bar &&
+      kw.MACD[kw.MACD.length - 3].bar <= 0 &&
+      kw.MACD[kw.MACD.length - 1].bar > -0.05 &&
+      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar
+    );
+  },
+  自动过滤: function({ item, kd, kw, km }) {
+    return (
+      kw.MACD.length > 4 &&
+      !(
+        kw.MACD[kw.MACD.length - 1].bar < 0 &&
+        kw.MACD[kw.MACD.length - 2].bar < 0 &&
+        kw.MACD[kw.MACD.length - 3].bar <= 0
+      ) &&
+      (kw.datas[kw.MACD.length - 2].close > kw.datas[kw.MACD.length - 2].open ||
+        kw.datas[kw.MACD.length - 1].close >
+          kw.datas[kw.MACD.length - 1].open) &&
+      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar
+    );
+  }
+  /*,
   "D&B": function({ item, kd, kw, km }) {
     let boll = kd.BOLL;
     if (boll && boll.length > 5) {
@@ -97,7 +123,7 @@ const techMap = {
       }
     }
     return false;
-  },
+  } 
   B: function({ item, kd, kw, km }) {
     let boll = kd.BOLL;
     if (boll) {
@@ -141,12 +167,12 @@ const techMap = {
 
   W: function({ item, kd, kw, km }) {
     return isMacdGolden(kw);
-  },
+  }
   M: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
-  },
+  },*/
 
-  粘多: function({ item, kd, kw, km }) {
+  /*粘多: function({ item, kd, kw, km }) {
     //5,10,20日三线粘合 {取1%振幅内粘合}
     let m = item.now;
     if (kd.MA.length < 30) return false;
@@ -168,7 +194,7 @@ const techMap = {
   },
   Deth: function({ item, kd, kw, km }) {
     return isMacdDeath(kd);
-  }
+  }*/
 };
 
 export function buildFilters() {

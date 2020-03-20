@@ -24,11 +24,11 @@ export const afilters = {
 };
 
 export let filters = {
-  Focus: function(items) {
+  /*Focus: function(items) {
     return items.filter(function(item) {
       return item.isFocus;
     });
-  }
+  }*/
 };
 filters = Object.assign(filters, buildFilters());
 

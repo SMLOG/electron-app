@@ -13,8 +13,7 @@ function isWeek(item, kd, kw, km) {
     ) &&
     (kw.datas[i - 2].close > kw.datas[i - 2].open ||
       kw.datas[i - 1].close > kw.datas[i - 1].open) &&
-    kw.MACD[i - 1].bar > kw.MACD[i - 2].bar &&
-    item.name.indexOf("中国") == -1
+    kw.MACD[i - 1].bar > kw.MACD[i - 2].bar
   );
 }
 function getMill() {
@@ -101,6 +100,14 @@ const techMap = {
       (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
     item.week3p = r;
     return isWeek(item, kd, kw, km);
+  },
+  "3M": function({ item, kd, kw, km }) {
+    return (
+      km.MACD.length > 2 &&
+      km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
+      km.MACD[km.MACD.length - 2].bar >= km.MACD[km.MACD.length - 3].bar &&
+      km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar
+    );
   },
   DU: function({ item, kd, kw, km }) {
     let i = kd.MACD.length;

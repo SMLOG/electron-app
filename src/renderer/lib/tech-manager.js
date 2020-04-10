@@ -1,5 +1,22 @@
 import { getTech as getTechDatas } from "./tech";
+import storejs from "storejs";
+import moment from "moment";
 
+function isWeek(item, kd, kw, km) {
+  let i = kw.MACD.length;
+  return (
+    kw.MACD.length > 4 &&
+    !(
+      kw.MACD[i - 1].bar < 0 &&
+      kw.MACD[i - 2].bar < 0 &&
+      kw.MACD[i - 3].bar <= 0
+    ) &&
+    (kw.datas[i - 2].close > kw.datas[i - 2].open ||
+      kw.datas[i - 1].close > kw.datas[i - 1].open) &&
+    kw.MACD[i - 1].bar > kw.MACD[i - 2].bar &&
+    item.name.indexOf("中国") == -1
+  );
+}
 function getMill() {
   let total = Math.floor((new Date().getTime() % 86400000) + 28800000);
   let t9_30 = 34200000; //new Date("2020-01-01 09:30:00") - new Date("2020-01-01 00:00:00");
@@ -42,19 +59,19 @@ function isMacdDeath(techData) {
   );
 }
 const techMap = {
-  DU: function({ item, kd, kw, km }) {
+  /* DU: function({ item, kd, kw, km }) {
     return (
       kd.MACD.length > 4 &&
       kd.MACD[kd.MACD.length - 1].bar > kd.MACD[kd.MACD.length - 2].bar &&
       item.now > item.open
     );
-  },
+  } 
   D: function({ item, kd, kw, km }) {
     return isMacdGolden(kd);
-  } /*
+  } 
   "0&D": function({ item, kd, kw, km }) {
     return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
-  },*/,
+  },
 
   WU: function({ item, kd, kw, km }) {
     return (
@@ -63,31 +80,47 @@ const techMap = {
       kw.datas[kw.MACD.length - 1].close > kw.datas[kw.MACD.length - 1].open
     );
   },
-  W2: function({ item, kd, kw, km }) {
+  连续两周: function({ item, kd, kw, km }) {
+    return (
+      km.MACD.length > 4 &&
+      kw.MACD[kw.MACD.length - 1].bar >= 0 &&
+      kw.MACD[kw.MACD.length - 2].bar >= 0 &&
+      item.name.indexOf("中国") == -1
+    );
+  },
+  连续两周上涨: function({ item, kd, kw, km }) {
     return (
       km.MACD.length > 4 &&
       kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
-      kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar &&
-      kw.MACD[kw.MACD.length - 3].bar >= kw.MACD[kw.MACD.length - 4].bar &&
-      kw.MACD[kw.MACD.length - 3].bar <= 0 &&
-      kw.MACD[kw.MACD.length - 1].bar > -0.05 &&
-      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar
+      kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
     );
+  },*/
+  周强: function({ item, kd, kw, km }) {
+    return isWeek(item, kd, kw, km);
   },
-  自动过滤: function({ item, kd, kw, km }) {
-    return (
-      kw.MACD.length > 4 &&
-      !(
-        kw.MACD[kw.MACD.length - 1].bar < 0 &&
-        kw.MACD[kw.MACD.length - 2].bar < 0 &&
-        kw.MACD[kw.MACD.length - 3].bar <= 0
-      ) &&
-      (kw.datas[kw.MACD.length - 2].close > kw.datas[kw.MACD.length - 2].open ||
-        kw.datas[kw.MACD.length - 1].close >
-          kw.datas[kw.MACD.length - 1].open) &&
-      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar
-    );
-  }
+  DU: function({ item, kd, kw, km }) {
+    let i = kd.MACD.length;
+    return isWeek(item, kd, kw, km) && kd.MACD[i - 1] >= kd.MACD[i - 2];
+  },
+  "10%": function({ item, kd, kw, km }) {
+    let i = kw.MACD.length;
+    let r =
+      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
+    return isWeek(item, kd, kw, km) && r <= 0.1;
+  },
+  "20%": function({ item, kd, kw, km }) {
+    let i = kw.MACD.length;
+    let r =
+      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
+    return isWeek(item, kd, kw, km) && r <= 0.2 && r > 0.1;
+  },
+  "30%": function({ item, kd, kw, km }) {
+    let i = kw.MACD.length;
+    let r =
+      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
+    return isWeek(item, kd, kw, km) && r <= 0.3 && r > 0.2;
+  },
+
   /*,
   "D&B": function({ item, kd, kw, km }) {
     let boll = kd.BOLL;
@@ -201,7 +234,7 @@ export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
     filters[name] = function(items) {
-      return items.filter(e => e[`_${name}`]);
+      return items.filter((e) => e[`_${name}`]);
     };
   }
   return filters;
@@ -211,7 +244,7 @@ export async function callFun(item, chooseDate) {
   if (chooseDate) {
     let ntechDatas = {};
     for (let p of ["kd", "kw", "km"]) {
-      let i = techDatas[p].datas.filter(d => d.day <= chooseDate).length;
+      let i = techDatas[p].datas.filter((d) => d.day <= chooseDate).length;
       let nk = techDatas[p].datas.slice(0, i);
       ntechDatas[p] = {};
       for (let k in techDatas[p]) {
@@ -232,4 +265,64 @@ export async function callFun(item, chooseDate) {
     techDatas.item = item;
     item[`_${name}`] = techMap[name](techDatas);
   }
+}
+
+let tjdatas = storejs.get("tj") || [];
+tjdatas.sort((a, b) => {
+  return a.endDate && a.endDate <= b.endDate && a.startDate <= b.startDate;
+});
+let tjmap = {};
+for (let i = 0; i < tjdatas.length; i++) {
+  let item = tjdatas[i];
+  item._i = i;
+  if (!item.endDate || moment(item.endDate).isSame(new Date(), "day"))
+    tjmap[item.code] = item;
+}
+export function tj(items) {
+  //storejs.set("his" + (new Date().getDate() % 28), this.items3);
+  let imap = {};
+  if (items) {
+    let needUpdate = false;
+    for (let i = 0; i < items.length; i++) {
+      let it = items[i];
+      imap[it.code] = it;
+      let item = tjmap[it.code];
+      if (!tjmap[it.code]) {
+        tjmap[it.code] = it;
+        tjdatas.push(it);
+        it.startDate = new Date();
+        needUpdate = true;
+        console.log(`add new ${it.code} to tj at ${it.startDate}`);
+        tjmap[it.code].startNow = it.now;
+      }
+      if (item && item !== it) {
+        item.endDate = null;
+        it = Object.assign(it, {
+          endDate: item.endDate,
+          startDate: item.startDate,
+          startNow: item.startNow,
+          endNow: item.endNow,
+        });
+        tjmap[it.code] = it;
+        tjdatas[item._i] = it;
+        needUpdate = true;
+      }
+      it.endNow = it.now;
+    }
+
+    for (let i = 0, codes = Object.keys(tjmap); i < codes.length; i++) {
+      if (!imap[codes[i]]) {
+        let it = tjmap[codes[i]];
+
+        it.endDate = new Date();
+        needUpdate = true;
+        console.log(
+          `remove new ${it.code} to tj at ${it.startDate} - ${it.endDate}`
+        );
+      }
+    }
+    if (needUpdate) {
+      storejs.set("tj", tjdatas);
+    }
+  } else return tjdatas;
 }

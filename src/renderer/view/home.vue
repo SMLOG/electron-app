@@ -1,7 +1,7 @@
 <template>
   <div>
     <Setting />
-    <His />
+    <His @showChart="openlink" />
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
@@ -105,6 +105,7 @@
           </thead>
           <draggable v-model="items" @update="dragEnd" tag="tbody">
             <tr
+              :id="'r'+item.code"
               class="item"
               v-for="(item, index) in filteredItems"
               :key="item.code"
@@ -129,10 +130,9 @@
                       link: true
                     }"
                   >
-                    <span
-                      :class="{ sz: item.mk == 'sz' }"
-                      @click="openlink(item, $event)"
-                    >{{ item.name }}</span>
+                    <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">
+                      <a :id="item.code">{{ item.name }}</a>
+                    </span>
                     <div v-if="false">
                       <span
                         title="最后持续平均线分钟(-下+上)"
@@ -204,6 +204,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import { callFun } from "@/lib/tech-manager";
+import { tj } from "@/lib/tech-manager";
 
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
@@ -758,7 +759,7 @@ export default {
           if (!this.chooseDate) monitor(this.items);
           await timeout(60000);
 
-          if (!isNotTradeTime()) {
+          if (true || !isNotTradeTime()) {
             let items = this.items;
             let items2 = getOrFiltersItems(this.items2);
 
@@ -778,7 +779,9 @@ export default {
 
             this.items3 = items2;
 
-            storejs.set("his" + (new Date().getDate() % 28), this.items3);
+            this.ready && tj(items2);
+
+            //storejs.set("his" + (new Date().getDate() % 28), this.items3);
           }
           // monitor(items);
         }
@@ -796,8 +799,11 @@ export default {
             let items = getOrFiltersItems(this.items2);
             console.log("monitor:", items);
             monitor(items);
+            tj(items);
           }
         });
+        this.ready = true;
+
         // items.forEach(e => this.items2.push(e));
         //await timeout(60000);
       })();

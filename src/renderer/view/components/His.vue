@@ -1,5 +1,5 @@
 <template>
-  <div ref="filterctr" style="float:right;">
+  <div ref="his" style="float:right;">
     <span
       style="
      position: fixed;
@@ -18,17 +18,31 @@
     <div id="his" v-show="show">
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <th>Date</th>
+          <th>#</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Days</th>
           <th>Name</th>
 
           <th>Price</th>
+          <th>EPrice</th>
+          <th>Ben(%)</th>
           <th v-for="(filter,i) in keys" :key="i">{{filter}}</th>
         </tr>
 
-        <tr v-for="item in his" :key="item.code">
-          <td>{{item.date}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.now}}</td>
+        <tr v-for="(item,i) in his" :key="i">
+          <td>{{i+i}}</td>
+          <td>{{item.startDate|dt}}</td>
+          <td>{{item.endDate|dt}}</td>
+          <td>{{item.startDate|dd(item.endDate||new Date())}}</td>
+          <td>
+            <a @click="showChart(item,$event)">{{item.name}}</a>
+          </td>
+          <td @click="scrollIntoView(item.code,$event)">{{item.now}}</td>
+          <td>{{item.startNow}}</td>
+          <td
+            :class="{red:item.now-item.startNow>0,green:item.now-item.startNow<0}"
+          >{{(item.now-item.startNow).toFixed(2)}}({{((item.now-item.startNow)/item.startNow*100).toFixed(2)}}%)</td>
           <td v-for="(filter,i) in keys" :key="i">{{item['_'+filter]?'Y':''}}</td>
         </tr>
       </table>
@@ -40,6 +54,8 @@
 import { mapActions, mapGetters } from "vuex";
 import { filters } from "@/lib/filters";
 import storejs from "storejs";
+import { tj } from "@/lib/tech-manager";
+import moment from "moment";
 
 let keys = Object.keys(filters);
 
@@ -53,19 +69,43 @@ export default {
       n: new Date().getDate() % 28
     };
   },
+  filters: {
+    dt(date) {
+      return date ? moment(date).format("MM-DD HH:mm") : "";
+    },
+    dd(d1, d2) {
+      return moment(d2).diff(d1, "days");
+    }
+  },
   mounted() {
     window.addEventListener("click", e => {
-      if (this.$refs.filterctr.contains(e.target)) {
+      if (this.$refs.his.contains(e.target)) {
       } else {
         this.show = false;
+        let a = document.querySelector(".align");
+        a && a.classList.remove("align");
       }
     });
-    this.his = storejs.get("his" + this.n) || [];
+    this.his = tj();
   },
   props: {
     items: Array
   },
-  methods: {},
+  methods: {
+    scrollIntoView(id, event) {
+      let el = document.querySelector("#r" + id);
+      if (el) {
+        el.style.top = event.clientY + "px";
+        let a = document.querySelector(".align");
+        a && a.classList.remove("align");
+
+        el.classList.add("align");
+      }
+    },
+    showChart(item, event) {
+      this.$emit("showChart", item, event);
+    }
+  },
   computed: {
     ...mapGetters(["filters"])
   }
@@ -143,5 +183,20 @@ td {
   user-select: none;
   cursor: pointer;
   border-bottom: 1px #ccc dashed;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+table tr:nth-of-type(even) td {
+  background: whitesmoke;
+}
+table tr:nth-of-type(odd) td {
+  background: white;
+}
+* {
+  font-size: 12px;
 }
 </style>

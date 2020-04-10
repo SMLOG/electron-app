@@ -2,7 +2,7 @@ import { getTech as getTechDatas } from "./tech";
 import storejs from "storejs";
 import moment from "moment";
 
-function isWeek(item, kd, kw, km) {
+function isStrong(kw) {
   let i = kw.MACD.length;
   return (
     kw.MACD.length > 4 &&
@@ -38,7 +38,7 @@ setInterval(() => {
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
-    techData.MACD[techData.MACD.length - 1].bar > 0 &&
+    techData.MACD[techData.MACD.length - 1].bar >= 0 &&
     techData.MACD[techData.MACD.length - 1].bar >
       techData.MACD[techData.MACD.length - 2].bar &&
     techData.MACD[techData.MACD.length - 2].bar >
@@ -94,13 +94,6 @@ const techMap = {
       kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
     );
   },*/
-  周强: function({ item, kd, kw, km }) {
-    let i = kw.MACD.length;
-    let r =
-      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
-    item.week3p = r;
-    return isWeek(item, kd, kw, km);
-  },
   "3M": function({ item, kd, kw, km }) {
     return (
       km.MACD.length > 2 &&
@@ -109,9 +102,22 @@ const techMap = {
       km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar
     );
   },
+  周: function({ item, kd, kw, km }) {
+    let i = kw.MACD.length;
+    let r =
+      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
+    item.week3p = r;
+    return isStrong(kw);
+  },
+  日: function({ item, kd, kw, km }) {
+    return isStrong(kd);
+  },
+  GM: function({ item, kd, kw, km }) {
+    return isMacdGolden(km);
+  },
   DU: function({ item, kd, kw, km }) {
     let i = kd.MACD.length;
-    return isWeek(item, kd, kw, km) && kd.MACD[i - 1] >= kd.MACD[i - 2];
+    return isStrong(kw) && kd.MACD[i - 1] >= kd.MACD[i - 2];
   },
 
   /*,

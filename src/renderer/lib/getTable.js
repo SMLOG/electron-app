@@ -6,7 +6,7 @@ import {
   fetchEval,
   awaitTimeout,
   isObjectEmpty,
-  rid
+  rid,
 } from "./utils";
 import { getCriterias } from "./criteria";
 import storejs from "storejs";
@@ -54,7 +54,7 @@ async function getXSJJTable() {
     ps: 10000,
     js: "var xsjjo={pages:(tp),data:(x),font:(font)}",
     filter: `(mkt=)(ltsj>=^${startDate}^ and ltsj<=^${endDate}^)`,
-    rt: 51294261
+    rt: 51294261,
   };
   let url = "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?";
 
@@ -222,8 +222,8 @@ async function getYYPLRQTable() {
               .map(function(e) {
                 return d[e];
               })
-              .filter(e => e && e != "-")
-              .map(e => new Date(e))
+              .filter((e) => e && e != "-")
+              .map((e) => new Date(e))
           );
         } catch (e) {
           console.err(e);
@@ -268,9 +268,9 @@ async function getGXL() {
 }
 window.getGXL = getGXL;
 
-const csvJSON = csv => {
+const csvJSON = (csv) => {
   const lines = csv.trim().split("\n");
-  const headers = lines[0].split(",").filter(x => x.trim());
+  const headers = lines[0].split(",").filter((x) => x.trim());
   const items = {};
   items["reportDate"] = headers;
 
@@ -373,7 +373,7 @@ const fieldMap = {
   zcfzl: "资产负债率(%)",
   ldzczfz: "流动负债/总负债(%)",
   ldbl: "流动比率",
-  sdbl: "速动比率"
+  sdbl: "速动比率",
 };
 function fmtReportDatas(json) {
   let reportDate = [];
@@ -414,7 +414,7 @@ export function loadReports(item) {
               /[^0-9]/g,
               ""
             )}.html`
-          ).then(res => res.blob());
+          ).then((res) => res.blob());
 
           return await new Promise((resolve, rejct) => {
             var reader = new FileReader();
@@ -432,7 +432,7 @@ export function loadReports(item) {
     let zyzb = await getCacheData(null, "zyzb_" + item.code, async () => {
       let code = item.code.replace("sz", "SZ").replace("sh", "SH");
       let url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0&code=${code}`;
-      let json = await fetch(url).then(res => res.json());
+      let json = await fetch(url).then((res) => res.json());
       console.log(json);
       try {
         json = fmtReportDatas(json);
@@ -503,7 +503,7 @@ function isCP(klines) {
       ).toFixed(2);
       return e;
     })
-    .map(e => (e.close - Math.max(e.open, e.preClose)) / e.close)
+    .map((e) => (e.close - Math.max(e.open, e.preClose)) / e.close)
     .reverse();
   let ret = 0;
   let retp = 0;
@@ -549,11 +549,8 @@ export async function batchUpdateHQ(items) {
   if (!items || !items.length || isNotTradeTime()) return;
 
   let datalist = await getHXList();
-  let dataMap = items.reduce((map, item) => {
-    map[item.code] = item;
-    return map;
-  }, {});
-  datalist = datalist.data.diff.map(e => {
+
+  datalist = datalist.data.diff.map((e) => {
     return {
       code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
       name: e.f14,
@@ -576,14 +573,20 @@ export async function batchUpdateHQ(items) {
       avg: (e.f6 / e.f5).toFixed(2),
       zf60: e.f24,
       zf250: e.f25,
-      firstDay: e.f26
+      firstDay: e.f26,
     };
   });
 
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
-    if (dataMap[item.code]) {
-      Object.assign(dataMap[item.code], item);
+
+    cache[item.code] = item;
+  }
+  for (let i = 0; i < items.length; i++) {
+    let item = items[i];
+
+    if (cache[item.code]) {
+      Object.assign(item, cache[item.code]);
     }
   }
 }
@@ -591,7 +594,7 @@ export async function batchUpdateHQ(items) {
 export async function getFilterList(callback) {
   let datalist = await getHXList();
   datalist = datalist.data.diff;
-  datalist = datalist.map(e => {
+  datalist = datalist.map((e) => {
     return {
       code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
       name: e.f14,
@@ -614,18 +617,18 @@ export async function getFilterList(callback) {
       avg: (e.f6 / e.f5).toFixed(2),
       zf60: e.f24,
       zf250: e.f25,
-      firstDay: e.f26
+      firstDay: e.f26,
     };
   });
 
   window.datalist = datalist;
 
   let crs = getCriterias();
-  let ccArrList = crs.map(cr => {
+  let ccArrList = crs.map((cr) => {
     return []
       .concat(Object.values(cr.scope))
       .concat(Object.values(cr.basic))
-      .filter(e => e && e._enable);
+      .filter((e) => e && e._enable);
   });
 
   let recursivFiltersSync = (item, filters) => {
@@ -656,19 +659,19 @@ export async function getFilterList(callback) {
     );
   };
 
-  datalist = datalist.filter(item =>
+  datalist = datalist.filter((item) =>
     recursivFiltersTopSync(
       item,
-      ccArrList.map(a => a.filter(e => e.order == 0))
+      ccArrList.map((a) => a.filter((e) => e.order == 0))
     )
   );
   console.log("0:", datalist);
 
   await loadHQ(datalist);
-  datalist = datalist.filter(item =>
+  datalist = datalist.filter((item) =>
     recursivFiltersTopSync(
       item,
-      ccArrList.map(a => a.filter(e => e.order == 1))
+      ccArrList.map((a) => a.filter((e) => e.order == 1))
     )
   );
   console.log("1:", datalist);
@@ -678,7 +681,7 @@ export async function getFilterList(callback) {
     if (
       await recursivFiltersTopAsync(
         item,
-        ccArrList.map(a => a.filter(e => e.order == 2))
+        ccArrList.map((a) => a.filter((e) => e.order == 2))
       )
     ) {
       await getCacheData(null, item.code, null, item);

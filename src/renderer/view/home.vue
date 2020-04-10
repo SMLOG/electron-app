@@ -131,7 +131,7 @@
                     }"
                   >
                     <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">
-                      <a :id="item.code">{{ item.name }}</a>
+                      <a :id="item.code">{{ item.name }}{{item.PEG&&item.PEG.toFixed(1)}}</a>
                     </span>
                     <div v-if="false">
                       <span
@@ -788,20 +788,28 @@ export default {
       })();
       (async () => {
         this.items2.length = 0;
-        afilters["海选"].items = this.items2;
         afilters[SELF].items = this.items;
+        let cacheDateTime = storejs.get("seadatetime") || 0;
+        if (new Date().getTime() - cacheDateTime >= 172800000) {
+          let items = await getFilterList(e => {
+            if (e) {
+              this.items2.push(e);
+              toFiltersCount(e, "海选");
+            } else {
+            }
+          });
+          storejs.set("seadatetime", new Date().getTime());
+          storejs.set("sea", this.items2);
+        } else {
+          this.items2 = storejs.get("sea") || [];
+        }
+        afilters["海选"].items = this.items2;
 
-        let items = await getFilterList(e => {
-          if (e) {
-            this.items2.push(e);
-            toFiltersCount(e, "海选");
-          } else {
-            let items = getOrFiltersItems(this.items2);
-            console.log("monitor:", items);
-            monitor(items);
-            tj(items);
-          }
-        });
+        let items = getOrFiltersItems(this.items2);
+        console.log("monitor:", items);
+        updateFiltersCount();
+        monitor(items);
+        tj(items);
         this.ready = true;
 
         // items.forEach(e => this.items2.push(e));

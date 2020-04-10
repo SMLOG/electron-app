@@ -94,12 +94,13 @@ const techMap = {
       kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
     );
   },*/
-  "3M": function({ item, kd, kw, km }) {
+  月: function({ item, kd, kw, km }) {
     return (
-      km.MACD.length > 2 &&
-      km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
-      km.MACD[km.MACD.length - 2].bar >= km.MACD[km.MACD.length - 3].bar &&
-      km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar
+      isStrong(km) ||
+      (km.MACD.length > 2 &&
+        km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
+        km.MACD[km.MACD.length - 2].bar >= km.MACD[km.MACD.length - 3].bar &&
+        km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar)
     );
   },
   周: function({ item, kd, kw, km }) {

@@ -96,29 +96,15 @@ const techMap = {
     );
   },*/
   周强: function({ item, kd, kw, km }) {
+    let i = kw.MACD.length;
+    let r =
+      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
+    item.week3p = r;
     return isWeek(item, kd, kw, km);
   },
   DU: function({ item, kd, kw, km }) {
     let i = kd.MACD.length;
     return isWeek(item, kd, kw, km) && kd.MACD[i - 1] >= kd.MACD[i - 2];
-  },
-  "10%": function({ item, kd, kw, km }) {
-    let i = kw.MACD.length;
-    let r =
-      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
-    return isWeek(item, kd, kw, km) && r <= 0.1;
-  },
-  "20%": function({ item, kd, kw, km }) {
-    let i = kw.MACD.length;
-    let r =
-      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
-    return isWeek(item, kd, kw, km) && r <= 0.2 && r > 0.1;
-  },
-  "30%": function({ item, kd, kw, km }) {
-    let i = kw.MACD.length;
-    let r =
-      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
-    return isWeek(item, kd, kw, km) && r <= 0.3 && r > 0.2;
   },
 
   /*,

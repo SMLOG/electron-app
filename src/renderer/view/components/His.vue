@@ -15,7 +15,7 @@
     "
       @click="show=!show"
     >His</span>
-    <div id="his" v-show="show">
+    <div id="his" v-show="show" ref="histbl">
       <table cellpadding="0" cellspacing="0">
         <tr>
           <th>#</th>
@@ -84,6 +84,10 @@ export default {
         this.show = false;
         let a = document.querySelector(".align");
         a && a.classList.remove("align");
+
+        let el = document.querySelector("#webviewWrap");
+        el.style.left = "";
+        el.style.right = "";
       }
     });
     this.his = tj();
@@ -104,6 +108,9 @@ export default {
     },
     showChart(item, event) {
       this.$emit("showChart", item, event);
+      let el = document.querySelector("#webviewWrap");
+      el.style.left = "0";
+      el.style.right = this.$refs.histbl.offsetWidth + "px";
     }
   },
   computed: {

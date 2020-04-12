@@ -57,6 +57,15 @@ function isMacdDeath(techData) {
     techData.MACD[len - 2].bar < techData.MACD[len - 3].bar
   );
 }
+function keepWeek(km, n) {
+  if (km.MACD.length > n) {
+    for (let i = 0; i < n; i++) {
+      if (km.MACD[i].bar >= 0) return false;
+    }
+    return true;
+  }
+  return false;
+}
 const techMap = {
   /* DU: function({ item, kd, kw, km }) {
     return (
@@ -97,10 +106,11 @@ const techMap = {
   月: function({ item, kd, kw, km }) {
     return (
       isStrong(km) ||
-      (km.MACD.length > 2 &&
+      (km.MACD.length > 3 &&
         km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
         km.MACD[km.MACD.length - 2].bar >= km.MACD[km.MACD.length - 3].bar &&
-        km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar)
+        km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar) ||
+      keepWeek(km, 20)
     );
   },
   周: function({ item, kd, kw, km }) {

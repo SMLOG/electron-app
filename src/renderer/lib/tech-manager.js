@@ -16,6 +16,16 @@ function isStrong(kw) {
     kw.MACD[i - 1].bar > kw.MACD[i - 2].bar
   );
 }
+function isTurn(kd) {
+  let i = kd.MACD.length;
+  return (
+    kd.MACD.length > 3 &&
+    kd.MACD[i - 1].bar > kd.MACD[i - 2].bar &&
+    kd.MACD[i - 2].bar > kd.MACD[i - 3].bar &&
+    kd.datas[i - 1].close < kd.datas[i - 2].close &&
+    kd.datas[i - 2].close < kd.datas[i - 3].close
+  );
+}
 function getMill() {
   let total = Math.floor((new Date().getTime() % 86400000) + 28800000);
   let t9_30 = 34200000; //new Date("2020-01-01 09:30:00") - new Date("2020-01-01 00:00:00");
@@ -122,6 +132,16 @@ const techMap = {
   },
   日: function({ item, kd, kw, km }) {
     return isStrong(kd);
+  },
+  月背离: function({ item, kd, kw, km }) {
+    return isTurn(km);
+  },
+  周背离: function({ item, kd, kw, km }) {
+    return isTurn(kw);
+  },
+  日背离: function({ item, kd, kw, km }) {
+    let i = kd.MACD.length;
+    return isTurn(kd);
   },
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);

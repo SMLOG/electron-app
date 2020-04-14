@@ -194,7 +194,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       k5: "touzi_wap_v2_hq_11",
       k15: "touzi_wap_v2_hq_12",
       k30: "touzi_wap_v2_hq_13",
-      k60: "touzi_wap_v2_hq_14"
+      k60: "touzi_wap_v2_hq_14",
     };
     e[t] && V(e[t], null, "touzi_wap_v2_hq");
   }
@@ -213,10 +213,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         var i = t.target, a = this.querySelectorAll("li"), r = a.length;
         r--;
 
-      )
-        c(a[r].style, e.itemNormalStyle, !0),
-          a[r].setAttribute("selected", "false");
-      c(i.style, e.itemActiveStyle, !0), i.setAttribute("selected", "true");
+      ) {
+        // c(a[r].style, e.itemNormalStyle, !0),
+        // a[r].setAttribute("selected", "false");
+      }
+      var select = i.getAttribute("selected") == "true";
+      i.setAttribute("selected", select ? "false" : "true");
+      // c(i.style, e.itemNormalStyle, !0),
+      c(i.style, select ? e.itemNormalStyle : e.itemActiveStyle, !0); // i.setAttribute("selected", "true");
     }
   }
   function _(t, e) {
@@ -241,7 +245,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             if ("k1" === a) {
               if (
                 (e.kChart.setLineStyle({
-                  linetype: "line"
+                  linetype: "line",
                 }),
                 !i)
               ) {
@@ -256,13 +260,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                       symbol: t,
                       timeSymbol: "sys_time",
                       interval: 30,
-                      offset: 30
+                      offset: 30,
                     },
                     function(i) {
                       i &&
                         e.kChart.pushData({
                           symbol: t,
-                          data: i
+                          data: i,
                         });
                     }
                   ),
@@ -271,7 +275,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               }
             } else
               e.kChart.setLineStyle({
-                linetype: "solid"
+                linetype: "solid",
               });
         });
     }
@@ -341,7 +345,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       subname: e.value || "chart_CN_bs",
       uatrackKey: e.key || "universal_callup",
       androidInstallUrl: e.apk || this.bag,
-      needOpenSource: !1
+      needOpenSource: !1,
     };
     (this.sfc = null),
       "undefined" != typeof SinaFinanceCallUp &&
@@ -358,7 +362,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         eventid: "callup_zhengu",
         subname: "fromWapHq",
         uatrackKey: "callup_zhengu",
-        needOpenSource: !1
+        needOpenSource: !1,
       };
     "undefined" != typeof SinaFinanceCallUp &&
       (o = new SinaFinanceCallUp.CallUpSinaFinance(s)),
@@ -381,7 +385,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             callfailUrl: r,
             openBrowser: function() {
               window.open(r, "_self");
-            }
+            },
           }),
           V("dsjzg", null, "hq_center_hs"),
           a(t);
@@ -398,14 +402,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           a.callBack({
             pos: a.pix + t.market + "_" + i,
             key: "universal_callup",
-            androidurl: a.bag
+            androidurl: a.bag,
           })
         : a.noSEList.indexOf(e) > -1 &&
           a.callBack &&
           a.callBack({
             pos: a.pix + t.market + "_" + i,
             key: "universal_callup",
-            androidurl: a.bag
+            androidurl: a.bag,
           }));
   }
   function z(t) {
@@ -433,7 +437,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         "sz399415",
         "sz399416",
         "sz399300",
-        "sz000300"
+        "sz000300",
       ].indexOf(t) > -1
     );
   }
@@ -466,7 +470,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           "ARSUSD",
           "USDPHP",
           "USDKRW",
-          "USDIDR"
+          "USDIDR",
         ],
         i = e.length;
       i--;
@@ -542,13 +546,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           (t.tab.list = ["t1", "kcl", "kd", "kw", "km"]),
             (t.chart.tChart.tCharts = [
               {
-                name: "MACD"
-              }
+                name: "MACD",
+              },
             ]),
             (t.chart.kChart.tCharts = [
               {
-                name: "MACD"
-              }
+                name: "MACD",
+              },
             ]),
             (t.tech.tChart.pCharts = []),
             (t.tech.tChart.tCharts = [
@@ -562,7 +566,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "DMA",
               "EXPMA",
               "BIAS",
-              "VR"
+              "VR",
             ]),
             (t.tech.kChart.pCharts = ["MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"]),
             (t.tech.kChart.tCharts = [
@@ -580,7 +584,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "RSI",
               "SAR",
               "TRIX",
-              "WR"
+              "WR",
             ]),
             (t.chart.tChart.showScale = "pct");
           break;
@@ -596,8 +600,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             (t.chart.kInitParam.newthour = "forex_yt" === a ? 6 : 7),
             (t.chart.kChart.tCharts = [
               {
-                name: "MACD"
-              }
+                name: "MACD",
+              },
             ]),
             (t.chart.kChart.pCharts = []),
             (t.tech.kChart.pCharts = ["MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"]),
@@ -616,11 +620,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "RSI",
               "SAR",
               "TRIX",
-              "WR"
+              "WR",
             ]),
             (t.info.toFixedNum = 4),
             (t.chart.kChart.showRangeSelector = {
-              display: !1
+              display: !1,
             }),
             F(t);
           break;
@@ -635,26 +639,26 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             (t.chart.kInitParam.newthour = 0),
             (t.chart.kChart.tCharts = [
               {
-                name: "MACD"
-              }
+                name: "MACD",
+              },
             ]),
             (t.chart.kChart.pCharts = []),
             (t.info.toFixedNum = 2),
             (t.chart.kChart.showRangeSelector = {
-              display: !1
+              display: !1,
             }),
             F(t);
           break;
         case "HF":
           (t.chart.tChart.tCharts = [
             {
-              name: "MACD"
-            }
+              name: "MACD",
+            },
           ]),
             (t.chart.kChart.tCharts = [
               {
-                name: "MACD"
-              }
+                name: "MACD",
+              },
             ]),
             (t.tech.tChart.pCharts = []),
             (t.tech.tChart.tCharts = [
@@ -668,7 +672,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "DMA",
               "EXPMA",
               "BIAS",
-              "VR"
+              "VR",
             ]),
             (t.tech.kChart.pCharts = ["MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"]),
             (t.tech.kChart.tCharts = [
@@ -686,7 +690,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "RSI",
               "SAR",
               "TRIX",
-              "WR"
+              "WR",
             ]),
             (t.tab.list = ["t1", "kcl", "kd", "kw", "km", "more"]),
             (t.tab.more = ["k5", "k15", "k30", "k60"]),
@@ -702,8 +706,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 "DMA",
                 "EXPMA",
                 "BIAS",
-                "VR"
-              ]
+                "VR",
+              ],
             }),
             (t.chart.kInitParam.tchartobject = {
               k: [
@@ -720,8 +724,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 "RSI",
                 "SAR",
                 "TRIX",
-                "WR"
-              ]
+                "WR",
+              ],
             }),
             ~["hf_ES"].indexOf(e)
               ? (t.info.toFixedNum = 2)
@@ -731,7 +735,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                   "hf_CD",
                   "hf_JY",
                   "hf_BP",
-                  "hf_EC"
+                  "hf_EC",
                 ].indexOf(e)
               ? ((t.info.toFixedNum = 4), (t.info.percentToFixedNum = 4))
               : (t.info.toFixedNum = 3);
@@ -754,7 +758,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               "DMA",
               "EXPMA",
               "BIAS",
-              "VR"
+              "VR",
             ]);
           break;
         case "OTC":
@@ -816,7 +820,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 r[t].push({
                   handler: e,
                   one: a,
-                  ctx: i || this
+                  ctx: i || this,
                 }),
                 this)
               : this;
@@ -859,7 +863,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               }
             }
             return this;
-          }
+          },
         }),
         e
       );
@@ -998,7 +1002,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           ),
           c(this.nav.style, this.param.navTopStyle, !0),
           e && (e.style.bottom = ""));
-    }
+    },
   };
   var J = ["t", "k", "netWorth", "repay", "predict"];
   (g.prototype = {
@@ -1140,7 +1144,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             w("\u5e45", (100 * n).toFixed(s) + "%", n > 0 ? l : 0 > n ? c : d),
             w("\u6536", e.close.toFixed(o), n > 0 ? l : 0 > n ? c : d),
             w("\u4f4e", e.low.toFixed(o), e.low > r ? l : e.low < r ? c : d),
-            this.parent.hasVolume ? "\u91cf: " + p(e.volume, 2) : ""
+            this.parent.hasVolume ? "\u91cf: " + p(e.volume, 2) : "",
           ],
           y = [
             this.parent.hasVolume
@@ -1148,7 +1152,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               : "",
             this.parent.hasVolume
               ? "\u76d8\u540e\u989d: " + p(e.postAmt, 2)
-              : ""
+              : "",
           ],
           k = this.parent.tab.selectedView,
           C = 6,
@@ -1236,7 +1240,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
     },
     show: function(t, e) {
       this[this.isSimple ? "_showSimple" : "_showComplete"](t, e);
-    }
+    },
   }),
     (_.prototype = {
       constructor: _,
@@ -1252,18 +1256,21 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           t.param.wrap.dom.appendChild(i);
       },
       switchTechStyle: function(t, e) {
-        for (
-          var i = this.param,
-            a = e.Indicator,
-            r = this[t].tCharts.querySelectorAll("li"),
-            n = r.length;
-          n--;
+        if (false)
+          for (
+            var i = this.param,
+              a = e.Indicator,
+              r = this[t].tCharts.querySelectorAll("li"),
+              n = r.length;
+            n--;
 
-        )
-          c(r[n].style, i.itemNormalStyle, !0),
-            r[n].setAttribute("selected", "false"),
-            r[n].getAttribute("value") === a.name &&
-              c(r[n].style, i.itemActiveStyle, !0);
+          ) {
+            c(r[n].style, i.itemNormalStyle, !0),
+              r[n].setAttribute("selected", "false"),
+              r[n].getAttribute("value") === a.name &&
+                c(r[n].style, i.itemActiveStyle, !0);
+          }
+
         e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
           e.Indicator.name != this.parent.chart.param.kChart.tCharts[0].name &&
           M(this.parent, "tech", t + "_" + e.Indicator.name);
@@ -1332,7 +1339,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           a.addEventListener("click", function(e) {
             x.call(this, e, o),
               n.chart.chart["tChart" == t ? "switchTTech" : "switchKTech"](
-                e.target.getAttribute("value")
+                e.target.getAttribute("value"),
+                null,
+                e.target.getAttribute("selected") !== "true"
               );
           }),
           (this[t].rek = e),
@@ -1399,7 +1408,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       },
       hide: function() {
         (this.dom.style.display = "none"), (this.isShow = !1);
-      }
+      },
     }),
     (A.prototype = {
       constructor: A,
@@ -1423,7 +1432,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 },
                 onshortclickmain: function() {
                   E();
-                }
+                },
               },
               tInitParam: {
                 onviewprice: function(t) {
@@ -1434,23 +1443,23 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                 },
                 onshortclickmain: function() {
                   E();
-                }
+                },
               },
               netWorthInitParam: {
                 onviewprice: function(t) {
                   e.info.show(t, "netWorthChart");
-                }
+                },
               },
               repayInitParam: {
                 onviewprice: function(t) {
                   e.info.show(t, "repayChart");
-                }
+                },
               },
               predictInitParam: {
                 onviewprice: function(t) {
                   e.info.show(t, "predictChart");
-                }
-              }
+                },
+              },
             },
             !0
           ),
@@ -1495,12 +1504,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           M(this.parent, t, t),
           (this.currentView = t)),
           e && this.parent.tab.setView(e);
-      }
+      },
     }),
     (L.prototype = {
       moveTo: function(t, e) {
         (this.dom.style.right = t), (this.dom.style.bottom = e);
-      }
+      },
     }),
     (D.prototype = {
       show: function() {
@@ -1508,7 +1517,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       },
       hide: function() {
         this.dom.style.display = "none";
-      }
+      },
     }),
     (T.prototype = {
       show: function() {
@@ -1516,7 +1525,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       },
       hide: function() {
         this.maskDom.style.display = "none";
-      }
+      },
     }),
     (N.prototype = {
       callNew: function(t) {
@@ -1525,7 +1534,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           e.callBack({
             key: "universal_callup",
             pos: e.pix + this.parent.market + "_" + t,
-            androidurl: this.bag
+            androidurl: this.bag,
           });
       },
       call: function() {
@@ -1533,14 +1542,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           this.sfc.tryDirectCall({
             callpagetype: "2",
             symbol: this.parent.symbol,
-            position: this.param.value || "chart_CN_bs"
+            position: this.param.value || "chart_CN_bs",
           });
-      }
+      },
     }),
     (B.prototype = {
       moveTo: function(t, e) {
         (this.dom.style.right = t), (this.dom.style.bottom = e);
-      }
+      },
     });
   var $ = {
       tab: {
@@ -1565,7 +1574,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           app: "B/S\u70b9",
           predict: "\u51c0\u503c\u9884\u6d4b",
           networth: "\u5386\u53f2\u51c0\u503c",
-          repay: "\u5386\u53f2\u56de\u62a5"
+          repay: "\u5386\u53f2\u56de\u62a5",
         },
         style: {
           float: "left",
@@ -1575,18 +1584,18 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           textAlign: "center",
           fontSize: "14px",
           backgroundColor: "#F0F0F0",
-          listStyle: "none"
+          listStyle: "none",
         },
         navTopStyle: {
           width: "100%",
           height: "100%",
-          listStyle: "none"
+          listStyle: "none",
         },
         navBottomStyle: {
           margin: "auto",
           width: "80%",
           height: "100%",
-          listStyle: "none"
+          listStyle: "none",
         },
         navItemStyle: {
           position: "relative",
@@ -1597,118 +1606,118 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           backgroundColor: "",
           borderBottom: "",
           boxSizing: "border-box",
-          webkitBoxSizing: "border-box"
+          webkitBoxSizing: "border-box",
         },
         navItemActiveStyle: {
           color: "#0099ff",
           backgroundColor: "#fff",
-          borderBottom: "2px solid #0099ff"
+          borderBottom: "2px solid #0099ff",
         },
         subNavStyle: {
           position: "absolute",
           width: "100%",
           zIndex: 999,
-          listStyle: "none"
+          listStyle: "none",
         },
         subNavItemStyle: {
           color: "#000",
-          backgroundColor: "#F0F0F0"
+          backgroundColor: "#F0F0F0",
         },
         subNavItemActiveStyle: {
           color: "#0099ff",
-          backgroundColor: "#E8E8E8"
+          backgroundColor: "#E8E8E8",
         },
         attributeDj: "data-dj",
-        attributeName: "data-view"
+        attributeName: "data-view",
       },
       chart: {
         symbol: "sh000001",
         initView: "t1",
         style: {
           float: "left",
-          width: "90%"
+          width: "90%",
         },
         kInitParam: {
           theme: {},
           dim: {
-            H_T_G: 45
+            H_T_G: 45,
           },
-          candlenum: 40
+          candlenum: 40,
         },
         tInitParam: {
           theme: {},
           dim: {
-            H_T_G: 45
-          }
+            H_T_G: 45,
+          },
         },
         netWorthInitParam: {
           theme: {
-            K_CL: "#00c1eb"
+            K_CL: "#00c1eb",
           },
           dual: {
             theme: {
-              K_CL: "#fe6623"
-            }
+              K_CL: "#fe6623",
+            },
           },
           rate: 0,
-          nfloat: 4
+          nfloat: 4,
         },
         repayInitParam: {
           theme: {
-            K_CL: "#987654"
+            K_CL: "#987654",
           },
           rate: 0,
-          nfloat: 4
+          nfloat: 4,
         },
         predictInitParam: {
-          nfloat: 4
+          nfloat: 4,
         },
         kChart: {
           setCustom: {
             allow_indicator_edit: !0,
             storage_lv: 2,
-            touch_prevent: !1
+            touch_prevent: !1,
           },
           setReK: 0,
           tCharts: [
             {
-              name: "VOLUME"
+              name: "VOLUME",
             },
             {
-              name: "MACD"
-            }
+              name: "MACD",
+            },
           ],
           pCharts: [
             {
-              name: "MA"
-            }
-          ]
+              name: "MA",
+            },
+          ],
         },
         tChart: {
           setCustom: {
             allow_indicator_edit: !0,
             storage_lv: 2,
-            touch_prevent: !1
+            touch_prevent: !1,
           },
           tCharts: [
             {
-              name: "TVOL"
+              name: "TVOL",
             },
             {
-              name: "MACD"
-            }
+              name: "MACD",
+            },
           ],
-          pCharts: []
+          pCharts: [],
         },
         netWorthChart: {},
         repayChart: {},
         predictChart: {
           tCharts: [
             {
-              name: "ADL"
-            }
-          ]
-        }
+              name: "ADL",
+            },
+          ],
+        },
       },
       info: {
         simpleStyle: {
@@ -1722,7 +1731,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           color: "#000",
           backgroundColor: "#fff",
           boxSizing: "content-box",
-          webkitBoxSizing: "content-box"
+          webkitBoxSizing: "content-box",
         },
         completeStyle: {
           width: "100%",
@@ -1736,7 +1745,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           color: "#000",
           backgroundColor: "#F0F0F0",
           boxSizing: "content-box",
-          webkitBoxSizing: "content-box"
+          webkitBoxSizing: "content-box",
         },
         nameBoxStyle: {
           float: "left",
@@ -1744,7 +1753,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           height: "100%",
           paddingLeft: "10px",
           boxSizing: "border-box",
-          webkitBoxSizing: "border-box"
+          webkitBoxSizing: "border-box",
         },
         nameStyle: {
           fontSize: "17px",
@@ -1753,88 +1762,88 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           lineHeight: "24px",
           textOverflow: "ellipsis",
           overflow: "hidden",
-          whiteSpace: "nowrap"
+          whiteSpace: "nowrap",
         },
         symbolStyle: {
           fontSize: "13px",
           color: "#999999",
           height: "16px",
-          lineHeight: "16px"
+          lineHeight: "16px",
         },
         priceStyle: {
           float: "left",
           width: "25%",
           height: "100%",
-          fontSize: "26px"
+          fontSize: "26px",
         },
         simpleDetailStyle: {
           float: "left",
           width: "90%",
           height: "100%",
           fontSize: "13px",
-          marginLeft: "10%"
+          marginLeft: "10%",
         },
         CNKCompleteDetailStyle: {
           float: "left",
           width: "55%",
           marginLeft: "",
           height: "100%",
-          fontSize: "10px"
+          fontSize: "10px",
         },
         completeDetailStyle: {
           float: "left",
           width: "55%",
           marginLeft: "",
           height: "100%",
-          fontSize: "13px"
+          fontSize: "13px",
         },
         tDetailItemStyle: {
           float: "left",
           width: "50%",
-          height: "50%"
+          height: "50%",
         },
         kDetailItemStyle: {
           float: "left",
           width: "33%",
-          height: "50%"
+          height: "50%",
         },
         CNKSimpleDetailStyle: {
           float: "left",
           height: "100%",
           width: "100%",
           fontSize: "10px",
-          marginLeft: "2%"
+          marginLeft: "2%",
         },
         kCNKDetailItemStyle: {
           float: "left",
           width: "25%",
-          height: "50%"
+          height: "50%",
         },
         netWorthDetailItemStyle: {
           float: "left",
           width: "50%",
-          height: "100%"
+          height: "100%",
         },
         repayDetailItemStyle: {
           width: "100%",
-          height: "100%"
+          height: "100%",
         },
         predictDetailItemStyle: {
           float: "left",
           width: "33%",
-          height: "100%"
+          height: "100%",
         },
         upColor: "#f11200",
         downColor: "#00a800",
         levelColor: "black",
         toFixedNum: 2,
-        percentToFixedNum: 2
+        percentToFixedNum: 2,
       },
       tech: {
         show: !0,
         style: {
           width: "5%",
-          float: "left"
+          float: "left",
         },
         boxStyle: {
           width: "100%",
@@ -1845,12 +1854,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           fontSize: "12px",
           listStyle: "none",
           margin: 0,
-          padding: 0
+          padding: 0,
         },
         kChart: {
           show: !0,
           tCharts: ["null", "VOLUME", "KDJ", "MACD"],
-          pCharts: ["VOLUME", "MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"]
+          pCharts: ["VOLUME", "MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"],
         },
         tChart: {
           show: !0,
@@ -1867,17 +1876,17 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             "DMA",
             "EXPMA",
             "BIAS",
-            "VR"
+            "VR",
           ],
-          pCharts: ["VOLUME"]
+          pCharts: ["VOLUME"],
         },
         itemNormalStyle: {
           color: "#000",
-          padding: "10px 0"
+          padding: "10px 0",
         },
         itemActiveStyle: {
           color: "#09f",
-          padding: "10px 0"
+          padding: "10px 0",
         },
         techMap: {
           null: "\u65e0",
@@ -1887,8 +1896,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           VOLUME: "\u6210\u4ea4\u91cf",
           TVOL: "\u6210\u4ea4\u91cf",
           POSITION: "\u6301\u4ed3\u91cf",
-          LB: "\u91cf\u6bd4"
-        }
+          LB: "\u91cf\u6bd4",
+        },
       },
       wrap: {
         style: {
@@ -1901,8 +1910,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           mozUserSelect: "none",
           msUserSelect: "none",
           userSelect: "none",
-          webkitTapHighlightColor: "rgba(0,0,0,0)"
-        }
+          webkitTapHighlightColor: "rgba(0,0,0,0)",
+        },
       },
       zoomBar: {
         show: !0,
@@ -1913,7 +1922,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           width: "70px",
           height: "30px",
           overflow: "hidden",
-          zIndex: 998
+          zIndex: 998,
         },
         zoomOutStyle: {
           width: "30px",
@@ -1922,7 +1931,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           backgroundRepeat: "no-repeat",
           backgroundSize: "100%",
           float: "right",
-          backgroundImage: "url(//n.sinaimg.cn/finance/201706cn/icon_add.png)"
+          backgroundImage: "url(//n.sinaimg.cn/finance/201706cn/icon_add.png)",
         },
         zoomInStyle: {
           width: "30px",
@@ -1932,8 +1941,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           backgroundSize: "100%",
           float: "left",
           backgroundImage:
-            "url(//n.sinaimg.cn/finance/201706cn/icon_subtract.png)"
-        }
+            "url(//n.sinaimg.cn/finance/201706cn/icon_subtract.png)",
+        },
       },
       closeBtn: {
         show: !1,
@@ -1946,7 +1955,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           textAlign: "center",
           overflow: "hidden",
           width: "35px",
-          height: "35px"
+          height: "35px",
         },
         closeStyle: {
           width: "20px",
@@ -1956,11 +1965,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           backgroundSize: "100%",
           backgroundImage:
             "url(//n.sinaimg.cn/finance/app/h5chart/icon/iconclose2x.png)",
-          margin: "8px 5px"
-        }
+          margin: "8px 5px",
+        },
       },
       mask: {
-        show: !1
+        show: !1,
       },
       clinicStock: {
         show: !1,
@@ -1977,8 +1986,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           backgroundSize: "100%",
           float: "right",
           display: "none",
-          backgroundImage: "url(//n.sinaimg.cn/finance/201706cn/icon_zhen.png)"
-        }
+          backgroundImage: "url(//n.sinaimg.cn/finance/201706cn/icon_zhen.png)",
+        },
       },
       callUpApp: {
         isCall: 1,
@@ -2000,9 +2009,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           "k60",
           "k240",
           "zoom",
-          "tech"
+          "tech",
         ],
-        callBack: null
+        callBack: null,
       },
       bsCallUp: {
         tabs: [],
@@ -2014,8 +2023,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         value: "",
         key: "",
         apk:
-          "http://file.finance.sina.com.cn/finapp/apks/sinafinance_h5chart.apk"
-      }
+          "http://file.finance.sina.com.cn/finapp/apks/sinafinance_h5chart.apk",
+      },
     },
     Z = [],
     G = U.prototype;
@@ -2040,7 +2049,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       ) {
         t.localSL.save("tipToApp", !0, {
           mode: "cookie",
-          expires: 10
+          expires: 10,
         });
         var l = r("div"),
           p = l.style;

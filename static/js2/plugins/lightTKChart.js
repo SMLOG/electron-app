@@ -62,7 +62,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
       },
     };
   }
-  function o(t, i, h, e) {
+  function o(t, i, h, e, rm) {
     var r = this;
     (r.param[t][i] = [
       {
@@ -78,6 +78,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
           ],
           {
             isexclusive: !1,
+            toremove: rm,
             callback: function() {
               e && e(t, i, h);
             },
@@ -510,8 +511,8 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
     (f.update = function() {
       for (var t = m.length; t--; ) this[m[t]] && this[m[t]].update();
     }),
-    (f.switchKTech = function(t, i) {
-      o.call(this, "kChart", "tCharts", t, i);
+    (f.switchKTech = function(t, i, r) {
+      o.call(this, "kChart", "tCharts", t, i, r);
     }),
     (f.switchTTech = function(t, i) {
       o.call(this, "tChart", "tCharts", t, i);

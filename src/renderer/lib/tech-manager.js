@@ -133,22 +133,15 @@ const techMap = {
   日: function({ item, kd, kw, km }) {
     return isStrong(kd);
   },
-  月背离: function({ item, kd, kw, km }) {
-    return isTurn(km);
-  },
-  周背离: function({ item, kd, kw, km }) {
-    return isTurn(kw);
-  },
-  日背离: function({ item, kd, kw, km }) {
-    let i = kd.MACD.length;
-    return isTurn(kd);
-  },
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
-  DU: function({ item, kd, kw, km }) {
-    let i = kd.MACD.length;
-    return isStrong(kw) && kd.MACD[i - 1] >= kd.MACD[i - 2];
+  MU: function({ item, kd, kw, km }) {
+    let i = km.MACD.length;
+    return (
+      km.MACD[i - 2].bar >= km.MACD[i - 3].bar &&
+      km.MACD[i - 3].bar <= km.MACD[i - 4].bar
+    );
   },
 
   /*,

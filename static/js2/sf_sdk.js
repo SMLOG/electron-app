@@ -41,7 +41,7 @@ var xh5_define,
         isLocal: !1,
         isDebug: !1,
         isSSL: !0,
-        custom_mod_url: void 0,
+        custom_mod_url: "js2",
         MOD_URL: "js/$moduleName.js",
         MOD_URL_PROD:
           "http://finance.sina.com.cn/sinafinancesdk/js/$moduleName.js",
@@ -60,7 +60,7 @@ var xh5_define,
         CMD_UNEXIST: "calling nonexistent API",
         MOD_ERR: "erroneous module",
         MOD_DEF_ERR: "illegal module",
-        DEP_ERR: "error def module"
+        DEP_ERR: "error def module",
       },
       n = document.getElementsByTagName("script"),
       u = n.length;
@@ -132,7 +132,7 @@ var xh5_define,
             },
             error: function() {
               e && e.error && e.error.apply(e, arguments);
-            }
+            },
           };
         })(null)),
         (this.err = function(e, t) {
@@ -300,7 +300,7 @@ xh5_define("utils.util", [], function() {
               k.sima({
                 simadata: { cre: i, mod: o, during: t },
                 symbol: n.symbol,
-                type: n.type
+                type: n.type,
               });
             }
             (r = !0),
@@ -318,7 +318,7 @@ xh5_define("utils.util", [], function() {
             k.sima({
               simadata: { cre: e, mod: r, during: t, error_type: "err" },
               symbol: n.symbol,
-              type: n.type
+              type: n.type,
             });
           }
           (a.onload = a.onreadystatechange = a.onerror = null),
@@ -343,7 +343,7 @@ xh5_define("utils.util", [], function() {
           var t = [
               "@keyframes KKELoading",
               "@-webkit-keyframes KKELoading",
-              "@-moz-keyframes KKELoading"
+              "@-moz-keyframes KKELoading",
             ],
             e = 0,
             i = t.length;
@@ -384,7 +384,7 @@ xh5_define("utils.util", [], function() {
             margin: 0,
             display: "none",
             position: "absolute",
-            zIndex: 1
+            zIndex: 1,
           },
           item: {
             display: "inline-block",
@@ -394,16 +394,16 @@ xh5_define("utils.util", [], function() {
             borderRadius: "5px",
             animation: "KKELoading 1.2s infinite",
             webkitAnimation: "KKELoading 1.2s infinite",
-            MozAnimation: "KKELoading 1.2s infinite"
+            MozAnimation: "KKELoading 1.2s infinite",
           },
           color: ["#FF5472", "#FF706E", "#FF8762", "#FFAF4C", "#FFD53E"],
           delay: {
             animationDelay: -1,
             webkitAnimationDelay: -1,
-            MozAnimationDelay: -1
+            MozAnimationDelay: -1,
           },
           scaleY:
-            "{0%,40%,100%{-moz-transform:scaleY(0.2);-webkit-transform:scaleY(0.2);transform:scaleY(0.2);}20%,60%{-moz-transform:scaleY(1);-webkit-transform:scaleY(1);transform:scaleY(1);}}"
+            "{0%,40%,100%{-moz-transform:scaleY(0.2);-webkit-transform:scaleY(0.2);transform:scaleY(0.2);}20%,60%{-moz-transform:scaleY(1);-webkit-transform:scaleY(1);transform:scaleY(1);}}",
         };
       i(),
         (this.appendto = function(t, e) {
@@ -611,7 +611,7 @@ xh5_define("utils.util", [], function() {
           },
           error: function() {
             t && t.error && t.error.apply(t, arguments);
-          }
+          },
         };
       })(null));
     var N = function(t, e) {
@@ -727,7 +727,7 @@ xh5_define("utils.util", [], function() {
             }
             return !1;
           })(),
-          allowt: "ontouchend" in window
+          allowt: "ontouchend" in window,
         };
       })());
     var S = (function() {
@@ -770,7 +770,7 @@ xh5_define("utils.util", [], function() {
               r,
               a,
               o,
-              s
+              s,
             ].join(""));
         }
       }
@@ -872,7 +872,7 @@ xh5_define("utils.util", [], function() {
         },
         clear: function(t) {
           c && s(t);
-        }
+        },
       };
     })();
     (this.localSL = S),
@@ -933,7 +933,7 @@ xh5_define("utils.util", [], function() {
                 : 40 * -t.detail
               : 0
           );
-        }
+        },
       }),
       (e.prototype.al = function(t, e, i) {
         (i && this.evtObj[t]) ||
@@ -1053,7 +1053,7 @@ xh5_define("utils.util", [], function() {
                 }
               t.className = n;
             }
-        }
+        },
       }),
       (this.load = a);
     var _,
@@ -1206,7 +1206,7 @@ xh5_define("utils.util", [], function() {
             o = i.domain ? "; domain=" + i.domain : "",
             s = i.secure ? "; secure" : "";
           document.cookie = [t, "=", e, n, a, o, s].join("");
-        }
+        },
       });
     var k = new (function() {
       function t(e) {
@@ -1252,7 +1252,7 @@ xh5_define("utils.util", [], function() {
           count: 5,
           f: function() {
             return "undefined" == typeof SUDA ? void 0 : SUDA.uaTrack;
-          }
+          },
         },
         o = {
           url: "https://news.sina.com.cn/js/pctianyi/sima.js",
@@ -1260,7 +1260,7 @@ xh5_define("utils.util", [], function() {
           count: 5,
           f: function() {
             return "undefined" == typeof SIMA ? void 0 : i;
-          }
+          },
         };
       e(o), e(r);
       var s = [];
@@ -1342,7 +1342,7 @@ xh5_define("utils.util", [], function() {
         },
         vp: function(t, e, i) {
           return isNaN(t) || 0 >= t ? i - 1 : i * (1 - t / e);
-        }
+        },
       }),
       (this.xh5_HtmlPosUtil = {
         pageX: function(t) {
@@ -1364,7 +1364,7 @@ xh5_define("utils.util", [], function() {
           return t.parentNode == t.offsetParent
             ? t.offsetTop
             : this.pageY(t) - this.pageY(t.parentNode);
-        }
+        },
       }),
       (this.xh5_ADJUST_HIGH_LOW = new (function() {
         var t = function(t) {
@@ -1740,7 +1740,7 @@ xh5_define("utils.util", [], function() {
                 (l = r.cv[0] + a[0]),
                 (r.cv = [
                   l & d,
-                  r.cv[1] + a[1] + !!(((r.cv[0] & d) + (a[0] & d)) & f)
+                  r.cv[1] + a[1] + !!(((r.cv[0] & d) + (a[0] & d)) & f),
                 ]),
                 (n.volume = (r.cv[0] & (f - 1)) + r.cv[1] * f),
                 t.push(n);
@@ -1840,7 +1840,7 @@ xh5_define("utils.util", [], function() {
           s = [
             10 > r ? "0" + r : r,
             10 > a ? "0" + a : a,
-            10 > o ? "0" + o : o
+            10 > o ? "0" + o : o,
           ].join(":");
         return [n, s].join(" ");
       },
@@ -1900,11 +1900,11 @@ xh5_define("utils.util", [], function() {
         "\u56db",
         "\u4e94",
         "\u516d",
-        "\u65e5"
+        "\u65e5",
       ],
       nw: function(t) {
         return this.weekname[t] || "";
-      }
+      },
     };
     (this.dateUtil = C), (this.LoadingSign = o);
     var A = {
@@ -1969,7 +1969,7 @@ xh5_define("utils.util", [], function() {
       },
       zp: function(t) {
         return (t = String(t)), t.length < 2 ? "0" + t : t;
-      }
+      },
     };
     (this.strUtil = A),
       (this.tUtil = {
@@ -2000,7 +2000,7 @@ xh5_define("utils.util", [], function() {
             this.tradingA.length ||
               (this.tradingA = this.gtr([
                 ["9:30", "11:29"],
-                ["13:00", "15:00"]
+                ["13:00", "15:00"],
               ])),
             this.tradingA
           );
@@ -2011,7 +2011,7 @@ xh5_define("utils.util", [], function() {
             this.tradingRepo.length ||
               (this.tradingRepo = this.gtr([
                 ["9:30", "11:29"],
-                ["13:00", "15:30"]
+                ["13:00", "15:30"],
               ])),
             this.tradingRepo
           );
@@ -2038,7 +2038,7 @@ xh5_define("utils.util", [], function() {
             this.tradingMSCI.length ||
               (this.tradingMSCI = this.gtr([
                 ["07:00", "23:59"],
-                ["00:00", "06:00"]
+                ["00:00", "06:00"],
               ])),
             this.tradingMSCI
           );
@@ -2050,7 +2050,7 @@ xh5_define("utils.util", [], function() {
               (this.tradingGDS = this.gtr([
                 ["20:00", "23:59"],
                 ["00:00", "02:29"],
-                ["09:00", "15:30"]
+                ["09:00", "15:30"],
               ])),
             this.tradingGDS
           );
@@ -2061,7 +2061,7 @@ xh5_define("utils.util", [], function() {
             this.tradingHk.length ||
               (this.tradingHk = this.gtr([
                 ["09:30", "11:59"],
-                ["13:00", "16:00"]
+                ["13:00", "16:00"],
               ])),
             this.tradingHk
           );
@@ -2126,7 +2126,7 @@ xh5_define("utils.util", [], function() {
               avg_price: 0,
               volume: -0.01,
               holdPosition: 0,
-              inventory: 0
+              inventory: 0,
             }),
               c % u == 0 && r && ((o.date = r[h]), h++),
               s.push(o),
@@ -2144,7 +2144,7 @@ xh5_define("utils.util", [], function() {
           for (var i = this.gata(e), n = 0, r = t.length; r > n; n++)
             t[n].time = i[n];
           return t[0].date.setHours(0), t;
-        }
+        },
       }),
       (this.kUtil = {
         mw: function(t, e, i, n, r) {
@@ -2164,7 +2164,7 @@ xh5_define("utils.util", [], function() {
               close: e.price,
               volume: e.totalVolume,
               amount: e.totalAmount,
-              date: C.dd(e.date)
+              date: C.dd(e.date),
             }),
               (u[0] = {
                 open: e.open,
@@ -2173,7 +2173,7 @@ xh5_define("utils.util", [], function() {
                 close: e.price,
                 volume: e.totalVolume,
                 amount: e.totalAmount,
-                date: C.dd(e.date)
+                date: C.dd(e.date),
               }),
               (c[0] = {
                 open: e.open,
@@ -2182,7 +2182,7 @@ xh5_define("utils.util", [], function() {
                 close: e.price,
                 volume: e.totalVolume,
                 amount: e.totalAmount,
-                date: C.dd(e.date)
+                date: C.dd(e.date),
               });
           else
             for (
@@ -2233,7 +2233,7 @@ xh5_define("utils.util", [], function() {
                       close: m,
                       volume: g,
                       date: v,
-                      amount: b
+                      amount: b,
                     }),
                     (d = o.open),
                     (f = o.high),
@@ -2261,7 +2261,7 @@ xh5_define("utils.util", [], function() {
                       close: x,
                       volume: S,
                       date: _,
-                      amount: T
+                      amount: T,
                     }),
                     (N = o.open),
                     (y = o.high),
@@ -2284,7 +2284,7 @@ xh5_define("utils.util", [], function() {
                       close: P,
                       volume: O,
                       date: M,
-                      amount: R
+                      amount: R,
                     }),
                     (k = o.open),
                     (A = o.high),
@@ -2300,7 +2300,7 @@ xh5_define("utils.util", [], function() {
                     close: m,
                     volume: g,
                     date: v,
-                    amount: b
+                    amount: b,
                   }),
                   u.push({
                     open: N,
@@ -2309,7 +2309,7 @@ xh5_define("utils.util", [], function() {
                     close: x,
                     volume: S,
                     date: _,
-                    amount: T
+                    amount: T,
                   }),
                   c.push({
                     open: k,
@@ -2318,7 +2318,7 @@ xh5_define("utils.util", [], function() {
                     close: P,
                     volume: O,
                     date: M,
-                    amount: R
+                    amount: R,
                   }));
           return (
             (l[0].prevclose = i),
@@ -2361,7 +2361,7 @@ xh5_define("utils.util", [], function() {
               ampP: 0,
               amplitude: 0,
               change: o,
-              kke_cs: 0
+              kke_cs: 0,
             });
           }
         },
@@ -2509,7 +2509,7 @@ xh5_define("utils.util", [], function() {
               }
             }
           return c > 0 && t.splice(0, c), t;
-        }
+        },
       }),
       (this.domGc = new (function() {
         var t = u.$C("div");
@@ -2705,7 +2705,7 @@ xh5_define("utils.util", [], function() {
                       var b = {
                         canvas: a,
                         x: u.xh5_HtmlPosUtil.pageX(a) - d,
-                        y: u.xh5_HtmlPosUtil.pageY(a) - f
+                        y: u.xh5_HtmlPosUtil.pageY(a) - f,
                       };
                       h.push(b);
                     }
@@ -2720,13 +2720,13 @@ xh5_define("utils.util", [], function() {
                     right: i.right,
                     LOGO_W: i.LOGO_W,
                     LOGO_H: i.LOGO_H,
-                    color: i.color
+                    color: i.color,
                   });
                   N &&
                     h.push({
                       canvas: N,
                       x: s - Number(N.style.right.split("px")[0]) - i.LOGO_W,
-                      y: Number(N.style.top.split("px")[0])
+                      y: Number(N.style.top.split("px")[0]),
                     });
                 }
                 if (i.extra) {
@@ -2767,7 +2767,7 @@ xh5_define("utils.util", [], function() {
             LOAD: "load",
             REMOVE: "remove",
             DATA: "data",
-            READY: "ready"
+            READY: "ready",
           };
         t(a, r);
         var o = [],
@@ -3021,7 +3021,7 @@ xh5_define("utils.util", [], function() {
           return [
             f(255 * g(a, r, e + 1 / 3), 0, 255),
             f(255 * g(a, r, e), 0, 255),
-            f(255 * g(a, r, e - 1 / 3), 0, 255)
+            f(255 * g(a, r, e - 1 / 3), 0, 255),
           ];
         }
         function N(t) {
@@ -3080,7 +3080,7 @@ xh5_define("utils.util", [], function() {
                 return [
                   ((3840 & o) >> 4) | ((3840 & o) >> 8),
                   (240 & o) | ((240 & o) >> 4),
-                  (15 & o) | ((15 & o) << 4)
+                  (15 & o) | ((15 & o) << 4),
                 ];
               }
               if (7 === e.length) {
@@ -3103,7 +3103,7 @@ xh5_define("utils.util", [], function() {
           var e = [
             t[0].toFixed(0),
             (100 * t[1]).toFixed(0) + "%",
-            (100 * t[2]).toFixed(0) + "%"
+            (100 * t[2]).toFixed(0) + "%",
           ];
           return "hsl(" + e.join(",") + ")";
         }
@@ -3196,7 +3196,7 @@ xh5_define("utils.util", [], function() {
                 height: 0.65,
                 size: 10,
                 color: "#000",
-                lineWidth: 1
+                lineWidth: 1,
               },
               slider: { left: 0.5, top: 0.15, width: 0.05, height: 0.65 },
               rgbBox: {
@@ -3208,7 +3208,7 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 36,
                 left: 0.6,
-                top: 0.15
+                top: 0.15,
               },
               hslBox: {
                 label: ["H:", "S:", "L:"],
@@ -3219,7 +3219,7 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 36,
                 left: 0.78,
-                top: 0.15
+                top: 0.15,
               },
               hexBox: {
                 label: ["#"],
@@ -3228,7 +3228,7 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 60,
                 left: 0.03,
-                top: 0.85
+                top: 0.85,
               },
               colorBox: { left: 0.63, top: 0.6, width: 0.32, height: 0.2 },
               okBtn: {
@@ -3239,7 +3239,7 @@ xh5_define("utils.util", [], function() {
                 left: 0.65,
                 top: 0.87,
                 width: 0.12,
-                height: 0.1
+                height: 0.1,
               },
               cancelBtn: {
                 text: "\u53d6\u6d88",
@@ -3249,8 +3249,8 @@ xh5_define("utils.util", [], function() {
                 left: 0.83,
                 top: 0.87,
                 width: 0.12,
-                height: 0.1
-              }
+                height: 0.1,
+              },
             },
             M = function(t, i) {
               e(this, i),
@@ -3309,7 +3309,7 @@ xh5_define("utils.util", [], function() {
             },
             update: function(t) {
               (this.H = t[0]), (this.S = t[1]), this.updatePoint();
-            }
+            },
           };
           var R = function(t, i) {
             e(this, i),
@@ -3367,7 +3367,7 @@ xh5_define("utils.util", [], function() {
             },
             update: function(t) {
               (this.L = t[2]), this.paintBG(t), this.updatePoint(t);
-            }
+            },
           };
           var I = function(t, e) {
             var i = this;
@@ -3396,7 +3396,7 @@ xh5_define("utils.util", [], function() {
               return [
                 t[0].childNodes[1].value,
                 t[1].childNodes[1].value,
-                t[2].childNodes[1].value
+                t[2].childNodes[1].value,
               ];
             },
             update: function(t) {
@@ -3406,7 +3406,7 @@ xh5_define("utils.util", [], function() {
                 n++
               )
                 e[n].childNodes[1].value = (+i[n]).toFixed(0);
-            }
+            },
           };
           var E = function(t, e) {
             var i = this;
@@ -3444,7 +3444,7 @@ xh5_define("utils.util", [], function() {
               return [
                 t[0].childNodes[1].value,
                 t[1].childNodes[1].value / 100,
-                t[2].childNodes[1].value / 100
+                t[2].childNodes[1].value / 100,
               ];
             },
             update: function(t) {
@@ -3452,7 +3452,7 @@ xh5_define("utils.util", [], function() {
                 e[i].childNodes[1].value = (i > 0 ? 100 * t[i] : +t[i]).toFixed(
                   0
                 );
-            }
+            },
           };
           var F = function(t, e) {
             var i = this;
@@ -3474,7 +3474,7 @@ xh5_define("utils.util", [], function() {
             update: function(t) {
               var e = this.box.childNodes;
               e[0].childNodes[1].value = w(b(t));
-            }
+            },
           };
           var L = function(t, e) {
               this.btn = c(t, e);
@@ -3496,7 +3496,7 @@ xh5_define("utils.util", [], function() {
               for (var e = b(t), i = e.length; i--; ) e[i] = (+e[i]).toFixed(0);
               this.box.style.backgroundColor =
                 "rgb(" + e[0] + ", " + e[1] + ", " + e[2] + ")";
-            }
+            },
           };
           var K = function(t) {
             (t = t || {}),
@@ -3614,16 +3614,16 @@ xh5_define("utils.util", [], function() {
                         {
                           rgb: f.getRGB(),
                           hsl: p.getHSL(),
-                          hex: S(p.getHSL(), "hex")
+                          hex: S(p.getHSL(), "hex"),
                         },
-                        u.target
+                        u.target,
                       ]),
                       u.onok &&
                         u.onok(
                           {
                             rgb: f.getRGB(),
                             hsl: p.getHSL(),
-                            hex: S(p.getHSL(), "hex")
+                            hex: S(p.getHSL(), "hex"),
                           },
                           u.target
                         );
@@ -3658,7 +3658,7 @@ xh5_define("utils.util", [], function() {
                   this.hslBox.update(e),
                   this.hexBox.update(e),
                   this.colorBox.update(e);
-              }
+              },
             }),
             t(K, u.xh5_EvtDispatcher),
             new K()
@@ -3698,7 +3698,7 @@ xh5_define("cfgs.settinger", [], function() {
         indicator_reorder: !0,
         indicator_cvs_title: !1,
         indicator_reheight: !1,
-        centerZoom: !0
+        centerZoom: !0,
       }),
       (this.PARAM = {
         K_CL_NUM: 260,
@@ -3720,7 +3720,7 @@ xh5_define("cfgs.settinger", [], function() {
           return this._hd;
         },
         isFlash: !1,
-        LOGO_ID: "KKE_sina_finance_logo"
+        LOGO_ID: "KKE_sina_finance_logo",
       }),
       (this.DIMENSION = {
         extend_draw: !1,
@@ -3766,11 +3766,11 @@ xh5_define("cfgs.settinger", [], function() {
         },
         getStageH: function() {
           return this._h;
-        }
+        },
       }),
       (this.STYLE = {
         FONT_SIZE: 12,
-        FONT_FAMILY: "helvetica,arial,sans-serif"
+        FONT_FAMILY: "helvetica,arial,sans-serif",
       }),
       (this.COLOR = {
         BG: "#fff",
@@ -3812,7 +3812,7 @@ xh5_define("cfgs.settinger", [], function() {
         K_PCT: "#ccc",
         BTN_ARR: ["#2b9dfc", "#fff"],
         TIP_ARR: ["#000", "#fff", null, !1, null],
-        LOGO: "#ccc"
+        LOGO: "#ccc",
       }),
       (this.datas = {
         s: "sh000001",
@@ -3821,7 +3821,7 @@ xh5_define("cfgs.settinger", [], function() {
         t: "",
         isT: !1,
         scaleType: "price",
-        candle: "solid"
+        candle: "solid",
       });
   }
   var t = {
@@ -3959,12 +3959,12 @@ xh5_define("cfgs.settinger", [], function() {
             t.baseid = e;
         }
         return t;
-      }
+      },
     },
     e: {
       K_DATA_LOADED: "kDataLoaded",
       T_DATA_LOADED: "tDataLoaded",
-      I_EVT: "iEvent"
+      I_EVT: "iEvent",
     },
     nohtml5info:
       "\u68c0\u6d4b\u5230\u60a8\u7684\u6d4f\u89c8\u5668\u8fc7\u65e7\u4e14\u4e0d\u652f\u6301HTML 5\uff0c\u5f53\u524d\u4ee5\u517c\u5bb9\u6a21\u5f0f\u8fd0\u884c\u3002<br/>\u4e3a\u83b7\u5f97\u66f4\u597d\u7684\u4f53\u9a8c\u53ca\u5b8c\u5584\u7684\u529f\u80fd\uff0c\u5efa\u8bae\u4f7f\u7528<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/40975.html' target='_blank'>\u8c37\u6b4cChrome</a>\u6d4f\u89c8\u5668\uff0c\u6216\u5347\u7ea7\u5230\u60a8\u6d4f\u89c8\u5668\u7684<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/58979.html' target='_blank'>\u6700\u65b0\u7248\u672c</a>\u3002",
@@ -3976,7 +3976,7 @@ xh5_define("cfgs.settinger", [], function() {
     notlisted: "\u672a\u4e0a\u5e02",
     delisted: "\u9000\u5e02",
     nodata: "\u672a\u52a0\u8f7d\u5230\u6709\u6548\u6570\u636e",
-    noredata: "\u90e8\u5206\u8bc1\u5238\u65e0\u590d\u6743\u6570\u636e"
+    noredata: "\u90e8\u5206\u8bc1\u5238\u65e0\u590d\u6743\u6570\u636e",
   };
   return new (function() {
     this.VER = "2.0.31";
@@ -4195,7 +4195,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
           "06": "\u505c\u724c\u534a\u5c0f\u65f6",
           "07": "\u6682\u505c",
           "08": "\u53ef\u6062\u590d\u4ea4\u6613\u7194\u65ad",
-          "09": "\u4e0d\u53ef\u6062\u590d\u4ea4\u6613\u7194\u65ad"
+          "09": "\u4e0d\u53ef\u6062\u590d\u4ea4\u6613\u7194\u65ad",
         },
         c = new Date().getTime(),
         g = {},
@@ -4239,7 +4239,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
           var h = {
               time: b,
               isUpdateTime: isNaN(p) ? !0 : Boolean(p >= 0),
-              index: p
+              index: p,
             },
             c = r.split(u),
             g = ~~Number(c[0]),
@@ -4249,7 +4249,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
               isErrData: !1,
               isDateChange: !1,
               date: i.date,
-              today: [g, f + 1, v].join("-")
+              today: [g, f + 1, v].join("-"),
             };
           if (i.date) {
             var w = new Date(g, f, v, o, d, l),
@@ -4302,7 +4302,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 50,
                 2,
                 1,
-                8
+                8,
               ]);
             for (var i = 0; i < t.length; i++) a += r[t[i]] + ",";
             return (a = a.slice(0, a.length - 1));
@@ -4317,7 +4317,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 r = e;
             }
             return r;
-          }
+          },
         },
         y = new (function() {
           var e;
@@ -4355,7 +4355,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
             e ||
               (e = m.gtr([
                 ["6:00", "23:59"],
-                ["0:00", "5:59"]
+                ["0:00", "5:59"],
               ]));
             var i = e,
               n = "06:00",
@@ -4367,7 +4367,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 (t ||
                   (t = m.gtr([
                     ["6:00", "23:59"],
-                    ["0:00", "5:59"]
+                    ["0:00", "5:59"],
                   ])),
                 (i = t),
                 (n = "06:00")));
@@ -4415,7 +4415,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                   timeStr: u,
                   hqObj: a,
                   tArr: t,
-                  start: "09:30"
+                  start: "09:30",
                 });
               if (s.datePart.isErrData) return !1;
               if (
@@ -4493,7 +4493,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
               r ||
                 (r = m.gtr([
                   ["9:15", "11:30"],
-                  ["13:00", "15:01"]
+                  ["13:00", "15:01"],
                 ]));
               var i = g[a.symbol] || {},
                 u = i.date;
@@ -4506,7 +4506,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                   timeStr: d,
                   hqObj: a,
                   tArr: r,
-                  start: "09:15"
+                  start: "09:15",
                 });
               return l.datePart.isErrData
                 ? !1
@@ -4544,7 +4544,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 (window["kke_future_" + r.symbol] &&
                   window["kke_future_" + r.symbol].time) || [
                   ["09:30", "11:29"],
-                  ["13:00", "02:59"]
+                  ["13:00", "02:59"],
                 ]
               ));
             var i = t[36],
@@ -4594,7 +4594,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                     "Sep",
                     "Oct",
                     "Nov",
-                    "Dec"
+                    "Dec",
                   ],
                   i = t.split(" "),
                   n = new Date(),
@@ -4625,7 +4625,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
               var f = [
                 g.getFullYear(),
                 e.strUtil.zp(g.getMonth() + 1),
-                e.strUtil.zp(g.getDate())
+                e.strUtil.zp(g.getDate()),
               ].join("-");
               return [c, f];
             },
@@ -4667,7 +4667,11 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 );
                 d = [
                   "09:10",
-                  l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate()
+                  l.getFullYear() +
+                    "-" +
+                    (l.getMonth() + 1) +
+                    "-" +
+                    l.getDate(),
                 ];
               } else
                 (a.open = Number(e[5]) || a.prevclose),
@@ -4715,7 +4719,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: u,
                 hqObj: r,
                 tArr: e,
-                start: s
+                start: s,
               });
             (r.date = o.datePart.date),
               (r.isDateChange = o.datePart.isDateChange),
@@ -4755,7 +4759,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: o,
                 hqObj: r,
                 tArr: e,
-                start: "08:00"
+                start: "08:00",
               });
               (r.date = l.datePart.date),
                 (r.isDateChange = l.datePart.isDateChange),
@@ -4806,7 +4810,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: i,
                 hqObj: r,
                 tArr: e,
-                start: "09:30"
+                start: "09:30",
               });
             return (
               (r.date = n.datePart.date),
@@ -4829,7 +4833,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
             var r = (window["kke_future_" + t.symbol] &&
                 window["kke_future_" + t.symbol].time) || [
                 ["09:30", "11:29"],
-                ["13:00", "02:59"]
+                ["13:00", "02:59"],
               ],
               i = m.gata(a(t.symbol), r),
               n = e[1],
@@ -4841,7 +4845,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: s,
                 hqObj: t,
                 tArr: i,
-                start: i[0]
+                start: i[0],
               });
             (t.date = o.datePart.date),
               (t.isDateChange = o.datePart.isDateChange),
@@ -4911,7 +4915,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                     timeStr: u,
                     hqObj: r,
                     tArr: e,
-                    start: "09:30"
+                    start: "09:30",
                   }));
               (r.date = s.datePart.date || new Date()),
                 (r.isDateChange = s.datePart.isDateChange),
@@ -4966,7 +4970,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 (window["kke_global_index_" + t.symbol] &&
                   window["kke_global_index_" + t.symbol].time) || [
                   ["06:00", "23:59"],
-                  ["00:00", "05:00"]
+                  ["00:00", "05:00"],
                 ]
               ),
               i = r,
@@ -5043,7 +5047,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 (window["kke_future_" + t.symbol] &&
                   window["kke_future_" + t.symbol].time) || [
                   ["06:00", "23:59"],
-                  ["00:00", "05:00"]
+                  ["00:00", "05:00"],
                 ]
               ),
               i = r,
@@ -5089,7 +5093,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: u,
                 hqObj: r,
                 tArr: e,
-                start: "09:30"
+                start: "09:30",
               });
             if (s.datePart.isErrData) return !1;
             (r.date = s.datePart.date),
@@ -5127,7 +5131,7 @@ xh5_define("datas.hq", ["utils.util"], function(e) {
                 timeStr: i,
                 hqObj: r,
                 tArr: e,
-                start: "09:30"
+                start: "09:30",
               });
             if (n.datePart.isErrData) return !1;
             if (
@@ -5533,7 +5537,7 @@ xh5_define("utils.painter", ["utils.util", "cfgs.settinger"], function(t, e) {
                       s,
                       (m && m.time) || [
                         ["06:00", "23:59"],
-                        ["00:00", "05:00"]
+                        ["00:00", "05:00"],
                       ]
                     );
                     break;
@@ -5542,7 +5546,7 @@ xh5_define("utils.painter", ["utils.util", "cfgs.settinger"], function(t, e) {
                       s,
                       (m && m.time) || [
                         ["09:00", "23:29"],
-                        ["13:00", "02:59"]
+                        ["13:00", "02:59"],
                       ]
                     );
                     break;
@@ -5551,7 +5555,7 @@ xh5_define("utils.painter", ["utils.util", "cfgs.settinger"], function(t, e) {
                       s,
                       (m && m.time) || [
                         ["06:00", "23:59"],
-                        ["00:00", "05:00"]
+                        ["00:00", "05:00"],
                       ]
                     );
                     break;
@@ -6152,7 +6156,7 @@ xh5_define("utils.painter", ["utils.util", "cfgs.settinger"], function(t, e) {
                 case "touchstart":
                   this.tS(t);
               }
-          }
+          },
         },
         y = new (function() {
           (this.onmouseup = function(t) {
@@ -6222,7 +6226,7 @@ xh5_define("utils.painter", ["utils.util", "cfgs.settinger"], function(t, e) {
             fixScale: !0,
             iTo: function() {},
             iMgr: void 0,
-            iClk: void 0
+            iClk: void 0,
           },
           e || {}
         ));
@@ -6540,7 +6544,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           onClkMain: void 0,
           stock: void 0,
           usrObj: void 0,
-          initMgr: void 0
+          initMgr: void 0,
         },
         i
       )),
@@ -6553,7 +6557,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           titleW: 0 / 0,
           isBlank: !1,
           ctnId: void 0,
-          allowrfs: !0
+          allowrfs: !0,
         },
         r
       )),
@@ -6610,7 +6614,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       isBlank: !0,
       ctnId: "blankctn_" + t.uid,
       allowrfs: !1,
-      h: t.DIMENSION.H_BLK
+      h: t.DIMENSION.H_BLK,
     };
     r.call(this, t, i, a),
       (this.name = "BLANKCTN"),
@@ -6618,7 +6622,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function s(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#007cc8", prop: "adl", idct: "ADL" }
+      { v: 0 / 0, color: "#007cc8", prop: "adl", idct: "ADL" },
     ]),
       r.call(this, i, a),
       (this.name = "ADL"),
@@ -6673,7 +6677,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function e(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#75B2A3", prop: "asi", idct: "ASI" },
-      { v: 10, color: "#68A3FF", prop: "asit", idct: "ASIT" }
+      { v: 10, color: "#68A3FF", prop: "asit", idct: "ASIT" },
     ]),
       r.call(this, i, a),
       (this.name = "ASI");
@@ -6728,7 +6732,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 11, color: "#999999", prop: "bbiboll", idct: "BBIBOLL" },
       { v: 6, color: "#ffac03", prop: "upr", idct: "UPR" },
-      { v: 0 / 0, color: "#9922aa", prop: "dwn", idct: "DWN" }
+      { v: 0 / 0, color: "#9922aa", prop: "dwn", idct: "DWN" },
     ]),
       r.call(this, i, a),
       (this.name = "BBIBOLL"),
@@ -6760,7 +6764,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function o(i, a) {
     (this.DEFAULT_ARR = [
       { v: 22, color: "#fa6d6d", prop: "m", idct: "M" },
-      { color: "#2b55ff" }
+      { color: "#2b55ff" },
     ]),
       r.call(this, i, a),
       (this.name = "BF");
@@ -6836,7 +6840,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 6, color: "#FD9C35", prop: "bias1", idct: "BIAS1" },
       { v: 12, color: "#00c1eb", prop: "bias2", idct: "BIAS2" },
-      { v: 24, color: "#DD4444", prop: "bias3", idct: "BIAS3" }
+      { v: 24, color: "#DD4444", prop: "bias3", idct: "BIAS3" },
     ]),
       r.call(this, i, a),
       (this.name = "BIAS"),
@@ -6866,7 +6870,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 20, color: "#999999", prop: "boll", idct: "BOLL" },
       { v: 2, color: "#ffac03", prop: "upper", idct: "UPPER" },
-      { v: 0 / 0, color: "#cc22ba", prop: "lower", idct: "LOWER" }
+      { v: 0 / 0, color: "#cc22ba", prop: "lower", idct: "LOWER" },
     ]),
       r.call(this, i, a),
       (this.name = "BOLL"),
@@ -6895,7 +6899,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function c(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#E297FF", prop: "br", idct: "BR" },
-      { color: "#666666", prop: "ar", idct: "AR" }
+      { color: "#666666", prop: "ar", idct: "AR" },
     ]),
       r.call(this, i, a),
       (this.name = "BRAR"),
@@ -6926,7 +6930,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function d(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 14, color: "#FFAC03", prop: "cci", idct: "CCI" }
+      { v: 14, color: "#FFAC03", prop: "cci", idct: "CCI" },
     ]),
       r.call(this, i, a),
       (this.name = "CCI"),
@@ -6953,8 +6957,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v: 0 / 0,
         color: "#ff8400",
         prop: "value",
-        idct: "\u7b79\u7801\u6210\u672c"
-      }
+        idct: "\u7b79\u7801\u6210\u672c",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "CHIPCOST"),
@@ -7081,7 +7085,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     }
     var h = this;
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#007cc8", prop: "ditc", idct: "DITC" }
+      { v: 0 / 0, color: "#007cc8", prop: "ditc", idct: "DITC" },
     ]),
       r.call(this, i, a),
       (this.name = "DITC"),
@@ -7175,7 +7179,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 10, desc: "\u5feb\u7ebf\u79fb\u52a8\u5e73\u5747" },
       { v: 50, color: "#777777", prop: "dif", idct: "DIF" },
-      { v: 10, color: "#FFAC03", prop: "difma", idct: "DIFMA" }
+      { v: 10, color: "#FFAC03", prop: "difma", idct: "DIFMA" },
     ]),
       r.call(this, i, a),
       (this.name = "DMA"),
@@ -7207,10 +7211,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#ffac03",
         prop: "mdi",
         idct: "MDI",
-        desc: "\u79fb\u52a8\u5e73\u5747"
+        desc: "\u79fb\u52a8\u5e73\u5747",
       },
       { color: "#cc22ba", prop: "adx", idct: "ADX" },
-      { color: "#2ec196", prop: "adxr", idct: "ADXR" }
+      { color: "#2ec196", prop: "adxr", idct: "ADXR" },
     ]),
       r.call(this, i, a),
       (this.name = "DMI");
@@ -7264,14 +7268,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#fa6d6d",
         prop: s,
-        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09"
+        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09",
       },
       {
         color: "#2b55ff",
         prop: e,
-        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09"
+        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09",
       },
-      { v: 0 / 0, prop: h, idct: h, color: "#66ccff", hidecfg: !0 }
+      { v: 0 / 0, prop: h, idct: h, color: "#66ccff", hidecfg: !0 },
     ]),
       r.call(this, i, a),
       (this.name = "DPDK"),
@@ -7530,7 +7534,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function g(i, a) {
     (this.DEFAULT_ARR = [
       { v: 14, color: "#D96FF0", prop: "emv", idct: "EMV" },
-      { v: 9, color: "#F76D6D", prop: "maemv", idct: "MAEMV" }
+      { v: 9, color: "#F76D6D", prop: "maemv", idct: "MAEMV" },
     ]),
       r.call(this, i, a),
       (this.name = "EMV"),
@@ -7560,7 +7564,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function b(i, a, s) {
     var e = "ewi";
     (this.DEFAULT_ARR = [
-      { color: "#F6C257", prop: e, idct: "\u7b49\u6743\u91cd" }
+      { color: "#F6C257", prop: e, idct: "\u7b49\u6743\u91cd" },
     ]),
       r.call(this, i, a);
     var h = "icn_calc_",
@@ -7695,14 +7699,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               color: s.param[i].color || e[i] || "#" + t.randomColor(),
               prop: o + a,
               idct: h + a,
-              desc: h
+              desc: h,
             });
         }
       }
       (!s.customArr || s.customArr.length < 1) &&
         (s.customArr = [
           { v: 12, color: e[0], prop: o + "12", idct: h + "12", desc: h },
-          { v: 50, color: e[1], prop: o + "50", idct: h + "50", desc: h }
+          { v: 50, color: e[1], prop: o + "50", idct: h + "50", desc: h },
         ]);
     };
     var l = bt.getArr,
@@ -7734,11 +7738,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v: 0 / 0,
         color: "#990000",
         prop: "mb",
-        idct: "\u51c0\u8d85\u5927\u5355"
+        idct: "\u51c0\u8d85\u5927\u5355",
       },
       { v: 0 / 0, color: "#009900", prop: "ms", idct: "\u51c0\u5927\u5355" },
       { v: 0 / 0, color: "#000099", prop: "sb", idct: "\u51c0\u4e2d\u5355" },
-      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" }
+      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" },
     ]),
       r.call(this, i, a),
       (this.name = "TECHFLOW"),
@@ -7772,7 +7776,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mb: s ? Number(s.mb) : 0 / 0,
                 ms: s ? Number(s.ms) : 0 / 0,
                 sb: s ? Number(s.sb) : 0 / 0,
-                ss: s ? Number(s.ss) : 0 / 0
+                ss: s ? Number(s.ss) : 0 / 0,
               });
         }
       }),
@@ -7850,7 +7854,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           ms: Number(i[1]),
           sb: Number(i[2]),
           ss: Number(i[3]),
-          date: lt.sd(i[4])
+          date: lt.sd(i[4]),
         };
       }),
       (this.df = function(t) {
@@ -7867,7 +7871,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 9, color: "#888888", prop: "k", idct: "K" },
       { v: 3, color: "#FFAC03", prop: "d", idct: "D" },
-      { v: 3, color: "#cc22ba", prop: "j", idct: "J" }
+      { v: 3, color: "#cc22ba", prop: "j", idct: "J" },
     ]),
       r.call(this, i, a),
       (this.name = "KDJ"),
@@ -7902,8 +7906,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#888887",
         prop: e,
         idct: "\u5927\u5355\u91d1\u989d",
-        desc: "\u6587\u5b57\u989c\u8272"
-      }
+        desc: "\u6587\u5b57\u989c\u8272",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KFLOW"),
@@ -8074,36 +8078,36 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#888887",
         prop: "bar",
         idct: "\u4e3b\u529b\u8d44\u91d1",
-        desc: "\u4e3b\u529b\u8d44\u91d1"
+        desc: "\u4e3b\u529b\u8d44\u91d1",
       },
       {
         v: 0 / 0,
         color: "#ff1111",
         prop: "super",
         idct: "\u7279\u5927",
-        desc: "\u7279\u5927"
+        desc: "\u7279\u5927",
       },
       {
         v: 0 / 0,
         color: "#ff9f07",
         prop: "big",
         idct: "\u5927",
-        desc: "\u5927"
+        desc: "\u5927",
       },
       {
         v: 0 / 0,
         color: "#00b5f8",
         prop: "mid",
         idct: "\u4e2d",
-        desc: "\u4e2d"
+        desc: "\u4e2d",
       },
       {
         v: 0 / 0,
         color: "#5b0497",
         prop: "small",
         idct: "\u5c0f",
-        desc: "\u5c0f"
-      }
+        desc: "\u5c0f",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KKFLOW"),
@@ -8143,7 +8147,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               big: o - d,
               mid: l - f,
               small: n - u,
-              bar: h + o - c - d
+              bar: h + o - c - d,
             });
           }
           return r;
@@ -8167,7 +8171,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               big: a - o,
               mid: s - l,
               small: e - n,
-              bar: r + a - h - o
+              bar: r + a - h - o,
             };
           }
         }
@@ -8204,8 +8208,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mid: 0,
                 small: 0,
                 super: 0,
-                date: i[i.length - 1].date
-              }
+                date: i[i.length - 1].date,
+              },
             ];
         }
         e = t.kUtil.adbd(r, i, !1, !0);
@@ -8216,7 +8220,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             super: a ? Number(a["super"]) : 0 / 0,
             big: a ? Number(a.big) : 0 / 0,
             mid: a ? Number(a.mid) : 0 / 0,
-            small: a ? Number(a.small) : 0 / 0
+            small: a ? Number(a.small) : 0 / 0,
           };
           this.selfArr.push(o);
         }
@@ -8330,22 +8334,22 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#FE6C6A",
         prop: "buy",
         idct: "\u4e70\u5165",
-        desc: "\u4e70\u5165"
+        desc: "\u4e70\u5165",
       },
       {
         v: 0 / 0,
         color: "#23B47B",
         prop: "sell",
         idct: "\u5356\u51fa",
-        desc: "\u5356\u51fa"
+        desc: "\u5356\u51fa",
       },
       {
         v: 0 / 0,
         color: "#888887",
         prop: "total",
         idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
-        desc: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1"
-      }
+        desc: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KGSTRADE"),
@@ -8368,7 +8372,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 date: lt.sd(i.dt),
                 buy: i.buy,
                 sell: i.sell,
-                total: i.buy + i.sell
+                total: i.buy + i.sell,
               });
           return r;
         }
@@ -8406,7 +8410,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             this.selfArr.push({
               total: a ? Number(a.total) : 0 / 0,
               buy: a ? Number(a.buy) : 0 / 0,
-              sell: a ? Number(a.sell) : 0 / 0
+              sell: a ? Number(a.sell) : 0 / 0,
             });
       }
     }),
@@ -8512,8 +8516,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#7d8087",
         prop: "dot",
         idct: "SUNSPOT",
-        desc: "SUNSPOT"
-      }
+        desc: "SUNSPOT",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "SUNSPOT"),
@@ -8576,7 +8580,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (a = e[s]),
             this.selfArr.push({
               bar: a ? Number(a.bar) : 0 / 0,
-              dot: a ? Number(a.dot) : 0 / 0
+              dot: a ? Number(a.dot) : 0 / 0,
             });
       }
     }),
@@ -8679,8 +8683,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#007cc8",
         prop: "lb",
         idct: "LB",
-        desc: "\u91cf\u6bd4"
-      }
+        desc: "\u91cf\u6bd4",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "LB"),
@@ -8754,7 +8758,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               color: s.param[i].color || e[i] || "#" + t.randomColor(),
               prop: o + a,
               idct: h + a,
-              desc: h
+              desc: h,
             });
         }
       }
@@ -8763,7 +8767,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           { v: 5, color: e[0], prop: o + "5", idct: h + "5", desc: h },
           { v: 10, color: e[1], prop: o + "10", idct: h + "10", desc: h },
           { v: 20, color: e[2], prop: o + "20", idct: h + "20", desc: h },
-          { v: 30, color: e[3], prop: o + "30", idct: h + "30", desc: h }
+          { v: 30, color: e[3], prop: o + "30", idct: h + "30", desc: h },
         ]);
     }),
       (this.initAndCalcAll = function(i) {
@@ -8799,7 +8803,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 12, color: "#5465ff", prop: "dif", idct: "DIF" },
       { v: 26, color: "#ec52f5", prop: "dea", idct: "DEA" },
-      { v: 9, color: "#b03030", prop: "bar", idct: "MACD" }
+      { v: 9, color: "#b03030", prop: "bar", idct: "MACD" },
     ]),
       r.call(this, i, a),
       (this.name = "MACD"),
@@ -8865,7 +8869,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           let tIndex;
           if (window.chooseDate) {
             tIndex = this.datas.filter(
-              e =>
+              (e) =>
                 e.date <
                 new Date(
                   new Date(window.chooseDate).getTime() + 24 * 3600 * 1000
@@ -8903,7 +8907,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             this.wrap.appendChild(el2);
             this.chooseDateEl2 = el2;
             let setChooseDate = () => {
-              let date = (d =>
+              let date = ((d) =>
                 `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`)(
                 this.datas[tIndex].date
               );
@@ -8988,7 +8992,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function C(i, a) {
     this.DEFAULT_ARR = [
       { v: 30, color: "#99cf17", prop: "obv", idct: "OBV" },
-      { v: 0 / 0, color: "#00c1eb", prop: "obvma", idct: "OBVMA" }
+      { v: 0 / 0, color: "#00c1eb", prop: "obvma", idct: "OBVMA" },
     ];
     var s = { nu: !0 };
     r.call(this, i, a, s),
@@ -9036,7 +9040,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function k(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#12BDD9", prop: "iy", idct: "Position" }
+      { v: 0 / 0, color: "#12BDD9", prop: "iy", idct: "Position" },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "POSITION"),
@@ -9053,7 +9057,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function P(t, i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" }
+      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" },
     ]),
       r.call(this, t, i);
     var s = this;
@@ -9146,7 +9150,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function x(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#EE2F72", prop: "psy", idct: "PSY" },
-      { v: 6, color: "#00c1eb", prop: "psyma", idct: "PSYMA" }
+      { v: 6, color: "#00c1eb", prop: "psyma", idct: "PSYMA" },
     ]),
       r.call(this, i, a),
       (this.name = "PSY"),
@@ -9182,7 +9186,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function E(i, a, s) {
     var e = "rgl";
     (this.DEFAULT_ARR = [
-      { color: "#2D0674", prop: e, idct: "\u7ea2\u7eff\u89d2\u7ebf" }
+      { color: "#2D0674", prop: e, idct: "\u7ea2\u7eff\u89d2\u7ebf" },
     ]),
       r.call(this, i, a),
       (this.name = "RGL"),
@@ -9347,7 +9351,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function L(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#F17147", prop: "roc", idct: "ROC" },
-      { v: 6, color: "#406BEA", prop: "maroc", idct: "MAROC" }
+      { v: 6, color: "#406BEA", prop: "maroc", idct: "MAROC" },
     ]),
       r.call(this, i, a),
       (this.name = "ROC"),
@@ -9376,7 +9380,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 6, color: "#999999", prop: "rsi1", idct: "RSI1" },
       { v: 12, color: "#ffac03", prop: "rsi2", idct: "RSI2" },
-      { v: 24, color: "#9A2574", prop: "rsi3", idct: "RSI3" }
+      { v: 24, color: "#9A2574", prop: "rsi3", idct: "RSI3" },
     ]),
       r.call(this, i, a),
       (this.name = "RSI"),
@@ -9418,7 +9422,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#777777",
         prop: "sar",
         idct: "SAR",
-        desc: "\u5929\u6570"
+        desc: "\u5929\u6570",
       },
       { v: 2, color: "#b82c0c", desc: "\u53c2\u6570" },
       { v: 20, color: "#008040", desc: "\u53cd\u5411\u4e34\u754c" },
@@ -9426,8 +9430,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#777777",
         idct: "\u533a\u95f4\u80a1\u4ef7\u6536\u76ca",
-        prop: e
-      }
+        prop: e,
+      },
     ]),
       r.call(this, i, a),
       (this.name = "SAR");
@@ -9559,10 +9563,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           v: 0 / 0,
           color: "#ff1111",
           prop: "trade_total",
-          idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1"
+          idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
         },
         { v: 0 / 0, color: "#ff9f07", prop: "trade_buy", idct: "\u4e70\u5165" },
-        { v: 0 / 0, color: "#00b5f8", prop: "trade_sell", idct: "\u5356\u51fa" }
+        {
+          v: 0 / 0,
+          color: "#00b5f8",
+          prop: "trade_sell",
+          idct: "\u5356\u51fa",
+        },
       ],
       l = "top_trade_",
       n = t.tUtil;
@@ -9574,7 +9583,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             vol: 0 / 0,
             color: h.param[i].color || o[i].color || "#" + t.randomColor(),
             prop: o[i].prop,
-            idct: o[i].idct
+            idct: o[i].idct,
           });
       }
       (!h.customArr || h.customArr.length < 1) && (h.customArr = o);
@@ -9589,7 +9598,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               time: s[o].time,
               buy: Number(s[o].buy),
               sell: Number(s[o].sell),
-              date: lt.sd(s[o].dt)
+              date: lt.sd(s[o].dt),
             });
           r = e(i, a.stock.hq.date, "CN", !0);
         }
@@ -9629,7 +9638,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 time: s[o][l].time,
                 buy: s[o][l].buy,
                 sell: s[o][l].sell,
-                date: lt.sd(s[o][l].dt)
+                date: lt.sd(s[o][l].dt),
               });
             var n;
             (n = a.stock ? a.stock.hq.date : s[h - 1][0].date),
@@ -9686,7 +9695,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 trade_total: e.trade_total ? Number(e.trade_total) : 0,
                 trade_buy: e.trade_buy ? Number(e.trade_buy) : 0,
                 trade_sell: e.trade_sell ? Number(e.trade_sell) : 0,
-                trade_time: e.trade_time ? e.trade_time : 0
+                trade_time: e.trade_time ? e.trade_time : 0,
               });
         }
       }),
@@ -9745,7 +9754,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         c:
           "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2A5dayminline?symbol=$symbol&random=$rn",
         d:
-          "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2ZhiShu5dayminline?random=$rn"
+          "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2ZhiShu5dayminline?random=$rn",
       });
     var o,
       l = !0;
@@ -9755,7 +9764,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         { v: 0 / 0, color: "#ff1111", prop: "mb", idct: "\u7279\u5927" },
         { v: 0 / 0, color: "#ff9f07", prop: "ms", idct: "\u5927" },
         { v: 0 / 0, color: "#00b5f8", prop: "sb", idct: "\u4e2d" },
-        { v: 0 / 0, color: "#5b0497", prop: "ss", idct: "\u5c0f" }
+        { v: 0 / 0, color: "#5b0497", prop: "ss", idct: "\u5c0f" },
       ],
       d = null;
     this.generateSettings = function() {
@@ -9768,7 +9777,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             v: 0 / 0,
             color: e.param[r].color || c[r].color || "#" + t.randomColor(),
             prop: c[r].prop,
-            idct: c[r].idct
+            idct: c[r].idct,
           });
       }
       (!e.customArr || e.customArr.length < 1) && (e.customArr = c);
@@ -9786,7 +9795,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               mb: Number(h[1]),
               ms: Number(h[2]),
               sb: Number(h[3]),
-              ss: Number(h[4])
+              ss: Number(h[4]),
             }),
             a.push(e));
       return a;
@@ -9808,7 +9817,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mb: Number(c[1]),
                 ms: Number(c[2]),
                 sb: Number(c[3]),
-                ss: Number(c[4])
+                ss: Number(c[4]),
               }),
               0 == l && (n.date = i.slice(0, 1)[0]),
               o.push(n));
@@ -9903,7 +9912,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                   ? Number(this.urlData[r][v].ss)
                   : f
                   ? f.ss
-                  : p
+                  : p,
               };
               r == h - 1 &&
                 v == this.disMod - 1 &&
@@ -10011,7 +10020,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function V(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#d6c84b", prop: "trix", idct: "TRIX" },
-      { v: 9, color: "#26bcd5", prop: "matrix", idct: "MATRIX" }
+      { v: 9, color: "#26bcd5", prop: "matrix", idct: "MATRIX" },
     ]),
       r.call(this, i, a),
       (this.name = "TRIX"),
@@ -10048,7 +10057,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         c:
           "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getStockHistoryMinuteFlow?symbol=$symbol&random=$rn",
         d:
-          "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getHistoryMinuteFlow?symbol=$symbol&random=$rn"
+          "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getHistoryMinuteFlow?symbol=$symbol&random=$rn",
       }),
       (this.cb = r),
       i.stock.hq || this.loadUrlData(!0);
@@ -10060,13 +10069,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#fa6d6d",
         prop: e,
-        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09"
+        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09",
       },
       {
         color: "#2b55ff",
         prop: h,
-        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09"
-      }
+        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "TZY"),
@@ -10181,7 +10190,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             (r = s[e]),
               this.selfArr.push({
                 flag: r ? Number(r.flag) : 1,
-                isFake: r ? !!r.isFake : !0
+                isFake: r ? !!r.isFake : !0,
               });
         }
       }),
@@ -10462,7 +10471,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function W(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#75B2A3", prop: "vr", idct: "VR" },
-      { v: 6, color: "#F8B82E", prop: "mavr", idct: "MAVR" }
+      { v: 6, color: "#F8B82E", prop: "mavr", idct: "MAVR" },
     ]),
       r.call(this, i, a),
       (this.name = "VR"),
@@ -10510,7 +10519,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function K(i, a) {
     (this.DEFAULT_ARR = [
       { v: 10, color: "#3D85C6", prop: "wr1", idct: "WR1" },
-      { v: 6, color: "#84C84B", prop: "wr2", idct: "WR2" }
+      { v: 6, color: "#84C84B", prop: "wr2", idct: "WR2" },
     ]),
       r.call(this, i, a),
       (this.name = "WR"),
@@ -10536,7 +10545,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function G(i, a) {
     (this.DEFAULT_ARR = [
       { v: 24, color: "#fe6623", prop: "wvad", idct: "WVAD" },
-      { v: 6, color: "#00c1eb", prop: "wvadma", idct: "WVADMA" }
+      { v: 6, color: "#00c1eb", prop: "wvadma", idct: "WVADMA" },
     ]),
       r.call(this, i, a),
       (this.name = "WVAD"),
@@ -10575,12 +10584,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var t = [
           { color: o },
           { v: 5, color: "#FC9CB8" },
-          { v: 10, color: "#12BDD9" }
+          { v: 10, color: "#12BDD9" },
         ];
         nt.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
-          value: t
+          value: t,
         });
       };
       nt.load(
@@ -10588,9 +10597,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             s.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
-          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer
+          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
         },
         function(i) {
           i || t();
@@ -10613,7 +10622,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 color: s.param[l].color || "#" + t.randomColor(),
                 prop: i + c,
                 idct: r + c,
-                desc: h
+                desc: h,
               });
           }
         }
@@ -10742,7 +10751,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         nt.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
-          value: t
+          value: t,
         });
       };
       nt.load(
@@ -10750,9 +10759,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             s.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
-          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer
+          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
         },
         function(i) {
           i || t();
@@ -10775,7 +10784,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 color: s.param[l].color || "#" + t.randomColor(),
                 prop: i + c,
                 idct: r + c,
-                desc: h
+                desc: h,
               });
           }
         }
@@ -10915,7 +10924,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         DPDK: A,
         EWI: b,
         RGL: E,
-        TECHFLOW: w
+        TECHFLOW: w,
       };
       yt.auth(i);
       var r = [],
@@ -11066,7 +11075,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         remove: function(t) {
           a.removeChart(t);
-        }
+        },
       },
       _ = function(i, r) {
         if (d.custom.allow_indicator_edit)
@@ -11097,7 +11106,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         mh: d.DIMENSION.H_MA4K,
         lz: d.PARAM.G_Z_INDEX + 1,
         usrObj: v,
-        type: p
+        type: p,
       };
     return (a = new r());
   }
@@ -11144,7 +11153,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         TTFLOW: j,
         TVOL: q,
         TTOPTRADE: H,
-        BLANKCTN: a
+        BLANKCTN: a,
       };
       yt.auth(i);
       var r;
@@ -11280,7 +11289,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             y: s,
             ox: Z.DIMENSION.posX,
             oy: Z.DIMENSION.H_T_T,
-            e: e
+            e: e,
           });
         }
       };
@@ -11334,7 +11343,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         remove: function(t) {
           o.removeChart(t);
-        }
+        },
       },
       vt = function(i, r) {
         if (Z.custom.allow_indicator_edit)
@@ -11363,7 +11372,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         onClkMain: dt,
         usrObj: J,
         type: E,
-        initMgr: it
+        initMgr: it,
       };
     return (o = new r());
   }
@@ -11382,7 +11391,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         DRAGGING: "dragging",
         PICKCOLOR: "pickcolor",
         COLORPICKED: "colorpicked",
-        OPEN: "open"
+        OPEN: "open",
       };
     a(h, e);
     var o,
@@ -11401,7 +11410,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           o.contentWindow.postMessage(
             JSON.stringify({
               cmd: h.COLORPICKED,
-              data: { color: t.hex, target: i }
+              data: { color: t.hex, target: i },
             }),
             "*"
           );
@@ -11453,8 +11462,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               width: d + "px",
               border: "1px solid #aaa",
               position: "absolute",
-              zIndex: i.z
-            }
+              zIndex: i.z,
+            },
           })),
           st.addHandler(window, "message", A));
       };
@@ -11542,7 +11551,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "BIAS",
       "ASI",
       "VR",
-      "BRAR"
+      "BRAR",
     ],
     ut = [
       "TVOL",
@@ -11556,7 +11565,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "DMA",
       "EXPMA",
       "BIAS",
-      "VR"
+      "VR",
     ],
     pt = {},
     vt = "ignore_",
@@ -11573,13 +11582,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             this.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
           key:
             this.STORAGE_PREFIX +
             (this.sname || this.name) +
             "_" +
-            this.storageVer
+            this.storageVer,
         },
         function(i) {
           if (i) {
@@ -11601,7 +11610,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (this.sname || this.name) +
           "_" +
           this.storageVer,
-        value: t
+        value: t,
       });
     },
     gdsd: function(t) {
@@ -11615,7 +11624,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         for (var r = 0, a = t.length; a > r; r++) i = i.concat(t[r]);
       }
       return i;
-    }
+    },
   }),
     (r.prototype.mr = function() {
       function i(t) {
@@ -11802,7 +11811,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             dt: !1,
             iMgr: this.proxyCfg.iMgr,
             iTo: at(r, null, this),
-            iClk: this.proxyCfg.onClkMain
+            iClk: this.proxyCfg.onClkMain,
           })),
           !isNaN(this.proxyCfg.lz) &&
             (this.line.getCanvas().style.zIndex = this.proxyCfg.lz),
@@ -12771,7 +12780,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       calcABS: y,
       calcMAX: w,
       calcSUM: _,
-      operateArr: D
+      operateArr: D,
     };
   })();
   t.fInherit(a, r),
@@ -12837,7 +12846,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                   { h: "https://touzi.sina.cn/", a: r },
                   { h: "http://touzi.sina.cn/", a: r },
                   { h: "https://touzi.sina.com.cn/", a: r },
-                  { h: "http://touzi.sina.com.cn/", a: r }
+                  { h: "http://touzi.sina.com.cn/", a: r },
                 ],
                 s = document.location.href,
                 e = a.length;
@@ -12880,7 +12889,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
     var s = {
       CNKCB: {
         DAYK_URL:
-          "http://quotes.sina.cn/cn/api/jsonp.php/$cb/KC_MarketDataService.getKLineData?symbol=$symbol"
+          "http://quotes.sina.cn/cn/api/jsonp.php/$cb/KC_MarketDataService.getKLineData?symbol=$symbol",
       },
       CN: {
         MINK_URL:
@@ -12889,7 +12898,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           "http://finance.sina.com.cn/realstock/company/$symbol/hisdata/klc_kl.js?d=$rn",
         DAYK_RE_URL:
           "http://finance.sina.com.cn/realstock/company/$symbol/$dirfq.js",
-        RE_VAR: "$symbol$dirfq"
+        RE_VAR: "$symbol$dirfq",
       },
       HK: {
         MINK_URL: "",
@@ -12897,7 +12906,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           "http://finance.sina.com.cn/stock/hkstock/$symbol/klc_kl.js?d=$rn",
         DAYK_RE_URL:
           "http://finance.sina.com.cn/stock/hkstock/$symbol/$dirfq.js",
-        RE_VAR: "$symbol$dirfq"
+        RE_VAR: "$symbol$dirfq",
       },
       US: {
         MINK_URL:
@@ -12905,37 +12914,37 @@ xh5_define("datas.k", ["utils.util"], function(e) {
         DAYK_URL: "http://finance.sina.com.cn/staticdata/us/$symbol",
         DAYK_RE_URL:
           "https://finance.sina.com.cn/us_stock/company/reinstatement/$symbol_$dirfq.js",
-        RE_VAR: "$symbol_$dirfq"
+        RE_VAR: "$symbol_$dirfq",
       },
       option_cn: {
         DAYK_URL:
-          "http://stock.finance.sina.com.cn/futures/api/jsonp_v2.php/$cb/StockOptionDaylineService.getSymbolInfo?symbol=$symbol"
+          "http://stock.finance.sina.com.cn/futures/api/jsonp_v2.php/$cb/StockOptionDaylineService.getSymbolInfo?symbol=$symbol",
       },
       op_m: {
         DAYK_URL:
-          "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb/FutureOptionAllService.getOptionDayline?symbol=$symbol"
+          "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb/FutureOptionAllService.getOptionDayline?symbol=$symbol",
       },
       forex: {
         DAYK_URL:
           "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getDayKLine?symbol=$symbol&_=$rn",
         MINK_URL:
-          "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getMinKline?symbol=$symbol&scale=$scale&datalen=$datalen"
+          "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getMinKline?symbol=$symbol&scale=$scale&datalen=$datalen",
       },
       forex_yt: {
         DAYK_URL:
           "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getDayKLine?symbol=$symbol&_=$rn",
         MINK_URL:
-          "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getOldMinKline?symbol=$symbol&scale=$scale&datalen=$datalen"
+          "http://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/$cb/NewForexService.getOldMinKline?symbol=$symbol&scale=$scale&datalen=$datalen",
       },
       OTC: {
         DAYK_URL:
-          "http://stock.finance.sina.com.cn/thirdmarket/api/jsonp.php/$cb/ThirdDataService.ThirdDailyData?symbol=$symbol&_=$rn"
+          "http://stock.finance.sina.com.cn/thirdmarket/api/jsonp.php/$cb/ThirdDataService.ThirdDailyData?symbol=$symbol&_=$rn",
       },
       CFF: {
         DAYK_URL:
           "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/CffexFuturesService.getCffexFuturesDailyKLine?symbol=$symbol&_=$rn",
         MINK_URL:
-          "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/CffexFuturesService.getCffexFuturesMiniKLine$scalem?symbol=$symbol&_=$rn"
+          "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/CffexFuturesService.getCffexFuturesMiniKLine$scalem?symbol=$symbol&_=$rn",
       },
       HF: {
         DAYK_URL:
@@ -12944,7 +12953,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb/InterfaceInfoService.getMarket?category=hf&symbol=$symbol",
         MINK_URL:
           "http://gu.sina.cn/ft/api/jsonp.php/$cb/GlobalService.getMink?symbol=$symbol&type=$scale",
-        INIT_VAR_PRE: "kke_future_"
+        INIT_VAR_PRE: "kke_future_",
       },
       NF: {
         DAYK_URL:
@@ -12953,30 +12962,30 @@ xh5_define("datas.k", ["utils.util"], function(e) {
           "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/InnerFuturesNewService.getFewMinLine?symbol=$symbol&type=$scale",
         INIT_URL:
           "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb/InterfaceInfoService.getMarket?category=nf&symbol=$symbol",
-        INIT_VAR_PRE: "kke_future_"
+        INIT_VAR_PRE: "kke_future_",
       },
       global_index: {
         DAYK_URL:
           "http://stock.finance.sina.com.cn/usstock/api/jsonp.php/$cb/Global_IndexService.getDayLine?symbol=$symbol&num=100",
         INIT_URL:
           "http://stock.finance.sina.com.cn/usstock/api/jsonp.php/$cb/Global_IndexService.getTradeTime?symbol=$symbol&category=index",
-        INIT_VAR_PRE: "kke_global_index_"
+        INIT_VAR_PRE: "kke_global_index_",
       },
       GOODS: {
         DAYK_URL:
-          "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/SpotService.getDaily?symbol=$symbol"
+          "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/$cb/SpotService.getDaily?symbol=$symbol",
       },
       BTC: {
         DAYK_URL:
           "http://quotes.sina.cn/fx/api/openapi.php/BtcService.getDayKLine?symbol=$symbol&callback=$cb",
         MINK_URL:
-          "http://quotes.sina.cn/fx/api/openapi.php/BtcService.getMinKline?symbol=$symbol&scale=$scale&datalen=$datalen&callback=$cb"
+          "http://quotes.sina.cn/fx/api/openapi.php/BtcService.getMinKline?symbol=$symbol&scale=$scale&datalen=$datalen&callback=$cb",
       },
       LSE: {
         DAYK_URL:
-          "http://quotes.sina.cn/lse/api/jsonp.php/$cb/LSEService.getDays?symbol=$symbol"
+          "http://quotes.sina.cn/lse/api/jsonp.php/$cb/LSEService.getDays?symbol=$symbol",
       },
-      MSCI: { DAYK_URL: "http://finance.sina.com.cn/staticdata/msci/$symbol" }
+      MSCI: { DAYK_URL: "http://finance.sina.com.cn/staticdata/msci/$symbol" },
     };
     s.REPO = s.CN;
     var r = function() {
@@ -13050,7 +13059,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               volume: g,
               date: n.ddt(m),
               postAmt: i.postAmount,
-              postVol: i.postVolume
+              postVol: i.postVolume,
             });
           }
           (d = i.issueprice), (u = i.name);
@@ -13159,9 +13168,9 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             (window[M] = {
               fhday: e.fhday,
               fhvalue: e.fhvalue,
-              fhchaifen: e.fhchaifen
+              fhchaifen: e.fhchaifen,
             });
-        }
+        },
       },
       p = function(e) {
         var t = [];
@@ -13177,7 +13186,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               volume: Number(a.v) || 0,
               date: new Date(Number(s[0]), Number(s[1]) - 1, Number(s[2]), 0),
               postVol: Number(a.pv) || 0,
-              postAmt: Number(a.pa) || 0
+              postAmt: Number(a.pa) || 0,
             });
           }
         return t;
@@ -13200,7 +13209,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     Number(a[1]) - 1,
                     Number(a[2]),
                     0
-                  )
+                  ),
                 }));
         return t;
       },
@@ -13226,7 +13235,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     Number(a[1]) - 1,
                     Number(a[2]),
                     0
-                  )
+                  ),
                 }));
         return t;
       },
@@ -13253,7 +13262,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     Number(a[1]) - 1,
                     Number(a[2]),
                     0
-                  )
+                  ),
                 }));
         return t;
       },
@@ -13270,7 +13279,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 high: Number(n[2]) || i,
                 low: Number(n[3]) || i,
                 close: i,
-                volume: Number(n[5]) || 0
+                volume: Number(n[5]) || 0,
               });
         return t;
       },
@@ -13286,7 +13295,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 high: Number(n[2]) || a,
                 low: Number(n[3]) || a,
                 close: a,
-                volume: Number(n[5]) || 0
+                volume: Number(n[5]) || 0,
               });
         return t;
       },
@@ -13302,7 +13311,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                 open: Number(a.open) || i,
                 high: Number(a.high) || i,
                 low: Number(a.low) || i,
-                close: i
+                close: i,
               });
         return t;
       },
@@ -13387,7 +13396,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             low: g.close,
             close: g.close,
             day: n.dss(b),
-            prevclose: g.prevclose
+            prevclose: g.prevclose,
           };
           "BTC" == l && (y.volume = 0), a.push(y), (g = y), (b = n.ssd(g.day));
         }
@@ -13557,7 +13566,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             kUrl: n,
             isCompressData: r,
             vu: i,
-            market: o
+            market: o,
           }
         );
       },
@@ -13588,7 +13597,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                     withsymbol: n.withsymbol,
                     hqSb: o.hqSb,
                     hqObjs: p,
-                    scale: c
+                    scale: c,
                   }))
                 ) {
                   var r = {};
@@ -13612,7 +13621,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
               {
                 symbol: [n.withsymbol, o.hqSb].join(","),
                 cancelEtag: !0,
-                ssl: n.ssl
+                ssl: n.ssl,
               },
               p
             )
@@ -13660,7 +13669,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                       week: d[1],
                       month: d[2],
                       ytd: d[3] || null,
-                      year: d[4]
+                      year: d[4],
                     })
                   : (h.msg = "error"),
                   e.isFunc(a) && a(h);
@@ -13675,7 +13684,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
                         week: t[1],
                         month: t[2],
                         ytd: t[3] || null,
-                        year: t[4]
+                        year: t[4],
                       })
                     : (h.msg = "error"),
                     e.isFunc(a) && a(h);
@@ -13704,7 +13713,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             week: s[1],
             month: s[2],
             ytd: s[3] || null,
-            year: s[4]
+            year: s[4],
           };
         }
         e.isFunc(n) && n(o);
@@ -13724,7 +13733,7 @@ xh5_define("datas.k", ["utils.util"], function(e) {
             .replace("gb_", "")
             .replace("$", ".")
             .toUpperCase(),
-          CN: n.symbol
+          CN: n.symbol,
         }[n.market.toUpperCase()],
         s = h(n.symbol, n.ssl),
         l = s.url;
@@ -13879,15 +13888,15 @@ xh5_define(
                 wfn: void 0,
                 url: void 0,
                 dataformatter: void 0,
-                staticdata: void 0
+                staticdata: void 0,
               },
               min: {
                 wfn: void 0,
                 url: void 0,
                 dataformatter: void 0,
-                staticdata: void 0
-              }
-            }
+                staticdata: void 0,
+              },
+            },
           },
           e || {}
         );
@@ -14000,7 +14009,7 @@ xh5_define(
               if (ret && window.chooseDate && window.cutChooseDate) {
                 let dt =
                   new Date(window.chooseDate).getTime() + 24 * 3600 * 1000;
-                let ds = ret.filter(d => d.date.getTime() < dt);
+                let ds = ret.filter((d) => d.date.getTime() < dt);
                 viewState.start = ds.length - viewState.currentLength;
                 viewState.end = ds.length;
                 return ds;
@@ -14043,7 +14052,7 @@ xh5_define(
                         (t = e[i]),
                           n.push({
                             amount: Number(t.amount),
-                            date: m.sd(t.date)
+                            date: m.sd(t.date),
                           });
                       n.length && (s.rsAmount = n);
                     }
@@ -14188,7 +14197,7 @@ xh5_define(
                         if (
                           (t.kUtil.nc(a, e, n, {
                             price: e.price,
-                            volume: e.volume
+                            volume: e.volume,
                           }),
                           /^forex|^BTC/.test(h.market))
                         )
@@ -14420,7 +14429,7 @@ xh5_define(
                       price: p.close,
                       volume: p.volume,
                       totalVolume: p.volume,
-                      date: m.dd(p.date)
+                      date: m.dd(p.date),
                     })),
                     (l = t.kUtil.mw(s, A, null, null, 0 / 0)),
                     (h = l[0]),
@@ -14501,8 +14510,8 @@ xh5_define(
                           day: m.ds(i.date, "/"),
                           time: i.time,
                           percent: i.price - i.prevclose / i.prevclose,
-                          kke_cs: 0
-                        }
+                          kke_cs: 0,
+                        },
                       ];
                     _.initState(viewState.viewId, a, !0),
                       o(t, { viewId: viewState.viewId });
@@ -14705,7 +14714,7 @@ xh5_define(
                 cb: G,
                 cfg: I,
                 type: "k",
-                usrObj: i
+                usrObj: i,
               })),
               n && (K = N),
               Z && ((g = N.showHide(Z)), (Z = void 0))),
@@ -14736,7 +14745,7 @@ xh5_define(
                 cfg: I,
                 type: "k",
                 usrObj: i,
-                initMgr: X
+                initMgr: X,
               })),
               n && (E = M)),
               M.createChart(e, t);
@@ -14793,13 +14802,13 @@ xh5_define(
                       y: i,
                       oy: I.DIMENSION.H_MA4K,
                       ox: I.DIMENSION.posX,
-                      e: a
+                      e: a,
                     },
                     !0,
                     !1
                   );
                 }
-              }
+              },
             })),
             (u = d.getG());
         }
@@ -15062,7 +15071,7 @@ xh5_define(
               d.clear(n, I.PARAM.getHd()),
                 d.newGStyle({
                   textBaseline: "bottom",
-                  font: I.STYLE.FONT_SIZE + "px " + I.STYLE.FONT_FAMILY
+                  font: I.STYLE.FONT_SIZE + "px " + I.STYLE.FONT_FAMILY,
                 }),
                 M && I.custom.show_underlay_vol && S(),
                 n ? w() : i ? L() : a ? k() : A();
@@ -15298,7 +15307,7 @@ xh5_define(
                 fontColor: "#000",
                 closeCb: p,
                 btnLb: "\u5173\u95ed",
-                bgStyle: { backgroundColor: "#fff", width: "80%", top: "2%" }
+                bgStyle: { backgroundColor: "#fff", width: "80%", top: "2%" },
               };
               return o || (o = new t.TipM(I.COLOR)), (i.content = a), i;
             },
@@ -15564,7 +15573,7 @@ xh5_define(
                 wbtext: "",
                 qrwidth: 100,
                 qrheight: 100,
-                extra: void 0
+                extra: void 0,
               },
               e || {}
             );
@@ -15580,7 +15589,7 @@ xh5_define(
                       txt:
                         '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
                       parent: H,
-                      btnLb: "\u5173\u95ed"
+                      btnLb: "\u5173\u95ed",
                     });
                   }
                 );
@@ -15602,7 +15611,7 @@ xh5_define(
                   bgColor: I.COLOR.BG,
                   txt: e.wbtext,
                   url: e.url,
-                  extra: e.extra
+                  extra: e.extra,
                 });
             }
           }),
@@ -15647,14 +15656,14 @@ xh5_define(
               wfn: void 0,
               url: void 0,
               dataformatter: void 0,
-              staticdata: void 0
+              staticdata: void 0,
             },
             min: {
               wfn: void 0,
               url: void 0,
               dataformatter: void 0,
-              staticdata: void 0
-            }
+              staticdata: void 0,
+            },
           },
           dim: null,
           dom: void 0,
@@ -15687,7 +15696,7 @@ xh5_define(
           w: 0 / 0,
           h: 0 / 0,
           zoomlimit: 0 / 0,
-          zoomunit: 0 / 0
+          zoomunit: 0 / 0,
         },
         i || { WANGXuan: "wangxuan2@staff.sina.com.cn", VER: "2.11.0" }
       );
@@ -15707,7 +15716,7 @@ xh5_define(
               i.symbol,
               "_",
               Math.floor(1234567890 * Math.random() + 1) +
-                Math.floor(9876543210 * Math.random() + 1)
+                Math.floor(9876543210 * Math.random() + 1),
             ].join("")
           )),
           0 == location.protocol.indexOf("https:") && (i.ssl = !0),
@@ -15765,7 +15774,7 @@ xh5_define(
           currentLength: 0 / 0,
           startDate: void 0,
           endDate: void 0,
-          movY: 0
+          movY: 0,
         },
         Y = {
           x: 0,
@@ -15774,7 +15783,7 @@ xh5_define(
               ? I.DIMENSION.w_k /
                 Math.max(viewState.currentLength, I.PARAM.minCandleNum)
               : e;
-          }
+          },
         },
         B = new (function() {
           var e;
@@ -15802,7 +15811,7 @@ xh5_define(
                 left: I.DIMENSION.posX,
                 top: I.DIMENSION.H_MA4K,
                 range: [e.labelMaxP, e.labelMinP, e.labelMaxVol],
-                minCandleNum: I.PARAM.minCandleNum
+                minCandleNum: I.PARAM.minCandleNum,
               });
           };
           var n = [];
@@ -15831,7 +15840,7 @@ xh5_define(
                         data: u,
                         rangedata: h,
                         symbol: p.symbol,
-                        color: p.getLineStyle().linecolor
+                        color: p.getLineStyle().linecolor,
                       }));
                 s = n;
               }
@@ -15844,7 +15853,7 @@ xh5_define(
                   top: I.DIMENSION.H_MA4K,
                   data_array: s,
                   curname: l,
-                  interacting: !!c
+                  interacting: !!c,
                 });
             }
           }),
@@ -15856,7 +15865,7 @@ xh5_define(
                     data: t.clone(n, null),
                     idx: viewState.currentLength - 1,
                     left: I.DIMENSION.posX,
-                    top: I.DIMENSION.H_MA4K
+                    top: I.DIMENSION.H_MA4K,
                   });
               }
             }),
@@ -15934,7 +15943,7 @@ xh5_define(
                 m(),
                 t.stc("k_wh", [
                   I.DIMENSION.getStageW(),
-                  I.DIMENSION.getStageH()
+                  I.DIMENSION.getStageH(),
                 ]);
             },
             v = function() {
@@ -16013,7 +16022,7 @@ xh5_define(
               right: I.DIMENSION.RIGHT_W + I.DIMENSION.K_RIGHT_W,
               LOGO_W: I.DIMENSION.LOGO_W,
               LOGO_H: I.DIMENSION.LOGO_H,
-              color: I.COLOR.LOGO
+              color: I.COLOR.LOGO,
             }),
             g.noH5 &&
               (B.showTip({ txt: i.nohtml5info || b.nohtml5info, parent: H }),
@@ -16449,13 +16458,13 @@ xh5_define(
                 isH: !0,
                 txtCN: "P_TC",
                 txtBgCN: "P_BG",
-                txtA: "right"
+                txtA: "right",
               })),
                 (o = new e({
                   isH: !1,
                   txtCN: "T_TC",
                   txtBgCN: "T_BG",
-                  txtA: "center"
+                  txtA: "center",
                 })),
                 H.appendChild(o.body);
             },
@@ -16526,7 +16535,7 @@ xh5_define(
                         data: z,
                         rangedata: R,
                         symbol: B.symbol,
-                        color: B.getLineStyle().linecolor
+                        color: B.getLineStyle().linecolor,
                       }),
                       z.isFake ||
                         ((X = Math.abs(z.cy - l)),
@@ -16563,7 +16572,7 @@ xh5_define(
                     data: H,
                     rangedata: T,
                     symbol: M,
-                    color: _.getLineStyle().linecolor
+                    color: _.getLineStyle().linecolor,
                   });
               }
               if (H) {
@@ -16575,7 +16584,7 @@ xh5_define(
                       name: L,
                       data: H,
                       stock: _,
-                      arr: O
+                      arr: O,
                     }),
                     p.pv({ x: j, y: I.DIMENSION.K_F_T })),
                   a.pv({ y: l, v: D, oy: c }),
@@ -16583,7 +16592,7 @@ xh5_define(
                     x: s,
                     ox: r,
                     y: I.DIMENSION.H_MA4K,
-                    v: H.day + " " + (H.time || "")
+                    v: H.day + " " + (H.time || ""),
                   }),
                   y(v),
                   !L && (L = M || "--"),
@@ -16616,7 +16625,7 @@ xh5_define(
               x: n.ix,
               y: n.cy,
               oy: I.DIMENSION.H_MA4K,
-              ox: I.DIMENSION.posX
+              ox: I.DIMENSION.posX,
             };
             return void this.iToD(i, !0, !0);
           };
@@ -17008,7 +17017,7 @@ xh5_define(
               t = I.DIMENSION.posX;
             i.call(this, "DIMENSION", {
               extend_draw: !e,
-              posX: t > 9 ? 7 : 55
+              posX: t > 9 ? 7 : 55,
             }),
               this.resize();
           }),
@@ -17079,7 +17088,7 @@ xh5_define(
               name: n.name,
               datas: n.datas,
               linetype: "line",
-              linecolor: n.theme
+              linecolor: n.theme,
             });
           };
           a.me.al(b.e.K_DATA_LOADED, o, !1),

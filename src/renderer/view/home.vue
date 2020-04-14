@@ -779,8 +779,8 @@ export default {
 
             this.items3 = items2;
 
-            this.ready && tj(items2);
-
+            //this.ready && tj(items2);
+            await batchUpdateHQ(this.items2);
             //storejs.set("his" + (new Date().getDate() % 28), this.items3);
           }
           // monitor(items);

@@ -546,7 +546,7 @@ export function isNotTradeTime() {
   return false;
 }
 export async function batchUpdateHQ(items) {
-  if (!items || !items.length || isNotTradeTime()) return;
+  if (!items || !items.length) return;
 
   let datalist = await getHXList();
 

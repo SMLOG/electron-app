@@ -130,19 +130,23 @@ const techMap = {
     item.week3p = r;
     return isStrong(kw);
   },
+
   日: function({ item, kd, kw, km }) {
     return isStrong(kd);
   },
-  GM: function({ item, kd, kw, km }) {
-    return isMacdGolden(km);
-  },
-  MU: function({ item, kd, kw, km }) {
-    let i = km.MACD.length;
+  KU: function({ item, kd, kw, km }) {
+    let i = kd.MACD.length;
     return (
-      km.MACD[i - 2].bar >= km.MACD[i - 3].bar &&
-      km.MACD[i - 3].bar <= km.MACD[i - 4].bar
+      kd.MACD[i - 1].bar >= kd.MACD[i - 2].bar &&
+      kd.MACD[i - 1].dif > kd.MACD[i - 2].dif &&
+      kd.MACD[i - 2].bar < kd.MACD[i - 3].bar &&
+      kd.MACD[i - 3].bar < kd.MACD[i - 4].bar &&
+      kd.MACD[i - 4].bar < kd.MACD[i - 5].bar
     );
   },
+  GM: function({ item, kd, kw, km }) {
+    return isMacdGolden(km);
+  }
 
   /*,
   "D&B": function({ item, kd, kw, km }) {
@@ -257,7 +261,7 @@ export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
     filters[name] = function(items) {
-      return items.filter((e) => e[`_${name}`]);
+      return items.filter(e => e[`_${name}`]);
     };
   }
   return filters;
@@ -267,7 +271,7 @@ export async function callFun(item, chooseDate) {
   if (chooseDate) {
     let ntechDatas = {};
     for (let p of ["kd", "kw", "km"]) {
-      let i = techDatas[p].datas.filter((d) => d.day <= chooseDate).length;
+      let i = techDatas[p].datas.filter(d => d.day <= chooseDate).length;
       let nk = techDatas[p].datas.slice(0, i);
       ntechDatas[p] = {};
       for (let k in techDatas[p]) {
@@ -324,7 +328,7 @@ export function tj(items) {
           endDate: item.endDate,
           startDate: item.startDate,
           startNow: item.startNow,
-          endNow: item.endNow,
+          endNow: item.endNow
         });
         tjmap[it.code] = it;
         tjdatas[item._i] = it;

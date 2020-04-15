@@ -175,13 +175,13 @@ var xh5_BrowserUtil = new (function() {
 var tChartProp = TodayChart.prototype;
 (tChartProp.init = function() {
   (this.painterDay = new Painter({
-    ctn: this.param.dom
+    ctn: this.param.dom,
   })),
     (this.painterDatail = new Painter({
-      ctn: this.param.domDetail
+      ctn: this.param.domDetail,
     })),
     (this.painterFive = new Painter({
-      ctn: this.param.domFive
+      ctn: this.param.domFive,
     })),
     this.load(),
     this.loadFive();
@@ -210,7 +210,7 @@ var tChartProp = TodayChart.prototype;
                 ? (1 * a[n].close - 1 * a[n].open) / (1 * a[n].open)
                 : (1 * a[n].close - 1 * a[n - 1].close) / (1 * a[n - 1].close);
           (a = a.reverse()), (e.dataPFive = a.slice(0, 6));
-        }
+        },
       });
   }),
   (tChartProp.loadFiveZJ = function() {
@@ -244,31 +244,31 @@ var tChartProp = TodayChart.prototype;
             )
               e.dataPPFive.push(e.dataPFive[n].percent);
             e.dim({
-              painter: "Five"
+              painter: "Five",
             }),
               e.dimDoubleTemple({
                 num: 5,
                 series: [
                   {
-                    value: "Five"
+                    value: "Five",
                   },
                   {
                     value: "PPFive",
-                    type: "line"
-                  }
-                ]
+                    type: "line",
+                  },
+                ],
               }),
               e.renderTemple("Five", {
-                painter: "Five"
+                painter: "Five",
               }),
               e.renderLine("PPFive", {
-                painter: "Five"
+                painter: "Five",
               }),
               e.zjFiveTemple();
           } else
             document.querySelector(".money-five") &&
               (document.querySelector(".money-five").style.display = "none");
-        }
+        },
       });
   }),
   (tChartProp.zjFiveTemple = function() {
@@ -280,17 +280,17 @@ var tChartProp = TodayChart.prototype;
     this.fiveListTemple({
       type: 1,
       data: t,
-      dom: a
+      dom: a,
     }),
       this.fiveListTemple({
         type: 2,
         data: t,
-        dom: i
+        dom: i,
       }),
       this.fiveListTemple({
         type: 3,
         data: e,
-        dom: n
+        dom: n,
       });
   }),
   (tChartProp.fiveListTemple = function(e) {
@@ -354,7 +354,7 @@ var tChartProp = TodayChart.prototype;
           zl_r: a.rp_net_rate || 0,
           type: a.type,
           turnOver: a.turnOver,
-          totalAmount: a.totalAmount_i
+          totalAmount: a.totalAmount_i,
         }),
           (e.dataDetail = [
             Math.abs(1 * a.rxl_in_raw) || 0,
@@ -364,35 +364,35 @@ var tChartProp = TodayChart.prototype;
             Math.abs(1 * a.rm_in_raw) || 0,
             Math.abs(1 * a.rm_out_raw) || 0,
             Math.abs(1 * a.rs_in_raw) || 0,
-            Math.abs(1 * a.rs_out_raw) || 0
+            Math.abs(1 * a.rs_out_raw) || 0,
           ]),
           (e.dataDay = [
             e.zjData.td_a,
             e.zjData.d_a,
             e.zjData.z_a,
-            e.zjData.x_a
+            e.zjData.x_a,
           ]),
           e.renderChart(),
           e.cb({
             day: e.dataDay,
-            zj: e.zjData
+            zj: e.zjData,
           });
-      }
+      },
     });
   }),
   (tChartProp.renderChart = function() {
     var e = this;
     e.dim({
-      painter: "Day"
+      painter: "Day",
     }),
       e.dimTemple("Day", {
-        num: 4
+        num: 4,
       }),
       e.dimTemple("Detail", {
-        num: 8
+        num: 8,
       }),
       e.renderTemple("Day", {
-        painter: "Day"
+        painter: "Day",
       }),
       e.detailRender();
   }),
@@ -711,7 +711,7 @@ var zjTableProp = ZjTable.prototype;
           t &&
             t.data &&
             ((e.BKData = t.data), e.bkTemple(t.data), e.loadBkList());
-        }
+        },
       });
   }),
   (zjTableProp.riseColorSetting = function() {
@@ -801,7 +801,7 @@ var zjTableProp = ZjTable.prototype;
         isANeedCWZJ: !0,
         getObj: function(e) {
           t.bkListTemple(e);
-        }
+        },
       });
   }),
   (zjTableProp.colorSetting = function(e) {
@@ -889,7 +889,7 @@ var zjTableProp = ZjTable.prototype;
             uatrackKey: "hq_center_hs",
             androidInstallUrl:
               "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-            needOpenSource: !1
+            needOpenSource: !1,
           },
           a = new SinaFinanceCallUp.CallUpSinaFinance(t),
           n = document.createElement("div");
@@ -901,7 +901,7 @@ var zjTableProp = ZjTable.prototype;
             a.tryDirectCall({
               callpagetype: "2",
               symbol: paperCode,
-              position: "moneyflow2app"
+              position: "moneyflow2app",
             });
           });
       }
@@ -989,7 +989,7 @@ function loader(e, t, n, a) {
     u = {
       Webkit: "webkit",
       Moz: "",
-      O: "o"
+      O: "o",
     },
     _ = document.createElement("div"),
     v = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i,
@@ -1012,11 +1012,11 @@ function loader(e, t, n, a) {
       speeds: {
         _default: 400,
         fast: 200,
-        slow: 600
+        slow: 600,
       },
       cssPrefix: f,
       transitionEnd: a("TransitionEnd"),
-      animationEnd: a("AnimationEnd")
+      animationEnd: a("AnimationEnd"),
     }),
     (e.fn.animate = function(n, a, i, r, o) {
       return (
@@ -1119,7 +1119,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         documentWidth: i,
         documentHeight: r,
         viewWidth: e,
-        viewHeight: t
+        viewHeight: t,
       }
     );
   }
@@ -1185,7 +1185,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         },
         error: function() {
           console.log("api error...");
-        }
+        },
       });
     }
     function i() {
@@ -1442,7 +1442,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             url: L.bkUrl,
             varStr: L.varBK,
             dom: "cn_bk_hy",
-            pDom: "cn_bk_hy_c"
+            pDom: "cn_bk_hy_c",
           },
           function(e) {
             window.bkSw = e;
@@ -1461,14 +1461,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             url: L.gnUrl,
             varStr: L.varGN,
             dom: "cn_bk_gn",
-            pDom: "cn_bk_bk_c"
+            pDom: "cn_bk_bk_c",
           })),
         F ||
           (F = new h({
             dom: document.getElementById("follow"),
             parentNode: document.getElementById("cn_bk_gp_c"),
             tap: "cn-bk-icon-r",
-            pop: "cn-pop"
+            pop: "cn-pop",
           }));
     }
     function i() {
@@ -1476,7 +1476,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         ((E = new s({
           tab: "news",
           idx: 1,
-          dom: $[1]
+          dom: $[1],
         })),
         E.init());
     }
@@ -1484,7 +1484,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       U ||
         ((U = new s({
           idx: 2,
-          dom: $[2]
+          dom: $[2],
         })),
         U.init());
     }
@@ -1498,7 +1498,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                 "\u7279\u5927\u5355",
                 "\u5927\u5355",
                 "\u4e2d\u5355",
-                "\u5c0f\u5355"
+                "\u5c0f\u5355",
               ],
               domDetail: document.getElementById("canvasDetail"),
               labDetail: [
@@ -1509,11 +1509,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                 "\u7279\u5927\u5355",
                 "\u5927\u5355",
                 "\u4e2d\u5355",
-                "\u5c0f\u5355"
+                "\u5c0f\u5355",
               ],
               domFive: document.getElementById("canvasFive"),
               domFiveList: document.getElementById("money_five"),
-              domDetailCon: "money_detail_con"
+              domDetailCon: "money_detail_con",
             },
             function(e) {
               A ||
@@ -1522,7 +1522,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                   zj: e.zj,
                   domBk: "money_bk",
                   domList: "money_list",
-                  domLink: "money_link"
+                  domLink: "money_link",
                 })),
                 A.zjTemple(e.zj));
             }
@@ -1593,7 +1593,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         T_RISE: L.chartRed,
         T_FALL: L.chartGreen,
         K_RISE: L.chartRed,
-        K_FALL: L.chartGreen
+        K_FALL: L.chartGreen,
       };
     }
     function b() {
@@ -1601,7 +1601,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         g({
           pos: "callup_morenews",
           androidurl:
-            "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
+            "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
         });
       }),
         e("#cn_comment_more").on("click tap", function() {
@@ -1680,12 +1680,12 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           T &&
             T.pushData({
               symbol: t,
-              data: e[t]
+              data: e[t],
             });
         },
         getObj: function(e) {
           e && P.load(e);
-        }
+        },
       });
     }
     function H() {
@@ -1703,11 +1703,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     }
     function D() {
       var t = new r({
-        code: paperCode
+        code: paperCode,
       });
       (z = new l({
         dom: e("#cn_visit_cont"),
-        visitObj: t
+        visitObj: t,
       })),
         (window.riseColor = L.riseColor = v() ? v() : "riseRed"),
         y(),
@@ -1715,13 +1715,13 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       var n = new d({
           dom: ["cn_floating", "cn_floating_h"],
           priceDom: ["cn-floating-price", "cn_floating_price_h"],
-          percentDom: ["cn-floating-zdf", "cn_floating_zdf_h"]
+          percentDom: ["cn-floating-zdf", "cn_floating_zdf_h"],
         }),
         i = 0;
       (P = new f({
         dom: {
           position: "cn_position",
-          detail: "cn_detail"
+          detail: "cn_detail",
         },
         symbol: paperCode,
         cb: function(e) {
@@ -1729,11 +1729,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             0 == i &&
               (z.hqComponent({
                 symbol: t.v_allList,
-                data: e
+                data: e,
               }),
               (i = 1)),
             sss || (sss = new o(e));
-        }
+        },
       })),
         a(),
         p(),
@@ -1759,7 +1759,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         "cn_tab_finance",
         "cn_tab_f10",
         "cn_tab_notice",
-        "cn_tab_report"
+        "cn_tab_report",
       ],
       $ = [
         "cn_relate_cont",
@@ -1769,7 +1769,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         "cn_finance_cont",
         "cn_f10_cont",
         "cn_notice_cont",
-        "cn_report_cont"
+        "cn_report_cont",
       ],
       G = [
         "cn_tab_relate_f",
@@ -1779,7 +1779,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         "cn_tab_finance_f",
         "cn_tab_f10_f",
         "cn_tab_notice_f",
-        "cn_tab_report_f"
+        "cn_tab_report_f",
       ],
       O = "cn-news-c",
       K = 0,
@@ -1791,9 +1791,9 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       con: $,
       tabF: G,
       css: {
-        active: "active"
+        active: "active",
       },
-      cb: _
+      cb: _,
     });
     var Y = 0,
       Q = e("#cn_bk_hy_c").offset().top,
@@ -1806,13 +1806,13 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       uatrackKey: e.key || "hq_center_hs",
       subname: e.pos,
       needOpenSource: !1,
-      androidInstallUrl: e.androidurl
+      androidInstallUrl: e.androidurl,
     };
     new SinaFinanceCallUp.CallUpSinaFinance(t).tryDirectCall({
       stocktype: "cn",
       callpagetype: "2",
       position: e.pos,
-      symbol: paperCode
+      symbol: paperCode,
     });
   }
   function y() {
@@ -1829,7 +1829,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   function C(e, t) {
     var n = {
       callpagetype: "17",
-      position: "outrefer2app"
+      position: "outrefer2app",
     };
     if ("undefined" == typeof SinaFinanceCallUp)
       throw new Error("nil SinaFinanceCallUp");
@@ -1889,7 +1889,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           o = n.domain ? "; domain=" + n.domain : "",
           s = n.secure ? "; secure" : "";
         document.cookie = [e, "=", t, a, r, o, s].join("");
-      }
+      },
     },
     S = r.prototype;
   (S.market = function(e) {
@@ -1913,7 +1913,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         x.set(a, t, {
           expires: 71996400,
           domain: ".sina.cn",
-          path: "/"
+          path: "/",
         });
     }),
     (S.setVisit = function() {
@@ -1923,12 +1923,12 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         e.setMCookie({
           prefix: e.prefix_visit,
           list: e.v_list,
-          len: e.v_len
+          len: e.v_len,
         }),
         e.setMCookie({
           prefix: e.prefix_visitAll,
           list: e.v_allList,
-          len: e.v_all_len
+          len: e.v_all_len,
         });
     }),
     (S.getVisit = function() {
@@ -1939,7 +1939,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     H = window.isVipRetain
       ? {}
       : {
-          callBack: g
+          callBack: g,
         },
     D = o.prototype;
   (D.initChart = function() {
@@ -1953,34 +1953,34 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     "\u9000\u5e02" == t.param.halt ? t.delistList : t.tabList;
     let pTechlist = document.cookie
       .split(";")
-      .map(e => e.split("=")[0].trim())
-      .filter(name => {
+      .map((e) => e.split("=")[0].trim())
+      .filter((name) => {
         return (
           name.indexOf("dataView-") == 0 && getMyCookie(name, "false") == "true"
         );
       })
-      .map(e => {
+      .map((e) => {
         if (e == "dataView-MA") {
           return {
             name: "MA",
             param: [
               {
                 v: 5,
-                color: "#FC9CB8"
+                color: "#FC9CB8",
               },
               {
                 v: 10,
-                color: "#12BDD9"
+                color: "#12BDD9",
               },
               {
                 v: 20,
-                color: "#EE2F72"
-              }
-            ]
+                color: "#EE2F72",
+              },
+            ],
           };
         } else
           return {
-            name: e.replace("dataView-", "")
+            name: e.replace("dataView-", ""),
           };
       });
     console.log(pTechlist);
@@ -1988,89 +1988,89 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       "plugins.sinaAppTKChart.get",
       {
         wrap: {
-          dom: e("#h5Chart")[0]
+          dom: e("#h5Chart")[0],
         },
         chart: {
           symbol: paperCode,
           initView: dataView,
           kInitParam: {
             rate: 20,
-            theme: L.theme
+            theme: L.theme,
           },
           kChart: {
-            pCharts: pTechlist
+            pCharts: pTechlist,
           },
           tChart: {
             toggleExtend: "on",
             setLineStyle: {
-              linetype: "mountain"
-            }
+              linetype: "mountain",
+            },
           },
           kInitParam: {
             theme: {},
             dim: {
-              H_T_G: 125
+              H_T_G: 90,
             },
-            candlenum: 240
+            candlenum: 240,
           },
           tInitParam: {
             rate: 20,
             theme: L.theme,
             dim: {
-              H_T_G: 125
-            }
-          }
+              H_T_G: 125,
+            },
+          },
         },
         info: {
           upColor: L.chartRed,
-          downColor: L.chartGreen
+          downColor: L.chartGreen,
         },
         bsCallUp: {
           more: [
             {
               name: "\u5e74\u7ebf",
-              v: "kcl"
+              v: "kcl",
             },
             {
               name: "5\u5206",
-              v: "k5"
+              v: "k5",
             },
             {
               name: "15\u5206",
-              v: "k15"
+              v: "k15",
             },
             {
               name: "30\u5206",
-              v: "k30"
+              v: "k30",
             },
             {
               name: "60\u5206",
-              v: "k60"
-            }
+              v: "k60",
+            },
           ],
           tabs: [
             {
               name: "\u4e94\u65e5",
-              v: "t5"
+              v: "t5",
             },
             {
               name: "\u5468K",
-              v: "kw"
+              v: "kw",
             },
             {
               name: "\u6708K",
-              v: "km"
-            }
+              v: "km",
+            },
           ],
-          show: !1
+          show: !1,
         },
         zoomBar: {
-          show: !__isNewsApp
+          show: !__isNewsApp,
         },
         clinicStock: {
-          show: !__isNewsApp
+          show: !__isNewsApp,
         },
-        callUpApp: H
+        callUpApp: H,
       },
       function(e) {
         (T = t.chart = e), t.resizeChart(e);
@@ -2114,7 +2114,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         themeGreen: "#1bc07d",
         themeEqual: "#999",
         themeEqualC: "#333",
-        themeBlack: "#999"
+        themeBlack: "#999",
       },
       riseColor: "riseRed",
       chartRed: "#f11200",
@@ -2123,7 +2123,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         T_RISE: void 0,
         T_FALL: void 0,
         K_RISE: void 0,
-        K_FALL: void 0
+        K_FALL: void 0,
       },
       newsUrl:
         "//cj.sina.cn/api/ct_news/get_news?market=cn&symbol=$symbol&su2cu=1&page=$page&num=10&fr=wap&mi=1",
@@ -2268,7 +2268,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       guHtml:
         '<a href="@url"><dl><dt><img src="@src"></dt><dd class="cn-comment-user"><span>@nick</span><span>@time</span></dd><dd><div class="cn-comment-content"><span>@content</span></div></dd></dl></a>',
       more:
-        '<p class="cn-news-more"><a href="@href">\u67e5\u770b\u66f4\u591a<i class="cn-arrow-more"></i></a></p>'
+        '<p class="cn-news-more"><a href="@href">\u67e5\u770b\u66f4\u591a<i class="cn-arrow-more"></i></a></p>',
     },
     E = l.prototype;
   (E.addBlank = function() {
@@ -2315,7 +2315,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             for (var a = n.split(","), i = [], r = 0; r < a.length; r++)
               i.push(e[a[r]]);
             t.inited ? t.relatedDataUpdate(i) : t.relatedRender(i);
-          }
+          },
         });
     }),
     (E.relatedRender = function(t) {
@@ -2551,21 +2551,21 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             t[0] > 0
               ? (e.animationDom({
                   dom: e.param.dom[0][0],
-                  offsetX: 0
+                  offsetX: 0,
                 }),
                 e.animationDom({
                   dom: e.param.dom[1][0],
-                  offsetX: 0
+                  offsetX: 0,
                 }),
                 (e.transformX[0] = e.transformX[1] = 0))
               : t[0] < e.screeWidth - this.offsetWidth
               ? (e.animationDom({
                   dom: e.param.dom[0][0],
-                  offsetX: e.screeWidth - this.offsetWidth
+                  offsetX: e.screeWidth - this.offsetWidth,
                 }),
                 e.animationDom({
                   dom: e.param.dom[1][0],
-                  offsetX: e.screeWidth - this.offsetWidth
+                  offsetX: e.screeWidth - this.offsetWidth,
                 }),
                 (e.transformX[0] = e.transformX[1] =
                   e.screeWidth - this.offsetWidth))
@@ -2583,7 +2583,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         callback: "jsonp",
         success: function(t) {
           (e.rData = t.data), e.clearedUp();
-        }
+        },
       });
   }),
     (U.market = function(e) {
@@ -2609,8 +2609,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             action: "_exposure",
             data: {
               aid: "hq_center_hs",
-              url: window.location.href
-            }
+              url: window.location.href,
+            },
           }),
         (e.inited = !1),
         (e.hasExposure = !0));
@@ -2631,12 +2631,12 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
               name: r.r_name,
               symbol: this.market({
                 code: r.r_code,
-                market: r.r_market
+                market: r.r_market,
               }),
               code: r.r_code,
               title: r.news_title,
               news_url: r.news_url,
-              stockUrl: r.url
+              stockUrl: r.url,
             };
           n.push(o.symbol), this.data.push(o);
         }
@@ -2645,7 +2645,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             symbols: this.symbols,
             getObj: function(e) {
               t.merge(e);
-            }
+            },
           });
       }
     }),
@@ -2784,14 +2784,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             {
               price: r,
               volume: o,
-              color: n
+              color: n,
             }
           );
         };
       for (i = 0; i < d; i++) {
         var m = h({
           price: c[i],
-          volume: (p[i] / e.u).toFixed(0)
+          volume: (p[i] / e.u).toFixed(0),
         });
         (n.childNodes[4 - i].childNodes[0].childNodes[1].innerHTML = m.price),
           (n.childNodes[4 - i].childNodes[0].childNodes[2].innerHTML =
@@ -2802,7 +2802,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       for (i = 0; i < l; i++) {
         var f = h({
           price: o[i],
-          volume: (s[i] / e.u).toFixed(0)
+          volume: (s[i] / e.u).toFixed(0),
         });
         (n.childNodes[i + 5].childNodes[0].childNodes[1].innerHTML = f.price),
           (n.childNodes[i + 5].childNodes[0].childNodes[2].innerHTML =
@@ -2945,14 +2945,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       uatrackKey: "wap_hqcenter_callup",
       androidInstallUrl:
         "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-      needOpenSource: !1
+      needOpenSource: !1,
     },
     z = new SinaFinanceCallUp.CallUpSinaFinance(P);
   e(".app-open").on("click", function() {
     z.tryDirectCall({
       callpagetype: "2",
       symbol: paperCode,
-      position: "hq_top"
+      position: "hq_top",
     });
   });
   var W;
@@ -2961,18 +2961,18 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     topBanner: {
       pos: "top_banner",
       androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk"
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
     },
     bottomBanner: {
       pos: "bottom_banner",
       androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waprecommend.apk"
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waprecommend.apk",
     },
     xeiut: {
       pos: "callup_consult",
       androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
-    }
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
+    },
   };
   e("#tbanner, #cnBottomBanner").on("click", function() {
     g(R[e(this).data("position")]);
@@ -2983,7 +2983,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       subname: "callup_consult",
       needOpenSource: !1,
       androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
     },
     G = new SinaFinanceCallUp.CallUpSinaFinance($),
     O = e("#cn_position_section")[0];
@@ -2991,7 +2991,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     e("#tuiex").on("click", function() {
       G.tryDirectCall({
         callpagetype: "37",
-        position: "callup_consult"
+        position: "callup_consult",
       });
     });
   var K = function() {
@@ -3003,7 +3003,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           g({
             pos: "callup_remind",
             androidurl:
-              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
+              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
           });
         },
         !1
@@ -3016,7 +3016,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       subname: "callup_announce",
       needOpenSource: !1,
       androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
     },
     Z = new SinaFinanceCallUp.CallUpSinaFinance(V),
     X = e("#cn_report_cont"),
@@ -3035,7 +3035,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           callpagetype: o,
           cid: l,
           symbol: paperCode,
-          position: "callup_announce"
+          position: "callup_announce",
         }),
           t.preventDefault();
       } catch (e) {}
@@ -3048,7 +3048,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       "baidu.com",
       "sogou.com",
       "so.com",
-      "easou.com"
+      "easou.com",
     ],
     te = {
       eventid: "hq_center_hs",
@@ -3056,30 +3056,30 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       subname: "outrefer2app",
       needOpenSource: !1,
       androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_sousuo.apk"
+        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_sousuo.apk",
     },
     ne = {
       navmystock: {
         callopts: {
           callpagetype: "10",
-          position: "outrefer2app"
-        }
+          position: "outrefer2app",
+        },
       },
       navmarket: {
         callopts: {
           subtype: "0",
           callpagetype: "23",
-          position: "outrefer2app"
-        }
+          position: "outrefer2app",
+        },
       },
       tabcall: {
         callopts: {
           stocktype: "cn",
           callpagetype: "2",
           position: "outrefer2app",
-          symbol: paperCode
-        }
-      }
+          symbol: paperCode,
+        },
+      },
     },
     ae = y(),
     ie = b();
@@ -3115,7 +3115,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     (n.DEFAULT = {
       interval: 8e3,
       service:
-        "//quotes.sina.cn/extra/api/openapi.php/CalendarService.getLatestIndex?size=5"
+        "//quotes.sina.cn/extra/api/openapi.php/CalendarService.getLatestIndex?size=5",
     }),
       (n.prototype = {
         constructor: n,
@@ -3128,7 +3128,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             success: function(e) {
               t.render(e);
             },
-            error: e.proxy(t.error, t)
+            error: e.proxy(t.error, t),
           });
         },
         render: function(e) {
@@ -3178,18 +3178,18 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             subname: "callup_calendar",
             needOpenSource: !1,
             androidInstallUrl:
-              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk"
+              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
           };
           new SinaFinanceCallUp.CallUpSinaFinance(e).tryDirectCall({
             callpagetype: "36",
-            position: "callup_calendar"
+            position: "callup_calendar",
           });
         },
         next: function() {
           var e = this.$elem;
           e.animate(
             {
-              marginTop: "-50px"
+              marginTop: "-50px",
             },
             function() {
               e.css("margin-top", 0)
@@ -3207,7 +3207,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
               e.proxy(this.next, this),
               this.options.interval
             ));
-        }
+        },
       }),
       (e.fn.InfiniteScroll = t),
       (e.fn.InfiniteScroll.Constructor = n),

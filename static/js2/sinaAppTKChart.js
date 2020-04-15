@@ -1679,7 +1679,23 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             touch_prevent: !1,
           },
           setReK: 0,
-          tCharts: [
+          tCharts: (() => {
+            let all = ["null", "VOLUME", "KDJ", "MACD"];
+            let tTechlist = document.cookie
+              .split(";")
+              .map((e) => e.split("=")[0].trim())
+              .filter((name) => {
+                return (
+                  name.indexOf("dataView-") == 0 &&
+                  getMyCookie(name, "false") == "true"
+                );
+              })
+              .map((e) => e.replace("dataView-", ""));
+            tTechlist = all.filter((e) => tTechlist.indexOf(e) > -1);
+            return tTechlist.map((e) => {
+              return { name: e };
+            });
+          })() || [
             {
               name: "VOLUME",
             },

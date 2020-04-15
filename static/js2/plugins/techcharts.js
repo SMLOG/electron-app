@@ -2442,15 +2442,43 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         xPos = u;
         var g,
           b = 1;
-        for (h.newStyle(s, !0, b), n = 0; d > n; n++)
-          (A = this.datas[n].bary),
-            m >= A &&
-              ((g = ~~(xPos + 0.5)),
-              (g -= 0.5),
-              h.moveTo(g, m),
-              h.lineTo(g, A)),
-            (xPos += perWidth);
-        for (h.stroke(), xPos = u, h.newStyle(e, !0, b), n = 0; d > n; n++)
+        var bar = 0;
+        var color = s;
+        for (h.newStyle(s, !0, b), n = 0; d > n; n++) {
+          if (n > 0) {
+            if (this.datas[n].bar <= bar && color === s) {
+              h.stroke();
+              color = "LightGreen";
+              h.newStyle(color, !0, b);
+            } else if (this.datas[n].bar > bar && color != s) {
+              h.stroke();
+              color = s;
+              h.newStyle(color, !0, b);
+            }
+          }
+
+          bar = this.datas[n].bar;
+          A = this.datas[n].bary;
+
+          m >= A &&
+            ((g = ~~(xPos + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A));
+          xPos += perWidth;
+        }
+        for (h.stroke(), xPos = u, h.newStyle(e, !0, b), n = 0; d > n; n++) {
+          if (n > 0) {
+            if (this.datas[n].bar >= bar && color === e) {
+              h.stroke();
+              color = "LightPink";
+              h.newStyle(color, !0, b);
+            } else if (this.datas[n].bar < bar && color != e) {
+              h.stroke();
+              color = e;
+              h.newStyle(color, !0, b);
+            }
+          }
+
+          bar = this.datas[n].bar;
+
           (A = this.datas[n].bary),
             A > m &&
               ((g = ~~(xPos + 0.5)),
@@ -2458,6 +2486,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               h.moveTo(g, m),
               h.lineTo(g, A)),
             (xPos += perWidth);
+        }
         h.stroke();
         var y = this.h / 2 - 0.5;
         h.newStyle(this.cfg.COLOR.GRID, !0, 1),

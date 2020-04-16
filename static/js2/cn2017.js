@@ -2009,7 +2009,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           kInitParam: {
             theme: {},
             dim: {
-              H_T_G: 90,
+              H_T_G: 120,
             },
             candlenum: 240,
           },

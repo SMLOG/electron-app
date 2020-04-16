@@ -126,8 +126,9 @@
                     :title="item.code"
                     :class="{
                       lk: item.tables && item.tables.length > 0,
-                      hl: item.hili == 2,
-                      link: true
+                      link: true,
+                      blink: item._S
+
                     }"
                   >
                     <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">

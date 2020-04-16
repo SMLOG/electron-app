@@ -2443,22 +2443,24 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var g,
           b = 1;
         var color = s;
+        var curColor = s;
+
         for (h.newStyle(s, !0, b), n = 0; d > n; n++) {
           if (n > 0) {
-            if (this.datas[n].bar <= this.datas[n - 1].bar && color === s) {
-              h.stroke();
+            if (this.datas[n].bar <= this.datas[n - 1].bar) {
               color = "LightPink";
-              h.newStyle(color, !0, b);
-            } else if (
-              this.datas[n].bar > this.datas[n - 1].bar &&
-              color != s
-            ) {
-              h.stroke();
+              //if (n > 1 && this.datas[n - 1].bar > this.datas[n - 2].bar) {
+              //  color = "green";
+              //}
+            } else {
               color = s;
-              h.newStyle(color, !0, b);
             }
           }
-
+          if (curColor != color) {
+            h.stroke();
+            curColor = color;
+            h.newStyle(curColor, !0, b);
+          }
           A = this.datas[n].bary;
 
           m >= A &&
@@ -2466,21 +2468,23 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           xPos += perWidth;
         }
         color = e;
+        curColor = e;
         for (h.stroke(), xPos = u, h.newStyle(e, !0, b), n = 0; d > n; n++) {
           if (n > 0) {
-            if (this.datas[n].bar >= this.datas[n - 1].bar && color === e) {
-              h.stroke();
+            if (this.datas[n].bar >= this.datas[n - 1].bar) {
               color = "LightGreen";
 
-              h.newStyle(color, !0, b);
-            } else if (
-              this.datas[n].bar < this.datas[n - 1].bar &&
-              color != e
-            ) {
-              h.stroke();
+              if (n > 1 && this.datas[n].dif >= this.datas[n - 1].dif) {
+                color = "red";
+              }
+            } else {
               color = e;
-              h.newStyle(color, !0, b);
             }
+          }
+          if (curColor != color) {
+            h.stroke();
+            curColor = color;
+            h.newStyle(curColor, !0, b);
           }
 
           (A = this.datas[n].bary),

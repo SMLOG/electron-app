@@ -134,20 +134,25 @@ const techMap = {
   日波: function({ item, kd, kw, km }) {
     return isStrong(kd);
   },
-  KU: function({ item, kd, kw, km }) {
-    let i = kd.MACD.length;
-    return (
-      kd.MACD[i - 1].bar >= kd.MACD[i - 2].bar &&
-      kd.MACD[i - 1].dif > kd.MACD[i - 2].dif &&
-      kd.MACD[i - 2].bar < kd.MACD[i - 3].bar &&
-      kd.MACD[i - 3].bar < kd.MACD[i - 4].bar &&
-      kd.MACD[i - 4].bar < kd.MACD[i - 5].bar
-    );
-  },
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
-
+  B: function({ item, kd, kw, km }) {
+    return (
+      km.MACD.length > 3 &&
+      km.MACD[km.MACD.length - 1].bar >= km.MACD[km.MACD.length - 2].bar &&
+      km.MACD[km.MACD.length - 1].dif >= km.MACD[km.MACD.length - 2].dif &&
+      (km.MACD[km.MACD.length - 2].bar < km.MACD[km.MACD.length - 3].bar ||
+        km.MACD[km.MACD.length - 2].dif < km.MACD[km.MACD.length - 3].dif)
+    );
+  },
+  S: function({ item, kd, kw, km }) {
+    return (
+      km.MACD.length > 3 &&
+      (km.MACD[km.MACD.length - 1].bar <= km.MACD[km.MACD.length - 2].bar ||
+        km.MACD[km.MACD.length - 1].dif <= km.MACD[km.MACD.length - 2].dif)
+    );
+  },
   /*,
   "D&B": function({ item, kd, kw, km }) {
     let boll = kd.BOLL;

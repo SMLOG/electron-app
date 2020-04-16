@@ -15,7 +15,7 @@
               >{{ item.name }}</span>
               <span
                 style="flex-grow:1;text-align:left;"
-                :class="{ blink: item._Deth }"
+                :class="{ blink: item._S }"
                 class="content"
                 @click="openK(item, $event)"
               >

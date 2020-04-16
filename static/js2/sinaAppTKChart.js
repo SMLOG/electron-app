@@ -1930,7 +1930,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         },
       },
       zoomBar: {
-        show: !0,
+        show: !1,
         style: {
           position: "absolute",
           bottom: 0,

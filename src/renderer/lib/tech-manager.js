@@ -113,7 +113,7 @@ const techMap = {
       kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
     );
   },*/
-  月: function({ item, kd, kw, km }) {
+  月势: function({ item, kd, kw, km }) {
     return (
       isStrong(km) ||
       (km.MACD.length > 3 &&
@@ -123,7 +123,7 @@ const techMap = {
       keepWeek(km, 20)
     );
   },
-  周: function({ item, kd, kw, km }) {
+  周底: function({ item, kd, kw, km }) {
     let i = kw.MACD.length;
     let r =
       (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
@@ -131,7 +131,7 @@ const techMap = {
     return isStrong(kw);
   },
 
-  日: function({ item, kd, kw, km }) {
+  日波: function({ item, kd, kw, km }) {
     return isStrong(kd);
   },
   KU: function({ item, kd, kw, km }) {
@@ -146,7 +146,7 @@ const techMap = {
   },
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
-  }
+  },
 
   /*,
   "D&B": function({ item, kd, kw, km }) {
@@ -261,7 +261,7 @@ export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
     filters[name] = function(items) {
-      return items.filter(e => e[`_${name}`]);
+      return items.filter((e) => e[`_${name}`]);
     };
   }
   return filters;
@@ -271,7 +271,7 @@ export async function callFun(item, chooseDate) {
   if (chooseDate) {
     let ntechDatas = {};
     for (let p of ["kd", "kw", "km"]) {
-      let i = techDatas[p].datas.filter(d => d.day <= chooseDate).length;
+      let i = techDatas[p].datas.filter((d) => d.day <= chooseDate).length;
       let nk = techDatas[p].datas.slice(0, i);
       ntechDatas[p] = {};
       for (let k in techDatas[p]) {
@@ -328,7 +328,7 @@ export function tj(items) {
           endDate: item.endDate,
           startDate: item.startDate,
           startNow: item.startNow,
-          endNow: item.endNow
+          endNow: item.endNow,
         });
         tjmap[it.code] = it;
         tjdatas[item._i] = it;

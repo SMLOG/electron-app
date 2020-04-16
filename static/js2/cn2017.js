@@ -2065,7 +2065,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           show: !1,
         },
         zoomBar: {
-          show: !__isNewsApp,
+          show: !1,
         },
         clinicStock: {
           show: !__isNewsApp,

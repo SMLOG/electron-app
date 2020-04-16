@@ -2442,42 +2442,46 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         xPos = u;
         var g,
           b = 1;
-        var bar = 0;
         var color = s;
         for (h.newStyle(s, !0, b), n = 0; d > n; n++) {
           if (n > 0) {
-            if (this.datas[n].bar <= bar && color === s) {
+            if (this.datas[n].bar <= this.datas[n - 1].bar && color === s) {
               h.stroke();
-              color = "LightGreen";
+              color = "LightPink";
               h.newStyle(color, !0, b);
-            } else if (this.datas[n].bar > bar && color != s) {
+            } else if (
+              this.datas[n].bar > this.datas[n - 1].bar &&
+              color != s
+            ) {
               h.stroke();
               color = s;
               h.newStyle(color, !0, b);
             }
           }
 
-          bar = this.datas[n].bar;
           A = this.datas[n].bary;
 
           m >= A &&
             ((g = ~~(xPos + 0.5)), (g -= 0.5), h.moveTo(g, m), h.lineTo(g, A));
           xPos += perWidth;
         }
+        color = e;
         for (h.stroke(), xPos = u, h.newStyle(e, !0, b), n = 0; d > n; n++) {
           if (n > 0) {
-            if (this.datas[n].bar >= bar && color === e) {
+            if (this.datas[n].bar >= this.datas[n - 1].bar && color === e) {
               h.stroke();
-              color = "LightPink";
+              color = "LightGreen";
+
               h.newStyle(color, !0, b);
-            } else if (this.datas[n].bar < bar && color != e) {
+            } else if (
+              this.datas[n].bar < this.datas[n - 1].bar &&
+              color != e
+            ) {
               h.stroke();
               color = e;
               h.newStyle(color, !0, b);
             }
           }
-
-          bar = this.datas[n].bar;
 
           (A = this.datas[n].bary),
             A > m &&

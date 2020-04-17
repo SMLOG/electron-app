@@ -1346,7 +1346,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }),
       this.loadUrlData();
   }
-  function _(i, a) {
+  function kdj(i, a) {
     (this.DEFAULT_ARR = [
       { v: 9, color: "#888888", prop: "k", idct: "K" },
       { v: 3, color: "#FFAC03", prop: "d", idct: "D" },
@@ -1375,6 +1375,81 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.oriArr = i), !this.datas && (this.datas = []), t.ca(this.selfArr);
       for (var g = 0, b = i.length; b > g; g++)
         this.selfArr[g] = { k: v[g], d: A[g], j: m[g] };
+    };
+    this.LightenDarkenColor = function(col, amt) {
+      var usePound = false;
+
+      if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+      }
+
+      var num = parseInt(col, 16);
+
+      var r = (num >> 16) + amt;
+
+      if (r > 255) r = 255;
+      else if (r < 0) r = 0;
+
+      var b = ((num >> 8) & 0x00ff) + amt;
+
+      if (b > 255) b = 255;
+      else if (b < 0) b = 0;
+
+      var g = (num & 0x0000ff) + amt;
+
+      if (g > 255) g = 255;
+      else if (g < 0) g = 0;
+
+      return (
+        (usePound ? "#" : "") +
+        ("000000" + (g | (b << 8) | (r << 16)).toString(16)).substr(-6, 6)
+      );
+    };
+
+    this.draw = function(t, i) {
+      if (((this.__iOffsetX = isNaN(i) ? this.__iOffsetX : i), this.datas)) {
+        this.line.clear(!0, this.cfg.PARAM.getHd());
+        var r,
+          a,
+          s = this.datas.length;
+        this.cfg.datas.isT
+          ? ((r = this.cfg.DIMENSION.w_t / s), (a = r * gt))
+          : ((r =
+              this.cfg.DIMENSION.w_k /
+              Math.max(s, this.cfg.PARAM.minCandleNum)),
+            (a = this.__iOffsetX - r * mt));
+        for (var e, h = this.customArr.length; h--; ) {
+          var o = this.customArr[h].prop + "y";
+          (e = a), this.line.newStyle(this.customArr[h].color, !0, this.lw);
+          for (var l = 0; s > l; l++)
+            0 == l
+              ? this.line.moveTo(e, this.datas[l][o])
+              : this.line.lineTo(e, this.datas[l][o]),
+              (e += r);
+          this.line.stroke();
+        }
+        var e;
+        var o = "ky";
+        e = a;
+        for (var l = 0; s > l; l++) {
+          if ((l > 1 && this.datas[l]["k"] > 80) || this.datas[l]["k"] < 20) {
+            this.line.beginPath();
+            this.line.newStyle(
+              this.datas[l]["k"] > 80 ? "darkgreen" : "red",
+              !0,
+              this.lw
+            );
+            this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
+
+            this.line.stroke();
+          }
+          e += r;
+        }
+
+        t && this.line.drawBg(this.__iOffsetX),
+          this.vaObj && this.drawValueRange();
+      }
     };
   }
   function D(i, a, s) {
@@ -4645,7 +4720,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         DPDKS: m,
         EMV: g,
         EXPMA: y,
-        KDJ: _,
+        KDJ: kdj,
         KFLOW: D,
         KKFLOW: M,
         KGSTRADE: O,
@@ -6322,7 +6397,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     t.fInherit(b, r),
     t.fInherit(y, r),
     t.fInherit(w, r),
-    t.fInherit(_, r),
+    t.fInherit(kdj, r),
     t.fInherit(D, r),
     t.fInherit(M, r),
     t.fInherit(O, r),

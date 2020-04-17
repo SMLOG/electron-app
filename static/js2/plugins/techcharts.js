@@ -2474,7 +2474,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             if (this.datas[n].bar >= this.datas[n - 1].bar) {
               color = "LightGreen";
 
-              if (n > 1 && this.datas[n].dif >= this.datas[n - 1].dif) {
+              if (
+                n > 1 &&
+                this.datas[n].dif >= this.datas[n - 1].dif &&
+                Math.abs(this.datas[n].bar) < 0.5
+              ) {
                 color = "red";
               }
             } else {

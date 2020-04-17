@@ -18,7 +18,7 @@ export async function getTechDatas(item, cache = true) {
     for (let v of ["kd", "kw", "km"]) {
       ifr.contentWindow[techId] = null;
       ifr.contentWindow.chart_.showView({
-        view: v
+        view: v,
       });
       for (;;) {
         if (ifr.contentWindow[techId]) {
@@ -52,7 +52,7 @@ export async function getTdatas(code) {
     KKE.api(
       "datas.t.get",
       {
-        symbol: code
+        symbol: code,
       },
       function(resp) {
         resolve(resp);
@@ -77,7 +77,7 @@ export async function get5Tdatas(code) {
         ssl: true,
         symbol: code,
         withI: true,
-        withT5: 1
+        withT5: 1,
       },
       function(data) {
         resolve(data);
@@ -89,10 +89,10 @@ window.get5Tdatas = get5Tdatas;
 let tmpromise = (async () => {
   await loadscript;
   return new Promise((resolve, reject) => {
-    KKE.api("plugins.techchart.get", "", tchar => {
+    KKE.api("plugins.techchart.get", "", (tchar) => {
       var tm = tchar.tChart({});
       tm.createChart({ name: "MACD" });
-      //tm.createChart({ name: "kDJ" });
+      tm.createChart({ name: "kDJ" });
       tm.createChart({ name: "BOLL" });
       tm.createChart({ name: "MA" });
       console.log(tm);
@@ -185,7 +185,7 @@ function rejustRight(factor, datas, market, kdatas, util) {
         price: p.close,
         volume: p.volume,
         totalVolume: p.volume,
-        date: util.dd(p.date)
+        date: util.dd(p.date),
       }));
     l = util.kUtil.mw(kdatas2, S, null, null, 0 / 0);
     h = l[0];
@@ -214,7 +214,7 @@ async function getReData(item) {
         symbol: item.code,
         market: "CN",
         dir: "q",
-        ssl: true
+        ssl: true,
       },
       function(data) {
         resolve(data);
@@ -283,7 +283,7 @@ export async function getTech(item) {
     ret = {
       kd: tm.linkData(datas.data.day),
       kw: tm.linkData(datas.data.week),
-      km: tm.linkData(datas.data.month)
+      km: tm.linkData(datas.data.month),
     };
 
     await getCacheData(item.date, techId, null, ret);

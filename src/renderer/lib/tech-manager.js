@@ -142,6 +142,7 @@ const techMap = {
       km.MACD.length > 3 &&
       km.MACD[km.MACD.length - 1].bar >= km.MACD[km.MACD.length - 2].bar &&
       km.MACD[km.MACD.length - 1].dif >= km.MACD[km.MACD.length - 2].dif &&
+      Math.abs(km.MACD[km.MACD.length - 1].bar) < 0.5 &&
       (km.MACD[km.MACD.length - 2].bar < km.MACD[km.MACD.length - 3].bar ||
         km.MACD[km.MACD.length - 2].dif < km.MACD[km.MACD.length - 3].dif)
     );

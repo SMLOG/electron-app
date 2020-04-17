@@ -768,7 +768,7 @@
       let timer = setInterval(() => {
         if ($("li[type=nav]").length > 0) clearInterval(timer);
         else return;
-        $("li[type=nav]").click(function(e) {
+        $("li[type=nav],li[type=subNav]").click(function(e) {
           let type = $(this).attr("data-view");
           if (type) {
             if (getMyCookie("dataView") == type) {

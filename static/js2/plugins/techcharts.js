@@ -1433,16 +1433,30 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var o = "ky";
         e = a;
         for (var l = 0; s > l; l++) {
-          if ((l > 1 && this.datas[l]["k"] > 80) || this.datas[l]["k"] < 20) {
-            this.line.beginPath();
-            this.line.newStyle(
-              this.datas[l]["k"] > 80 ? "darkgreen" : "red",
-              !0,
-              this.lw
-            );
-            this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
+          if (l > 1) {
+            if (this.datas[l]["k"] > 80 || this.datas[l]["k"] < 20) {
+              this.line.beginPath();
+              this.line.newStyle(
+                this.datas[l]["k"] > this.datas[l - 1]["k"] ? "red" : "green",
+                !0,
+                this.lw
+              );
+              this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
 
-            this.line.stroke();
+              this.line.stroke();
+            } else {
+              this.line.beginPath();
+              this.line.newStyle(
+                this.datas[l]["k"] > this.datas[l - 1]["k"]
+                  ? "#DA70D6"
+                  : "#7FFF00",
+                !0,
+                this.lw
+              );
+              this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
+
+              this.line.stroke();
+            }
           }
           e += r;
         }

@@ -113,46 +113,65 @@ const techMap = {
       kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
     );
   },*/
-  月势: function({ item, kd, kw, km }) {
+  W20Y5: function({ item, kd, kw, km }) {
     return (
-      isStrong(km) ||
-      (km.MACD.length > 3 &&
-        km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
-        km.MACD[km.MACD.length - 2].bar >= km.MACD[km.MACD.length - 3].bar &&
-        km.MACD[km.MACD.length - 3].bar >= km.MACD[km.MACD.length - 4].bar) ||
-      keepWeek(km, 20)
+      kw.MA[kw.MA.length - 1].ma20 < item.now &&
+      km.MA[km.MA.length - 1].ma5 < item.now &&
+      km.KDJ[km.KDJ.length - 1].k < 50
     );
   },
-  周底: function({ item, kd, kw, km }) {
-    let i = kw.MACD.length;
-    let r =
-      (kw.datas[i - 1].close - kw.datas[i - 3].open) / kw.datas[i - 3].open;
-    item.week3p = r;
-    return isStrong(kw);
+  上510周: function({ item, kd, kw, km }) {
+    return (
+      kw.MA[kw.MA.length - 1].ma5 < item.now &&
+      km.MA[km.MA.length - 1].ma10 < item.now
+    );
   },
-
+  上60日: function({ item, kd, kw, km }) {
+    let p = (item.now - kd.MA[kd.MA.length - 1].ma60) / item.now;
+    return kd.MA[kd.MA.length - 1].ma60 < item.now && p > 0 && p < 0.03;
+  },
   日波: function({ item, kd, kw, km }) {
-    return isStrong(kd);
+    return (
+      kd.KDJ[kd.KDJ.length - 1].k < 80 &&
+      kd.KDJ[kd.KDJ.length - 2].k < kd.KDJ[kd.KDJ.length - 1].k &&
+      kd.MACD[kd.MACD.length - 1].bar >= kd.MACD[kd.MACD.length - 2].bar
+    );
   },
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
+
   B: function({ item, kd, kw, km }) {
+    //月线看趋势，周线看方向，日线看买卖点
+    //趋势线上阴线买，趋势线下阳线卖
+    let i = kd.datas.length;
     return (
-      km.MACD.length > 3 &&
-      km.MACD[km.MACD.length - 1].bar >= km.MACD[km.MACD.length - 2].bar &&
-      km.MACD[km.MACD.length - 1].dif >= km.MACD[km.MACD.length - 2].dif &&
+      (kd.datas[i - 1].close || kd.datas[i - 1].now) > kd.datas[i - 1].open &&
+      kd.datas[i - 2].close > kd.datas[i - 2].open &&
+      (kd.datas[i - 1].close || kd.datas[i - 1].now) > kd.MA[i - 1].ma5 &&
+      kd.datas[i - 2].close > kd.MA[i - 2].ma5 &&
+      kd.datas[i - 3].close <=
+        kd.MA[i - 3]
+          .ma5 /*&&
+      kd.MACD[kd.MACD.length - 2].bar >= kd.MACD[kd.MACD.length - 3].bar*/
+      /*km.MACD.length > 3 &&
+      km.KDJ[km.KDJ.length - 1].k < 50 &&
+      kw.KDJ[kw.KDJ.length - 1].k < 80 &&*/
+      /* kd.KDJ[kd.KDJ.length - 1].k < 80 &&
+      kd.KDJ[kd.KDJ.length - 2].k < kd.KDJ[kd.KDJ.length - 1].k &&
       Math.abs(km.MACD[km.MACD.length - 1].bar) < 0.5 &&
-      (km.MACD[km.MACD.length - 2].bar < km.MACD[km.MACD.length - 3].bar ||
-        km.MACD[km.MACD.length - 2].dif < km.MACD[km.MACD.length - 3].dif)
+      km.KDJ[km.KDJ.length - 1].k < 80 &&
+      km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
+      km.MACD[km.MACD.length - 2].bar > km.MACD[km.MACD.length - 3].bar &&
+      kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
+      kd.MACD[kd.MACD.length - 1].bar >=
+        kd.MACD[kd.MACD.length - 2]
+          .bar*/
     );
   },
   S: function({ item, kd, kw, km }) {
-    return (
-      km.MACD.length > 3 &&
-      (km.MACD[km.MACD.length - 1].bar <= km.MACD[km.MACD.length - 2].bar ||
-        km.MACD[km.MACD.length - 1].dif <= km.MACD[km.MACD.length - 2].dif)
-    );
+    let i = kd.datas.length;
+    return (kd.datas[i - 1].close || kd.datas[i - 1].now) < kd.MA[i - 1].ma5;
   },
   /*,
   "D&B": function({ item, kd, kw, km }) {

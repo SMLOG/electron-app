@@ -1346,6 +1346,100 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }),
       this.loadUrlData();
   }
+  function BS(i, a) {
+    (this.DEFAULT_ARR = [
+      { v: 9, color: "#888888", prop: "k", idct: "K" },
+      { v: 3, color: "#FFAC03", prop: "d", idct: "D" },
+      { v: 3, color: "#cc22ba", prop: "j", idct: "J" },
+    ]),
+      r.call(this, i, a),
+      (this.name = "BS"),
+      (this.vaObj = { glv: 50, upper: 80, lower: 20 });
+    var s = bt.calcSMA,
+      e = bt.calcLLV,
+      h = bt.calcHHV,
+      o = bt.operateArr,
+      l = bt.getArr;
+    this.initAndCalcAll = function(i) {
+      var r = this.customArr,
+        a = r[0].v,
+        n = r[1].v,
+        c = r[2].v,
+        d = l(i, "close"),
+        f = l(i, "low"),
+        u = l(i, "high"),
+        p = o(o(o(d, e(f, a), "-"), o(h(u, a), e(f, a), "-"), "/"), 100, "*"),
+        v = s(p, n, 1),
+        A = s(v, c, 1),
+        m = o(o(v, 3, "*"), o(A, 2, "*"), "-");
+      (this.oriArr = i), !this.datas && (this.datas = []), t.ca(this.selfArr);
+      for (var g = 0, b = i.length; b > g; g++)
+        this.selfArr[g] = { k: v[g], d: A[g], j: m[g] };
+
+      //macd
+
+      //
+    };
+
+    this.draw = function(t, i) {
+      if (((this.__iOffsetX = isNaN(i) ? this.__iOffsetX : i), this.datas)) {
+        this.line.clear(!0, this.cfg.PARAM.getHd());
+        var r,
+          a,
+          s = this.datas.length;
+        this.cfg.datas.isT
+          ? ((r = this.cfg.DIMENSION.w_t / s), (a = r * gt))
+          : ((r =
+              this.cfg.DIMENSION.w_k /
+              Math.max(s, this.cfg.PARAM.minCandleNum)),
+            (a = this.__iOffsetX - r * mt));
+        for (var e, h = this.customArr.length; h--; ) {
+          var o = this.customArr[h].prop + "y";
+          (e = a), this.line.newStyle(this.customArr[h].color, !0, this.lw);
+          for (var l = 0; s > l; l++)
+            0 == l
+              ? this.line.moveTo(e, this.datas[l][o])
+              : this.line.lineTo(e, this.datas[l][o]),
+              (e += r);
+          this.line.stroke();
+        }
+        var e;
+        var o = "ky";
+        e = a;
+        for (var l = 0; s > l; l++) {
+          if (l > 1) {
+            if (this.datas[l]["k"] > 80 || this.datas[l]["k"] < 20) {
+              this.line.beginPath();
+              this.line.newStyle(
+                this.datas[l]["k"] > this.datas[l - 1]["k"] ? "red" : "green",
+                !0,
+                this.lw
+              );
+              this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
+
+              this.line.stroke();
+            } else {
+              this.line.beginPath();
+              this.line.newStyle(
+                this.datas[l]["k"] > this.datas[l - 1]["k"]
+                  ? "#DA70D6"
+                  : "#7FFF00",
+                !0,
+                this.lw
+              );
+              this.line.arc(e, this.datas[l][o], 1, 0, Math.PI * 2, true);
+
+              this.line.stroke();
+            }
+          }
+          e += r;
+        }
+
+        t && this.line.drawBg(this.__iOffsetX),
+          this.vaObj && this.drawValueRange();
+      }
+    };
+  }
   function kdj(i, a) {
     (this.DEFAULT_ARR = [
       { v: 9, color: "#888888", prop: "k", idct: "K" },
@@ -1375,36 +1469,6 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.oriArr = i), !this.datas && (this.datas = []), t.ca(this.selfArr);
       for (var g = 0, b = i.length; b > g; g++)
         this.selfArr[g] = { k: v[g], d: A[g], j: m[g] };
-    };
-    this.LightenDarkenColor = function(col, amt) {
-      var usePound = false;
-
-      if (col[0] == "#") {
-        col = col.slice(1);
-        usePound = true;
-      }
-
-      var num = parseInt(col, 16);
-
-      var r = (num >> 16) + amt;
-
-      if (r > 255) r = 255;
-      else if (r < 0) r = 0;
-
-      var b = ((num >> 8) & 0x00ff) + amt;
-
-      if (b > 255) b = 255;
-      else if (b < 0) b = 0;
-
-      var g = (num & 0x0000ff) + amt;
-
-      if (g > 255) g = 255;
-      else if (g < 0) g = 0;
-
-      return (
-        (usePound ? "#" : "") +
-        ("000000" + (g | (b << 8) | (r << 16)).toString(16)).substr(-6, 6)
-      );
     };
 
     this.draw = function(t, i) {
@@ -4599,7 +4663,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           var i = d.datas.isT ? s.tDb.get() : s.kDb.get();
           if (i)
             for (var e, h = r.length; h--; )
-              (e = r[h]), e.initAndCalcAll(i, t), t && e.update();
+              (e = r[h]),
+                e.initAndCalcAll(i, t),
+                (window["tech" + e.name] = e.selfArr),
+                t && e.update();
         }
       }),
         (this.setDataRange = function() {
@@ -4735,6 +4802,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         EMV: g,
         EXPMA: y,
         KDJ: kdj,
+        BS: BS,
         KFLOW: D,
         KKFLOW: M,
         KGSTRADE: O,
@@ -4826,8 +4894,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       (this.linkData = function(t) {
         var i = Z.datas.isT ? u.tDb.get() : u.kDb.get();
         if (i)
-          for (var r, a = lt.length; a--; )
-            (r = lt[a]), r.initAndCalcAll(i), t && r.update();
+          for (var r, a = lt.length; a--; ) {
+            r = lt[a];
+            r.initAndCalcAll(i);
+            window["tech" + r.name] = r.selfArr;
+
+            t && r.update();
+          }
       }),
         (this.setDataRange = function() {
           for (var t, i = lt.length; i--; )
@@ -5142,6 +5215,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "VOLUME",
       "MACD",
       "KDJ",
+      "BS",
       "RSI",
       "BOLL",
       "WR",
@@ -5782,6 +5856,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           case "DMA":
           case "EMV":
           case "KDJ":
+          case "BS":
           case "ROC":
           case "VR":
           case "WVAD":
@@ -6412,6 +6487,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     t.fInherit(y, r),
     t.fInherit(w, r),
     t.fInherit(kdj, r),
+    t.fInherit(BS, r),
     t.fInherit(D, r),
     t.fInherit(M, r),
     t.fInherit(O, r),

@@ -1680,7 +1680,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           },
           setReK: 0,
           tCharts: (() => {
-            let all = ["null", "VOLUME", "KDJ", "MACD"];
+            let all = ["null", "VOLUME", "KDJ", "MACD", "BS"];
             let tTechlist = document.cookie
               .split(";")
               .map((e) => e.split("=")[0].trim())
@@ -1874,7 +1874,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         },
         kChart: {
           show: !0,
-          tCharts: ["null", "VOLUME", "KDJ", "MACD"],
+          tCharts: ["null", "VOLUME", "KDJ", "MACD", "BS"],
           pCharts: ["VOLUME", "MA", "BBIBOLL", "BOLL", "EXPMA", "SAR"],
         },
         tChart: {

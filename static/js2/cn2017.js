@@ -1976,6 +1976,10 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                 v: 20,
                 color: "#EE2F72",
               },
+              {
+                v: 60,
+                color: "#8CBB0D",
+              },
             ],
           };
         } else

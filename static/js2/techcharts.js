@@ -23,7 +23,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           onClkMain: void 0,
           stock: void 0,
           usrObj: void 0,
-          initMgr: void 0
+          initMgr: void 0,
         },
         i
       )),
@@ -36,7 +36,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           titleW: 0 / 0,
           isBlank: !1,
           ctnId: void 0,
-          allowrfs: !0
+          allowrfs: !0,
         },
         r
       )),
@@ -93,7 +93,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       isBlank: !0,
       ctnId: "blankctn_" + t.uid,
       allowrfs: !1,
-      h: t.DIMENSION.H_BLK
+      h: t.DIMENSION.H_BLK,
     };
     r.call(this, t, i, a),
       (this.name = "BLANKCTN"),
@@ -101,7 +101,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function s(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#007cc8", prop: "adl", idct: "ADL" }
+      { v: 0 / 0, color: "#007cc8", prop: "adl", idct: "ADL" },
     ]),
       r.call(this, i, a),
       (this.name = "ADL"),
@@ -156,7 +156,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function e(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#75B2A3", prop: "asi", idct: "ASI" },
-      { v: 10, color: "#68A3FF", prop: "asit", idct: "ASIT" }
+      { v: 10, color: "#68A3FF", prop: "asit", idct: "ASIT" },
     ]),
       r.call(this, i, a),
       (this.name = "ASI");
@@ -211,7 +211,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 11, color: "#999999", prop: "bbiboll", idct: "BBIBOLL" },
       { v: 6, color: "#ffac03", prop: "upr", idct: "UPR" },
-      { v: 0 / 0, color: "#9922aa", prop: "dwn", idct: "DWN" }
+      { v: 0 / 0, color: "#9922aa", prop: "dwn", idct: "DWN" },
     ]),
       r.call(this, i, a),
       (this.name = "BBIBOLL"),
@@ -243,7 +243,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function o(i, a) {
     (this.DEFAULT_ARR = [
       { v: 22, color: "#fa6d6d", prop: "m", idct: "M" },
-      { color: "#2b55ff" }
+      { color: "#2b55ff" },
     ]),
       r.call(this, i, a),
       (this.name = "BF");
@@ -319,7 +319,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 6, color: "#FD9C35", prop: "bias1", idct: "BIAS1" },
       { v: 12, color: "#00c1eb", prop: "bias2", idct: "BIAS2" },
-      { v: 24, color: "#DD4444", prop: "bias3", idct: "BIAS3" }
+      { v: 24, color: "#DD4444", prop: "bias3", idct: "BIAS3" },
     ]),
       r.call(this, i, a),
       (this.name = "BIAS"),
@@ -349,7 +349,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 20, color: "#999999", prop: "boll", idct: "BOLL" },
       { v: 2, color: "#ffac03", prop: "upper", idct: "UPPER" },
-      { v: 0 / 0, color: "#cc22ba", prop: "lower", idct: "LOWER" }
+      { v: 0 / 0, color: "#cc22ba", prop: "lower", idct: "LOWER" },
     ]),
       r.call(this, i, a),
       (this.name = "BOLL"),
@@ -378,7 +378,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function c(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#E297FF", prop: "br", idct: "BR" },
-      { color: "#666666", prop: "ar", idct: "AR" }
+      { color: "#666666", prop: "ar", idct: "AR" },
     ]),
       r.call(this, i, a),
       (this.name = "BRAR"),
@@ -409,7 +409,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function d(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 14, color: "#FFAC03", prop: "cci", idct: "CCI" }
+      { v: 14, color: "#FFAC03", prop: "cci", idct: "CCI" },
     ]),
       r.call(this, i, a),
       (this.name = "CCI"),
@@ -436,8 +436,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v: 0 / 0,
         color: "#ff8400",
         prop: "value",
-        idct: "\u7b79\u7801\u6210\u672c"
-      }
+        idct: "\u7b79\u7801\u6210\u672c",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "CHIPCOST"),
@@ -564,7 +564,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     }
     var h = this;
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#007cc8", prop: "ditc", idct: "DITC" }
+      { v: 0 / 0, color: "#007cc8", prop: "ditc", idct: "DITC" },
     ]),
       r.call(this, i, a),
       (this.name = "DITC"),
@@ -658,7 +658,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 10, desc: "\u5feb\u7ebf\u79fb\u52a8\u5e73\u5747" },
       { v: 50, color: "#777777", prop: "dif", idct: "DIF" },
-      { v: 10, color: "#FFAC03", prop: "difma", idct: "DIFMA" }
+      { v: 10, color: "#FFAC03", prop: "difma", idct: "DIFMA" },
     ]),
       r.call(this, i, a),
       (this.name = "DMA"),
@@ -690,10 +690,10 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#ffac03",
         prop: "mdi",
         idct: "MDI",
-        desc: "\u79fb\u52a8\u5e73\u5747"
+        desc: "\u79fb\u52a8\u5e73\u5747",
       },
       { color: "#cc22ba", prop: "adx", idct: "ADX" },
-      { color: "#2ec196", prop: "adxr", idct: "ADXR" }
+      { color: "#2ec196", prop: "adxr", idct: "ADXR" },
     ]),
       r.call(this, i, a),
       (this.name = "DMI");
@@ -747,14 +747,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#fa6d6d",
         prop: s,
-        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09"
+        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09",
       },
       {
         color: "#2b55ff",
         prop: e,
-        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09"
+        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09",
       },
-      { v: 0 / 0, prop: h, idct: h, color: "#66ccff", hidecfg: !0 }
+      { v: 0 / 0, prop: h, idct: h, color: "#66ccff", hidecfg: !0 },
     ]),
       r.call(this, i, a),
       (this.name = "DPDK"),
@@ -1013,7 +1013,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function g(i, a) {
     (this.DEFAULT_ARR = [
       { v: 14, color: "#D96FF0", prop: "emv", idct: "EMV" },
-      { v: 9, color: "#F76D6D", prop: "maemv", idct: "MAEMV" }
+      { v: 9, color: "#F76D6D", prop: "maemv", idct: "MAEMV" },
     ]),
       r.call(this, i, a),
       (this.name = "EMV"),
@@ -1043,7 +1043,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function b(i, a, s) {
     var e = "ewi";
     (this.DEFAULT_ARR = [
-      { color: "#F6C257", prop: e, idct: "\u7b49\u6743\u91cd" }
+      { color: "#F6C257", prop: e, idct: "\u7b49\u6743\u91cd" },
     ]),
       r.call(this, i, a);
     var h = "icn_calc_",
@@ -1178,14 +1178,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               color: s.param[i].color || e[i] || "#" + t.randomColor(),
               prop: o + a,
               idct: h + a,
-              desc: h
+              desc: h,
             });
         }
       }
       (!s.customArr || s.customArr.length < 1) &&
         (s.customArr = [
           { v: 12, color: e[0], prop: o + "12", idct: h + "12", desc: h },
-          { v: 50, color: e[1], prop: o + "50", idct: h + "50", desc: h }
+          { v: 50, color: e[1], prop: o + "50", idct: h + "50", desc: h },
         ]);
     };
     var l = bt.getArr,
@@ -1217,11 +1217,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         v: 0 / 0,
         color: "#990000",
         prop: "mb",
-        idct: "\u51c0\u8d85\u5927\u5355"
+        idct: "\u51c0\u8d85\u5927\u5355",
       },
       { v: 0 / 0, color: "#009900", prop: "ms", idct: "\u51c0\u5927\u5355" },
       { v: 0 / 0, color: "#000099", prop: "sb", idct: "\u51c0\u4e2d\u5355" },
-      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" }
+      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" },
     ]),
       r.call(this, i, a),
       (this.name = "TECHFLOW"),
@@ -1255,7 +1255,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mb: s ? Number(s.mb) : 0 / 0,
                 ms: s ? Number(s.ms) : 0 / 0,
                 sb: s ? Number(s.sb) : 0 / 0,
-                ss: s ? Number(s.ss) : 0 / 0
+                ss: s ? Number(s.ss) : 0 / 0,
               });
         }
       }),
@@ -1333,7 +1333,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           ms: Number(i[1]),
           sb: Number(i[2]),
           ss: Number(i[3]),
-          date: lt.sd(i[4])
+          date: lt.sd(i[4]),
         };
       }),
       (this.df = function(t) {
@@ -1350,7 +1350,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 9, color: "#888888", prop: "k", idct: "K" },
       { v: 3, color: "#FFAC03", prop: "d", idct: "D" },
-      { v: 3, color: "#cc22ba", prop: "j", idct: "J" }
+      { v: 3, color: "#cc22ba", prop: "j", idct: "J" },
     ]),
       r.call(this, i, a),
       (this.name = "KDJ"),
@@ -1385,8 +1385,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#888887",
         prop: e,
         idct: "\u5927\u5355\u91d1\u989d",
-        desc: "\u6587\u5b57\u989c\u8272"
-      }
+        desc: "\u6587\u5b57\u989c\u8272",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KFLOW"),
@@ -1557,36 +1557,36 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#888887",
         prop: "bar",
         idct: "\u4e3b\u529b\u8d44\u91d1",
-        desc: "\u4e3b\u529b\u8d44\u91d1"
+        desc: "\u4e3b\u529b\u8d44\u91d1",
       },
       {
         v: 0 / 0,
         color: "#ff1111",
         prop: "super",
         idct: "\u7279\u5927",
-        desc: "\u7279\u5927"
+        desc: "\u7279\u5927",
       },
       {
         v: 0 / 0,
         color: "#ff9f07",
         prop: "big",
         idct: "\u5927",
-        desc: "\u5927"
+        desc: "\u5927",
       },
       {
         v: 0 / 0,
         color: "#00b5f8",
         prop: "mid",
         idct: "\u4e2d",
-        desc: "\u4e2d"
+        desc: "\u4e2d",
       },
       {
         v: 0 / 0,
         color: "#5b0497",
         prop: "small",
         idct: "\u5c0f",
-        desc: "\u5c0f"
-      }
+        desc: "\u5c0f",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KKFLOW"),
@@ -1626,7 +1626,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               big: o - d,
               mid: l - f,
               small: n - u,
-              bar: h + o - c - d
+              bar: h + o - c - d,
             });
           }
           return r;
@@ -1650,7 +1650,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               big: a - o,
               mid: s - l,
               small: e - n,
-              bar: r + a - h - o
+              bar: r + a - h - o,
             };
           }
         }
@@ -1687,8 +1687,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mid: 0,
                 small: 0,
                 super: 0,
-                date: i[i.length - 1].date
-              }
+                date: i[i.length - 1].date,
+              },
             ];
         }
         e = t.kUtil.adbd(r, i, !1, !0);
@@ -1699,7 +1699,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             super: a ? Number(a["super"]) : 0 / 0,
             big: a ? Number(a.big) : 0 / 0,
             mid: a ? Number(a.mid) : 0 / 0,
-            small: a ? Number(a.small) : 0 / 0
+            small: a ? Number(a.small) : 0 / 0,
           };
           this.selfArr.push(o);
         }
@@ -1813,22 +1813,22 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#FE6C6A",
         prop: "buy",
         idct: "\u4e70\u5165",
-        desc: "\u4e70\u5165"
+        desc: "\u4e70\u5165",
       },
       {
         v: 0 / 0,
         color: "#23B47B",
         prop: "sell",
         idct: "\u5356\u51fa",
-        desc: "\u5356\u51fa"
+        desc: "\u5356\u51fa",
       },
       {
         v: 0 / 0,
         color: "#888887",
         prop: "total",
         idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
-        desc: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1"
-      }
+        desc: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "KGSTRADE"),
@@ -1851,7 +1851,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 date: lt.sd(i.dt),
                 buy: i.buy,
                 sell: i.sell,
-                total: i.buy + i.sell
+                total: i.buy + i.sell,
               });
           return r;
         }
@@ -1889,7 +1889,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             this.selfArr.push({
               total: a ? Number(a.total) : 0 / 0,
               buy: a ? Number(a.buy) : 0 / 0,
-              sell: a ? Number(a.sell) : 0 / 0
+              sell: a ? Number(a.sell) : 0 / 0,
             });
       }
     }),
@@ -1995,8 +1995,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#7d8087",
         prop: "dot",
         idct: "SUNSPOT",
-        desc: "SUNSPOT"
-      }
+        desc: "SUNSPOT",
+      },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "SUNSPOT"),
@@ -2059,7 +2059,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (a = e[s]),
             this.selfArr.push({
               bar: a ? Number(a.bar) : 0 / 0,
-              dot: a ? Number(a.dot) : 0 / 0
+              dot: a ? Number(a.dot) : 0 / 0,
             });
       }
     }),
@@ -2162,8 +2162,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#007cc8",
         prop: "lb",
         idct: "LB",
-        desc: "\u91cf\u6bd4"
-      }
+        desc: "\u91cf\u6bd4",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "LB"),
@@ -2218,7 +2218,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         }
       });
   }
-  function N(i, a) {
+  function MA(i, a) {
     r.call(this, i, a);
     var s = this;
     (this.name = "MA"), "k" != a.type && (this.sname = "T_" + this.name);
@@ -2237,7 +2237,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               color: s.param[i].color || e[i] || "#" + t.randomColor(),
               prop: o + a,
               idct: h + a,
-              desc: h
+              desc: h,
             });
         }
       }
@@ -2246,7 +2246,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           { v: 5, color: e[0], prop: o + "5", idct: h + "5", desc: h },
           { v: 10, color: e[1], prop: o + "10", idct: h + "10", desc: h },
           { v: 20, color: e[2], prop: o + "20", idct: h + "20", desc: h },
-          { v: 30, color: e[3], prop: o + "30", idct: h + "30", desc: h }
+          { v: 30, color: e[3], prop: o + "30", idct: h + "30", desc: h },
         ]);
     }),
       (this.initAndCalcAll = function(i) {
@@ -2282,7 +2282,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 12, color: "#5465ff", prop: "dif", idct: "DIF" },
       { v: 26, color: "#ec52f5", prop: "dea", idct: "DEA" },
-      { v: 9, color: "#b03030", prop: "bar", idct: "MACD" }
+      { v: 9, color: "#b03030", prop: "bar", idct: "MACD" },
     ]),
       r.call(this, i, a),
       (this.name = "MACD"),
@@ -2338,7 +2338,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               (c += perWidth);
           this.line.stroke();
         }
-        let tIndex = this.datas.filter(e => e.date < new Date("2020-01-15"))
+        let tIndex = this.datas.filter((e) => e.date < new Date("2020-01-15"))
           .length;
 
         var el = document.createElement("div");
@@ -2379,7 +2379,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function C(i, a) {
     this.DEFAULT_ARR = [
       { v: 30, color: "#99cf17", prop: "obv", idct: "OBV" },
-      { v: 0 / 0, color: "#00c1eb", prop: "obvma", idct: "OBVMA" }
+      { v: 0 / 0, color: "#00c1eb", prop: "obvma", idct: "OBVMA" },
     ];
     var s = { nu: !0 };
     r.call(this, i, a, s),
@@ -2427,7 +2427,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function k(i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#12BDD9", prop: "iy", idct: "Position" }
+      { v: 0 / 0, color: "#12BDD9", prop: "iy", idct: "Position" },
     ]),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "POSITION"),
@@ -2444,7 +2444,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   }
   function P(t, i, a) {
     (this.DEFAULT_ARR = [
-      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" }
+      { v: 0 / 0, color: "#ff0099", prop: "ss", idct: "\u51c0\u5c0f\u5355" },
     ]),
       r.call(this, t, i);
     var s = this;
@@ -2537,7 +2537,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function x(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#EE2F72", prop: "psy", idct: "PSY" },
-      { v: 6, color: "#00c1eb", prop: "psyma", idct: "PSYMA" }
+      { v: 6, color: "#00c1eb", prop: "psyma", idct: "PSYMA" },
     ]),
       r.call(this, i, a),
       (this.name = "PSY"),
@@ -2573,7 +2573,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function E(i, a, s) {
     var e = "rgl";
     (this.DEFAULT_ARR = [
-      { color: "#2D0674", prop: e, idct: "\u7ea2\u7eff\u89d2\u7ebf" }
+      { color: "#2D0674", prop: e, idct: "\u7ea2\u7eff\u89d2\u7ebf" },
     ]),
       r.call(this, i, a),
       (this.name = "RGL"),
@@ -2738,7 +2738,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function L(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#F17147", prop: "roc", idct: "ROC" },
-      { v: 6, color: "#406BEA", prop: "maroc", idct: "MAROC" }
+      { v: 6, color: "#406BEA", prop: "maroc", idct: "MAROC" },
     ]),
       r.call(this, i, a),
       (this.name = "ROC"),
@@ -2767,7 +2767,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     (this.DEFAULT_ARR = [
       { v: 6, color: "#999999", prop: "rsi1", idct: "RSI1" },
       { v: 12, color: "#ffac03", prop: "rsi2", idct: "RSI2" },
-      { v: 24, color: "#9A2574", prop: "rsi3", idct: "RSI3" }
+      { v: 24, color: "#9A2574", prop: "rsi3", idct: "RSI3" },
     ]),
       r.call(this, i, a),
       (this.name = "RSI"),
@@ -2809,7 +2809,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         color: "#777777",
         prop: "sar",
         idct: "SAR",
-        desc: "\u5929\u6570"
+        desc: "\u5929\u6570",
       },
       { v: 2, color: "#b82c0c", desc: "\u53c2\u6570" },
       { v: 20, color: "#008040", desc: "\u53cd\u5411\u4e34\u754c" },
@@ -2817,8 +2817,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#777777",
         idct: "\u533a\u95f4\u80a1\u4ef7\u6536\u76ca",
-        prop: e
-      }
+        prop: e,
+      },
     ]),
       r.call(this, i, a),
       (this.name = "SAR");
@@ -2950,10 +2950,15 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           v: 0 / 0,
           color: "#ff1111",
           prop: "trade_total",
-          idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1"
+          idct: "\u4eca\u65e5\u4ea4\u6613\u603b\u8ba1",
         },
         { v: 0 / 0, color: "#ff9f07", prop: "trade_buy", idct: "\u4e70\u5165" },
-        { v: 0 / 0, color: "#00b5f8", prop: "trade_sell", idct: "\u5356\u51fa" }
+        {
+          v: 0 / 0,
+          color: "#00b5f8",
+          prop: "trade_sell",
+          idct: "\u5356\u51fa",
+        },
       ],
       l = "top_trade_",
       n = t.tUtil;
@@ -2965,7 +2970,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             vol: 0 / 0,
             color: h.param[i].color || o[i].color || "#" + t.randomColor(),
             prop: o[i].prop,
-            idct: o[i].idct
+            idct: o[i].idct,
           });
       }
       (!h.customArr || h.customArr.length < 1) && (h.customArr = o);
@@ -2980,7 +2985,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               time: s[o].time,
               buy: Number(s[o].buy),
               sell: Number(s[o].sell),
-              date: lt.sd(s[o].dt)
+              date: lt.sd(s[o].dt),
             });
           r = e(i, a.stock.hq.date, "CN", !0);
         }
@@ -3020,7 +3025,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 time: s[o][l].time,
                 buy: s[o][l].buy,
                 sell: s[o][l].sell,
-                date: lt.sd(s[o][l].dt)
+                date: lt.sd(s[o][l].dt),
               });
             var n;
             (n = a.stock ? a.stock.hq.date : s[h - 1][0].date),
@@ -3077,7 +3082,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 trade_total: e.trade_total ? Number(e.trade_total) : 0,
                 trade_buy: e.trade_buy ? Number(e.trade_buy) : 0,
                 trade_sell: e.trade_sell ? Number(e.trade_sell) : 0,
-                trade_time: e.trade_time ? e.trade_time : 0
+                trade_time: e.trade_time ? e.trade_time : 0,
               });
         }
       }),
@@ -3136,7 +3141,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         c:
           "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2A5dayminline?symbol=$symbol&random=$rn",
         d:
-          "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2ZhiShu5dayminline?random=$rn"
+          "http://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockLevel2Service.getLv2ZhiShu5dayminline?random=$rn",
       });
     var o,
       l = !0;
@@ -3146,7 +3151,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         { v: 0 / 0, color: "#ff1111", prop: "mb", idct: "\u7279\u5927" },
         { v: 0 / 0, color: "#ff9f07", prop: "ms", idct: "\u5927" },
         { v: 0 / 0, color: "#00b5f8", prop: "sb", idct: "\u4e2d" },
-        { v: 0 / 0, color: "#5b0497", prop: "ss", idct: "\u5c0f" }
+        { v: 0 / 0, color: "#5b0497", prop: "ss", idct: "\u5c0f" },
       ],
       d = null;
     this.generateSettings = function() {
@@ -3159,7 +3164,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             v: 0 / 0,
             color: e.param[r].color || c[r].color || "#" + t.randomColor(),
             prop: c[r].prop,
-            idct: c[r].idct
+            idct: c[r].idct,
           });
       }
       (!e.customArr || e.customArr.length < 1) && (e.customArr = c);
@@ -3177,7 +3182,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               mb: Number(h[1]),
               ms: Number(h[2]),
               sb: Number(h[3]),
-              ss: Number(h[4])
+              ss: Number(h[4]),
             }),
             a.push(e));
       return a;
@@ -3199,7 +3204,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 mb: Number(c[1]),
                 ms: Number(c[2]),
                 sb: Number(c[3]),
-                ss: Number(c[4])
+                ss: Number(c[4]),
               }),
               0 == l && (n.date = i.slice(0, 1)[0]),
               o.push(n));
@@ -3294,7 +3299,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                   ? Number(this.urlData[r][v].ss)
                   : f
                   ? f.ss
-                  : p
+                  : p,
               };
               r == h - 1 &&
                 v == this.disMod - 1 &&
@@ -3402,7 +3407,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function V(i, a) {
     (this.DEFAULT_ARR = [
       { v: 12, color: "#d6c84b", prop: "trix", idct: "TRIX" },
-      { v: 9, color: "#26bcd5", prop: "matrix", idct: "MATRIX" }
+      { v: 9, color: "#26bcd5", prop: "matrix", idct: "MATRIX" },
     ]),
       r.call(this, i, a),
       (this.name = "TRIX"),
@@ -3439,7 +3444,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         c:
           "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getStockHistoryMinuteFlow?symbol=$symbol&random=$rn",
         d:
-          "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getHistoryMinuteFlow?symbol=$symbol&random=$rn"
+          "http://stock.sina.com.cn/stock/api/jsonp.php/$cb/TouziService.getHistoryMinuteFlow?symbol=$symbol&random=$rn",
       }),
       (this.cb = r),
       i.stock.hq || this.loadUrlData(!0);
@@ -3451,13 +3456,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       {
         color: "#fa6d6d",
         prop: e,
-        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09"
+        idct: "\u7ea2\u7ebf\uff08\u591a\u7a7a\u4fe1\u53f7\u6536\u76ca\uff09",
       },
       {
         color: "#2b55ff",
         prop: h,
-        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09"
-      }
+        idct: "\u84dd\u7ebf\uff08\u80a1\u4ef7\u81ea\u7136\u6da8\u5e45\uff09",
+      },
     ]),
       r.call(this, i, a),
       (this.name = "TZY"),
@@ -3572,7 +3577,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             (r = s[e]),
               this.selfArr.push({
                 flag: r ? Number(r.flag) : 1,
-                isFake: r ? !!r.isFake : !0
+                isFake: r ? !!r.isFake : !0,
               });
         }
       }),
@@ -3853,7 +3858,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function W(i, a) {
     (this.DEFAULT_ARR = [
       { v: 26, color: "#75B2A3", prop: "vr", idct: "VR" },
-      { v: 6, color: "#F8B82E", prop: "mavr", idct: "MAVR" }
+      { v: 6, color: "#F8B82E", prop: "mavr", idct: "MAVR" },
     ]),
       r.call(this, i, a),
       (this.name = "VR"),
@@ -3901,7 +3906,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function K(i, a) {
     (this.DEFAULT_ARR = [
       { v: 10, color: "#3D85C6", prop: "wr1", idct: "WR1" },
-      { v: 6, color: "#84C84B", prop: "wr2", idct: "WR2" }
+      { v: 6, color: "#84C84B", prop: "wr2", idct: "WR2" },
     ]),
       r.call(this, i, a),
       (this.name = "WR"),
@@ -3927,7 +3932,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
   function G(i, a) {
     (this.DEFAULT_ARR = [
       { v: 24, color: "#fe6623", prop: "wvad", idct: "WVAD" },
-      { v: 6, color: "#00c1eb", prop: "wvadma", idct: "WVADMA" }
+      { v: 6, color: "#00c1eb", prop: "wvadma", idct: "WVADMA" },
     ]),
       r.call(this, i, a),
       (this.name = "WVAD"),
@@ -3966,12 +3971,12 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         var t = [
           { color: o },
           { v: 5, color: "#FC9CB8" },
-          { v: 10, color: "#12BDD9" }
+          { v: 10, color: "#12BDD9" },
         ];
         nt.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
-          value: t
+          value: t,
         });
       };
       nt.load(
@@ -3979,9 +3984,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             s.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
-          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer
+          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
         },
         function(i) {
           i || t();
@@ -4004,7 +4009,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 color: s.param[l].color || "#" + t.randomColor(),
                 prop: i + c,
                 idct: r + c,
-                desc: h
+                desc: h,
               });
           }
         }
@@ -4133,7 +4138,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         nt.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
-          value: t
+          value: t,
         });
       };
       nt.load(
@@ -4141,9 +4146,9 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             s.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
-          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer
+          key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,
         },
         function(i) {
           i || t();
@@ -4166,7 +4171,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                 color: s.param[l].color || "#" + t.randomColor(),
                 prop: i + c,
                 idct: r + c,
-                desc: h
+                desc: h,
               });
           }
         }
@@ -4299,14 +4304,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         CHIPCOST: f,
         DITC: u,
         EXPMA: y,
-        MA: N,
+        MA: MA,
         PRESS: P,
         SAR: F,
         TZY: $,
         DPDK: A,
         EWI: b,
         RGL: E,
-        TECHFLOW: w
+        TECHFLOW: w,
       };
       yt.auth(i);
       var r = [],
@@ -4457,7 +4462,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         remove: function(t) {
           a.removeChart(t);
-        }
+        },
       },
       _ = function(i, r) {
         if (d.custom.allow_indicator_edit)
@@ -4488,7 +4493,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         mh: d.DIMENSION.H_MA4K,
         lz: d.PARAM.G_Z_INDEX + 1,
         usrObj: v,
-        type: p
+        type: p,
       };
     return (a = new r());
   }
@@ -4512,7 +4517,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         KKFLOW: M,
         KGSTRADE: O,
         SUNSPOT: S,
-        MA: N,
+        MA: MA,
         MACD: MACD,
         OBV: C,
         PKFLOW: R,
@@ -4535,7 +4540,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         TTFLOW: j,
         TVOL: q,
         TTOPTRADE: H,
-        BLANKCTN: a
+        BLANKCTN: a,
       };
       yt.auth(i);
       var r;
@@ -4671,7 +4676,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             y: s,
             ox: Z.DIMENSION.posX,
             oy: Z.DIMENSION.H_T_T,
-            e: e
+            e: e,
           });
         }
       };
@@ -4725,7 +4730,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         },
         remove: function(t) {
           o.removeChart(t);
-        }
+        },
       },
       vt = function(i, r) {
         if (Z.custom.allow_indicator_edit)
@@ -4754,7 +4759,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         onClkMain: dt,
         usrObj: J,
         type: E,
-        initMgr: it
+        initMgr: it,
       };
     return (o = new r());
   }
@@ -4773,7 +4778,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         DRAGGING: "dragging",
         PICKCOLOR: "pickcolor",
         COLORPICKED: "colorpicked",
-        OPEN: "open"
+        OPEN: "open",
       };
     a(h, e);
     var o,
@@ -4792,7 +4797,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           o.contentWindow.postMessage(
             JSON.stringify({
               cmd: h.COLORPICKED,
-              data: { color: t.hex, target: i }
+              data: { color: t.hex, target: i },
             }),
             "*"
           );
@@ -4844,8 +4849,8 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
               width: d + "px",
               border: "1px solid #aaa",
               position: "absolute",
-              zIndex: i.z
-            }
+              zIndex: i.z,
+            },
           })),
           st.addHandler(window, "message", A));
       };
@@ -4933,7 +4938,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "BIAS",
       "ASI",
       "VR",
-      "BRAR"
+      "BRAR",
     ],
     ut = [
       "TVOL",
@@ -4947,7 +4952,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       "DMA",
       "EXPMA",
       "BIAS",
-      "VR"
+      "VR",
     ],
     pt = {},
     vt = "ignore_",
@@ -4964,13 +4969,13 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           uid: [
             this.cfg.uid,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
           key:
             this.STORAGE_PREFIX +
             (this.sname || this.name) +
             "_" +
-            this.storageVer
+            this.storageVer,
         },
         function(i) {
           if (i) {
@@ -4992,7 +4997,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
           (this.sname || this.name) +
           "_" +
           this.storageVer,
-        value: t
+        value: t,
       });
     },
     gdsd: function(t) {
@@ -5006,7 +5011,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         for (var r = 0, a = t.length; a > r; r++) i = i.concat(t[r]);
       }
       return i;
-    }
+    },
   }),
     (r.prototype.mr = function() {
       function i(t) {
@@ -5193,7 +5198,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
             dt: !1,
             iMgr: this.proxyCfg.iMgr,
             iTo: at(r, null, this),
-            iClk: this.proxyCfg.onClkMain
+            iClk: this.proxyCfg.onClkMain,
           })),
           !isNaN(this.proxyCfg.lz) &&
             (this.line.getCanvas().style.zIndex = this.proxyCfg.lz),
@@ -6162,7 +6167,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       calcABS: y,
       calcMAX: w,
       calcSUM: _,
-      operateArr: D
+      operateArr: D,
     };
   })();
   t.fInherit(a, r),
@@ -6190,7 +6195,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     t.fInherit(O, r),
     t.fInherit(S, r),
     t.fInherit(T, r),
-    t.fInherit(N, r),
+    t.fInherit(MA, r),
     t.fInherit(MACD, r),
     t.fInherit(C, r),
     t.fInherit(R, D),
@@ -6228,7 +6233,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                   { h: "https://touzi.sina.cn/", a: r },
                   { h: "http://touzi.sina.cn/", a: r },
                   { h: "https://touzi.sina.com.cn/", a: r },
-                  { h: "http://touzi.sina.com.cn/", a: r }
+                  { h: "http://touzi.sina.com.cn/", a: r },
                 ],
                 s = document.location.href,
                 e = a.length;

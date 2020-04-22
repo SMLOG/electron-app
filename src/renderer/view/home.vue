@@ -796,7 +796,7 @@ export default {
         } else {
           console.log("get cache items");
 
-          this.items2.concat(storejs.get("sea") || []);
+          this.items2.splice(0, 0, ...(storejs.get("sea") || []));
         }
 
         let items = getOrFiltersItems(this.items2);
@@ -810,7 +810,7 @@ export default {
       (async () => {
         for (;;) {
           await batchUpdateHQ(this.items2.concat(this.items));
-          await timeout(2000);
+          await timeout(4000);
         }
       })();
     },

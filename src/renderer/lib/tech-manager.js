@@ -2,30 +2,6 @@ import { getTech as getTechDatas } from "./tech";
 import storejs from "storejs";
 import moment from "moment";
 
-function isStrong(kw) {
-  let i = kw.MACD.length;
-  return (
-    kw.MACD.length > 4 &&
-    !(
-      kw.MACD[i - 1].bar < 0 &&
-      kw.MACD[i - 2].bar < 0 &&
-      kw.MACD[i - 3].bar <= 0
-    ) &&
-    (kw.datas[i - 2].close > kw.datas[i - 2].open ||
-      kw.datas[i - 1].close > kw.datas[i - 1].open) &&
-    kw.MACD[i - 1].bar > kw.MACD[i - 2].bar
-  );
-}
-function isTurn(kd) {
-  let i = kd.MACD.length;
-  return (
-    kd.MACD.length > 3 &&
-    kd.MACD[i - 1].bar > kd.MACD[i - 2].bar &&
-    kd.MACD[i - 2].bar > kd.MACD[i - 3].bar &&
-    kd.datas[i - 1].close < kd.datas[i - 2].close &&
-    kd.datas[i - 2].close < kd.datas[i - 3].close
-  );
-}
 function getMill() {
   let total = Math.floor((new Date().getTime() % 86400000) + 28800000);
   let t9_30 = 34200000; //new Date("2020-01-01 09:30:00") - new Date("2020-01-01 00:00:00");
@@ -45,6 +21,17 @@ setInterval(() => {
   timeRatio = getMill() / 1000;
   turnover = timeRatio * 0.000138;
 }, 2000);
+
+function oneLineCrossMa5Ma20(item, kd) {
+  let i = kd.datas.length;
+  return (
+    kd.datas[i - 1].close > kd.datas[i - 1].open &&
+    kd.datas[i - 1].close > kd.MA[i - 1].ma5 &&
+    kd.datas[i - 1].close > kd.MA[i - 3].ma20 &&
+    kd.datas[i - 2].close <= kd.MA[i - 1].ma5 &&
+    kd.datas[i - 2].close <= kd.MA[i - 1].ma20
+  );
+}
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -58,24 +45,7 @@ function isMacdGolden(techData) {
       techData.MACD[techData.MACD.length - 5].bar < 0)
   );
 }
-function isMacdDeath(techData) {
-  let len = techData.MACD.length;
-  return (
-    len > 3 &&
-    techData.MACD[len - 1].bar < 0 &&
-    techData.MACD[len - 1].bar < techData.MACD[len - 2].bar &&
-    techData.MACD[len - 2].bar < techData.MACD[len - 3].bar
-  );
-}
-function keepWeek(km, n) {
-  if (km.MACD.length > n) {
-    for (let i = 0; i < n; i++) {
-      if (km.MACD[i].bar >= 0) return false;
-    }
-    return true;
-  }
-  return false;
-}
+
 const techMap = {
   /* DU: function({ item, kd, kw, km }) {
     return (
@@ -139,8 +109,13 @@ const techMap = {
       kd.MACD[kd.MACD.length - 1].bar >= kd.MACD[kd.MACD.length - 2].bar
     );
   },*/,
-
-  B: function({ item, kd, kw, km }) {
+  "穿5&20周": function({ item, kd, kw, km }) {
+    return oneLineCrossMa5Ma20(item, kw);
+  },
+  "穿5&20日": function({ item, kd, kw, km }) {
+    return oneLineCrossMa5Ma20(item, kd);
+  },
+  日B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖
     let i = kd.datas.length;
@@ -172,7 +147,7 @@ const techMap = {
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
-  S: function({ item, kd, kw, km }) {
+  日S: function({ item, kd, kw, km }) {
     let i = kd.datas.length;
     return (kd.datas[i - 1].close || kd.datas[i - 1].now) < kd.MA[i - 1].ma5;
   },

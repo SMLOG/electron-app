@@ -121,11 +121,13 @@ const techMap = {
     );
   },
   上510周: function({ item, kd, kw, km }) {
+    let i = kd.datas.length;
+    kd.datas[i - 1].close <= 0 && (i += -1);
     return (
-      kw.MA[kw.MA.length - 1].ma5 < item.now &&
-      km.MA[km.MA.length - 1].ma10 < item.now
+      kw.MA[kw.MA.length - 1].ma5 < kd.datas[i - 1].close &&
+      km.MA[km.MA.length - 1].ma10 < kd.datas[i - 1].close
     );
-  },
+  } /*
   上60日: function({ item, kd, kw, km }) {
     let p = (item.now - kd.MA[kd.MA.length - 1].ma60) / item.now;
     return kd.MA[kd.MA.length - 1].ma60 < item.now && p > 0 && p < 0.03;
@@ -136,22 +138,20 @@ const techMap = {
       kd.KDJ[kd.KDJ.length - 2].k < kd.KDJ[kd.KDJ.length - 1].k &&
       kd.MACD[kd.MACD.length - 1].bar >= kd.MACD[kd.MACD.length - 2].bar
     );
-  },
-  GM: function({ item, kd, kw, km }) {
-    return isMacdGolden(km);
-  },
+  },*/,
 
   B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖
     let i = kd.datas.length;
     return (
-      (kd.datas[i - 1].close || kd.datas[i - 1].now) > kd.datas[i - 1].open &&
+      item.now > item.open &&
+      kd.datas[i - 1].close > kd.datas[i - 1].open &&
+      item.now > kd.MA[i - 1].ma5 &&
+      kd.datas[i - 1].close > kd.MA[i - 1].ma5 &&
       kd.datas[i - 2].close > kd.datas[i - 2].open &&
-      (kd.datas[i - 1].close || kd.datas[i - 1].now) > kd.MA[i - 1].ma5 &&
-      kd.datas[i - 2].close > kd.MA[i - 2].ma5 &&
-      kd.datas[i - 3].close <=
-        kd.MA[i - 3]
+      kd.datas[i - 2].close <=
+        kd.MA[i - 2]
           .ma5 /*&&
       kd.MACD[kd.MACD.length - 2].bar >= kd.MACD[kd.MACD.length - 3].bar*/
       /*km.MACD.length > 3 &&
@@ -168,6 +168,9 @@ const techMap = {
         kd.MACD[kd.MACD.length - 2]
           .bar*/
     );
+  },
+  GM: function({ item, kd, kw, km }) {
+    return isMacdGolden(km);
   },
   S: function({ item, kd, kw, km }) {
     let i = kd.datas.length;

@@ -810,7 +810,7 @@ export default {
         console.log("monitor:", items);
         updateFiltersCount();
         monitor(items);
-        tj(items);
+        //tj(items);
         this.ready = true;
 
         // items.forEach(e => this.items2.push(e));

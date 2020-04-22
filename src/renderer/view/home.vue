@@ -134,17 +134,6 @@
                     <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">
                       <a :id="item.code">{{ item.name }}{{item.PEG&&item.PEG.toFixed(1)}}</a>
                     </span>
-                    <div v-if="false">
-                      <span
-                        title="最后持续平均线分钟(-下+上)"
-                        @click="toggleDetail(item)"
-                        :class="{
-                          avggood: item.avgzs > 45 && item.upArgCount > 120
-                        }"
-                      >{{ item.avgzs }}</span>
-                      <span title="总平均线分钟数">/{{ item.upArgCount }}</span>
-                      <span title="连续方向分钟数">/{{ item.contDir }}</span>
-                    </div>
                   </div>
                 </div>
               </td>
@@ -434,7 +423,7 @@ export default {
       window.resizeTo(screen.availWidth, screen.availHeight);
     };
     this.reloadData();
-    this.timerFn();
+    this.initTimer();
 
     document.addEventListener("keydown", e => {
       if (e.target && e.target.nodeName == "BODY") {
@@ -747,7 +736,7 @@ export default {
       console.log("monitor:", items);
       monitor(items);
     },
-    timerFn() {
+    initTimer() {
       (async () => {
         for (;;) {
           await this.refresh();
@@ -781,7 +770,7 @@ export default {
             this.items3 = items2;
 
             //this.ready && tj(items2);
-            await batchUpdateHQ(this.items2);
+            //await batchUpdateHQ(this.items2);
             //storejs.set("his" + (new Date().getDate() % 28), this.items3);
           }
           // monitor(items);
@@ -790,8 +779,11 @@ export default {
       (async () => {
         this.items2.length = 0;
         afilters[SELF].items = this.items;
+        afilters["海选"].items = this.items2;
+
         let cacheDateTime = storejs.get("seadatetime") || 0;
         if (new Date().getTime() - cacheDateTime >= 172800000) {
+          console.log("re-fetch filter items");
           let items = await getFilterList(e => {
             if (e) {
               this.items2.push(e);
@@ -802,9 +794,10 @@ export default {
           storejs.set("seadatetime", new Date().getTime());
           storejs.set("sea", this.items2);
         } else {
-          this.items2 = storejs.get("sea") || [];
+          console.log("get cache items");
+
+          this.items2.concat(storejs.get("sea") || []);
         }
-        afilters["海选"].items = this.items2;
 
         let items = getOrFiltersItems(this.items2);
         console.log("monitor:", items);
@@ -812,15 +805,12 @@ export default {
         monitor(items);
         //tj(items);
         this.ready = true;
-
-        // items.forEach(e => this.items2.push(e));
-        //await timeout(60000);
       })();
 
       (async () => {
         for (;;) {
-          await batchUpdateHQ(this.items2);
-          await timeout(5000);
+          await batchUpdateHQ(this.items2.concat(this.items));
+          await timeout(2000);
         }
       })();
     },
@@ -835,26 +825,7 @@ export default {
     async refresh() {
       let that = this;
       let needReloadData = false;
-      loadHQ(this.items);
-      for (let i = 0; i < that.items.length; i++) {
-        let item = that.items[i];
-
-        if (
-          item.pe_ttm > 0 &&
-          ((item.tbzz && item.tbzz > 0 && item.pe_ttm / item.tbzz < 1) ||
-            (item.PEG && item.PEG > 0 && item.PEG < 1))
-        ) {
-          item.candidateType = 1;
-        }
-        //  that.items.splice(i, 1, item);
-
-        if (item.code == that.indexCode && item.changePV) {
-          that.progressBarWidth = Math.abs(item.changePV / 1) * 100;
-          that.indexPercent = item.changePV;
-        }
-
-        // vm.items.splice(newLength)
-      }
+      //loadHQ(this.items);
       that.sendRefresh();
     },
     sendRefresh() {

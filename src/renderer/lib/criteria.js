@@ -7,13 +7,13 @@ export const criteria = {
       name: "market",
       op: "equal",
       label: "市场",
-      values: { ALL: "所有", A: "A股", B: "B股" }
+      values: { ALL: "所有", A: "A股", B: "B股" },
     },
     exchange: {
       name: "exchange",
       op: "equal",
       label: "交易所",
-      values: { ALL: "所有", SH: "上海证券交易所", SZ: "深圳证券交易所" }
+      values: { ALL: "所有", SH: "上海证券交易所", SZ: "深圳证券交易所" },
     },
     board: {
       name: "board",
@@ -23,8 +23,8 @@ export const criteria = {
         ALL: "所有板块",
         MAIN_BOARD: "主板",
         SMALL_AND_MEDIUM_ENTERPRISES: "中小板",
-        CHINEXT: "创业板"
-      }
+        CHINEXT: "创业板",
+      },
     },
     industry_classification_id: {
       name: "industry_classification_id",
@@ -149,9 +149,9 @@ export const criteria = {
         R88: "  体育",
         R89: "  娱乐业",
         S: "综合",
-        S90: "  综合"
-      }
-    }
+        S90: "  综合",
+      },
+    },
   },
   basic: {
     roe: {
@@ -166,31 +166,31 @@ export const criteria = {
           let n = "净资产收益率加权(%)";
           return (item.roe = parseFloat(tb[n][tb.reportDate[1]]));
         }
-      }
+      },
     },
     roa: {
       name: "roa",
       op: "between",
       label: "总资产收益率 ROA",
-      unit: "%"
+      unit: "%",
     },
     gpm: {
       name: "gpm",
       op: "between",
       label: "毛利率 GPM",
-      unit: "%"
+      unit: "%",
     },
     epsgr: {
       name: "epsgr",
       op: "between",
       label: "利润增长率",
-      unit: "%"
+      unit: "%",
     },
     dar: {
       name: "dar",
       op: "between",
       label: "资产负债比",
-      unit: "%"
+      unit: "%",
     },
     pe: {
       name: "pe",
@@ -200,16 +200,16 @@ export const criteria = {
       order: 1,
       is: function(item) {
         return (
-          item.pe_ttm > (this._value1 || Number.MIN_VALUE) &&
-          item.pe_ttm < (this._value2 || Number.MAX_VALUE)
+          (item.pe_ttm || item.pe) > (this._value1 || Number.MIN_VALUE) &&
+          (item.pe_ttm || item.pe) < (this._value2 || Number.MAX_VALUE)
         );
-      }
+      },
     },
     pb: {
       name: "pb",
       op: "between",
       label: "市净率 PB",
-      unit: "倍"
+      unit: "倍",
     },
     peg: {
       name: "peg",
@@ -228,37 +228,37 @@ export const criteria = {
         ) {
           return true;
         }
-      }
+      },
     },
     ev_ebit: {
       name: "ev_ebit",
       op: "between",
       label: "企业价值倍数 EV/EBIT",
-      unit: "倍"
+      unit: "倍",
     },
     ps: {
       name: "ps",
       op: "between",
       label: "市销率 PS",
-      unit: "倍"
+      unit: "倍",
     },
     avg_dividend_yield_ratio: {
       name: "avg_dividend_yield_ratio",
       op: "between",
       label: "股息率(平均)",
-      unit: "%"
+      unit: "%",
     },
     market_value: {
       name: "market_value",
       op: "between",
       label: "市值",
-      unit: "亿"
+      unit: "亿",
     },
     latest_price: {
       name: "latest_price",
       op: "between",
       label: "股价",
-      unit: "元"
+      unit: "元",
     },
     others: {
       name: "others",
@@ -276,9 +276,9 @@ export const criteria = {
           item.name.indexOf("ST") == -1
           //&& e.sz3
         );
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 const isTypeFun = function(t) {

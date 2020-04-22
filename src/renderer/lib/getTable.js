@@ -205,6 +205,7 @@ async function getYYPLRQTable() {
   return await getCacheData(new Date(), "disclosure_date_", async () => {
     let _varname = rid("var");
     let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=5000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=52629803`;
+    console.info("获取最新披露日期列表：" + url);
     await fetchEval([url]);
     if (window[_varname] && window[_varname].data)
       for (let i = 0, len = window[_varname].data.length; i < len; i++) {
@@ -531,7 +532,35 @@ async function getHXList() {
 
   let datalist = await p;
   delete window[cb];
-
+  datalist = datalist.data.diff;
+  datalist = datalist.map((e) => {
+    return {
+      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
+      name: e.f14,
+      now: e.f2,
+      changePV: e.f3,
+      changeP: e.f3 + "%",
+      changeV: e.f4,
+      change: e.f4,
+      open: e.f17,
+      preClose: e.f18,
+      preclose: e.f18,
+      turnover: e.f8,
+      pe: e.f9,
+      pe_ttm: e.f115,
+      volume: e.f5,
+      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
+      amount: e.f6,
+      high: e.f15,
+      low: e.f16,
+      zsz: (e.f20 / 100000000).toFixed(2),
+      lz: (e.f21 / 100000000).toFixed(2),
+      avg: (e.f6 / e.f5).toFixed(2),
+      zf60: e.f24,
+      zf250: e.f25,
+      firstDay: e.f26,
+    };
+  });
   return datalist;
 }
 export function isNotTradeTime() {
@@ -550,33 +579,6 @@ export async function batchUpdateHQ(items) {
 
   let datalist = await getHXList();
 
-  datalist = datalist.data.diff.map((e) => {
-    return {
-      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
-      name: e.f14,
-      now: e.f2,
-      changePV: e.f3,
-      changeP: e.f3 + "%",
-      changeV: e.f4,
-      change: e.f4,
-      open: e.f17,
-      preClose: e.f18,
-      turnover: e.f8,
-      pe: e.f9,
-      volume: e.f5,
-      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
-      amount: e.f6,
-      high: e.f15,
-      low: e.f16,
-      zsz: (e.f20 / 100000000).toFixed(2),
-      lz: (e.f21 / 100000000).toFixed(2),
-      avg: (e.f6 / e.f5).toFixed(2),
-      zf60: e.f24,
-      zf250: e.f25,
-      firstDay: e.f26,
-    };
-  });
-
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];
 
@@ -593,33 +595,6 @@ export async function batchUpdateHQ(items) {
 //基本面筛选
 export async function getFilterList(callback) {
   let datalist = await getHXList();
-  datalist = datalist.data.diff;
-  datalist = datalist.map((e) => {
-    return {
-      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
-      name: e.f14,
-      now: e.f2,
-      changePV: e.f3,
-      changeV: e.f4,
-      change: e.f4,
-      open: e.f17,
-      preClose: e.f18,
-      preclose: e.f18,
-      turnover: e.f8,
-      pe: e.f9,
-      volume: e.f5,
-      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
-      amount: e.f6,
-      high: e.f15,
-      low: e.f16,
-      zsz: (e.f20 / 100000000).toFixed(2),
-      lz: (e.f21 / 100000000).toFixed(2),
-      avg: (e.f6 / e.f5).toFixed(2),
-      zf60: e.f24,
-      zf250: e.f25,
-      firstDay: e.f26,
-    };
-  });
 
   window.datalist = datalist;
 
@@ -667,7 +642,7 @@ export async function getFilterList(callback) {
   );
   console.log("0:", datalist);
 
-  await loadHQ(datalist);
+  //await loadHQ(datalist);
   datalist = datalist.filter((item) =>
     recursivFiltersTopSync(
       item,
@@ -684,7 +659,10 @@ export async function getFilterList(callback) {
         ccArrList.map((a) => a.filter((e) => e.order == 2))
       )
     ) {
+      //update cache
+      console.log("update cache");
       await getCacheData(null, item.code, null, item);
+      console.log(item);
       await techAnalyst(item);
 
       callback(item);

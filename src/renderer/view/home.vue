@@ -487,7 +487,7 @@ export default {
     focusItems: function() {
       return this.items.filter(e => e.isFocus);
     },
-    ...mapGetters(["fields"]),
+    ...mapGetters(["fields", "curFilterIds"]),
     ...mapGetters({ sfilters: "filters" })
   },
 
@@ -644,7 +644,8 @@ export default {
     },
     getfilterItems() {
       let items = this.getSelectItems();
-      let fcs = getFilterChain(this.selectFilter_r, this.selectFilter_c);
+      if (!this.curFilterIds) return items;
+      let fcs = getFilterChain(this.curFilterIds);
       for (let fc of fcs) {
         items = fc(items);
       }

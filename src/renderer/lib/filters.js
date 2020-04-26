@@ -8,19 +8,19 @@ export const afilters = {
     name: "items2",
     is_search: true,
     get: async function(cb) {
-      await getFilterList(e => {
+      await getFilterList((e) => {
         this.items.push(e);
       });
     },
-    items: []
+    items: [],
   },
   自选: {
     name: "items",
     get: function(cb) {
       this.items.concat(store.fetch());
     },
-    items: []
-  }
+    items: [],
+  },
 };
 
 export let filters = {
@@ -34,9 +34,9 @@ filters = Object.assign(filters, buildFilters());
 
 export function getCheckFilters(name) {
   let checkFields = getFilters()[name] || [];
-  let checked = checkFields.filter(e => e.checked).map(e => e.name);
+  let checked = checkFields.filter((e) => e.checked).map((e) => e.name);
   let filters_arr = Object.keys(filters);
-  let ret = filters_arr.map(f => {
+  let ret = filters_arr.map((f) => {
     return { name: f, checked: checked.indexOf(f) > -1 };
   });
 
@@ -47,25 +47,20 @@ export const filtersCount = [];
   const keys = Object.keys(filters);
   const akeys = Object.keys(afilters);
 
-  for (let i = 0; i < keys.length; i++) {
-    let arr = [];
-    for (let k = i; k < keys.length; k++) {
-      let it = { name: keys[k] };
-      for (let j of akeys) it[j] = 0;
-      arr.push(it);
-    }
-    filtersCount.push(arr);
+  for (let k = 0; k < keys.length; k++) {
+    let it = { name: keys[k] };
+    for (let j of akeys) it[j] = 0;
+    filtersCount.push(it);
   }
 }
 export function toFiltersCount(item, src, type = "+") {
-  if (!item) return;
-  for (let cn = 0; cn < filtersCount.length; cn++) {
-    for (let ri = 0; ri < filtersCount.length - cn; ri++) {
-      let it = filtersCount[ri][cn];
-      if (filters[it.name]([item]).length > 0) {
-        it[src] += type == "-" ? -1 : 1;
-      } else break;
-    }
+  const keys = Object.keys(filters);
+
+  for (let i = 0; i < keys.length; i++) {
+    let it = filtersCount[i];
+    let fc = filters[it.name];
+    items = fc([item]);
+    it[src] += fc([item]) ? (type == "+" ? 1 : -1) : 0;
   }
 }
 export function updateFiltersCount() {
@@ -73,27 +68,20 @@ export function updateFiltersCount() {
   const akeys = Object.keys(afilters);
 
   for (let i = 0; i < keys.length; i++) {
-    for (let k = 0; k < keys.length - i; k++) {
-      let it = filtersCount[i][k];
-      if (!it) filtersCount[i][k] = { name: keys[k + i] };
-      let fcs = getFilterChain(i, k);
-      for (let j of akeys) {
-        let items = afilters[j].items;
-        for (let fc of fcs) {
-          items = fc(items);
-        }
-        it[j] = items.length;
-      }
+    let it = filtersCount[i];
+    let fc = filters[it.name];
+    for (let j of akeys) {
+      let items = afilters[j].items;
+      items = fc(items);
+      it[j] = items.length;
     }
   }
 }
 window.updateFiltersCount = updateFiltersCount;
 
-export function getFilterChain(ri, ci) {
-  if (ri < 0 || ci < 0) return [];
-  return new Array(ri + 1)
-    .fill(0)
-    .map((a, i) => filters[filtersCount[i][ci].name]);
+export function getFilterChain(ids) {
+  if (!ids) return [];
+  return ids.split("+").map((e) => filters[e]);
 }
 window.getFilterChain = getFilterChain;
 
@@ -103,5 +91,5 @@ export function orFiltersItem(item, filters) {
   return f([item]).length > 0 || orFiltersItem(item, filters);
 }
 export function getOrFiltersItems(items) {
-  return items.filter(item => orFiltersItem(item, Object.values(filters)));
+  return items.filter((item) => orFiltersItem(item, Object.values(filters)));
 }

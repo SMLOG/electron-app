@@ -7,7 +7,10 @@
     @mouseout="save();showAll=false"
   >
     <div>
-      <div v-if="selectId>-1">{{list[selectId]}}</div>
+      <div v-if="selectId>-1">
+        {{list[selectId]}}
+        <span v-if="countMap[list[selectId]]">({{countMap[list[selectId]][src]}})</span>
+      </div>
       <ul>
         <li v-for="(id,i) in list" :key="i" class="item">
           <div @click="selectId=i;" :class="{select:selectId==i}" class="it">

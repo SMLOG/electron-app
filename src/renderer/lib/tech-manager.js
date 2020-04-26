@@ -1,4 +1,4 @@
-import { getTech as getTechDatas } from "./tech";
+import { getTech } from "./tech";
 import storejs from "storejs";
 import moment from "moment";
 
@@ -25,12 +25,15 @@ setInterval(() => {
 function oneLineCrossMa5Ma20(item, kd) {
   let i = kd.datas.length;
   return (
-    kd.datas[i - 1].close > kd.datas[i - 1].open &&
-    kd.datas[i - 1].close > kd.MA[i - 1].ma5 &&
-    kd.datas[i - 1].close > kd.MA[i - 3].ma20 &&
-    kd.datas[i - 2].close <= kd.MA[i - 1].ma5 &&
-    kd.datas[i - 2].close <= kd.MA[i - 1].ma20
+    item.close > item.open &&
+    item.close > kd.MA[i - 2].ma5 &&
+    item.close > kd.MA[i - 2].ma20 &&
+    kd.datas[i - 2].close <= kd.MA[i - 2].ma5 &&
+    kd.datas[i - 2].close <= kd.MA[i - 2].ma20
   );
+}
+function up5(item, km) {
+  return km.MA[km.MA.length - 1].ma5 < item.close;
 }
 function isMacdGolden(techData) {
   return (
@@ -90,6 +93,15 @@ const techMap = {
       km.KDJ[km.KDJ.length - 1].k < 50
     );
   },
+  上5月: function({ item, kd, kw, km }) {
+    return up5(item, km);
+  },
+  上5周: function({ item, kd, kw, km }) {
+    return up5(item, kw);
+  },
+  上5日: function({ item, kd, kw, km }) {
+    return up5(item, kd);
+  },
   上510周: function({ item, kd, kw, km }) {
     let i = kd.datas.length;
     kd.datas[i - 1].close <= 0 && (i += -1);
@@ -147,9 +159,9 @@ const techMap = {
   GM: function({ item, kd, kw, km }) {
     return isMacdGolden(km);
   },
-  日S: function({ item, kd, kw, km }) {
-    let i = kd.datas.length;
-    return (kd.datas[i - 1].close || kd.datas[i - 1].now) < kd.MA[i - 1].ma5;
+  S: function({ item, kd, kw, km }) {
+    let i = kw.datas.length;
+    return item.close < kw.MA[i - 1].ma5;
   },
   /*,
   "D&B": function({ item, kd, kw, km }) {
@@ -270,7 +282,7 @@ export function buildFilters() {
   return filters;
 }
 export async function callFun(item, chooseDate) {
-  let techDatas = await getTechDatas(item);
+  let techDatas = await getTech(item);
   if (chooseDate) {
     let ntechDatas = {};
     for (let p of ["kd", "kw", "km"]) {

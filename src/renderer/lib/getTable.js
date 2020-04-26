@@ -519,7 +519,7 @@ function isCP(klines) {
 async function getHXList() {
   let cb = rid("list");
 
-  let url = `http://25.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f128,f136,f115,f152&_=1572107420243`;
+  let url = `http://25.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f124,f128,f136,f115,f152&_=1572107420243`;
   let p = new Promise((resolve, reject) => {
     window[cb] = function(data) {
       resolve(data);
@@ -538,6 +538,7 @@ async function getHXList() {
       code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
       name: e.f14,
       now: e.f2,
+      close: e.f2,
       changePV: e.f3,
       changeP: e.f3 + "%",
       changeV: e.f4,
@@ -559,6 +560,7 @@ async function getHXList() {
       zf60: e.f24,
       zf250: e.f25,
       firstDay: e.f26,
+      date: new Date(e.f124 * 1000),
     };
   });
   return datalist;

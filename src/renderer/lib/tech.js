@@ -237,6 +237,14 @@ export async function getTech(item) {
   ) {
     let ps = ["kd", "kw", "km"];
 
+    Object.assign(itemDatas.kd.datas[itemDatas.kd.datas.length - 1], {
+      close: item.close,
+      open: item.open,
+      high: item.high,
+      low: item.low,
+      volume: item.volume,
+    });
+
     for (let j = 0; j < ps.length; j++) {
       let type = ps[j];
       let macd = itemDatas[type].MACD;
@@ -252,6 +260,14 @@ export async function getTech(item) {
     }
     return (window[techId] = itemDatas);
   } else {
+    if (
+      itemDatas &&
+      moment(item.date).format("YYYY-MM-DD") ==
+        moment(new Date()).format("YYYY-MM-DD") &&
+      new Date() <= new Date(moment().format("YYYY-MM-DD 09:30:00"))
+    ) {
+      return (window[techId] = itemDatas);
+    }
     let datas = await new Promise((resolve, reject) => {
       KKE.api(
         "datas.k.get",

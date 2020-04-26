@@ -13,6 +13,7 @@
           <div @click="selectId=i;" :class="{select:selectId==i}" class="it">
             <span>+</span>
             <span>{{id}}</span>
+            <span v-if="countMap[id]">({{countMap[id][src]}})</span>
           </div>
           <div v-show="selectId==i" class="sub">
             <ul>
@@ -44,7 +45,12 @@
 </template>
 
 <script>
-import { filters, getCheckFilters } from "@/lib/filters";
+import {
+  filters,
+  getCheckFilters,
+  countMap,
+  updateFiltersCount
+} from "@/lib/filters";
 import { mapActions, mapGetters } from "vuex";
 import storejs from "storejs";
 
@@ -55,7 +61,8 @@ export default {
       showAll: false,
       list: null,
       selectId: -1,
-      listMap: null
+      listMap: null,
+      countMap: countMap
     };
   },
   mounted() {
@@ -95,6 +102,7 @@ export default {
       console.log(names);
       this.list[i] = names;
       this.setCurFilterIds(names);
+      updateFiltersCount();
     },
     del(i) {
       this.list.splice(i, 1);

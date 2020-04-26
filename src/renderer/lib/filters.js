@@ -2,6 +2,7 @@ import { buildFilters } from "./tech-manager";
 import { getFilters } from "../store/modules/suspension";
 import { getFilterList } from "@/lib/getTable";
 import store from "../localdata";
+import storejs from "storejs";
 
 export const afilters = {
   海选: {
@@ -63,6 +64,7 @@ export function toFiltersCount(item, src, type = "+") {
     it[src] += fc([item]) ? (type == "+" ? 1 : -1) : 0;
   }
 }
+export const countMap = {};
 export function updateFiltersCount() {
   const keys = Object.keys(filters);
   const akeys = Object.keys(afilters);
@@ -76,6 +78,26 @@ export function updateFiltersCount() {
       it[j] = items.length;
     }
   }
+  let list = storejs.get("filter-id-list") || [];
+  let fcs = list.map((e) => [e, e.split("+").map((t) => filters[t])]);
+  let ret = fcs.map((e) => {
+    let ret = { name: e[0] };
+    for (let j of akeys) {
+      let items = afilters[j].items;
+      ret[j] = calRes(e[1], items, 0);
+    }
+    return ret;
+  });
+  ret.reduce((map, item) => {
+    map[item.name] = item;
+    return map;
+  }, countMap);
+}
+function calRes(fnArr, items, index) {
+  if (fnArr.length <= index || items.length == 0) return items.length;
+
+  let f = fnArr[index];
+  return calRes(fnArr, f(items), ++index);
 }
 window.updateFiltersCount = updateFiltersCount;
 

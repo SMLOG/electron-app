@@ -22,15 +22,9 @@ setInterval(() => {
   turnover = timeRatio * 0.000138;
 }, 2000);
 
-function oneLineCrossMa5Ma20(item, kd) {
-  let i = kd.datas.length;
-  return (
-    item.close > item.open &&
-    item.close > kd.MA[i - 2].ma5 &&
-    item.close > kd.MA[i - 2].ma20 &&
-    kd.datas[i - 2].close <= kd.MA[i - 2].ma5 &&
-    kd.datas[i - 2].close <= kd.MA[i - 2].ma20
-  );
+function kdjGold(item, kw) {
+  let i = kw.KDJ.length - 1;
+  return kw.KDJ[i].k > kw.KDJ[i - 1].k && kw.KDJ[i - 2].k > kw.KDJ[i - 1].k;
 }
 function up5(item, km) {
   return km.MA[km.MA.length - 1].ma5 < item.close;
@@ -81,7 +75,18 @@ const techMap = {
   上穿20日: function({ item, kd, kw, km }) {
     return upThrouhtN(item, kd, 20);
   },
-
+  KDJ周: function({ item, kd, kw }) {
+    return kdjGold(item, kw);
+  },
+  KDJ日: function({ item, kd, kw }) {
+    return kdjGold(item, kd);
+  },
+  MACD周: function({ item, kw }) {
+    return isMacdGolden(kw);
+  },
+  MACD日: function({ item, kd }) {
+    return isMacdGolden(kd);
+  },
   日B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖

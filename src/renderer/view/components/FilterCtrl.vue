@@ -2,18 +2,20 @@
   <div id="filterctr" ref="filterctr">
     <div>
       <div>
-        <a class="id" @click="showTree=!showTree">Tree</a>
-        <a class="id" :class="{cur:selectId<0}" @click="showAll">All</a>
-        <a
-          v-for="(id,i) in list"
-          :key="i"
-          :class="{cur:id==curFilterIds}"
-          class="id"
-          @click="selId(id)"
-        >
-          {{id}}
-          <span v-if="countMap[id]">({{countMap[id][src]}})</span>
-        </a>
+        <ul style="margin:0;padding:0;display:flex;justify-content:flex-end">
+          <li class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
+          <li class="id" :class="{cur:selectId<0}" @click="showAll">All</li>
+          <li
+            v-for="(id,i) in list"
+            :key="i"
+            :class="{cur:id==curFilterIds}"
+            class="id"
+            @click="selId(id)"
+          >
+            {{id}}
+            <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+          </li>
+        </ul>
       </div>
       <ul class="tree" v-show="showTree">
         <li v-for="(id,i) in list" :key="i" class="item">
@@ -150,6 +152,11 @@ export default {
 .id {
   display: inline-block;
   margin: 3px;
+  font-size: 80%;
+  padding-left: 8px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  min-width: 25px;
 }
 .select {
   font-weight: bold;
@@ -260,6 +267,9 @@ i.arrow {
   position: fixed;
   background: white;
   margin: 0;
+}
+.tree_ctrl {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PGRlZnM+PHN0eWxlPi5pY29uLWNhbnZhcy10cmFuc3BhcmVudCwuaWNvbi12cy1vdXR7ZmlsbDojMjUyNTI2O30uaWNvbi1jYW52YXMtdHJhbnNwYXJlbnR7b3BhY2l0eTowO30uaWNvbi12cy1iZ3tmaWxsOiNjNWM1YzU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5FbGxpcHNpc19ib2xkXzE2eDwvdGl0bGU+PGcgaWQ9ImNhbnZhcyI+PHBhdGggY2xhc3M9Imljb24tY2FudmFzLXRyYW5zcGFyZW50IiBkPSJNMTYsMFYxNkgwVjBaIi8+PC9nPjxnIGlkPSJvdXRsaW5lIiBzdHlsZT0iZGlzcGxheTogbm9uZTsiPjxwYXRoIGNsYXNzPSJpY29uLXZzLW91dCIgZD0iTTYsNy41QTIuNSwyLjUsMCwxLDEsMy41LDUsMi41LDIuNSwwLDAsMSw2LDcuNVpNOC41LDVBMi41LDIuNSwwLDEsMCwxMSw3LjUsMi41LDIuNSwwLDAsMCw4LjUsNVptNSwwQTIuNSwyLjUsMCwxLDAsMTYsNy41LDIuNSwyLjUsMCwwLDAsMTMuNSw1WiIgc3R5bGU9ImRpc3BsYXk6IG5vbmU7Ii8+PC9nPjxnIGlkPSJpY29uQmciPjxwYXRoIGNsYXNzPSJpY29uLXZzLWJnIiBkPSJNNSw3LjVBMS41LDEuNSwwLDEsMSwzLjUsNiwxLjUsMS41LDAsMCwxLDUsNy41Wk04LjUsNkExLjUsMS41LDAsMSwwLDEwLDcuNSwxLjUsMS41LDAsMCwwLDguNSw2Wm01LDBBMS41LDEuNSwwLDEsMCwxNSw3LjUsMS41LDEuNSwwLDAsMCwxMy41LDZaIi8+PC9nPjwvc3ZnPg==);
 }
 .cur {
   font-weight: bold;

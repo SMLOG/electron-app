@@ -232,6 +232,7 @@ export async function getTech(item) {
   if (
     itemDatas &&
     itemDatas.kd.datas &&
+    item.close != "-" &&
     moment(item.date).format("YYYY-MM-DD") ==
       moment(itemDatas.kd.datas.slice(-1)[0].date).format("YYYY-MM-DD")
   ) {
@@ -266,6 +267,7 @@ export async function getTech(item) {
         moment(new Date()).format("YYYY-MM-DD") &&
       new Date() <= new Date(moment().format("YYYY-MM-DD 09:30:00"))
     ) {
+      console.log(itemDatas);
       return (window[techId] = itemDatas);
     }
     let datas = await new Promise((resolve, reject) => {
@@ -303,6 +305,7 @@ export async function getTech(item) {
     };
 
     await getCacheData(item.date, techId, null, ret);
+    console.log(ret);
     return (window[techId] = ret);
   }
 }

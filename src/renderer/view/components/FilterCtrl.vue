@@ -1,14 +1,9 @@
 <template>
-  <div
-    id="filterctr"
-    ref="filterctr"
-    :class="{showAll:showAll}"
-    @mouseover="showAll=true"
-    @mouseout="save();showAll=false"
-  >
+  <div id="filterctr" ref="filterctr">
     <div>
       <div>
         <a class="id" @click="showTree=!showTree">Tree</a>
+        <a class="id" :class="{cur:selectId<0}" @click="showAll">All</a>
         <a
           v-for="(id,i) in list"
           :key="i"
@@ -70,7 +65,6 @@ export default {
   name: "filterCtr",
   data: function() {
     return {
-      showAll: false,
       list: null,
       selectId: -1,
       listMap: null,
@@ -129,6 +123,10 @@ export default {
       this.selectId = this.list.length;
       this.list.push("");
       this.listMap.push({});
+    },
+    showAll() {
+      this.selectId = -1;
+      this.setCurFilterIds(null);
     },
     save() {
       storejs.set(

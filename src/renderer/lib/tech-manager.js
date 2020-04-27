@@ -56,75 +56,32 @@ function isMacdGolden(techData) {
 }
 
 const techMap = {
-  /* DU: function({ item, kd, kw, km }) {
-    return (
-      kd.MACD.length > 4 &&
-      kd.MACD[kd.MACD.length - 1].bar > kd.MACD[kd.MACD.length - 2].bar &&
-      item.now > item.open
-    );
-  } 
-  D: function({ item, kd, kw, km }) {
-    return isMacdGolden(kd);
-  } 
-  "0&D": function({ item, kd, kw, km }) {
-    return isMacdGolden(kd) && Math.abs(kd.MACD[kd.MACD.length - 1].dif) < 0.1;
-  },
-
-  WU: function({ item, kd, kw, km }) {
-    return (
-      km.MACD.length > 4 &&
-      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
-      kw.datas[kw.MACD.length - 1].close > kw.datas[kw.MACD.length - 1].open
-    );
-  },
-  连续两周: function({ item, kd, kw, km }) {
-    return (
-      km.MACD.length > 4 &&
-      kw.MACD[kw.MACD.length - 1].bar >= 0 &&
-      kw.MACD[kw.MACD.length - 2].bar >= 0 &&
-      item.name.indexOf("中国") == -1
-    );
-  },
-  连续两周上涨: function({ item, kd, kw, km }) {
-    return (
-      km.MACD.length > 4 &&
-      kw.MACD[kw.MACD.length - 1].bar > kw.MACD[kw.MACD.length - 2].bar &&
-      kw.MACD[kw.MACD.length - 2].bar >= kw.MACD[kw.MACD.length - 3].bar
-    );
-  },*/
-  W20Y5: function({ item, kd, kw, km }) {
-    return (
-      kw.MA[kw.MA.length - 1].ma20 < item.now &&
-      km.MA[km.MA.length - 1].ma5 < item.now &&
-      km.KDJ[km.KDJ.length - 1].k < 50
-    );
-  },
   上5月: function({ item, kd, kw, km }) {
     return up5(item, km);
   },
   上5周: function({ item, kd, kw, km }) {
     return up5(item, kw);
   },
-  上穿5周: function({ item, kd, kw, km }) {
-    return upThrouhtN(item, kw, 5);
-  },
+
   上5日: function({ item, kd, kw, km }) {
     return up5(item, kd);
   },
-  上510周: function({ item, kd, kw, km }) {
-    let i = kd.datas.length;
-    kd.datas[i - 1].close <= 0 && (i += -1);
-    return (
-      kw.MA[kw.MA.length - 1].ma5 < kd.datas[i - 1].close &&
-      km.MA[km.MA.length - 1].ma10 < kd.datas[i - 1].close
-    );
+  上穿5月: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, km, 5);
   },
-  "穿5&20周": function({ item, kd, kw, km }) {
-    return oneLineCrossMa5Ma20(item, kw);
+  上穿5周: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, kw, 5);
   },
-  "穿5&20日": function({ item, kd, kw, km }) {
-    return oneLineCrossMa5Ma20(item, kd);
+  上穿20周: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, kw, 20);
   },
+  上穿5日: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, kd, 5);
+  },
+  上穿20日: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, kd, 20);
+  },
+
   日B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖
@@ -135,23 +92,7 @@ const techMap = {
       item.now > kd.MA[i - 1].ma5 &&
       kd.datas[i - 1].close > kd.MA[i - 1].ma5 &&
       kd.datas[i - 2].close > kd.datas[i - 2].open &&
-      kd.datas[i - 2].close <=
-        kd.MA[i - 2]
-          .ma5 /*&&
-      kd.MACD[kd.MACD.length - 2].bar >= kd.MACD[kd.MACD.length - 3].bar*/
-      /*km.MACD.length > 3 &&
-      km.KDJ[km.KDJ.length - 1].k < 50 &&
-      kw.KDJ[kw.KDJ.length - 1].k < 80 &&*/
-      /* kd.KDJ[kd.KDJ.length - 1].k < 80 &&
-      kd.KDJ[kd.KDJ.length - 2].k < kd.KDJ[kd.KDJ.length - 1].k &&
-      Math.abs(km.MACD[km.MACD.length - 1].bar) < 0.5 &&
-      km.KDJ[km.KDJ.length - 1].k < 80 &&
-      km.MACD[km.MACD.length - 1].bar > km.MACD[km.MACD.length - 2].bar &&
-      km.MACD[km.MACD.length - 2].bar > km.MACD[km.MACD.length - 3].bar &&
-      kw.MACD[kw.MACD.length - 2].bar > kw.MACD[kw.MACD.length - 3].bar &&
-      kd.MACD[kd.MACD.length - 1].bar >=
-        kd.MACD[kd.MACD.length - 2]
-          .bar*/
+      kd.datas[i - 2].close <= kd.MA[i - 2].ma5
     );
   },
   GM: function({ item, kd, kw, km }) {

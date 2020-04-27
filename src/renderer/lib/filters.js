@@ -79,7 +79,13 @@ export function updateFiltersCount() {
     }
   }
   let list = storejs.get("filter-id-list") || [];
-  let fcs = list.map((e) => [e, e.split("+").map((t) => filters[t])]);
+  let fcs = list.map((e) => [
+    e,
+    e
+      .split("+")
+      .map((t) => filters[t])
+      .filter((e) => e),
+  ]);
   let ret = fcs.map((e) => {
     let ret = { name: e[0] };
     for (let j of akeys) {
@@ -92,6 +98,7 @@ export function updateFiltersCount() {
     map[item.name] = item;
     return map;
   }, countMap);
+  console.log(countMap);
 }
 function calRes(fnArr, items, index) {
   if (fnArr.length <= index || items.length == 0) return items.length;
@@ -103,7 +110,10 @@ window.updateFiltersCount = updateFiltersCount;
 
 export function getFilterChain(ids) {
   if (!ids) return [];
-  return ids.split("+").map((e) => filters[e]);
+  return ids
+    .split("+")
+    .map((e) => filters[e])
+    .filter((e) => e);
 }
 window.getFilterChain = getFilterChain;
 
@@ -114,4 +124,10 @@ export function orFiltersItem(item, filters) {
 }
 export function getOrFiltersItems(items) {
   return items.filter((item) => orFiltersItem(item, Object.values(filters)));
+}
+export function removeAbandon(id) {
+  return id
+    .split("+")
+    .filter((t) => filters[t])
+    .join("+");
 }

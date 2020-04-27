@@ -1,14 +1,13 @@
 <template>
   <div>
     <Setting />
-    <His @showChart="openlink" />
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
       @click="closeview"
     ></div>
 
-    <iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>
+    <!--<iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>-->
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap" style>
@@ -202,7 +201,6 @@ import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
 import TopFocus from "@/view/components/TopFocus";
 import WinView from "@/view/components/WinView";
-import His from "@/view/components/His";
 
 import Sea from "@/view/components/Sea";
 import store from "@/localdata";
@@ -357,8 +355,7 @@ export default {
     FilterCtrl,
     Sea,
     TopFocus,
-    WinView,
-    His
+    WinView
   },
   filters: {
     objectType(id) {
@@ -424,34 +421,6 @@ export default {
     };
     this.reloadData();
     this.initTimer();
-
-    document.addEventListener("keydown", e => {
-      if (e.target && e.target.nodeName == "BODY") {
-        let items = this.getfilterItems();
-
-        switch (event.keyCode) {
-          //case 37:
-          case 38:
-            if (this.focus === null) {
-              this.focus = 0;
-            } else if (this.focus > 0) {
-              this.focus--;
-            }
-            break;
-
-          //case 39:
-          case 40:
-            if (this.focus === null) {
-              this.focus = 0;
-            } else if (this.focus < items.length - 1) {
-              this.focus++;
-            }
-            break;
-        }
-
-        // this.keyword +=e.key;
-      }
-    });
   },
   watch: {
     focus() {

@@ -59,13 +59,12 @@ xh5_define("utils.util", [], function() {
               simadata: {
                 cre: i,
                 mod: o,
-                during: t
+                during: t,
               },
               symbol: options.symbol,
-              type: options.type
+              type: options.type,
             });
           }
-          console.log(url);
           r = !0;
           scriptTag.onload = scriptTag.onreadystatechange = scriptTag.onerror = null;
           scriptTag.parentNode.removeChild(scriptTag);
@@ -83,10 +82,10 @@ xh5_define("utils.util", [], function() {
               cre: e,
               mod: r,
               during: t,
-              error_type: "err"
+              error_type: "err",
             },
             symbol: options.symbol,
-            type: options.type
+            type: options.type,
           });
         }
         scriptTag.onload = scriptTag.onreadystatechange = scriptTag.onerror = null;
@@ -114,7 +113,7 @@ xh5_define("utils.util", [], function() {
           var t = [
               "@keyframes KKELoading",
               "@-webkit-keyframes KKELoading",
-              "@-moz-keyframes KKELoading"
+              "@-moz-keyframes KKELoading",
             ],
             e = 0,
             len = t.length;
@@ -130,20 +129,20 @@ xh5_define("utils.util", [], function() {
           domObj = u.$C("div");
           copyStyleToDom({
             dom: domObj,
-            style: guest.ctn
+            style: guest.ctn,
           });
           for (var i = 0.1, n = 0, a = guest.color.length; a > n; n++) {
             var o = u.$C("span");
             copyStyleToDom({
               dom: o,
-              style: guest.item
+              style: guest.item,
             });
             var s = u.clone(guest.delay, s),
               c = -1 + i * n + "s";
             for (var h in s) s.hasOwnProperty(h) && (s[h] = c);
             copyStyleToDom({
               dom: o,
-              style: s
+              style: s,
             }),
               (o.style.background = guest.color[n]),
               domObj.appendChild(o);
@@ -168,7 +167,7 @@ xh5_define("utils.util", [], function() {
             margin: 0,
             display: "none",
             position: "absolute",
-            zIndex: 1
+            zIndex: 1,
           },
           item: {
             display: "inline-block",
@@ -178,16 +177,16 @@ xh5_define("utils.util", [], function() {
             borderRadius: "5px",
             animation: "KKELoading 1.2s infinite",
             webkitAnimation: "KKELoading 1.2s infinite",
-            MozAnimation: "KKELoading 1.2s infinite"
+            MozAnimation: "KKELoading 1.2s infinite",
           },
           color: ["#FF5472", "#FF706E", "#FF8762", "#FFAF4C", "#FFD53E"],
           delay: {
             animationDelay: -1,
             webkitAnimationDelay: -1,
-            MozAnimationDelay: -1
+            MozAnimationDelay: -1,
           },
           scaleY:
-            "{0%,40%,100%{-moz-transform:scaleY(0.2);-webkit-transform:scaleY(0.2);transform:scaleY(0.2);}20%,60%{-moz-transform:scaleY(1);-webkit-transform:scaleY(1);transform:scaleY(1);}}"
+            "{0%,40%,100%{-moz-transform:scaleY(0.2);-webkit-transform:scaleY(0.2);transform:scaleY(0.2);}20%,60%{-moz-transform:scaleY(1);-webkit-transform:scaleY(1);transform:scaleY(1);}}",
         };
       i();
       this.appendto = function(t, e) {
@@ -417,7 +416,7 @@ xh5_define("utils.util", [], function() {
         },
         error: function() {
           t && t.error && t.error.apply(t, arguments);
-        }
+        },
       };
     })(null);
 
@@ -514,12 +513,12 @@ xh5_define("utils.util", [], function() {
           ? ((t = /\brv[ :]+(\d+)/g.exec(e) || []),
             {
               name: "IE ",
-              version: t[1] || ""
+              version: t[1] || "",
             })
           : "Chrome" === i[1] && ((t = e.match(/\bOPR\/(\d+)/)), null != t)
           ? {
               name: "Opera",
-              version: t[1]
+              version: t[1],
             }
           : ((i = i[2]
               ? [i[1], i[2]]
@@ -527,7 +526,7 @@ xh5_define("utils.util", [], function() {
             null != (t = e.match(/version\/(\d+)/i)) && i.splice(1, 1, t[1]),
             {
               name: i[0],
-              version: i[1]
+              version: i[1],
             });
       })();
       this.noH5 = !1;
@@ -555,7 +554,7 @@ xh5_define("utils.util", [], function() {
           }
           return !1;
         })(),
-        allowt: "ontouchend" in window
+        allowt: "ontouchend" in window,
       };
     })();
 
@@ -602,7 +601,7 @@ xh5_define("utils.util", [], function() {
               r,
               a,
               o,
-              s
+              s,
             ].join(""));
         }
       }
@@ -711,7 +710,7 @@ xh5_define("utils.util", [], function() {
         },
         clear: function(t) {
           c && removeItem(t);
-        }
+        },
       };
     })();
 
@@ -771,7 +770,7 @@ xh5_define("utils.util", [], function() {
               : 40 * -t.detail
             : 0
         );
-      }
+      },
     };
     xh5_EvtDispatcher.prototype.al = function(t, e, i) {
       (i && this.evtObj[t]) ||
@@ -893,7 +892,7 @@ xh5_define("utils.util", [], function() {
               }
             t.className = n;
           }
-      }
+      },
     };
     this.load = getScript;
     var _;
@@ -915,7 +914,7 @@ xh5_define("utils.util", [], function() {
         (t[u] = {
           url: n,
           cbArr: [o],
-          errCbArr: [s]
+          errCbArr: [s],
         }),
           getScript(n, fbind(e, this, u), fbind(e, this, u, !0), l);
       };
@@ -1050,7 +1049,7 @@ xh5_define("utils.util", [], function() {
           o = i.domain ? "; domain=" + i.domain : "",
           s = i.secure ? "; secure" : "";
         document.cookie = [t, "=", e, n, a, o, s].join("");
-      }
+      },
     };
     var k = new (function() {
       function t(e) {
@@ -1085,7 +1084,7 @@ xh5_define("utils.util", [], function() {
           r = {
             action: "hq",
             data: n,
-            pk: "179824"
+            pk: "179824",
           };
         try {
           SIMA(r);
@@ -1102,7 +1101,7 @@ xh5_define("utils.util", [], function() {
           count: 5,
           f: function() {
             return "undefined" == typeof SUDA ? void 0 : SUDA.uaTrack;
-          }
+          },
         },
         o = {
           url: "https://news.sina.com.cn/js/pctianyi/sima.js",
@@ -1110,7 +1109,7 @@ xh5_define("utils.util", [], function() {
           count: 5,
           f: function() {
             return "undefined" == typeof SIMA ? void 0 : i;
-          }
+          },
         };
       e(o), e(r);
       var s = [];
@@ -1154,7 +1153,7 @@ xh5_define("utils.util", [], function() {
             }
           c.push({
             k: t,
-            v: e
+            v: e,
           }),
             clearTimeout(u),
             (u = setTimeout(h, i));
@@ -1197,7 +1196,7 @@ xh5_define("utils.util", [], function() {
       },
       vp: function(t, e, i) {
         return isNaN(t) || 0 >= t ? i - 1 : i * (1 - t / e);
-      }
+      },
     };
     this.xh5_HtmlPosUtil = {
       pageX: function(t) {
@@ -1219,7 +1218,7 @@ xh5_define("utils.util", [], function() {
         return t.parentNode == t.offsetParent
           ? t.offsetTop
           : this.pageY(t) - this.pageY(t.parentNode);
-      }
+      },
     };
     this.xh5_ADJUST_HIGH_LOW = new (function() {
       var t = function(t) {
@@ -1369,7 +1368,7 @@ xh5_define("utils.util", [], function() {
               _136: _,
               _200: S,
               _139: k,
-              _197: _mi_run
+              _197: _mi_run,
             }["_" + u[0]] ||
               function() {
                 return [];
@@ -1444,7 +1443,7 @@ xh5_define("utils.util", [], function() {
               i = [],
               t = 0;
             (o = {
-              d: 1
+              d: 1,
             }),
               y() &&
                 ((a = w([3])[0]),
@@ -1454,7 +1453,7 @@ xh5_define("utils.util", [], function() {
                   ? ((r.d = w([18])[0]), (o.d = 0))
                   : (o.d = a)),
               (l = {
-                day: x(o.d)
+                day: x(o.d),
               }),
               y() && (r.ld += N()),
               (a = w([3 * r.ld], [1])),
@@ -1474,11 +1473,11 @@ xh5_define("utils.util", [], function() {
               d = {
                 v: "volume",
                 p: "price",
-                a: "avg_price"
+                a: "avg_price",
               },
               r.d = w([18], [1])[0] - 1,
               h = {
-                day: x(1)
+                day: x(1),
               },
               a = w(1 > s ? [3, 3, 4, 1, 1, 1, 5] : [4, 4, 4, 1, 1, 1, 3]),
               t = 0;
@@ -1551,7 +1550,7 @@ xh5_define("utils.util", [], function() {
           ) {
             if (
               ((i = {
-                c: a[0]
+                c: a[0],
               }),
               (n = {}),
               (i.d = 1),
@@ -1585,7 +1584,7 @@ xh5_define("utils.util", [], function() {
             n.date = x(i.d);
             for (o in {
               v: 0,
-              d: 0
+              d: 0,
             })
               b(i["x_" + o]) || (r["l" + o] = i["x_" + o]),
                 b(i["u_" + o]) && (i["u_" + o] = r["l" + o]);
@@ -1611,7 +1610,7 @@ xh5_define("utils.util", [], function() {
               (l = r.cv[0] + a[0]),
               (r.cv = [
                 l & d,
-                r.cv[1] + a[1] + !!(((r.cv[0] & d) + (a[0] & d)) & f)
+                r.cv[1] + a[1] + !!(((r.cv[0] & d) + (a[0] & d)) & f),
               ]),
               (n.volume = (r.cv[0] & (f - 1)) + r.cv[1] * f),
               t.push(n);
@@ -1707,7 +1706,7 @@ xh5_define("utils.util", [], function() {
           s = [
             10 > r ? "0" + r : r,
             10 > a ? "0" + a : a,
-            10 > o ? "0" + o : o
+            10 > o ? "0" + o : o,
           ].join(":");
         return [n, s].join(" ");
       },
@@ -1762,7 +1761,7 @@ xh5_define("utils.util", [], function() {
       weekname: ["日", "一", "二", "三", "四", "五", "六", "日"],
       nw: function(t) {
         return this.weekname[t] || "";
-      }
+      },
     };
     (this.dateUtil = C), (this.LoadingSign = o);
     var A = {
@@ -1827,7 +1826,7 @@ xh5_define("utils.util", [], function() {
       },
       zp: function(t) {
         return (t = String(t)), t.length < 2 ? "0" + t : t;
-      }
+      },
     };
     (this.strUtil = A),
       (this.tUtil = {
@@ -1858,7 +1857,7 @@ xh5_define("utils.util", [], function() {
             this.tradingA.length ||
               (this.tradingA = this.gtr([
                 ["9:30", "11:29"],
-                ["13:00", "15:00"]
+                ["13:00", "15:00"],
               ])),
             this.tradingA
           );
@@ -1869,7 +1868,7 @@ xh5_define("utils.util", [], function() {
             this.tradingRepo.length ||
               (this.tradingRepo = this.gtr([
                 ["9:30", "11:29"],
-                ["13:00", "15:30"]
+                ["13:00", "15:30"],
               ])),
             this.tradingRepo
           );
@@ -1896,7 +1895,7 @@ xh5_define("utils.util", [], function() {
             this.tradingMSCI.length ||
               (this.tradingMSCI = this.gtr([
                 ["07:00", "23:59"],
-                ["00:00", "06:00"]
+                ["00:00", "06:00"],
               ])),
             this.tradingMSCI
           );
@@ -1908,7 +1907,7 @@ xh5_define("utils.util", [], function() {
               (this.tradingGDS = this.gtr([
                 ["20:00", "23:59"],
                 ["00:00", "02:29"],
-                ["09:00", "15:30"]
+                ["09:00", "15:30"],
               ])),
             this.tradingGDS
           );
@@ -1919,7 +1918,7 @@ xh5_define("utils.util", [], function() {
             this.tradingHk.length ||
               (this.tradingHk = this.gtr([
                 ["09:30", "11:59"],
-                ["13:00", "16:00"]
+                ["13:00", "16:00"],
               ])),
             this.tradingHk
           );
@@ -1984,7 +1983,7 @@ xh5_define("utils.util", [], function() {
               avg_price: 0,
               volume: -0.01,
               holdPosition: 0,
-              inventory: 0
+              inventory: 0,
             }),
               c % u == 0 && r && ((o.date = r[h]), h++),
               s.push(o),
@@ -2002,7 +2001,7 @@ xh5_define("utils.util", [], function() {
           for (var i = this.gata(e), n = 0, r = t.length; r > n; n++)
             t[n].time = i[n];
           return t[0].date.setHours(0), t;
-        }
+        },
       }),
       (this.kUtil = {
         mw: function(t, e, i, n, r) {
@@ -2022,7 +2021,7 @@ xh5_define("utils.util", [], function() {
               close: e.price,
               volume: e.totalVolume,
               amount: e.totalAmount,
-              date: C.dd(e.date)
+              date: C.dd(e.date),
             }),
               (u[0] = {
                 open: e.open,
@@ -2031,7 +2030,7 @@ xh5_define("utils.util", [], function() {
                 close: e.price,
                 volume: e.totalVolume,
                 amount: e.totalAmount,
-                date: C.dd(e.date)
+                date: C.dd(e.date),
               }),
               (c[0] = {
                 open: e.open,
@@ -2040,7 +2039,7 @@ xh5_define("utils.util", [], function() {
                 close: e.price,
                 volume: e.totalVolume,
                 amount: e.totalAmount,
-                date: C.dd(e.date)
+                date: C.dd(e.date),
               });
           else
             for (
@@ -2094,7 +2093,7 @@ xh5_define("utils.util", [], function() {
                     close: dClose,
                     volume: dVolume,
                     date: dDate,
-                    amount: dAmount
+                    amount: dAmount,
                   }),
                   (dOpen = o.open),
                   (dHigh = o.high),
@@ -2125,7 +2124,7 @@ xh5_define("utils.util", [], function() {
                     close: mClose,
                     volume: mVolume,
                     date: mDate,
-                    amount: mAmount
+                    amount: mAmount,
                   }),
                   (mOpen = o.open),
                   (mHigh = o.high),
@@ -2148,7 +2147,7 @@ xh5_define("utils.util", [], function() {
                     close: yClose,
                     volume: yVolume,
                     date: yDate,
-                    amount: yAmount
+                    amount: yAmount,
                   }),
                   (yOpen = o.open),
                   (yHigh = o.high),
@@ -2164,7 +2163,7 @@ xh5_define("utils.util", [], function() {
                   close: dClose,
                   volume: dVolume,
                   date: dDate,
-                  amount: dAmount
+                  amount: dAmount,
                 }),
                 u.push({
                   open: mOpen,
@@ -2173,7 +2172,7 @@ xh5_define("utils.util", [], function() {
                   close: mClose,
                   volume: mVolume,
                   date: mDate,
-                  amount: mAmount
+                  amount: mAmount,
                 }),
                 c.push({
                   open: yOpen,
@@ -2182,7 +2181,7 @@ xh5_define("utils.util", [], function() {
                   close: yClose,
                   volume: yVolume,
                   date: yDate,
-                  amount: yAmount
+                  amount: yAmount,
                 }));
             }
           return (
@@ -2226,7 +2225,7 @@ xh5_define("utils.util", [], function() {
               ampP: 0,
               amplitude: 0,
               change: o,
-              kke_cs: 0
+              kke_cs: 0,
             });
           }
         },
@@ -2382,7 +2381,7 @@ xh5_define("utils.util", [], function() {
               }
             }
           return c > 0 && t.splice(0, c), t;
-        }
+        },
       }),
       (this.domGc = new (function() {
         var t = u.$C("div");
@@ -2474,7 +2473,7 @@ xh5_define("utils.util", [], function() {
               l.drawImage(e, 0, 0),
               o({
                 logo: s,
-                color: t.color
+                color: t.color,
               }),
               isFunction(t.cb) && t.cb(s),
               s
@@ -2522,7 +2521,7 @@ xh5_define("utils.util", [], function() {
             return {
               canvas: s,
               x: c,
-              y: f
+              y: f,
             };
           },
           e = function(t, e) {
@@ -2538,7 +2537,7 @@ xh5_define("utils.util", [], function() {
                 a,
                 {
                   imgData: t,
-                  symbol: "imgData"
+                  symbol: "imgData",
                 },
                 function(t) {
                   t &&
@@ -2592,7 +2591,7 @@ xh5_define("utils.util", [], function() {
                       var b = {
                         canvas: a,
                         x: u.xh5_HtmlPosUtil.pageX(a) - d,
-                        y: u.xh5_HtmlPosUtil.pageY(a) - f
+                        y: u.xh5_HtmlPosUtil.pageY(a) - f,
                       };
                       h.push(b);
                     }
@@ -2607,13 +2606,13 @@ xh5_define("utils.util", [], function() {
                     right: i.right,
                     LOGO_W: i.LOGO_W,
                     LOGO_H: i.LOGO_H,
-                    color: i.color
+                    color: i.color,
                   });
                   N &&
                     h.push({
                       canvas: N,
                       x: s - Number(N.style.right.split("px")[0]) - i.LOGO_W,
-                      y: Number(N.style.top.split("px")[0])
+                      y: Number(N.style.top.split("px")[0]),
                     });
                 }
                 if (i.extra) {
@@ -2654,7 +2653,7 @@ xh5_define("utils.util", [], function() {
             LOAD: "load",
             REMOVE: "remove",
             DATA: "data",
-            READY: "ready"
+            READY: "ready",
           };
         t(a, r);
         var o = [],
@@ -2777,7 +2776,7 @@ xh5_define("utils.util", [], function() {
             ? t.getBoundingClientRect()
             : {
                 left: 0,
-                top: 0
+                top: 0,
               };
         }
 
@@ -2934,7 +2933,7 @@ xh5_define("utils.util", [], function() {
           return [
             f(255 * g(a, r, e + 1 / 3), 0, 255),
             f(255 * g(a, r, e), 0, 255),
-            f(255 * g(a, r, e - 1 / 3), 0, 255)
+            f(255 * g(a, r, e - 1 / 3), 0, 255),
           ];
         }
 
@@ -2995,7 +2994,7 @@ xh5_define("utils.util", [], function() {
                 return [
                   ((3840 & o) >> 4) | ((3840 & o) >> 8),
                   (240 & o) | ((240 & o) >> 4),
-                  (15 & o) | ((15 & o) << 4)
+                  (15 & o) | ((15 & o) << 4),
                 ];
               }
               if (7 === e.length) {
@@ -3020,7 +3019,7 @@ xh5_define("utils.util", [], function() {
           var e = [
             t[0].toFixed(0),
             (100 * t[1]).toFixed(0) + "%",
-            (100 * t[2]).toFixed(0) + "%"
+            (100 * t[2]).toFixed(0) + "%",
           ];
           return "hsl(" + e.join(",") + ")";
         }
@@ -3114,13 +3113,13 @@ xh5_define("utils.util", [], function() {
                 height: 0.65,
                 size: 10,
                 color: "#000",
-                lineWidth: 1
+                lineWidth: 1,
               },
               slider: {
                 left: 0.5,
                 top: 0.15,
                 width: 0.05,
-                height: 0.65
+                height: 0.65,
               },
               rgbBox: {
                 label: ["R:", "G:", "B:"],
@@ -3131,7 +3130,7 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 36,
                 left: 0.6,
-                top: 0.15
+                top: 0.15,
               },
               hslBox: {
                 label: ["H:", "S:", "L:"],
@@ -3142,7 +3141,7 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 36,
                 left: 0.78,
-                top: 0.15
+                top: 0.15,
               },
               hexBox: {
                 label: ["#"],
@@ -3151,13 +3150,13 @@ xh5_define("utils.util", [], function() {
                 labelWidth: 15,
                 inputWidth: 60,
                 left: 0.03,
-                top: 0.85
+                top: 0.85,
               },
               colorBox: {
                 left: 0.63,
                 top: 0.6,
                 width: 0.32,
-                height: 0.2
+                height: 0.2,
               },
               okBtn: {
                 text: "确定",
@@ -3167,7 +3166,7 @@ xh5_define("utils.util", [], function() {
                 left: 0.65,
                 top: 0.87,
                 width: 0.12,
-                height: 0.1
+                height: 0.1,
               },
               cancelBtn: {
                 text: "取消",
@@ -3177,8 +3176,8 @@ xh5_define("utils.util", [], function() {
                 left: 0.83,
                 top: 0.87,
                 width: 0.12,
-                height: 0.1
-              }
+                height: 0.1,
+              },
             },
             M = function(t, i) {
               e(this, i),
@@ -3237,7 +3236,7 @@ xh5_define("utils.util", [], function() {
             },
             update: function(t) {
               (this.H = t[0]), (this.S = t[1]), this.updatePoint();
-            }
+            },
           };
           var R = function(t, i) {
             e(this, i),
@@ -3295,7 +3294,7 @@ xh5_define("utils.util", [], function() {
             },
             update: function(t) {
               (this.L = t[2]), this.paintBG(t), this.updatePoint(t);
-            }
+            },
           };
           var I = function(t, e) {
             var i = this;
@@ -3324,7 +3323,7 @@ xh5_define("utils.util", [], function() {
               return [
                 t[0].childNodes[1].value,
                 t[1].childNodes[1].value,
-                t[2].childNodes[1].value
+                t[2].childNodes[1].value,
               ];
             },
             update: function(t) {
@@ -3334,7 +3333,7 @@ xh5_define("utils.util", [], function() {
                 n++
               )
                 e[n].childNodes[1].value = (+i[n]).toFixed(0);
-            }
+            },
           };
           var E = function(t, e) {
             var i = this;
@@ -3372,7 +3371,7 @@ xh5_define("utils.util", [], function() {
               return [
                 t[0].childNodes[1].value,
                 t[1].childNodes[1].value / 100,
-                t[2].childNodes[1].value / 100
+                t[2].childNodes[1].value / 100,
               ];
             },
             update: function(t) {
@@ -3380,7 +3379,7 @@ xh5_define("utils.util", [], function() {
                 e[i].childNodes[1].value = (i > 0 ? 100 * t[i] : +t[i]).toFixed(
                   0
                 );
-            }
+            },
           };
           var F = function(t, e) {
             var i = this;
@@ -3402,7 +3401,7 @@ xh5_define("utils.util", [], function() {
             update: function(t) {
               var e = this.box.childNodes;
               e[0].childNodes[1].value = w(b(t));
-            }
+            },
           };
           var L = function(t, e) {
               this.btn = c(t, e);
@@ -3424,7 +3423,7 @@ xh5_define("utils.util", [], function() {
               for (var e = b(t), i = e.length; i--; ) e[i] = (+e[i]).toFixed(0);
               this.box.style.backgroundColor =
                 "rgb(" + e[0] + ", " + e[1] + ", " + e[2] + ")";
-            }
+            },
           };
           var K = function(t) {
             (t = t || {}),
@@ -3544,16 +3543,16 @@ xh5_define("utils.util", [], function() {
                         {
                           rgb: f.getRGB(),
                           hsl: p.getHSL(),
-                          hex: S(p.getHSL(), "hex")
+                          hex: S(p.getHSL(), "hex"),
                         },
-                        u.target
+                        u.target,
                       ]),
                       u.onok &&
                         u.onok(
                           {
                             rgb: f.getRGB(),
                             hsl: p.getHSL(),
-                            hex: S(p.getHSL(), "hex")
+                            hex: S(p.getHSL(), "hex"),
                           },
                           u.target
                         );
@@ -3588,7 +3587,7 @@ xh5_define("utils.util", [], function() {
                   this.hslBox.update(e),
                   this.hexBox.update(e),
                   this.colorBox.update(e);
-              }
+              },
             }),
             t(K, u.xh5_EvtDispatcher),
             new K()

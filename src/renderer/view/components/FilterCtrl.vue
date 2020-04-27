@@ -54,7 +54,12 @@
 </template>
 
 <script>
-import { filters, countMap, updateFiltersCount } from "@/lib/filters";
+import {
+  filters,
+  countMap,
+  updateFiltersCount,
+  removeAbandon
+} from "@/lib/filters";
 import { mapActions, mapGetters } from "vuex";
 import storejs from "storejs";
 
@@ -71,7 +76,9 @@ export default {
   },
   mounted() {
     this.checkMap = {};
-    this.list = storejs.get("filter-id-list") || [];
+    this.list = (storejs.get("filter-id-list") || []).map(e =>
+      removeAbandon(e)
+    );
     this.listMap = [];
     for (let i = 0; i < this.list.length; i++) {
       let fs = this.list[i].split("+");
@@ -110,6 +117,7 @@ export default {
         .join("+");
       this.list[i] = names;
       this.setCurFilterIds(names);
+      this.save();
       updateFiltersCount();
     },
     del(i) {
@@ -147,7 +155,7 @@ export default {
 <style scoped>
 .id {
   display: inline-block;
-  margin: 3px;
+  padding: 3px;
   font-size: 80%;
   padding-left: 8px;
   border-bottom: 1px solid #ccc;
@@ -263,6 +271,7 @@ i.arrow {
   position: fixed;
   background: white;
   margin: 0;
+  border-left: 5px solid black;
 }
 .tree_ctrl {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PGRlZnM+PHN0eWxlPi5pY29uLWNhbnZhcy10cmFuc3BhcmVudCwuaWNvbi12cy1vdXR7ZmlsbDojMjUyNTI2O30uaWNvbi1jYW52YXMtdHJhbnNwYXJlbnR7b3BhY2l0eTowO30uaWNvbi12cy1iZ3tmaWxsOiNjNWM1YzU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5FbGxpcHNpc19ib2xkXzE2eDwvdGl0bGU+PGcgaWQ9ImNhbnZhcyI+PHBhdGggY2xhc3M9Imljb24tY2FudmFzLXRyYW5zcGFyZW50IiBkPSJNMTYsMFYxNkgwVjBaIi8+PC9nPjxnIGlkPSJvdXRsaW5lIiBzdHlsZT0iZGlzcGxheTogbm9uZTsiPjxwYXRoIGNsYXNzPSJpY29uLXZzLW91dCIgZD0iTTYsNy41QTIuNSwyLjUsMCwxLDEsMy41LDUsMi41LDIuNSwwLDAsMSw2LDcuNVpNOC41LDVBMi41LDIuNSwwLDEsMCwxMSw3LjUsMi41LDIuNSwwLDAsMCw4LjUsNVptNSwwQTIuNSwyLjUsMCwxLDAsMTYsNy41LDIuNSwyLjUsMCwwLDAsMTMuNSw1WiIgc3R5bGU9ImRpc3BsYXk6IG5vbmU7Ii8+PC9nPjxnIGlkPSJpY29uQmciPjxwYXRoIGNsYXNzPSJpY29uLXZzLWJnIiBkPSJNNSw3LjVBMS41LDEuNSwwLDEsMSwzLjUsNiwxLjUsMS41LDAsMCwxLDUsNy41Wk04LjUsNkExLjUsMS41LDAsMSwwLDEwLDcuNSwxLjUsMS41LDAsMCwwLDguNSw2Wm01LDBBMS41LDEuNSwwLDEsMCwxNSw3LjUsMS41LDEuNSwwLDAsMCwxMy41LDZaIi8+PC9nPjwvc3ZnPg==);

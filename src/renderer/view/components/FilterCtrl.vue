@@ -7,11 +7,20 @@
     @mouseout="save();showAll=false"
   >
     <div>
-      <div v-if="selectId>-1">
-        {{list[selectId]}}
-        <span v-if="countMap[list[selectId]]">({{countMap[list[selectId]][src]}})</span>
+      <div>
+        <a class="id" @click="showTree=!showTree">Tree</a>
+        <a
+          v-for="(id,i) in list"
+          :key="i"
+          :class="{cur:id==curFilterIds}"
+          class="id"
+          @click="selId(id)"
+        >
+          {{id}}
+          <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+        </a>
       </div>
-      <ul>
+      <ul class="tree" v-show="showTree">
         <li v-for="(id,i) in list" :key="i" class="item">
           <div @click="selectId=i;" :class="{select:selectId==i}" class="it">
             <span>+</span>
@@ -65,7 +74,8 @@ export default {
       list: null,
       selectId: -1,
       listMap: null,
-      countMap: countMap
+      countMap: countMap,
+      showTree: false
     };
   },
   mounted() {
@@ -98,11 +108,14 @@ export default {
     c: Number
   },
   methods: {
+    selId(id) {
+      this.setCurFilterIds(id);
+      this.selectId = this.list.indexOf(id);
+    },
     change(i, filter) {
       let names = Object.keys(this.listMap[i])
         .filter(e => this.listMap[i][e])
         .join("+");
-      console.log(names);
       this.list[i] = names;
       this.setCurFilterIds(names);
       updateFiltersCount();
@@ -126,7 +139,7 @@ export default {
     ...mapActions(["setCurFilterIds", "setCurFilterIdsAndSave"])
   },
   computed: {
-    ...mapGetters(["filters"])
+    ...mapGetters(["filters", "curFilterIds"])
   },
   watch: {
     selectId(nv, ov) {
@@ -136,6 +149,10 @@ export default {
 };
 </script>
 <style scoped>
+.id {
+  display: inline-block;
+  margin: 3px;
+}
 .select {
   font-weight: bold;
 }
@@ -239,5 +256,14 @@ i.arrow {
 .arrow.down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+
+.tree {
+  position: fixed;
+  background: white;
+  margin: 0;
+}
+.cur {
+  font-weight: bold;
 }
 </style>

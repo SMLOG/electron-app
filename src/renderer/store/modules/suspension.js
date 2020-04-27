@@ -24,6 +24,7 @@ const actions = {
   setCurFilterIds: function({ state, commit }, curFilterIds) {
     state.curFilterIds = curFilterIds;
     commit(MUTATION_TYPE.SET_CURFILTERIDS, curFilterIds);
+    storejs.set("curFilterIds", curFilterIds);
   },
   setCurFilterIdsAndSave: function({ state, commit }, curFilterIds) {
     storejs.set("curFilterIds", curFilterIds);

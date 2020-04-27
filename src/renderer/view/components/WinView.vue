@@ -8,16 +8,14 @@
               class="button"
               v-if="chooseDate && (showChooseDate || cutChooseDate)"
               @click="prevChooseDate()"
-              >前</span
-            >
+            >前</span>
 
             <span
               class="button"
               v-if="chooseDate && (showChooseDate || cutChooseDate)"
               @click="nextChooseDate()"
               :class="{ gray: item.date <= chooseDate }"
-              >后</span
-            >
+            >后</span>
             <span
               ref="choose_date_ref"
               style="display:inline-block;width:120px;text-align:center;border-bottom:1px solid;"
@@ -25,8 +23,7 @@
               <span
                 style="width:100%;display:inline-block;"
                 @click="showChooseDate2 = !showChooseDate2"
-                >{{ chooseDate || "--" }} {{ weekday }}</span
-              >
+              >{{ chooseDate || "--" }} {{ weekday }}</span>
               <div
                 class="selectDate"
                 style="position:absolute;right:10px;"
@@ -70,21 +67,14 @@
               :key="f"
               style="display:inline-block;margin:5px;margin-right;10px;"
               :class="{ y: aitem['_' + f] }"
-            >
-              {{ f }}
-            </li>
+            >{{ f }}</li>
           </ul>
         </div>
       </td>
     </tr>
     <tr>
       <td>
-        <webview
-          ref="webview"
-          id="figure"
-          style="width:100%;height:100%;"
-          :src="link"
-        ></webview>
+        <webview ref="webview" id="figure" style="width:100%;height:100%;" :src="link"></webview>
       </td>
     </tr>
   </table>

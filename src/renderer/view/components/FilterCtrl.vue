@@ -5,16 +5,18 @@
         <ul style="margin:0;padding:0;display:flex;justify-content:flex-end">
           <li ref="tree_ctrl" class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
           <li class="id" :class="{cur:selectId<0}" @click="showAll">All</li>
-          <li
-            v-for="(id,i) in list"
-            :key="i"
-            :class="{cur:id==curFilterIds}"
-            class="id"
-            @click="selId(id)"
-          >
-            {{id}}
-            <span v-if="countMap[id]">({{countMap[id][src]}})</span>
-          </li>
+          <draggable v-model="list" @update="dragEnd" tag="li">
+            <li
+              v-for="(id,i) in list"
+              :key="i"
+              :class="{cur:id==curFilterIds}"
+              class="id"
+              @click="selId(id)"
+            >
+              {{id}}
+              <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+            </li>
+          </draggable>
         </ul>
       </div>
       <ul class="tree" v-show="showTree" ref="tree">
@@ -62,6 +64,7 @@ import {
 } from "@/lib/filters";
 import { mapActions, mapGetters } from "vuex";
 import storejs from "storejs";
+import draggable from "vuedraggable";
 
 export default {
   name: "filterCtr",
@@ -73,6 +76,9 @@ export default {
       countMap: countMap,
       showTree: false
     };
+  },
+  components: {
+    draggable
   },
   mounted() {
     this.checkMap = {};
@@ -106,6 +112,10 @@ export default {
     src: String
   },
   methods: {
+    dragEnd(e) {
+      e.preventDefault();
+      this.save();
+    },
     selId(id) {
       this.setCurFilterIds(id);
       this.selectId = this.list.indexOf(id);

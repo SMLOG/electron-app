@@ -3,7 +3,7 @@
     <div>
       <div>
         <ul style="margin:0;padding:0;display:flex;justify-content:flex-end">
-          <li class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
+          <li ref="tree_ctrl" class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
           <li class="id" :class="{cur:selectId<0}" @click="showAll">All</li>
           <li
             v-for="(id,i) in list"
@@ -17,7 +17,7 @@
           </li>
         </ul>
       </div>
-      <ul class="tree" v-show="showTree">
+      <ul class="tree" v-show="showTree" ref="tree">
         <li v-for="(id,i) in list" :key="i" class="item">
           <div @click="selectId=i;" :class="{select:selectId==i}" class="it">
             <span>+</span>
@@ -54,12 +54,7 @@
 </template>
 
 <script>
-import {
-  filters,
-  getCheckFilters,
-  countMap,
-  updateFiltersCount
-} from "@/lib/filters";
+import { filters, countMap, updateFiltersCount } from "@/lib/filters";
 import { mapActions, mapGetters } from "vuex";
 import storejs from "storejs";
 
@@ -87,9 +82,11 @@ export default {
       }
     }
     window.addEventListener("click", e => {
-      if (this.$refs.filterctr.contains(e.target)) {
-      } else {
-        this.show = false;
+      if (
+        !this.$refs.tree.contains(e.target) &&
+        !this.$refs.tree_ctrl.contains(e.target)
+      ) {
+        this.showTree = false;
       }
     });
   },
@@ -99,9 +96,7 @@ export default {
     filtersCount: Array,
     selected: Boolean,
     items: Array,
-    src: String,
-    r: Number,
-    c: Number
+    src: String
   },
   methods: {
     selId(id) {
@@ -111,6 +106,7 @@ export default {
     change(i, filter) {
       let names = Object.keys(this.listMap[i])
         .filter(e => this.listMap[i][e])
+        .sort()
         .join("+");
       this.list[i] = names;
       this.setCurFilterIds(names);

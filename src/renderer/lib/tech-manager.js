@@ -35,6 +35,12 @@ function oneLineCrossMa5Ma20(item, kd) {
 function up5(item, km) {
   return km.MA[km.MA.length - 1].ma5 < item.close;
 }
+function upThrouhtN(item, km, n) {
+  return (
+    km.MA[km.MA.length - 1]["ma" + n] < item.close &&
+    km.datas[km.datas.length - 2].close < km.MA[km.MA.length - 2]["ma" + n]
+  );
+}
 function isMacdGolden(techData) {
   return (
     techData.MACD.length > 3 &&
@@ -99,6 +105,9 @@ const techMap = {
   上5周: function({ item, kd, kw, km }) {
     return up5(item, kw);
   },
+  上穿5周: function({ item, kd, kw, km }) {
+    return upThrouhtN(item, kw, 5);
+  },
   上5日: function({ item, kd, kw, km }) {
     return up5(item, kd);
   },
@@ -109,18 +118,7 @@ const techMap = {
       kw.MA[kw.MA.length - 1].ma5 < kd.datas[i - 1].close &&
       km.MA[km.MA.length - 1].ma10 < kd.datas[i - 1].close
     );
-  } /*
-  上60日: function({ item, kd, kw, km }) {
-    let p = (item.now - kd.MA[kd.MA.length - 1].ma60) / item.now;
-    return kd.MA[kd.MA.length - 1].ma60 < item.now && p > 0 && p < 0.03;
   },
-  日波: function({ item, kd, kw, km }) {
-    return (
-      kd.KDJ[kd.KDJ.length - 1].k < 80 &&
-      kd.KDJ[kd.KDJ.length - 2].k < kd.KDJ[kd.KDJ.length - 1].k &&
-      kd.MACD[kd.MACD.length - 1].bar >= kd.MACD[kd.MACD.length - 2].bar
-    );
-  },*/,
   "穿5&20周": function({ item, kd, kw, km }) {
     return oneLineCrossMa5Ma20(item, kw);
   },
@@ -163,113 +161,6 @@ const techMap = {
     let i = kw.datas.length;
     return item.close < kw.MA[i - 1].ma5;
   },
-  /*,
-  "D&B": function({ item, kd, kw, km }) {
-    let boll = kd.BOLL;
-    if (boll && boll.length > 5) {
-      let arr = boll;
-      let i = arr.length - 1;
-      //连续下跌，MA20反转信号
-      let nrValue = (arr[i].upper - arr[i].lower) / arr[i].boll;
-      let kd5 = kd.datas.slice(-5);
-      let boll5 = boll.slice(-5);
-      if (
-        (nrValue < 0.1 &&
-          ((Math.min.apply(
-            null,
-            kd5.map(e => e.low)
-          ) <=
-            Math.max.apply(
-              null,
-              boll5.map(e => e.lower)
-            ) &&
-            Math.max.apply(
-              null,
-              kd5.map(e => e.high)
-            ) >=
-              Math.min.apply(
-                null,
-                boll5.map(e => e.boll)
-              )) ||
-            kd.datas[i].low > arr[i].upper)) ||
-        kd.now >= arr[i].boll
-      ) {
-        return true;
-      }
-    }
-    return false;
-  } 
-  B: function({ item, kd, kw, km }) {
-    let boll = kd.BOLL;
-    if (boll) {
-      let arr = boll;
-      let i = arr.length - 1;
-
-      if (
-        item.now >= arr[i].boll &&
-        item.turnover > turnover &&
-        item.now > item.open
-      ) {
-        return true;
-      }
-    }
-    return false;
-  },
-  三小: function({ item, kd, kw, km }) {
-    let datas = kd.datas;
-    if (datas && datas.length > 3) {
-      let len = datas.length;
-      if (
-        datas[len - 1].close - datas[len - 1].open > 0 &&
-        datas[len - 2].close - datas[len - 2].open > 0 &&
-        datas[len - 3].close - datas[len - 3].open > 0 &&
-        datas[len - 1].percent >= 0 &&
-        datas[len - 2].percent >= 0 &&
-        datas[len - 3].percent >= 0 &&
-        datas[len - 1].percent < 0.03 &&
-        datas[len - 2].percent < 0.03 &&
-        datas[len - 3].percent < 0.03 &&
-        datas[len - 1].percent +
-          datas[len - 2].percent +
-          datas[len - 3].percent <
-          0.05
-      ) {
-        return true;
-      }
-    }
-    return false;
-  },
-
-  W: function({ item, kd, kw, km }) {
-    return isMacdGolden(kw);
-  }
-  M: function({ item, kd, kw, km }) {
-    return isMacdGolden(km);
-  },*/
-
-  /*粘多: function({ item, kd, kw, km }) {
-    //5,10,20日三线粘合 {取1%振幅内粘合}
-    let m = item.now;
-    if (kd.MA.length < 30) return false;
-    let ma = kd.MA[kd.MA.length - 1];
-    let ma1 = kd.MA[kd.MA.length - 2];
-    let m5 = ma.ma5;
-    let m10 = ma.ma10;
-    let m20 = ma.ma20;
-    let x1 = m5 / m10 - 1 < 0.01;
-    let x2 = m5 / m20 - 1 < 0.01;
-    let x3 = m10 / m20 - 1 < 0.01;
-
-    //AA:=MA(C,5)>REF(MA(C,5),1);BB:=MA(C,10)>REF(MA(C,10),1);CC:=MA(C,5)>MA(C,10);{均线勾头向上}
-    let aa = m5 > ma1.ma5;
-    let bb = m10 > ma1.ma10;
-    let cc = m20 > ma1.ma20;
-
-    return x1 && x2 && x3 && aa && bb && cc;
-  },
-  Deth: function({ item, kd, kw, km }) {
-    return isMacdDeath(kd);
-  }*/
 };
 
 export function buildFilters() {

@@ -82,7 +82,7 @@ i.arrow {
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 @-moz-keyframes blink {
@@ -90,7 +90,7 @@ i.arrow {
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 @-ms-keyframes blink {
@@ -98,7 +98,7 @@ i.arrow {
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 @-o-keyframes blink {
@@ -106,7 +106,7 @@ i.arrow {
     opacity: 1;
   }
   100% {
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 #app {

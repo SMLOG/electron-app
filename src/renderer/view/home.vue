@@ -34,6 +34,12 @@
           :r="selectFilter_r"
           :c="selectFilter_c"
         />
+        <div style="float:left">
+          <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi,$event)">
+            {{zi.name}}
+            <em :class="{up:zi.change>0,down:zi.change<0}">{{zi.changeP}}</em>
+          </span>
+        </div>
 
         <!-- <TopFocus :items="focusItems" @openlink="openlink" /> -->
       </div>
@@ -242,7 +248,8 @@ import {
   getMeetList,
   getFilterList,
   batchUpdateHQ,
-  isNotTradeTime
+  isNotTradeTime,
+  syncZsItems
 } from "@/lib/getTable";
 import $ from "jquery";
 
@@ -307,7 +314,8 @@ export default {
       m_posts: [],
       m_posts_item: null,
       his: storejs.get("history") || {},
-      items3: []
+      items3: [],
+      zsItems: [{ code: "sh000001", now: "-" }]
     };
   },
   directives: {
@@ -626,6 +634,9 @@ export default {
       $(this.$refs.top).css("margin-bottom", "0");
       this.openCode = null;
     },
+    openIndex(zitem, event) {
+      this.openlink(zitem, event);
+    },
     openlink(item, event, link) {
       link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
       this.openType = link;
@@ -780,6 +791,12 @@ export default {
       (async () => {
         for (;;) {
           await batchUpdateHQ(this.items2.concat(this.items));
+          await timeout(4000);
+        }
+      })();
+      (async () => {
+        for (;;) {
+          await syncZsItems(this.zsItems);
           await timeout(4000);
         }
       })();

@@ -163,14 +163,6 @@ table .descending:before {
   color: red;
 }
 /* 定义keyframe动画，命名为blink */
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
 .avggood,
 .lk {

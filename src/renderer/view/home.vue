@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div id="sidebar">
+      <ul>
+        <li @drop="drop" @dragover.prevent>a</li>
+        <li>b</li>
+      </ul>
+    </div>
     <Setting />
     <div
       id="bg"
@@ -136,7 +142,13 @@
 
                     }"
                   >
-                    <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">
+                    <span
+                      :class="{ sz: item.mk == 'sz' }"
+                      @click="openlink(item, $event)"
+                      draggable="true"
+                      @dragstart="dragstart($event, item)"
+                      @dragend="dragend"
+                    >
                       <a :id="item.code">{{ item.name }}{{item.PEG&&item.PEG.toFixed(1)}}</a>
                     </span>
                   </div>
@@ -469,6 +481,16 @@ export default {
   },
 
   methods: {
+    drop(event) {
+      let item = event.dataTransfer.getData("item");
+      console.log(item);
+    },
+    dragstart(event, item) {
+      event.dataTransfer.setData("item", item);
+    },
+    dragend(event) {
+      event.dataTransfer.clearData();
+    },
     loadPosts(item) {
       (async () => {
         let p = this.m_posts ? Math.floor(this.m_posts.length / 20) + 1 : 1;

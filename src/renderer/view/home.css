@@ -1,3 +1,21 @@
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 100px;
+  background: rgba(255, 255, 255, 0.6);
+  color: white;
+  z-index: 1000;
+}
+#sidebar ul {
+  margin: 0;
+  padding: 0;
+}
+#sidebar ul:hover {
+  width: 25px;
+}
+#sidebar ul li {
+  display: block;
+}
 table {
   width: 100%;
 }

@@ -166,11 +166,11 @@ export default {
 .id {
   display: inline-block;
   padding: 3px;
-  font-size: 80%;
+  font-size: 60%;
   padding-left: 8px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
-  min-width: 25px;
+  min-width: 15px;
 }
 .select {
   font-weight: bold;

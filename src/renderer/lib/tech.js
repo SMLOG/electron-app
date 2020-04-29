@@ -91,6 +91,8 @@ let tmpromise = (async () => {
   return new Promise((resolve, reject) => {
     KKE.api("plugins.techchart.get", "", (tchar) => {
       var tm = tchar.tChart({});
+
+      tm.createChart({ name: "VOLUME" });
       tm.createChart({ name: "MACD" });
       tm.createChart({ name: "kDJ" });
       tm.createChart({ name: "BOLL" });

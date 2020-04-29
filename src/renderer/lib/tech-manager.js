@@ -87,9 +87,19 @@ const techMap = {
   MACD日: function({ item, kd }) {
     return isMacdGolden(kd);
   },
+  量穿5日: function({ item, kd }) {
+    return item.volume > kd.VOLUME[kd.datas.length - 1].volume5;
+  },
+  量穿5穿10日: function({ item, kd }) {
+    return (
+      kd.VOLUME[kd.datas.length - 1].volume5 >
+      kd.VOLUME[kd.datas.length - 1].volume10
+    );
+  },
   日B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖
+    //买入的方式通常是两种:一种是在股票突破时买入，另一种方式是在低位向上转折时买入
     let i = kd.datas.length;
     return (
       item.now > item.open &&

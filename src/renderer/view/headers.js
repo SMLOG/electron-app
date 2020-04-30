@@ -153,11 +153,22 @@ export let headers = [
         };
     },
   },
-  { label: "Cash", prop: "xjlzzl", type: "string" },
   {
-    label: "Ben",
+    label: "Cash",
+    prop: "xjlzzl",
+    type: "string",
+    click: (item, event, openlink) => {
+      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code=${item.code}#zyzb-0`;
+      openlink(item, event, url);
+    },
+  },
+  {
+    label: "扣非净利润",
     prop: "zzl",
     type: "string",
+    title: (item) => {
+      return item.reportDate;
+    },
     class: (item) => {
       return {
         link: true,
@@ -199,6 +210,10 @@ export let headers = [
     label: "ROE",
     prop: "roe",
     type: "number",
+    click: (item, event, openlink) => {
+      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code=${item.code}#dbfx-0`;
+      openlink(item, event, url);
+    },
     fmt: (e, item) => {
       try {
         let tb = cache["tb_zycwzb" + item.code];

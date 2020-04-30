@@ -514,6 +514,28 @@ function isCP(klines) {
   }
   return ret > 2 && retp < 0.08;
 }
+export async function getHQTimeTrades(item) {
+  let cb = rid("cb");
+
+  let url = `https://push2.eastmoney.com/api/qt/stock/details/get?secid=${
+    item.code.substr(0, 2) == "sh" ? 1 : 0
+  }.${item.code.replace(
+    /sz|sh/i,
+    ""
+  )}&ut=f057cbcbce2a86e2866ab8877db1d059&forcect=1&fields1=f1,f2,f3,f4,f5&fields2=f51,f52,f53,f54,f55&pos=-14&iscca=1&invt=2&cb=${cb}&callback=jsonp10`;
+  let p = new Promise((resolve, reject) => {
+    window[cb] = function(data) {
+      resolve(data);
+    };
+  });
+  await awaitTimeout(() => {
+    return fetchEval([url]);
+  });
+
+  let result = await p;
+  delete window[cb];
+  return result;
+}
 async function getHSzs() {
   let cb = rid("list");
 

@@ -26,7 +26,7 @@ export async function fetchEval(urls, encode, callback) {
     let url = urls[i];
     let text;
     if (encode) {
-      let blob = await fetch(url).then(res => res.blob());
+      let blob = await fetch(url).then((res) => res.blob());
       text = await new Promise((resolve, reject) => {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -37,7 +37,7 @@ export async function fetchEval(urls, encode, callback) {
       });
     } else {
       let charset;
-      let blob = await fetch(url).then(res => {
+      let blob = await fetch(url).then((res) => {
         let contentType = res.headers.get("content-type");
         charset = contentType.match(/.*?charset=(.+)/);
         charset = charset && charset[1];
@@ -236,7 +236,7 @@ export const hqParser = new (function() {
       "07": "暂停",
       "-1": "无记录",
       "-2": "未上市",
-      "-3": "退市"
+      "-3": "退市",
     };
     e.statusWord = "00" == e.status || e.buy || e.sell ? "" : g[e.status];
     ("02" != e.status && "03" != e.status) ||
@@ -295,7 +295,7 @@ export const hqParser = new (function() {
       e.zgb = _data_i[7] * 10000; //总股本
       e.kcbinfo = _data_i[23]; //科创板信息 "C|W|10|16000000|8000000"
       e.currcapital = _data_i ? _data_i[8] : e.totalcapital;
-      e.turnover = (e.volume / e.currcapital / 10000) * 100;
+      e.turnover = ((e.volume / e.currcapital / 10000) * 100).toFixed(2);
       e.totalShare = e.now > 0 ? e.now * e.totalcapital * 10000 : "--";
       e.cvs = e.now > 0 ? e.now * e.currcapital * 10000 : "--";
       e.ltgb = 1 * e.currcapital * 10000;
@@ -404,7 +404,7 @@ const handleMap = {
   "71": "fx",
   "41": "us",
   "31": "hk",
-  "33": "hk"
+  "33": "hk",
 };
 //(hqstr, papercode)
 export function parse(item) {
@@ -465,7 +465,7 @@ export const ObjectType = {
   "106": "ETF",
   "107": "msci",
   "111": "A股",
-  "120": "债券"
+  "120": "债券",
 };
 
 export function getLink(item) {
@@ -545,8 +545,8 @@ export function openKlineWindow(target, item) {
       plugins: true,
       nodeIntegration: true,
       webSecurity: false,
-      preload: "http://localhost:9080/static/preload-kline.js"
-    }
+      preload: "http://localhost:9080/static/preload-kline.js",
+    },
   });
   klinewin.setMenu(null);
   let winsize = klinewin.getSize();
@@ -554,7 +554,7 @@ export function openKlineWindow(target, item) {
   klinewin.loadURL(url);
   let win = target.$electron.remote.getCurrentWindow();
   win.focus();
-  klinewin.webContents.on("dom-ready", e => {
+  klinewin.webContents.on("dom-ready", (e) => {
     klinewin.webContents.executeJavaScript(`function loadScripts(scripts) {
   return scripts.reduce((currentPromise, scriptUrl) => {
   return currentPromise.then(() => {
@@ -597,8 +597,8 @@ export function openWin2(target, item) {
       plugins: true,
       nodeIntegration: true,
       webSecurity: false,
-      preload: "http://localhost:9080/static/preload.js"
-    }
+      preload: "http://localhost:9080/static/preload.js",
+    },
   }));
   openwin.setMenu(null);
   let url = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
@@ -606,17 +606,17 @@ export function openWin2(target, item) {
   )}`;
 
   fetch(url)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       if (data.TotalCount > 0) return data;
       else {
         let url2 = `https://emwap.eastmoney.com/home/HttpSearch?type=14&input=${encodeURIComponent(
           item.orgCode.replace(/[^0-9]+/g, "")
         )}`;
-        return fetch(url2).then(res => res.json());
+        return fetch(url2).then((res) => res.json());
       }
     })
-    .then(data => {
+    .then((data) => {
       let i = data.Data.reduce((i, cur, curIndex, arr) => {
         if (item.code.toLowerCase().indexOf(cur.Code.toLowerCase()) > -1)
           return curIndex;
@@ -627,7 +627,7 @@ export function openWin2(target, item) {
           `https://emwap.eastmoney.com/quota/stock/index/${data.Data[i].ID}`
         );
 
-        openwin.webContents.on("dom-ready", e => {
+        openwin.webContents.on("dom-ready", (e) => {
           openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
       return scripts.reduce((currentPromise, scriptUrl) => {
       return currentPromise.then(() => {
@@ -682,14 +682,14 @@ export function openWin(target, item) {
       plugins: true,
       nodeIntegration: true,
       webSecurity: false,
-      preload: "http://localhost:9080/static/preload.js"
-    }
+      preload: "http://localhost:9080/static/preload.js",
+    },
   }));
   openwin.setMenu(null);
 
   openwin.loadURL(getLink(item));
 
-  openwin.webContents.on("dom-ready", e => {
+  openwin.webContents.on("dom-ready", (e) => {
     openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
 return scripts.reduce((currentPromise, scriptUrl) => {
 return currentPromise.then(() => {
@@ -732,14 +732,14 @@ export function openSite(target) {
       plugins: true,
       nodeIntegration: true,
       webSecurity: false,
-      preload: "http://localhost:9080/static/preload.js"
-    }
+      preload: "http://localhost:9080/static/preload.js",
+    },
   }));
   openwin.setMenu(null);
 
   openwin.loadURL(`https://xtrade.newone.com.cn/ssologin?t=jykstd`);
 
-  openwin.webContents.on("dom-ready", e => {
+  openwin.webContents.on("dom-ready", (e) => {
     openwin.webContents.executeJavaScript(`function loadScripts(scripts) {
 return scripts.reduce((currentPromise, scriptUrl) => {
 return currentPromise.then(() => {
@@ -880,7 +880,7 @@ export function time() {
   else if (t > t4) diff = t4 - t3 + t2 - t1;
   return {
     t: diff,
-    percent: (diff / 4) * 3600
+    percent: (diff / 4) * 3600,
   };
 }
 
@@ -894,13 +894,13 @@ function vlookup(search, index, code, tbname, match) {
   }
 }
 export function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export function getLastReportDate() {
   let d = new Date();
 
-  let now = (d =>
+  let now = ((d) =>
     ("0" + (d.getMonth() + 1)).substr(-2, 2) +
     ("0" + d.getDate()).substr(-2, 2))(new Date());
   for (let e of ["09-30", "06-30", "03-31"]) {
@@ -1005,7 +1005,7 @@ Date.prototype.Format = function(fmt) {
     "m+": this.getMinutes(), //分
     "s+": this.getSeconds(), //秒
     "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-    S: this.getMilliseconds() //毫秒
+    S: this.getMilliseconds(), //毫秒
   };
   if (/(y+)/.test(fmt))
     fmt = fmt.replace(
@@ -1074,7 +1074,7 @@ export function rid(name) {
   return `${name}${rirand++}`;
 }
 export async function awaitTimeout(fn, ts = 15000) {
-  return retry(fn, 5, ts).catch(e => {
+  return retry(fn, 5, ts).catch((e) => {
     alert("fail");
     return Promise.reject(e);
   });
@@ -1118,7 +1118,7 @@ export function deepCopy(obj, cache = []) {
   }
 
   // if obj is hit, it is in circular structure
-  const hit = find(cache, c => c.original === obj);
+  const hit = find(cache, (c) => c.original === obj);
   if (hit) {
     return hit.copy;
   }
@@ -1128,10 +1128,10 @@ export function deepCopy(obj, cache = []) {
   // because we want to refer it in recursive deepCopy
   cache.push({
     original: obj,
-    copy
+    copy,
   });
 
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     copy[key] = deepCopy(obj[key], cache);
   });
 

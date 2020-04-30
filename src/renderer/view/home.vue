@@ -7,6 +7,7 @@
       </ul>
     </div>
     <Setting />
+    <Right :item="rightItem" />
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
@@ -156,11 +157,13 @@
               </td>
 
               <td
-                v-for="col in head"
+                v-for="(col,ci) in head"
                 :key="col.prop"
                 :class="col.class && col.class(item)"
                 :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
+                @mouseover="cellOver($event,item,ci)"
+                @mouseout="cellOut($event,item,ci)"
               >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
             </tr>
           </draggable>
@@ -221,6 +224,8 @@ import TopFocus from "@/view/components/TopFocus";
 import WinView from "@/view/components/WinView";
 
 import Sea from "@/view/components/Sea";
+import Right from "@/view/components/Right";
+
 import store from "@/localdata";
 import draggable from "vuedraggable";
 import { initwebview } from "@/lib/webview";
@@ -327,7 +332,8 @@ export default {
       m_posts_item: null,
       his: storejs.get("history") || {},
       items3: [],
-      zsItems: [{ code: "sh000001", now: "-" }]
+      zsItems: [{ code: "sh000001", now: "-" }],
+      rightItem: false
     };
   },
   directives: {
@@ -374,6 +380,7 @@ export default {
     FilterItem,
     FilterCtrl,
     Sea,
+    Right,
     TopFocus,
     WinView
   },
@@ -481,6 +488,14 @@ export default {
   },
 
   methods: {
+    cellOver(event, item, i) {
+      if (i == 0) {
+        this.rightItem = item;
+      }
+    },
+    cellOut(event, item, i) {
+      if (i == 0) this.rightItem = false;
+    },
     drop(event) {
       let item = event.dataTransfer.getData("item");
       console.log(item);
@@ -855,7 +870,9 @@ export default {
       //if (confirm("are you sure?")) {
       //this.items = this.items.slice(this.items.indexOf(item), 1);
       for (let k in window) {
-        if (k.indexOf(item.code) > -1) window[k] = undefined;
+        try {
+          if (k.indexOf(item.code) > -1) window[k] = undefined;
+        } catch (e) {}
       }
       this.items.splice(this.items.indexOf(item), 1);
       toFiltersCount(item, SELF, "-");

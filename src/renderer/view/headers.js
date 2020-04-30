@@ -4,7 +4,7 @@ import { getFields } from "../store/modules/suspension";
 import storejs from "storejs";
 
 const reportDate = getLastReportDate();
-const fmtPercent = value => {
+const fmtPercent = (value) => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
 };
@@ -14,11 +14,11 @@ export let headers = [
     prop: "now",
     type: "number",
     fmt: (e, item) => `${e}(${item.changeP})`,
-    class: item => {
+    class: (item) => {
       return {
         up: item.change > 0,
         down: item.change < 0,
-        click: true
+        click: true,
       };
     },
     click: (item, event, openlink) => {
@@ -27,7 +27,7 @@ export let headers = [
         event,
         "http://localhost:9080/static/tech.html?{{code}}&t1"
       );
-    }
+    },
   },
   {
     label: "HY",
@@ -39,22 +39,22 @@ export let headers = [
       if (item._hy) item.hy = `${item._hy}(${storejs.get(item._hy)}%)`;
 
       return item.hy;
-    }
+    },
   },
   {
     label: "Forecast",
     prop: "forecast",
     type: "string",
-    title: item => {
+    title: (item) => {
       return item.forecast_title;
     },
     fmt: (e, item) => {
-      getCacheData(null, "Performance forecast_" + item.code).then(data => {
+      getCacheData(null, "Performance forecast_" + item.code).then((data) => {
         item.forecast = data && data[0].forecasttype;
         item.forecast_title = data && data[0].str;
       });
       return item.forecast;
-    }
+    },
   },
   {
     label: "披露日期",
@@ -68,7 +68,7 @@ export let headers = [
       }
 
       return item.disclosure;
-    }
+    },
   },
   /* {
     label: "V",
@@ -84,20 +84,20 @@ export let headers = [
   {
     label: "52周%",
     prop: "52weekPer",
-    type: "number"
+    type: "number",
   },
   {
     label: "TO%",
     prop: "turnover",
-    type: "number"
+    type: "number",
   },
   {
     label: "流通/亿",
     prop: "ltg",
     type: "number",
-    class: item => {
+    class: (item) => {
       return {
-        link: true
+        link: true,
       };
     },
     click: (item, event, openlink) => {
@@ -106,29 +106,29 @@ export let headers = [
         event,
         "http://f10.eastmoney.com/ShareholderResearch/Index?type=web&code={{code}}"
       );
-    }
+    },
   },
   {
     label: "流/总",
     prop: "lz",
     type: "string",
-    fmt: (e, item) => `${e}/${item.zsz}`
+    fmt: (e, item) => `${e}/${item.zsz}`,
   },
   { label: "TTM", prop: "pe_ttm", type: "number" },
   {
     label: "PEG",
     prop: "PEG",
     type: "number",
-    fmt: e => e && e.toFixed(2)
+    fmt: (e) => e && e.toFixed(2),
   },
   {
     label: "CAGR",
     prop: "zzl3",
     type: "number",
 
-    class: item => {
+    class: (item) => {
       return {
-        link: true
+        link: true,
       };
     },
     click: (item, event, openlink) => {
@@ -139,37 +139,34 @@ export let headers = [
       );
     },
     fmt: (e, item) =>
-      e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`
+      e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`,
   },
   {
     label: "CP",
     prop: "tbzz",
     type: "number",
     fmt: fmtPercent,
-    class: item => {
+    class: (item) => {
       if (item.reportDate == reportDate)
         return {
-          reportUpdate: true
+          reportUpdate: true,
         };
-    }
+    },
   },
   { label: "Cash", prop: "xjlzzl", type: "string" },
   {
     label: "Ben",
     prop: "zzl",
     type: "string",
-    class: item => {
+    class: (item) => {
       return {
-        link: true
+        link: true,
       };
     },
     click: (item, event, openlink) => {
-      let url = `http://stockhtm.finance.qq.com/sstock/ggcx/${item.code.replace(
-        /[a-z]/gi,
-        ""
-      )}.shtml?pgv_ref=fi_quote_my_recent`;
+      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=${item.code}#`;
       openlink(item, event, url);
-    }
+    },
   },
   {
     label: "息%",
@@ -181,7 +178,7 @@ export let headers = [
           2
         );
       return item.GXL;
-    }
+    },
   },
   {
     label: "红%",
@@ -196,7 +193,7 @@ export let headers = [
           100
         ).toFixed(2);
       return item.FHL;
-    }
+    },
   },
   {
     label: "ROE",
@@ -211,7 +208,7 @@ export let headers = [
           return (item.roe = parseFloat(tb[n][tb.reportDate[1]]));
         }
       } catch (e) {}
-    }
+    },
   },
   {
     label: "净利率",
@@ -224,7 +221,7 @@ export let headers = [
           data["净利率(%)"][data["reportDate"][1]]
         ));
       }
-    }
+    },
   },
   {
     label: "毛利率",
@@ -238,7 +235,7 @@ export let headers = [
             data["毛利率(%)"][data["reportDate"][1]]
           ));
       }
-    }
+    },
   },
   {
     label: "资产负债率",
@@ -251,15 +248,15 @@ export let headers = [
           data["资产负债率(%)"][data["reportDate"][1]]
         ));
       }
-    }
-  }
+    },
+  },
 ];
 
 export function getCheckFields(onlyCheck = true) {
   let checkFields = getFields();
-  let checked = checkFields.filter(e => e.checked).map(e => e.prop);
-  let all = checkFields.map(e => e.prop);
-  headers.map(f => {
+  let checked = checkFields.filter((e) => e.checked).map((e) => e.prop);
+  let all = checkFields.map((e) => e.prop);
+  headers.map((f) => {
     f.order = all.indexOf(f.prop) > -1 ? all.indexOf(f.prop) : headers.length;
 
     checked.indexOf(f.prop) > -1 && (f.checked = true);
@@ -267,6 +264,6 @@ export function getCheckFields(onlyCheck = true) {
   });
   headers = headers.slice().sort((a, b) => a.order - b.order);
 
-  if (onlyCheck) return headers.filter(e => e.checked);
+  if (onlyCheck) return headers.filter((e) => e.checked);
   else return headers;
 }

@@ -30,10 +30,14 @@ export let headers = [
     },
   },
   {
-    label: "HY",
+    label: "行业",
     prop: "hy",
     filterable: true,
     type: "string",
+    class: (item) => {
+      let hy = storejs.get(item._hy);
+      return hy && { down: hy < 0, up: hy > 0 };
+    },
     fmt: (e, item) => {
       item._hy = storejs.get(item.code);
       if (item._hy) item.hy = `${item._hy}(${storejs.get(item._hy)}%)`;
@@ -142,7 +146,7 @@ export let headers = [
       e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`,
   },
   {
-    label: "CP",
+    label: "同比",
     prop: "tbzz",
     type: "number",
     fmt: fmtPercent,
@@ -150,11 +154,13 @@ export let headers = [
       if (item.reportDate == reportDate)
         return {
           reportUpdate: true,
+          up: item.tbzz > 0,
+          down: item.tbzz < 0,
         };
     },
   },
   {
-    label: "Cash",
+    label: "现金流",
     prop: "xjlzzl",
     type: "string",
     click: (item, event, openlink) => {

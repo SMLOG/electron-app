@@ -26,8 +26,7 @@
             @click.native="
               (selectSrc = k),
                 (visibility = null),
-                (selectFilter = filter),
-                (selectFilter_r = selectFilter_c = -1)
+                (selectFilter = filter)
             "
             :is_search="k.is_search"
           >
@@ -707,9 +706,17 @@ export default {
         webview[0].style.height = "100%";
         this.openCode = item.code;
       }
-      setTimeout(() => {
+      //webview bug:need show up
+      let timer;
+      timer = setInterval(() => {
+        if ($(this.$refs.webviewWrap).is(":visible")) {
+          clearInterval(timer);
+          this.link = url;
+        }
+      }, 50);
+      /* setTimeout(() => {
         this.link = url;
-      }, 200);
+      }, 500);*/
 
       // webview.attr("src", url);
 

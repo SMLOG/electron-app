@@ -172,10 +172,12 @@ export let headers = [
     class: (item) => {
       return {
         link: true,
+        down: item.tbzz < 0,
+        up: item.tbzz > 0,
       };
     },
     click: (item, event, openlink) => {
-      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=${item.code}#`;
+      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=${item.code}`;
       openlink(item, event, url);
     },
   },

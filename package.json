@@ -55,7 +55,7 @@
     "axios": "^0.19.2",
     "electron-fetch": "^1.4.0",
     "fetch-jsonp": "^1.1.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "request": "^2.88.2",
     "storejs": "^1.0.20",

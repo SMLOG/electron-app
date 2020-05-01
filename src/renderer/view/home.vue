@@ -188,17 +188,20 @@
         v-if="m_posts_item"
         style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;"
       >{{ m_posts_item.name }}({{ m_posts_item.code }})</div>
-      <div
-        v-for="(post, i) in m_posts"
-        :key="i"
-        class="post"
-        v-if="'东方财富网' != post.post_user.user_nickname"
-      >
+      <div v-for="(post, i) in m_posts" :key="i" class="post">
         <div>
           <span class="post_title">{{ post.post_user.user_nickname }}:</span>
           <span class="post_time">{{ post.post_publish_time }}</span>
         </div>
-        <div class="post_content">{{ post.post_content }}</div>
+        <div class="post_content">
+          <b v-if="post.content_type>0">[研报]</b>
+          {{ post.post_content||post.post_title }}
+          <a
+            v-if="post.post_pdf_url"
+            class="link"
+            @click="extOpen(post.post_pdf_url)"
+          >PDF</a>
+        </div>
         <div v-if="post.replies" class="replies">
           <div v-for="rep in post.replies.re" :key="rep.reply_id" class="reply">
             <span>{{ rep.reply_user.user_nickname }}</span>:
@@ -403,12 +406,6 @@ export default {
 
     let time = 0;
     this.$refs.m_posts.addEventListener("scroll", event => {
-      console.log(
-        this.$refs.m_posts.scrollTop,
-        this.$refs.m_posts.clientHeight,
-        this.$refs.m_posts.scrollHeight,
-        event
-      );
       if (
         this.$refs.m_posts.scrollTop + this.$refs.m_posts.clientHeight >=
         this.$refs.m_posts.scrollHeight - 30
@@ -487,6 +484,23 @@ export default {
   },
 
   methods: {
+    extOpen(url) {
+      console.log(url);
+
+      let pdfwin = this.$electron.remote.require("electron-pdf-window");
+
+      const win = new this.$electron.remote.BrowserWindow({
+        width: Math.min(800, window.outerWidth),
+        height: window.outerHeight - 40
+      });
+
+      pdfwin.addSupport(win);
+      win.loadURL(url);
+      win.on("blur", () => {
+        win.close();
+        win.destroy();
+      });
+    },
     getclass(col, item) {
       let cls = col.class && col.class(item);
       if (col.click) {
@@ -526,6 +540,10 @@ export default {
             this.m_posts = [];
           }
           posts = JSON.parse(p.Result).re;
+          posts = posts.filter(
+            e => e.post_user.user_nickname.indexOf("证券") == -1
+          );
+
           this.m_posts = this.m_posts.concat(posts);
           console.log(posts);
 

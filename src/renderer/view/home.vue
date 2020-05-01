@@ -37,8 +37,6 @@
           :filtersCount="filtersCount"
           :src="selectFilter"
           @filterChainChange="selectFilterChange"
-          :r="selectFilter_r"
-          :c="selectFilter_c"
         />
         <div style="float:left">
           <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi,$event)">
@@ -125,7 +123,7 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a class="post_bt" :name="item.code" @click="showMsgItem=item">{{ index + 1 }}</a>
+                    <a class="post_bt" :name="item.code" @click="viewItemMsgs(item)">{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -246,32 +244,6 @@ import $ from "jquery";
 window.$ = $;
 const SELF = "自选";
 
-function getPosts(id, type = 1) {
-  const data = {
-    path: "/content/api/Post/ArticleContent",
-    env: "2",
-    param: `postid=${id}&type=0`
-  };
-  if (type == 2) {
-    data.path = "/reply/api/Reply/ArticleReplyList";
-    data.param = `postid=${id}&type=0&sort=1&ps=30&p=1&replyid=`;
-  }
-  return axios({
-    method: "post",
-    url:
-      "http://mguba.eastmoney.com/interface/GetData.aspx?mt=" + Math.random(),
-    headers: {
-      Referer: `http://mguba.eastmoney.com/mguba/article/0/${id}`
-    },
-    data: Object.keys(data)
-      .map(k => `${k}=${encodeURIComponent(data[k])}`)
-      .join("&")
-  }).then(function(response) {
-    return response.data;
-  });
-}
-
-window.getPosts = getPosts;
 export default {
   name: "home",
   data: function() {
@@ -434,6 +406,10 @@ export default {
   },
 
   methods: {
+    viewItemMsgs(item) {
+      if (item == this.showMsgItem) this.showMsgItem = null;
+      else this.showMsgItem = item;
+    },
     getclass(col, item) {
       let cls = col.class && col.class(item);
       if (col.click) {

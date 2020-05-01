@@ -61,7 +61,10 @@ i.arrow {
 .selected i.arrow {
   border-color: transparent transparent rgba(255, 255, 255, 1) transparent;
 }
-
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+}
 .arrow.left {
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);

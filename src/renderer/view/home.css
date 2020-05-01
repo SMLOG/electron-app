@@ -245,10 +245,6 @@ i.arrow {
   -webkit-transform: rotate(45deg);
 }
 
-.link {
-  cursor: pointer;
-}
-
 .openlink td {
   /*background: gray !important;*/
   font-weight: bold;

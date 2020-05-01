@@ -7,7 +7,7 @@
   >
     <div
       v-if="item"
-      style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;"
+      style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;top:25px;"
     >{{ item.name }}({{ item.code }})</div>
     <div v-for="(post, i) in m_posts" :key="i" class="post">
       <div>
@@ -34,6 +34,32 @@
 </template>
 
 <script>
+function getPosts(id, type = 1) {
+  const data = {
+    path: "/content/api/Post/ArticleContent",
+    env: "2",
+    param: `postid=${id}&type=0`
+  };
+  if (type == 2) {
+    data.path = "/reply/api/Reply/ArticleReplyList";
+    data.param = `postid=${id}&type=0&sort=1&ps=30&p=1&replyid=`;
+  }
+  return axios({
+    method: "post",
+    url:
+      "http://mguba.eastmoney.com/interface/GetData.aspx?mt=" + Math.random(),
+    headers: {
+      Referer: `http://mguba.eastmoney.com/mguba/article/0/${id}`
+    },
+    data: Object.keys(data)
+      .map(k => `${k}=${encodeURIComponent(data[k])}`)
+      .join("&")
+  }).then(function(response) {
+    return response.data;
+  });
+}
+
+window.getPosts = getPosts;
 export default {
   name: "Posts",
   data: function() {
@@ -76,9 +102,7 @@ export default {
     });
   },
 
-  props: {
-    item: Object
-  },
+  props: ["item"],
   methods: {
     loadPosts(item) {
       (async () => {
@@ -119,7 +143,7 @@ export default {
       })();
     },
     showMessage(item) {
-      if (this.m_posts_item == item) {
+      if (item == null) {
         return (this.m_posts_item = null);
       }
       this.m_posts_item = item;

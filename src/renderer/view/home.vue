@@ -198,7 +198,7 @@
           {{ post.post_content||post.post_title }}
           <a
             v-if="post.post_pdf_url"
-            class="link"
+            class="link pdf"
             @click="viewPdf(post.post_pdf_url)"
           >PDF</a>
         </div>

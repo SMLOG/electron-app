@@ -125,7 +125,7 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a class="post_bt" :name="item.code" @click="showMessage(item)">{{ index + 1 }}</a>
+                    <a class="post_bt" :name="item.code" @click="showMsgItem=item">{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -179,37 +179,7 @@
       </div>
       <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
     </div>
-    <div
-      ref="m_posts"
-      v-show="m_posts_item"
-      style="position: fixed;top: 35px;right:0;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
-    >
-      <div
-        v-if="m_posts_item"
-        style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;"
-      >{{ m_posts_item.name }}({{ m_posts_item.code }})</div>
-      <div v-for="(post, i) in m_posts" :key="i" class="post">
-        <div>
-          <span class="post_title">{{ post.post_user.user_nickname }}:</span>
-          <span class="post_time">{{ post.post_publish_time }}</span>
-        </div>
-        <div class="post_content">
-          <b v-if="post.content_type>0">[研报]</b>
-          {{ post.post_content||post.post_title }}
-          <a
-            v-if="post.post_pdf_url"
-            class="link pdf"
-            @click="viewPdf(post.post_pdf_url)"
-          >PDF</a>
-        </div>
-        <div v-if="post.replies" class="replies">
-          <div v-for="rep in post.replies.re" :key="rep.reply_id" class="reply">
-            <span>{{ rep.reply_user.user_nickname }}</span>:
-            <span>{{ rep.reply_text }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Posts :item="showMsgItem" />
   </div>
 </template>
 
@@ -224,6 +194,7 @@ import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
 import TopFocus from "@/view/components/TopFocus";
 import WinView from "@/view/components/WinView";
+import Posts from "@/view/components/Posts";
 
 import Sea from "@/view/components/Sea";
 import Right from "@/view/components/Right";
@@ -330,12 +301,11 @@ export default {
       show_filter_prop: false,
       fullscreen: false,
       indMap: {},
-      m_posts: [],
-      m_posts_item: null,
       his: storejs.get("history") || {},
       items3: [],
       zsItems: [{ code: "sh000001", now: "-" }],
-      rightItem: false
+      rightItem: false,
+      showMsgItem: null
     };
   },
   directives: {
@@ -384,7 +354,8 @@ export default {
     Sea,
     Right,
     TopFocus,
-    WinView
+    WinView,
+    Posts
   },
   filters: {
     objectType(id) {
@@ -398,22 +369,8 @@ export default {
       switch (event.keyCode) {
         case 27:
           this.closeview();
-          this.m_posts_item = null;
           break;
         default:
-      }
-    });
-
-    let time = 0;
-    this.$refs.m_posts.addEventListener("scroll", event => {
-      if (
-        this.$refs.m_posts.scrollTop + this.$refs.m_posts.clientHeight >=
-        this.$refs.m_posts.scrollHeight - 30
-      ) {
-        if (+new Date() - time > 1000) {
-          time = +new Date();
-          this.loadPosts(this.m_posts_item);
-        }
       }
     });
 
@@ -423,13 +380,6 @@ export default {
         } else {
           this.show_filter_prop = false;
         }
-      }
-      if (
-        this.$refs.m_posts &&
-        !this.$refs.m_posts.contains(e.target) &&
-        e.target.className.indexOf("post_bt") == -1
-      ) {
-        this.m_posts_item = null;
       }
     });
 
@@ -484,23 +434,6 @@ export default {
   },
 
   methods: {
-    viewPdf(url) {
-      console.log(url);
-
-      let pdfwin = this.$electron.remote.require("electron-pdf-window");
-
-      const win = new this.$electron.remote.BrowserWindow({
-        width: Math.min(1024, window.outerWidth),
-        height: window.outerHeight - 40
-      });
-
-      pdfwin.addSupport(win);
-      win.loadURL(url);
-      win.on("blur", () => {
-        win.close();
-        win.destroy();
-      });
-    },
     getclass(col, item) {
       let cls = col.class && col.class(item);
       if (col.click) {
@@ -527,126 +460,7 @@ export default {
     dragend(event) {
       event.dataTransfer.clearData();
     },
-    loadPosts(item) {
-      (async () => {
-        let p = this.m_posts ? Math.floor(this.m_posts.length / 20) + 1 : 1;
-        let jurl = `https://wap.eastmoney.com/info/guba/GetApiResultNewCore?url=webarticlelist%2Fapi%2FArticle%2FArticleListForMobile&query=${encodeURIComponent(
-          "code=" + item.code + "&sorttype=0&ps=20&p=" + p
-        )}&type=POST&cb=gubadata&callback=jsonp10`;
-        let result = await fetch(jurl).then(res => res.text());
-        let posts = null;
-        window.gubadata = p => {
-          if (!this.m_posts) {
-            this.m_posts = [];
-          }
-          posts = JSON.parse(p.Result).re;
-          posts = posts.filter(
-            e => e.post_user.user_nickname.indexOf("证券") == -1
-          );
 
-          this.m_posts = this.m_posts.concat(posts);
-          console.log(posts);
-
-          this.m_posts_item = item;
-          console.log(this.m_posts);
-        };
-        eval(result);
-
-        if (posts) {
-          for (let i = 0; i < posts.length; i++) {
-            let post = posts[i];
-            if (post.post_comment_count) {
-              let replies = await getPosts(post.post_id, 2);
-              post.replies = replies;
-              console.log(post);
-            }
-          }
-        }
-
-        //  .then(res => res.json())
-        //.then(data => JSON.parse(data.Result));
-        //this.m_posts = result.re;
-      })();
-    },
-    showMessage(item) {
-      if (this.m_posts_item == item) {
-        return (this.m_posts_item = null);
-      }
-      this.m_posts_item = item;
-      this.m_posts = null;
-      this.loadPosts(item);
-
-      /*
-        let url=`http://mguba.eastmoney.com/interface/GetData.aspx?mt=0.6259930282217008`;
-
-       let data = await fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-        'Content-Type': 'application/json'
-    }, 
-    body: JSON.stringify({path:'/reply/api/Reply/ArticleReplyList',env:2,param:'postid=908679981&type=0&sort=1&ps=30&p=1&replyid='})
-});*/
-      this.getArcContent();
-    },
-    getArcContent() {
-      let n = {};
-      n.url = "http://mguba.eastmoney.com/interface/GetData.aspx";
-      n.data = {};
-      n.data.path = "/reply/api/Reply/ArticleReplyList";
-      n.data.env = 2;
-      n.type = "POST";
-      var l = "postid=908679981&type=0&sort=1&ps=30&p=1&replyid=";
-      n.data.param = encodeURIComponent(l);
-      this.ajax(n);
-    },
-    ajax(e) {
-      var t = (e = e || {}).type || "GET";
-      t = t.toUpperCase();
-      var s = e.url,
-        o = e.async || !0,
-        a = e.contentType || "application/x-www-form-urlencoded;charset=UTF-8",
-        i = e.data || "",
-        n = [];
-      for (var r in i) n.push(r + "=" + i[r]);
-      var l = "";
-      n.length > 0 && (l = n.join("&"));
-      var c,
-        p = {
-          successCall: null,
-          success: function(e) {
-            return (p.successCall = e), p;
-          },
-          errorCall: null,
-          error: function(e) {
-            return (p.errorCall = e), p;
-          },
-          request: null
-        };
-      try {
-        c = new XMLHttpRequest();
-      } catch (e) {}
-      return (
-        c &&
-          ("GET" == t
-            ? (c.open(t, s + "?" + l + "&mt=" + Math.random(), o),
-              (c.withCredentials = !0),
-              c.send(null))
-            : (c.open(t, s + "?mt=" + Math.random(), o),
-              (c.withCredentials = !0),
-              c.setRequestHeader("Content-Type", a),
-              c.send(l)),
-          (c.onreadystatechange = function() {
-            if (4 == c.readyState)
-              if (200 == c.status) {
-                var e = c.responseText;
-                p.successCall && p.successCall(e);
-              } else p.errorCall && p.errorCall(c);
-          })),
-        (p.request = c),
-        p
-      );
-    },
     showFilterable(prop) {
       this.show_filter_prop = !this.show_filter_prop;
 

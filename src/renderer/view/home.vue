@@ -199,7 +199,7 @@
           <a
             v-if="post.post_pdf_url"
             class="link"
-            @click="extOpen(post.post_pdf_url)"
+            @click="viewPdf(post.post_pdf_url)"
           >PDF</a>
         </div>
         <div v-if="post.replies" class="replies">
@@ -484,13 +484,13 @@ export default {
   },
 
   methods: {
-    extOpen(url) {
+    viewPdf(url) {
       console.log(url);
 
       let pdfwin = this.$electron.remote.require("electron-pdf-window");
 
       const win = new this.$electron.remote.BrowserWindow({
-        width: Math.min(800, window.outerWidth),
+        width: Math.min(1024, window.outerWidth),
         height: window.outerHeight - 40
       });
 

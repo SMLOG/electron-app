@@ -357,7 +357,7 @@ export default {
 
     getAllInd(this.indMap);
 
-    initwebview(this.closeview.bind(this));
+    initwebview(this.closeview.bind(this), this.$electron);
     mouseDragMenu(this.$electron, false);
     document.ondblclick = () => {
       let win = $electron.remote.getCurrentWindow();

@@ -64,14 +64,14 @@
           <tr>
             <td colspan="3" class="seperate"></td>
           </tr>
-          <tr v-for="(t,i) in trade_item_list" :key="11+i">
-            <th>{{t[0]}}</th>
+          <tr v-for="(t,i) in item.trade_list" :key="11+i">
+            <th>{{t.t|mmss}}</th>
             <td>
-              <span :class="{up:t[2]>item.preClose,down:t[2]<item.preClose}">{{t[2]}}</span>
-              <em v-if="t[3]=='UP'" class="up">↑</em>
-              <em v-else-if="t[3]=='DOWN'" class="down">↓</em>
+              <span :class="{up:t.now>t.preNow,down:t.now<item.preNow}">{{t.now}}</span>
+              <em v-if="t.now>t.preNow" class="up">↑</em>
+              <em v-else-if="t.now<t.preNow" class="down">↓</em>
             </td>
-            <td :class="{up:t[3]=='UP',down:t[3]=='DOWN'}">{{(t[1]/100).toFixed(0)}}</td>
+            <td :class="{up:t.now>t.preNow,down:t.now<t.preNow}">{{t.volume-t.preVolume}}</td>
           </tr>
         </table>
       </li>
@@ -80,6 +80,7 @@
 </template>
 <script>
 import { loadScripts, parse, toFixed, toPercent, fmtdig } from "@/lib/utils";
+import moment from "moment";
 
 import jquery from "jquery";
 export default {
@@ -89,6 +90,10 @@ export default {
   },
   props: ["item"],
   filters: {
+    mmss(date) {
+      return date ? moment(date).format("HH:mm:ss") : "";
+    },
+
     fmtValue(val) {
       return toFixed(val, 2);
     },
@@ -135,16 +140,33 @@ export default {
           return total;
         }, [])
         .join(",");
-      return loadScripts([
-        `http://hq.sinajs.cn/list=${str}`,
-        `https://vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=11&symbol=${this.item.code}&rn=26470569`
-      ]).then(() => {
+      this.item.preNow = this.item.now;
+      this.item.preVolume = this.item.volume;
+
+      return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
         [this.item].map((item, i) => {
           let data = parse(item);
           Object.assign(item, data);
         });
-        this.trade_item_list.length = 0;
-        this.trade_item_list = trade_item_list;
+        let item = this.item;
+        if (!item) return;
+        if (item.trade_list == null) item.trade_list = [];
+        else if (item.volume - item.preVolume > 0) {
+          item.trade_list.unshift({
+            t: new Date(),
+            preNow: item.preNow,
+            now: item.now,
+            preVolume: item.preVolume,
+            volume: item.volume,
+            preAmount: item.preAmount,
+            amount: item.amount
+          });
+          item.trade_list.length = Math.min(10, item.trade_list.length);
+        }
+
+        //`https://vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=11&symbol=${this.item.code}&rn=26470569`
+        //this.trade_item_list.length = 0;
+        //this.trade_item_list = trade_item_list;
       });
     },
     timerFn() {

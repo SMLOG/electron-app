@@ -220,7 +220,7 @@ export const hqParser = new (function() {
     e.low = 1 * d[5];
     e.buy = 1 * d[6];
     e.sell = 1 * d[7];
-    e.volume = 1 * d[8];
+    e.volume = ((1 * d[8]) / 100).toFixed(0);
     e.symbol && /^(sh000|sh580)\d*/.test(e.symbol) && (e.volume *= 100);
     e.amount = 1 * d[9];
     e.date = d[30];
@@ -276,12 +276,12 @@ export const hqParser = new (function() {
 
     for (let j = 28; j >= 20; j -= 2) {
       bsVols.push(1 * d[j]);
-      bsPrices.push(d[j + 1]);
+      bsPrices.push((1 * d[j + 1]).toFixed(2));
     }
 
     for (let k = 10; k < 20; k += 2) {
       bsVols.push(1 * d[k]);
-      bsPrices.push(d[k + 1]);
+      bsPrices.push((1 * d[k + 1]).toFixed(2));
     }
 
     e.bsPrices = bsPrices;

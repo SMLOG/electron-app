@@ -3,15 +3,14 @@
     <div id="setting" ref="settings">
       <span @click="showSetting=!showSetting" title="设置"></span>
       <div id="setting_contents" v-show="showSetting">
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tbody>
-            <tr>
-              <td>
-                <a @click="clearTechData">Clear Tech Data</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <ul>
+          <li>
+            <a @click="clearTechData">Clear Tech Data</a>
+          </li>
+          <li>
+            <a @click="clearItems()">清除缓存海选</a>
+          </li>
+        </ul>
         <draggable v-model="cols" @update="dragEnd" tag="ul">
           <li v-for="col in cols" :key="col.prop">
             {{col.label}}
@@ -28,6 +27,7 @@ import store from "@/localdata";
 import { getCheckFields } from "../headers";
 import { mapActions, mapState } from "vuex";
 import draggable from "vuedraggable";
+import storejs from "storejs";
 
 export default {
   name: "setting",
@@ -53,6 +53,9 @@ export default {
   watch: {},
 
   methods: {
+    clearItems() {
+      storejs.set("seadatetime", 0);
+    },
     dragEnd() {
       this.changeCols();
     },

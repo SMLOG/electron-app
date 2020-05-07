@@ -223,8 +223,8 @@ export const criteria = {
           e.PEG > (this._value1 || Number.MIN_VALUE) &&
           e.PEG < (this._value2 || Number.MAX_VALUE) &&
           e.pe_ttm > 0 &&
-          e.pe_ttm < 40 &&
-          e.tbzz > 0
+          e.pe_ttm < 40 /*&&
+          e.tbzz > 0*/
         ) {
           return true;
         }

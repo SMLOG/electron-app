@@ -592,16 +592,17 @@ export default {
 
           if (true || !isNotTradeTime()) {
             let items = this.items;
-            let items2 = getOrFiltersItems(this.items2);
+            let items2 = this.items2;
 
             items = items.concat(
-              items2.filter(e => e.turnover > 2).filter(v => !items.includes(v))
+              items2
+              //items2.filter(e => e.turnover > 2).filter(v => !items.includes(v))
             );
-            items = items.concat(
+            /* items = items.concat(
               this.items2
                 .filter(e => e.turnover > 2)
                 .filter(v => !items.includes(v))
-            );
+            );*/
             console.log("monitor:", items);
             for (let i = 0; i < items.length; i++) {
               await callFun(items[i]);

@@ -143,15 +143,39 @@ export default {
       this.item.preNow = this.item.now;
       this.item.preVolume = this.item.volume;
 
-      return loadScripts([`http://hq.sinajs.cn/list=${str}`]).then(() => {
+      let initTradeList = "";
+      let jss = [`http://hq.sinajs.cn/list=${str}`];
+      if (
+        this.item.trade_list == null ||
+        this.item.trade_list.length == 0 ||
+        typeof this.item.trade_list[0].t !== "object"
+      ) {
+        initTradeList =
+          `https://vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=11&symbol=${this.item.code}&rn=` +
+          +new Date();
+        jss.push(initTradeList);
+      }
+
+      return loadScripts(jss).then(() => {
         [this.item].map((item, i) => {
           let data = parse(item);
           Object.assign(item, data);
         });
         let item = this.item;
         if (!item) return;
-        if (item.trade_list == null) item.trade_list = [];
-        else if (item.volume - item.preVolume > 0) {
+
+        if (initTradeList != "") {
+          let today = moment().format("YYYY-MM-DD");
+          item.trade_list = trade_item_list.map(e => {
+            return {
+              t: new Date(`${today} ${e[0]}`),
+              preNow: (e[3] == "DOWN" ? -0.01 : +0.01) + e[2],
+              now: e[2],
+              volume: (e[1] / 100).toFixed(0),
+              preVolume: 0
+            };
+          });
+        } else if (item.volume - item.preVolume > 0) {
           item.trade_list.unshift({
             t: new Date(),
             preNow: item.preNow,

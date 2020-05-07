@@ -622,6 +622,7 @@ async function getHXList() {
       preclose: e.f18,
       turnover: e.f8,
       pe: e.f9,
+      lb: e.f10,
       pe_ttm: e.f115,
       volume: e.f5,
       ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),

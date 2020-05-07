@@ -42,6 +42,10 @@
           <span>委比:{{item|wb}}</span>
           <span>委差:{{wc(item)}}</span>
         </div>
+
+        <div class="c2" :class="upDown(item.lb>1)">
+          <span>量比:{{item.lb}}</span>
+        </div>
       </li>
       <li>
         <table style="width:100%;" class="seperate">

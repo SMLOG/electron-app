@@ -585,8 +585,15 @@ async function getHSzs() {
   return datalist;
 }
 export async function syncZsItems(items) {
-  let list = await getHSzs();
-  let map = list.reduce((map, item) => ((map[item.code] = item), map), {});
+  let zsdatalist = window.zsdatalist;
+  if (!isNotTradeTime() || !window.zsdatalist) {
+    window.zsdatalist = zsdatalist = await getHSzs();
+  }
+
+  let map = zsdatalist.reduce(
+    (map, item) => ((map[item.code] = item), map),
+    {}
+  );
   return items.map((e) => Object.assign(e, map[e.code]));
 }
 
@@ -645,7 +652,7 @@ export function isNotTradeTime() {
   let h = d.getHours();
   let m = d.getMinutes();
   if (h < 9 || h > 15) return true;
-  if (h == 9 && m < 30) return true;
+  if (h == 9 && m < 15) return true;
   if (h == 11 && m > 30) return true;
   if (h > 11 && h < 13) return true;
   if (h > 15) return true;
@@ -654,7 +661,10 @@ export function isNotTradeTime() {
 export async function batchUpdateHQ(items) {
   if (!items || !items.length) return;
 
-  let datalist = await getHXList();
+  let datalist = window.datalist;
+  if (!isNotTradeTime() || !window.datalist) {
+    window.datalist = datalist = await getHXList();
+  }
 
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];

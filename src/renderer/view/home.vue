@@ -595,8 +595,7 @@ export default {
             let items2 = this.items2;
 
             items = items.concat(
-              items2
-              //items2.filter(e => e.turnover > 2).filter(v => !items.includes(v))
+              items2.filter(e => e.lb > 1).filter(v => !items.includes(v))
             );
             /* items = items.concat(
               this.items2

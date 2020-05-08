@@ -39,9 +39,9 @@
             <input type="checkbox" v-model="cutChooseDate" />
             <span>截断</span>
           </div>
-          <div @dblclick="dbclick">
+          <div @dblclick="dbclick" class="info">
             <span>{{ item.hy }}</span>
-            <span>{{ item.forecast }}</span>
+            <span v-if="item.forecast">{{ item.forecast }}</span>
             <span>披露:{{ item.disclosure }}</span>
             <span>52周%:{{ item["52weekPer"] }}</span>
             <span>流通/亿:{{ item["ltg"] }}</span>
@@ -50,6 +50,7 @@
             <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
             <span>换手率:{{ item["turnover"] }}%</span>
+            <span>量比:{{ item["lb"] }}</span>
           </div>
         </div>
         <div v-if="showChooseDate">
@@ -225,6 +226,11 @@ export default {
 };
 </script>
 <style scoped>
+.info span {
+  margin-right: 8px;
+  font-size: 80%;
+}
+
 #dragBar {
   position: absolute;
   width: 100%;

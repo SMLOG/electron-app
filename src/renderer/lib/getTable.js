@@ -747,9 +747,7 @@ export async function getFilterList(callback) {
       )
     ) {
       //update cache
-      console.log("update cache");
       await getCacheData(null, item.code, null, item);
-      console.log(item);
       await techAnalyst(item);
 
       callback(item);

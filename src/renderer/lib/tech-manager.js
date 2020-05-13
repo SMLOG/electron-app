@@ -26,8 +26,8 @@ function kdjGold(item, kw) {
   let i = kw.KDJ.length - 1;
   return kw.KDJ[i].k > kw.KDJ[i - 1].k && kw.KDJ[i - 2].k > kw.KDJ[i - 1].k;
 }
-function up5(item, km) {
-  return km.MA[km.MA.length - 1].ma5 < item.close;
+function upN(item, km, n = 5) {
+  return km.MA[km.MA.length - 1]["ma" + n] < item.close;
 }
 function upThrouhtN(item, km, n) {
   return (
@@ -51,14 +51,16 @@ function isMacdGolden(techData) {
 
 const techMap = {
   上5月: function({ item, kd, kw, km }) {
-    return up5(item, km);
+    return upN(item, km, 5);
   },
   上5周: function({ item, kd, kw, km }) {
-    return up5(item, kw);
+    return upN(item, kw, 5);
   },
-
+  上20日: function({ item, kd, kw, km }) {
+    return upN(item, kd, 20);
+  },
   上5日: function({ item, kd, kw, km }) {
-    return up5(item, kd);
+    return upN(item, kd, 5);
   },
   上穿5月: function({ item, kd, kw, km }) {
     return upThrouhtN(item, km, 5);
@@ -116,6 +118,25 @@ const techMap = {
   S: function({ item, kd, kw, km }) {
     let i = kw.datas.length;
     return item.close < kw.MA[i - 1].ma5;
+  },
+  上涨放量: function({ item, kd, kw, km }) {
+    let i = kd.datas.length;
+    if (i < 10) return false;
+    let items = kd.datas.slice(i - 5).filter((e) => e.close > e.open);
+    return (
+      items.filter((e) => e.volume >= kd.VOLUME[i - 1].volume5).length >=
+      items.length - 1
+    );
+  },
+  下跌缩量: function({ item, kd, kw, km }) {
+    let i = kd.datas.length;
+    if (i < 10) return false;
+
+    let items = kd.datas.slice(i - 5).filter((e) => e.close < e.open);
+    return (
+      items.filter((e) => e.volume < kd.VOLUME[i - 1].volume5).length >=
+      items.length - 1
+    );
   },
 };
 

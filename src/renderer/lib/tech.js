@@ -231,6 +231,7 @@ export async function getTech(item) {
   let techId = "tech_1" + item.code;
 
   let itemDatas = window[techId] || (await getCacheData(item.date, techId));
+  window[techId] = itemDatas;
   if (
     itemDatas &&
     itemDatas.kd.datas &&
@@ -261,7 +262,7 @@ export async function getTech(item) {
       macd[i + 1].dea = dea;
       macd[i + 1].bar = (diff - dea) * 2;
     }
-    return (window[techId] = itemDatas);
+    return itemDatas;
   } else {
     if (
       itemDatas &&
@@ -270,7 +271,7 @@ export async function getTech(item) {
       new Date() <= new Date(moment().format("YYYY-MM-DD 09:30:00"))
     ) {
       console.log(itemDatas);
-      return (window[techId] = itemDatas);
+      return itemDatas;
     }
     let datas = await new Promise((resolve, reject) => {
       KKE.api(
@@ -300,14 +301,17 @@ export async function getTech(item) {
       }
     }
 
-    ret = {
-      kd: tm.linkData(datas.data.day),
-      kw: tm.linkData(datas.data.week),
-      km: tm.linkData(datas.data.month),
-    };
+    ret = Object.assign(
+      {},
+      {
+        kd: tm.linkData(datas.data.day),
+        kw: tm.linkData(datas.data.week),
+        km: tm.linkData(datas.data.month),
+      }
+    );
+    console.log(`fetch tech datas for ${item.name}`);
 
     await getCacheData(item.date, techId, null, ret);
-    console.log(ret);
     return (window[techId] = ret);
   }
 }

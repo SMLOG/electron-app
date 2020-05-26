@@ -92,12 +92,7 @@ const techMap = {
   量穿5日: function({ item, kd }) {
     return item.volume > kd.VOLUME[kd.datas.length - 1].volume5;
   },
-  量穿5穿10日: function({ item, kd }) {
-    return (
-      kd.VOLUME[kd.datas.length - 1].volume5 >
-      kd.VOLUME[kd.datas.length - 1].volume10
-    );
-  },
+
   日B: function({ item, kd, kw, km }) {
     //月线看趋势，周线看方向，日线看买卖点
     //趋势线上阴线买，趋势线下阳线卖
@@ -137,6 +132,25 @@ const techMap = {
       items.filter((e) => e.volume < kd.VOLUME[i - 1].volume5).length >=
       items.length - 1
     );
+  },
+  换手率大1: function({ item, kd, kw, km }) {
+    return item.turnover >= 1;
+  },
+
+  下跌放缓: function({ item, kd, kw, km }) {
+    let i = kd.datas.length;
+    if (i < 10) return false;
+    let j = i - 1;
+
+    if ((kd.datas[j].close - kd.datas[j - 4].close) / kd.MA[j].ma5 > -0.05)
+      return false;
+    if (
+      kd.datas[j].close < kd.MA[j].ma5 &&
+      kd.datas[j].close < kd.datas[j - 1].close
+    )
+      return false;
+
+    return true;
   },
 };
 

@@ -30,7 +30,6 @@ body {
 }
 
 .blink {
-  color: #dd4814;
   animation: blink 1s linear infinite;
   /* 其它浏览器兼容性前缀 */
   -webkit-animation: blink 2s linear infinite;

@@ -3,47 +3,10 @@
     <tr v-if="item">
       <td style="height:27px;">
         <div>
-          <div style="float:right;margin-right:10px;">
-            <span
-              class="button"
-              v-if="chooseDate && (showChooseDate || cutChooseDate)"
-              @click="prevChooseDate()"
-            >前</span>
-
-            <span
-              class="button"
-              v-if="chooseDate && (showChooseDate || cutChooseDate)"
-              @click="nextChooseDate()"
-              :class="{ gray: item.date <= chooseDate }"
-            >后</span>
-            <span
-              ref="choose_date_ref"
-              style="display:inline-block;width:120px;text-align:center;border-bottom:1px solid;"
-            >
-              <span
-                style="width:100%;display:inline-block;"
-                @click="showChooseDate2 = !showChooseDate2"
-              >{{ chooseDate || "--" }} {{ weekday }}</span>
-              <div
-                class="selectDate"
-                style="position:absolute;right:10px;"
-                v-show="showChooseDate2"
-              >
-                <Calendar @choseDay="choseDay"></Calendar>
-              </div>
-            </span>
-
-            <input type="checkbox" v-model="showChooseDate" />
-            <span>分析</span>
-
-            <input type="checkbox" v-model="cutChooseDate" />
-            <span>截断</span>
-          </div>
           <div @dblclick="dbclick" class="info">
             <span>{{ item.hy }}</span>
             <span v-if="item.forecast">{{ item.forecast }}</span>
             <span>披露:{{ item.disclosure }}</span>
-            <span>52周%:{{ item["52weekPer"] }}</span>
             <span>流通/亿:{{ item["ltg"] }}</span>
             <span>流/总:{{ item["lz"] }}</span>
             <span>TTM:{{ item["pe_ttm"] }}</span>
@@ -51,25 +14,10 @@
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
             <span>换手率:{{ item["turnover"] }}%</span>
             <span>量比:{{ item["lb"] }}</span>
+            <span>低:{{ item["low"] }}</span>
+            <span>高:{{ item["high"] }}</span>
+            <span>成交额:{{(item.amount/100000000).toFixed(2)}}亿</span>
           </div>
-        </div>
-        <div v-if="showChooseDate">
-          <ul
-            style="
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    clear:both;
-    display:block;
-"
-          >
-            <li
-              v-for="(v, f) in filters"
-              :key="f"
-              style="display:inline-block;margin:5px;margin-right;10px;"
-              :class="{ y: aitem['_' + f] }"
-            >{{ f }}</li>
-          </ul>
         </div>
       </td>
     </tr>
@@ -101,17 +49,7 @@ export default {
     return {
       openCode: null,
       openType: null,
-      showChooseDate: false,
-      chooseDate: "",
-      showChooseDate2: false,
-      cutChooseDate: false,
-      filters: filters,
-      aitem: Object.keys(filters)
-        .map(e => "_" + e)
-        .reduce((p, c) => {
-          p[c] = false;
-          return p;
-        }, {})
+      filters: filters
     };
   },
   props: {
@@ -124,14 +62,7 @@ export default {
   },
   mounted() {
     // initwebview(this.closeview.bind(this));
-    window.addEventListener("click", e => {
-      if (this.$refs.choose_date_ref) {
-        if (this.$refs.choose_date_ref.contains(e.target)) {
-        } else {
-          this.showChooseDate2 = false;
-        }
-      }
-    });
+
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", e => {
       this.sendValue();
@@ -148,74 +79,13 @@ export default {
       return false;
     });
   },
-  watch: {
-    showChooseDate() {
-      this.sendValue();
-      this.analyst();
-    },
-    chooseDate() {
-      this.sendValue();
-      this.analyst();
-    },
-    cutChooseDate() {
-      this.sendValue();
-      this.analyst();
-    }
-  },
-  computed: {
-    weekday() {
-      return this.chooseDate && moment(this.chooseDate).format("ddd");
-    }
-  },
+  watch: {},
+  computed: {},
   methods: {
-    prevChooseDate() {
-      let m = moment(this.chooseDate);
-      do {
-        m.subtract(1, "day");
-      } while (m.isoWeekday() > 5);
-      this.chooseDate = m.format("YYYY-MM-DD");
-    },
-    nextChooseDate() {
-      if (item.date <= this.chooseDate) return;
-      let m = moment(this.chooseDate);
-      do {
-        m.add(1, "day");
-      } while (m.isoWeekday() > 5);
-      this.chooseDate = m.format("YYYY-MM-DD");
-    },
-    analyst() {
-      if (this.showChooseDate) {
-        (async () => {
-          let fmtDate =
-            this.chooseDate &&
-            this.chooseDate
-              .split(/[/\-]/)
-              .map(e => (e.length == 1 ? "0" + e : e))
-              .join("/");
-          Object.assign(this.aitem, { code: this.item.code });
-          await callFun(this.aitem, fmtDate);
-        })();
-      }
-    },
     dbclick() {
       this.$emit("dBclick");
     },
-    sendValue() {
-      const webview = document.querySelector("webview");
-      webview
-        .getWebContents()
-        .executeJavaScript(
-          `window.showChooseDate=${
-            this.showChooseDate ? 1 : 0
-          };window.chooseDate='${this.chooseDate}';window.cutChooseDate=${
-            this.cutChooseDate ? 1 : 0
-          };window.dispatchEvent(new Event('resize'))`
-        );
-    },
-    choseDay(d) {
-      this.showChooseDate2 = false;
-      this.chooseDate = d;
-    },
+
     closeview() {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();

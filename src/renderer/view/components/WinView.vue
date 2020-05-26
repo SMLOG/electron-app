@@ -16,6 +16,7 @@
             <span>量比:{{ item["lb"] }}</span>
             <span>低:{{ item["low"] }}</span>
             <span>高:{{ item["high"] }}</span>
+            <span>振幅:{{ item["zf"] }}%</span>
             <span>成交额:{{(item.amount/100000000).toFixed(2)}}亿</span>
           </div>
         </div>

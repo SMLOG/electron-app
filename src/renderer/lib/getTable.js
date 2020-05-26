@@ -635,6 +635,7 @@ async function getHXList() {
       ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
       amount: e.f6,
       high: e.f15,
+      zf: e.f7,
       low: e.f16,
       zsz: (e.f20 / 100000000).toFixed(2),
       lz: (e.f21 / 100000000).toFixed(2),

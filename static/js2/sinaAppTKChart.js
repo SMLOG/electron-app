@@ -1051,38 +1051,41 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
     _initDoms: function() {
       function t(t, a) {
         var h = r("div");
-        i.appendChild(h), (n.doms[t + "Detail"] = h);
+        topDom.appendChild(h), (n.doms[t + "Detail"] = h);
         var o;
         o = "k" === t && n.isCNK ? "CNKDetailItemStyle" : "DetailItemStyle";
         for (var l = 0; a > l; l++) {
           var p = r("div"),
             d = p.style;
-          i.appendChild(p),
+          topDom.appendChild(p),
             c(d, e[t + o], !0),
             (d.lineHeight = s(p) + "px"),
             h.appendChild(p);
         }
       }
       var e = this.param,
-        i = r("div"),
-        a = i.style,
+        topDom = r("div"),
+        a = topDom.style,
         n = this;
       (this.doms = {}),
         (a.height = "100%"),
         (a.width = "100%"),
-        this.dom.appendChild(i);
-      var h = r("div");
-      i.appendChild(h), c(h.style, e.nameBoxStyle, !0), (this.doms.nameBox = h);
+        this.dom.appendChild(topDom);
+      var nameDom = r("div");
+      topDom.appendChild(nameDom);
+      c(nameDom.style, e.nameBoxStyle, !0), (this.doms.nameBox = nameDom);
       var o = r("div");
-      h.appendChild(o), c(o.style, e.nameStyle, !0), (this.doms.name = o);
+      nameDom.appendChild(o), c(o.style, e.nameStyle, !0), (this.doms.name = o);
       var l = r("div");
-      h.appendChild(l), c(l.style, e.symbolStyle, !0), (this.doms.symbol = l);
-      var p = r("div"),
-        d = p.style;
-      i.appendChild(p),
-        c(p.style, e.priceStyle, !0),
-        (d.lineHeight = s(p) + "px"),
-        (this.doms.price = p);
+      nameDom.appendChild(l),
+        c(l.style, e.symbolStyle, !0),
+        (this.doms.symbol = l);
+      var prDom = r("div"),
+        d = prDom.style;
+      topDom.appendChild(prDom);
+      c(prDom.style, e.priceStyle, !0),
+        (d.lineHeight = s(prDom) + "px"),
+        (this.doms.price = prDom);
       var m = this.isCNK ? 8 : 6;
       return (
         t("t", 6),
@@ -1090,8 +1093,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         t("netWorth", 2),
         t("repay", 1),
         t("predict", 3),
-        (this.doms.dom = i),
-        i
+        (this.doms.dom = topDom),
+        topDom
       );
     },
     _displayNoneExcept: function(t) {
@@ -1113,19 +1116,15 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         var m, u;
         "LSE" === this.parent.market || "MSCI" === this.parent.market
           ? ((m = Number(e.price).toFixed(o)), (u = "-"))
-          : ((m = e.price), (u = e.avg_price)),
-          (a = this.doms.tDetail),
-          (r = e.price / (1 + n)),
-          (a.childNodes[0].innerHTML = w(
-            "\u4ef7",
-            m,
-            n > 0 ? l : 0 > n ? c : d
-          )),
-          (a.childNodes[1].innerHTML = w(
-            "\u5747",
-            isNaN(e.avg_price) ? "-" : u,
-            e.avg_price > r ? l : e.avg_price < r ? c : d
-          )),
+          : ((m = e.price), (u = e.avg_price));
+        a = this.doms.tDetail;
+        r = e.price / (1 + n);
+        a.childNodes[0].innerHTML = w("\u4ef7", m, n > 0 ? l : 0 > n ? c : d);
+        (a.childNodes[1].innerHTML = w(
+          "\u5747",
+          isNaN(e.avg_price) ? "-" : u,
+          e.avg_price > r ? l : e.avg_price < r ? c : d
+        )),
           (a.childNodes[2].innerHTML = w(
             "\u5e45",
             (100 * n).toFixed(s) + "%",
@@ -1220,7 +1219,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
     _showComplete: function(t, e) {
       var i,
         a = this.param,
-        r = this.doms.price,
+        priceDom = this.doms.price,
         n = this.doms.symbol,
         h = this.doms.name,
         o = t.data,
@@ -1228,15 +1227,16 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       (h.innerHTML = s ? s.name : t.curname),
         (n.innerHTML = d(this.parent.param.chart.symbol)),
         (i = o.percent),
-        (r.style.color =
+        (priceDom.style.color =
           i > 0 ? a.upColor : 0 > i ? a.downColor : a.levelColor),
         this._showDetailInfo(e, o, t.data_array),
-        (r.innerHTML =
-          "tChart" == e
+        (priceDom.innerHTML =
+          ("tChart" == e
             ? Number(o.price).toFixed(a.toFixedNum)
             : "kChart" == e
             ? o.close.toFixed(a.toFixedNum)
-            : "");
+            : "") +
+          `(${o.change > 0 ? "+" : ""}${o.change.toFixed(a.toFixedNum)})`);
     },
     show: function(t, e) {
       this[this.isSimple ? "_showSimple" : "_showComplete"](t, e);

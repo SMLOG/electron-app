@@ -1,43 +1,26 @@
 <template>
   <div>
-    <div id="sidebar">
-      <ul>
-        <li @drop="drop" @dragover.prevent>a</li>
-        <li>b</li>
-      </ul>
-    </div>
     <Setting />
     <Right :item="rightItem" />
     <div
       id="bg"
       style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
-      @click="closeview"
     ></div>
 
-    <!--<iframe src="static/tech2.html?sh000001" style="width:100%;height:600px;display:none;"></iframe>-->
     <search-panel @select="addItem"></search-panel>
     <div>
-      <div id="menuWrap" style>
+      <div id="menuWrap">
         <ul class="filters" id="menus">
           <Sea
-            v-for="(k, filter) in afilters"
-            :key="filter"
-            :selected="selectSrc == k"
-            @click.native="
-              (selectSrc = k),
-                (visibility = null),
-                (selectFilter = filter)
-            "
-            :is_search="k.is_search"
+            v-for="(fitem, fname) in afilters"
+            :key="fname"
+            :selected="selectSrc == fitem"
+            @click.native="clickType(fname,fitem)"
           >
-            <a>{{ filter }}({{ k.items.length }})</a>
+            <a>{{ fname }}({{ fitem.items.length }})</a>
           </Sea>
         </ul>
-        <FilterCtrl
-          :filtersCount="filtersCount"
-          :src="selectFilter"
-          @filterChainChange="selectFilterChange"
-        />
+        <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" />
         <div style="float:left">
           <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi,$event)">
             {{zi.name}}
@@ -254,7 +237,6 @@ export default {
       items: [],
       descending: true,
       sortby: "",
-      visibility: "Strong",
       head: getCheckFields(),
       selectItem: null,
       items2: [],
@@ -264,8 +246,6 @@ export default {
       openType: null,
       showSetting: false,
       filtersCount: filtersCount,
-      selectFilter_r: -1,
-      selectFilter_c: -1,
       link: "about:blank",
       item: {},
       filterables: [],
@@ -406,6 +386,10 @@ export default {
   },
 
   methods: {
+    clickType(fname, fitem) {
+      this.selectSrc = fitem;
+      this.selectFilter = fname;
+    },
     viewItemMsgs(item) {
       if (item == this.showMsgItem) this.showMsgItem = null;
       else this.showMsgItem = item;
@@ -463,10 +447,6 @@ export default {
         this.filter_prop = "_" + prop;
       }
     },
-    selectFilterChange(r, c) {
-      this.selectFilter_r = r;
-      this.selectFilter_c = c;
-    },
     getSelectItems() {
       window.items = this[this.selectSrc.name];
       return this[this.selectSrc.name];
@@ -522,14 +502,6 @@ export default {
           this.link = url;
         }
       }, 50);
-      /* setTimeout(() => {
-        this.link = url;
-      }, 500);*/
-
-      // webview.attr("src", url);
-
-      console.log(url);
-      //openKlineWindow(this, item);
     },
     toggleDetail(item) {
       if (this.selectItem != item) this.selectItem = item;
@@ -587,21 +559,16 @@ export default {
       //定时监控
       (async () => {
         for (;;) {
-          if (!this.chooseDate) monitor(this.items);
           await timeout(60000);
 
-          if (true || !isNotTradeTime()) {
+          if (true) {
             let items = this.items;
             let items2 = this.items2;
 
             items = items.concat(
               items2.filter(e => e.lb > 1).filter(v => !items.includes(v))
             );
-            /* items = items.concat(
-              this.items2
-                .filter(e => e.turnover > 2)
-                .filter(v => !items.includes(v))
-            );*/
+
             console.log("monitor:", items);
             for (let i = 0; i < items.length; i++) {
               await callFun(items[i]);
@@ -609,12 +576,7 @@ export default {
             updateFiltersCount();
 
             this.items3 = items2;
-
-            //this.ready && tj(items2);
-            //await batchUpdateHQ(this.items2);
-            //storejs.set("his" + (new Date().getDate() % 28), this.items3);
           }
-          // monitor(items);
         }
       })();
       (async () => {
@@ -644,30 +606,17 @@ export default {
         console.log("monitor:", items);
         updateFiltersCount();
         monitor(items);
-        //tj(items);
         this.ready = true;
       })();
 
       (async () => {
         for (;;) {
           await batchUpdateHQ(this.items2.concat(this.items));
-          await timeout(4000);
-        }
-      })();
-      (async () => {
-        for (;;) {
           await syncZsItems(this.zsItems);
+
           await timeout(4000);
         }
       })();
-    },
-    notify(item, message) {
-      this.$electron.remote.app.notifywin.webContents.send("message", {
-        id: +new Date(),
-        time: item.time,
-        item: item,
-        content: message
-      });
     },
     async refresh() {
       let that = this;

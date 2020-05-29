@@ -65,16 +65,8 @@ export default {
     // initwebview(this.closeview.bind(this));
 
     const webview = document.querySelector("webview");
-    webview.addEventListener("dom-ready", e => {
-      this.sendValue();
-      this.analyst();
-    });
+    webview.addEventListener("dom-ready", e => {});
     webview.addEventListener("did-navigate-in-page", event => {
-      if (webview.src && webview.src.indexOf("chooseDate")) {
-        setTimeout(() => {
-          this.chooseDate = webview.src.split("chooseDate=")[1];
-        }, 100);
-      }
       event.preventDefault();
       event.stopPropagation();
       return false;

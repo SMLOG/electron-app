@@ -60,7 +60,6 @@ export function toFiltersCount(item, src, type = "+") {
   for (let i = 0; i < keys.length; i++) {
     let it = filtersCount[i];
     let fc = filters[it.name];
-    items = fc([item]);
     it[src] += fc([item]) ? (type == "+" ? 1 : -1) : 0;
   }
 }

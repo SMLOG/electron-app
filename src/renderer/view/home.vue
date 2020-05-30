@@ -27,8 +27,6 @@
             <em :class="{up:zi.change>0,down:zi.change<0}">{{zi.changeP}}</em>
           </span>
         </div>
-
-        <!-- <TopFocus :items="focusItems" @openlink="openlink" /> -->
       </div>
     </div>
     <div id="tbl">
@@ -223,7 +221,7 @@ import {
   syncZsItems
 } from "@/lib/getTable";
 import $ from "jquery";
-
+window.indMap = {};
 window.$ = $;
 const SELF = "自选";
 
@@ -252,7 +250,7 @@ export default {
       filter_prop: "",
       show_filter_prop: false,
       fullscreen: false,
-      indMap: {},
+      indMap: window.indMap,
       his: storejs.get("history") || {},
       items3: [],
       zsItems: [{ code: "sh000001", now: "-" }],
@@ -363,6 +361,9 @@ export default {
     }
   },
   computed: {
+    getSourceItems2: function() {
+      return this[afilters[this.selectFilter].name];
+    },
     filteredItems: function() {
       if (
         this.filter_prop &&
@@ -376,10 +377,8 @@ export default {
           e => selectedValues.indexOf(e[this.filter_prop]) > -1
         );
       }
+
       return this.getfilterItems();
-    },
-    focusItems: function() {
-      return this.items.filter(e => e.isFocus);
     },
     ...mapGetters(["fields", "curFilterIds"]),
     ...mapGetters({ sfilters: "filters" })
@@ -395,7 +394,8 @@ export default {
       else this.showMsgItem = item;
     },
     getclass(col, item) {
-      let cls = col.class && col.class(item);
+      let cls = {};
+      col.class && (cls = col.class(item));
       if (col.click) {
         if (!cls) cls = {};
         cls["link"] = true;
@@ -447,17 +447,18 @@ export default {
         this.filter_prop = "_" + prop;
       }
     },
-    getSelectItems() {
-      window.items = this[this.selectSrc.name];
+    getSourceItems() {
       return this[this.selectSrc.name];
     },
     getfilterItems() {
-      let items = this.getSelectItems();
+      let items = this.getSourceItems2;
+
       if (!this.curFilterIds) return items;
       let fcs = getFilterChain(this.curFilterIds);
       for (let fc of fcs) {
         items = fc(items);
       }
+
       return items;
     },
     closeview() {

@@ -1714,7 +1714,21 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             storage_lv: 2,
             touch_prevent: !1,
           },
-          tCharts: [
+          tCharts: (() => {
+            let tTechlist = document.cookie
+              .split(";")
+              .map((e) => e.split("=")[0].trim())
+              .filter((name) => {
+                return (
+                  name.indexOf("dataViewt-") == 0 &&
+                  getMyCookie(name, "false") == "true"
+                );
+              })
+              .map((e) => e.replace("dataViewt-", ""));
+            return tTechlist.map((e) => {
+              return { name: e };
+            });
+          })() || [
             {
               name: "TVOL",
             },

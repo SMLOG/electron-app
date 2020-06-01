@@ -783,7 +783,9 @@
           setTimeout(() => {
             let value = $(this).attr("value");
             if (value) {
-              setCookie("dataView-" + value, $(this).attr("selected"));
+              if (getMyCookie("dataView", "k").indexOf("t") > -1) {
+                setCookie("dataViewt-" + value, $(this).attr("selected"));
+              } else setCookie("dataView-" + value, $(this).attr("selected"));
             }
           }, 500);
         });

@@ -1270,10 +1270,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               r[n].getAttribute("value") === a.name &&
                 c(r[n].style, i.itemActiveStyle, !0);
           }
-
-        e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
+        /* e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
           e.Indicator.name != this.parent.chart.param.kChart.tCharts[0].name &&
-          M(this.parent, "tech", t + "_" + e.Indicator.name);
+          M(this.parent, "tech", t + "_" + e.Indicator.name);*/
       },
       switchTechList: function(t) {
         this.tChart && (this.tChart.dom.style.display = "none"),
@@ -1721,6 +1720,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             },
             {
               name: "MACD",
+            },
+            {
+              name: "LB",
             },
           ],
           pCharts: [],

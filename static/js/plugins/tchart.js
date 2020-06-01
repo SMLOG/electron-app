@@ -53,7 +53,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             "ARSUSD",
             "USDPHP",
             "USDKRW",
-            "USDIDR"
+            "USDIDR",
           ],
           a = e.length;
         a--;
@@ -66,12 +66,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       var o = {
           api: {
             t: {},
-            k: {}
+            k: {},
           },
           param: {
             t: {},
-            k: {}
-          }
+            k: {},
+          },
         },
         TKFColorSettings = {
           K_RISE: "#23bc01",
@@ -79,7 +79,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           T_RISE: "#23bc01",
           T_FALL: "#f11200",
           F_RISE: "#23bc01",
-          F_FALL: "#f11200"
+          F_FALL: "#f11200",
         },
         r = {
           dim: {},
@@ -90,102 +90,102 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "ts",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
-            ]
+                t: "K",
+              },
+            ],
           },
           param: {
             t: {
-              theme: TKFColorSettings
+              theme: TKFColorSettings,
             },
             k: {
-              theme: TKFColorSettings
-            }
+              theme: TKFColorSettings,
+            },
           },
           api: {
             t: {
               tCharts: [
                 [
                   {
-                    name: "TVOL"
-                  }
-                ]
+                    name: "TVOL",
+                  },
+                ],
               ],
               setCustom: {
                 show_floater: !1,
                 mousewheel_zoom: !1,
-                touch_prevent: !1
-              }
+                touch_prevent: !1,
+              },
             },
             k: {
               tCharts: [
                 [
                   {
-                    name: "VOLUME"
-                  }
-                ]
+                    name: "VOLUME",
+                  },
+                ],
               ],
               setCustom: {
                 show_floater: !1,
-                touch_prevent: !1
+                touch_prevent: !1,
               },
               showRangeSelector: {
-                display: !1
-              }
-            }
-          }
+                display: !1,
+              },
+            },
+          },
         },
         s = {
           dim: {},
           menu: {
             user_obj: configObj2,
-            menu_rek: !1
+            menu_rek: !1,
           },
           param: {
             t: {
-              theme: TKFColorSettings
+              theme: TKFColorSettings,
             },
             k: {
-              theme: TKFColorSettings
-            }
+              theme: TKFColorSettings,
+            },
           },
           api: {
             t: {
               setCustom: {
                 indicator_reheight: !0,
                 allow_indicator_edit: !0,
-                storage_lv: 2
+                storage_lv: 2,
               },
               showRangeSelector: {
-                display: !0
-              }
+                display: !0,
+              },
             },
             k: {
               setCustom: {
                 indicator_reheight: !0,
                 allow_indicator_edit: !0,
-                storage_lv: 2
+                storage_lv: 2,
               },
               showRangeSelector: {
-                display: !0
-              }
-            }
-          }
+                display: !0,
+              },
+            },
+          },
         };
       if (
         configObj2.iswap ||
@@ -195,33 +195,33 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           tCharts: O,
           setCustom: {
             allow_indicator_edit: !0,
-            mousewheel_zoom: !0
-          }
+            mousewheel_zoom: !0,
+          },
         };
         switch (
           (configObj2.menu &&
             configObj2.menu.menu_wapmore &&
             ("HK" != marketCode &&
               (l.showRangeSelector = {
-                display: !0
+                display: !0,
               }),
             (r.api.t = l),
             (r.api.k = {
               pCharts: [
                 [
                   {
-                    name: "MA"
-                  }
-                ]
+                    name: "MA",
+                  },
+                ],
               ],
               tCharts: defaultE,
               setCustom: {
                 allow_indicator_edit: !0,
-                mousewheel_zoom: !0
+                mousewheel_zoom: !0,
               },
               showRangeSelector: {
-                display: !0
-              }
+                display: !0,
+              },
             })),
           marketCode)
         ) {
@@ -233,23 +233,23 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "ts",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ];
             break;
           case "op_m":
@@ -257,18 +257,18 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ];
             break;
           case "US":
@@ -277,68 +277,68 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 {
                   lab: "\u5206\u65f6",
                   v: "ts",
-                  t: "T"
+                  t: "T",
                 },
                 {
                   lab: "5\u65e5",
                   v: "t5",
-                  t: "T"
+                  t: "T",
                 },
                 {
                   lab: "\u65e5K",
                   v: "kd",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u5468K",
                   v: "kw",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u6708K",
                   v: "km",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u66f4\u591a",
                   v: "more",
-                  t: "K"
-                }
+                  t: "K",
+                },
               ]),
               (r.menu.more = [
                 {
                   lab: "5\u5206",
                   v: "k5",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "15\u5206",
                   v: "k15",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "30\u5206",
                   v: "k30",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "1\u6708",
                   v: "km1",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "3\u6708",
                   v: "km3",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "1\u5e74",
                   v: "km12",
-                  t: "K"
-                }
+                  t: "K",
+                },
               ]),
               (r.api.t.setLineStyle = {
-                linetype: "mountain"
+                linetype: "mountain",
               }),
               (r.api.t.showScale = "pct"),
               configObj2.symbol)
@@ -359,60 +359,60 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 {
                   lab: "\u5206\u65f6",
                   v: "ts",
-                  t: "T"
+                  t: "T",
                 },
                 {
                   lab: "\u65e5K",
                   v: "kd",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u5468K",
                   v: "kw",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u6708K",
                   v: "km",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u66f4\u591a",
                   v: "more",
-                  t: "K"
-                }
+                  t: "K",
+                },
               ],
               m = [
                 {
                   lab: "\u5206\u65f6",
                   v: "ts",
-                  t: "T"
+                  t: "T",
                 },
                 {
                   lab: "B/S\u70b9",
                   v: "kdd",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u65e5K",
                   v: "kd",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u5468K",
                   v: "kw",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u6708K",
                   v: "km",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "\u66f4\u591a",
                   v: "more",
-                  t: "K"
-                }
+                  t: "K",
+                },
               ];
             (r.menu.tab =
               N(configObj2.symbol) &&
@@ -425,23 +425,23 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 {
                   lab: "5\u5206",
                   v: "k5",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "15\u5206",
                   v: "k15",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "30\u5206",
                   v: "k30",
-                  t: "K"
+                  t: "K",
                 },
                 {
                   lab: "60\u5206",
                   v: "k60",
-                  t: "K"
-                }
+                  t: "K",
+                },
               ]),
               (r.param = o.param);
             break;
@@ -450,23 +450,23 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "ts",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (r.api.t.showScale = "pct"),
               (r.param = o.param);
@@ -481,45 +481,45 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "ts",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t = {
                 tCharts: [
                   [
                     {
-                      name: "TVOL"
+                      name: "TVOL",
                     },
                     {
-                      name: "BLANKCTN"
-                    }
+                      name: "BLANKCTN",
+                    },
                   ],
                   {
                     callback: function() {
                       indicatorTab(_tChart);
-                    }
-                  }
+                    },
+                  },
                 ],
                 setCustom: {
                   allow_indicator_edit: !0,
                   storage_lv: 2,
-                  mousewheel_zoom: !1
-                }
+                  mousewheel_zoom: !1,
+                },
               }),
               (s.api.t.showScale = "pct"),
               (s.param = o.param);
@@ -529,30 +529,30 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "ts",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t = {
                 setCustom: {
                   allow_indicator_edit: !0,
                   storage_lv: 2,
-                  mousewheel_zoom: !1
-                }
+                  mousewheel_zoom: !1,
+                },
               }),
               (s.api.t.showScale = "pct");
             break;
@@ -563,50 +563,50 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "15\u5206",
                       v: "k15",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ]
                 : [
                     {
                       lab: "1\u5206",
                       v: "k1",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "15\u5206",
                       v: "k15",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ];
             (s.menu.tab = d), (s.param.k.view = "kd");
             break;
@@ -618,99 +618,99 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     {
                       lab: "1\u5206",
                       v: "k1",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5e74K",
                       v: "ky",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "5\u5206",
                       v: "k5",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "15\u5206",
                       v: "k15",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "30\u5206",
                       v: "k30",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "60\u5206",
                       v: "k60",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "4H",
                       v: "k240",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ]
                 : [
                     {
                       lab: "1\u5206",
                       v: "k1",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5e74K",
                       v: "ky",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "5\u5206",
                       v: "k5",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "30\u5206",
                       v: "k30",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ]),
               (s.param.k.view = h(configObj2.symbol) ? "k1" : "kd"),
               (s.param = {
                 t: {
-                  theme: null
+                  theme: null,
                 },
                 k: {
-                  theme: null
-                }
+                  theme: null,
+                },
               }),
               (s.param.k.nfloat = 4);
             break;
@@ -720,60 +720,60 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   {
                     lab: "\u5e74\u7ebf",
                     v: "kcl",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u65e5K",
                     v: "kd",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u5468K",
                     v: "kw",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u6708K",
                     v: "km",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u5e74K",
                     v: "ky",
-                    t: "K"
-                  }
+                    t: "K",
+                  },
                 ]
               : [
                   {
                     lab: "\u5206\u65f6",
                     v: "t1",
-                    t: "T"
+                    t: "T",
                   },
                   {
                     lab: "\u5e74\u7ebf",
                     v: "kcl",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u65e5K",
                     v: "kd",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u5468K",
                     v: "kw",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u6708K",
                     v: "km",
-                    t: "K"
+                    t: "K",
                   },
                   {
                     lab: "\u5e74K",
                     v: "ky",
-                    t: "K"
-                  }
+                    t: "K",
+                  },
                 ]),
               (s.param = o.param),
               (s.param.k.candlenum = 70),
@@ -781,26 +781,26 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 tCharts: [
                   [
                     {
-                      name: "TVOL"
+                      name: "TVOL",
                     },
                     {
-                      name: "LB"
+                      name: "LB",
                     },
                     {
-                      name: "BLANKCTN"
-                    }
+                      name: "BLANKCTN",
+                    },
                   ],
                   {
                     callback: function() {
                       indicatorTab(_tChart);
-                    }
-                  }
+                    },
+                  },
                 ],
                 setCustom: {
                   allow_indicator_edit: !0,
                   storage_lv: 2,
-                  mousewheel_zoom: !1
-                }
+                  mousewheel_zoom: !1,
+                },
               });
             break;
           case "US":
@@ -808,66 +808,66 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "t1",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "5\u65e5",
                 v: "t5",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u5e74\u7ebf",
                 v: "kcl",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "YTD",
                 v: "ytd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5e74K",
                 v: "ky",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "5\u5206",
                 v: "k5",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "15\u5206",
                 v: "k15",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "30\u5206",
                 v: "k30",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "60\u5206",
                 v: "k60",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t.setLineStyle = {
-                linetype: "mountain"
+                linetype: "mountain",
               }),
               (s.api.t.showScale = "pct");
             break;
@@ -876,33 +876,33 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "t1",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "5\u65e5",
                 v: "t5",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5e74K",
                 v: "ky",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.menu.menu_rek = !0);
             break;
@@ -911,18 +911,18 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
-              }
+                t: "K",
+              },
             ];
             break;
           case "global_index":
@@ -930,28 +930,28 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "t1",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5e74K",
                 v: "ky",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t.setCustom.mousewheel_zoom = !1),
               (s.api.t.showRangeSelector.display = !1);
@@ -961,53 +961,53 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "t1",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u5e74\u7ebf",
                 v: "kcl",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5e74K",
                 v: "ky",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "5\u5206",
                 v: "k5",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "15\u5206",
                 v: "k15",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "30\u5206",
                 v: "k30",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "60\u5206",
                 v: "k60",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t.showScale = "pct"),
               (s.tchartobject = {
@@ -1021,7 +1021,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   "DMA",
                   "EXPMA",
                   "BIAS",
-                  "VR"
+                  "VR",
                 ],
                 k: [
                   "MACD",
@@ -1037,8 +1037,8 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   "RSI",
                   "SAR",
                   "TRIX",
-                  "WR"
-                ]
+                  "WR",
+                ],
               }),
               (s.param = o.param),
               (s.api.t.setCustom.mousewheel_zoom = !1),
@@ -1057,120 +1057,120 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     {
                       lab: "\u5206\u65f6",
                       v: "t1",
-                      t: "T"
+                      t: "T",
                     },
                     {
                       lab: "5\u65e5",
                       v: "t5",
-                      t: "T"
+                      t: "T",
                     },
                     {
                       lab: "\u5e74\u7ebf",
                       v: "kcl",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "B/S\u70b9",
                       v: "kdd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5e74K",
                       v: "ky",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "5\u5206",
                       v: "k5",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "15\u5206",
                       v: "k15",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "30\u5206",
                       v: "k30",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "60\u5206",
                       v: "k60",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ]
                 : [
                     {
                       lab: "\u5206\u65f6",
                       v: "t1",
-                      t: "T"
+                      t: "T",
                     },
                     {
                       lab: "5\u65e5",
                       v: "t5",
-                      t: "T"
+                      t: "T",
                     },
                     {
                       lab: "\u5e74\u7ebf",
                       v: "kcl",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u65e5K",
                       v: "kd",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5468K",
                       v: "kw",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u6708K",
                       v: "km",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "\u5e74K",
                       v: "ky",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "5\u5206",
                       v: "k5",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "15\u5206",
                       v: "k15",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "30\u5206",
                       v: "k30",
-                      t: "K"
+                      t: "K",
                     },
                     {
                       lab: "60\u5206",
                       v: "k60",
-                      t: "K"
-                    }
+                      t: "K",
+                    },
                   ]),
               (s.menu.menu_rek = !0),
               (s.param = o.param);
@@ -1180,76 +1180,76 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               {
                 lab: "\u5206\u65f6",
                 v: "t1",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "5\u65e5",
                 v: "t5",
-                t: "T"
+                t: "T",
               },
               {
                 lab: "\u5e74\u7ebf",
                 v: "kcl",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u65e5K",
                 v: "kd",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5468K",
                 v: "kw",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u6708K",
                 v: "km",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "\u5e74K",
                 v: "ky",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "5\u5206",
                 v: "k5",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "15\u5206",
                 v: "k15",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "30\u5206",
                 v: "k30",
-                t: "K"
+                t: "K",
               },
               {
                 lab: "60\u5206",
                 v: "k60",
-                t: "K"
-              }
+                t: "K",
+              },
             ]),
               (s.api.t.tCharts = [
                 [
                   {
-                    name: "TVOL"
+                    name: "TVOL",
                   },
                   {
-                    name: "POSITION"
+                    name: "POSITION",
                   },
                   {
-                    name: "BLANKCTN"
-                  }
+                    name: "BLANKCTN",
+                  },
                 ],
                 {
                   callback: function() {
                     indicatorTab(_tChart);
-                  }
-                }
+                  },
+                },
               ]),
               (s.api.t.showScale = "pct"),
               (s.param = o.param);
@@ -1272,12 +1272,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       (config.dim = {
         H_T_G: 40,
         H_T_T: 0,
-        posX: 55
+        posX: 55,
       }),
         (z.dim = {
           H_T_G: 40,
           H_T_T: 0,
-          posX: 45
+          posX: 45,
         }),
         (z.candlenum = 45);
     }
@@ -1348,7 +1348,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     height: e.info.height,
                     top: e.info.top,
                     left: e.info.left,
-                    rangeData: e.info.data
+                    rangeData: e.info.data,
                   }))
                 : configObj2.dotTool.hide();
             else {
@@ -1369,9 +1369,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   show: !0,
                   formatter: function(t) {
                     return t.date + ":\u9f99\u864e\u699c";
-                  }
+                  },
                 },
-                alwaysHide: d && !d.alwaysShow
+                alwaysHide: d && !d.alwaysShow,
               });
             }
           if (configObj2.paintTool)
@@ -1384,12 +1384,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 height: e.info.height,
                 top: e.info.top,
                 left: e.info.left,
-                shapeListName: c
+                shapeListName: c,
               };
               "k" == e.type &&
                 (p.data = S.getExtraData({
                   name: "currentK",
-                  clone: !1
+                  clone: !1,
                 })),
                 configObj2.paintTool.update(p);
             } else {
@@ -1407,7 +1407,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 domain: e.info.range,
                 style: {
                   strokeStyle: "#000",
-                  lineWidth: 1
+                  lineWidth: 1,
                 },
                 paintOnEachCenter: !0,
                 saveKeyPreName: "sinatkchart_paintSth_",
@@ -1415,12 +1415,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   return (
                     t && t.match(/sinatkchart_paintSth_[\S]*\|(t|5|15|30|60)/)
                   );
-                }
+                },
               };
               "k" == e.type &&
                 (h.data = S.getExtraData({
                   name: "currentK",
-                  clone: !1
+                  clone: !1,
                 })),
                 configObj2.paintTool.init(h);
             }
@@ -1442,17 +1442,17 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           dis_compare: !1,
           compare_dom_id: "KKE_compare_" + a,
           compare_dom_left: "5px",
-          compare_dom_h: 23
+          compare_dom_h: 23,
         },
         menu: {
           dis_menu: !0,
           menu_rek: void 0,
           menu_wapmore: !1,
           menu_dom_id: "KKE_menu_" + a,
-          menu_dom_h: 30
+          menu_dom_h: 30,
         },
         zoom: {
-          zoom_btn: !1
+          zoom_btn: !1,
         },
         range: {
           rangeCon: "",
@@ -1463,12 +1463,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           range_font: void 0,
           range_dom_id: "KKE_range_" + a,
           range_dom_h: 20,
-          dis_range: !0
+          dis_range: !0,
         },
         dim: {
           H_T_B: 0,
           H_BLK: 22,
-          I_V_O: -22
+          I_V_O: -22,
         },
         param: {
           t: {
@@ -1476,7 +1476,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               f({
                 chart: _tChart,
                 info: t,
-                type: "t"
+                type: "t",
               });
             },
             oninnerresize: function(t) {
@@ -1526,7 +1526,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     " \u91cf:",
                     o,
                     " \u5e45:",
-                    a.percent + "%"
+                    a.percent + "%",
                   ];
                 if (configObj2) {
                   var c = configObj2.market;
@@ -1613,7 +1613,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       whatW.range.rangeValue +
                       '">' +
                       a.percent +
-                      "%</span>"
+                      "%</span>",
                   ];
                   if ("cntouzi2" != configObj2.mt)
                     for (d = 0; d < f.length; d++)
@@ -1622,14 +1622,14 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   r(X.range.range_dom_id).innerHTML = f.join("");
                 }
               }
-            }
+            },
           },
           k: {
             onrange: function(t) {
               f({
                 chart: S,
                 info: t,
-                type: "k"
+                type: "k",
               });
             },
             oninnerresize: function(t) {
@@ -1659,9 +1659,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       uid: [
                         configObj2.CFGSETTING_IFRAME_PREFIX,
                         new Date().getTime(),
-                        Math.floor(987654321 * Math.random() + 1)
+                        Math.floor(987654321 * Math.random() + 1),
                       ].join("|"),
-                      key: configObj2.CFGSETTING_IFRAME_PREFIX
+                      key: configObj2.CFGSETTING_IFRAME_PREFIX,
                     },
                     function(t) {
                       if (
@@ -1714,7 +1714,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   " \u4f4e:",
                   a.low.toFixed(2),
                   " \u91cf:",
-                  o
+                  o,
                 ];
                 if (
                   configObj2.iswap ||
@@ -1799,7 +1799,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       whatW.range.rangeValue +
                       '">' +
                       a.percent +
-                      "%</span>"
+                      "%</span>",
                   ];
                   if (
                     ("CN" !== configObj2.market ||
@@ -1822,7 +1822,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                             (0 === a.postAmt
                               ? 0
                               : utils_util.strUtil.vs(a.postAmt, !0)) +
-                            "</span>"
+                            "</span>",
                         ]))),
                     "cntouzi2" != configObj2.mt)
                   )
@@ -1832,30 +1832,30 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   r(X.range.range_dom_id).innerHTML = f.join("");
                 }
               }
-            }
-          }
+            },
+          },
         },
         api: {
           t: {
             setCustom: {
-              show_underlay_vol: !1
+              show_underlay_vol: !1,
             },
-            tCharts: O
+            tCharts: O,
           },
           k: {
             setCustom: {
-              show_underlay_vol: !1
+              show_underlay_vol: !1,
             },
             pCharts: [
               [
                 {
-                  name: "MA"
-                }
-              ]
+                  name: "MA",
+                },
+              ],
             ],
-            tCharts: defaultE
-          }
-        }
+            tCharts: defaultE,
+          },
+        },
       };
     }
     function K(t) {
@@ -1864,9 +1864,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           date: t[a].dt.replace(/-/g, "/"),
           data: [
             {
-              url: t[a].url
-            }
-          ]
+              url: t[a].url,
+            },
+          ],
         });
       return e;
     }
@@ -1874,7 +1874,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
       var t = h(configObj2.symbol) ? "k1" : "kd";
       "k1" != t &&
         C({
-          view: t
+          view: t,
         });
       var e = new Date(),
         a = new Date();
@@ -1882,11 +1882,11 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         S.showView("k1", {
           callback: function() {
             S.setLineStyle({
-              linetype: "line"
+              linetype: "line",
             }),
               S.pCharts(null, {
                 toremove: !0,
-                noLog: 1
+                noLog: 1,
               });
             var t = 60 * e.getTimezoneOffset() * 1e3;
             e.setTime(e.getTime() + t),
@@ -1899,21 +1899,21 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   symbol: configObj2.symbol,
                   timeSymbol: "sys_time",
                   interval: 30,
-                  offset: 30
+                  offset: 30,
                 },
                 function(t) {
                   t &&
                     S.pushData({
                       symbol: configObj2.symbol,
-                      data: t
+                      data: t,
                     }),
                     S.pCharts(null, {
                       toremove: !0,
-                      noLog: 1
+                      noLog: 1,
                     });
                 }
               );
-          }
+          },
         });
     }
     function w() {
@@ -1927,7 +1927,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               "ppt.ppt.get",
               {
                 menu: menuTab,
-                userObj: configObj2
+                userObj: configObj2,
               },
               null
             );
@@ -1961,7 +1961,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             userObj: configObj2,
             chartId: whatW.domid,
             menu: menuTab,
-            chart: sinaTKChartObj
+            chart: sinaTKChartObj,
           },
           function() {}
         );
@@ -2021,7 +2021,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     "ASI",
                     "VR",
                     "EMV",
-                    "BRAR"
+                    "BRAR",
                   ]
                 : [
                     "\u65e0",
@@ -2040,7 +2040,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     "EXPMA",
                     "BIAS",
                     "ASI",
-                    "BRAR"
+                    "BRAR",
                   ]),
             configObj2.market)
           ) {
@@ -2070,7 +2070,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 "DMA",
                 "EXPMA",
                 "BIAS",
-                "VR"
+                "VR",
               ]),
                 (a = "\u65e0");
               break;
@@ -2088,7 +2088,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 "DMA",
                 "EXPMA",
                 "BIAS",
-                "VR"
+                "VR",
               ]),
                 (a = "TVOL");
               break;
@@ -2108,7 +2108,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       "DMA",
                       "EXPMA",
                       "BIAS",
-                      "VR"
+                      "VR",
                     ]
                   : [
                       "\u65e0",
@@ -2122,7 +2122,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                       "DMA",
                       "EXPMA",
                       "BIAS",
-                      "VR"
+                      "VR",
                     ]),
                 (a = "TVOL");
           }
@@ -2135,12 +2135,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             rightW: o,
             fix: {
               firsts: [a],
-              lasts: ["BLANKCTN"]
+              lasts: ["BLANKCTN"],
             },
             tabs: e,
             active: 1,
             type: n,
-            domid: r
+            domid: r,
           },
           function(t) {
             indicatorTabLogger[s] = t;
@@ -2151,35 +2151,35 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         kChart: {
           pCharts: [
             {
-              name: "MA"
-            }
+              name: "MA",
+            },
           ],
           setCustom: {
             centerZoom: !0,
             history_t: "window",
             show_k_rangepercent: !0,
             show_ext_marks: !0,
-            show_floater: !0
+            show_floater: !0,
           },
           setReK: 0,
           setLineStyle: {
-            linetype: "solid"
-          }
+            linetype: "solid",
+          },
         },
         tChart: {
           setCustom: {
-            show_floater: !0
+            show_floater: !0,
           },
           setLineStyle: {
-            linetype: "line"
-          }
+            linetype: "line",
+          },
         },
         tkChart: {
           showView: "t1",
           showDotTool: {
-            alwaysShow: !0
-          }
-        }
+            alwaysShow: !0,
+          },
+        },
       };
     (configObj2.indicatorTab = indicatorTab),
       (configObj2.indicatorTabLogger = indicatorTabLogger),
@@ -2201,9 +2201,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           uid: [
             configObj2.CFGSETTING_IFRAME_PREFIX,
             new Date().getTime(),
-            Math.floor(987654321 * Math.random() + 1)
+            Math.floor(987654321 * Math.random() + 1),
           ].join("|"),
-          key: configObj2.CFGSETTING_IFRAME_PREFIX
+          key: configObj2.CFGSETTING_IFRAME_PREFIX,
         },
         function(t) {
           t
@@ -2222,23 +2222,23 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           O = [
             [
               {
-                name: "POSITION"
+                name: "POSITION",
               },
               {
-                name: "TVOL"
+                name: "TVOL",
               },
               {
-                name: "LB"
+                name: "LB",
               },
               {
-                name: "BLANKCTN"
-              }
+                name: "BLANKCTN",
+              },
             ],
             {
               callback: function() {
                 indicatorTab(_tChart);
-              }
-            }
+              },
+            },
           ];
           break;
         case "HF":
@@ -2246,17 +2246,17 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           O = [
             [
               {
-                name: "MACD"
+                name: "MACD",
               },
               {
-                name: "BLANKCTN"
-              }
+                name: "BLANKCTN",
+              },
             ],
             {
               callback: function() {
                 indicatorTab(_tChart);
-              }
-            }
+              },
+            },
           ];
           break;
         default:
@@ -2265,38 +2265,38 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               ? [
                   [
                     {
-                      name: "TVOL"
+                      name: "TVOL",
                     },
                     {
-                      name: "TFLOW"
+                      name: "TFLOW",
                     },
                     {
-                      name: "BLANKCTN"
-                    }
+                      name: "BLANKCTN",
+                    },
                   ],
                   {
                     callback: function() {
                       indicatorTab(_tChart);
-                    }
-                  }
+                    },
+                  },
                 ]
               : [
                   [
                     {
-                      name: "TVOL"
+                      name: "TVOL",
                     },
                     {
-                      name: "LB"
+                      name: "LB",
                     },
                     {
-                      name: "BLANKCTN"
-                    }
+                      name: "BLANKCTN",
+                    },
                   ],
                   {
                     callback: function() {
                       indicatorTab(_tChart);
-                    }
-                  }
+                    },
+                  },
                 ];
       }
     })();
@@ -2309,17 +2309,17 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         defaultE = [
           [
             {
-              name: "MACD"
+              name: "MACD",
             },
             {
-              name: "BLANKCTN"
-            }
+              name: "BLANKCTN",
+            },
           ],
           {
             callback: function() {
               indicatorTab(S);
-            }
-          }
+            },
+          },
         ];
         break;
       default:
@@ -2328,26 +2328,26 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           [
             { name: "MA" },
             {
-              name: "VOLUME"
+              name: "VOLUME",
             },
             {
-              name: "BOLL"
+              name: "BOLL",
             },
             {
-              name: "MACD"
+              name: "MACD",
             },
             {
-              name: "KDJ"
+              name: "KDJ",
             },
             {
-              name: "BLANKCTN"
-            }
+              name: "BLANKCTN",
+            },
           ],
           {
             callback: function() {
               indicatorTab(S);
-            }
-          }
+            },
+          },
         ];
     }
     var whatF,
@@ -2433,18 +2433,18 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             {
               lab: "\u65e5K",
               v: "kd",
-              t: "K"
+              t: "K",
             },
             {
               lab: "\u5468K",
               v: "kw",
-              t: "K"
+              t: "K",
             },
             {
               lab: "\u6708K",
               v: "km",
-              t: "K"
-            }
+              t: "K",
+            },
           ]);
       },
       et = function() {
@@ -2501,58 +2501,58 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         for (var a in e) e.hasOwnProperty(a) && "setCustom" == a && S[a](e[a]);
         menuTab && menuTab.setPPT("block"),
           S.setCustom({
-            allow_indicator_edit: !0
+            allow_indicator_edit: !0,
           }),
           S.setCustom({
-            storage_lv: 2
+            storage_lv: 2,
           }),
           utils_util.suda("m_bs"),
           S.showView("kd"),
           S.setDimension({
-            I_V_O: 0
+            I_V_O: 0,
           }),
           S.pCharts(
             [
               {
-                name: configObj2.DKpChart
-              }
+                name: configObj2.DKpChart,
+              },
             ],
             {
               isexclusive: !0,
-              noLog: 1
+              noLog: 1,
             }
           ),
           "cnlv1wap" == configObj2.mt
             ? (S.tCharts(
                 [
                   {
-                    name: configObj2.DKtChart
-                  }
+                    name: configObj2.DKtChart,
+                  },
                 ],
                 {
                   isexclusive: !0,
-                  noLog: 1
+                  noLog: 1,
                 }
               ),
               S.showRangeSelector({
-                display: !1
+                display: !1,
               }))
             : (S.tCharts(
                 [
                   {
-                    name: configObj2.DKtChart
+                    name: configObj2.DKtChart,
                   },
                   {
-                    name: "volume"
-                  }
+                    name: "volume",
+                  },
                 ],
                 {
                   isexclusive: !0,
-                  noLog: 1
+                  noLog: 1,
                 }
               ),
               S.showRangeSelector({
-                display: !0
+                display: !0,
               })),
           "TZY" == configObj2.DKpChart && S.setReK(-1);
       },
@@ -2584,13 +2584,13 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   symbol: configObj2.symbol,
                   timeSymbol: "sys_time",
                   interval: 30,
-                  offset: 30
+                  offset: 30,
                 },
                 function(t) {
                   t &&
                     S.pushData({
                       symbol: symbol,
-                      data: t
+                      data: t,
                     });
                 }
               );
@@ -2598,14 +2598,14 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         S.showView("kd", {
           callback: function() {
             S.setLineStyle({
-              linetype: "line"
+              linetype: "line",
             });
-          }
+          },
         }),
           S.showYTD(),
           S.showRangeSelector({
             from: e,
-            to: a
+            to: a,
           });
       },
       it = function(t, e, a) {
@@ -2624,16 +2624,16 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   n.setCustom &&
                     n.setCustom.show_underlay_vol &&
                     t.setCustom({
-                      show_underlay_vol: n.setCustom.show_underlay_vol
+                      show_underlay_vol: n.setCustom.show_underlay_vol,
                     });
-                }
+                },
               });
             } else if ("setReK" == o)
               N(configObj2.symbol) && t[o](n[o]),
                 "HK" === configObj2.market && t[o](n[o]);
             else if ("showView" == o)
               sinaTKChartObj[o]({
-                view: n[o]
+                view: n[o],
               });
             else {
               if (
@@ -2652,7 +2652,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
               sinaTKChartObj[o](
                 "showView" === o
                   ? {
-                      view: configObj2.settingCfg.tkChart[o]
+                      view: configObj2.settingCfg.tkChart[o],
                     }
                   : configObj2.settingCfg.tkChart[o]
               );
@@ -2663,9 +2663,9 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             S.compare({
               symbol: _tChart.getSymbols()[e],
               linecolor: {
-                K_N: whatW.compare.color[e - 1]
+                K_N: whatW.compare.color[e - 1],
               },
-              linetype: t
+              linetype: t,
             });
       },
       st = 0,
@@ -2678,7 +2678,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 i &&
                   C({
                     view: n,
-                    active: i
+                    active: i,
                   });
             else {
               for (var e in whatF.k)
@@ -2700,12 +2700,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                     S.tCharts(
                       [
                         {
-                          name: "MACD"
-                        }
+                          name: "MACD",
+                        },
                       ],
                       {
                         isexclusive: !0,
-                        noLog: 1
+                        noLog: 1,
                       }
                     )
                   : (menuTab && it(S), "kcl" == n && S.showView(n));
@@ -2717,19 +2717,19 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             menuTab
               ? (menuTab.setChart({
                   k: S,
-                  o: configObj2
+                  o: configObj2,
                 }),
                 i &&
                   C({
                     view: n,
-                    active: i
+                    active: i,
                   }))
               : whatW.menu.dis_menu &&
                 mt(
                   whatW.menu,
                   {
                     type: "k",
-                    chart: S
+                    chart: S,
                   },
                   function() {
                     it(S), _();
@@ -2763,12 +2763,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                         zIndex: 99,
                         opacity: 1,
                         filter: "alpha(opacity=100)",
-                        boxShadow: null
+                        boxShadow: null,
                       },
                       dotHoverStyle: {
                         opacity: 0.8,
                         filter: "alpha(opacity=80)",
-                        boxShadow: "0px 0px 5px 2px #349FF9"
+                        boxShadow: "0px 0px 5px 2px #349FF9",
                       },
                       tipStyle: {
                         position: "absolute",
@@ -2784,8 +2784,8 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                         minWidth: "110px",
                         lineHeight: "15px",
                         height: "15px",
-                        fontSize: "12px"
-                      }
+                        fontSize: "12px",
+                      },
                     });
                   }
                 );
@@ -2805,12 +2805,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             }
           menuTab
             ? menuTab.setChart({
-                t: _tChart
+                t: _tChart,
               })
             : whatW.menu.dis_menu &&
               mt(whatW.menu, {
                 type: "t",
-                chart: _tChart
+                chart: _tChart,
               }),
             whatW.iswap ||
               whatW.menu.menu_wapmore ||
@@ -2836,10 +2836,10 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
           d.save({
             uid: [
               configObj2.CFGSETTING_IFRAME_PREFIX,
-              new Date().getTime()
+              new Date().getTime(),
             ].join("|"),
             key: configObj2.CFGSETTING_IFRAME_PREFIX,
-            value: t
+            value: t,
           });
       });
     var mt = function(t, a, n) {
@@ -2848,12 +2848,12 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         switch (o) {
           case "t":
             i = {
-              t: a.chart
+              t: a.chart,
             };
             break;
           case "k":
             i = {
-              k: a.chart
+              k: a.chart,
             };
         }
         (whatW.menu.me = sinaTKChartObj),
@@ -2870,10 +2870,10 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                   ? C(pt)
                   : (menuTab.chooseTab = {
                       tye: "K",
-                      tab: "kd"
+                      tab: "kd",
                     })
                 : C({
-                    view: configObj2.settingCfg.tkChart.showView
+                    view: configObj2.settingCfg.tkChart.showView,
                   }),
               n && n();
           });
@@ -2911,7 +2911,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
         } else
           initK({
             obj: e,
-            rm: a
+            rm: a,
           });
       });
     var pt,
@@ -2990,7 +2990,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 width: e.w_k,
                 height: e.h_k,
                 left: e.RIGHT_W,
-                top: e.T_F_T
+                top: e.T_F_T,
               }))
             : _tChart &&
               ((e = _tChart.getDimension()),
@@ -2998,7 +2998,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
                 width: e.w_t,
                 height: e.h_t,
                 left: e.RIGHT_W,
-                top: e.T_F_T
+                top: e.T_F_T,
               })),
           t && a && a.resize(t),
           t && n && n.update(t));
@@ -3033,7 +3033,7 @@ xh5_define("plugins.tchart", ["utils.util"], function(utils_util) {
             a(config.symbol) &&
               i.showView({
                 view: "kcl",
-                active: 0
+                active: 0,
               });
         };
         i.me.al("T_DATA_LOADED", r, !1);

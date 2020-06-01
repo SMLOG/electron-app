@@ -270,7 +270,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
     (f._initTChart = function(t) {
       var h = this,
         a = this.param,
-        s = a.tChart,
+        tChart = a.tChart,
         n = a.symbol;
       a.isFund && (n = a.isFund.exchange.slice(4, 6).toLowerCase() + n),
         (this.isPendingTChart = !0),
@@ -285,7 +285,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
             a.tInitParam
           ),
           function(i) {
-            e(i, s),
+            e(i, tChart),
               h.inited &&
                 i.showView(h.currentView, {
                   callback: function() {

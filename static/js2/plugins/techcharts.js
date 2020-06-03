@@ -6168,7 +6168,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       }
     }),
     (r.prototype.indicatorI = function(t) {
-      if (this.indicatorArr) {
+      if (t && this.indicatorArr) {
         for (var i, r, a = [], s = 0, e = this.indicatorArr.length; e > s; s++)
           (i = this.indicatorArr[s]),
             (r = t[i.prop]),

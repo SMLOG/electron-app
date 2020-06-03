@@ -1236,7 +1236,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             : "kChart" == e
             ? o.close.toFixed(a.toFixedNum)
             : "") +
-          `(${o.change > 0 ? "+" : ""}${o.change.toFixed(a.toFixedNum)})`);
+          (o.change != null
+            ? `(${o.change > 0 ? "+" : ""}${o.change.toFixed(a.toFixedNum)})`
+            : ""));
     },
     show: function(t, e) {
       this[this.isSimple ? "_showSimple" : "_showComplete"](t, e);

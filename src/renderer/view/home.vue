@@ -16,6 +16,7 @@
             :key="fname"
             :selected="selectSrc == fitem"
             @click.native="clickType(fname,fitem)"
+            :is_search="fitem.is_search"
           >
             <a>{{ fname }}({{ fitem.items.length }})</a>
           </Sea>

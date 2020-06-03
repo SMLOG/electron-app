@@ -13,7 +13,7 @@
             <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
             <span>换手率:{{ item["turnover"] }}%</span>
-            <span>量比:{{ item["lb"] }}</span>
+            <span :class="{up:item.lb>1,down:item.lb<1}">量比:{{ item["lb"] }}</span>
             <span>低:{{ item["low"] }}</span>
             <span>高:{{ item["high"] }}</span>
             <span>振幅:{{ item["zf"] }}%</span>
@@ -117,5 +117,11 @@ export default {
 }
 .gray {
   color: gray;
+}
+.up {
+  color: red;
+}
+.down {
+  color: green;
 }
 </style>

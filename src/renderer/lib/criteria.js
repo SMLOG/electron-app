@@ -256,9 +256,15 @@ export const criteria = {
     },
     latest_price: {
       name: "latest_price",
-      op: "between",
       label: "股价",
       unit: "元",
+      order: 0,
+      is: function(e) {
+        return (
+          e.now >= (this._value1 || Number.MIN_VALUE) &&
+          e.now <= (this._value2 || Number.MAX_VALUE)
+        );
+      },
     },
     others: {
       name: "others",

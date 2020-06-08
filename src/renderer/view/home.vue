@@ -105,7 +105,12 @@
               <td class="firstCol">
                 <div class="first">
                   <span>
-                    <a class="post_bt" :name="item.code" @click="viewItemMsgs(item)">{{ index + 1 }}</a>
+                    <a
+                      class="post_bt"
+                      :name="item.code"
+                      @dblclick="dblclickn($event,item)"
+                      @click="viewItemMsgs(item)"
+                    >{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
@@ -386,6 +391,14 @@ export default {
   },
 
   methods: {
+    dblclickn(event, item) {
+      let items = this.getSourceItems();
+      let i = items.indexOf(item);
+
+      items.splice(i, 1);
+      items.unshift(item);
+      store.save(this.items);
+    },
     clickType(fname, fitem) {
       this.selectSrc = fitem;
       this.selectFilter = fname;

@@ -134,7 +134,10 @@
                       @dragstart="dragstart($event, item)"
                       @dragend="dragend"
                     >
-                      <a :id="item.code">{{ item.name }}{{item.PEG&&item.PEG.toFixed(1)}}</a>
+                      <a :id="item.code">
+                        {{ item.name }}
+                        <b :class="{up:item.lb>1,down:item.lb<1}">{{item.lb}}</b>
+                      </a>
                     </span>
                   </div>
                 </div>

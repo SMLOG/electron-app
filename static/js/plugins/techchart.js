@@ -4649,6 +4649,7 @@ xh5_define("plugins.techchart", ["utils.util", "utils.painter"], function(
             color: "#12BDD9",
           },
         ];
+        s.cfg = s.cfg || {};
         bridge.save({
           uid: [s.cfg.uid, new Date().getTime()].join("|"),
           key: s.STORAGE_PREFIX + (s.sname || s.name) + "_" + s.storageVer,

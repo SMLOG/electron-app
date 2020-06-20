@@ -274,6 +274,13 @@ export let headers = [
       }
     },
   },
+  {
+    label: "分",
+    prop: "score",
+    type: "number",
+    fmt: (e, item) => e,
+    title: (item) => item.score_desc,
+  },
 ];
 
 export function getCheckFields(onlyCheck = true) {

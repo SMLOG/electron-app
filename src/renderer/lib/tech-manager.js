@@ -165,88 +165,54 @@ export function buildFilters() {
 }
 export async function callFun(item, chooseDate) {
   let techDatas = await getTech(item);
-  if (chooseDate) {
-    let ntechDatas = {};
-    for (let p of ["kd", "kw", "km"]) {
-      let i = techDatas[p].datas.filter((d) => d.day <= chooseDate).length;
-      let nk = techDatas[p].datas.slice(0, i);
-      ntechDatas[p] = {};
-      for (let k in techDatas[p]) {
-        if (k == "datas") ntechDatas[p][k] = nk;
-        else {
-          ntechDatas[p][k] = techDatas[p][k].slice(0, nk.length);
-        }
-      }
-    }
-    techDatas = ntechDatas;
-    let citem = ntechDatas.kd.datas.slice(-1);
-    item = Object.assign(item, { now: citem.close });
-    item = Object.assign(item, citem);
-    techDatas.item = item;
-  }
 
   for (let name in techMap) {
     techDatas.item = item;
     item[`_${name}`] = techMap[name](techDatas);
   }
+  [item[`score`], item.tscore, item.score_desc] = score(techDatas);
 }
-
-let tjdatas = storejs.get("tj") || [];
-tjdatas.sort((a, b) => {
-  return a.endDate && a.endDate <= b.endDate && a.startDate <= b.startDate;
-});
-let tjmap = {};
-for (let i = 0; i < tjdatas.length; i++) {
-  let item = tjdatas[i];
-  item._i = i;
-  if (!item.endDate || moment(item.endDate).isSame(new Date(), "day"))
-    tjmap[item.code] = item;
-}
-export function tj(items) {
-  //storejs.set("his" + (new Date().getDate() % 28), this.items3);
-  let imap = {};
-  if (items) {
-    let needUpdate = false;
-    for (let i = 0; i < items.length; i++) {
-      let it = items[i];
-      imap[it.code] = it;
-      let item = tjmap[it.code];
-      if (!tjmap[it.code]) {
-        tjmap[it.code] = it;
-        tjdatas.push(it);
-        it.startDate = new Date();
-        needUpdate = true;
-        console.log(`add new ${it.code} to tj at ${it.startDate}`);
-        tjmap[it.code].startNow = it.now;
-      }
-      if (item && item !== it) {
-        item.endDate = null;
-        it = Object.assign(it, {
-          endDate: item.endDate,
-          startDate: item.startDate,
-          startNow: item.startNow,
-          endNow: item.endNow,
-        });
-        tjmap[it.code] = it;
-        tjdatas[item._i] = it;
-        needUpdate = true;
-      }
-      it.endNow = it.now;
+export function score({ item, kd, kw, km }) {
+  let s = 0;
+  let t = 0;
+  let desc = "";
+  if (kw.MACD[kw.MACD.length - 1].bar >= 0) {
+    s += 1;
+    desc += "MACD BAR>=0\n";
+    if (kw.MACD[kw.MACD.length - 1].dif < 0) {
+      s += 1;
+      desc += "MACD DIF<0\n";
     }
+  }
+  t += 2;
+  if (
+    kw.datas.slice(-6).some((val, i, arr) => {
+      return val.percent > 0.1;
+    })
+  ) {
+    desc += "Price > 10% (6)\n";
+    s += 1;
+  }
+  t += 1;
+  if (
+    kw.VOLUME[kw.datas.length - 1].volume5 >
+      kw.datas[kw.datas.length - 2].volume &&
+    kw.datas[kw.datas.length - 1].volume >
+      kw.VOLUME[kw.datas.length - 1].volume5
+  ) {
+    s += 1;
+    desc += "Volume >-1 \n";
+  }
+  t += 1;
 
-    for (let i = 0, codes = Object.keys(tjmap); i < codes.length; i++) {
-      if (!imap[codes[i]]) {
-        let it = tjmap[codes[i]];
-
-        it.endDate = new Date();
-        needUpdate = true;
-        console.log(
-          `remove new ${it.code} to tj at ${it.startDate} - ${it.endDate}`
-        );
-      }
-    }
-    if (needUpdate) {
-      storejs.set("tj", tjdatas);
-    }
-  } else return tjdatas;
+  if (
+    (kw.MA[kw.MA.length - 1].ma10 - kw.MA[kw.MA.length - 3].ma10) /
+      kw.MA[kw.MA.length - 1].ma10 <
+    0.001
+  ) {
+    s += 1;
+    desc += "MA10 平滑 \n";
+  }
+  t += 1;
+  return [s, t, desc];
 }

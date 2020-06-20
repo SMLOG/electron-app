@@ -18,6 +18,7 @@
             <span>高:{{ item["high"] }}</span>
             <span>振幅:{{ item["zf"] }}%</span>
             <span>成交额:{{(item.amount/100000000).toFixed(2)}}亿</span>
+            <span :title="item.score_desc">分数:{{item.score}}/{{item.tscore}}</span>
           </div>
         </div>
       </td>

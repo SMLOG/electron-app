@@ -214,5 +214,34 @@ export function score({ item, kd, kw, km }) {
     desc += "MA10 平滑 \n";
   }
   t += 1;
+
+  if (
+    kw.datas[kw.datas.length - 1].close >= kw.MA[kw.MA.length - 1].ma20 &&
+    kw.datas[kw.datas.length - 2].close < kw.MA[kw.MA.length - 2].ma20
+  ) {
+    s += 1;
+    desc += "上穿20天均线 \n";
+  }
+  t += 1;
+
+  if (
+    kw.datas[kw.datas.length - 1].close > kw.datas[kw.datas.length - 2].close &&
+    kw.VOLUME[kw.datas.length - 1].volume5 >
+      kw.VOLUME[kw.datas.length - 2].volume5
+  ) {
+    s += 1;
+    desc += "价格上涨 成交量连续正向放大 \n";
+  }
+  t += 1;
+
+  if (
+    kw.datas[kw.datas.length - 1].close > kw.MA[kw.MA.length - 1].ma60 &&
+    kw.datas[kw.datas.length - 1].volume >
+      1.5 * kw.VOLUME[kw.datas.length - 1].volume5
+  ) {
+    s -= 1;
+    desc += "上升途放量下跌可能性大 \n";
+  }
+
   return [s, t, desc];
 }

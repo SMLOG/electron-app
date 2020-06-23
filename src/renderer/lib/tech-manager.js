@@ -205,11 +205,10 @@ export function score({ item, kd, kw, km }) {
   }
   t += 1;
 
-  if (
-    (kw.MA[kw.MA.length - 1].ma10 - kw.MA[kw.MA.length - 3].ma10) /
-      kw.MA[kw.MA.length - 1].ma10 <
-    0.001
-  ) {
+  let v =
+    (kw.MA[kw.MA.length - 1].ma10 - kw.MA[kw.MA.length - 2].ma10) /
+    kw.MA[kw.MA.length - 1].ma10;
+  if (v < 0.001 && v > 0) {
     s += 1;
     desc += "MA10 平滑 \n";
   }
@@ -232,6 +231,55 @@ export function score({ item, kd, kw, km }) {
     s += 1;
     desc += "价格上涨 成交量连续正向放大 \n";
   }
+  t += 1;
+
+  if (
+    kw.MA[kw.MA.length - 1].ma10 >= kw.MA[kw.MA.length - 2].ma10 &&
+    kw.MA[kw.MA.length - 2].ma10 >= kw.MA[kw.MA.length - 3].ma10
+  ) {
+    s += 1;
+    desc += "10天线向上 \n";
+  }
+  t += 1;
+
+  for (let i = 0; i < 6; i++) {
+    if (
+      kw.datas[kw.datas.length - i - 1].close >
+        kw.datas[kw.datas.length - i - 1].open &&
+      kw.datas[kw.datas.length - i - 1].close >
+        Math.max(
+          kw.datas[kw.datas.length - i - 2].open,
+          kw.datas[kw.datas.length - i - 2].close
+        ) &&
+      kw.datas[kw.datas.length - i - 1].open <
+        Math.min(
+          kw.datas[kw.datas.length - i - 2].open,
+          kw.datas[kw.datas.length - i - 2].close
+        )
+    ) {
+      s += 1;
+      desc += "穿头破脚 up \n";
+      break;
+    } else if (
+      kw.datas[kw.datas.length - i - 1].close <
+        kw.datas[kw.datas.length - i - 1].open &&
+      kw.datas[kw.datas.length - i - 1].close <
+        Math.min(
+          kw.datas[kw.datas.length - i - 2].open,
+          kw.datas[kw.datas.length - i - 2].close
+        ) &&
+      kw.datas[kw.datas.length - i - 1].open >
+        Math.max(
+          kw.datas[kw.datas.length - i - 2].open,
+          kw.datas[kw.datas.length - i - 2].close
+        )
+    ) {
+      s -= 1;
+      desc += "穿头破脚 down \n";
+      break;
+    }
+  }
+
   t += 1;
 
   if (

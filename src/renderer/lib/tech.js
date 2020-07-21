@@ -187,7 +187,7 @@ function rejustRight(factor, datas, market, kdatas, util) {
         price: p.close,
         volume: p.volume,
         totalVolume: p.volume,
-        date: util.dd(p.date),
+        date: util.dataUtil.dd(p.date),
       }));
     l = util.kUtil.mw(kdatas2, S, null, null, 0 / 0);
     h = l[0];

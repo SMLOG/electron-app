@@ -1977,6 +1977,10 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
                 color: "#EE2F72",
               },
               {
+                v: 30,
+                color: "#000000",
+              },
+              {
                 v: 60,
                 color: "#8CBB0D",
               },

@@ -1110,7 +1110,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         s = this.param.percentToFixedNum,
         l = h.upColor,
         c = h.downColor,
-        d = h.levelColor;
+        d = h.levelColor,
+        preclose = e.close / (1 + e.percent);
       if ((isNaN(n) && (n = 0), "tChart" == t)) {
         this._displayNoneExcept("t");
         var m, u;
@@ -1138,11 +1139,31 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           (a = this.doms.kDetail),
           (r = e.close / (1 + n));
         var f = [
-            w("\u5f00", e.open.toFixed(o), e.open > r ? l : e.open < r ? c : d),
-            w("\u9ad8", e.high.toFixed(o), e.high > r ? l : e.high < r ? c : d),
+            w(
+              "\u5f00",
+              e.open.toFixed(o) +
+                `(${(((e.open - preclose) / preclose) * 100).toFixed(s)}%)`,
+              e.open > r ? l : e.open < r ? c : d
+            ),
+            w(
+              "\u9ad8",
+              e.high.toFixed(o) +
+                `(${(((e.high - preclose) / preclose) * 100).toFixed(s)}%)`,
+              e.high > r ? l : e.high < r ? c : d
+            ),
             w("\u5e45", (100 * n).toFixed(s) + "%", n > 0 ? l : 0 > n ? c : d),
-            w("\u6536", e.close.toFixed(o), n > 0 ? l : 0 > n ? c : d),
-            w("\u4f4e", e.low.toFixed(o), e.low > r ? l : e.low < r ? c : d),
+            w(
+              "\u6536",
+              e.close.toFixed(o) +
+                `(${(((e.close - preclose) / preclose) * 100).toFixed(s)}%)`,
+              n > 0 ? l : 0 > n ? c : d
+            ),
+            w(
+              "\u4f4e",
+              e.low.toFixed(o) +
+                `(${(((e.low - preclose) / preclose) * 100).toFixed(s)}%)`,
+              e.low > r ? l : e.low < r ? c : d
+            ),
             this.parent.hasVolume ? "\u91cf: " + p(e.volume, 2) : "",
           ],
           y = [
@@ -1693,6 +1714,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               })
               .map((e) => e.replace("dataView-", ""));
             tTechlist = all.filter((e) => tTechlist.indexOf(e) > -1);
+            console.log(tTechlist);
             return tTechlist.map((e) => {
               return { name: e };
             });

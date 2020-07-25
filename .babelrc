@@ -1,30 +1,7 @@
 {
-  "comments": false,
+  "presets": ["@babel/preset-env"],
+  "plugins": [["@babel/transform-runtime"]],
   "env": {
-    "main": {
-      "presets": [
-        ["env", {
-          "targets": { "node": 7 }
-        }],
-        "stage-0"
-      ]
-    },
-    "renderer": {
-      "presets": [
-        ["env", {
-          "modules": false
-        }],
-        "stage-0"
-      ]
-    },
-    "web": {
-      "presets": [
-        ["env", {
-          "modules": false
-        }],
-        "stage-0"
-      ]
-    }
-  },
-  "plugins": ["transform-runtime"]
+    "debug": { "sourceMap": "inline", "retainLines": true }
+  }
 }

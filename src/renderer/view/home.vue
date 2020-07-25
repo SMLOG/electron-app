@@ -25,7 +25,7 @@
         <div style="float:left">
           <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi,$event)">
             {{zi.name}}
-            <em :class="{up:zi.change>0,down:zi.change<0}">{{zi.changeP}}</em>
+            <em :class="{up:zi.change>0,down:zi.change<0}">{{zi.close}}({{zi.changeP}})</em>
           </span>
         </div>
       </div>
@@ -262,7 +262,7 @@ export default {
       indMap: window.indMap,
       his: storejs.get("history") || {},
       items3: [],
-      zsItems: [{ code: "sh000001", now: "-" }],
+      zsItems: [{ code: "sh000001" }, { code: "sz399001" }],
       rightItem: false,
       showMsgItem: null
     };

@@ -5,11 +5,15 @@ import {
   dialog,
   Tray,
   Menu,
-  screen
+  screen,
 } from "electron";
 import * as path from "path";
 
 var axios = require("axios"); //使用之前需要npm install axios
+let { server } = require("../server/server.js");
+process.on("exit", function(code) {
+  server.close();
+});
 
 global.axios = axios;
 
@@ -42,8 +46,8 @@ function createWindow() {
     icon: "app.ico",
     show: false,
     webPreferences: {
-      webSecurity: false
-    }
+      webSecurity: false,
+    },
   });
   mainWindow.loadURL(winURL);
   app.mainWindow = mainWindow;
@@ -53,7 +57,7 @@ function createWindow() {
       event.preventDefault();
     }
   );
-  mainWindow.on("close", event => {
+  mainWindow.on("close", (event) => {
     //mainWindow = null;
     console.log("close");
     if (mainWindow.isVisible()) {
@@ -63,11 +67,11 @@ function createWindow() {
   });
   require("./window");
 
-  mainWindow.on("closed", event => {
+  mainWindow.on("closed", (event) => {
     mainWindow = null;
   });
 
-  mainWindow.on("blur", e => {
+  mainWindow.on("blur", (e) => {
     // mainWindow.hide();
   });
 }
@@ -80,9 +84,9 @@ app.on("ready", () => {
         type: "info",
         title: "Information",
         message: "Do you really want to close the application?",
-        buttons: ["Yes", "No"]
+        buttons: ["Yes", "No"],
       },
-      index => {
+      (index) => {
         if (index === 0) {
           app.quit();
         }
@@ -104,9 +108,9 @@ app.on("ready", () => {
     "ALT+E": "notifywin",
     "ALT+Z": "minwin",
     "ALT+CommandOrControl+L": "minwin",
-    "ALT+CommandOrControl+1": "minwin"
+    "ALT+CommandOrControl+1": "minwin",
   };
-  Object.keys(keysMap).forEach(k => {
+  Object.keys(keysMap).forEach((k) => {
     console.log(`check key ${k} is regist: ${globalShortcut.isRegistered(k)}`);
     if (
       !globalShortcut.register(k, () => {
@@ -129,11 +133,11 @@ app.on("ready", () => {
       type: "checkbox",
       click: function(menuItem, browserWindow, event) {
         //showDlg(menuItem.label, menuItem.label, browserWindow);
-        toggleWindow(options, name, ret => {
+        toggleWindow(options, name, (ret) => {
           menuItem.checked = ret;
           callback && callback();
         });
-      }
+      },
     };
   }
 
@@ -149,10 +153,10 @@ app.on("ready", () => {
           mainWindow.show();
           menuItem.checked = true;
         }
-      } //打开相应页面
+      }, //打开相应页面
     },
     {
-      type: "separator"
+      type: "separator",
     },
     {
       label: "Windows",
@@ -168,13 +172,13 @@ app.on("ready", () => {
           show: false, //先不让窗口显示
           webPreferences: {
             // devTools: false, //关闭调试工具
-            webSecurity: false
+            webSecurity: false,
           },
           maximizable: false,
           maxWidth: screen.getPrimaryDisplay().workAreaSize[0],
           fullscreenable: false,
           transparent: false, //设置透明
-          alwaysOnTop: true //窗口是否总是显示在其他窗口之前
+          alwaysOnTop: true, //窗口是否总是显示在其他窗口之前
         }),
         createItemWindow("today", {
           width: 200,
@@ -186,12 +190,12 @@ app.on("ready", () => {
           show: true,
           webPreferences: {
             //  devTools: false, //关闭调试工具
-            webSecurity: false
+            webSecurity: false,
           },
           transparent: false,
-          alwaysOnTop: true
-        })
-      ]
+          alwaysOnTop: true,
+        }),
+      ],
     },
     {
       label: "迷你窗口",
@@ -200,19 +204,19 @@ app.on("ready", () => {
       click: function(menuItem, browserWindow, event) {
         app.minwin.isVisible() ? app.minwin.hide() : app.minwin.show();
         menuItem.checked = app.minwin.isVisible();
-      }
+      },
     },
     {
       label: "关于",
-      click: function() {}
+      click: function() {},
     },
     {
       label: "退出",
       click: function() {
         app.quit();
         app.quit(); //因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
-      }
-    }
+      },
+    },
   ];
 
   appTray = new Tray(path.join(__dirname, "app.png")); //app.ico是app目录下的ico文件
@@ -305,7 +309,7 @@ function showDlg(title, msg, focusedWindow = null) {
     type: "info",
     title: "" + title,
     buttons: ["OK"],
-    message: "" + msg
+    message: "" + msg,
   };
   dialog.showMessageBox(focusedWindow, options, function() {});
 }

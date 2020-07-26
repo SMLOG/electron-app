@@ -15,7 +15,7 @@
             v-for="(fitem, fname) in afilters"
             :key="fname"
             :selected="selectSrc == fitem"
-            @click.native="clickType(fname,fitem)"
+            @click.native="clickType(fname, fitem)"
             :is_search="fitem.is_search"
           >
             <a>{{ fname }}({{ fitem.items.length }})</a>
@@ -23,9 +23,15 @@
         </ul>
         <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" />
         <div style="float:left">
-          <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi,$event)">
-            {{zi.name}}
-            <em :class="{up:zi.change>0,down:zi.change<0}">{{zi.close}}({{zi.changeP}})</em>
+          <span
+            v-for="zi in zsItems"
+            :key="zi.code"
+            @click="openIndex(zi, $event)"
+          >
+            {{ zi.name }}
+            <em :class="{ up: zi.change > 0, down: zi.change < 0 }"
+              >{{ zi.close }}({{ zi.changeP }})</em
+            >
           </span>
         </div>
       </div>
@@ -49,7 +55,7 @@
                 :key="col.prop"
                 :class="{
                   ascending: sortby === col.prop && !descending,
-                  descending: sortby === col.prop && descending
+                  descending: sortby === col.prop && descending,
                 }"
               >
                 <span @click="sort(col.prop)">{{ col.label }}</span>
@@ -66,7 +72,7 @@
                         @click="f.select = !f.select"
                         :class="{
                           up: indMap[f.value] > 0,
-                          down: indMap[f.value] < 0
+                          down: indMap[f.value] < 0,
                         }"
                       >
                         <input type="checkbox" v-model="f.select" />
@@ -84,7 +90,9 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
+                  <span
+                    v-if="selectItem.tables && selectItem.tables.length > 0"
+                  >
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -96,7 +104,7 @@
           </thead>
           <draggable v-model="items" @update="dragEnd" tag="tbody">
             <tr
-              :id="'r'+item.code"
+              :id="'r' + item.code"
               class="item"
               v-for="(item, index) in filteredItems"
               :key="item.code"
@@ -108,23 +116,27 @@
                     <a
                       class="post_bt"
                       :name="item.code"
-                      @dblclick="dblclickn($event,item)"
+                      @dblclick="dblclickn($event, item)"
                       @click="viewItemMsgs(item)"
-                    >{{ index + 1 }}</a>
+                      >{{ index + 1 }}</a
+                    >
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveDatas(item)"
+                    />
                   </span>
                   <div
                     :title="item.code"
                     :class="{
                       lk: item.tables && item.tables.length > 0,
                       link: true,
-                      blink: item._S
-
+                      blink: item._S,
                     }"
                   >
                     <span
@@ -136,7 +148,9 @@
                     >
                       <a :id="item.code">
                         {{ item.name }}
-                        <b :class="{up:item.lb>1,down:item.lb<1}">{{item.lb}}</b>
+                        <b :class="{ up: item.lb > 1, down: item.lb < 1 }">{{
+                          item.lb
+                        }}</b>
                       </a>
                     </span>
                   </div>
@@ -144,28 +158,43 @@
               </td>
 
               <td
-                v-for="(col,ci) in head"
+                v-for="(col, ci) in head"
                 :key="col.prop"
-                :class="getclass(col,item)"
+                :class="getclass(col, item)"
                 :title="col.title && col.title(item)"
                 @click="col.click && col.click(item, $event, openlink)"
-                @mouseover="cellOver($event,item,ci)"
-                @mouseout="cellOut($event,item,ci)"
-              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+                @mouseover="cellOver($event, item, ci)"
+                @mouseout="cellOut($event, item, ci)"
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullscreen: fullscreen }">
+    <div
+      id="webviewWrap"
+      ref="webviewWrap"
+      class="webview"
+      :class="{ fullscreen: fullscreen }"
+    >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
           style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
         ></i>
-        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+        <i
+          v-if="false"
+          class="arrow down"
+          style="position:relative;top:-10px;cursor:pointer;"
+        ></i>
       </div>
-      <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
+      <WinView
+        :item="item"
+        :link="link"
+        @dBclick="fullscreen = !fullscreen"
+      ></WinView>
     </div>
     <Posts :item="showMsgItem" />
   </div>
@@ -206,7 +235,7 @@ import {
   timeout,
   openKlineWindow,
   setCookie,
-  getCookie
+  getCookie,
 } from "@/lib/utils";
 import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
@@ -217,7 +246,7 @@ import {
   filtersCount,
   getFilterChain,
   updateFiltersCount,
-  getOrFiltersItems
+  getOrFiltersItems,
 } from "@/lib/filters";
 import fetchJsonp from "fetch-jsonp";
 
@@ -227,7 +256,7 @@ import {
   getFilterList,
   batchUpdateHQ,
   isNotTradeTime,
-  syncZsItems
+  syncZsItems,
 } from "@/lib/getTable";
 import $ from "jquery";
 window.indMap = {};
@@ -264,7 +293,7 @@ export default {
       items3: [],
       zsItems: [{ code: "sh000001" }, { code: "sz399001" }],
       rightItem: false,
-      showMsgItem: null
+      showMsgItem: null,
     };
   },
   directives: {
@@ -302,7 +331,7 @@ export default {
         //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
         return false;
       };
-    }
+    },
   },
   components: {
     SearchPanel,
@@ -314,17 +343,17 @@ export default {
     Right,
     TopFocus,
     WinView,
-    Posts
+    Posts,
   },
   filters: {
     objectType(id) {
       return ObjectType[id];
-    }
+    },
   },
   mounted() {
     window.axios = this.$electron.remote.getGlobal("axios");
 
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       switch (event.keyCode) {
         case 27:
           this.closeview();
@@ -333,9 +362,9 @@ export default {
       }
     });
 
-    window.addEventListener("click", e => {
+    window.addEventListener("click", (e) => {
       if (this.$refs.filter_prop_ref) {
-        if (this.$refs.filter_prop_ref.some(el => el.contains(e.target))) {
+        if (this.$refs.filter_prop_ref.some((el) => el.contains(e.target))) {
         } else {
           this.show_filter_prop = false;
         }
@@ -366,8 +395,8 @@ export default {
       deep: true,
       handler(newValue, oldValue) {
         this.head = getCheckFields();
-      }
-    }
+      },
+    },
   },
   computed: {
     getSourceItems2: function() {
@@ -377,20 +406,20 @@ export default {
       if (
         this.filter_prop &&
         this.filterables &&
-        this.filterables.filter(e => e.select).length
+        this.filterables.filter((e) => e.select).length
       ) {
         let selectedValues = this.filterables
-          .filter(e => e.select)
-          .map(e => e.value);
+          .filter((e) => e.select)
+          .map((e) => e.value);
         return this.getfilterItems().filter(
-          e => selectedValues.indexOf(e[this.filter_prop]) > -1
+          (e) => selectedValues.indexOf(e[this.filter_prop]) > -1
         );
       }
 
       return this.getfilterItems();
     },
     ...mapGetters(["fields", "curFilterIds"]),
-    ...mapGetters({ sfilters: "filters" })
+    ...mapGetters({ sfilters: "filters" }),
   },
 
   methods: {
@@ -442,19 +471,19 @@ export default {
       this.show_filter_prop = !this.show_filter_prop;
 
       if (this.show_filter_prop) {
-        let values = this.getfilterItems().map(item => item["_" + prop]);
+        let values = this.getfilterItems().map((item) => item["_" + prop]);
         values = values.filter(function(item, index, arr) {
           return arr.indexOf(item, 0) === index;
         });
         this.filterables = values
-          .map(e => {
+          .map((e) => {
             return {
               value: e,
               changeP: this.indMap[e],
               select:
-                this.filterables.filter(a => {
+                this.filterables.filter((a) => {
                   return a.value == e && a.select;
-                }).length > 0
+                }).length > 0,
             };
           })
           .sort((a, b) =>
@@ -549,11 +578,11 @@ export default {
       this.sendRefresh();
     },
     reloadData() {
-      this.items = store.fetch().filter(e => e);
-      this.items.forEach(e => toFiltersCount(e, SELF));
+      this.items = store.fetch().filter((e) => e);
+      this.items.forEach((e) => toFiltersCount(e, SELF));
     },
     addItem(selectItem) {
-      if (this.items.filter(it => it.code == selectItem.code).length == 0) {
+      if (this.items.filter((it) => it.code == selectItem.code).length == 0) {
         this.items.push(selectItem);
         store.save(this.items);
         toFiltersCount(selectItem, SELF);
@@ -584,7 +613,7 @@ export default {
             let items2 = this.items2;
 
             items = items.concat(
-              items2.filter(e => e.lb > 1).filter(v => !items.includes(v))
+              items2.filter((e) => e.lb > 1).filter((v) => !items.includes(v))
             );
 
             console.log("monitor:", items);
@@ -605,7 +634,7 @@ export default {
         let cacheDateTime = storejs.get("seadatetime") || 0;
         if (new Date().getTime() - cacheDateTime >= 172800000) {
           console.log("re-fetch filter items");
-          let items = await getFilterList(e => {
+          let items = await getFilterList((e) => {
             if (e) {
               this.items2.push(e);
               toFiltersCount(e, "海选");
@@ -643,12 +672,12 @@ export default {
       that.sendRefresh();
     },
     sendRefresh() {
-      this.$electron.remote.BrowserWindow.getAllWindows().map(win => {
+      this.$electron.remote.BrowserWindow.getAllWindows().map((win) => {
         try {
           win.isVisible() &&
             win.webContents.send(
               "refresh",
-              this.items.filter(e => e.isFocus)
+              this.items.filter((e) => e.isFocus)
             );
         } catch (e) {
           console.log(e);
@@ -676,8 +705,16 @@ export default {
       if (item.isFocus) this.addItem(item);
       store.save(this.items);
       updateFiltersCount();
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped src="./home.css" />
+<style scoped>
+em {
+  color: red;
+}
+#id {
+  color: red;
+}
+</style>

@@ -78,6 +78,11 @@ function startRenderer() {
           resolve();
         });
       },
+      proxy: {
+        "/api/*": {
+          target: "http://localhost:3000",
+        },
+      },
     });
 
     server.listen(9080);

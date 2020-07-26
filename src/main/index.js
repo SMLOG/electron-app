@@ -43,10 +43,11 @@ function createWindow() {
     height: scSize.height,
     useContentSize: true,
     width: scSize.width,
-    icon: "app.ico",
+    //  icon: "app.ico",
     show: false,
     webPreferences: {
       webSecurity: false,
+      nodeIntegration: true,
     },
   });
   mainWindow.loadURL(winURL);

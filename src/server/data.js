@@ -1,6 +1,6 @@
 import fs from "fs";
 import os from "os";
-import { name as appName } from "./package.json";
+import { name as appName } from "#package.json";
 import { mainFinanceAnalyst } from "./basicAnalyst";
 import { getDataDir } from "./config";
 export async function get(item, prop) {

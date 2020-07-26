@@ -1,8 +1,5 @@
-import { tech, getKlineData, getList } from "./TechMan";
-import { kUtil } from "./util";
-import fs from "fs";
-import os from "os";
-import { name as appName } from "./package.json";
+import { getList } from "./TechMan";
+
 import { getFilterList } from "./criteria";
 (async () => {
   let list = await getList();

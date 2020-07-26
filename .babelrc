@@ -7,7 +7,7 @@
       {
         "paths": [
           { "rootPathPrefix": "#", "rootPathSuffix": "" },
-          { "rootPathPrefix": "~", "rootPathSuffix": "" }
+          { "rootPathPrefix": "~", "rootPathSuffix": "src" }
         ]
       }
     ]

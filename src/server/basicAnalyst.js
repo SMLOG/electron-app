@@ -113,12 +113,16 @@ export async function getLatestDisclosureDateList() {
 
 (async () => {
   let file = `${CONFIG_DIR}/yypl-预约披露日期列表.json`;
-  let stat = fs.statSync(file);
-  console.log(stat);
+  let refresh = true;
+  if (fs.existsSync(file)) {
+    let stat = fs.statSync(file);
+    console.log(stat);
+    let hours = (new Date().getTime() - stat.ctime.getTime()) / 1000 / 60 / 60;
+    if (hours < 12) refresh = false;
+  }
 
-  let hours = (new Date().getTime() - stat.ctime.getTime()) / 1000 / 60 / 60;
   let map;
-  if (hours > 12) {
+  if (refresh) {
     let result = await getLatestDisclosureDateList();
     map = {};
     result.data.forEach((d) => {

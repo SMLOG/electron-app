@@ -115,7 +115,6 @@ export async function getList() {
 
   return await new Promise((resolve, reject) => {
     JSONP(hq, datas, "cb", (json) => {
-      console.log(json);
       let datalist = json.data.diff;
       datalist = datalist.map((e) => {
         return {

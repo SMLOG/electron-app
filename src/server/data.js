@@ -8,7 +8,7 @@ export async function get(item, prop) {
   let code = item.code;
   let dir = `${os.homedir()}/.${appName}/${code}`;
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir, { recursive: true });
   }
   switch (prop) {
     case "PEG":

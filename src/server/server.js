@@ -1,6 +1,8 @@
 "use strict";
 import { getList } from "./TechMan";
 import { getFilterList } from "./criteria";
+import fs from "fs";
+import { CONFIG_DIR } from "./config";
 
 const koa = require("koa");
 const logger = require("koa-logger");
@@ -28,6 +30,20 @@ routerHome.get("/", async (ctx) => {
 });
 
 let routerApi = new Router();
+routerApi.get("/cookie", async (ctx) => {
+  ctx.response.type = "text/javascript";
+  let content = "";
+
+  if (ctx.request.query.cookie) {
+    fs.writeFileSync(CONFIG_DIR + "/cookie", ctx.request.query.cookie);
+  } else if (fs.existsSync(CONFIG_DIR + "/cookie")) {
+    content = ("" + fs.readFileSync(CONFIG_DIR + "/cookie"))
+      .split(";")
+      .map((e) => "document.cookie='" + e.trim() + "';")
+      .join("\n");
+  }
+  ctx.body = content;
+});
 routerApi.get("/sea", async (ctx) => {
   //let cb = ctx.request.query.callback;
   //ctx.type = "text";
@@ -56,6 +72,23 @@ let failRetry = async () => {
   for (let i = 0; i < 10; i++) {
     try {
       let server = app.listen(3000);
+
+      process.on("exit", function(code) {
+        console.log("**********");
+        server.close();
+      });
+      process.on("uncaughtException", function(e) {
+        console.log(e);
+        // 异常可以选择不退出
+        process.exit(1000);
+      });
+      process.on("SIGINT", function() {
+        process.exit(1001);
+      });
+
+      process.on("SIGTERM", function() {
+        process.exit(1002);
+      });
       break;
     } catch (err) {
       console.log(err);
@@ -64,20 +97,3 @@ let failRetry = async () => {
   }
 };
 failRetry();
-/*
-process.on("exit", function(code) {
-  console.log("**********");
-  server.close();
-});
-process.on("uncaughtException", function(e) {
-  console.log(e);
-  // 异常可以选择不退出
-  process.exit(1000);
-});
-process.on("SIGINT", function() {
-  process.exit(1001);
-});
-
-process.on("SIGTERM", function() {
-  process.exit(1002);
-});*/

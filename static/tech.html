@@ -34,6 +34,7 @@
         d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
         var expires = "expires=" + d.toGMTString();
         document.cookie = cname + "=" + cvalue + "; " + expires;
+        loader("/api/cookie?set=1&_t" + +new Date());
       }
       function getMyCookie(cname, def) {
         var name = cname + "=";
@@ -763,6 +764,12 @@
         d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
         var expires = "expires=" + d.toGMTString();
         document.cookie = cname + "=" + cvalue + "; " + expires;
+        loader(
+          "/api/cookie?cookie=" +
+            encodeURIComponent(document.cookie) +
+            "&_t" +
+            +new Date()
+        );
       }
 
       let timer = setInterval(() => {
@@ -790,6 +797,9 @@
           }, 500);
         });
       }, 100);
+      if (!document.cookie) {
+        loader("/api/cookie?_t" + +new Date(), () => {});
+      }
     </script>
   </body>
 </html>

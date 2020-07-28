@@ -28,7 +28,7 @@ export const criteria = {
       _value1: 0,
       _value2: 60,
       _enable: true,
-      is: function (item) {
+      is: function(item) {
         return (
           (item.pe_ttm || item.pe) > (this._value1 || Number.MIN_VALUE) &&
           (item.pe_ttm || item.pe) < (this._value2 || Number.MAX_VALUE)
@@ -45,9 +45,8 @@ export const criteria = {
       _enable: true,
       _value1: 0,
       _value2: 2,
-      is: async function (e) {
+      is: async function(e) {
         let peg = await get(e, "PEG");
-        console.log(`${e.code} ${peg} ${e.pe_ttm}`);
         if (
           (peg > (this._value1 || Number.MIN_VALUE) &&
             peg < (this._value2 || Number.MAX_VALUE)) ||
@@ -61,7 +60,7 @@ export const criteria = {
     latest_price: {
       label: "股价",
       order: 0,
-      is: function (e) {
+      is: function(e) {
         return (
           e.now >= (this._value1 || Number.MIN_VALUE) &&
           e.now <= (this._value2 || Number.MAX_VALUE)
@@ -72,7 +71,7 @@ export const criteria = {
     others: {
       label: "Others",
       order: 0,
-      is: function (item) {
+      is: function(item) {
         return (
           item.lz > 100 && item.zf60 < 100 && item.name.indexOf("ST") == -1
         );
@@ -82,8 +81,8 @@ export const criteria = {
   },
 };
 
-const isTypeFun = function (t) {
-  return function (e) {
+const isTypeFun = function(t) {
+  return function(e) {
     return {}.toString.call(e) == "[object " + t + "]";
   };
 };
@@ -145,7 +144,6 @@ export async function getFilterList(datalist) {
       ccArrList.map((a) => a.filter((e) => e.order == 0))
     )
   );
-  console.log("0:", datalist);
 
   datalist = datalist.filter((item) =>
     recursivFiltersTopSync(
@@ -153,7 +151,6 @@ export async function getFilterList(datalist) {
       ccArrList.map((a) => a.filter((e) => e.order == 1))
     )
   );
-  console.log("1:", datalist);
 
   let ret = [];
   for (let i = 0; i < datalist.length; i++) {

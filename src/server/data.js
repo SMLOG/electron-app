@@ -26,8 +26,9 @@ export async function get(item, prop) {
 
       let g = financeData[0]["扣非净利润滚动环比增长(%)"];
       item["扣非净利润滚动环比增长(%)"] = g;
+      item.tbzz = new Number(g);
       //console.log(g);
-      item.PEG = (pe_ttm / g).toFixed(2);
+      item.PEG = new Number((pe_ttm / g).toFixed(2));
       //console.log(item);
 
       break;
@@ -37,7 +38,3 @@ export async function get(item, prop) {
 
   return item[prop];
 }
-(async () => {
-  let result = await get({ code: "SZ000651", pe_ttm: 17.22 }, "PEG");
-  console.log(result);
-})();

@@ -110,7 +110,7 @@ export async function getLatestDisclosureDateList() {
   let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=50000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=${+new Date()}`;
   return await axios.get(url).then((resp) => eval(resp.data + ";aaa"));
 }
-
+/*
 (async () => {
   let file = `${CONFIG_DIR}/yypl-预约披露日期列表.json`;
   let refresh = true;
@@ -153,3 +153,4 @@ export async function getLatestDisclosureDateList() {
 
   console.log(map);
 })();
+*/

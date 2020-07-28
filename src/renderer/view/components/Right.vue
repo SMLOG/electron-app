@@ -1,81 +1,108 @@
-
 <template>
   <div id="right" v-show="item">
     <ul>
       <li>
         <div class="name">
-          <span>{{item.name}}({{item.code}})</span>
-          <span
-            class="content"
-            :class="upDown(item.change)"
-          >{{item.now|fmtValue}}({{item.change|fmtValue}}){{item.changeP}}</span>
+          <span>{{ item.name }}({{ item.code }})</span>
+          <span class="content" :class="upDown(item.change)"
+            >{{ item.now | fmtValue }}({{ item.change | fmtValue }}){{
+              item.changeP
+            }}</span
+          >
         </div>
       </li>
       <li>
         <div class="c2">
-          <span :class="upDown(item.open-item.preClose)">今开:{{item.open|fmtValue}}</span>
-          <span>昨收:{{item.preClose|fmtValue}}</span>
+          <span :class="upDown(item.open - item.preClose)"
+            >今开:{{ item.open | fmtValue }}</span
+          >
+          <span>昨收:{{ item.preClose | fmtValue }}</span>
         </div>
         <div class="c2">
-          <span :class="upDown(item.low-item.preClose)">最低:{{item.low|fmtValue}}</span>
-          <span :class="upDown(item.high-item.preClose)">最高:{{item.high|fmtValue}}</span>
+          <span :class="upDown(item.low - item.preClose)"
+            >最低:{{ item.low | fmtValue }}</span
+          >
+          <span :class="upDown(item.high - item.preClose)"
+            >最高:{{ item.high | fmtValue }}</span
+          >
         </div>
         <div class="c2">
-          <span>换手率:{{item.turnover}}%</span>
-          <span>市盈(动):{{item.pe}}</span>
+          <span>换手率:{{ item.turnover }}%</span>
+          <span>市盈(动):{{ item.pe }}</span>
         </div>
         <div class="c2">
-          <span>每收益:{{item.prof}}</span>
-          <span>未分配:{{item.unProf}}</span>
+          <span>每收益:{{ item.prof }}</span>
+          <span>未分配:{{ item.unProf }}</span>
         </div>
 
         <div class="c2">
-          <span>总市值:{{item.zsz}}</span>
-          <span>流值:{{item.lz}}</span>
+          <span>总市值:{{ item.zsz }}</span>
+          <span>流值:{{ item.lz }}</span>
         </div>
 
         <div class="c2">
-          <span>总量:{{(item.volume/10000/100).toFixed(2)}}万手</span>
-          <span>总额:{{(item.amount/100000000).toFixed(2)}}亿</span>
+          <span>总量:{{ (item.volume / 10000 / 100).toFixed(2) }}万手</span>
+          <span>总额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
         </div>
         <div class="sepb c2" :class="upDown(wc(item))">
-          <span>委比:{{item|wb}}</span>
-          <span>委差:{{wc(item)}}</span>
+          <span>委比:{{ item | wb }}</span>
+          <span>委差:{{ wc(item) }}</span>
         </div>
 
-        <div class="c2" :class="upDown(item.lb>1)">
-          <span>量比:{{item.lb}}</span>
+        <div class="c2" :class="upDown(item.lb > 1)">
+          <span>量比:{{ item.lb }}</span>
         </div>
+      </li>
+
+      <li style="color:red" class="seperate">
+        <span>7% - {{ (item.preClose * 1.07) | fmtValue }}</span>
+        <span>5% - {{ (item.preClose * 1.05) | fmtValue }}</span>
+        <span>3% - {{ (item.preClose * 1.03) | fmtValue }}</span>
+      </li>
+
+      <li style="color:green">
+        <span>7% - {{ (item.preClose * 0.93) | fmtValue }}</span>
+        <span>5% - {{ (item.preClose * 0.95) | fmtValue }}</span>
+        <span>3% - {{ (item.preClose * 0.97) | fmtValue }}</span>
       </li>
       <li>
         <table style="width:100%;" class="seperate">
-          <tr class="price" v-for="(price,index) in item.bsPrices" :key="index">
-            <th :class="{seperate:index==5}">
-              <span v-if="index<5">卖 {{5-index}}</span>
-              <span v-if="index>=5">买{{index-4}}</span>
+          <tr
+            class="price"
+            v-for="(price, index) in item.bsPrices"
+            :key="index"
+          >
+            <th :class="{ seperate: index == 5 }">
+              <span v-if="index < 5">卖 {{ 5 - index }}</span>
+              <span v-if="index >= 5">买{{ index - 4 }}</span>
             </th>
-            <td :class="{seperate:index==5}">
-              <span :class="upDown(price-item.preClose)">
-                {{price}}
-                <em v-if="index==4 && item.now>=price">↑</em>
-                <em v-else-if="index==5&&item.now<=price">↓</em>
+            <td :class="{ seperate: index == 5 }">
+              <span :class="upDown(price - item.preClose)">
+                {{ price }}
+                <em v-if="index == 4 && item.now >= price">↑</em>
+                <em v-else-if="index == 5 && item.now <= price">↓</em>
               </span>
             </td>
-            <td :class="{seperate:index==5}">
-              <span>{{(item.bsVols[index]/100).toFixed(0)}}</span>
+            <td :class="{ seperate: index == 5 }">
+              <span>{{ (item.bsVols[index] / 100).toFixed(0) }}</span>
             </td>
           </tr>
           <tr>
             <td colspan="3" class="seperate"></td>
           </tr>
-          <tr v-for="(t,i) in item.trade_list" :key="11+i">
-            <th>{{t.t|mmss}}</th>
+          <tr v-for="(t, i) in item.trade_list" :key="11 + i">
+            <th>{{ t.t | mmss }}</th>
             <td>
-              <span :class="{up:t.now>t.preNow,down:t.now<item.preNow}">{{t.now}}</span>
-              <em v-if="t.now>t.preNow" class="up">↑</em>
-              <em v-else-if="t.now<t.preNow" class="down">↓</em>
+              <span
+                :class="{ up: t.now > t.preNow, down: t.now < item.preNow }"
+                >{{ t.now }}</span
+              >
+              <em v-if="t.now > t.preNow" class="up">↑</em>
+              <em v-else-if="t.now < t.preNow" class="down">↓</em>
             </td>
-            <td :class="{up:t.now>t.preNow,down:t.now<t.preNow}">{{t.volume-t.preVolume}}</td>
+            <td :class="{ up: t.now > t.preNow, down: t.now < t.preNow }">
+              {{ t.volume - t.preVolume }}
+            </td>
           </tr>
         </table>
       </li>
@@ -114,7 +141,7 @@ export default {
       }, 0);
       let wb = toPercent((100 * (wtbuy - wtsell)) / (wtbuy + wtsell), 2);
       return wb;
-    }
+    },
   },
 
   methods: {
@@ -170,13 +197,13 @@ export default {
 
         if (initTradeList != "") {
           let today = moment().format("YYYY-MM-DD");
-          item.trade_list = trade_item_list.map(e => {
+          item.trade_list = trade_item_list.map((e) => {
             return {
               t: new Date(`${today} ${e[0]}`),
               preNow: (e[3] == "DOWN" ? -0.01 : +0.01) + e[2],
               now: e[2],
               volume: (e[1] / 100).toFixed(0),
-              preVolume: 0
+              preVolume: 0,
             };
           });
         } else if (item.volume - item.preVolume > 0) {
@@ -187,7 +214,7 @@ export default {
             preVolume: item.preVolume,
             volume: item.volume,
             preAmount: item.preAmount,
-            amount: item.amount
+            amount: item.amount,
           });
           item.trade_list.length = Math.min(10, item.trade_list.length);
         }
@@ -205,12 +232,12 @@ export default {
           }),
         2000
       );
-    }
+    },
   },
 
   mounted() {
     this.timerFn();
-  }
+  },
 };
 </script>
 

@@ -670,7 +670,8 @@ export async function batchUpdateHQ(items) {
 
   let datalist = window.datalist;
   if (!isNotTradeTime() || !window.datalist) {
-    window.datalist = datalist = await getHXList();
+    // window.datalist = datalist = await getHXList();
+    window.datalist = datalist = await (await fetch("/api/hxlist")).json();
   }
 
   for (let i = 0; i < datalist.length; i++) {

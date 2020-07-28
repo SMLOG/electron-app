@@ -113,10 +113,11 @@ function startMain() {
 
       if (electronProcess && electronProcess.kill) {
         manualRestart = true;
+
         process.kill(electronProcess.pid);
+
         electronProcess = null;
         startElectron();
-
         setTimeout(() => {
           manualRestart = false;
         }, 5000);

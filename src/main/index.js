@@ -10,22 +10,8 @@ import {
 import * as path from "path";
 
 var axios = require("axios"); //使用之前需要npm install axios
-let { server } = require("../server/server.js");
-process.on("exit", function(code) {
-  server.close();
-});
-process.on("uncaughtException", function(e) {
-  console.log(e);
-  // 异常可以选择不退出
-  process.exit(1000);
-});
-process.on("SIGINT", function() {
-  process.exit(1001);
-});
+require("../server/server.js");
 
-process.on("SIGTERM", function() {
-  process.exit(1002);
-});
 global.axios = axios;
 
 /**

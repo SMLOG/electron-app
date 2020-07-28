@@ -28,16 +28,22 @@ routerHome.get("/", async (ctx) => {
 });
 
 let routerApi = new Router();
-routerApi.get("/list", async (ctx) => {
-  let cb = ctx.request.query.callback;
-  ctx.type = "text";
+routerApi.get("/sea", async (ctx) => {
+  //let cb = ctx.request.query.callback;
+  //ctx.type = "text";
 
   let list = await getList();
 
   list = await getFilterList(list);
 
-  ctx.body = cb + "(" + JSON.stringify(list) + ")";
+  ctx.body = list;
 });
+routerApi.get("/hxlist", async (ctx) => {
+  let list = await getList();
+
+  ctx.body = list;
+});
+
 let router = new Router();
 router.use("/", routerHome.routes(), routerHome.allowedMethods());
 router.use("/api", routerApi.routes(), routerApi.allowedMethods());
@@ -46,5 +52,32 @@ app.use(router.routes()).use(router.allowedMethods());
 app.use(async (ctx) => {
   ctx.body = "hello word";
 });
+let failRetry = async () => {
+  for (let i = 0; i < 10; i++) {
+    try {
+      let server = app.listen(3000);
+      break;
+    } catch (err) {
+      console.log(err);
+      await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+    }
+  }
+};
+failRetry();
+/*
+process.on("exit", function(code) {
+  console.log("**********");
+  server.close();
+});
+process.on("uncaughtException", function(e) {
+  console.log(e);
+  // 异常可以选择不退出
+  process.exit(1000);
+});
+process.on("SIGINT", function() {
+  process.exit(1001);
+});
 
-export const server = app.listen(3000);
+process.on("SIGTERM", function() {
+  process.exit(1002);
+});*/

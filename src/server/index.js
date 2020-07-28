@@ -5,10 +5,7 @@ import { getFilterList } from "./criteria";
   let list = await getList();
 
   list = await getFilterList(list);
-  console.log(list);
-  list.map((e) => {
-    console.log(e.name, e.code, e.close, e.pe_ttm, e.PEG);
-  });
+
   process.exit(0);
   /*let time = +new Date();
   for (let i = 0; i < list.length; i++) {

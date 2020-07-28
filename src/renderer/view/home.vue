@@ -23,15 +23,11 @@
         </ul>
         <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" />
         <div style="float:left">
-          <span
-            v-for="zi in zsItems"
-            :key="zi.code"
-            @click="openIndex(zi, $event)"
-          >
+          <span v-for="zi in zsItems" :key="zi.code" @click="openIndex(zi, $event)">
             {{ zi.name }}
-            <em :class="{ up: zi.change > 0, down: zi.change < 0 }"
-              >{{ zi.close }}({{ zi.changeP }})</em
-            >
+            <em
+              :class="{ up: zi.change > 0, down: zi.change < 0 }"
+            >{{ zi.close }}({{ zi.changeP }})</em>
           </span>
         </div>
       </div>
@@ -90,9 +86,7 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span
-                    v-if="selectItem.tables && selectItem.tables.length > 0"
-                  >
+                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -118,18 +112,13 @@
                       :name="item.code"
                       @dblclick="dblclickn($event, item)"
                       @click="viewItemMsgs(item)"
-                      >{{ index + 1 }}</a
-                    >
+                    >{{ index + 1 }}</a>
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input
-                      type="checkbox"
-                      v-model="item.isFocus"
-                      @change="saveDatas(item)"
-                    />
+                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
                   </span>
                   <div
                     :title="item.code"
@@ -148,9 +137,11 @@
                     >
                       <a :id="item.code">
                         {{ item.name }}
-                        <b :class="{ up: item.lb > 1, down: item.lb < 1 }">{{
+                        <b :class="{ up: item.lb > 1, down: item.lb < 1 }">
+                          {{
                           item.lb
-                        }}</b>
+                          }}
+                        </b>
                       </a>
                     </span>
                   </div>
@@ -165,36 +156,21 @@
                 @click="col.click && col.click(item, $event, openlink)"
                 @mouseover="cellOver($event, item, ci)"
                 @mouseout="cellOut($event, item, ci)"
-              >
-                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
-              </td>
+              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div
-      id="webviewWrap"
-      ref="webviewWrap"
-      class="webview"
-      :class="{ fullscreen: fullscreen }"
-    >
+    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullscreen: fullscreen }">
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
           style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
         ></i>
-        <i
-          v-if="false"
-          class="arrow down"
-          style="position:relative;top:-10px;cursor:pointer;"
-        ></i>
+        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
       </div>
-      <WinView
-        :item="item"
-        :link="link"
-        @dBclick="fullscreen = !fullscreen"
-      ></WinView>
+      <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
     </div>
     <Posts :item="showMsgItem" />
   </div>
@@ -265,7 +241,7 @@ const SELF = "自选";
 
 export default {
   name: "home",
-  data: function() {
+  data: function () {
     return {
       filters: filters,
       afilters: afilters,
@@ -300,15 +276,15 @@ export default {
     drag(el) {
       let oDiv = $(el).parent()[0];
       let self = this;
-      document.onselectstart = function() {
+      document.onselectstart = function () {
         return false;
       };
-      el.onmousedown = function(e) {
+      el.onmousedown = function (e) {
         //鼠标按下，计算当前元素距离可视区的距离
         let disX = e.clientX - oDiv.offsetLeft;
         let disY = e.clientY - oDiv.offsetTop;
         let winH = $(window).outerHeight();
-        document.onmousemove = function(e) {
+        document.onmousemove = function (e) {
           //通过事件委托，计算移动的距离
           let l = e.clientX - disX;
           let t = e.clientY - disY;
@@ -318,7 +294,7 @@ export default {
           else if (t >= winH) t = winH - 8;
           oDiv.style.top = t + "px";
         };
-        document.onmouseup = function(e) {
+        document.onmouseup = function (e) {
           document.onmousemove = null;
           document.onmouseup = null;
           $("#top").css("margin-bottom", $(oDiv).outerHeight());
@@ -399,10 +375,10 @@ export default {
     },
   },
   computed: {
-    getSourceItems2: function() {
+    getSourceItems2: function () {
       return this[afilters[this.selectFilter].name];
     },
-    filteredItems: function() {
+    filteredItems: function () {
       if (
         this.filter_prop &&
         this.filterables &&
@@ -472,7 +448,7 @@ export default {
 
       if (this.show_filter_prop) {
         let values = this.getfilterItems().map((item) => item["_" + prop]);
-        values = values.filter(function(item, index, arr) {
+        values = values.filter(function (item, index, arr) {
           return arr.indexOf(item, 0) === index;
         });
         this.filterables = values
@@ -557,7 +533,7 @@ export default {
     sort(prop) {
       let items = this[this.selectSrc.name];
 
-      items.sort(function(a, b) {
+      items.sort(function (a, b) {
         if (typeof a[prop] === "number") {
           return a[prop] - b[prop];
         }
@@ -631,7 +607,7 @@ export default {
         afilters[SELF].items = this.items;
         afilters["海选"].items = this.items2;
 
-        let cacheDateTime = storejs.get("seadatetime") || 0;
+        /*let cacheDateTime = storejs.get("seadatetime") || 0;
         if (new Date().getTime() - cacheDateTime >= 172800000) {
           console.log("re-fetch filter items");
           let items = await getFilterList((e) => {
@@ -644,13 +620,17 @@ export default {
           storejs.set("seadatetime", new Date().getTime());
           storejs.set("sea", this.items2);
         } else {
-          console.log("get cache items");
-
           this.items2.splice(0, 0, ...(storejs.get("sea") || []));
+        }*/
+        try {
+          let resp = await (await fetch("/api/sea")).json();
+          this.items2.splice(0, 0, ...(resp || []));
+          console.log(this.item2);
+        } catch (err) {
+          alert(err);
         }
 
         let items = getOrFiltersItems(this.items2);
-        console.log("monitor:", items);
         updateFiltersCount();
         monitor(items);
         this.ready = true;
@@ -710,11 +690,3 @@ export default {
 };
 </script>
 <style scoped src="./home.css" />
-<style scoped>
-em {
-  color: red;
-}
-#id {
-  color: red;
-}
-</style>

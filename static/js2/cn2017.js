@@ -659,242 +659,7 @@ var tChartProp = TodayChart.prototype;
           );
     a.stroke();
   });
-function ZjTable(e) {
-  (this.param = e),
-    (this.zjData = this.param.zj),
-    (this.zjDom = document.getElementById(e.domZj)),
-    this.zjTemple(this.zjData),
-    (this.hasCtm = 1),
-    (this.bkDom = document.getElementById(e.domBk)),
-    (this.bkListDom = document.getElementById(e.domList)),
-    (this.BKUrl =
-      "//gu.sina.cn/hq/api/openapi.php/StockV2Service.getPlateDetail?sort=rp_net&asc=0&page=1&num=1000&id=@bk&dpc=1"),
-    (this.BKData = null),
-    (this.bRise = "money-red"),
-    (this.bFall = "money-green"),
-    (this.rise = this.bRise),
-    (this.fall = this.bFall),
-    (this.linkMore = "//gu.sina.cn/m/#/stock/blockdetail?id=@link"),
-    (this.linkDom = e.domLink),
-    (this.bkUrl =
-      "https://money.finance.sina.com.cn/quotes_service/api/jsonp.php/var $cb=/Market_Center.getSymbolSW2?symbol=$symbol&source=apage&dpc=1"),
-    (this.Sw = void 0),
-    (this.arrow = !0),
-    this.addEvent(),
-    this.loadBK();
-}
-var zjTableProp = ZjTable.prototype;
-(zjTableProp.loadBK = function() {
-  var e = this;
-  if (window.bkSw) (e.Sw = window.bkSw[0].type), e.loadBKDetail();
-  else {
-    var t = Math.floor(1e3 * Math.random()),
-      a = this.bkUrl.replace("$symbol", paperCode).replace("$cb", "bkVar" + t);
-    loader(a, function() {
-      var a = window["bkVar" + t];
-      a && ((e.Sw = a[0].type), e.loadBKDetail());
-    });
-  }
-}),
-  (zjTableProp.loadBKDetail = function() {
-    var e = this,
-      t = this.BKUrl.replace("@bk", this.Sw);
-    (document.getElementById(this.linkDom).href = this.linkMore.replace(
-      "@link",
-      this.Sw
-    )),
-      jsonP({
-        varStr: "moneyBK",
-        callback: !0,
-        url: t,
-        success: function(t) {
-          t &&
-            t.data &&
-            ((e.BKData = t.data), e.bkTemple(t.data), e.loadBkList());
-        },
-      });
-  }),
-  (zjTableProp.riseColorSetting = function() {
-    window.riseColor &&
-      "riseGreen" == window.riseColor &&
-      ((this.rise = this.bFall), (this.fall = this.bRise));
-  }),
-  (zjTableProp.addEvent = function() {
-    var e = this;
-    document
-      .getElementById("money_detail")
-      .addEventListener("click", function() {
-        e.arrow
-          ? ((document.getElementById("money_detail_con").style.display =
-              "block"),
-            (document.getElementById("money_arrow_open").style.display =
-              "none"),
-            (document.getElementById("money_arrow_close").style.display =
-              "block"),
-            "undefined" != typeof SUDA && SUDA.log())
-          : ((document.getElementById("money_detail_con").style.display =
-              "none"),
-            (document.getElementById("money_arrow_open").style.display =
-              "block"),
-            (document.getElementById("money_arrow_close").style.display =
-              "none")),
-          (e.arrow = !e.arrow);
-      });
-  }),
-  (zjTableProp.bkTemple = function(e) {
-    var t = e.plate,
-      a = 0;
-    (a = t.avgRate > 0 ? "red" : t.avgRate < 0 ? "green" : "equal"),
-      (c = this.colorSetting(a));
-    var n =
-      '<a href="' +
-      this.linkMore.replace("@link", this.Sw) +
-      '"><div class="tTitle"><span>\u6240\u5c5e\u884c\u4e1a</span><span class="money-blue" style="padding-left:.3rem;">' +
-      t.name +
-      '</span></div></a><ul><li class="line"><span>\u6da8\u8dcc\u5e45</span><span class="value ' +
-      c +
-      '">' +
-      (100 * Number(t.avgRate)).toFixed(2) +
-      '%</span></li><li class="line right"><span>\u4e3b\u529b\u51c0\u6d41\u5165</span><span class="value">' +
-      unit(t.totalRp_net, 2) +
-      '</span></li></ul><ul><li class="line bottom"><span>\u6da8\u8dcc\u6570</span><span class="value"><span class="clearM ' +
-      this.rise +
-      '">' +
-      t.leadNum +
-      '</span>/<span class="clearM ' +
-      this.fall +
-      '">' +
-      t.ledNum +
-      '</span></span></li><li class="line bottom right"><span>\u6210\u4ea4\u989d</span><span class="value">' +
-      unit(t.totalAmount, 2) +
-      "</span></li></ul>";
-    this.bkDom.innerHTML = n;
-  }),
-  (zjTableProp.loadBkList = function() {
-    var e = this.BKData.data,
-      t = this,
-      a = [];
-    this.bkListIndex = [];
-    var n = 0;
-    if (e.length > 4)
-      a.push(e[0].symbol),
-        a.push(e[1].symbol),
-        a.push(e[e.length - 2].symbol),
-        a.push(e[e.length - 1].symbol),
-        (this.bkListIndex = [1, 2, e.length - 1, e.length]);
-    else
-      for (n = 0; n < e.length; n++)
-        a.push(e[n].symbol), this.bkListIndex.push(n + 1);
-    var i = 0,
-      r = void 0;
-    for (n = 0; n < e.length; n++)
-      if (e[n].symbol == paperCode) {
-        r = n + 1;
-        break;
-      }
-    for (n = 0; n < a.length; n++) a[n] == paperCode && (i = 1);
-    0 == i &&
-      (a.splice(2, 0, paperCode), t.bkListIndex.splice(2, 0, r || "--")),
-      (a = a.join(",")),
-      new HQ.DataCenter({
-        symbols: a,
-        isANeedCWZJ: !0,
-        getObj: function(e) {
-          t.bkListTemple(e);
-        },
-      });
-  }),
-  (zjTableProp.colorSetting = function(e) {
-    var t = 0;
-    switch (e) {
-      case "red":
-        t = this.rise;
-        break;
-      case "green":
-        t = this.fall;
-        break;
-      case "equal":
-        t = "money-back";
-    }
-    return t;
-  }),
-  (zjTableProp.bkListTemple = function(e) {
-    var t = e,
-      a = "",
-      n = 0;
-    for (var i in t)
-      if (t.hasOwnProperty(i)) {
-        var r,
-          o = t[i],
-          s = this.colorSetting(o.type),
-          l =
-            (1 * o.rxl_in_raw || 0) -
-            (1 * o.rxl_out_raw || 0) +
-            (1 * o.rl_in_raw || 0) -
-            (1 * o.rl_out_raw || 0),
-          c = o.code == paperCode ? "money-cur-back" : "",
-          d = 0;
-        (r = l > 0 ? "red" : l < 0 ? "green" : "equal"),
-          (d = this.colorSetting(r)),
-          (a +=
-            '<ul class="rank-data ' +
-            c +
-            '"><a href="' +
-            "//quotes.sina.cn/hs/company/quotes/view/$symbol".replace(
-              "$symbol",
-              o.code
-            ) +
-            '"><li>' +
-            this.bkListIndex[n] +
-            '</li><li style="line-height: 0;"><p class="name size">' +
-            o.name +
-            '</p><p class="name code ' +
-            s +
-            '">' +
-            o.price +
-            " " +
-            o.percent +
-            '</p></li><li class="' +
-            d +
-            '">' +
-            unit(l, 0, 2) +
-            "</li><li>" +
-            unit(o.totalAmount_i, 0, 2) +
-            "</li></a></ul>"),
-          n++;
-      }
-    this.bkListDom.innerHTML = a;
-  }),
-  (zjTableProp.zjTemple = function(e) {
-    var t = e,
-      a =
-        '<ul><li class="line"><span>\u4e3b\u529b\u51c0\u6d41\u5165</span><span class="value">' +
-        unit(Number(t.d_a) + Number(t.td_a), 2) +
-        '</span></li><li class="line right"><span>\u6210\u4ea4\u989d</span><span class="value">' +
-        unit(t.totalAmount, 2) +
-        '</span></li></ul><ul><li class="line bottom"><span>\u4e3b\u529b\u51c0\u6d41\u5165\u7387</span><span class="value">' +
-        t.zl_r +
-        '</span></li><li class="line bottom right"><span>\u6362\u624b\u7387</span><span class="value">' +
-        t.turnOver +
-        "</span></li></ul>";
-    (this.zjDom.innerHTML = a), this.ctmHtml();
-  }),
-  (zjTableProp.ctmHtml = function() {
-    if (this.hasCtm && !(this.hasCtm > 1)) {
-      var e = document.querySelector(".money-five");
-      if (e) {
-        var t = {
-          eventid: "wap_hqcenter_callup",
-          subname: "moneyflow2app",
-          uatrackKey: "hq_center_hs",
-          androidInstallUrl:
-            "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-          needOpenSource: !1,
-        };
-      }
-      this.hasCtn = 2;
-    }
-  });
+
 function jsonP(e) {
   var t = e.varStr,
     n = document.getElementsByTagName("head")[0],
@@ -1110,19 +875,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       }
     );
   }
-  function n(e, t, n, a, i, r) {
-    void 0 === t && (t = "-");
-    var o = [];
-    if ((a || o.push(e[n ? "getUTCFullYear" : "getFullYear"]()), !i)) {
-      var s = e[n ? "getUTCMonth" : "getMonth"]() + 1;
-      o.push(s < 10 ? "0" + s : s);
-    }
-    if (!r) {
-      var l = e[n ? "getUTCDate" : "getDate"]();
-      o.push(l < 10 ? "0" + l : l);
-    }
-    return o.join(t);
-  }
+
   function a(e, t) {
     var n = L.cssClass.themeGreen,
       a = L.cssClass.themeRed;
@@ -1150,56 +903,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       (this.tabList = ["t1", "t5", "kd", "kw", "km", "more"]),
       this.initChart();
   }
-  function s(t) {
-    function a() {
-      var t = paperCode.toLowerCase().replace(/\$/, "."),
-        n = L.newsUrl.replace("$page", l.pageNum).replace("$symbol", t);
-      e.ajax({
-        type: "GET",
-        url: n,
-        jsonp: "callback",
-        dataType: "jsonp",
-        success: function(t) {
-          t &&
-            ((l.data = t.result.data),
-            l.pageNum++,
-            o(e("#" + l.param.dom), l.data),
-            e("#cn_news_cont")
-              .find("a")
-              .each(function(t, n) {
-                e(n).attr("suda-uatrack", "key=wapnews_cn&value=news" + t);
-              }));
-        },
-        error: function() {
-          console.log("api error...");
-        },
-      });
-    }
-    function i() {}
-    function r(t, n) {}
-    function o(t, a) {}
-    function s() {
-      switch (l.param.idx.toString()) {
-        case "1":
-          a();
-          break;
-        case "2":
-          i();
-      }
-      1 == l.isLoad && "undefined" != typeof SUDA && SUDA.log();
-    }
-    (this.param = t),
-      (this.pageNum = 1),
-      (this.isLoad = !1),
-      (this.isMore = !1),
-      (this.data = null),
-      (this.relate_tid = 0),
-      (this.relate_value = 0);
-    var l = this;
-    this.init = function() {
-      s(), (this.isLoad = 1);
-    };
-  }
+
   function l(e) {
     relateSymbol || (relateSymbol = "sh000001,sz399001,sz399006,gb_$dji,hkHSI"),
       (relateSymbol = relateSymbol.replace(paperCode + ",", "")),
@@ -1272,151 +976,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   }
   function _() {}
   function v() {
-    function n(e) {
-      var t,
-        n = document.createElement("div");
-      (n.innerHTML = '<li class="cn-stock-flex"></li>'),
-        (t = n.childNodes[0]),
-        e.appendChild(t),
-        (n.innerHTML = '<li class="cn-stock-halfFlex"></li>'),
-        (t = n.childNodes[0]),
-        e.appendChild(t);
-    }
-    function a() {
-      N ||
-        (N = new m(
-          {
-            url: L.bkUrl,
-            varStr: L.varBK,
-            dom: "cn_bk_hy",
-            pDom: "cn_bk_hy_c",
-          },
-          function(e) {}
-        )),
-        M ||
-          (M = new m({
-            url: L.gnUrl,
-            varStr: L.varGN,
-            dom: "cn_bk_gn",
-            pDom: "cn_bk_bk_c",
-          })),
-        F ||
-          (F = new h({
-            dom: document.getElementById("follow"),
-            parentNode: document.getElementById("cn_bk_gp_c"),
-            tap: "cn-bk-icon-r",
-            pop: "cn-pop",
-          }));
-    }
-    function i() {
-      E ||
-        ((E = new s({
-          tab: "news",
-          idx: 1,
-          dom: $[1],
-        })),
-        E.init());
-    }
-    function p() {
-      U ||
-        ((U = new s({
-          idx: 2,
-          dom: $[2],
-        })),
-        U.init());
-    }
-    function u() {
-      B
-        ? B.renderChart()
-        : (B = new TodayChart(
-            {
-              dom: document.getElementById("canvasCtn"),
-              lab: [
-                "\u7279\u5927\u5355",
-                "\u5927\u5355",
-                "\u4e2d\u5355",
-                "\u5c0f\u5355",
-              ],
-              domDetail: document.getElementById("canvasDetail"),
-              labDetail: [
-                "\u7279\u5927\u5355",
-                "\u5927\u5355",
-                "\u4e2d\u5355",
-                "\u5c0f\u5355",
-                "\u7279\u5927\u5355",
-                "\u5927\u5355",
-                "\u4e2d\u5355",
-                "\u5c0f\u5355",
-              ],
-              domFive: document.getElementById("canvasFive"),
-              domFiveList: document.getElementById("money_five"),
-              domDetailCon: "money_detail_con",
-            },
-            function(e) {
-              A ||
-                ((A = new ZjTable({
-                  domZj: "money_in",
-                  zj: e.zj,
-                  domBk: "money_bk",
-                  domList: "money_list",
-                  domLink: "money_link",
-                })),
-                A.zjTemple(e.zj));
-            }
-          ));
-    }
-    function _(t) {
-      var n = t || null,
-        r = n.id;
-      switch (((hashValue = r.split("_")), hashValue[2])) {
-        case "comment":
-          (I.activeDom = e("#cn_news_tab_con").find("li")[3].innerHTML),
-            (I.lastDom = e("#cn_news_up").find("li")[4].innerHTML),
-            (I.activeDomf = e("#cn_f_up").find("li")[4].innerHTML),
-            (I.lastDomf = e("#cn_f_con").find("li")[3].innerHTML),
-            (j = 3);
-          break;
-        case "notice":
-          (I.activeDom = e("#cn_news_tab_con").find("li")[0].innerHTML),
-            (I.lastDom = e("#cn_news_up").find("li")[4].innerHTML),
-            (I.activeDomf = e("#cn_f_up").find("li")[4].innerHTML),
-            (I.lastDomf = e("#cn_f_con").find("li")[0].innerHTML),
-            (j = 0);
-          break;
-        case "report":
-          (I.activeDom = e("#cn_news_tab_con").find("li")[1].innerHTML),
-            (I.lastDom = e("#cn_news_up").find("li")[4].innerHTML),
-            (I.activeDomf = e("#cn_f_up").find("li")[4].innerHTML),
-            (I.lastDomf = e("#cn_f_con").find("li")[1].innerHTML),
-            (j = 1);
-          break;
-        default:
-          I.lastDom &&
-            ((e("#cn_news_tab_con").find("li")[j].innerHTML = I.activeDom),
-            (e("#cn_news_up").find("li")[4].innerHTML = I.lastDom),
-            (e("#cn_f_con").find("li")[j].innerHTML = I.lastDomf),
-            (e("#cn_f_up").find("li")[4].innerHTML = I.activeDomf),
-            (I.activeDom = void 0),
-            (I.lastDom = void 0),
-            (I.activeDomf = void 0),
-            (I.lastDomf = void 0),
-            (e("#cn_news_tab_con").find("a")[j].className = ""),
-            (e("#cn_f_con").find("a")[j].className = ""),
-            (j = 10));
-      }
-      W.addEvent(),
-        "data" == hashValue[2] && H(),
-        "relate" == hashValue[2] && (z && z.addBlank(), a()),
-        "news" == hashValue[2] && i(),
-        "money" == hashValue[2] && u(),
-        (X = e("#cn_head").offset().height),
-        1 == K &&
-          ((Z = e("#" + O).offset().top - X + 2), window.scrollTo(0, Z)),
-        (I.flag = !0),
-        (I.fFlag = !0),
-        I.close(j),
-        I.fClose(j);
-    }
+    function a() {}
+    function i() {}
+    function p() {}
+    function u() {}
+    function _(t) {}
     function v() {
       var e = x.get(V);
       if (e) return e;
@@ -1433,78 +997,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         K_FALL: L.chartGreen,
       };
     }
-    function b() {
-      e("#cn_news_more").on("click tap", function() {
-        g({
-          pos: "callup_morenews",
-          androidurl:
-            "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-        });
-      }),
-        e("#cn_comment_more").on("click tap", function() {
-          e("#cn_comment_more").hide(),
-            e("#cn_comment_refresh").show(),
-            U.init();
-        }),
-        e("#cn_comment_tw").on("click tap", function() {
-          var e = "//guba.sina.cn/list_$symbol.html".replace(
-            "$symbol",
-            paperCode
-          );
-          window.open(e, "_self");
-        }),
-        e(".cn-icon-backtop").on("click tap", function() {
-          e("#fix_floating").hide(),
-            e("#fix_header").hide(),
-            window.scrollTo(0, 0);
-        });
-    }
+    function b() {}
     function w() {
       e(window).on("resize", function() {
         sss && sss.resizeChart(T), sss && sss.chart && sss.chart.resize();
       });
     }
-    function C() {
-      var t = Z;
-      e(window).scroll(function() {
-        var n = e(this).scrollTop();
-        (X = e("#cn_head").offset().height),
-          0 == Y && (t = Z = e("#" + O).offset().top - X),
-          n > 0
-            ? n > t
-              ? ((K = 1),
-                e("#fix_header").hide(),
-                e("#fix_floating").show(),
-                e("#fix_floating")
-                  .find("header")
-                  .css("position", ""),
-                I.close(j),
-                (I.flag = !0))
-              : ((K = 0),
-                e("#fix_floating").hide(),
-                n > J && e("#fix_header").show(),
-                (I.fFlag = !0),
-                I.fClose(j))
-            : (e("#fix_floating").hide(),
-              e("#fix_header").hide(),
-              (I.fFlag = !0),
-              I.fClose(j)),
-          k(),
-          F &&
-            ((Q = e("#cn_bk_hy_c").offset().top),
-            (F.flag = !1),
-            (document.querySelector("." + F.param.pop).style.display = "none"),
-            Q <= n + window.innerHeight &&
-              !F.hasExposure &&
-              F.hasNews &&
-              F.sima());
-      });
-    }
-    function k() {
-      0 == K
-        ? e(".cn-expert-tw").css("display", "none")
-        : e(".cn-expert-tw").css("display", "block");
-    }
+    function C() {}
+
     function S() {
       new HQ.DataBox({
         isANeedPHP: !1,
@@ -1525,19 +1025,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         },
       });
     }
-    function H() {
-      var t = e("#cn_data_blank"),
-        n = window.innerHeight;
-      t.css("height", 0);
-      var a = window.getComputedStyle(
-          document.getElementById("cn_data_cont"),
-          null
-        ).height,
-        i = document.getElementById("cn_head").offsetHeight,
-        r = document.getElementById("cn_tab").offsetHeight,
-        o = e(".cn-footer-links")[0].offsetHeight;
-      (a = parseInt(a, 10) || 350) < n && t.css("height", n - a - i - r - o);
-    }
+
     function D() {
       var t = new r({
         code: paperCode,
@@ -1578,63 +1066,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         b(),
         w();
     }
-    var E,
-      N,
-      M,
-      F,
-      U,
-      sss,
-      B,
-      A,
+    var sss,
       P,
       z,
-      R = [
-        "cn_tab_relate",
-        "cn_tab_news",
-        "cn_tab_comment",
-        "cn_tab_money",
-        "cn_tab_finance",
-        "cn_tab_f10",
-        "cn_tab_notice",
-        "cn_tab_report",
-      ],
-      $ = [
-        "cn_relate_cont",
-        "cn_news_cont",
-        "cn_comment_cont",
-        "cn_money_cont",
-        "cn_finance_cont",
-        "cn_f10_cont",
-        "cn_notice_cont",
-        "cn_report_cont",
-      ],
-      G = [
-        "cn_tab_relate_f",
-        "cn_tab_news_f",
-        "cn_tab_comment_f",
-        "cn_tab_money_f",
-        "cn_tab_finance_f",
-        "cn_tab_f10_f",
-        "cn_tab_notice_f",
-        "cn_tab_report_f",
-      ],
-      O = "cn-news-c",
-      K = 0,
-      V = "hq_userColor",
-      Z = 0,
-      X = 0;
-    W = new c({
-      tab: R,
-      con: $,
-      tabF: G,
-      css: {
-        active: "active",
-      },
-      cb: _,
-    });
-    var Y = 0,
-      Q = 0,
-      J = 48;
+      V = "hq_userColor";
+
     this.init = D;
   }
   function g(e) {}

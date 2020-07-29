@@ -300,15 +300,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             });
         },
         getObj: function(e) {
-          e && P.load(e);
+          e && PPP.load(e);
         },
       });
     }
 
     function D() {
       (window.riseColor = cfg.riseColor = v() ? v() : "riseRed"), y(), S();
-      var i = 0;
-      (P = new why({
+      (PPP = new why({
         dom: {
           position: "cn_position",
           detail: "cn_detail",
@@ -321,7 +320,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         wresize();
     }
     var sss,
-      P,
+      PPP,
       V = "hq_userColor";
 
     this.init = D;
@@ -553,19 +552,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     varComment: "cnComment",
     info: "cnInfo",
   };
-
-  /*"" != rSymbol &&
-        new HQ.DataCenter({
-          symbols: rSymbol,
-          QZindex: !1,
-          isANeedQZ: !1,
-          isANeedPHP: !1,
-          isANeedCWZJ: !1,
-          getObj: function(e) {
-            for (var a = rSymbol.split(","), i = [], r = 0; r < a.length; r++)
-              i.push(e[a[r]]);
-          },
-        });*/
 
   var B = why.prototype;
   (B.addEvent = function() {}),

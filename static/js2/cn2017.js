@@ -216,7 +216,7 @@ function loader(e, t, n, a) {
 var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
 !(function($) {
-  function t() {
+  function viewPoint() {
     var e = 0,
       t = 0,
       n = 0,
@@ -244,40 +244,12 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     );
   }
 
-  function r(e) {
-    (this.prefix_visitAll = "_visit_all"),
-      (this.prefix = "_visit_"),
-      (this.v_allList = null),
-      (this.v_list = null),
-      (this.v_all_len = 20),
-      (this.v_len = 10),
-      (this.code = e.code),
-      this.market("cn"),
-      this.getVisit();
-  }
   function ooo(e) {
     (this.param = e),
       (this.chart = null),
       (this.delistList = ["kd", "kw", "km", "more"]),
       (this.tabList = ["t1", "t5", "kd", "kw", "km", "more"]),
       this.initChart();
-  }
-
-  function lll(e) {
-    relateSymbol || (relateSymbol = "sh000001,sz399001,sz399006,gb_$dji,hkHSI"),
-      (relateSymbol = relateSymbol.replace(paperCode + ",", "")),
-      (relateSymbol = relateSymbol.replace(paperCode, "")),
-      (this.param = e),
-      (this.inited = !1),
-      (this.relateSymbol = relateSymbol),
-      (this.visitSymbol = e.visitSymbol);
-  }
-
-  function ddd(e) {
-    (this.param = e),
-      (this.tempHtml = void 0),
-      (this.tempHHtml = void 0),
-      (this.inited = 0);
   }
 
   function why(e) {
@@ -291,19 +263,19 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
 
   function v() {
     function v() {
-      var e = x.get(V);
+      var e = cookieUtil.get(V);
       if (e) return e;
     }
     function y() {
-      if ("riseGreen" == L.riseColor) {
-        var e = L.chartGreen;
-        (L.chartGreen = L.chartRed), (L.chartRed = e);
+      if ("riseGreen" == cfg.riseColor) {
+        var e = cfg.chartGreen;
+        (cfg.chartGreen = cfg.chartRed), (cfg.chartRed = e);
       }
-      L.theme = {
-        T_RISE: L.chartRed,
-        T_FALL: L.chartGreen,
-        K_RISE: L.chartRed,
-        K_FALL: L.chartGreen,
+      cfg.theme = {
+        T_RISE: cfg.chartRed,
+        T_FALL: cfg.chartGreen,
+        K_RISE: cfg.chartRed,
+        K_FALL: cfg.chartGreen,
       };
     }
     function wresize() {
@@ -334,16 +306,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     }
 
     function D() {
-      var t = new r({
-        code: paperCode,
-      });
-      (z = new lll({
-        dom: $("#cn_visit_cont"),
-        visitObj: t,
-      })),
-        (window.riseColor = L.riseColor = v() ? v() : "riseRed"),
-        y(),
-        S();
+      (window.riseColor = cfg.riseColor = v() ? v() : "riseRed"), y(), S();
       var i = 0;
       (P = new why({
         dom: {
@@ -352,102 +315,45 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         },
         symbol: paperCode,
         cb: function(e) {
-          0 == i &&
-            (z.hqComponent({
-              symbol: t.v_allList,
-              data: e,
-            }),
-            (i = 1)),
-            sss || (sss = new ooo(e));
+          sss || (sss = new ooo(e));
         },
       })),
         wresize();
     }
     var sss,
       P,
-      z,
       V = "hq_userColor";
 
     this.init = D;
   }
-  function g(e) {}
 
-  var x = {
-      escape: function(e) {
-        return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
-      },
-      get: function(e) {
-        var t = document.cookie.match(
-          "(?:^|;)\\s*" + this.escape(e) + "=([^;]*)"
-        );
-        return t ? t[1] || "" : "";
-      },
-      set: function(e, t, n) {
-        !n && (n = {}), t || ((t = ""), (n.expires = -1));
-        var a = "";
-        if (n.expires && (Number(n.expires) || n.expires.toUTCString)) {
-          var i;
-          Number(n.expires)
-            ? ((i = new Date()), i.setTime(i.getTime() + 1e3 * n.expires))
-            : (i = n.expires),
-            (a = "; expires=" + i.toUTCString());
-        }
-        var r = n.path ? "; path=" + n.path : "",
-          o = n.domain ? "; domain=" + n.domain : "",
-          s = n.secure ? "; secure" : "";
-        document.cookie = [e, "=", t, a, r, o, s].join("");
-      },
+  var cookieUtil = {
+    escape: function(e) {
+      return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
     },
-    S = r.prototype;
-  (S.market = function(e) {
-    var t = this;
-    t.prefix_visit = t.prefix + e;
-  }),
-    (S.setMCookie = function(e) {
-      var t = e.list,
-        n = e.len,
-        a = e.prefix,
-        i = this;
-      t
-        ? ((t = t.replace(this.code + ",", "")),
-          (t = t.replace(this.code, "")),
-          (t = i.code + "," + t),
-          "," == t.charAt(t.length - 1) && (t = t.substring(0, t.length - 1)))
-        : (t = i.code);
-      var r = t.split(",");
-      r.length > n && r.pop(),
-        (t = r.toString()),
-        x.set(a, t, {
-          expires: 71996400,
-          domain: ".sina.cn",
-          path: "/",
-        });
-    }),
-    (S.setVisit = function() {
-      if (!this.code) return !1;
-      var e = this;
-      e.getVisit(),
-        e.setMCookie({
-          prefix: e.prefix_visit,
-          list: e.v_list,
-          len: e.v_len,
-        }),
-        e.setMCookie({
-          prefix: e.prefix_visitAll,
-          list: e.v_allList,
-          len: e.v_all_len,
-        });
-    }),
-    (S.getVisit = function() {
-      (this.v_list = x.get(this.prefix_visit)),
-        (this.v_allList = x.get(this.prefix_visitAll));
-    });
+    get: function(e) {
+      var t = document.cookie.match(
+        "(?:^|;)\\s*" + this.escape(e) + "=([^;]*)"
+      );
+      return t ? t[1] || "" : "";
+    },
+    set: function(e, t, n) {
+      !n && (n = {}), t || ((t = ""), (n.expires = -1));
+      var a = "";
+      if (n.expires && (Number(n.expires) || n.expires.toUTCString)) {
+        var i;
+        Number(n.expires)
+          ? ((i = new Date()), i.setTime(i.getTime() + 1e3 * n.expires))
+          : (i = n.expires),
+          (a = "; expires=" + i.toUTCString());
+      }
+      var r = n.path ? "; path=" + n.path : "",
+        o = n.domain ? "; domain=" + n.domain : "",
+        s = n.secure ? "; secure" : "";
+      document.cookie = [e, "=", t, a, r, o, s].join("");
+    },
+  };
   var T = null,
-    H = window.isVipRetain
-      ? {}
-      : {
-          callBack: g,
-        },
     D = ooo.prototype;
   (D.initChart = function() {
     var t = this,
@@ -509,7 +415,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           initView: dataView,
           kInitParam: {
             rate: 20,
-            theme: L.theme,
+            theme: cfg.theme,
           },
           kChart: {
             pCharts: pTechlist,
@@ -529,15 +435,15 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           },
           tInitParam: {
             rate: 20,
-            theme: L.theme,
+            theme: cfg.theme,
             dim: {
               H_T_G: 125,
             },
           },
         },
         info: {
-          upColor: L.chartRed,
-          downColor: L.chartGreen,
+          upColor: cfg.chartRed,
+          downColor: cfg.chartGreen,
         },
         bsCallUp: {
           more: [
@@ -582,18 +488,18 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           show: !1,
         },
         clinicStock: {
-          show: !__isNewsApp,
+          show: false,
         },
-        callUpApp: H,
+        callUpApp: {},
       },
-      function(e) {
-        (T = t.chart = e), t.resizeChart(e);
+      function(chartObj) {
+        (T = t.chart = chartObj), t.resizeChart(chartObj);
       }
     );
   }),
     (D.resizeChart = function(n) {
       var a = this,
-        i = t(),
+        i = viewPoint(),
         r = $("#hq_chart"),
         o = $("#h5Chart"),
         s = $("#hqMain"),
@@ -611,89 +517,55 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       }, 100);
     }),
     (D.resize = function() {
-      var e = t(),
+      var e = viewPoint(),
         n = e.viewWidth,
         a = e.viewHeight;
       return n > a ? 1 : 0;
     });
-  var L = {
-      cssClass: {
-        riseColor: "red",
-        fallColor: "green",
-        equalColor: "equal",
-        themeRed: "#de3639",
-        themeGreen: "#1bc07d",
-        themeEqual: "#999",
-        themeEqualC: "#333",
-        themeBlack: "#999",
-      },
-      riseColor: "riseRed",
-      chartRed: "#f11200",
-      chartGreen: "#23bc01",
-      theme: {
-        T_RISE: void 0,
-        T_FALL: void 0,
-        K_RISE: void 0,
-        K_FALL: void 0,
-      },
-
-      detailUrl:
-        "//vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=10&symbol=$symbol&dpc=1&" +
-        1e3 * Math.random(),
-      varBK: "cnBk",
-      varGN: "cnGn",
-      varNews: "cnNews",
-      varData: "cnData",
-      varComment: "cnComment",
-      info: "cnInfo",
+  var cfg = {
+    cssClass: {
+      riseColor: "red",
+      fallColor: "green",
+      equalColor: "equal",
+      themeRed: "#de3639",
+      themeGreen: "#1bc07d",
+      themeEqual: "#999",
+      themeEqualC: "#333",
+      themeBlack: "#999",
     },
-    E = lll.prototype;
-  (E.addBlank = function() {
-    var t = $("#cn_blank"),
-      n = window.innerHeight;
-    t.css("height", 0);
-    var a = $("#cn_relate_cont"),
-      i = $(".cn-footer-links")[0].offsetHeight,
-      r = $("#cn_news")[0].offsetHeight,
-      o = $("#cn_head")[0].offsetHeight,
-      s = window.getComputedStyle(a[0]).height;
-    (s = parseInt(s, 10) || 350) < n && t.css("height", n - s - r - o - i);
-  }),
-    (E.hqComponent = function(e) {
-      var t = this,
-        n = null;
-      if (e) {
-        for (var a = e.symbol.split(","), i = 0; i < a.length; i++)
-          (n = e.symbol.replace(paperCode, "")),
-            paperCode == a[i] && a.splice(i, 1);
-        for (i = 0; i < a.length; i++) a[i] && (a[i] = a[i]);
-        var r = a.length > 10 ? a.splice(0, 10) : a;
-        n = r.join(",");
-        var o = e.data;
-        if (
-          (("--" == o.price &&
-            "--" == o.prevclose &&
-            "--" == o.name &&
-            "--" == o.totalVolume &&
-            "--" == o.open) ||
-            t.param.visitObj.setVisit(),
-          !n)
-        )
-          return t.param.dom.hide(), !0;
-      } else n = t.relateSymbol;
-      "" != n &&
+    riseColor: "riseRed",
+    chartRed: "#f11200",
+    chartGreen: "#23bc01",
+    theme: {
+      T_RISE: void 0,
+      T_FALL: void 0,
+      K_RISE: void 0,
+      K_FALL: void 0,
+    },
+
+    detailUrl:
+      "//vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=10&symbol=$symbol&dpc=1&" +
+      1e3 * Math.random(),
+    varBK: "cnBk",
+    varGN: "cnGn",
+    varNews: "cnNews",
+    varData: "cnData",
+    varComment: "cnComment",
+    info: "cnInfo",
+  };
+
+  /*"" != rSymbol &&
         new HQ.DataCenter({
-          symbols: n,
+          symbols: rSymbol,
           QZindex: !1,
           isANeedQZ: !1,
           isANeedPHP: !1,
           isANeedCWZJ: !1,
           getObj: function(e) {
-            for (var a = n.split(","), i = [], r = 0; r < a.length; r++)
+            for (var a = rSymbol.split(","), i = [], r = 0; r < a.length; r++)
               i.push(e[a[r]]);
           },
-        });
-    });
+        });*/
 
   var B = why.prototype;
   (B.addEvent = function() {}),

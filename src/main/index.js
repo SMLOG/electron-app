@@ -13,7 +13,20 @@ var axios = require("axios"); //使用之前需要npm install axios
 require("../server/server.js");
 
 global.axios = axios;
-
+/*
+process.on("exit", () => {
+  try {
+    BrowserWindow.getAllWindows().forEach(function(win) {
+      if (win.id > 1) {
+        win.close();
+      }
+    });
+    app.quit();
+    app.quit(); //因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
+  } catch (err) {
+    console.log(err);
+  }
+});*/
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html

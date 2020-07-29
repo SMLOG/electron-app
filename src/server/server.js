@@ -26,7 +26,7 @@ app.use(async (ctx, next) => {
 });
 let routerHome = new Router();
 routerHome.get("/", async (ctx) => {
-  ctx.body = "欢迎欢迎5！";
+  ctx.body = "欢迎欢迎6！";
 });
 
 let routerApi = new Router();
@@ -68,32 +68,6 @@ app.use(router.routes()).use(router.allowedMethods());
 app.use(async (ctx) => {
   ctx.body = "hello word";
 });
-let failRetry = async () => {
-  for (let i = 0; i < 10; i++) {
-    try {
-      let server = app.listen(3000);
 
-      process.on("exit", function(code) {
-        console.log("**********");
-        server.close();
-      });
-      process.on("uncaughtException", function(e) {
-        console.log(e);
-        // 异常可以选择不退出
-        process.exit(1000);
-      });
-      process.on("SIGINT", function() {
-        process.exit(1001);
-      });
-
-      process.on("SIGTERM", function() {
-        process.exit(1002);
-      });
-      break;
-    } catch (err) {
-      console.log(err);
-      await new Promise((resolve, reject) => setTimeout(resolve, 1000));
-    }
-  }
-};
-failRetry();
+console.log("start");
+app.listen(3000);

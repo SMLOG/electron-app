@@ -11,6 +11,7 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 
 const mainConfig = require("./webpack.main.config");
 const rendererConfig = require("./webpack.renderer.config");
+const serverConfig = require("./webpack.server.config");
 
 let electronProcess = null;
 let manualRestart = false;
@@ -43,7 +44,7 @@ function logStats(proc, data) {
   console.log(log);
 }
 
-function startRenderer() {
+function startHotloadRenderer() {
   return new Promise((resolve, reject) => {
     rendererConfig.entry.renderer = [path.join(__dirname, "dev-client")].concat(
       rendererConfig.entry.renderer
@@ -89,7 +90,34 @@ function startRenderer() {
   });
 }
 
-function startMain() {
+function startHotloadServer() {
+  return new Promise((resolve, reject) => {
+    serverConfig.entry.main = [
+      path.join(__dirname, "../src/server/index.dev.js"),
+    ].concat(serverConfig.entry.main);
+    serverConfig.mode = "development";
+    const compiler = webpack(serverConfig);
+
+    compiler.hooks.watchRun.tapAsync("watch-run", (compilation, done) => {
+      logStats("Server", chalk.white.bold("compiling..."));
+      hotMiddleware.publish({ action: "compiling" });
+      done();
+    });
+
+    compiler.watch({}, (err, stats) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      logStats("Server", stats);
+
+      resolve();
+    });
+  });
+}
+
+function startHotloadMain() {
   return new Promise((resolve, reject) => {
     mainConfig.entry.main = [
       path.join(__dirname, "../src/main/index.dev.js"),
@@ -113,17 +141,24 @@ function startMain() {
 
       if (electronProcess && electronProcess.kill) {
         manualRestart = true;
-
+        process.kill(electronProcess.pid);
         process.kill(electronProcess.pid);
 
-        electronProcess = null;
-        startElectron();
         setTimeout(() => {
-          manualRestart = false;
-        }, 5000);
+          electronProcess = null;
+          startElectron();
+          setTimeout(() => {
+            manualRestart = false;
+          }, 3000);
+        }, 3000);
       }
 
       resolve();
+    });
+
+    process.on("SIGINT", function() {
+      console.log("Exit now!");
+      process.exit();
     });
   });
 }
@@ -152,6 +187,23 @@ function startElectron() {
 
   electronProcess.on("close", () => {
     if (!manualRestart) process.exit();
+  });
+}
+let koaProcess;
+function startKoaService() {
+  var args = [path.join(__dirname, "../dist/server/main.js")];
+
+  koaProcess = spawn("node", args);
+
+  koaProcess.stdout.on("data", (data) => {
+    electronLog(data, "blue");
+  });
+  koaProcess.stderr.on("data", (data) => {
+    electronLog(data, "red");
+  });
+
+  koaProcess.on("close", () => {
+    electronLog("koa close", "red");
   });
 }
 
@@ -193,8 +245,13 @@ function greeting() {
 function init() {
   greeting();
 
-  Promise.all([startRenderer(), startMain()])
+  Promise.all([
+    startHotloadRenderer(),
+    startHotloadMain(),
+    startHotloadServer(),
+  ])
     .then(() => {
+      // startKoaService();
       startElectron();
     })
     .catch((err) => {

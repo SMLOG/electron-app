@@ -884,26 +884,13 @@ var zjTableProp = ZjTable.prototype;
       var e = document.querySelector(".money-five");
       if (e) {
         var t = {
-            eventid: "wap_hqcenter_callup",
-            subname: "moneyflow2app",
-            uatrackKey: "hq_center_hs",
-            androidInstallUrl:
-              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-            needOpenSource: !1,
-          },
-          a = new SinaFinanceCallUp.CallUpSinaFinance(t),
-          n = document.createElement("div");
-        (n.className = "ctm"),
-          (n.innerHTML =
-            '<p class="text">\u8d22\u7ecf\u5ba2\u6237\u7aef\u8d44\u91d1\u6d41\u5411\u6570\u636e\u66f4\u51c6\u786e\u3001\u66f4\u65b0\u66f4\u53ca\u65f6\u3002<span>\u70b9\u6b64\u67e5\u770b</span>\u3002</p>'),
-          e.appendChild(n),
-          n.addEventListener("click", function() {
-            a.tryDirectCall({
-              callpagetype: "2",
-              symbol: paperCode,
-              position: "moneyflow2app",
-            });
-          });
+          eventid: "wap_hqcenter_callup",
+          subname: "moneyflow2app",
+          uatrackKey: "hq_center_hs",
+          androidInstallUrl:
+            "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
+          needOpenSource: !1,
+        };
       }
       this.hasCtn = 2;
     }
@@ -1188,121 +1175,9 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         },
       });
     }
-    function i() {
-      var t = "&relate_tid=" + l.relate_tid + "&relate_value=" + l.relate_value,
-        n = paperCode.toLowerCase().replace(/\$/, ".");
-      loader(
-        L.commentUrl.replace("$symbol", n) + L.varComment + "=" + t,
-        function() {
-          var t,
-            a = window[L.varComment];
-          if (((l.data = a), l.data)) {
-            if (!a.data)
-              return (
-                e("#cn_comment_refresh").hide(),
-                e("#cn_comment_more").hide(),
-                (t = L.nothingComment.replace("@code", n)),
-                void e("#" + l.param.dom)
-                  .find("ul")
-                  .append(t)
-              );
-            if (0 == a.data.threads) {
-              if (
-                (e("#cn_comment_refresh").hide(),
-                e("#cn_comment_more").hide(),
-                l.isMore)
-              ) {
-                var i = L.nothingCommentMore.replace("@code", n);
-                return void e("#" + l.param.dom)
-                  .find("ul")
-                  .append(i);
-              }
-              return (
-                (t = L.nothingComment.replace("@code", n)),
-                void e("#" + l.param.dom)
-                  .find("ul")
-                  .append(t)
-              );
-            }
-            (l.isMore = 1),
-              (l.relate_tid = a.data.threads[a.data.threads.length - 1].tid),
-              (l.relate_value =
-                a.data.threads[a.data.threads.length - 1].timestamp),
-              r(e("#" + l.param.dom), l.data);
-          }
-        }
-      );
-    }
-    function r(t, n) {
-      for (
-        var a = t.find("ul")[0], i = n.data.threads, r = i.length, o = 0;
-        o < r;
-        o++
-      ) {
-        var s = L.guHtml,
-          l = i[o],
-          c = document.createElement("li"),
-          d = l.content.replace("<br />", ""),
-          p = l.title
-            ? l.title
-            : d.length < 30
-            ? d
-            : d.substring(0, 30) + "...",
-          h = (f = l.lastctime.split(" ")),
-          m = h[0].substring(5, h[0].length),
-          f = h[1].substring(0, 5);
-        (s = s
-          .replace("@content", p)
-          .replace("@src", l.user.portrait)
-          .replace("@time", m + " " + f)
-          .replace("@nick", l.user.nick)
-          .replace(
-            "@url",
-            "//guba.sina.cn/view_" + l.bid + "_" + l.tid + ".html"
-          )),
-          (c.innerHTML = s),
-          e(a).append(c);
-      }
-      e("#cn_comment_more").show(), e("#cn_comment_refresh").hide();
-    }
-    function o(t, a) {
-      var i = t.find("ul")[0],
-        r = a,
-        o = r.length;
-      if (0 == o) {
-        if ((e("#cn_news_more").hide(), e("#cn_news_refresh").hide(), l.isMore))
-          return void e(i).append(L.nothingMore);
-        var s = L.nothing;
-        return void e(i).append(s);
-      }
-      l.isMore = 1;
-      for (var c = 0; c < o; c++) {
-        var d = L.newsHtml,
-          p = r[c],
-          h = "none",
-          m = "",
-          f = document.createElement("li"),
-          u = n(new Date(1e3 * Number(p.ctime)));
-        p.thumbs &&
-          p.thumbs.length > 0 &&
-          ((h = ""),
-          (m = p.thumbs[0].replace("http://", "https://")),
-          (d = d
-            .replace("@dlhg", "1.6rem")
-            .replace("@ddhg", "1.2rem")
-            .replace("@h3hg", ".8rem"))),
-          (d = d
-            .replace("@content", p.waptitle)
-            .replace("@source", p.media)
-            .replace("@time", u)
-            .replace("@src", m)
-            .replace("@display", h)
-            .replace("@href", p.wapurl)),
-          (f.innerHTML = d),
-          e(i).append(f);
-      }
-      e("#cn_news_more").show(), e("#cn_news_refresh").hide();
-    }
+    function i() {}
+    function r(t, n) {}
+    function o(t, a) {}
     function s() {
       switch (l.param.idx.toString()) {
         case "1":
@@ -1395,36 +1270,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       t ? n + a : n
     );
   }
-  function _() {
-    this.addEvent(),
-      (this.flag = !1),
-      (this.fFlag = !1),
-      (this.cn_f_con = e("#cn_f_con")),
-      (this.cn_f_up = e("#cn_f_up")),
-      (this.cn_f_close = e("#cn_f_close")),
-      (this.cn_f_open = e("#cn_f_open")),
-      (this.cn_news_tab_con = e("#cn_news_tab_con")),
-      (this.index = 3);
-  }
+  function _() {}
   function v() {
-    function t(e) {
-      var t,
-        n = document.createElement("div"),
-        a =
-          "http://m.news.leju.com/stock/" +
-          paperCode +
-          ".html#source=m_sina_cjgs&source_ext=sina",
-        i =
-          '<li class="cn-stock-flex"><a suda-uatrack="key=hq_center_hs&value=leju_company" href=' +
-          a +
-          ">\u516c\u53f8</a></li>";
-      (n.innerHTML = i),
-        (t = n.childNodes[0]),
-        e.appendChild(t),
-        (n.innerHTML = '<li class="cn-stock-halfFlex"></li>'),
-        (t = n.childNodes[0]),
-        e.appendChild(t);
-    }
     function n(e) {
       var t,
         n = document.createElement("div");
@@ -1790,21 +1637,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       J = 48;
     this.init = D;
   }
-  function g(e) {
-    var t = {
-      eventid: e.key || "hq_center_hs",
-      uatrackKey: e.key || "hq_center_hs",
-      subname: e.pos,
-      needOpenSource: !1,
-      androidInstallUrl: e.androidurl,
-    };
-    new SinaFinanceCallUp.CallUpSinaFinance(t).tryDirectCall({
-      stocktype: "cn",
-      callpagetype: "2",
-      position: e.pos,
-      symbol: paperCode,
-    });
-  }
+  function g(e) {}
   function y() {
     return (
       window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == J
@@ -2667,24 +2500,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   }),
     (q.render = function(e) {});
   var B = f.prototype;
-  (B.addEvent = function() {
-    e("#cn_position_close").on("click", function() {
-      (this.style.display = "none"),
-        e("#cn_position_open").show(),
-        e("#cn_position_cont").show(),
-        "undefined" != typeof SUDA && SUDA.log();
-    }),
-      e("#cn_position_open").on("click", function() {
-        (this.style.display = "none"),
-          e("#cn_position_close").show(),
-          e("#cn_position_cont").hide();
-      });
-  }),
-    (B.defaultOpen = function() {
-      e("#cn_position_open").show(),
-        e("#cn_position_close").hide(),
-        e("#cn_position_cont").show();
-    }),
+  (B.addEvent = function() {}),
+    (B.defaultOpen = function() {}),
     (B.load = function(e) {
       var t = this;
       e[t.param.symbol] &&
@@ -2768,64 +2585,9 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           ));
       }
     }),
-    (B.render = function() {
-      if (true) return;
-      var e = this,
-        t = e.hqData,
-        n = document.getElementById(e.param.dom.position),
-        i = document.getElementById(e.param.dom.detail);
-      (n.innerHTML = ""), (i.innerHTML = "");
-      var r = 0,
-        o = {},
-        s = t.buyPriceArr,
-        l = t.buyNumArr,
-        c = s.length,
-        d = t.sellPriceArr,
-        p = t.sellNumArr;
-      for (r = c - 1; r >= 0; r--)
-        (o.time = "\u5356" + (r + 1)),
-          (o.price = d[r]),
-          (o.volume = (p[r] / e.u).toFixed(0)),
-          (o.type = ""),
-          (o.color = a(d[r] - t.prevclose, L.cssClass)),
-          (n.innerHTML += L.positionHtml(o));
-      for (r = 0; r < c; r++)
-        (o.time = "\u4e70" + (r + 1)),
-          (o.price = s[r]),
-          (o.volume = (l[r] / e.u).toFixed(0)),
-          (o.type = ""),
-          (o.color = a(s[r] - t.prevclose, L.cssClass)),
-          (o.style = 0 == r ? "1px solid #ddd" : ""),
-          (n.innerHTML += L.positionHtml(o));
-      var h = e.data,
-        m = h.length >= 10 ? 10 : h.length;
-      for (r = 0; r < m; r++)
-        (o.time = h[r] ? String(h[r][0]).substring(0, 5) : ""),
-          (o.price = h[r] ? Number(h[r][2]).toFixed(2) : ""),
-          (o.volume = h[r] ? ((1 * h[r][1]) / e.u).toFixed(0) : ""),
-          (o.type = h[r] ? ("UP" == h[r][3] ? "\u4e70" : "\u5356") : ""),
-          (o.bsColor = h[r]
-            ? "UP" == h[r][3]
-              ? L.cssClass.themeRed
-              : L.cssClass.themeGreen
-            : ""),
-          (o.color = a(Number(h[r][2] - t.prevclose), L.cssClass)),
-          (i.innerHTML += L.detailHtml(o));
-      (document.getElementById("cn_position_cont").innerHTML += L.tradeMore),
-        (e.loaded = 1);
-    });
+    (B.render = function() {});
   var A = _.prototype;
-  (A.addEvent = function() {
-    var t = this;
-    e("#cn_news_tab").on("click tap", function() {
-      t.flag ? (t.open(), t.fOpen()) : (t.close(), t.fClose()),
-        (t.flag = !t.flag),
-        W && W.addF10();
-    }),
-      e("#cn_tab_f").on("click tap", function() {
-        t.fFlag ? t.fOpen() : t.fClose(), (t.fFlag = !t.fFlag), W && W.addF10();
-      });
-  }),
+  (A.addEvent = function() {}),
     (A.fOpen = function(e) {
       this.cn_f_con.show(),
         this.cn_f_close.hide(),
@@ -2844,86 +2606,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           ((this.cn_f_con.find("li")[this.index].innerHTML = this.activeDomf),
           (this.cn_f_up.find("li")[4].innerHTML = this.lastDomf));
     }),
-    (A.open = function(t) {
-      this.cn_news_tab_con.show(),
-        e("#cn_news_tab_close").hide(),
-        e("#cn_news_tab_open").show(),
-        (this.index = void 0 !== t ? t : this.index),
-        this.lastDom &&
-          ((this.cn_news_tab_con.find("li")[
-            this.index
-          ].innerHTML = this.activeDom),
-          (e("#cn_news_up").find("li")[4].innerHTML = this.lastDom));
-    }),
-    (A.close = function(t) {
-      this.cn_news_tab_con.hide(),
-        e("#cn_news_tab_close").show(),
-        e("#cn_news_tab_open").hide(),
-        (this.index = void 0 !== t ? t : this.index),
-        this.lastDom &&
-          ((this.cn_news_tab_con.find("li")[
-            this.index
-          ].innerHTML = this.lastDom),
-          (e("#cn_news_up").find("li")[4].innerHTML = this.activeDom));
-    });
+    (A.open = function(t) {}),
+    (A.close = function(t) {});
   var I = new _();
   I.open();
-  var j = 70,
-    P = {
-      eventid: "wap_hqcenter_callup",
-      subname: "hq_top",
-      uatrackKey: "wap_hqcenter_callup",
-      androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-      needOpenSource: !1,
-    },
-    z = new SinaFinanceCallUp.CallUpSinaFinance(P);
-  e(".app-open").on("click", function() {
-    z.tryDirectCall({
-      callpagetype: "2",
-      symbol: paperCode,
-      position: "hq_top",
-    });
-  });
+  var j = 70;
   var W;
   new v().init();
-  var R = {
-    topBanner: {
-      pos: "top_banner",
-      androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_slhqbanner.apk",
-    },
-    bottomBanner: {
-      pos: "bottom_banner",
-      androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waprecommend.apk",
-    },
-    xeiut: {
-      pos: "callup_consult",
-      androidurl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-    },
-  };
-  e("#tbanner, #cnBottomBanner").on("click", function() {
-    g(R[e(this).data("position")]);
-  });
-  var $ = {
-      eventid: "hq_center_hs",
-      uatrackKey: "hq_center_hs",
-      subname: "callup_consult",
-      needOpenSource: !1,
-      androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-    },
-    G = new SinaFinanceCallUp.CallUpSinaFinance($),
-    O = e("#cn_position_section")[0];
-  O && O.insertAdjacentHTML("afterend", '<div class="xeiut" id="tuiex"></div>'),
-    e("#tuiex").on("click", function() {
-      G.tryDirectCall({
-        callpagetype: "37",
-        position: "callup_consult",
-      });
-    });
+
   var K = function() {
     var t = e("#hqboxCallBox")[0];
     t &&
@@ -2940,36 +2630,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       );
   };
   setTimeout(K, 1e3);
-  var V = {
-      eventid: "hq_center_hs",
-      uatrackKey: "hq_center_hs",
-      subname: "callup_announce",
-      needOpenSource: !1,
-      androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-    },
-    Z = new SinaFinanceCallUp.CallUpSinaFinance(V),
-    X = e("#cn_report_cont"),
-    Y = e("#cn_notice_cont"),
-    Q = function(t) {
-      var n = e(this),
-        a = n.attr("class"),
-        i = n.find("a").attr("href"),
-        r = "report-table" === a ? "report" : "announce",
-        o = "report" === r ? "7" : "5",
-        s = "report" === r ? /reportid=(\d){1,7}/g : /id=(\d){1,7}/g,
-        l = i.match(s)[0].split("=")[1];
-      try {
-        Z.tryDirectCall({
-          stocktype: "cn",
-          callpagetype: o,
-          cid: l,
-          symbol: paperCode,
-          position: "callup_announce",
-        }),
-          t.preventDefault();
-      } catch (e) {}
-    };
+  var V;
+  (X = e("#cn_report_cont")), (Y = e("#cn_notice_cont")), (Q = function(t) {});
   X.on("click", ".report-table", Q), Y.on("click", ".summary-table", Q);
   var J = "micromessenger",
     ee = [
@@ -3014,135 +2676,4 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     ae = y(),
     ie = b();
   (window.__ISSE__ = ie ? 1 : 0), (ae || ie) && k();
-})(Zepto),
-  (function(e) {
-    "use strict";
-    function t(t) {
-      return this.each(function() {
-        var a = e(this),
-          i = a.data("InfiniteScroll"),
-          r = e.extend({}, n.DEFAULT, "object" == typeof t && t);
-        i || (a.data("infiniteScroll", "mounted"), (i = new n(a, r))),
-          r.interval && i.infinite();
-      });
-    }
-    if (__isNewsApp)
-      return (
-        (document.getElementById("cn_head").style.display = "none"),
-        (document.querySelector(".cn-footer").style.display = "none"),
-        document.querySelector(".cn-nav").remove(),
-        document.getElementById("tuiex").remove(),
-        void (document.getElementById("da-calendar").style.display = "none")
-      );
-    var n = function(t, n) {
-      (this.$elem = t),
-        (this.options = n),
-        (this.interval = null),
-        (this.rendered = !1),
-        (this.relate = this.$elem.data("relate")),
-        e(this.relate).on("click", e.proxy(this.caller, this));
-    };
-    (n.DEFAULT = {
-      interval: 8e3,
-      service:
-        "//quotes.sina.cn/extra/api/openapi.php/CalendarService.getLatestIndex?size=5",
-    }),
-      (n.prototype = {
-        constructor: n,
-        remoteData: function() {
-          var t = this;
-          e.ajax({
-            type: "GET",
-            url: this.options.service,
-            dataType: "jsonp",
-            success: function(e) {
-              t.render(e);
-            },
-            error: e.proxy(t.error, t),
-          });
-        },
-        render: function(e) {
-          var t = "",
-            e = e.result.data;
-          e.forEach(function(e, n) {
-            (t += '<div class="calendar-scroll-item" data-order="@order"><p class="item-title">@country-\u516c\u5e03@title\u524d\u503c@previous\u9884\u6d4b\u503c@median\u516c\u5e03\u503c@ifr_actual</p><div class="clearfix item-msg"><span class="msg-datetime">@datetime </span><span class="msg-mark"><span style="vertical-align: middle">\u91cd\u8981\u6027:</span>@mark</span></div></div>'
-              .replace("@order", n)
-              .replace("@title", e.event)
-              .replace("@datetime", e.date + " " + e.time)
-              .replace("@country", e.country)
-              .replace(
-                "\u524d\u503c@previous",
-                e.previous ? ": \u524d\u503c" + e.previous : ""
-              )
-              .replace(
-                "\u9884\u6d4b\u503c@median",
-                e.median ? ": \u9884\u6d4b\u503c" + e.median : ""
-              )
-              .replace(
-                "\u516c\u5e03\u503c@ifr_actual",
-                e.ifr_actual ? ": \u516c\u5e03\u503c" + e.ifr_actual : ""
-              )),
-              "M" === e.importance &&
-                (t = t.replace(
-                  "@mark",
-                  '<i class="s1"></i><i class="s1"></i><i class="s0"></i><i class="s0"></i>'
-                )),
-              "L" === e.importance &&
-                (t = t.replace(
-                  "@mark",
-                  '<i class="s1"></i><i class="s0"></i><i class="s0"></i><i class="s0"></i>'
-                )),
-              "H" === e.importance &&
-                (t = t.replace(
-                  "@mark",
-                  '<i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s0"></i>'
-                ));
-          }),
-            this.$elem.html(t);
-        },
-        error: function(e) {},
-        caller: function() {
-          var e = {
-            eventid: "hq_center_hs",
-            uatrackKey: "hq_center_hs",
-            subname: "callup_calendar",
-            needOpenSource: !1,
-            androidInstallUrl:
-              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-          };
-          new SinaFinanceCallUp.CallUpSinaFinance(e).tryDirectCall({
-            callpagetype: "36",
-            position: "callup_calendar",
-          });
-        },
-        next: function() {
-          var e = this.$elem;
-          e.animate(
-            {
-              marginTop: "-50px",
-            },
-            function() {
-              e.css("margin-top", 0)
-                .children("div")
-                .first()
-                .appendTo(e);
-            }
-          );
-        },
-        infinite: function() {
-          !this.rendered && this.remoteData(),
-            (this.rendered = !0),
-            this.interval && clearInterval(this.interval),
-            (this.interval = setInterval(
-              e.proxy(this.next, this),
-              this.options.interval
-            ));
-        },
-      }),
-      (e.fn.InfiniteScroll = t),
-      (e.fn.InfiniteScroll.Constructor = n),
-      e('[data-role="InfiniteScroll"]').each(function() {
-        var n = e(this);
-        t.call(n, {});
-      });
-  })(Zepto);
+})(Zepto);

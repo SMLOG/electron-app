@@ -819,7 +819,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   function m(e, t) {
     (this.param = e), (this.cb = t), this.load();
   }
-  function f(e) {
+  function why(e) {
     (this.param = e),
       (this.data = null),
       (this.hqData = null),
@@ -907,7 +907,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           percentDom: ["cn-floating-zdf", "cn_floating_zdf_h"],
         }),
         i = 0;
-      (P = new f({
+      (P = new why({
         dom: {
           position: "cn_position",
           detail: "cn_detail",
@@ -938,16 +938,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     this.init = D;
   }
   function g(e) {}
-  function y() {
-    return (
-      window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == J
-    );
-  }
+
   function b() {
     return new RegExp(ee.join("|")).test(document.referrer);
   }
 
-  function k() {}
   var x = {
       escape: function(e) {
         return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
@@ -1548,130 +1543,17 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     );
   }),
     (q.render = function(e) {});
-  var B = f.prototype;
+  var B = why.prototype;
   (B.addEvent = function() {}),
-    (B.defaultOpen = function() {}),
     (B.load = function(e) {
       var t = this;
       e[t.param.symbol] &&
         ((t.hqData = e[t.param.symbol]),
         (t.data = t.hqData.tradeItems),
-        t.param.cb(t.hqData),
-        0 == t.loaded ? t.render() : t.updateRender());
+        t.param.cb(t.hqData));
     }),
-    (B.updateRender = function() {
-      var e = this,
-        t = e.hqData,
-        n = document.getElementById(e.param.dom.position),
-        r = document.getElementById(e.param.dom.detail),
-        o = t.buyPriceArr,
-        s = t.buyNumArr,
-        l = o.length,
-        c = t.sellPriceArr,
-        d = c.length,
-        p = t.sellNumArr,
-        h = function(e) {
-          var n,
-            i = "--",
-            r = Number(e.price) ? e.price : i,
-            o = Number(e.volume) ? u(Number(e.volume), !0) : i;
-          return (
-            r !== i && (n = a(e.price - t.prevclose, L.cssClass)),
-            {
-              price: r,
-              volume: o,
-              color: n,
-            }
-          );
-        };
-      for (i = 0; i < d; i++) {
-        var m = h({
-          price: c[i],
-          volume: (p[i] / e.u).toFixed(0),
-        });
-        (n.childNodes[4 - i].childNodes[0].childNodes[1].innerHTML = m.price),
-          (n.childNodes[4 - i].childNodes[0].childNodes[2].innerHTML =
-            m.volume),
-          (n.childNodes[4 - i].childNodes[0].childNodes[1].style.color =
-            m.color);
-      }
-      for (i = 0; i < l; i++) {
-        var f = h({
-          price: o[i],
-          volume: (s[i] / e.u).toFixed(0),
-        });
-        (n.childNodes[i + 5].childNodes[0].childNodes[1].innerHTML = f.price),
-          (n.childNodes[i + 5].childNodes[0].childNodes[2].innerHTML =
-            f.volume),
-          (n.childNodes[i + 5].childNodes[0].childNodes[1].style.color =
-            f.color);
-      }
-      var _ = e.hqData.tradeItems,
-        v = _.length >= 10 ? 10 : _.length;
-      for (i = 0; i < v; i++) {
-        (r.childNodes[i].childNodes[0].childNodes[0].innerHTML = _[i]
-          ? String(_[i][0]).substring(0, 5)
-          : ""),
-          (r.childNodes[i].childNodes[0].childNodes[1].innerHTML = _[i]
-            ? Number(_[i][2]).toFixed(2)
-            : ""),
-          (r.childNodes[i].childNodes[0].childNodes[2].innerHTML = _[i]
-            ? ((1 * _[i][1]) / e.u).toFixed(0)
-            : "");
-        var g = document.createElement("span"),
-          y = L.cssClass.themeGreen,
-          b = L.cssClass.themeRed;
-        if ("riseGreen" == L.riseColor) {
-          var w = y;
-          (y = b), (b = w);
-        }
-        (g.innerHTML = _[i] ? ("UP" == _[i][3] ? "\u4e70" : "\u5356") : ""),
-          (g.style.color = _[i] ? ("UP" == _[i][3] ? b : y) : ""),
-          r.childNodes[i].childNodes[0].childNodes[2].appendChild(g),
-          (r.childNodes[i].childNodes[0].childNodes[1].style.color = a(
-            Number(_[i][2] - t.prevclose),
-            L.cssClass
-          ));
-      }
-    }),
+    (B.updateRender = function() {}),
     (B.render = function() {});
-  var A = _.prototype;
-  (A.addEvent = function() {}),
-    (A.fOpen = function(e) {
-      this.cn_f_con.show(),
-        this.cn_f_close.hide(),
-        this.cn_f_open.show(),
-        (this.index = void 0 !== e ? e : this.index),
-        this.lastDomf &&
-          ((this.cn_f_con.find("li")[this.index].innerHTML = this.lastDomf),
-          (this.cn_f_up.find("li")[4].innerHTML = this.activeDomf));
-    }),
-    (A.fClose = function(e) {
-      this.cn_f_con.hide(),
-        this.cn_f_close.show(),
-        this.cn_f_open.hide(),
-        (this.index = void 0 !== e ? e : this.index),
-        this.lastDomf &&
-          ((this.cn_f_con.find("li")[this.index].innerHTML = this.activeDomf),
-          (this.cn_f_up.find("li")[4].innerHTML = this.lastDomf));
-    }),
-    (A.open = function(t) {}),
-    (A.close = function(t) {});
-  var I = new _();
-  I.open();
 
   new v().init();
-
-  var J = "micromessenger",
-    ee = [
-      "google.com",
-      "bing.com",
-      "baidu.com",
-      "sogou.com",
-      "so.com",
-      "easou.com",
-    ],
-    ae = y(),
-    ie = b();
-  (window.__ISSE__ = ie ? 1 : 0), (ae || ie) && k();
 })(Zepto);

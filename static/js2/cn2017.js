@@ -1444,17 +1444,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             dom: "cn_bk_hy",
             pDom: "cn_bk_hy_c",
           },
-          function(e) {
-            window.bkSw = e;
-            var a = window.bkSw && window.bkSw[0] && window.bkSw[0].type,
-              i = document
-                .getElementById("cn_news_tab_con")
-                .querySelector(".cn-tab"),
-              r = document.getElementById("cn_f_con").querySelector(".cn-tab");
-            "sw2_430100" === a || "sw2_430200" === a
-              ? (t(i), t(r))
-              : (n(i), n(r));
-          }
+          function(e) {}
         )),
         M ||
           (M = new m({
@@ -1784,8 +1774,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       O = "cn-news-c",
       K = 0,
       V = "hq_userColor",
-      Z = e("#" + O).offset().top,
-      X = e("#cn_head").offset().height;
+      Z = 0,
+      X = 0;
     W = new c({
       tab: R,
       con: $,
@@ -1796,8 +1786,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       cb: _,
     });
     var Y = 0,
-      Q = e("#cn_bk_hy_c").offset().top,
-      J = document.querySelector(".js-app-header").offsetHeight || 48;
+      Q = 0,
+      J = 48;
     this.init = D;
   }
   function g(e) {
@@ -2102,8 +2092,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
               .show()
               .height(i.viewHeight + "px")
               .append(o),
-            n.setDirection("horizontal"),
-            SUDA.uaTrack("hq_center_hs", "horizontal"))
+            n.setDirection("horizontal"))
           : (s.show(), r.hide(), l.append(o), n.setDirection("vertical"));
       }, 100);
     }),
@@ -2446,18 +2435,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             t.setCss(e, t.param.tabF);
           });
     }),
-    (N.select = function(t) {
-      this.hide(),
-        (e("#" + this.param.tabF[t])[0].className = this.param.css.active),
-        (e("#" + this.param.tab[t])[0].className = this.param.css.active),
-        e("#" + this.param.con[t]).show();
-    }),
-    (N.hide = function() {
-      for (var t = this, n = t.param.tab.length, a = 0; a < n; a++)
-        e("#" + t.param.con[a]).hide(),
-          (e("#" + t.param.tab[a])[0].className = ""),
-          (e("#" + t.param.tabF[a])[0].className = "");
-    });
+    (N.select = function(t) {}),
+    (N.hide = function() {});
   var M = d.prototype;
   (M.load = function(e) {
     this.render(e);
@@ -2476,45 +2455,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         e.percent +
         ")- \u65b0\u6d6a\u8d22\u7ecf";
     }),
-    (M.render = function(e) {
-      var t = this,
-        n = document.getElementById("cn_floating"),
-        a = document.getElementById(t.param.dom[1]);
-      0 == t.inited &&
-        ((t.tempHtml = n.innerHTML),
-        (t.tempHHtml = a.innerHTML),
-        (t.inited = 1));
-      var i,
-        r = t.tempHtml,
-        o = t.tempHHtml,
-        s = e,
-        l = L.cssClass.themeGreen,
-        c = L.cssClass.themeRed;
-      switch (s.type) {
-        case "green":
-          i = l;
-          break;
-        case "red":
-          i = c;
-          break;
-        case "equal":
-          i = L.cssClass.themeEqualC;
-      }
-      (r = r
-        .replace("@name", s.sname)
-        .replace("@price", s.price)
-        .replace("@zdf", s.percent)),
-        (o = o
-          .replace("@name", s.sname)
-          .replace("@price", s.price)
-          .replace("@zdf", s.percent)),
-        (a.innerHTML = o),
-        (n.innerHTML = r);
-      for (var d = 0; d < 2; d++)
-        (document.getElementById(t.param.priceDom[d]).style.color = i),
-          (document.getElementById(t.param.percentDom[d]).style.color = i);
-      t.title(e);
-    });
+    (M.render = function(e) {});
   var F = p.prototype;
   (F.transformDom = function(e, t) {
     (e.style.transform = "translate(" + t + "px,0)"),
@@ -2667,13 +2608,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         (a = new Date().getTime() - i),
           (i = 0),
           a > 10 && ((n.flag = !1), (t.style.display = "none"));
-      }),
-        e.addEventListener("click", function() {
-          (t.style.display = n.flag ? "none" : "block"),
-            (t.style.top = e.offsetTop - t.offsetHeight + "px"),
-            (n.flag = !n.flag),
-            (i = new Date().getTime());
-        });
+      });
     }),
     (U.merge = function(e) {
       var t = this;
@@ -2730,20 +2665,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       }
     );
   }),
-    (q.render = function(e) {
-      for (
-        var t = e,
-          n = t.length,
-          a = this,
-          i = document.getElementById(a.param.dom),
-          r = 0;
-        r < n;
-        r++
-      ) {
-        var o = document.createElement("li");
-        (o.innerHTML = L.bkHtml(t[r], a.param)), i.appendChild(o);
-      }
-    });
+    (q.render = function(e) {});
   var B = f.prototype;
   (B.addEvent = function() {
     e("#cn_position_close").on("click", function() {

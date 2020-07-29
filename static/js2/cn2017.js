@@ -11,24 +11,7 @@ function Painter(e) {
     this.initCtn(),
     this.initCanvas();
 }
-function TodayChart(e, t) {
-  (this.param = e),
-    (this.painterDay = null),
-    (this.painterDatail = null),
-    (this.painterFive = null),
-    (this.max = 0),
-    (this.min = 0),
-    (this.mainW = 0),
-    (this.mainH = 0),
-    this.init(),
-    (this.data = null),
-    (this.cb = t),
-    (this.bRise = themeRed),
-    (this.bFall = themeGreen),
-    (this.rise = this.bRise),
-    (this.fall = this.bFall),
-    (this.detailFlag = !1);
-}
+
 var xh5_BrowserUtil = new (function() {
     this.hdpr = (function(e) {
       var t = document.createElement("canvas");
@@ -43,135 +26,7 @@ var xh5_BrowserUtil = new (function() {
   })(),
   themeRed = "#de3639",
   themeGreen = "#1bc07d",
-  themeBlue = "#538eeb",
-  painterProp = Painter.prototype;
-(painterProp.initCtn = function() {
-  this.ctn = this.param.ctn ? this.param.ctn : document.body;
-}),
-  (painterProp.initCanvas = function() {
-    (this.canvas = document.createElement("canvas")),
-      (this.g = this.canvas.getContext("2d")),
-      this.ctn.appendChild(this.canvas),
-      this.resizeLoc();
-  }),
-  (painterProp.resizeLoc = function() {
-    (this.canvas.style.top = "0px"), (this.canvas.style.left = "0px");
-    var e = 1,
-      t = this.canvas.parentNode.offsetWidth,
-      a = this.canvas.parentNode.offsetHeight;
-    switch (
-      ((this.canvas.style.width = t + "px"),
-      (this.canvas.style.height = a + "px"),
-      e)
-    ) {
-      case 0:
-        break;
-      case 1:
-        (e = xh5_BrowserUtil.hdpr), (t *= e), (a *= e);
-        break;
-      default:
-        (t *= e), (a *= e);
-    }
-    (this.canvas.width = t),
-      (this.canvas.height = a),
-      e && 1 != e && this.g.scale(e, e);
-  }),
-  (painterProp.scale = function(e) {
-    switch (e) {
-      case 0:
-        return;
-      case 1:
-        e = xh5_BrowserUtil.hdpr;
-    }
-    e && this.g.scale(e, e);
-  }),
-  (painterProp.newGStyle = function(e) {
-    for (var t in e) e.hasOwnProperty(t) && (this.g[t] = e[t]);
-  }),
-  (painterProp.newStyle = function(e, t, a) {
-    (this.g.strokeStyle = e),
-      t && this.g.beginPath(),
-      a && (this.g.lineWidth = a);
-  }),
-  (painterProp.newFillStyle = function(e, t) {
-    if (e && !(e.length < 1)) {
-      var a = e.length;
-      if (1 == a) this.g.fillStyle = e[0];
-      else if (a > 1) {
-        for (var n = this.g.createLinearGradient(0, 0, 0, t), i = 0; i < a; i++)
-          n.addColorStop((1 / (a - 1)) * i, e[i]);
-        this.g.fillStyle = n;
-      }
-    }
-  }),
-  (painterProp.newFillStyle_rgba = function(e, t, a) {
-    for (
-      var n = _g.createLinearGradient(0, 0, 0, t), i = 0, r = e.length;
-      i < r;
-      i++
-    )
-      n.addColorStop((1 / (r - 1)) * i, util_.hex2dec(e[i], a));
-    this.g.fillStyle = n;
-  }),
-  (painterProp.clear = function(e, t) {
-    var a = this.canvas.width;
-    (this.canvas.width = a),
-      e &&
-        (_c && _g.strokeStyle != _c && (_g.strokeStyle = _c), _g.beginPath()),
-      this.scale(t);
-  }),
-  (painterProp.clearLimit = function(e, t) {
-    this.g.clearRect(e, 0, t, this.canvas.height), this.g.beginPath();
-  }),
-  (painterProp.beginPath = function() {
-    this.g.beginPath();
-  }),
-  (painterProp.closePath = function() {
-    this.g.closePath();
-  }),
-  (painterProp.fill = function() {
-    this.g.fill();
-  }),
-  (painterProp.stroke = function() {
-    this.g.stroke();
-  }),
-  (painterProp.save = function() {
-    this.g.save();
-  }),
-  (painterProp.translate = function(e, t) {
-    this.g.translate(e, t);
-  }),
-  (painterProp.restore = function() {
-    this.g.restore();
-  }),
-  (painterProp.moveTo = function(e, t) {
-    this.g.moveTo(e, t);
-  }),
-  (painterProp.lineTo = function(e, t) {
-    this.g.lineTo(e, t);
-  }),
-  (painterProp.drawDot = function(e, t, a, n) {
-    n && this.g.moveTo(e, t), this.fill(), this.g.arc(e, t, a, 0, 2 * Math.PI);
-  }),
-  (painterProp.arc = function(e, t, a, n, i, r) {
-    this.g.arc(e, t, a, n, i, r);
-  }),
-  (painterProp.drawVStickRect = function(e, t, a, n, i, r) {
-    var o = a;
-    (e = ~~(e + 0.5)),
-      (o = ~~(o + 0.5)),
-      (t = ~~(t + 0.5)),
-      (n = ~~(n + 0.5)),
-      0 == n && (n = 1),
-      r
-        ? (o < 0.5 && (o = 0.5),
-          (this.g.fillStyle = i),
-          this.g.fillRect(e, t, o, n))
-        : ((e -= 0.5),
-          (t -= 0.5),
-          (this.g.strokeStyle = i),
-          this.g.strokeRect(e, t, o, n));
-  });
+  themeBlue = "#538eeb";
 
 function jsonP(e) {
   var t = e.varStr,
@@ -561,10 +416,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     this.init = D;
   }
   function g(e) {}
-
-  function b() {
-    return new RegExp(ee.join("|")).test(document.referrer);
-  }
 
   var x = {
       escape: function(e) {

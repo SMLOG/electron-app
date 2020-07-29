@@ -1232,110 +1232,10 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       info: "cnInfo",
       newsHtml:
         '<a href="@href"><dl style="height:@dlhg;"><dt><img src="@src" alt="@alt" style="display: @display;"></dt><dd style="height:@ddhg"><h3 style="height:@h3hg;">@content</h3><p><span>@source</span><span>@time</span></p></dd></dl></a>',
-      positionHtml: function(e) {
-        var t = e,
-          n = e.color,
-          a = Number(t.price)
-            ? "<li style=color:" + n + ">" + t.price + "</li>"
-            : "<li>--</li>",
-          i = Number(t.volume) ? "<li>" + t.volume + "</li>" : "<li>--</li>";
-        return (
-          '<li><ul class="cn-pos" style="border-top:' +
-          t.style +
-          '"><li>' +
-          t.time +
-          "</li>" +
-          a +
-          i +
-          "</ul></li>"
-        );
-      },
-      detailHtml: function(e) {
-        var t = e,
-          n = e.color,
-          a = e.bsColor,
-          i = e.type;
-        return (
-          '<li><ul class="cn-detail"><li>' +
-          t.time +
-          '</li><li style="color:' +
-          n +
-          '">' +
-          t.price +
-          "</li><li>" +
-          t.volume +
-          '<span style="color:' +
-          a +
-          '">' +
-          i +
-          "</span></li></ul></li>"
-        );
-      },
-      bkHtml: function(e, t) {
-        var n = e,
-          i = n.type,
-          r =
-            n.percent > 0
-              ? "+" + n.percent.toFixed(2) + "%"
-              : n.percent.toFixed(2) + "%",
-          o = n.lead_cname,
-          s =
-            n.increase > 0
-              ? "+" + n.increase.toFixed(2) + "%"
-              : n.increase.toFixed(2) + "%",
-          l = a(n.percent, L.cssClass),
-          c = a(n.increase, L.cssClass);
-        return (
-          '<ul class="cn-bk"><li><a href="//gu.sina.cn/m/#/stock/blockdetail?id=' +
-          i +
-          '"><p>' +
-          n.name +
-          '</p></a></li><li><a href="//gu.sina.cn/m/#/stock/blockdetail?id=' +
-          i +
-          '"><p style="color:' +
-          l +
-          '">' +
-          r +
-          '</p></a></li><li><a href="//quotes.sina.cn/hs/company/quotes/view/' +
-          n.lead_shares +
-          '/"><span>' +
-          o +
-          '</span><span style="color:' +
-          c +
-          '">' +
-          s +
-          "</span></a></li></ul>"
-        );
-      },
-      follow: function(e) {
-        var t = e,
-          n = t.title.length > 20 ? t.title.substring(0, 19) + "..." : t.title;
-        return (
-          '<li class="cn-panel"><a href="' +
-          t.stockUrl +
-          '"><div class="name">' +
-          t.name +
-          '</div><div class="code">' +
-          t.code.toUpperCase() +
-          '</div><div class="price" style="color:' +
-          t.color +
-          '">' +
-          t.price +
-          '</div><div><span class="diff" style="color:' +
-          t.color +
-          '">' +
-          t.change +
-          '</span><span class="percent" style="color:' +
-          t.color +
-          '">' +
-          t.percent +
-          '</span></div><div></a><span class="title">\u4e8b\u4ef6</span><a href="' +
-          t.news_url +
-          '"><span class="content">' +
-          n +
-          "</span></a></div></li>"
-        );
-      },
+      positionHtml: function(e) {},
+      detailHtml: function(e) {},
+      bkHtml: function(e, t) {},
+      follow: function(e) {},
       tradeMore:
         '<div class="trade-more"><a class="trade-more-list" style="display: none;" href="//dp.sina.cn/dpool/stock_new/v2/cjmx.php?code=' +
         paperCode +
@@ -1401,95 +1301,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           getObj: function(e) {
             for (var a = n.split(","), i = [], r = 0; r < a.length; r++)
               i.push(e[a[r]]);
-            t.inited ? t.relatedDataUpdate(i) : t.relatedRender(i);
           },
         });
-    }),
-    (E.relatedRender = function(t) {
-      var n = this;
-      n.inited || (n.inited = !0);
-      for (
-        var a = n.param.dom.find("li")[0], i = "", r = 0;
-        r < t.length;
-        r++
-      ) {
-        var o,
-          s = L.relatedHtml,
-          l = t[r],
-          c = l.name,
-          d = L.cssClass.themeGreen,
-          p = L.cssClass.themeRed;
-        switch (l.type) {
-          case "green":
-            o = d;
-            break;
-          case "red":
-            o = p;
-            break;
-          case "equal":
-            o = L.cssClass.themeEqual;
-        }
-        (s = s
-          .replace("@price", l.price)
-          .replace("@zdf", l.percent)
-          .replace("@href", l.url)
-          .replace("@symbol", String(l.code).toUpperCase())
-          .replace("@name", c)
-          .replace("@color", o)
-          .replace("@attr", String(l.code).toUpperCase())),
-          (i += s);
-      }
-      e(a).append(i), n.addBlank();
-    }),
-    (E.relatedDataUpdate = function(t) {
-      function n(e, t) {
-        if (e.getAttribute("data-attr"))
-          for (var n = 0; n < t.length; n++) {
-            var a = t[n];
-            if (a.code.toUpperCase() == e.getAttribute("data-attr")) {
-              (e.innerHTML = a.price),
-                (e.nextElementSibling.childNodes[0].innerHTML = a.percent),
-                (e.nextElementSibling.childNodes[0].className = "cn-relate-color cn-relate-@color".replace(
-                  "@color",
-                  a.type
-                ));
-              var i = "";
-              (i =
-                "red" == a.type
-                  ? L.cssClass.themeRed
-                  : "green" == a.type
-                  ? L.cssClass.themeGreen
-                  : L.cssClass.themeEqual),
-                (e.nextElementSibling.childNodes[0].style.backgroundColor = i);
-            }
-          }
-      }
-      for (
-        var a = e("#cn_relate_cont").find("li"),
-          i = a.length,
-          r = e("#cn_visit_cont").find("li"),
-          o = r.length,
-          s = 0;
-        s < i;
-        s++
-      ) {
-        var l = a[s];
-        n(l, t);
-      }
-      for (s = 0; s < o; s++) (l = r[s]), n(l, t);
     });
   var N = c.prototype;
   (N.setCss = function(t, n) {
     var a = this,
       i = a.param.tab.length;
-    if ((a.hide(), "undefined" != typeof SUDA))
-      if (
-        "cn_tab_finance" == t.target.id ||
-        "cn_tab_finance_f" == t.target.id
-      ) {
-        var r = "quotes.sina.cn/hs/company/quotes/view/" + paperCode + "/index";
-        SUDA.log(r, "", "URL:http://" + r);
-      } else SUDA.log();
+
     for (var o = 0; o < i; o++) {
       var s = o;
       if (t.target.id == n[o]) {
@@ -1501,19 +1320,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       }
     }
   }),
-    (N.addF10 = function() {
-      var t = this;
-      e("#cn_tab_f10_f").off("click tap"),
-        e("#cn_tab_f10").off("click tap"),
-        e("#cn_tab_f10_f").on("click tap", function(n) {
-          t.setCss(n, t.param.tabF),
-            (e("#cn_f_up").find("li")[4].innerHTML = n.target.outerHTML);
-        }),
-        e("#cn_tab_f10").on("click tap", function(n) {
-          t.setCss(n, t.param.tab),
-            (e("#cn_news_up").find("li")[4].innerHTML = n.target.outerHTML);
-        });
-    }),
     (N.addEvent = function() {
       for (var t = this, n = t.param.tab.length, a = 0; a < n; a++)
         e("#" + t.param.tab[a]).off("click tap"),
@@ -1531,20 +1337,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   (M.load = function(e) {
     this.render(e);
   }),
-    (M.title = function(e) {
-      var t = e.code;
-      document.title =
-        e.name +
-        " " +
-        t.toUpperCase() +
-        " " +
-        e.price +
-        "(" +
-        e.change +
-        " " +
-        e.percent +
-        ")- \u65b0\u6d6a\u8d22\u7ecf";
-    }),
     (M.render = function(e) {});
   var F = p.prototype;
   (F.transformDom = function(e, t) {
@@ -1867,29 +1659,9 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     (A.close = function(t) {});
   var I = new _();
   I.open();
-  var j = 70;
-  var W;
+
   new v().init();
 
-  var K = function() {
-    var t = e("#hqboxCallBox")[0];
-    t &&
-      t.addEventListener(
-        "click",
-        function() {
-          g({
-            pos: "callup_remind",
-            androidurl:
-              "http://file.finance.sina.com.cn/finapp/apks/sinafinance_waphangqing.apk",
-          });
-        },
-        !1
-      );
-  };
-  setTimeout(K, 1e3);
-  var V;
-  (X = e("#cn_report_cont")), (Y = e("#cn_notice_cont")), (Q = function(t) {});
-  X.on("click", ".report-table", Q), Y.on("click", ".summary-table", Q);
   var J = "micromessenger",
     ee = [
       "google.com",
@@ -1899,37 +1671,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       "so.com",
       "easou.com",
     ],
-    te = {
-      eventid: "hq_center_hs",
-      uatrackKey: "hq_center_hs",
-      subname: "outrefer2app",
-      needOpenSource: !1,
-      androidInstallUrl:
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_sousuo.apk",
-    },
-    ne = {
-      navmystock: {
-        callopts: {
-          callpagetype: "10",
-          position: "outrefer2app",
-        },
-      },
-      navmarket: {
-        callopts: {
-          subtype: "0",
-          callpagetype: "23",
-          position: "outrefer2app",
-        },
-      },
-      tabcall: {
-        callopts: {
-          stocktype: "cn",
-          callpagetype: "2",
-          position: "outrefer2app",
-          symbol: paperCode,
-        },
-      },
-    },
     ae = y(),
     ie = b();
   (window.__ISSE__ = ie ? 1 : 0), (ae || ie) && k();

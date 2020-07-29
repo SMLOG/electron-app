@@ -215,7 +215,7 @@ function loader(e, t, n, a) {
 })(Zepto);
 var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
-!(function(e) {
+!(function($) {
   function t() {
     var e = 0,
       t = 0,
@@ -255,7 +255,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       this.market("cn"),
       this.getVisit();
   }
-  function o(e) {
+  function ooo(e) {
     (this.param = e),
       (this.chart = null),
       (this.delistList = ["kd", "kw", "km", "more"]),
@@ -263,7 +263,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       this.initChart();
   }
 
-  function l(e) {
+  function lll(e) {
     relateSymbol || (relateSymbol = "sh000001,sz399001,sz399006,gb_$dji,hkHSI"),
       (relateSymbol = relateSymbol.replace(paperCode + ",", "")),
       (relateSymbol = relateSymbol.replace(paperCode, "")),
@@ -272,45 +272,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       (this.relateSymbol = relateSymbol),
       (this.visitSymbol = e.visitSymbol);
   }
-  function c(e) {
-    (this.param = e), this.addEvent(), this.select(0);
-  }
-  function d(e) {
+
+  function ddd(e) {
     (this.param = e),
       (this.tempHtml = void 0),
       (this.tempHHtml = void 0),
       (this.inited = 0);
   }
-  function p(e) {
-    (this.param = e),
-      (this.dom = e.dom),
-      (this.transformX = [0, 0]),
-      (this.startX = void 0),
-      (this.startY = void 0),
-      (this.isMove = !1),
-      (this.transformTime = 150),
-      (this.screeWidth = window.innerWidth),
-      (this.init = function() {
-        this.onTouchStart(), this.onTouchMove(), this.onTouchEnd();
-      }),
-      this.init();
-  }
-  function h(e) {
-    (this.param = e),
-      (this.url =
-        "//quotes.sina.cn/extra/api/openapi.php/RelateStockService/getStocks?symbol=$symbol"),
-      (this.rData = null),
-      (this.symbols = ""),
-      (this.flag = !1),
-      (this.data = []),
-      this.load(),
-      (this.inited = !0),
-      (this.hasNews = !1),
-      (this.hasExposure = !1);
-  }
-  function m(e, t) {
-    (this.param = e), (this.cb = t), this.load();
-  }
+
   function why(e) {
     (this.param = e),
       (this.data = null),
@@ -321,8 +290,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   }
 
   function v() {
-    function a() {}
-    function p() {}
     function v() {
       var e = x.get(V);
       if (e) return e;
@@ -339,13 +306,11 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         K_FALL: L.chartGreen,
       };
     }
-    function b() {}
-    function w() {
-      e(window).on("resize", function() {
+    function wresize() {
+      $(window).on("resize", function() {
         sss && sss.resizeChart(T), sss && sss.chart && sss.chart.resize();
       });
     }
-    function C() {}
 
     function S() {
       new HQ.DataBox({
@@ -372,19 +337,14 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       var t = new r({
         code: paperCode,
       });
-      (z = new l({
-        dom: e("#cn_visit_cont"),
+      (z = new lll({
+        dom: $("#cn_visit_cont"),
         visitObj: t,
       })),
         (window.riseColor = L.riseColor = v() ? v() : "riseRed"),
         y(),
         S();
-      var n = new d({
-          dom: ["cn_floating", "cn_floating_h"],
-          priceDom: ["cn-floating-price", "cn_floating_price_h"],
-          percentDom: ["cn-floating-zdf", "cn_floating_zdf_h"],
-        }),
-        i = 0;
+      var i = 0;
       (P = new why({
         dom: {
           position: "cn_position",
@@ -392,21 +352,16 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         },
         symbol: paperCode,
         cb: function(e) {
-          n.load(e),
-            0 == i &&
-              (z.hqComponent({
-                symbol: t.v_allList,
-                data: e,
-              }),
-              (i = 1)),
-            sss || (sss = new o(e));
+          0 == i &&
+            (z.hqComponent({
+              symbol: t.v_allList,
+              data: e,
+            }),
+            (i = 1)),
+            sss || (sss = new ooo(e));
         },
       })),
-        a(),
-        p(),
-        C(),
-        b(),
-        w();
+        wresize();
     }
     var sss,
       P,
@@ -493,7 +448,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       : {
           callBack: g,
         },
-    D = o.prototype;
+    D = ooo.prototype;
   (D.initChart = function() {
     var t = this,
       dataView =
@@ -547,7 +502,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       "plugins.sinaAppTKChart.get",
       {
         wrap: {
-          dom: e("#h5Chart")[0],
+          dom: $("#h5Chart")[0],
         },
         chart: {
           symbol: paperCode,
@@ -639,10 +594,10 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     (D.resizeChart = function(n) {
       var a = this,
         i = t(),
-        r = e("#hq_chart"),
-        o = e("#h5Chart"),
-        s = e("#hqMain"),
-        l = e(".cn-chart");
+        r = $("#hq_chart"),
+        o = $("#h5Chart"),
+        s = $("#hqMain"),
+        l = $(".cn-chart");
       setTimeout(function() {
         a.resize()
           ? (window.scrollTo(0, 0),
@@ -692,15 +647,15 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       varComment: "cnComment",
       info: "cnInfo",
     },
-    E = l.prototype;
+    E = lll.prototype;
   (E.addBlank = function() {
-    var t = e("#cn_blank"),
+    var t = $("#cn_blank"),
       n = window.innerHeight;
     t.css("height", 0);
-    var a = e("#cn_relate_cont"),
-      i = e(".cn-footer-links")[0].offsetHeight,
-      r = e("#cn_news")[0].offsetHeight,
-      o = e("#cn_head")[0].offsetHeight,
+    var a = $("#cn_relate_cont"),
+      i = $(".cn-footer-links")[0].offsetHeight,
+      r = $("#cn_news")[0].offsetHeight,
+      o = $("#cn_head")[0].offsetHeight,
       s = window.getComputedStyle(a[0]).height;
     (s = parseInt(s, 10) || 350) < n && t.css("height", n - s - r - o - i);
   }),
@@ -739,233 +694,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
           },
         });
     });
-  var N = c.prototype;
-  (N.setCss = function(t, n) {
-    var a = this,
-      i = a.param.tab.length;
 
-    for (var o = 0; o < i; o++) {
-      var s = o;
-      if (t.target.id == n[o]) {
-        e("#" + a.param.con[s]).show(),
-          (e("#" + a.param.tab[s])[0].className = a.param.css.active),
-          (e("#" + a.param.tabF[s])[0].className = a.param.css.active),
-          a.param.cb(t.target);
-        break;
-      }
-    }
-  }),
-    (N.addEvent = function() {
-      for (var t = this, n = t.param.tab.length, a = 0; a < n; a++)
-        e("#" + t.param.tab[a]).off("click tap"),
-          e("#" + t.param.tabF[a]).off("click tap"),
-          e("#" + t.param.tab[a]).on("click tap", function(e) {
-            t.setCss(e, t.param.tab);
-          }),
-          e("#" + t.param.tabF[a]).on("click tap", function(e) {
-            t.setCss(e, t.param.tabF);
-          });
-    }),
-    (N.select = function(t) {}),
-    (N.hide = function() {});
-  var M = d.prototype;
-  (M.load = function(e) {
-    this.render(e);
-  }),
-    (M.render = function(e) {});
-  var F = p.prototype;
-  (F.transformDom = function(e, t) {
-    (e.style.transform = "translate(" + t + "px,0)"),
-      (e.style.webkitTransform = "translate(" + t + "px,0)");
-  }),
-    (F.animationDom = function(e) {
-      var t = e.time || this.transformTime;
-      (e.dom.style.transition = "-webkit-transform " + t + "ms ease-out"),
-        (e.dom.style.transition = "transform " + t + "ms ease-out"),
-        (e.dom.style.webkitTransform = "translate(" + e.offsetX + "px,0)"),
-        (e.dom.style.transform = "translate(" + e.offsetX + "px,0)");
-    }),
-    (F.deleteTfm = function(e) {
-      e.style.transition = "";
-    }),
-    (F.onTouchStart = function() {
-      for (var e = this, t = 0; t < e.dom.length; t++)
-        e.dom[t].on("touchstart", function(t) {
-          e.deleteTfm(this);
-          var n = t.touches[0];
-          (e.startX = n.clientX), (e.startY = n.clientY), (e.isMove = !1);
-        });
-    }),
-    (F.onTouchMove = function() {
-      for (var e = this, t = 0; t < e.dom.length; t++)
-        e.dom[t].on("touchmove", function(t) {
-          var n = t.touches[0],
-            a = n.clientX - e.startX,
-            i = this.getAttribute("data-attr");
-          (e.deltaY = Math.abs(n.clientY - e.startY)),
-            !e.deltaY > 0 && t.preventDefault(),
-            e.transformDom(e.param.dom[0][0], e.transformX[1 * i] + a),
-            e.transformDom(e.param.dom[1][0], e.transformX[1 * i] + a),
-            (e.isMove = !0);
-        });
-    }),
-    (F.onTouchEnd = function() {
-      for (var e = this, t = 0; t < e.dom.length; t++)
-        e.dom[t].on("touchend", function() {
-          if (e.isMove) {
-            var t = this.style.transform.replace(/[^0-9.\-,]/g, "").split(",");
-            t[0] > 0
-              ? (e.animationDom({
-                  dom: e.param.dom[0][0],
-                  offsetX: 0,
-                }),
-                e.animationDom({
-                  dom: e.param.dom[1][0],
-                  offsetX: 0,
-                }),
-                (e.transformX[0] = e.transformX[1] = 0))
-              : t[0] < e.screeWidth - this.offsetWidth
-              ? (e.animationDom({
-                  dom: e.param.dom[0][0],
-                  offsetX: e.screeWidth - this.offsetWidth,
-                }),
-                e.animationDom({
-                  dom: e.param.dom[1][0],
-                  offsetX: e.screeWidth - this.offsetWidth,
-                }),
-                (e.transformX[0] = e.transformX[1] =
-                  e.screeWidth - this.offsetWidth))
-              : (e.transformX[0] = e.transformX[1] = 1 * t[0]);
-          }
-        });
-    });
-  var U = h.prototype;
-  (U.load = function() {
-    var e = this;
-    e.addEvent(),
-      jsonP({
-        url: e.url.replace("$symbol", paperCode),
-        varStr: "follow",
-        callback: "jsonp",
-        success: function(t) {
-          (e.rData = t.data), e.clearedUp();
-        },
-      });
-  }),
-    (U.market = function(e) {
-      var t = "";
-      switch (e.market) {
-        case "sz":
-        case "sh":
-        case "hk":
-          t = e.market + e.code;
-          break;
-        case "us":
-          t = "gb_" + e.code.toLowerCase();
-      }
-      return t;
-    }),
-    (U.clearedUp = function() {
-      var e = this.rData,
-        t = this;
-      if (t.param.parentNode) {
-        if (!e || e.length <= 0)
-          return void (t.param.parentNode.style.display = "none");
-        var n = [],
-          a = e.length > 5 ? 5 : e.length;
-        if (a < 2) return void (t.param.parentNode.style.display = "none");
-        (t.hasNews = !0), (t.param.parentNode.style.display = "block");
-        for (var i = 0; i < a; i++) {
-          var r = e[i],
-            o = {
-              name: r.r_name,
-              symbol: this.market({
-                code: r.r_code,
-                market: r.r_market,
-              }),
-              code: r.r_code,
-              title: r.news_title,
-              news_url: r.news_url,
-              stockUrl: r.url,
-            };
-          n.push(o.symbol), this.data.push(o);
-        }
-        (this.symbols = n.join(",")),
-          new HQ.DataCenter({
-            symbols: this.symbols,
-            getObj: function(e) {
-              t.merge(e);
-            },
-          });
-      }
-    }),
-    (U.addEvent = function() {
-      var t = document.querySelector("." + this.param.pop),
-        n = this,
-        a = 0,
-        i = 0;
-      window.addEventListener("click", function() {
-        (a = new Date().getTime() - i),
-          (i = 0),
-          a > 10 && ((n.flag = !1), (t.style.display = "none"));
-      });
-    }),
-    (U.merge = function(e) {
-      var t = this;
-      for (var n in e)
-        for (var a = 0; a < t.data.length; a++)
-          if (n === t.data[a].symbol) {
-            (t.data[a].price = e[n].price),
-              (t.data[a].percent = e[n].percent),
-              (t.data[a].change = e[n].change);
-            var i = L.cssClass.themeGreen,
-              r = L.cssClass.themeRed,
-              o = null;
-            switch (e[n].type) {
-              case "green":
-                o = i;
-                break;
-              case "red":
-                o = r;
-                break;
-              case "equal":
-                o = L.cssClass.themeEqualC;
-            }
-            t.data[a].color = o;
-            break;
-          }
-      t.render();
-    }),
-    (U.render = function() {
-      for (var e = this, t = e.data.length, n = "", a = 0; a < t; a++) {
-        var i = e.data[a];
-        n += L.follow(i);
-      }
-      (e.param.dom.parentNode.style.width = 4.3 * t + 0.3 + "rem"),
-        (e.param.dom.innerHTML = n);
-    });
-  var q = m.prototype;
-  (q.load = function() {
-    var t = this,
-      n = Math.floor(1e3 * Math.random());
-    loader(
-      t.param.url
-        .replace("$symbol", paperCode)
-        .replace("$cb", this.param.varStr + n),
-      function() {
-        var a = window[t.param.varStr + n],
-          i = a;
-        i
-          ? (i.length <= 0 ? e("#" + t.param.pDom).hide() : t.render(i),
-            "cn_bk_hy" == t.param.dom && t.cb && t.cb(i))
-          : e("#" + t.param.pDom).hide();
-      },
-      function() {
-        e("#" + t.param.pDom).hide(), console.log("error...");
-      }
-    );
-  }),
-    (q.render = function(e) {});
   var B = why.prototype;
   (B.addEvent = function() {}),
     (B.load = function(e) {

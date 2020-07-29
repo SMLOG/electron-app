@@ -681,15 +681,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         K_RISE: void 0,
         K_FALL: void 0,
       },
-      newsUrl:
-        "//cj.sina.cn/api/ct_news/get_news?market=cn&symbol=$symbol&su2cu=1&page=$page&num=10&fr=wap&mi=1",
-      commentUrl:
-        "//guba.sina.com.cn/api/?s=h5bar&dpc=1&bname=$symbol.cn&jsonpflag=1&callback=var ",
-      guBaUrl: "//guba.sina.com.cn/api/?s=h5bar&bname=$symbol.cn&dpc=1",
-      bkUrl:
-        "https://money.finance.sina.com.cn/quotes_service/api/jsonp.php/var $cb=/Market_Center.getSymbolSW2?symbol=$symbol&source=apage&dpc=1",
-      gnUrl:
-        "https://money.finance.sina.com.cn/quotes_service/api/jsonp.php/var $cb=/Market_Center.getSymbolCHGN?symbol=$symbol&source=apage&dpc=1",
+
       detailUrl:
         "//vip.stock.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=10&symbol=$symbol&dpc=1&" +
         1e3 * Math.random(),
@@ -699,32 +691,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       varData: "cnData",
       varComment: "cnComment",
       info: "cnInfo",
-      newsHtml:
-        '<a href="@href"><dl style="height:@dlhg;"><dt><img src="@src" alt="@alt" style="display: @display;"></dt><dd style="height:@ddhg"><h3 style="height:@h3hg;">@content</h3><p><span>@source</span><span>@time</span></p></dd></dl></a>',
-      positionHtml: function(e) {},
-      detailHtml: function(e) {},
-      bkHtml: function(e, t) {},
-      follow: function(e) {},
-      tradeMore:
-        '<div class="trade-more"><a class="trade-more-list" style="display: none;" href="//dp.sina.cn/dpool/stock_new/v2/cjmx.php?code=' +
-        paperCode +
-        '&page=1"><div>\u67e5\u770b\u6210\u4ea4\u660e\u7ec6 ></div></a><a class="trade-more-list" style="display: none;" href="//dp.sina.cn/dpool/stock_new/v2/stock_history.php?code=' +
-        paperCode +
-        '"><div>\u67e5\u770b\u5386\u53f2\u4ea4\u6613 ></div></a></div>',
-      nothing:
-        '<div class="cn-nothing"><div></div><span><a style="color: #0090f7;" href="http://finance.sina.cn/roll.d.html?vt=4&pos=102&cid=76524&rollCid=76524">\u6682\u65e0\u4e2a\u80a1\u8d44\u8baf\uff0c\u70b9\u51fb\u67e5\u770b\u6caa\u6df1\u6eda\u52a8\u65b0\u95fb</a></span></div>',
-      nothingComment:
-        '<div class="cn-nothing"><div></div><span><a style="color: #0090f7;" href="//guba.sina.cn/list_@code.html">\u6682\u65e0\u6570\u636e \u70b9\u51fb\u524d\u5f80\u8bc4\u8bba</a></span></div>',
-      nothingMore:
-        '<div style="display: inline-block; text-align: center;width: 100%;padding: .3rem 0;background: #f8f8f8;"><a style="color: #0090f7;" href="http://finance.sina.cn/roll.d.html?vt=4&pos=102&cid=76524&rollCid=76524">\u6682\u65e0\u66f4\u591a\u6570\u636e \u70b9\u51fb\u67e5\u770b\u6caa\u6df1\u6eda\u52a8\u65b0\u95fb</a></div>',
-      nothingCommentMore:
-        '<div style="display: inline-block; text-align: center;width: 100%;padding: .3rem 0;background: #f8f8f8;"><a style="color: #0090f7;" href="//guba.sina.cn/list_@code.html">\u6682\u65e0\u66f4\u591a\u6570\u636e \u70b9\u51fb\u524d\u5f80\u8bc4\u8bba</a></div>',
-      relatedHtml:
-        '<a href="@href"><ul class="cn-relate"><li><div class="cn-relate-name">@name</div><div class="cn-relate-name gray">@symbol</div></li><li data-attr="@attr">@price</li><li><span data-color="a" class="cn-relate-color" style="background-color:@color">@zdf</span></li></ul></a>',
-      guHtml:
-        '<a href="@url"><dl><dt><img src="@src"></dt><dd class="cn-comment-user"><span>@nick</span><span>@time</span></dd><dd><div class="cn-comment-content"><span>@content</span></div></dd></dl></a>',
-      more:
-        '<p class="cn-news-more"><a href="@href">\u67e5\u770b\u66f4\u591a<i class="cn-arrow-more"></i></a></p>',
     },
     E = l.prototype;
   (E.addBlank = function() {
@@ -1008,9 +974,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         ((t.hqData = e[t.param.symbol]),
         (t.data = t.hqData.tradeItems),
         t.param.cb(t.hqData));
-    }),
-    (B.updateRender = function() {}),
-    (B.render = function() {});
+    });
 
   new v().init();
 })(Zepto);

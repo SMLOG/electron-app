@@ -183,141 +183,8 @@ var tChartProp = TodayChart.prototype;
     (this.painterFive = new Painter({
       ctn: this.param.domFive,
     })),
-    this.load(),
-    this.loadFive();
+    this.load();
 }),
-  (tChartProp.loadFive = function() {
-    var e = this;
-    (e.dataPPFive = []),
-      jsonP({
-        varStr: "fiveK" + Math.floor(100 * Math.random()),
-        url:
-          "//money.finance.sina.com.cn/quotes_service/api/openapi.php/CN_MarketData.getKLineData?symbol=" +
-          paperCode +
-          "&scale=240&ma=no&datalen=10",
-        callback: !0,
-        success: function(t) {
-          var a = t.data;
-          if (!a)
-            return void (
-              document.querySelector(".money-five") &&
-              (document.querySelector(".money-five").style.display = "none")
-            );
-          e.loadFiveZJ();
-          for (var n = 0; n < a.length; n++)
-            a[n].percent =
-              0 == n
-                ? (1 * a[n].close - 1 * a[n].open) / (1 * a[n].open)
-                : (1 * a[n].close - 1 * a[n - 1].close) / (1 * a[n - 1].close);
-          (a = a.reverse()), (e.dataPFive = a.slice(0, 6));
-        },
-      });
-  }),
-  (tChartProp.loadFiveZJ = function() {
-    var e = this;
-    (e.fiveZJ = []),
-      (e.dataFive = []),
-      jsonP({
-        varStr: "fiveZj" + Math.floor(100 * Math.random()),
-        url: "//stock.sina.com.cn/stock/api/openapi.php/TouziService.getStockHistoryFlow?page=1&num=5&symbol=$symbol".replace(
-          "$symbol",
-          paperCode
-        ),
-        callback: !0,
-        success: function(t) {
-          if (t && t.data && t.data.data) {
-            for (var a = t.data.data, n = 0; n < a.length; n++) {
-              var i = a[n].r0_in - a[n].r0_out + a[n].r1_in - a[n].r1_out;
-              e.dataFive.push(i);
-            }
-            for (
-              e.dataPFive[0].day.replace(/\//g, "-") != a[0].date &&
-                e.dataPFive.shift(),
-                e.dataPFive = e.dataPFive.reverse(),
-                e.dataPPFive = e.dataPPFive.reverse(),
-                e.dataFive = e.dataFive.reverse(),
-                e.dataFive.length > 5 && e.dataFive.shift(),
-                e.dataPFive.length > 5 && e.dataPFive.shift(),
-                n = 0;
-              n < e.dataPFive.length;
-              n++
-            )
-              e.dataPPFive.push(e.dataPFive[n].percent);
-            e.dim({
-              painter: "Five",
-            }),
-              e.dimDoubleTemple({
-                num: 5,
-                series: [
-                  {
-                    value: "Five",
-                  },
-                  {
-                    value: "PPFive",
-                    type: "line",
-                  },
-                ],
-              }),
-              e.renderTemple("Five", {
-                painter: "Five",
-              }),
-              e.renderLine("PPFive", {
-                painter: "Five",
-              }),
-              e.zjFiveTemple();
-          } else
-            document.querySelector(".money-five") &&
-              (document.querySelector(".money-five").style.display = "none");
-        },
-      });
-  }),
-  (tChartProp.zjFiveTemple = function() {
-    var e = this.dataFive,
-      t = this.dataPFive,
-      a = document.querySelector(".date"),
-      n = document.querySelector(".earn"),
-      i = document.querySelector(".percent");
-    this.fiveListTemple({
-      type: 1,
-      data: t,
-      dom: a,
-    }),
-      this.fiveListTemple({
-        type: 2,
-        data: t,
-        dom: i,
-      }),
-      this.fiveListTemple({
-        type: 3,
-        data: e,
-        dom: n,
-      });
-  }),
-  (tChartProp.fiveListTemple = function(e) {
-    for (
-      var t = e, a = document.createElement("ul"), n = 0;
-      n < t.data.length;
-      n++
-    ) {
-      var i = document.createElement("li");
-      switch (t.type) {
-        case 1:
-          var r = t.data[n].day.split("-");
-          i.innerHTML = r[1] + "-" + r[2];
-          break;
-        case 2:
-          i.innerHTML =
-            Number(100 * t.data[n].percent) > 0
-              ? "+" + Number(100 * t.data[n].percent).toFixed(2) + "%"
-              : Number(100 * t.data[n].percent).toFixed(2) + "%";
-          break;
-        case 3:
-          i.innerHTML = unit(t.data[n], 0, 2);
-      }
-      a.appendChild(i);
-    }
-    t.dom.appendChild(a);
-  }),
   (tChartProp.load = function() {
     var e = this;
     new HQ.DataCenter({
@@ -977,10 +844,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   function _() {}
   function v() {
     function a() {}
-    function i() {}
     function p() {}
-    function u() {}
-    function _(t) {}
     function v() {
       var e = x.get(V);
       if (e) return e;
@@ -1082,48 +946,8 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
   function b() {
     return new RegExp(ee.join("|")).test(document.referrer);
   }
-  function w(e) {
-    return e.getAttribute("suda-uatrack").split("=")[2];
-  }
-  function C(e, t) {
-    var n = {
-      callpagetype: "17",
-      position: "outrefer2app",
-    };
-    if ("undefined" == typeof SinaFinanceCallUp)
-      throw new Error("nil SinaFinanceCallUp");
-    var a = new SinaFinanceCallUp.CallUpSinaFinance(te);
-    e && (n.url = e), t && (n.symbol = t), a.tryDirectCall(n);
-  }
-  function k() {
-    var t = e(".cn-nav").find("a"),
-      n = e(".cn-stock-tab").find("li"),
-      a = e("#cn_news_cont");
-    t.on("click", function(e) {
-      var t = w(this);
-      if ("navstock" !== t && "navpoint" !== t) {
-        if ((e.preventDefault(), "undefined" == typeof SinaFinanceCallUp))
-          throw new Error("nil SinaFinanceCallUp");
-        new SinaFinanceCallUp.CallUpSinaFinance(te).tryDirectCall(
-          ne[t].callopts
-        );
-      }
-    }),
-      n.on("click", "a", function(e) {
-        e.preventDefault();
-        var t = w(this);
-        if ("news" !== t && "relate" !== t) {
-          if ("undefined" == typeof SinaFinanceCallUp)
-            throw new Error("nil SinaFinanceCallUp");
-          new SinaFinanceCallUp.CallUpSinaFinance(te).tryDirectCall(
-            ne.tabcall.callopts
-          );
-        }
-      }),
-      a.on("click", "a", function(t) {
-        t.preventDefault(), C(e(this).attr("href"));
-      });
-  }
+
+  function k() {}
   var x = {
       escape: function(e) {
         return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
@@ -1250,7 +1074,6 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
             name: e.replace("dataView-", ""),
           };
       });
-    console.log(pTechlist);
     KKE.api(
       "plugins.sinaAppTKChart.get",
       {
@@ -1353,9 +1176,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
         l = e(".cn-chart");
       setTimeout(function() {
         a.resize()
-          ? (e("#fix_floating").hide(),
-            e("#fix_header").hide(),
-            window.scrollTo(0, 0),
+          ? (window.scrollTo(0, 0),
             s.hide(),
             r
               .show()

@@ -1,33 +1,3 @@
-function unit(e, t, a) {
-  if (((e = Number(e)), isNaN(e))) return "-";
-  var n = Math.abs(e);
-  return (e / 1e4).toFixed(a ? (n / 1e4 <= 99 ? 2 : t) : t);
-}
-function Painter(e) {
-  (this.param = e),
-    (this.ctn = null),
-    (this.g = null),
-    (this.canvas = null),
-    this.initCtn(),
-    this.initCanvas();
-}
-
-var xh5_BrowserUtil = new (function() {
-    this.hdpr = (function(e) {
-      var t = document.createElement("canvas");
-      if (t.getContext && t.getContext("2d")) {
-        return (
-          Math.ceil(window.devicePixelRatio || 1) /
-          (t.getContext("2d").webkitBackingStorePixelRatio || 1)
-        );
-      }
-      return (e.noH5 = !0), 1;
-    })(this);
-  })(),
-  themeRed = "#de3639",
-  themeGreen = "#1bc07d",
-  themeBlue = "#538eeb";
-
 function jsonP(e) {
   var t = e.varStr,
     n = document.getElementsByTagName("head")[0],
@@ -119,7 +89,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     );
   }
 
-  function ooo(e) {
+  function ChartMan(e) {
     (this.param = e),
       (this.chart = null),
       (this.delistList = ["kd", "kw", "km", "more"]),
@@ -127,21 +97,20 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       this.initChart();
   }
 
-  function why(e) {
+  function HqLoader(e) {
     (this.param = e),
       (this.data = null),
       (this.hqData = null),
       (this.u = __isKCB ? 1 : 100),
-      (this.loaded = 0),
-      this.addEvent();
+      (this.loaded = 0);
   }
 
-  function v() {
-    function v() {
-      var e = cookieUtil.get(V);
+  function MyChart() {
+    function getUserRiseColor() {
+      var e = cookieUtil.get(hq_userColor);
       if (e) return e;
     }
-    function cfgTheme() {
+    function initTheme() {
       if ("riseGreen" == cfg.riseColor) {
         var e = cfg.chartGreen;
         (cfg.chartGreen = cfg.chartRed), (cfg.chartRed = e);
@@ -155,11 +124,12 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     }
     function wresize() {
       $(window).on("resize", function() {
-        sss && sss.resizeChart(T), sss && sss.chart && sss.chart.resize();
+        chartman && chartman.resizeChart(chart),
+          chartman && chartman.chart && chartman.chart.resize();
       });
     }
 
-    function S() {
+    function initHQ() {
       new HQ.DataBox({
         isANeedPHP: !1,
         isANeedCWZJ: !1,
@@ -168,39 +138,41 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         symbol: paperCode,
         getStr: function(e) {
           var t = Object.keys(e)[0];
-          T &&
-            T.pushData({
+          chart &&
+            chart.pushData({
               symbol: t,
               data: e[t],
             });
         },
         getObj: function(e) {
-          e && PPP.load(e);
+          e && hqloader.load(e);
         },
       });
     }
 
-    function D() {
-      (window.riseColor = cfg.riseColor = v() ? v() : "riseRed"),
-        cfgTheme(),
-        S();
-      (PPP = new why({
+    function init() {
+      (window.riseColor = cfg.riseColor = getUserRiseColor()
+        ? getUserRiseColor()
+        : "riseRed"),
+        initTheme(),
+        initHQ();
+      (hqloader = new HqLoader({
         dom: {
           position: "cn_position",
           detail: "cn_detail",
         },
         symbol: paperCode,
-        cb: function(e) {
-          sss || (sss = new ooo(e));
+        cb: function(hqData) {
+          chartman || (chartman = new ChartMan(hqData));
         },
       })),
         wresize();
     }
-    var sss,
-      PPP,
-      V = "hq_userColor";
+    var chartman,
+      hqloader,
+      hq_userColor = "hq_userColor";
 
-    this.init = D;
+    this.init = init;
   }
 
   var cookieUtil = {
@@ -229,8 +201,8 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       document.cookie = [e, "=", t, a, r, o, s].join("");
     },
   };
-  var T = null,
-    D = ooo.prototype;
+  var chart = null,
+    D = ChartMan.prototype;
   (D.initChart = function() {
     var t = this,
       dataView =
@@ -368,12 +340,12 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         },
         callUpApp: {},
       },
-      function(chartObj) {
-        (T = t.chart = chartObj), t.resizeChart(chartObj);
+      function(e) {
+        (chart = t.chart = e), t.resizeChart(e);
       }
     );
   }),
-    (D.resizeChart = function(n) {
+    (D.resizeChart = function(chart) {
       var a = this,
         i = viewPoint(),
         r = $("#hq_chart"),
@@ -388,8 +360,8 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
               .show()
               .height(i.viewHeight + "px")
               .append(o),
-            n.setDirection("horizontal"))
-          : (s.show(), r.hide(), l.append(o), n.setDirection("vertical"));
+            chart.setDirection("horizontal"))
+          : (s.show(), r.hide(), l.append(o), chart.setDirection("vertical"));
       }, 100);
     }),
     (D.resize = function() {
@@ -430,15 +402,14 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     info: "cnInfo",
   };
 
-  var B = why.prototype;
-  (B.addEvent = function() {}),
-    (B.load = function(e) {
-      var t = this;
-      e[t.param.symbol] &&
-        ((t.hqData = e[t.param.symbol]),
-        (t.data = t.hqData.tradeItems),
-        t.param.cb(t.hqData));
-    });
+  var B = HqLoader.prototype;
+  B.load = function(e) {
+    var t = this;
+    e[t.param.symbol] &&
+      ((t.hqData = e[t.param.symbol]),
+      (t.data = t.hqData.tradeItems),
+      t.param.cb(t.hqData));
+  };
 
-  new v().init();
+  new MyChart().init();
 })(Zepto);

@@ -48,14 +48,20 @@ routerApi.get("/sea", async (ctx) => {
   //let cb = ctx.request.query.callback;
   //ctx.type = "text";
 
-  let list = await getList();
+  let list = [];
+  list = await getList();
 
   list = await getFilterList(list);
 
   ctx.body = list;
 });
 routerApi.get("/hxlist", async (ctx) => {
-  let list = await getList();
+  let list = [];
+  try {
+    list = await getList();
+  } catch (err) {
+    console.log(err);
+  }
 
   ctx.body = list;
 });
@@ -71,3 +77,5 @@ app.use(async (ctx) => {
 
 console.log("start");
 app.listen(3000);
+
+process.on("uncaughtException", () => {});

@@ -88,133 +88,8 @@ function loader(e, t, n, a) {
       ? s.insertBefore(r, l)
       : s.appendChild(r);
 }
-!(function(e, t) {
-  function n(e) {
-    return e.replace(/([A-Z])/g, "-$1").toLowerCase();
-  }
-  function a(e) {
-    return i ? i + e : e.toLowerCase();
-  }
-  var i,
-    r,
-    o,
-    s,
-    l,
-    c,
-    d,
-    p,
-    h,
-    m,
-    f = "",
-    u = {
-      Webkit: "webkit",
-      Moz: "",
-      O: "o",
-    },
-    _ = document.createElement("div"),
-    v = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i,
-    g = {};
-  _.style.transform === t &&
-    e.each(u, function(e, n) {
-      if (_.style[e + "TransitionProperty"] !== t)
-        return (f = "-" + e.toLowerCase() + "-"), (i = n), !1;
-    }),
-    (r = f + "transform"),
-    (g[(o = f + "transition-property")] = g[
-      (s = f + "transition-duration")
-    ] = g[(c = f + "transition-delay")] = g[
-      (l = f + "transition-timing-function")
-    ] = g[(d = f + "animation-name")] = g[(p = f + "animation-duration")] = g[
-      (m = f + "animation-delay")
-    ] = g[(h = f + "animation-timing-function")] = ""),
-    (e.fx = {
-      off: i === t && _.style.transitionProperty === t,
-      speeds: {
-        _default: 400,
-        fast: 200,
-        slow: 600,
-      },
-      cssPrefix: f,
-      transitionEnd: a("TransitionEnd"),
-      animationEnd: a("AnimationEnd"),
-    }),
-    (e.fn.animate = function(n, a, i, r, o) {
-      return (
-        e.isFunction(a) && ((r = a), (i = t), (a = t)),
-        e.isFunction(i) && ((r = i), (i = t)),
-        e.isPlainObject(a) &&
-          ((i = a.easing), (r = a.complete), (o = a.delay), (a = a.duration)),
-        a &&
-          (a =
-            ("number" == typeof a
-              ? a
-              : e.fx.speeds[a] || e.fx.speeds._default) / 1e3),
-        o && (o = parseFloat(o) / 1e3),
-        this.anim(n, a, i, r, o)
-      );
-    }),
-    (e.fn.anim = function(a, i, f, u, _) {
-      var y,
-        b,
-        w,
-        C = {},
-        k = "",
-        x = this,
-        S = e.fx.transitionEnd,
-        T = !1;
-      if (
-        (i === t && (i = e.fx.speeds._default / 1e3),
-        _ === t && (_ = 0),
-        e.fx.off && (i = 0),
-        "string" == typeof a)
-      )
-        (C[d] = a),
-          (C[p] = i + "s"),
-          (C[m] = _ + "s"),
-          (C[h] = f || "linear"),
-          (S = e.fx.animationEnd);
-      else {
-        b = [];
-        for (y in a)
-          v.test(y)
-            ? (k += y + "(" + a[y] + ") ")
-            : ((C[y] = a[y]), b.push(n(y)));
-        k && ((C[r] = k), b.push(r)),
-          i > 0 &&
-            "object" == typeof a &&
-            ((C[o] = b.join(", ")),
-            (C[s] = i + "s"),
-            (C[c] = _ + "s"),
-            (C[l] = f || "linear"));
-      }
-      return (
-        (w = function(t) {
-          if (void 0 !== t) {
-            if (t.target !== t.currentTarget) return;
-            e(t.target).unbind(S, w);
-          } else e(this).unbind(S, w);
-          (T = !0), e(this).css(g), u && u.call(this);
-        }),
-        i > 0 &&
-          (this.bind(S, w),
-          setTimeout(function() {
-            T || w.call(x);
-          }, 1e3 * (i + _) + 25)),
-        this.size() && this.get(0).clientLeft,
-        this.css(C),
-        i <= 0 &&
-          setTimeout(function() {
-            x.each(function() {
-              w.call(this);
-            });
-          }, 0),
-        this
-      );
-    }),
-    (_ = null);
-})(Zepto);
-var __isNewsApp = /sinanews/i.test(navigator.userAgent),
-  __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
+
+var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
 !(function($) {
   function viewPoint() {
     var e = 0,
@@ -266,7 +141,7 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
       var e = cookieUtil.get(V);
       if (e) return e;
     }
-    function y() {
+    function cfgTheme() {
       if ("riseGreen" == cfg.riseColor) {
         var e = cfg.chartGreen;
         (cfg.chartGreen = cfg.chartRed), (cfg.chartRed = e);
@@ -306,7 +181,9 @@ var __isNewsApp = /sinanews/i.test(navigator.userAgent),
     }
 
     function D() {
-      (window.riseColor = cfg.riseColor = v() ? v() : "riseRed"), y(), S();
+      (window.riseColor = cfg.riseColor = v() ? v() : "riseRed"),
+        cfgTheme(),
+        S();
       (PPP = new why({
         dom: {
           position: "cn_position",

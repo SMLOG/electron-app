@@ -42,8 +42,8 @@ xh5_define(
             }
             return 1;
           };
-        (this.business = e.business), (this.simple = e.simple);
-        var y = !0;
+        this.business = e.business;
+        this.simple = e.simple;
         (this.dp = e.dp),
           (this.marketNum = b),
           (this.isErr = !1),
@@ -76,47 +76,47 @@ xh5_define(
           (this.futureTime = x || w || T),
           (this.gbiTime = T),
           (this.preData = { data: 0, vPos: null }),
-          (this.needMarket = h),
-          (this.changeMarket = function(e) {
-            var a,
-              i = [],
-              r = e;
-            if (((U = A.tcd(I)), b(m.needMarket) != b(I))) {
-              (a = F.get()), (d = t.tUtil.gata(I));
-              for (var n = 0; n < a.length; n++)
-                b(m.needMarket) < b(I)
-                  ? (i.push(A.aduk(a[n], m.market, I, C, a[n][0].date)),
-                    (m.realLen = t.arrIndexOf(
-                      d,
-                      C.getHours() + ":" + t.strUtil.zp(C.getMinutes())
-                    )),
-                    m.realLen < 0 && (m.realLen = U))
-                  : (i.push(A.rmuk(a[n], I, r)),
-                    (m.realLen = t.arrIndexOf(
-                      d,
-                      C.getHours() + ":" + t.strUtil.zp(C.getMinutes())
-                    )));
-              (m.needMarket = I),
-                F.initTState(i),
-                (m.datas = i[4]),
-                $.setDataRange(),
-                $.createPlayingData();
-            }
-          });
+          (this.needMarket = h);
+        this.changeMarket = function(e) {
+          var a,
+            i = [],
+            r = e;
+          if (((U = A.tcd(I)), b(m.needMarket) != b(I))) {
+            (a = F.get()), (d = t.tUtil.gata(I));
+            for (var n = 0; n < a.length; n++)
+              b(m.needMarket) < b(I)
+                ? (i.push(A.aduk(a[n], m.market, I, C, a[n][0].date)),
+                  (m.realLen = t.arrIndexOf(
+                    d,
+                    C.getHours() + ":" + t.strUtil.zp(C.getMinutes())
+                  )),
+                  m.realLen < 0 && (m.realLen = U))
+                : (i.push(A.rmuk(a[n], I, r)),
+                  (m.realLen = t.arrIndexOf(
+                    d,
+                    C.getHours() + ":" + t.strUtil.zp(C.getMinutes())
+                  )));
+            (m.needMarket = I),
+              F.initTState(i),
+              (m.datas = i[4]),
+              $.setDataRange(),
+              $.createPlayingData();
+          }
+        };
         var _,
           k,
           D,
           L,
           C,
           q = new S(this, e);
-        (this.getName = function() {
+        this.getName = function() {
           return L || "";
-        }),
-          (this.getStockType = function() {
-            var e;
-            return m.hq && (e = m.hq.type), e || "";
-          }),
-          (this.viewState = ee);
+        };
+        this.getStockType = function() {
+          var e;
+          return m.hq && (e = m.hq.type), e || "";
+        };
+        this.viewState = ee;
         var F = new (function() {
             var a = {},
               r = { rsAmount: void 0 },
@@ -455,8 +455,8 @@ xh5_define(
                     t();
                 }
               });
-          })(),
-          K = {},
+          })();
+        var K = {},
           B = !1,
           ae = !1,
           ie = {},
@@ -1079,62 +1079,62 @@ xh5_define(
           (this.initData = pe.init),
           (this.initT5Data = me.updateT5Data),
           (this.doUpdate = me.update),
-          (this.onViewChange = r),
-          (this.setPricePos = function(e, t) {
-            (m.labelMaxP = e[0]),
-              (m.labelMinP = e[1]),
-              (m.labelPriceCount = e[2]),
-              (m.isCompare = t),
-              $.createPlayingData(),
-              k && k.setPricePos(e);
-          }),
-          (this.setRange = function() {
-            $.setDataRange(),
-              _ && _.setDataRange(),
-              k && k.setDataRange(),
-              D && D.setDataRange();
-          }),
-          (this.draw = function() {
-            q.draw(), _ && _.allDraw(), k && k.allDraw();
-          }),
-          (this.resize = function(e) {
+          (this.onViewChange = r);
+        this.setPricePos = function(e, t) {
+          (m.labelMaxP = e[0]),
+            (m.labelMinP = e[1]),
+            (m.labelPriceCount = e[2]),
+            (m.isCompare = t),
             $.createPlayingData(),
-              q.resize(),
-              _ && _.onResize(e),
-              k && k.onResize(),
-              D && D.onResize();
-          }),
-          (this.clear = function() {
-            q.clear(),
-              _ && (_.clear(), (_ = null)),
-              k && (k.clear(), (k = null)),
-              D && (D.clear(), (D = null)),
-              a && (Q = null);
-          }),
-          (this.getPriceTech = function() {
-            return k || null;
-          }),
-          (this.removePt = function(e) {
-            if (e) {
-              !t.isArr(e) && (e = [e]);
-              for (var a = e.length; a--; )
-                if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
-                  e.splice(a, 1), (E.custom.show_underlay_vol = !1);
-                  break;
-                }
-            } else E.custom.show_underlay_vol = !1;
-            k && k.removeChart(e);
-          }),
-          (this.togglePt = function(e) {
-            k && (y = k.showHide(e));
-          });
+            k && k.setPricePos(e);
+        };
+        this.setRange = function() {
+          $.setDataRange(),
+            _ && _.setDataRange(),
+            k && k.setDataRange(),
+            D && D.setDataRange();
+        };
+        this.draw = function() {
+          q.draw(), _ && _.allDraw(), k && k.allDraw();
+        };
+        this.resize = function(e) {
+          $.createPlayingData(),
+            q.resize(),
+            _ && _.onResize(e),
+            k && k.onResize(),
+            D && D.onResize();
+        };
+        this.clear = function() {
+          q.clear(),
+            _ && (_.clear(), (_ = null)),
+            k && (k.clear(), (k = null)),
+            D && (D.clear(), (D = null)),
+            a && (Q = null);
+        };
+        this.getPriceTech = function() {
+          return k || null;
+        };
+        this.removePt = function(e) {
+          if (e) {
+            !t.isArr(e) && (e = [e]);
+            for (var a = e.length; a--; )
+              if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
+                e.splice(a, 1), (E.custom.show_underlay_vol = !1);
+                break;
+              }
+          } else E.custom.show_underlay_vol = !1;
+          k && k.removeChart(e);
+        };
+        this.togglePt = function(e) {
+          k && (y = k.showHide(e));
+        };
         var he = function(e, a, i) {
           e && re.resizeAll(!0),
             X.onChangeView(),
             a && t.isFunc(a.callback) && a.callback(),
             i && ne.onTechChanged(i[0]);
         };
-        (this.initPt = function(e, r) {
+        this.initPt = function(e, r) {
           if (e) {
             !t.isArr(e) && (e = [e]);
             for (var n = e.length; n--; )
@@ -1156,39 +1156,39 @@ xh5_define(
               a && (Z = k)),
               k.createChart(e, r);
           }
-        }),
-          (this.initTc = function(e, t) {
-            _ ||
-              ((_ = new l({
-                stockData: m,
-                iMgr: oe,
-                subArea: W,
-                cb: he,
-                cfg: E,
-                type: "option_cn" == I ? "p" : "t",
-                usrObj: i,
-                initMgr: re,
-              })),
-              a && (Y = _)),
-              _.createChart(e, t);
-          }),
-          (this.removeTc = function(e) {
-            _ && _.removeChart(e);
-          }),
-          (this.initRs = function() {
-            D ||
-              ((D = new o({
-                stockData: m,
-                setting: E,
-                state: ee,
-                rc: X.moving,
-                witht5: 1,
-              })),
-              (Q = D)),
-              D.linkData();
-          }),
-          (this.setTLineStyle = q.setTLineStyle),
-          c();
+        };
+        this.initTc = function(e, t) {
+          _ ||
+            ((_ = new l({
+              stockData: m,
+              iMgr: oe,
+              subArea: W,
+              cb: he,
+              cfg: E,
+              type: "option_cn" == I ? "p" : "t",
+              usrObj: i,
+              initMgr: re,
+            })),
+            a && (Y = _)),
+            _.createChart(e, t);
+        };
+        this.removeTc = function(e) {
+          _ && _.removeChart(e);
+        };
+        this.initRs = function() {
+          D ||
+            ((D = new o({
+              stockData: m,
+              setting: E,
+              state: ee,
+              rc: X.moving,
+              witht5: 1,
+            })),
+            (Q = D)),
+            D.linkData();
+        };
+        this.setTLineStyle = q.setTLineStyle;
+        c();
       }
       function S(e, r) {
         function n() {
@@ -2073,7 +2073,7 @@ xh5_define(
         };
       t.xh5_EvtDispatcher.call(this);
       var P = this;
-      (i = u(
+      i = u(
         {
           symbol: "sh000001",
           ssl: !0,
@@ -2114,15 +2114,14 @@ xh5_define(
           tchartobject: { t: void 0, k: void 0 },
         },
         i || { YANGWEN: "yangwen@staff.sina.com.cn", VER: "2.6.0" }
-      )),
-        !i.symbol && (i.symbol = "sh000001"),
-        (i.symbol = String(i.symbol)),
-        (i.rawsymbol = String(i.symbol)),
-        (i.symbol =
-          "LSE" === t.market(i.symbol)
-            ? t.strUtil.replaceStr(i.symbol)
-            : i.symbol.replace(".", "$")),
-        0 == location.protocol.indexOf("https:") && (i.ssl = !0);
+      );
+      !i.symbol && (i.symbol = "sh000001"), (i.symbol = String(i.symbol));
+      i.rawsymbol = String(i.symbol);
+      i.symbol =
+        "LSE" === t.market(i.symbol)
+          ? t.strUtil.replaceStr(i.symbol)
+          : i.symbol.replace(".", "$");
+      0 == location.protocol.indexOf("https:") && (i.ssl = !0);
       var q =
           "_" +
           i.symbol +
@@ -2130,11 +2129,11 @@ xh5_define(
           Math.floor(1234567890 * Math.random() + 1) +
           Math.floor(9876543210 * Math.random() + 1),
         E = e.getSetting(q);
-      (E.datas.isT = !0),
-        i.reorder || (E.custom.indicator_reorder = !1),
-        i.reheight || (E.custom.indicator_reheight = !1),
-        (I = t.market(i.symbol)),
-        (E.datas.tDataLen = A.tcd(I));
+      E.datas.isT = !0;
+      i.reorder || (E.custom.indicator_reorder = !1);
+      i.reheight || (E.custom.indicator_reheight = !1);
+      I = t.market(i.symbol);
+      E.datas.tDataLen = A.tcd(I);
       var U = E.datas.tDataLen,
         H = new (function() {
           var e;
@@ -3190,7 +3189,7 @@ xh5_define(
             !t.isArr(e) && (e = [e]), X.pushData(e, a);
           };
           var s;
-          (this.pushTr = function(e) {
+          this.pushTr = function(e) {
             e &&
               e.data &&
               (clearTimeout(s),
@@ -3201,10 +3200,10 @@ xh5_define(
                   r = { symbol: a, data: t[t.length - 1], market: i };
                 X.pushData([r], 1);
               }, 20)));
-          }),
-            (this.setScale = function(e) {
-              X.setScale(e), t.stc("t_scale", e);
-            });
+          };
+          this.setScale = function(e) {
+            X.setScale(e), t.stc("t_scale", e);
+          };
           var l = !0;
           this.showView = function(e, a) {
             oe.hideIUis(), l ? (l = !1) : J.hide();

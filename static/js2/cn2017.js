@@ -297,44 +297,44 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         bsCallUp: {
           more: [
             {
-              name: "\u5e74\u7ebf",
+              name: "年线",
               v: "kcl",
             },
             {
-              name: "5\u5206",
+              name: "5分",
               v: "k5",
             },
             {
-              name: "15\u5206",
+              name: "15分",
               v: "k15",
             },
             {
-              name: "30\u5206",
+              name: "30分",
               v: "k30",
             },
             {
-              name: "60\u5206",
+              name: "60分",
               v: "k60",
             },
           ],
           tabs: [
             {
-              name: "\u4e94\u65e5",
+              name: "五日",
               v: "t5",
             },
             {
-              name: "\u5468K",
+              name: "周K",
               v: "kw",
             },
             {
-              name: "\u6708K",
+              name: "月K",
               v: "km",
             },
           ],
-          show: !1,
+          show: !0,
         },
         zoomBar: {
-          show: !1,
+          show: !0,
         },
         clinicStock: {
           show: false,

@@ -89,8 +89,8 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     );
   }
 
-  function ChartMan(e) {
-    (this.param = e),
+  function ChartMan(hqData) {
+    (this.param = hqData),
       (this.chart = null),
       (this.delistList = ["kd", "kw", "km", "more"]),
       (this.tabList = ["t1", "t5", "kd", "kw", "km", "more"]),
@@ -104,7 +104,13 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       (this.u = __isKCB ? 1 : 100),
       (this.loaded = 0);
   }
-
+  HqLoader.prototype.load = function(e) {
+    var t = this;
+    e[t.param.symbol] &&
+      ((t.hqData = e[t.param.symbol]),
+      (t.data = t.hqData.tradeItems),
+      t.param.cb(t.hqData));
+  };
   function MyChart() {
     function getUserRiseColor() {
       var e = cookieUtil.get(hq_userColor);
@@ -151,22 +157,16 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     }
 
     function init() {
-      (window.riseColor = cfg.riseColor = getUserRiseColor()
-        ? getUserRiseColor()
-        : "riseRed"),
-        initTheme(),
-        initHQ();
-      (hqloader = new HqLoader({
-        dom: {
-          position: "cn_position",
-          detail: "cn_detail",
-        },
+      cfg.riseColor = getUserRiseColor() ? getUserRiseColor() : "riseRed";
+      initTheme();
+      hqloader = new HqLoader({
         symbol: paperCode,
         cb: function(hqData) {
           chartman || (chartman = new ChartMan(hqData));
         },
-      })),
-        wresize();
+      });
+      wresize();
+      initHQ();
     }
     var chartman,
       hqloader,
@@ -201,17 +201,17 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       document.cookie = [e, "=", t, a, r, o, s].join("");
     },
   };
-  var chart = null,
-    D = ChartMan.prototype;
-  (D.initChart = function() {
+  var chart = null;
+  ChartMan.prototype.initChart = function() {
     var t = this,
       dataView =
-        "\u9000\u5e02" == t.param.halt
+        "退市" == t.param.halt
           ? "kd"
           : location.href.indexOf("&t1") > -1
           ? "t1"
           : getMyCookie("dataView", "t1");
-    "\u9000\u5e02" == t.param.halt ? t.delistList : t.tabList;
+    "退市" == t.param.halt ? t.delistList : t.tabList;
+
     let pTechlist = document.cookie
       .split(";")
       .map((e) => e.split("=")[0].trim())
@@ -252,6 +252,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
             name: e.replace("dataView-", ""),
           };
       });
+
     KKE.api(
       "plugins.sinaAppTKChart.get",
       {
@@ -344,32 +345,32 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         (chart = t.chart = e), t.resizeChart(e);
       }
     );
-  }),
-    (D.resizeChart = function(chart) {
-      var a = this,
-        i = viewPoint(),
-        r = $("#hq_chart"),
-        o = $("#h5Chart"),
-        s = $("#hqMain"),
-        l = $(".cn-chart");
-      setTimeout(function() {
-        a.resize()
-          ? (window.scrollTo(0, 0),
-            s.hide(),
-            r
-              .show()
-              .height(i.viewHeight + "px")
-              .append(o),
-            chart.setDirection("horizontal"))
-          : (s.show(), r.hide(), l.append(o), chart.setDirection("vertical"));
-      }, 100);
-    }),
-    (D.resize = function() {
-      var e = viewPoint(),
-        n = e.viewWidth,
-        a = e.viewHeight;
-      return n > a ? 1 : 0;
-    });
+  };
+  ChartMan.prototype.resizeChart = function(chart) {
+    var a = this,
+      i = viewPoint(),
+      r = $("#hq_chart"),
+      o = $("#h5Chart"),
+      s = $("#hqMain"),
+      l = $(".cn-chart");
+    setTimeout(function() {
+      a.resize()
+        ? (window.scrollTo(0, 0),
+          s.hide(),
+          r
+            .show()
+            .height(i.viewHeight + "px")
+            .append(o),
+          chart.setDirection("horizontal"))
+        : (s.show(), r.hide(), l.append(o), chart.setDirection("vertical"));
+    }, 100);
+  };
+  ChartMan.prototype.resize = function() {
+    var e = viewPoint(),
+      n = e.viewWidth,
+      a = e.viewHeight;
+    return n > a ? 1 : 0;
+  };
   var cfg = {
     cssClass: {
       riseColor: "red",
@@ -400,15 +401,6 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     varData: "cnData",
     varComment: "cnComment",
     info: "cnInfo",
-  };
-
-  var B = HqLoader.prototype;
-  B.load = function(e) {
-    var t = this;
-    e[t.param.symbol] &&
-      ((t.hqData = e[t.param.symbol]),
-      (t.data = t.hqData.tradeItems),
-      t.param.cb(t.hqData));
   };
 
   new MyChart().init();

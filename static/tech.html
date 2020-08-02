@@ -20,59 +20,12 @@
     />
     <link rel="stylesheet" type="text/css" href="js2/cwIndexF10.css?hsw=7.32" />
 
-    <script type="text/javascript">
-      function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-        var expires = "expires=" + d.toGMTString();
-        document.cookie = cname + "=" + cvalue + "; " + expires;
-        loader("/api/cookie?set=1&_t" + +new Date());
-      }
-      function getMyCookie(cname, def) {
-        var name = cname + "=";
-        var ca = document.cookie.split(";");
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i].trim();
-          if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-        }
-        return def;
-      }
-      try {
-        document.domain = "sina.cn";
-      } catch (event) {}
-      (function(doc, win) {
-        var MAX_WIDTH = 400.0125;
-        var resizing = null;
-        var dpr, rem, scale;
-        var metaEl = doc.querySelector('meta[name="viewport"]');
-        win.onresize = function() {
-          if (resizing) {
-            clearTimeout(resizing);
-          }
-          resizing = setTimeout(adjustBase, 100);
-        };
 
-        function adjustBase() {
-          var clientWidth =
-            doc.body.clientWidth || doc.documentElement.clientWidth;
-          if (clientWidth > MAX_WIDTH) {
-            clientWidth = MAX_WIDTH;
-          }
-          doc.querySelector("html").style["font-size"] =
-            ((clientWidth / 750) * 10000) / 16 + "%";
-          resizing = null;
-        }
-        if (!doc.documentElement.addEventListener) return;
-        doc.addEventListener("DOMContentLoaded", adjustBase, false);
-      })(document, window);
-    </script>
     <script>
-      var relateSymbol = "sh000001,sz399001,sz399006,b_SPX,hkHSI"; //,b_SX5E';//相关代码
       var q = document.location.href.split("?")[1];
       var paperCode = q.split("&")[0];
       var type = q.split("&").length > 1 && q.split("&")[1];
 
-      var isIndex = "0";
     </script>
   </head>
 
@@ -114,48 +67,6 @@
       charset="GBK"
       src="js2/cn2017.js?hsw=7.32"
     ></script>
-    <script>
-      function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-        var expires = "expires=" + d.toGMTString();
-        document.cookie = cname + "=" + cvalue + "; " + expires;
-        loader(
-          "/api/cookie?cookie=" +
-            encodeURIComponent(document.cookie) +
-            "&_t" +
-            +new Date()
-        );
-      }
 
-      let timer = setInterval(() => {
-        if ($("li[type=nav]").length > 0) clearInterval(timer);
-        else return;
-        $("li[type=nav],li[type=subNav]").click(function(e) {
-          let type = $(this).attr("data-view");
-          if (type) {
-            if (getMyCookie("dataView") == type) {
-              location = location.href + "#close";
-            }
-
-            setCookie("dataView", type);
-          }
-        });
-
-        $("li").click(function(e) {
-          setTimeout(() => {
-            let value = $(this).attr("value");
-            if (value) {
-              if (getMyCookie("dataView", "k").indexOf("t") > -1) {
-                setCookie("dataViewt-" + value, $(this).attr("selected"));
-              } else setCookie("dataView-" + value, $(this).attr("selected"));
-            }
-          }, 500);
-        });
-      }, 100);
-      if (!document.cookie) {
-        loader("/api/cookie?_t" + +new Date(), () => {});
-      }
-    </script>
   </body>
 </html>

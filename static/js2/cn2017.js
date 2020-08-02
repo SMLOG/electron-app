@@ -1,17 +1,19 @@
 function jsonP(e) {
-  var t = e.varStr,
+  var varStr = e.varStr,
     n = document.getElementsByTagName("head")[0],
     a = document.createElement("script"),
-    i = e.success,
-    r = e.callback ? "&callback=" + t : "",
-    o = e.url;
-  (a.src = o + r),
+    onSuccess = e.success,
+    callback = e.callback ? "&callback=" + varStr : "",
+    url = e.url;
+  (a.src = url + callback),
     (a.type = "text/javascript"),
     (a.onload = a.onreadystatechange = function() {
       (this.readyState &&
         "loaded" !== this.readyState &&
         "complete" !== this.readyState) ||
-        (r || i(), (a.onload = a.onreadystatechange = null), n.removeChild(a));
+        (callback || onSuccess(),
+        (a.onload = a.onreadystatechange = null),
+        n.removeChild(a));
     }),
     (a.onerror = function() {
       (a.onload = a.onreadystatechange = a.onerror = null),
@@ -20,9 +22,9 @@ function jsonP(e) {
         "function" == typeof e.error && e.error();
     }),
     n.appendChild(a),
-    r &&
-      (window[t] = function(e) {
-        i && i(e.result ? e.result : e), delete window[t];
+    callback &&
+      (window[varStr] = function(e) {
+        onSuccess && onSuccess(e.result ? e.result : e), delete window[varStr];
       });
 }
 function loader(e, t, n, a) {
@@ -405,3 +407,48 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
 
   new MyChart().init();
 })(Zepto);
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+  loader("/api/cookie?set=1&_t" + +new Date());
+}
+function getMyCookie(cname, def) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+  return def;
+}
+
+let timer = setInterval(() => {
+  if ($("li[type=nav]").length > 0) clearInterval(timer);
+  else return;
+  $("li[type=nav],li[type=subNav]").click(function(e) {
+    let type = $(this).attr("data-view");
+    if (type) {
+      if (getMyCookie("dataView") == type) {
+        location = location.href + "#close";
+      }
+      setCookie("dataView", type);
+    }
+  });
+
+  $("li").click(function(e) {
+    setTimeout(() => {
+      let value = $(this).attr("value");
+      if (value) {
+        if (getMyCookie("dataView", "k").indexOf("t") > -1) {
+          setCookie("dataViewt-" + value, $(this).attr("selected"));
+        } else setCookie("dataView-" + value, $(this).attr("selected"));
+      }
+    }, 500);
+  });
+}, 100);
+if (!document.cookie) {
+  loader("/api/cookie?_t" + +new Date(), () => {});
+}

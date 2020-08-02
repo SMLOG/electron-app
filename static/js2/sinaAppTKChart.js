@@ -624,7 +624,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             ]),
             (t.info.toFixedNum = 4),
             (t.chart.kChart.showRangeSelector = {
-              display: !1,
+              display: !0,
             }),
             F(t);
           break;

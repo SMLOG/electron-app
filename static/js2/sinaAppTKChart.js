@@ -624,7 +624,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
             ]),
             (t.info.toFixedNum = 4),
             (t.chart.kChart.showRangeSelector = {
-              display: !0,
+              display: !1,
             }),
             F(t);
           break;
@@ -1067,6 +1067,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         topDom = r("div"),
         a = topDom.style,
         n = this;
+      topDom.id = "topDom";
       (this.doms = {}),
         (a.height = "100%"),
         (a.width = "100%"),
@@ -1082,6 +1083,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         (this.doms.symbol = l);
       var prDom = r("div"),
         d = prDom.style;
+      prDom.id = "prDom";
       topDom.appendChild(prDom);
       c(prDom.style, e.priceStyle, !0),
         (d.lineHeight = s(prDom) + "px"),
@@ -1709,7 +1711,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               .filter((name) => {
                 return (
                   name.indexOf("dataView-") == 0 &&
-                  getMyCookie(name, "false") == "true"
+                  cookieUtil.get(name, "false") == "true"
                 );
               })
               .map((e) => e.replace("dataView-", ""));
@@ -1745,7 +1747,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
               .filter((name) => {
                 return (
                   name.indexOf("dataViewt-") == 0 &&
-                  getMyCookie(name, "false") == "true"
+                  cookieUtil.get(name, "false") == "true"
                 );
               })
               .map((e) => e.replace("dataViewt-", ""));

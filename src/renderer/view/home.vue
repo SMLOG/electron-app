@@ -170,7 +170,7 @@
         ></i>
         <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
       </div>
-      <WinView :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinView>
+      <WinViewInline :item="item" :link="link" @dBclick="fullscreen = !fullscreen"></WinViewInline>
     </div>
     <Posts :item="showMsgItem" />
   </div>
@@ -187,6 +187,7 @@ import FilterItem from "@/view/components/FilterItem";
 import FilterCtrl from "@/view/components/FilterCtrl";
 import TopFocus from "@/view/components/TopFocus";
 import WinView from "@/view/components/WinView";
+import WinViewInline from "@/view/components/WinViewInline";
 import Posts from "@/view/components/Posts";
 
 import Sea from "@/view/components/Sea";
@@ -194,7 +195,6 @@ import Right from "@/view/components/Right";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import { mouseDragMenu } from "@/lib/WinUtils";
 import { getAllInd } from "@/lib/ind";
@@ -319,6 +319,7 @@ export default {
     Right,
     TopFocus,
     WinView,
+    WinViewInline,
     Posts,
   },
   filters: {
@@ -349,7 +350,6 @@ export default {
 
     getAllInd(this.indMap);
 
-    initwebview(this.closeview.bind(this), this.$electron);
     mouseDragMenu(this.$electron, false);
     document.ondblclick = () => {
       let win = $electron.remote.getCurrentWindow();
@@ -495,28 +495,25 @@ export default {
     openlink(item, event, link) {
       link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
       this.openType = link;
-      let webview = $(document.querySelectorAll("webview"));
+      let webview = $(document.querySelectorAll("#webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
       this.item = item;
       let url = link.replace("{{code}}", item.code);
 
-      if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {
-        this.closeview();
-      } else {
-        if (!webviewWrap.is(":visible")) {
-          let chartop =
-            Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
+      if (!webviewWrap.is(":visible")) {
+        let chartop =
+          Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
 
-          webviewWrap.css("top", chartop + "px");
-          setTimeout(() => {
-            webviewWrap.css("top", chartop - 1 + "px");
-          }, 10);
-        }
-
-        webviewWrap.show();
-        webview[0].style.height = "100%";
-        this.openCode = item.code;
+        webviewWrap.css("top", chartop + "px");
+        setTimeout(() => {
+          webviewWrap.css("top", chartop - 1 + "px");
+        }, 10);
       }
+
+      webviewWrap.show();
+      webview[0].style.height = "100%";
+      this.openCode = item.code;
+
       //webview bug:need show up
       let timer;
       timer = setInterval(() => {

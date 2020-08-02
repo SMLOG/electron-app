@@ -1,3 +1,30 @@
+var cookieUtil = {
+  escape: function(e) {
+    return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
+  },
+  get: function(name, def) {
+    var t = document.cookie.match(
+      "(?:^|;)\\s*" + this.escape(name) + "=([^;]*)"
+    );
+    return t ? t[1] || def : "";
+  },
+  set: function(name, val, n) {
+    !n && (n = {}), val || ((val = ""), (n.expires = -1));
+    var a = "";
+    if (n.expires && (Number(n.expires) || n.expires.toUTCString)) {
+      var i;
+      Number(n.expires)
+        ? ((i = new Date()), i.setTime(i.getTime() + 1e3 * n.expires))
+        : (i = n.expires),
+        (a = "; expires=" + i.toUTCString());
+    }
+    var r = n.path ? "; path=" + n.path : "",
+      o = n.domain ? "; domain=" + n.domain : "",
+      s = n.secure ? "; secure" : "";
+    document.cookie = [name, "=", val, a, r, o, s].join("");
+  },
+};
+
 function jsonP(e) {
   var varStr = e.varStr,
     n = document.getElementsByTagName("head")[0],
@@ -114,11 +141,10 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       t.param.cb(t.hqData));
   };
   function MyChart() {
-    function getUserRiseColor() {
-      var e = cookieUtil.get(hq_userColor);
-      if (e) return e;
-    }
-    function initTheme() {
+    function init() {
+      var userRiseColor = cookieUtil.get(hq_userColor);
+
+      cfg.riseColor = userRiseColor ? userRiseColor : "riseRed";
       if ("riseGreen" == cfg.riseColor) {
         var e = cfg.chartGreen;
         (cfg.chartGreen = cfg.chartRed), (cfg.chartRed = e);
@@ -129,15 +155,17 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         K_RISE: cfg.chartRed,
         K_FALL: cfg.chartGreen,
       };
-    }
-    function wresize() {
+      hqloader = new HqLoader({
+        symbol: paperCode,
+        cb: function(hqData) {
+          chartman || (chartman = new ChartMan(hqData));
+        },
+      });
+
       $(window).on("resize", function() {
         chartman && chartman.resizeChart(chart),
           chartman && chartman.chart && chartman.chart.resize();
       });
-    }
-
-    function initHQ() {
       new HQ.DataBox({
         isANeedPHP: !1,
         isANeedCWZJ: !1,
@@ -157,19 +185,6 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
         },
       });
     }
-
-    function init() {
-      cfg.riseColor = getUserRiseColor() ? getUserRiseColor() : "riseRed";
-      initTheme();
-      hqloader = new HqLoader({
-        symbol: paperCode,
-        cb: function(hqData) {
-          chartman || (chartman = new ChartMan(hqData));
-        },
-      });
-      wresize();
-      initHQ();
-    }
     var chartman,
       hqloader,
       hq_userColor = "hq_userColor";
@@ -177,32 +192,6 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     this.init = init;
   }
 
-  var cookieUtil = {
-    escape: function(e) {
-      return e.replace(/([.*+?^${}()|[\]\/\\])/g, "\\$1");
-    },
-    get: function(e) {
-      var t = document.cookie.match(
-        "(?:^|;)\\s*" + this.escape(e) + "=([^;]*)"
-      );
-      return t ? t[1] || "" : "";
-    },
-    set: function(e, t, n) {
-      !n && (n = {}), t || ((t = ""), (n.expires = -1));
-      var a = "";
-      if (n.expires && (Number(n.expires) || n.expires.toUTCString)) {
-        var i;
-        Number(n.expires)
-          ? ((i = new Date()), i.setTime(i.getTime() + 1e3 * n.expires))
-          : (i = n.expires),
-          (a = "; expires=" + i.toUTCString());
-      }
-      var r = n.path ? "; path=" + n.path : "",
-        o = n.domain ? "; domain=" + n.domain : "",
-        s = n.secure ? "; secure" : "";
-      document.cookie = [e, "=", t, a, r, o, s].join("");
-    },
-  };
   var chart = null;
   ChartMan.prototype.initChart = function() {
     var t = this,
@@ -211,7 +200,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
           ? "kd"
           : location.href.indexOf("&t1") > -1
           ? "t1"
-          : getMyCookie("dataView", "t1");
+          : cookieUtil.get("dataView", "t1");
     "退市" == t.param.halt ? t.delistList : t.tabList;
 
     let pTechlist = document.cookie
@@ -219,7 +208,8 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
       .map((e) => e.split("=")[0].trim())
       .filter((name) => {
         return (
-          name.indexOf("dataView-") == 0 && getMyCookie(name, "false") == "true"
+          name.indexOf("dataView-") == 0 &&
+          cookieUtil.get(name, "false") == "true"
         );
       })
       .map((e) => {
@@ -408,33 +398,16 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
   new MyChart().init();
 })(Zepto);
 
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
-  loader("/api/cookie?set=1&_t" + +new Date());
-}
-function getMyCookie(cname, def) {
-  var name = cname + "=";
-  var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i].trim();
-    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-  }
-  return def;
-}
-
 let timer = setInterval(() => {
   if ($("li[type=nav]").length > 0) clearInterval(timer);
   else return;
   $("li[type=nav],li[type=subNav]").click(function(e) {
     let type = $(this).attr("data-view");
     if (type) {
-      if (getMyCookie("dataView") == type) {
+      if (cookieUtil.get("dataView") == type) {
         location = location.href + "#close";
       }
-      setCookie("dataView", type);
+      cookieUtil.set("dataView", type);
     }
   });
 
@@ -442,13 +415,10 @@ let timer = setInterval(() => {
     setTimeout(() => {
       let value = $(this).attr("value");
       if (value) {
-        if (getMyCookie("dataView", "k").indexOf("t") > -1) {
-          setCookie("dataViewt-" + value, $(this).attr("selected"));
-        } else setCookie("dataView-" + value, $(this).attr("selected"));
+        if (cookieUtil.get("dataView", "k").indexOf("t") > -1) {
+          cookieUtil.set("dataViewt-" + value, $(this).attr("selected"));
+        } else cookieUtil.set("dataView-" + value, $(this).attr("selected"));
       }
     }, 500);
   });
 }, 100);
-if (!document.cookie) {
-  loader("/api/cookie?_t" + +new Date(), () => {});
-}

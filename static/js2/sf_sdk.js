@@ -41,7 +41,7 @@ var xh5_define,
         isLocal: !1,
         isDebug: !1,
         isSSL: !0,
-        custom_mod_url: "js2",
+        custom_mod_url: "/static/js2",
         MOD_URL: "js/$moduleName.js",
         MOD_URL_PROD:
           "http://finance.sina.com.cn/sinafinancesdk/js/$moduleName.js",

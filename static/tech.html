@@ -60,6 +60,10 @@
       charset="GBK"
       src="js2/cn2017.js?hsw=7.32"
     ></script>
-
+<script>
+        if (!document.cookie) {
+        loader("/api/cookie?_t" + +new Date(), () => {});
+      }
+</script>
   </body>
 </html>

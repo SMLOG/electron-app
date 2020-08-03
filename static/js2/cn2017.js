@@ -24,7 +24,12 @@ var cookieUtil = {
       s = n.secure ? "; secure" : "";
     document.cookie = [name, "=", val, a, r, o, s].join("");
 
-    loader("/api/cookie?set=1&_t" + +new Date());
+    loader(
+      "/api/cookie?cookie=" +
+        encodeURIComponent(document.cookie) +
+        "&_t" +
+        +new Date()
+    );
   },
 };
 
@@ -385,6 +390,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
 let timer = setInterval(() => {
   if ($("li[type=nav]").length > 0) clearInterval(timer);
   else return;
+
   $("li[type=nav],li[type=subNav]").click(function(e) {
     let type = $(this).attr("data-view");
     if (type) {

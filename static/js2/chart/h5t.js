@@ -1483,17 +1483,18 @@ xh5_define(
           n();
       }
       function D() {
-        var e,
-          a = this,
-          n = [];
+        var mainStock,
+          me = this,
+          allStocks = [];
         this.getAllStock = function() {
-          return n;
+          return allStocks;
         };
         this.getMainStock = function() {
-          return e;
+          return mainStock;
         };
         this.getAllSymbols = function() {
-          for (var e = [], t = 0, a = n.length; a > t; t++) e.push(n[t].symbol);
+          for (var e = [], t = 0, a = allStocks.length; a > t; t++)
+            e.push(allStocks[t].symbol);
           return e;
         };
         var c = function() {
@@ -1512,14 +1513,14 @@ xh5_define(
                 a,
                 i = Number.MAX_VALUE,
                 r = -Number.MAX_VALUE,
-                o = n.length,
+                o = allStocks.length,
                 s = o > 1,
                 l = s ? "avgPercent" : "Price",
                 d = o;
               d--;
 
             )
-              (e = n[d]),
+              (e = allStocks[d]),
                 (a = e.getPriceTech()),
                 a &&
                   !s &&
@@ -1533,30 +1534,30 @@ xh5_define(
                 p = m.length;
               for (d = 0; p > d; d++)
                 if ("EWI" == m[d].name || "MA" == m[d].name) {
-                  var h = n[0].datas[0][0].prevclose,
+                  var h = allStocks[0].datas[0][0].prevclose,
                     u = Math.max(Math.abs(h - r), Math.abs(h - i));
                   (r = h + u), (i = h - u);
                 }
             }
             for (var v = c(), f = o; f--; )
-              (e = n[f]), e.setPricePos([r, i, v], s);
+              (e = allStocks[f]), e.setPricePos([r, i, v], s);
           },
           m = function(e) {
             if (e) e.draw();
-            else for (var t = n.length; t--; ) n[t].draw();
+            else for (var t = allStocks.length; t--; ) allStocks[t].draw();
           },
           setViewData = function(t) {
             1 == viewState.viewId || 0 == viewState.viewId
               ? conf.date
-                ? a.moving(viewState.start, viewState.end)
-                : a.moving(4, 5, !1)
-              : a.moving(viewState.start, viewState.end, !1),
-              t || ne.onRange(e);
+                ? me.moving(viewState.start, viewState.end)
+                : me.moving(4, 5, !1)
+              : me.moving(viewState.start, viewState.end, !1),
+              t || ne.onRange(mainStock);
           },
           v = function(e) {
             return e.isErr
               ? (util.trace.error("err symbol data"),
-                a.removeCompare([e.symbol]),
+                me.removeCompare([e.symbol]),
                 !0)
               : e.tDb.get()
               ? !0
@@ -1574,17 +1575,21 @@ xh5_define(
             }
           },
           onChangeView = function(a, i) {
-            if ((g(i), v(e))) {
-              if (e.isErr)
-                return util.trace.error("err main symbol"), void (e.isErr = !1);
+            g(i);
+            if (v(mainStock)) {
+              if (mainStock.isErr)
+                return (
+                  util.trace.error("err main symbol"),
+                  void (mainStock.isErr = !1)
+                );
               oe.patcher.switchFloater();
-              for (var r, o = !0, s = n.length; s--; )
-                (r = n[s]), r == e || v(r) || (o = !1);
+              for (var r, o = !0, s = allStocks.length; s--; )
+                (r = allStocks[s]), r == mainStock || v(r) || (o = !1);
               if (o) {
-                for (s = n.length; s--; )
-                  n[s].marketNum(n[s].needMarket) > n[s].marketNum(I) &&
-                    (I = n[s].needMarket);
-                for (s = n.length; s--; ) changeData(n[s]);
+                for (s = allStocks.length; s--; )
+                  allStocks[s].marketNum(allStocks[s].needMarket) >
+                    allStocks[s].marketNum(I) && (I = allStocks[s].needMarket);
+                for (s = allStocks.length; s--; ) changeData(allStocks[s]);
                 for (setViewData(a); f.length; ) {
                   var l = f.shift();
                   l();
@@ -1595,17 +1600,20 @@ xh5_define(
             }
           },
           _ = function() {
-            ne.onRange(e);
+            ne.onRange(mainStock);
           };
         this.getExtraData = function(a) {
           if (
-            ((a = oc({ symbol: e.symbol, name: null, clone: !0 }, a || {})),
+            ((a = oc(
+              { symbol: mainStock.symbol, name: null, clone: !0 },
+              a || {}
+            )),
             !a.name)
           )
             return null;
-          for (var i, r, o = n.length; o--; )
-            if (n[o].symbol === a.symbol) {
-              i = n[o];
+          for (var i, r, o = allStocks.length; o--; )
+            if (allStocks[o].symbol === a.symbol) {
+              i = allStocks[o];
               break;
             }
           if (i) {
@@ -1683,23 +1691,26 @@ xh5_define(
               var t = 1e3 * conf.rate;
               t > 0 && (N = setTimeout(updateDataAll, t));
             }
-            for (var a, r = n.length; r--; )
-              (a = n[r]), a.doUpdate(D, null, null, null, e);
+            for (var a, r = allStocks.length; r--; )
+              (a = allStocks[r]), a.doUpdate(D, null, null, null, e);
           },
           update5Data = function() {
             viewState.viewId = 2;
-            for (var e, t = n.length; t--; )
-              (e = n[t]), e.initT5Data(e.datas, e.hq, onChangeView);
+            for (var e, t = allStocks.length; t--; )
+              (e = allStocks[t]), e.initT5Data(e.datas, e.hq, onChangeView);
           };
         this.updateDataAll = updateDataAll;
         this.update5Data = update5Data;
         var T = function(t, a) {
             var i = new r(t, a);
-            a && (e = i), (n[n.length] = i), L(), onChangeView();
+            a && (mainStock = i),
+              (allStocks[allStocks.length] = i),
+              L(),
+              onChangeView();
           },
           M = function(e) {
-            for (var t, a, i = e, r = 0, o = 0; r < n.length; r++)
-              (a = n[r]),
+            for (var t, a, i = e, r = 0, o = 0; r < allStocks.length; r++)
+              (a = allStocks[r]),
                 a.marketNum(a.market) == a.marketNum(i)
                   ? o++
                   : (t = t
@@ -1707,18 +1718,18 @@ xh5_define(
                         ? a.market
                         : t
                       : a.market),
-                r == n.length - 1 && 0 == o && (I = t);
-            for (r = n.length; r--; ) changeData(n[r], i);
+                r == allStocks.length - 1 && 0 == o && (I = t);
+            for (r = allStocks.length; r--; ) changeData(allStocks[r], i);
           },
           changeData = function(e, t) {
             e.changeMarket(t);
           };
         this.changeData = changeData;
         var L = function() {
-            if (n.length > 1) a.mM.togglePt({ v: !1 });
+            if (allStocks.length > 1) me.mM.togglePt({ v: !1 });
             else {
-              if (n.length <= 0) return;
-              a.mM.togglePt({ v: !0 });
+              if (allStocks.length <= 0) return;
+              me.mM.togglePt({ v: !0 });
             }
           },
           R = function(e) {
@@ -1737,7 +1748,7 @@ xh5_define(
           if (0 != t) {
             t = t > 0 ? -1 : 1;
             var i = R(t);
-            a.moving(i[0], i[1], "wheel");
+            me.moving(i[0], i[1], "wheel");
           }
         };
         this.onKb = function(e) {
@@ -1746,7 +1757,7 @@ xh5_define(
             case 38:
             case 40:
               var i = R(38 == t ? 1 : -1);
-              a.moving(i[0], i[1], "Key");
+              me.moving(i[0], i[1], "Key");
               break;
             case 37:
             case 39:
@@ -1759,7 +1770,7 @@ xh5_define(
         };
         this.zoomApi = function(e) {
           var t = R(e ? 1 : -1);
-          a.moving(t[0], t[1], "zoom");
+          me.moving(t[0], t[1], "zoom");
         };
         this.moveApi = function(e) {
           var t = viewState.start,
@@ -1768,7 +1779,7 @@ xh5_define(
             (i += e),
             i > 5 && ((t = 4), (i = 5)),
             0 > t && ((t = 0), (i = 1)),
-            a.moving(t, i, "move");
+            me.moving(t, i, "move");
         };
         this.setViewData = setViewData;
         this.onChangeView = onChangeView;
@@ -1783,32 +1794,36 @@ xh5_define(
               0 == C &&
               i &&
               (J.show(), update5Data("t5"), (C = 1), (A = 2));
-          for (var o, s = n.length; s--; )
-            (o = n[s]), o.setRange(), o.onViewChange();
-          d(), m(), ne.onRange(e);
+          for (var o, s = allStocks.length; s--; )
+            (o = allStocks[s]), o.setRange(), o.onViewChange();
+          d(), m(), ne.onRange(mainStock);
         };
         this.dAdd = 0;
         this.compare = function(e) {
-          for (var t = n.length; t--; ) if (n[t].symbol == e.symbol) return;
+          for (var t = allStocks.length; t--; )
+            if (allStocks[t].symbol == e.symbol) return;
           T(e, !1);
         };
         this.removeCompare = function(e) {
           for (var t, a, i = "CN", r = e.length; r--; ) {
             a = e[r];
-            for (var o = n.length; o--; )
-              if (a == n[o].symbol) {
-                (t = n.splice(o, 1)[0]), (i = t.market), t.clear(), (t = null);
+            for (var o = allStocks.length; o--; )
+              if (a == allStocks[o].symbol) {
+                (t = allStocks.splice(o, 1)[0]),
+                  (i = t.market),
+                  t.clear(),
+                  (t = null);
                 break;
               }
           }
-          M(i), L(), d(), m(), ne.onRange(n[0]);
+          M(i), L(), d(), m(), ne.onRange(allStocks[0]);
         };
         this.onResize = function(e) {
-          for (var t = n.length; t--; ) n[t].resize(e);
+          for (var t = allStocks.length; t--; ) allStocks[t].resize(e);
         };
         this.dcReset = function() {
-          for (var e, t = n.length; t--; )
-            (e = n.splice(t, 1)[0]), e.clear(), (e = null);
+          for (var e, t = allStocks.length; t--; )
+            (e = allStocks.splice(t, 1)[0]), e.clear(), (e = null);
         };
         this.setScale = function(e) {
           E.datas.scaleType = e;
@@ -1819,14 +1834,14 @@ xh5_define(
             for (var i = a.length; i--; ) {
               var r = a[i];
               if (r.hasOwnProperty("symbol")) {
-                for (var o = r.symbol, s = n.length; s--; )
-                  if (n[s].symbol == o) {
-                    n[s].setTLineStyle(r), n[s].draw();
+                for (var o = r.symbol, s = allStocks.length; s--; )
+                  if (allStocks[s].symbol == o) {
+                    allStocks[s].setTLineStyle(r), allStocks[s].draw();
                     break;
                   }
-              } else e.setTLineStyle(r), e.draw();
+              } else mainStock.setTLineStyle(r), mainStock.draw();
             }
-          } else e.setTLineStyle(), e.draw();
+          } else mainStock.setTLineStyle(), mainStock.draw();
         };
         var P,
           q = function(e) {
@@ -1855,10 +1870,15 @@ xh5_define(
               clearTO();
           }
           for (var i = e.length; i--; )
-            for (var r = n.length; r--; )
-              if (n[r].symbol == e[i].symbol && e[i].data) {
+            for (var r = allStocks.length; r--; )
+              if (allStocks[r].symbol == e[i].symbol && e[i].data) {
                 F++,
-                  n[r].doUpdate(fBind(q, null, a), !1, e[i].data, e[i].market);
+                  allStocks[r].doUpdate(
+                    fBind(q, null, a),
+                    !1,
+                    e[i].data,
+                    e[i].market
+                  );
                 break;
               }
         };
@@ -1877,7 +1897,7 @@ xh5_define(
               }
               o &&
                 (n
-                  ? e[o](a, r)
+                  ? mainStock[o](a, r)
                   : KKE.api("plugins.techcharts.get", { type: i }, function(e) {
                       (l = e.tChart), (s = e.pChart), t(a, i, r);
                     }));
@@ -1891,11 +1911,13 @@ xh5_define(
                 case "tech":
                   i = "removeTc";
               }
-              i && e && (e[i](t), onChangeView());
+              i && mainStock && (mainStock[i](t), onChangeView());
             },
             i = function(t) {
               return o
-                ? (Q ? Q.sh(t) : (e.initRs(), i(t), B.appendChild(Q.getBody())),
+                ? (Q
+                    ? Q.sh(t)
+                    : (mainStock.initRs(), i(t), B.appendChild(Q.getBody())),
                   void re.resizeAll(!0))
                 : void KKE.api("plugins.rangeselector.get", null, function(e) {
                     (o = e), i(t);
@@ -1905,7 +1927,7 @@ xh5_define(
             (this.newAC = t),
             (this.removeAC = a),
             (this.togglePt = function(t) {
-              e && (e.togglePt(t), onChangeView());
+              mainStock && (mainStock.togglePt(t), onChangeView());
             });
         })();
       }

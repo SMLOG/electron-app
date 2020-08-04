@@ -3,7 +3,7 @@ xh5_define(
   ["cfgs.settinger", "utils.util", "utils.painter"],
   function(settinger, util, painter) {
     "use strict";
-    function s2(i) {
+    function s2(conf) {
       function r(e, a) {
         function onViewChange(e) {
           $.setDataRange(e),
@@ -68,8 +68,8 @@ xh5_define(
           (this.labelPriceCount = void 0),
           (this.isTotalRedraw = !0),
           (this.realLen = 0),
-          (this.nfloat = 0 === i.nfloat ? i.nfloat : i.nfloat || 2),
-          (this.ennfloat = i.ennfloat),
+          (this.nfloat = 0 === conf.nfloat ? conf.nfloat : conf.nfloat || 2),
+          (this.ennfloat = conf.ennfloat),
           (this.market = h),
           (this.date = null),
           (this.hq = null),
@@ -126,10 +126,10 @@ xh5_define(
                     n = e.length,
                     o = [];
                   if ((util.clone(e, o), o.length > 5)) {
-                    if (i.date) {
+                    if (conf.date) {
                       for (
                         var s,
-                          l = Number(i.date.split("-")[2]),
+                          l = Number(conf.date.split("-")[2]),
                           c = 0,
                           d = 0,
                           m = 0,
@@ -152,7 +152,7 @@ xh5_define(
                         (a.tv = viewState.start),
                         (a.tb = viewState.end);
                     }
-                  } else (r = o), (a.tv = i.date ? 0 : 4), (a.tb = n);
+                  } else (r = o), (a.tv = conf.date ? 0 : 4), (a.tb = n);
                   a.t = r;
                 }
               };
@@ -168,7 +168,7 @@ xh5_define(
               }),
               (this.extraDataObj = r),
               (this.initExtraData = function() {
-                var a = i.ssl ? "https" : "http",
+                var a = conf.ssl ? "https" : "http",
                   n =
                     a +
                     "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
@@ -361,14 +361,14 @@ xh5_define(
                 (m.maxPercent = m.maxavgPercent = d),
                 (m.minPercent = m.minavgPercent = -d));
               var p;
-              /^s[hz]51\d{4}$/.test(i.symbol) && (p = "fund"),
+              /^s[hz]51\d{4}$/.test(conf.symbol) && (p = "fund"),
                 p &&
                   "fund" === p &&
                   "pct" !== E.datas.scaleType &&
                   d > Math.abs(m.minPercent) &&
-                  ((d = Math.abs(m.minPercent)), (i.nfloat = m.nfloat = 3)),
+                  ((d = Math.abs(m.minPercent)), (conf.nfloat = m.nfloat = 3)),
                 ("gb_brk$a" === m.symbol || "usr_brk$a" === m.symbol) &&
-                  (i.nfloat = m.nfloat = 1);
+                  (conf.nfloat = m.nfloat = 1);
             };
             createPlayingData = function() {
               var e,
@@ -605,9 +605,9 @@ xh5_define(
                 }
                 function p() {
                   var e = new Date().getTime() - se;
-                  return !isNaN(te) &&
-                    te > 0 &&
-                    e >= 1e3 * Number(te) &&
+                  return !isNaN(t_rate) &&
+                    t_rate > 0 &&
+                    e >= 1e3 * Number(t_rate) &&
                     0 != m.realLen &&
                     m.hq.isUpdateTime
                     ? ((se = new Date().getTime()), g(b, m.hq, a), !0)
@@ -672,7 +672,7 @@ xh5_define(
                   default:
                     d = util.tUtil.gata(m.needMarket);
                 }
-                if (e && e.date && m.datas && !i.date) {
+                if (e && e.date && m.datas && !conf.date) {
                   if (((n = !1), (b = y[4]), m.hq.isDateChange)) {
                     if (
                       ("NF" == m.market && x && x.time[0][0] < "21:00") ||
@@ -790,11 +790,11 @@ xh5_define(
                   withI: !1,
                   faker: "",
                   dataformatter: e.datas.t1.dataformatter,
-                  ssl: i.ssl,
-                  assisthq: i.assisthq,
+                  ssl: conf.ssl,
+                  assisthq: conf.assisthq,
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (s.symbol = i.rawsymbol),
+                  "LSE" == m.market && (s.symbol = conf.rawsymbol),
                   KKE.api("datas.t.get", s, function(e) {
                     (a = e.data.td1), ce(m.hq);
                     var i = tDb.get();
@@ -831,10 +831,10 @@ xh5_define(
                   withI: !1,
                   faker: "",
                   dataformatter: e.datas.t1.dataformatter,
-                  ssl: i.ssl,
+                  ssl: conf.ssl,
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (o.symbol = i.rawsymbol),
+                  "LSE" == m.market && (o.symbol = conf.rawsymbol),
                   KKE.api("datas.t.get", o, function(e) {
                     (a = e.data.td1),
                       tDb.initTState(e.data.td5),
@@ -852,11 +852,11 @@ xh5_define(
                   h = "",
                   u = "";
                 if (((p = s ? s : util.market(e.symbol)), "US" === p))
-                  h = 1 === i.assisthq ? ",gb_ixic" : u;
+                  h = 1 === conf.assisthq ? ",gb_ixic" : u;
                 else if ("HK" === p) {
                   var v =
                     "hk" === e.symbol.substring(0, 2) ? ",hkHSI" : ",rt_hkHSI";
-                  h = 1 === i.assisthq ? v : u;
+                  h = 1 === conf.assisthq ? v : u;
                 }
                 o
                   ? ((d = "datas.hq.parse"),
@@ -864,14 +864,14 @@ xh5_define(
                       symbol: e.symbol + h,
                       hqStr: o,
                       market: p,
-                      ssl: i.ssl,
+                      ssl: conf.ssl,
                     }))
                   : ((d = "datas.hq.get"),
                     (m = {
                       symbol: e.symbol + h,
                       delay: !0,
                       cancelEtag: n,
-                      ssl: i.ssl,
+                      ssl: conf.ssl,
                     })),
                   KKE.api(d, m, function(t) {
                     l(t.dataObj[e.symbol], a, c);
@@ -936,12 +936,12 @@ xh5_define(
               if (r != p) {
                 (r = p), null != m.datas && tDb.initTState(p, m.tDb.get());
                 var h = {
-                  assisthq: i.assisthq,
-                  ssl: i.ssl,
+                  assisthq: conf.assisthq,
+                  ssl: conf.ssl,
                   symbol: e.symbol,
-                  date: i.date,
+                  date: conf.date,
                   withT5: 1,
-                  dist5: i.dist5,
+                  dist5: conf.dist5,
                   withI: !0,
                   faker: m.needMarket,
                   dataformatter: e.datas.t1.dataformatter,
@@ -957,7 +957,7 @@ xh5_define(
                     d = util.tUtil.gata(m.needMarket, T.time);
                     break;
                   case "LSE":
-                    h.symbol = i.rawsymbol;
+                    h.symbol = conf.rawsymbol;
                   default:
                     d = util.tUtil.gata(m.needMarket);
                 }
@@ -1058,12 +1058,14 @@ xh5_define(
                         (e.data.td1 && e.data.td1[0].today) || m.hq.date),
                       tDb.initTState(b),
                       s(o),
-                      1 == O && (n.dateTo(i.historytime, i.historycb), (O = 0)),
+                      1 == O &&
+                        (n.dateTo(conf.historytime, conf.historycb), (O = 0)),
                       J.hide(),
-                      i.loadedChart)
+                      conf.loadedChart)
                     )
-                      if (util.isFunc(i.loadedChart)) i.loadedChart();
-                      else if (window[i.loadedChart]) window[i.loadedChart]();
+                      if (util.isFunc(conf.loadedChart)) conf.loadedChart();
+                      else if (window[conf.loadedChart])
+                        window[conf.loadedChart]();
                       else
                         try {
                           window.h5chart.loadedChart();
@@ -1148,9 +1150,9 @@ xh5_define(
                 cb: he,
                 type: "t",
                 cfg: E,
-                usrObj: i,
+                usrObj: conf,
               })),
-              a && (Z = k)),
+              a && (ispCharts = k)),
               k.createChart(e, r);
           }
         };
@@ -1163,10 +1165,10 @@ xh5_define(
               cb: he,
               cfg: E,
               type: "option_cn" == I ? "p" : "t",
-              usrObj: i,
+              usrObj: conf,
               initMgr: re,
             })),
-            a && (Y = _)),
+            a && (istCharts = _)),
             _.createChart(e, t);
         };
         this.removeTc = function(e) {
@@ -1192,7 +1194,7 @@ xh5_define(
           var r = e.isMain;
           if (r) (l = E.COLOR.T_P), (c = E.COLOR.T_AVG);
           else {
-            2 != X.dAdd || o.linecolor || (o.linecolor = i.overlaycolor);
+            2 != X.dAdd || o.linecolor || (o.linecolor = conf.overlaycolor);
             var n = o.linecolor || "#cccccc";
             l = n.K_N || n.T_N || "#" + util.randomColor();
           }
@@ -1289,8 +1291,8 @@ xh5_define(
                   N > k && ((S = y[k]), !(S.price <= 0));
                   k++
                 ) {
-                  if (5 == viewState.end && "CN" == e.market && Z)
-                    for (var t = Z.getLog(), a = 0; a < t.length; a++)
+                  if (5 == viewState.end && "CN" == e.market && ispCharts)
+                    for (var t = ispCharts.getLog(), a = 0; a < t.length; a++)
                       if ("EWI" == t[a].name && k > (N / U - 1) * U)
                         return void s.stroke();
                   k == D || k % U == 0
@@ -1323,13 +1325,13 @@ xh5_define(
                 (e = S.py),
                   k == D || k % U == 0
                     ? s.moveTo(M, e)
-                    : k % i.modulo == 0 && s.lineTo(M, e),
+                    : k % conf.modulo == 0 && s.lineTo(M, e),
                   (S.ix = M),
                   (M += T);
               (O = M),
                 (L = e),
                 s.stroke(),
-                i.business && h({ xPos: M, yPos: e });
+                conf.business && h({ xPos: M, yPos: e });
             }
             function h(e) {
               s.newStyle(l, !0, 0.5),
@@ -1391,7 +1393,7 @@ xh5_define(
 
               )
                 s.moveTo(a, t), (a += r), s.lineTo(a, t), (a += r);
-              if ((e.isMain && s.stroke(), i.business)) {
+              if ((e.isMain && s.stroke(), conf.business)) {
                 var n = e.hq.price.toFixed(2),
                   o = s.getG(),
                   l = o.measureText(n).width,
@@ -1457,7 +1459,10 @@ xh5_define(
                   a(),
                     "sh000012" != e.symbol &&
                       "sh000013" != e.symbol &&
-                      (i.business || i.simple || util.isRepos(e.symbol) || r()),
+                      (conf.business ||
+                        conf.simple ||
+                        util.isRepos(e.symbol) ||
+                        r()),
                     n(),
                     m(),
                     u(),
@@ -1494,9 +1499,9 @@ xh5_define(
         var c = function() {
             var e,
               t = E.DIMENSION.h_t;
-            return i.business
+            return conf.business
               ? (e = 0)
-              : i.appMode
+              : conf.appMode
               ? 2
               : (e = 100 > t ? 2 : 180 > t ? 4 : 300 > t ? 6 : 8);
           },
@@ -1523,8 +1528,8 @@ xh5_define(
                 (t = [r, i]),
                 (i = Math.min(i, e["min" + l], t[1])),
                 (r = Math.max(r, e["max" + l], t[0]));
-            if (Z) {
-              var m = Z.getLog(),
+            if (ispCharts) {
+              var m = ispCharts.getLog(),
                 p = m.length;
               for (d = 0; p > d; d++)
                 if ("EWI" == m[d].name || "MA" == m[d].name) {
@@ -1542,7 +1547,7 @@ xh5_define(
           },
           setViewData = function(t) {
             1 == viewState.viewId || 0 == viewState.viewId
-              ? i.date
+              ? conf.date
                 ? a.moving(viewState.start, viewState.end)
                 : a.moving(4, 5, !1)
               : a.moving(viewState.start, viewState.end, !1),
@@ -1674,8 +1679,8 @@ xh5_define(
                 (k = setTimeout(S, 200));
           },
           updateDataAll = function(e) {
-            if ((clearInterval(N), !isNaN(i.rate))) {
-              var t = 1e3 * i.rate;
+            if ((clearInterval(N), !isNaN(conf.rate))) {
+              var t = 1e3 * conf.rate;
               t > 0 && (N = setTimeout(updateDataAll, t));
             }
             for (var a, r = n.length; r--; )
@@ -1912,7 +1917,9 @@ xh5_define(
         O = 0,
         L = "手",
         C = 0;
-      (x = i._nf_window_var), (w = i._hf_window_var), (T = i._gbi_window_var);
+      (x = conf._nf_window_var),
+        (w = conf._hf_window_var),
+        (T = conf._gbi_window_var);
       var R = function(e) {
           return (
             "CN" === e ||
@@ -1944,8 +1951,8 @@ xh5_define(
                 break;
               case "CN":
                 (a = 241),
-                  util.isRepos(i.symbol) && (L = ""),
-                  util.isCNK(i.symbol) && (L = "\u80a1");
+                  util.isRepos(conf.symbol) && (L = ""),
+                  util.isCNK(conf.symbol) && (L = "\u80a1");
                 break;
               case "option_cn":
               case "op_m":
@@ -2069,7 +2076,7 @@ xh5_define(
         };
       util.xh5_EvtDispatcher.call(this);
       var P = this;
-      i = oc(
+      conf = oc(
         {
           symbol: "sh000001",
           ssl: !0,
@@ -2109,26 +2116,27 @@ xh5_define(
           nohtml5info: void 0,
           tchartobject: { t: void 0, k: void 0 },
         },
-        i || { YANGWEN: "yangwen@staff.sina.com.cn", VER: "2.6.0" }
+        conf || { YANGWEN: "yangwen@staff.sina.com.cn", VER: "2.6.0" }
       );
-      !i.symbol && (i.symbol = "sh000001"), (i.symbol = String(i.symbol));
-      i.rawsymbol = String(i.symbol);
-      i.symbol =
-        "LSE" === util.market(i.symbol)
-          ? util.strUtil.replaceStr(i.symbol)
-          : i.symbol.replace(".", "$");
-      0 == location.protocol.indexOf("https:") && (i.ssl = !0);
+      !conf.symbol && (conf.symbol = "sh000001"),
+        (conf.symbol = String(conf.symbol));
+      conf.rawsymbol = String(conf.symbol);
+      conf.symbol =
+        "LSE" === util.market(conf.symbol)
+          ? util.strUtil.replaceStr(conf.symbol)
+          : conf.symbol.replace(".", "$");
+      0 == location.protocol.indexOf("https:") && (conf.ssl = !0);
       var q =
           "_" +
-          i.symbol +
+          conf.symbol +
           "_" +
           Math.floor(1234567890 * Math.random() + 1) +
           Math.floor(9876543210 * Math.random() + 1),
         E = settinger.getSetting(q);
       E.datas.isT = !0;
-      i.reorder || (E.custom.indicator_reorder = !1);
-      i.reheight || (E.custom.indicator_reheight = !1);
-      I = util.market(i.symbol);
+      conf.reorder || (E.custom.indicator_reorder = !1);
+      conf.reheight || (E.custom.indicator_reheight = !1);
+      I = util.market(conf.symbol);
       E.datas.tDataLen = A.tcd(I);
       var U = E.datas.tDataLen,
         tip = new (function() {
@@ -2141,19 +2149,19 @@ xh5_define(
           };
         })();
       if (xh5_BrowserUtil.noH5) {
-        if ("undefined" == typeof FlashCanvas || i.fh5)
-          return void (util.isFunc(i.noh5) && i.noh5(i));
+        if ("undefined" == typeof FlashCanvas || conf.fh5)
+          return void (util.isFunc(conf.noh5) && conf.noh5(conf));
         E.PARAM.isFlash = !0;
       }
       if (
         (E.PARAM.isFlash &&
           ((E.COLOR.K_EXT_BG = "#fff"), (E.COLOR.F_BG = "#fff")),
-        i.dim)
+        conf.dim)
       )
-        for (var F in i.dim)
-          i.dim.hasOwnProperty(F) &&
+        for (var F in conf.dim)
+          conf.dim.hasOwnProperty(F) &&
             util.isNum(E.DIMENSION[F]) &&
-            (E.DIMENSION[F] = i.dim[F]);
+            (E.DIMENSION[F] = conf.dim[F]);
       var $,
         V,
         mainareaDom,
@@ -2163,27 +2171,27 @@ xh5_define(
         B,
         X,
         j,
-        Y,
-        Z,
+        istCharts,
+        ispCharts,
         Q,
         J,
         viewState = {
-          viewId: globalCfg.URLHASH.vi(i.view || "ts"),
+          viewId: globalCfg.URLHASH.vi(conf.view || "ts"),
           dataLength: void 0,
           start: void 0,
           end: void 0,
           startDate: void 0,
           endDate: void 0,
         },
-        te = isNaN(i.t_rate) ? E.PARAM.T_RATE : i.t_rate,
+        t_rate = isNaN(conf.t_rate) ? E.PARAM.T_RATE : conf.t_rate,
         ae = !1,
         ie = 0,
         re = new (function() {
           var e,
             a = function(e, t, a) {
               var r = !1;
-              isNaN(e) && (e = i.w || $.offsetWidth),
-                isNaN(t) && (t = i.h || $.offsetHeight - i.mh);
+              isNaN(e) && (e = conf.w || $.offsetWidth),
+                isNaN(t) && (t = conf.h || $.offsetHeight - conf.mh);
               for (
                 var n,
                   o = B.clientHeight || 0,
@@ -2237,7 +2245,7 @@ xh5_define(
                 ]);
             },
             createDoms = function() {
-              $ = $DOM(i.domid) || i.dom;
+              $ = $DOM(conf.domid) || conf.dom;
               $ ||
                 (($ = $C("div")),
                 document.body.appendChild($),
@@ -2300,7 +2308,7 @@ xh5_define(
             },
             f = function() {
               createDoms(),
-                initTheme(i.theme),
+                initTheme(conf.theme),
                 resizeAll(),
                 u(),
                 E.DIMENSION.h_t < 0 &&
@@ -2319,7 +2327,7 @@ xh5_define(
                 }),
                 xh5_BrowserUtil.noH5 &&
                   (tip.showTip({
-                    txt: i.nohtml5info || globalCfg.nohtml5info,
+                    txt: conf.nohtml5info || globalCfg.nohtml5info,
                     parent: V,
                   }),
                   util.stc("t_nh5"));
@@ -2363,7 +2371,7 @@ xh5_define(
                       s > a.time
                         ? ((s = o.datas[o.datas.length - 1][0].date),
                           (l = new Date(s)),
-                          "hf_CHA50CFD" !== i.symbol &&
+                          "hf_CHA50CFD" !== conf.symbol &&
                             l.setDate(l.getDate() + 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
                     : "NF" == I
@@ -2400,10 +2408,10 @@ xh5_define(
             };
           this.currentData = currentData;
           this.onDataUpdate = function() {
-            if (util.isFunc(i.ondataupdate)) {
+            if (util.isFunc(conf.ondataupdate)) {
               var e = currentData();
               e &&
-                i.ondataupdate({
+                conf.ondataupdate({
                   data: util.clone(e),
                   idx: viewState.currentLength - 1,
                   left: E.DIMENSION.posX,
@@ -2412,13 +2420,13 @@ xh5_define(
             }
           };
           (this.onInnerResize = function(e) {
-            util.isFunc(i.oninnerresize) && i.oninnerresize(e);
+            util.isFunc(conf.oninnerresize) && conf.oninnerresize(e);
           }),
             (this.onRange = function(e) {
               !ae &&
-                util.isFunc(i.onrange) &&
+                util.isFunc(conf.onrange) &&
                 e &&
-                i.onrange({
+                conf.onrange({
                   isCompare: e.isCompare,
                   data: util.clone(e.datas),
                   width: E.DIMENSION.w_t,
@@ -2430,28 +2438,28 @@ xh5_define(
                 });
             });
           this.onViewChanged = function() {
-            util.isFunc(i.onviewchanged) &&
-              i.onviewchanged({ viewRangeState: util.clone(viewState) });
+            util.isFunc(conf.onviewchanged) &&
+              conf.onviewchanged({ viewRangeState: util.clone(viewState) });
           };
           this.onViewPrice = function(r, n, o, s) {
-            if (!ae && util.isFunc(i.onviewprice)) {
+            if (!ae && util.isFunc(conf.onviewprice)) {
               if ((r || (r = currentData(r, n)), !r)) return;
               o || (o = X.getMainStock().getName());
               var l,
                 c,
                 d = util.clone(r);
-              i.ennfloat
-                ? ((l = i.nfloat), (c = i.nfloat))
+              conf.ennfloat
+                ? ((l = conf.nfloat), (c = conf.nfloat))
                 : ((l = util.strUtil.nfloat(d.price)),
                   (c = util.strUtil.nfloat(d.avg_price))),
                 (d.price = Number(d.price.toFixed(l))),
                 (d.avg_price = Number(d.avg_price.toFixed(c)));
-              var m = i.symbol.length;
+              var m = conf.symbol.length;
               "HK" == I &&
-                i.symbol.substring(m - 1, m) >= "A" &&
+                conf.symbol.substring(m - 1, m) >= "A" &&
                 (d.avg_price = 0 / 0),
                 d.volume && d.volume < 0 && (d.volume = 0),
-                i.onviewprice({
+                conf.onviewprice({
                   curname: o || "",
                   data_array: X.getAllStock().length,
                   data: d,
@@ -2463,10 +2471,11 @@ xh5_define(
             }
           };
           this.onTechChanged = function(e) {
-            util.isFunc(i.ontechchanged) && i.ontechchanged({ Indicator: e });
+            util.isFunc(conf.ontechchanged) &&
+              conf.ontechchanged({ Indicator: e });
           };
           this.shortClickHandler = function() {
-            util.isFunc(i.onshortclickmain) && i.onshortclickmain();
+            util.isFunc(conf.onshortclickmain) && conf.onshortclickmain();
           };
         })(),
         oe = new (function() {
@@ -2475,7 +2484,7 @@ xh5_define(
             iHLineO,
             n,
             o,
-            s = i.nfloat,
+            s = conf.nfloat,
             l = 137,
             c = new (function() {
               var showFloater = function(t) {
@@ -2644,13 +2653,13 @@ xh5_define(
                     "HK" == I || "US" == I || "HF" == I
                       ? (u = util.strUtil.nfloat(d))
                       : "LSE" === I && (u = 3),
-                      i.ennfloat && (u = i.nfloat),
+                      conf.ennfloat && (u = conf.nfloat),
                       (c = isNaN(c) ? "--" : (100 * c).toFixed(2)),
                       (D.innerHTML = d.toFixed(u)),
                       (w.innerHTML = r() ? "--" : p.toFixed(u)),
                       (x.innerHTML = h.toFixed(u) + "(" + c + "%)");
                     var v = 2;
-                    util.isCNK(i.symbol) && (v = 0),
+                    util.isCNK(conf.symbol) && (v = 0),
                       (T.innerHTML = ps(l.volume < 0 ? 0 : l.volume, v) + L),
                       (x.style.color = M(c, 0)),
                       (w.style.color = M(p - m, 0)),
@@ -2803,10 +2812,12 @@ xh5_define(
             },
             b = function(e) {
               e > 2e3 && (e = g()),
-                0 > e || (Y && Y.indirectI(e), Z && Z.indirectI(e));
+                0 > e ||
+                  (istCharts && istCharts.indirectI(e),
+                  ispCharts && ispCharts.indirectI(e));
             },
             y = function() {
-              b(g()), Y && Y.allDraw();
+              b(g()), istCharts && istCharts.allDraw();
             },
             k = !0,
             S = 0,
@@ -2898,11 +2909,11 @@ xh5_define(
                     case "HK":
                     case "US":
                     case "HF":
-                      (Y = i.ennfloat ? s : util.strUtil.nfloat(g)),
+                      (Y = conf.ennfloat ? s : util.strUtil.nfloat(g)),
                         (G = g.toFixed(Y));
                       break;
                     case "LSE":
-                      (Y = i.ennfloat ? s : 3), (G = g.toFixed(Y));
+                      (Y = conf.ennfloat ? s : 3), (G = g.toFixed(Y));
                       break;
                     default:
                       G = g.toFixed(
@@ -2979,7 +2990,7 @@ xh5_define(
                 "/" +
                 util.dateUtil.nw(pe.getDay()) +
                 (L.time || "");
-              ("GOODS" === I || "hf_CHA50CFD" === i.symbol || "HF" === I) &&
+              ("GOODS" === I || "hf_CHA50CFD" === conf.symbol || "HF" === I) &&
                 (he = L.time || "--"),
                 (L.day = he),
                 e &&
@@ -3223,7 +3234,8 @@ xh5_define(
           this.showView = function(e, a) {
             oe.hideIUis(), l ? (l = !1) : J.hide();
             var r = globalCfg.URLHASH.vi(e);
-            if (i.date) return (i.date = ""), o(r), void this.newSymbol(i);
+            if (conf.date)
+              return (conf.date = ""), o(r), void this.newSymbol(conf);
             var n = X.getAllStock()[0];
             if (
               (ne.onRange(n),
@@ -3251,7 +3263,7 @@ xh5_define(
                   e.symbol == m[a] && m.splice(a, 1);
                 X.getAllStock().length <= 1 && (X.dAdd = 0);
               } else
-                (i.overlaycolor = e.linecolor || { K_N: "#cccccc" }),
+                (conf.overlaycolor = e.linecolor || { K_N: "#cccccc" }),
                   (X.dAdd = 2),
                   X.compare(e),
                   m.push(e.symbol);
@@ -3292,8 +3304,8 @@ xh5_define(
             e && (X.mM.togglePt(e), util.stc("t_sp", e));
           };
           this.getIndicators = function() {
-            var e = Y ? Y.getLog() : null,
-              t = Z ? Z.getLog() : null;
+            var e = istCharts ? istCharts.getLog() : null,
+              t = ispCharts ? ispCharts.getLog() : null;
             return { tCharts: e, pCharts: t };
           };
           var f;
@@ -3313,22 +3325,20 @@ xh5_define(
             t && (this.setLineStyle({ linecolor: e }), this.resize());
           };
           this.newSymbol = function(e) {
-            if (
-              ((i.symbol = e.symbol),
-              (i.date = e.date),
+            (conf.symbol = e.symbol),
+              (conf.date = e.date),
               oe.hideIUis(),
               oe.iReset(),
               X.dcReset(),
-              X.dcInit(i),
-              tip.hideTip(),
-              Y)
-            ) {
-              var a = Y.getLog();
-              (Y = null), a && this.tCharts(a);
+              X.dcInit(conf),
+              tip.hideTip();
+            if (istCharts) {
+              var a = istCharts.getLog();
+              (istCharts = null), a && this.tCharts(a);
             }
-            if (Z) {
-              var r = Z.getLog();
-              (Z = null), r && this.pCharts(r);
+            if (ispCharts) {
+              var r = ispCharts.getLog();
+              (ispCharts = null), r && this.pCharts(r);
             }
             f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
               util.stc("t_ns", e);
@@ -3356,21 +3366,22 @@ xh5_define(
           this.getChartId = function() {
             return E.uid;
           };
-          this.dateTo = function(e, a) {
-            (i.historytime = e), (i.historycb = a);
-            var r = e;
-            "object" == typeof e
-              ? (r = dateUtil.ds(e, "-"))
-              : (e = dateUtil.sd(e));
+          this.dateTo = function(time, cb) {
+            conf.historytime = time;
+            conf.historycb = cb;
+            var r = time;
+            "object" == typeof time
+              ? (r = dateUtil.ds(time, "-"))
+              : (time = dateUtil.sd(time));
             var n = j.get();
             if (null == n) return void (O = 1);
             for (var o = n.length, s = 0; o > s; s++)
-              if (dateUtil.stbd(e, n[s][0].date))
+              if (dateUtil.stbd(time, n[s][0].date))
                 return void X.moving(s, s + 1, "dateTo");
-            (i.date = r),
-              (X.hasHistory = a),
-              util.stc("t_ft", r),
-              this.newSymbol(i);
+            conf.date = r;
+            X.hasHistory = cb;
+            util.stc("t_ft", r);
+            this.newSymbol(conf);
           };
           this.showScale = function(e) {
             X && X.setScale(e);
@@ -3418,33 +3429,35 @@ xh5_define(
           (this.viewState = viewState), (this.me = P), (this.type = "h5t");
         })()),
         (X = new D()),
-        X.dcInit(i),
+        X.dcInit(conf),
         n
       );
     }
-    function r() {
-      function s1(e, a) {
-        var r = new s2(e),
+    function out() {
+      function s1(conf, cb) {
+        var r = new s2(conf),
           n = function(e) {
             r.me.rl(e, n);
           };
-        r.me.al(globalCfg.e.T_DATA_LOADED, n), util.isFunc(a) && a(r);
+        r.me.al(globalCfg.e.T_DATA_LOADED, n);
+        util.isFunc(cb) && cb(r);
       }
-      this.get = function(a, i) {
-        util.stc("h5t_get"), util.suda("h5t_" + util.market(a.symbol));
+      this.get = function(conf, cb) {
+        util.stc("h5t_get"), util.suda("h5t_" + util.market(conf.symbol));
         var r;
         0 == location.protocol.indexOf("https:") && (r = !0);
-        var n = util.market(a.symbol),
+        var market = util.market(conf.symbol),
           o =
             "http://stock.finance.sina.com.cn/futures/api/jsonp.php/$cb=/InterfaceInfoService.getMarket?category=$market&symbol=$symbol",
           s =
             "//stock.finance.sina.com.cn/usstock/api/jsonp.php/var $cb=/Global_IndexService.getTradeTime?symbol=$symbol&category=index";
-        switch ((r && (o = util.getSUrl(o)), n)) {
+        r && (o = util.getSUrl(o));
+        switch (market) {
           case "HF":
-            var l = "kke_future_" + a.symbol;
+            var l = "kke_future_" + conf.symbol;
             util.load(
               o
-                .replace("$symbol", a.symbol.replace("hf_", ""))
+                .replace("$symbol", conf.symbol.replace("hf_", ""))
                 .replace("$market", "hf")
                 .replace("$cb", "var " + l),
               function() {
@@ -3454,16 +3467,16 @@ xh5_define(
                     ["00:00", "05:00"],
                   ],
                 }),
-                  (a._hf_window_var = l),
-                  s1(a, i);
+                  (conf._hf_window_var = l),
+                  s1(conf, cb);
               },
               null,
-              { symbol: a.symbol, market: n, type: "init_hf" }
+              { symbol: conf.symbol, market: market, type: "init_hf" }
             );
             break;
           case "NF":
-            var c = "kke_future_" + a.symbol,
-              d = a.symbol.replace("nf_", "").replace(/[\d]+$/, "");
+            var c = "kke_future_" + conf.symbol,
+              d = conf.symbol.replace("nf_", "").replace(/[\d]+$/, "");
             util.load(
               o
                 .replace("$symbol", d)
@@ -3477,18 +3490,18 @@ xh5_define(
                   ],
                 }),
                   (c.inited = 0),
-                  (a._nf_window_var = c),
-                  s1(a, i);
+                  (conf._nf_window_var = c),
+                  s1(conf, cb);
               },
               null,
-              { symbol: a.symbol, market: n, type: "init_nf" }
+              { symbol: conf.symbol, market: market, type: "init_nf" }
             );
             break;
           case "global_index":
-            var m = "kke_global_index_" + a.symbol;
+            var m = "kke_global_index_" + conf.symbol;
             util.load(
               s
-                .replace("$symbol", a.symbol.replace("znb_", ""))
+                .replace("$symbol", conf.symbol.replace("znb_", ""))
                 .replace("$cb", m),
               function() {
                 (m = window[m] || {
@@ -3497,15 +3510,15 @@ xh5_define(
                     ["00:00", "05:00"],
                   ],
                 }),
-                  (a._gbi_window_var = m),
-                  s1(a, i);
+                  (conf._gbi_window_var = m),
+                  s1(conf, cb);
               },
               null,
-              { symbol: a.symbol, market: n, type: "init_global" }
+              { symbol: conf.symbol, market: market, type: "init_global" }
             );
             break;
           default:
-            s1(a, i);
+            s1(conf, cb);
         }
       };
     }
@@ -3527,6 +3540,6 @@ xh5_define(
       ps = util.strUtil.ps,
       globalCfg = settinger.globalCfg,
       logoM = util.logoM;
-    return util.fInherit(s2, util.xh5_EvtDispatcher), r;
+    return util.fInherit(s2, util.xh5_EvtDispatcher), out;
   }
 );

@@ -1,10 +1,10 @@
-xh5_define("datas.t", ["utils.util"], function(e) {
-  var t = e,
-    a = e.HQ_DOMAIN,
-    r = t.load,
-    n = t.dateUtil,
-    i = t.tUtil,
-    l = 0 == location.protocol.indexOf("https:"),
+xh5_define("datas.t", ["utils.util"], function(d_util) {
+  var t = d_util,
+    HQ_DOMAIN = d_util.HQ_DOMAIN,
+    load = t.load,
+    dateUtil = t.dateUtil,
+    tUtil = t.tUtil,
+    protocol = 0 == location.protocol.indexOf("https:"),
     s = {
       isBond: function(e) {
         return /^(sh204\d{3}|sz1318\d{2})$/.test(e)
@@ -62,7 +62,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       optionCn: function(e, t, a) {
         if (typeof e.length < 1) return [];
         for (
-          var r, n, l, s, o = i.gata(a), c = [], p = e.length, d = 0, m = 0;
+          var r, n, l, s, o = tUtil.gata(a), c = [], p = e.length, d = 0, m = 0;
           p > d;
           d++
         )
@@ -93,7 +93,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         if (typeof t.length < 1) return [];
         var s,
           o,
-          c = i.gata(r, l.time),
+          c = tUtil.gata(r, l.time),
           p = [],
           d = t.length,
           m = 0;
@@ -105,7 +105,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           (u = 0),
           0 == v && (u = n ? 1 : 4),
           0 == g && Number(o[1 + u]) <= 0 && (o[1 + u] = a.price),
-          !(a.index > 0 && !n && a.index <= e.arrIndexOf(c, o[u])));
+          !(a.index > 0 && !n && a.index <= d_util.arrIndexOf(c, o[u])));
           v++
         )
           g++,
@@ -136,7 +136,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           hq: {
             price: a.price,
             prevclose: a.prevclose,
-            date: n.ds(a.date),
+            date: dateUtil.ds(a.date),
             time: a.time,
           },
           td1: e,
@@ -154,7 +154,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           hq: {
             price: a.price,
             prevclose: a.prevclose,
-            date: n.ds(a.date),
+            date: dateUtil.ds(a.date),
             time: a.time,
           },
           td1: e,
@@ -175,7 +175,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           hq: {
             price: a.price,
             prevclose: a.prevclose,
-            date: n.ds(a.date),
+            date: dateUtil.ds(a.date),
             time: a.time,
           },
           td1: e,
@@ -194,7 +194,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           var r,
             n,
             l,
-            s = i.gata(a),
+            s = tUtil.gata(a),
             o = [],
             c = e.length,
             p = 0,
@@ -221,7 +221,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       otc: function(e, t, a) {
         if (typeof e.length < 1) return [];
         for (
-          var r, n, l, s, o = i.gata(a), c = [], p = e.length, d = 0, m = 0;
+          var r, n, l, s, o = tUtil.gata(a), c = [], p = e.length, d = 0, m = 0;
           p > d;
           d++
         ) {
@@ -252,7 +252,11 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       },
       lse: function(e, t, a, r) {
         if (typeof e.length < 1) return [];
-        for (var n, l, s = (i.gtlse(), []), o = 0, c = e.length; c > o; o++) {
+        for (
+          var n, l, s = (tUtil.gtlse(), []), o = 0, c = e.length;
+          c > o;
+          o++
+        ) {
           var p = e[o];
           r || ((n = t.today), (l = t.prevclose));
           var d = {
@@ -272,7 +276,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           hq: {
             price: a.price,
             prevclose: a.prevclose,
-            date: n.ds(a.date),
+            date: dateUtil.ds(a.date),
             time: a.time,
           },
           td1: e,
@@ -332,7 +336,13 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       fB: function(t, a, r, n) {
         t.splice(360, 3);
         for (
-          var l, s = [], o = i.gata(r), c = 3 * o.length, p = 0, d = 0, m = 0;
+          var l,
+            s = [],
+            o = tUtil.gata(r),
+            c = 3 * o.length,
+            p = 0,
+            d = 0,
+            m = 0;
           c > m;
           m += 3
         )
@@ -345,10 +355,10 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                   price: t[m + 1] / 1e3,
                   volume: t[m + 2] / 100,
                 }),
-                e.isRepos(n.symbol) &&
+                d_util.isRepos(n.symbol) &&
                   ((s[d].avg_price = s[d].price), (s[d].volume *= 10)),
                 /^(hy|gn|dy)\d+/.test(n.symbol) && (s[d].volume *= 100),
-                e.isCNK(n.symbol) && (s[d].volume *= 100),
+                d_util.isCNK(n.symbol) && (s[d].volume *= 100),
                 s[d].volume > 0 && (p += s[d].volume),
                 s[d] &&
                   0 == s[d].price &&
@@ -374,14 +384,14 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         for (var s, o, c, p, d = [], m = r, u = 0, b = a.length; b > u; u++) {
           d[d.length] =
             0 == u && "" == a[0]
-              ? i.gltbt(1, n.prevclose)
+              ? tUtil.gltbt(1, n.prevclose)
               : t.xh5_S_KLC_D(a[u]);
           var v,
             g = 0;
           d[u].splice(120, 1);
           var f;
           for (
-            e.isRepos(n.symbol)
+            d_util.isRepos(n.symbol)
               ? ((f = 271), d[u].splice(f, d[u].length - f))
               : (f = 241),
               o = 0,
@@ -395,7 +405,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 ? (d[u][o].price = d[u][o].avg_price = d[u][o].prevclose)
                 : ((d[u][o].price = d[u][o - 1].price),
                   (d[u][o].avg_price = d[u][o - 1].avg_price))),
-              e.isRepos(n.symbol) &&
+              d_util.isRepos(n.symbol) &&
                 (d[u][o]
                   ? ((d[u][o].avg_price = d[u][o].price),
                     (d[u][o].volume *= 10))
@@ -406,7 +416,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     })),
               (v = d[u][o].volume *= 0.01),
               /^(hy|gn|dy)\d+/.test(n.symbol) && (d[u][o].volume *= 100),
-              e.isCNK(n.symbol) && (d[u][o].volume *= 100),
+              d_util.isCNK(n.symbol) && (d[u][o].volume *= 100),
               (g += v);
           (d[u][0].totalVolume = g),
             (d[u][0].prevclose = d[u][0].prevclose || d[u][0].price);
@@ -419,12 +429,14 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         )
           for (o = 0, p = d.length; p > o; o++) {
             if (t.dateUtil.stbd(d[o][0].date, l[u])) {
-              s.unshift(i.azft(d[o], e.isRepos(n.symbol) ? "REPO" : "CN"));
+              s.unshift(
+                tUtil.azft(d[o], d_util.isRepos(n.symbol) ? "REPO" : "CN")
+              );
               break;
             }
             if (o == d.length - 1) {
               var h = s[0][0].prevclose;
-              s.unshift(i.gltbt(1, h)),
+              s.unshift(tUtil.gltbt(1, h)),
                 (s[0][0].date = t.dateUtil.dd(l[u])),
                 (s[0][0].prevclose = h);
             }
@@ -434,13 +446,13 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       ctdb: function(t, a, r, n, l, s) {
         for (var o = a, c = [o], p = n.length, d = p - 2; d > p - 6; d--)
           c.unshift(
-            "HF" == e.market(r.symbol)
-              ? i.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
-              : "NF" == e.market(r.symbol)
-              ? i.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
-              : "global_index" == e.market(r.symbol)
-              ? i.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
-              : i.gltbt(1, r.prevclose, !1, l, [n[d]])
+            "HF" == d_util.market(r.symbol)
+              ? tUtil.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
+              : "NF" == d_util.market(r.symbol)
+              ? tUtil.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
+              : "global_index" == d_util.market(r.symbol)
+              ? tUtil.gltbt(1, r.prevclose, !1, l, [n[d]], s.time)
+              : tUtil.gltbt(1, r.prevclose, !1, l, [n[d]])
           );
         return c;
       },
@@ -469,10 +481,10 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         var s,
           o = !1,
           c = e,
-          p = i.s0(a.date.getHours()) + ":" + i.s0(a.date.getMinutes());
+          p = tUtil.s0(a.date.getHours()) + ":" + tUtil.s0(a.date.getMinutes());
         switch (r) {
           case "HF":
-            (s = i.gata(r, l.time)),
+            (s = tUtil.gata(r, l.time)),
               c.length <= 0 &&
                 c.push({ d: a.today, price: a.price, prevclose: a.prevclose }),
               c[0].d < a.today &&
@@ -480,13 +492,13 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 (p = l.time[l.time.length - 1][1]);
             break;
           case "NF":
-            s = i.gata(r, l.time);
+            s = tUtil.gata(r, l.time);
             break;
           case "global_index":
-            s = i.gata(r, l.time);
+            s = tUtil.gata(r, l.time);
             break;
           default:
-            s = i.gata(r);
+            s = tUtil.gata(r);
         }
         for (var d, m = [], u = 0, b = 0, v = s.length; v > b; b++) {
           if (
@@ -578,7 +590,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         REPO: {
           T_Head_STR: "hq_str_ml_",
           T_EMI_URL: "http://finance.sina.com.cn/finance/eqlweight/$symbol.js",
-          T_URL: "http://" + a + ".sinajs.cn/?_=$rn&list=$symbol",
+          T_URL: "http://" + HQ_DOMAIN + ".sinajs.cn/?_=$rn&list=$symbol",
           T5_URL:
             "http://finance.sina.com.cn/realstock/company/$symbol/hisdata/klc_cm_nhg.js?day=$rn",
           TRADING_DATES_URL: o,
@@ -590,7 +602,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         CN: {
           T_Head_STR: "hq_str_ml_",
           T_EMI_URL: "http://finance.sina.com.cn/finance/eqlweight/$symbol.js",
-          T_URL: "http://" + a + ".sinajs.cn/?_=$rn&list=$symbol",
+          T_URL: "http://" + HQ_DOMAIN + ".sinajs.cn/?_=$rn&list=$symbol",
           T5_URL:
             "http://finance.sina.com.cn/realstock/company/$symbol/hisdata/klc_cm.js?day=$rn",
           TRADING_DATES_URL: o,
@@ -696,9 +708,9 @@ xh5_define("datas.t", ["utils.util"], function(e) {
       p = {},
       d = 0,
       m = function(t, a, r) {
-        var n = e.market(a),
+        var n = d_util.market(a),
           i = c[n][r];
-        return (l || t) && (i = e.getSUrl(i)), i;
+        return (protocol || t) && (i = d_util.getSUrl(i)), i;
       },
       u = 0;
     this.get = function(a, n) {
@@ -706,14 +718,15 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         o,
         v,
         g = a.symbol,
-        f = e.market(g),
+        market = d_util.market(g),
         h = a.date,
         _ = a.withT5,
         y = a.withI,
         k = a.ssl;
       u = a.dist5;
       var T = { msg: null, data: { td1: null, td5: null, hq: null } };
-      switch (((v = l = g), f)) {
+      v = l = g;
+      switch (market) {
         case "HK":
           (g = "rt" == g.substring(0, 2) ? g.slice(3) : g),
             (l = g),
@@ -781,7 +794,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
             : ((h = e), null);
         },
         hist = function(a) {
-          r(
+          load(
             m(k, g, "HISTORY_DATA_URL")
               .replace("$symbol", g)
               .replace("$y", a.year)
@@ -798,7 +811,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     b = String(l).split(","),
                     v = [],
                     _ = b.length,
-                    y = i.gata(f),
+                    y = tUtil.gata(market),
                     N = 0;
                   _ > N;
                   N++
@@ -810,14 +823,16 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     v[N].splice(120, 1),
                     (c = 0);
                   for (var R = 0; 241 > R; R++)
-                    (d = e.isCNK(g) ? v[N][R].volume : (v[N][R].volume /= 100)),
+                    (d = d_util.isCNK(g)
+                      ? v[N][R].volume
+                      : (v[N][R].volume /= 100)),
                       (c += d),
                       (v[N][R].time = y[R]);
                   var $ = t.dateUtil.ds(o.date);
                   $ == h && (u = v[N]), (v[N][0].totalVolume = c);
                 }
                 if (v.length < 5)
-                  return void r(
+                  return void load(
                     m(k, g, "TRADING_DATES_URL"),
                     function() {
                       for (
@@ -829,7 +844,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                         o--
                       )
                         v.unshift(
-                          i.gltbt(1, v[0][0].price, !1, f, [
+                          tUtil.gltbt(1, v[0][0].price, !1, market, [
                             l[l.length - 5 + o],
                           ])
                         );
@@ -839,7 +854,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                         t.isFunc(n) && n(T);
                     },
                     null,
-                    { symbol: g, market: f, type: "tradedate" }
+                    { symbol: g, market: market, type: "tradedate" }
                   );
                 (T.data.td1 = u),
                   (T.data.td5 = v),
@@ -850,7 +865,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
             function() {
               (T.msg = "nohistory"), t.isFunc(n) && n(T);
             },
-            { market: f, symbol: g, type: "historydata" }
+            { market: market, symbol: g, type: "historydata" }
           );
         },
         his0 = function(e) {
@@ -858,17 +873,17 @@ xh5_define("datas.t", ["utils.util"], function(e) {
             ? void (t.isFunc(n) && n(p[g + e.year + e.month]))
             : void hist(e);
         },
-        S = function(e, t, a) {
+        decodeStr = function(e, t, a) {
           var r;
-          switch (f) {
+          switch (market) {
             case "OTC":
-              r = s.otc(e.result.data, t, f);
+              r = s.otc(e.result.data, t, market);
               break;
             case "US":
               r = s.us(String(e), t);
               break;
             case "HK":
-              r = s.hk(e.result.data, t, f);
+              r = s.hk(e.result.data, t, market);
               break;
             case "fund":
               r = s.fund(e);
@@ -877,20 +892,20 @@ xh5_define("datas.t", ["utils.util"], function(e) {
               r = s.futures(e, t);
               break;
             case "global_index":
-              r = s.gbIndex(e, t, f, !1, a);
+              r = s.gbIndex(e, t, market, !1, a);
               break;
             case "NF":
-              r = s.futures(e, t, f, !1, a);
+              r = s.futures(e, t, market, !1, a);
               break;
             case "GOODS":
-              r = s.goods(e.result.data, t, f, !1, [
+              r = s.goods(e.result.data, t, market, !1, [
                 ["20:00", "23:59"],
                 ["00:00", "02:29"],
                 ["09:00", "15:30"],
               ]);
               break;
             case "MSCI":
-              r = s.msci(e.result.data, t, f, !1, [
+              r = s.msci(e.result.data, t, market, !1, [
                 ["07:00", "23:59"],
                 ["00:00", "06:00"],
               ]);
@@ -902,21 +917,26 @@ xh5_define("datas.t", ["utils.util"], function(e) {
               r = s.opm(e.result.data, t, "CN");
               break;
             case "LSE":
-              r = s.lse(e.result.data, t, f, !1);
+              r = s.lse(e.result.data, t, market, !1);
               break;
             case "CN":
             case "REPO":
               r = s.db(e);
               break;
             case "HF":
-              r = s.hf(e.result.data.minLine_1d, t, f, !1, a);
+              r = s.hf(e.result.data.minLine_1d, t, market, !1, a);
           }
-          if ("CN" == f || "REPO" == f) r = s.fB(r, !1, f, t);
-          else if ("NF" === f || "HF" === f || "GOODS" === f || "MSCI" === f);
+          if ("CN" == market || "REPO" == market) r = s.fB(r, !1, market, t);
+          else if (
+            "NF" === market ||
+            "HF" === market ||
+            "GOODS" === market ||
+            "MSCI" === market
+          );
           else {
-            r = s.pkt(r, t, f, !1, a);
+            r = s.pkt(r, t, market, !1, a);
             var n = t.time;
-            "HK" == f &&
+            "HK" == market &&
               n > "15:59" &&
               (n > "16:09" && (n = "16:09"),
               (r[r.length - 1].price = t.price),
@@ -928,13 +948,13 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           }
           return r;
         },
-        U = function(i, c, p) {
+        ss3 = function(i, c, p) {
           var d,
             u = 3;
-          if (d && d.length > 600) b(i, g, c, d, n, a.dataformatter, k);
+          if (d && d.length > 600) ss4(i, g, c, d, n, a.dataformatter, k);
           else if ((u--, u > 0))
-            if ("US" == f) {
-              var h = e.dateUtil.ds(
+            if ("US" == market) {
+              var h = d_util.dateUtil.ds(
                 new Date(
                   i.date.getFullYear(),
                   i.date.getMonth() - 2,
@@ -942,7 +962,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 ),
                 "-"
               );
-              r(
+              load(
                 m(k, v, "TRADING_DATES_URL")
                   .replace("$start", h)
                   .replace("$end", i.today)
@@ -953,35 +973,47 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     p--;
 
                   )
-                    r[p] = e.dateUtil.sd(r[p]);
+                    r[p] = d_util.dateUtil.sd(r[p]);
                   r.length > 0 &&
                     !t.dateUtil.stbd(r[r.length - 1], i.date) &&
                     r.push(i.date),
                     (d = s.gdf(r, i.date, !0)),
-                    b(i, g, c, d, f, n, a.dataformatter, k, l, o);
+                    ss4(i, g, c, d, market, n, a.dataformatter, k, l, o);
                 },
                 null,
-                { symbol: i.symbol, market: f, type: "tradedate" }
+                { symbol: i.symbol, market: market, type: "tradedate" }
               );
             } else
-              r(
+              load(
                 m(k, g, "TRADING_DATES_URL"),
                 function() {
                   var e = window.datelist;
                   (d = s.gdf(e, i.date)),
-                    b(i, g, c, d, f, n, a.dataformatter, k, null, null, p);
+                    ss4(
+                      i,
+                      g,
+                      c,
+                      d,
+                      market,
+                      n,
+                      a.dataformatter,
+                      k,
+                      null,
+                      null,
+                      p
+                    );
                 },
                 null,
-                { symbol: i.symbol, market: f, type: "tradedate" }
+                { symbol: i.symbol, market: market, type: "tradedate" }
               );
           else null();
         },
-        L = function(e, a) {
-          r(
+        ss2 = function(e, a) {
+          load(
             e,
             function() {
-              var e = window[c[f].T_Head_STR + l];
-              window[c[f].T_Head_STR + l] = null;
+              var hq_str_ml = window[c[market].T_Head_STR + l];
+              window[c[market].T_Head_STR + l] = null;
               var r,
                 s = window["kke_future_" + a.symbol] || {
                   time: [
@@ -1002,33 +1034,56 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                   ],
                 };
               if (
-                "" == e ||
-                null == e ||
-                (e.result && null == e.result.data) ||
-                (e.result && e.result.data && e.result.data.length <= 0) ||
-                (e.result &&
-                  e.result.data.minLine_1d &&
-                  e.result.data.minLine_1d.length <= 0) ||
-                e.__ERROR
+                "" == hq_str_ml ||
+                null == hq_str_ml ||
+                (hq_str_ml.result && null == hq_str_ml.result.data) ||
+                (hq_str_ml.result &&
+                  hq_str_ml.result.data &&
+                  hq_str_ml.result.data.length <= 0) ||
+                (hq_str_ml.result &&
+                  hq_str_ml.result.data.minLine_1d &&
+                  hq_str_ml.result.data.minLine_1d.length <= 0) ||
+                hq_str_ml.__ERROR
               )
-                switch (((T.msg = "empty"), f)) {
+                switch (((T.msg = "empty"), market)) {
                   case "HF":
                     var m = new Date(a.date);
                     s.time[s.time.length - 1][1] > a.time &&
                       m.setDate(a.date.getDate() - 1),
-                      (r = i.gltbt(1, a.prevclose, !0, f, [m], s.time));
+                      (r = tUtil.gltbt(
+                        1,
+                        a.prevclose,
+                        !0,
+                        market,
+                        [m],
+                        s.time
+                      ));
                     break;
                   case "NF":
-                    r = i.gltbt(1, a.prevclose, !0, f, [a.date], o.time);
+                    r = tUtil.gltbt(
+                      1,
+                      a.prevclose,
+                      !0,
+                      market,
+                      [a.date],
+                      o.time
+                    );
                     break;
                   case "global_index":
-                    r = i.gltbt(1, a.prevclose, !0, f, [a.date], p.time);
+                    r = tUtil.gltbt(
+                      1,
+                      a.prevclose,
+                      !0,
+                      market,
+                      [a.date],
+                      p.time
+                    );
                     break;
                   default:
-                    r = i.gltbt(1, a.prevclose, !0, f, [a.date]);
+                    r = tUtil.gltbt(1, a.prevclose, !0, market, [a.date]);
                 }
               else
-                switch (((T.msg = ""), f)) {
+                switch (((T.msg = ""), market)) {
                   case "HF":
                     {
                       var u = a.today.split("-");
@@ -1038,85 +1093,87 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                         "-" +
                         (Number(u[2]) < 10 ? "0" + u[2] : u[2]);
                     }
-                    (r = S(e, a, s)),
+                    (r = decodeStr(hq_str_ml, a, s)),
                       "hf_ES" == a.symbol &&
                         a.time > s.time[0][0] &&
                         !t.dateUtil.stbd(r[0].date, a.date) &&
-                        (r = i.gltbt(1, a.prevclose, !0, f, [a.date], s.time));
+                        (r = tUtil.gltbt(
+                          1,
+                          a.prevclose,
+                          !0,
+                          market,
+                          [a.date],
+                          s.time
+                        ));
                     break;
                   case "NF":
-                    r = S(e, a, o);
+                    r = decodeStr(hq_str_ml, a, o);
                     break;
                   case "global_index":
-                    r = S(e, a, p);
+                    r = decodeStr(hq_str_ml, a, p);
                     break;
                   default:
-                    r = S(e, a);
+                    r = decodeStr(hq_str_ml, a);
                 }
-              if (
-                (r && !r[0].date && (r[0].date = a.date), (T.data.td1 = r), !_)
-              )
+              r && !r[0].date && (r[0].date = a.date), (T.data.td1 = r);
+              if (!_) {
                 return (
                   0 != d && (r[0].lastfive = d), void (t.isFunc(n) && n(T))
                 );
-              switch (f) {
+              }
+
+              switch (market) {
                 case "HF":
-                  U(a, r, s);
+                  ss3(a, r, s);
                   break;
                 case "NF":
-                  U(a, r, o);
+                  ss3(a, r, o);
                   break;
                 case "global_index":
-                  U(a, r, p);
+                  ss3(a, r, p);
                   break;
                 default:
-                  U(a, r);
+                  ss3(a, r);
               }
             },
             function() {},
-            { market: f, symbol: a.symbol, type: "t1" }
+            { market: market, symbol: a.symbol, type: "t1" }
           );
         },
-        D = function() {
-          "LSE" === f && (v = e.strUtil.replaceStr(v)),
-            KKE.api(
-              "datas.hq.get",
-              { symbol: v, withI: y, cancelEtag: !0, ssl: k },
-              function(e) {
-                var a = e.data[0];
-                if (
-                  ((T.data.hq = a),
-                  a.name || (a.name = v),
-                  !a.name && "CFF" != f)
-                )
-                  return (T.msg = "error"), void (t.isFunc(n) && n(T));
-                var r = m(k, g, "T_URL")
-                    .replace("$rn", new Date().getTime())
-                    .replace("$symbol", o)
-                    .replace("$cb", "var t1" + l),
-                  i = N(a.today);
-                return "CN" != f ||
-                  t.dateUtil.stbd(t.dateUtil.sd(a.today), t.dateUtil.sd(h))
-                  ? void L(r, a)
-                  : void his0(i);
-              }
-            );
+        ss1 = function() {
+          "LSE" === market && (v = d_util.strUtil.replaceStr(v));
+          KKE.api(
+            "datas.hq.get",
+            { symbol: v, withI: y, cancelEtag: !0, ssl: k },
+            function(e) {
+              var a = e.data[0];
+              T.data.hq = a;
+              a.name || (a.name = v);
+              if (!a.name && "CFF" != market)
+                return (T.msg = "error"), void (t.isFunc(n) && n(T));
+              var r = m(k, g, "T_URL")
+                  .replace("$rn", new Date().getTime())
+                  .replace("$symbol", o)
+                  .replace("$cb", "var t1" + l),
+                i = N(a.today);
+              return "CN" != market ||
+                t.dateUtil.stbd(t.dateUtil.sd(a.today), t.dateUtil.sd(h))
+                ? void ss2(r, a)
+                : void his0(i);
+            }
+          );
         };
-      D();
+      ss1();
     };
-    var b = function(e, a, l, o, c, p, b, v, g, f, h) {
+    var ss4 = function(e, a, l, o, c, ss6, b, v, g, f, h) {
       var _ = { msg: null, data: { td1: null, td5: null, hq: null } };
-      if (
-        ((_.data.hq = e),
-        (_.data.td1 = l),
-        e.name || (e.name = e.symbol),
-        !e.name && "CFF" != c)
-      )
-        return (_.msg = "error"), void (t.isFunc(p) && p(_));
+      (_.data.hq = e), (_.data.td1 = l), e.name || (e.name = e.symbol);
+      if (!e.name && "CFF" != c)
+        return (_.msg = "error"), void (t.isFunc(ss6) && ss6(_));
       var y = function() {
           var u,
             b = a.replace("hk", "");
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$symbol", b)
               .replace("$cb", "var __hkT5"),
@@ -1132,7 +1189,8 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                       }),
                       e.forEach(function(t, r) {
                         var i = t.m.split(":");
-                        t.date && ((t.today = t.date), (t.date = n.sd(t.date))),
+                        t.date &&
+                          ((t.today = t.date), (t.date = dateUtil.sd(t.date))),
                           t.prevclose && (t.prevclose = Number(t.prevclose)),
                           (t.time = i[0] + ":" + i[1]),
                           (t.price =
@@ -1148,7 +1206,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                       for (
                         var r = 0,
                           l = e.length,
-                          s = i.gthk(),
+                          s = tUtil.gthk(),
                           o = 0,
                           c = s.length;
                         c > o;
@@ -1191,7 +1249,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                         });
                       }),
                       (_.data.td5 = u))
-                    : (n.stbd(g[g.length - 2][0].date, l[0].date) &&
+                    : (dateUtil.stbd(g[g.length - 2][0].date, l[0].date) &&
                         ((l[0].today = g[g.length - 1][0].today),
                         (l[0].date = g[g.length - 1][0].date)),
                       (g[g.length - 1] = l),
@@ -1199,7 +1257,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 : ((u = s.ctdb(5, l, e, o, c)), (_.data.td5 = u));
               var f = "lastfive" + a,
                 h = a.substring(2);
-              r(
+              load(
                 m(v, a, "LAST5_URL")
                   .replace("$rn", new Date().getHours())
                   .replace("$symbol", h)
@@ -1208,11 +1266,11 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                   var e = window[f];
                   return e
                     ? ((_.data.td5[4][0].lastfive = d = Number(e.volume)),
-                      void (t.isFunc(p) && p(_)))
-                    : void (t.isFunc(p) && p(_));
+                      void (t.isFunc(ss6) && ss6(_)))
+                    : void (t.isFunc(ss6) && ss6(_));
                 },
                 function() {
-                  (_.data.td5 = u), t.isFunc(p) && p(_);
+                  (_.data.td5 = u), t.isFunc(ss6) && ss6(_);
                 },
                 { symbol: e.symbol, market: c, type: "lastfive" }
               );
@@ -1220,7 +1278,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           );
         },
         k = function() {
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$rn", new Date().getTime())
               .replace("$symbol", f)
@@ -1242,17 +1300,17 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                   f = d.length,
                   h = [];
                 for (m = b - 1; m > b - 6; m--)
-                  h.unshift(i.gltbt(1, e.prevclose, !1, "US", [o[m]]));
+                  h.unshift(tUtil.gltbt(1, e.prevclose, !1, "US", [o[m]]));
                 for (m = b - 1; m > b - 6; m--) {
                   for (var y, k = 0, T = 0; f > T; T++)
                     t.dateUtil.stbd(o[m], d[T][0].date) &&
                       ((y = d[T]), (k = 1), (v = T));
                   0 == k &&
-                    (y = i.gltbt(1, h[v][0].prevclose, !1, "US", [o[m]])),
+                    (y = tUtil.gltbt(1, h[v][0].prevclose, !1, "US", [o[m]])),
                     n.unshift(y);
                 }
               }
-              (n[4] = l), (_.data.td5 = n), t.isFunc(p) && p(_);
+              (n[4] = l), (_.data.td5 = n), t.isFunc(ss6) && ss6(_);
             },
             null,
             { market: c, symbol: e.symbol, type: "t5" }
@@ -1260,7 +1318,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
         },
         T = function(n) {
           var i = "CFF_RE_" == a.substring(0, 7) ? a.slice(7) : a;
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$rn", new Date().getTime())
               .replace("$symbol", i)
@@ -1280,17 +1338,17 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                   }
                 }
               }
-              (i[4] = l), (_.data.td5 = i), t.isFunc(p) && p(_);
+              (i[4] = l), (_.data.td5 = i), t.isFunc(ss6) && ss6(_);
             },
             null,
             { market: c, symbol: e.symbol, type: "t5" }
           );
         },
         N = function(a) {
-          (_.data.td5 = s.ctdb(5, l, e, o, c, a)), t.isFunc(p) && p(_);
+          (_.data.td5 = s.ctdb(5, l, e, o, c, a)), t.isFunc(ss6) && ss6(_);
         },
         R = function(n) {
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$symbol", a.replace("nf_", ""))
               .replace("$cb", "var t5" + a),
@@ -1321,14 +1379,14 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 ? (i.length >= 5 && i.shift(), i.push(l))
                 : (i[4] = l),
                 (_.data.td5 = i),
-                t.isFunc(p) && p(_);
+                t.isFunc(ss6) && ss6(_);
             },
             null,
             { market: c, symbol: e.symbol, type: "t5" }
           );
         },
         $ = function(n) {
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$symbol", a.replace("hf_", ""))
               .replace("$cb", "var t5" + a),
@@ -1383,7 +1441,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                           ($ = 1);
                       0 == $ &&
                         o.unshift(
-                          i.gltbt(
+                          tUtil.gltbt(
                             1,
                             d[d.length - 1][0].prevclose,
                             !1,
@@ -1398,7 +1456,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     o.length <= 3 &&
                     !t.dateUtil.stbd(o[0][0].date, g[u]) &&
                     o.unshift(
-                      i.gltbt(
+                      tUtil.gltbt(
                         1,
                         d[d.length - 1][0].prevclose,
                         !1,
@@ -1409,14 +1467,14 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                     );
                 }
               }
-              (o[4] = l), (_.data.td5 = o), t.isFunc(p) && p(_);
+              (o[4] = l), (_.data.td5 = o), t.isFunc(ss6) && ss6(_);
             },
             null,
             { market: c, symbol: e.symbol, type: "t5" }
           );
         },
         S = function() {
-          r(
+          load(
             m(v, a, "T5_URL")
               .replace("$rn", new Date().getTime())
               .replace("$symbol", a)
@@ -1435,16 +1493,16 @@ xh5_define("datas.t", ["utils.util"], function(e) {
                 }
                 var v = c[0] ? c[0][0].prevclose : e.prevclose;
                 for (m = n - 1 - d; m > n - 6; m--)
-                  c.unshift(i.gltbt(1, v, !1, "CN", [o[m]]));
+                  c.unshift(tUtil.gltbt(1, v, !1, "CN", [o[m]]));
               }
-              (c[4] = l), (_.data.td5 = c), t.isFunc(p) && p(_);
+              (c[4] = l), (_.data.td5 = c), t.isFunc(ss6) && ss6(_);
             },
             null,
             { market: c, symbol: e.symbol, type: "t5" }
           );
         },
-        U = function() {
-          r(
+        ss5 = function() {
+          load(
             m(v, a, "T5_URL")
               .replace("$symbol", a)
               .replace("$rn", e.today),
@@ -1455,37 +1513,37 @@ xh5_define("datas.t", ["utils.util"], function(e) {
               var u, b;
               "" == i
                 ? ((_.msg = "empty"), (u = s.ctdb(5, l, e, o, c)))
-                : ((_.msg = ""), (b = i.split(",")), (u = s.ctdf(b, l, e, o))),
-                s.isBond(a)
-                  ? ((_.data.td5 = u), t.isFunc(p) && p(_))
-                  : r(
-                      m(v, a, "LAST5_URL")
-                        .replace("$rn", new Date().getHours())
-                        .replace("$symbol", a),
-                      function() {
-                        var a = window[n];
-                        if (!a || !a.lastfive)
-                          return (_.data.td5 = u), void (t.isFunc(p) && p(_));
-                        for (var r = a.lastfive.length; r--; )
-                          for (var i = a.lastfive[r].d, l = u.length - 1; l--; )
-                            if (t.dateUtil.stbds(u[l][0].date, i, null)) {
-                              u[l][0].lastfive = Number(a.lastfive[r].c);
-                              break;
-                            }
-                        (d = e.lastfive ? e.lastfive : 0),
-                          (_.data.td5 = u),
-                          t.isFunc(p) && p(_);
-                      },
-                      function() {
-                        (_.data.td5 = u), t.isFunc(p) && p(_);
-                      },
-                      { market: c, symbol: e.symbol, type: "lastfive" }
-                    );
+                : ((_.msg = ""), (b = i.split(",")), (u = s.ctdf(b, l, e, o)));
+              s.isBond(a)
+                ? ((_.data.td5 = u), t.isFunc(ss6) && ss6(_))
+                : load(
+                    m(v, a, "LAST5_URL")
+                      .replace("$rn", new Date().getHours())
+                      .replace("$symbol", a),
+                    function() {
+                      var a = window[n];
+                      if (!a || !a.lastfive)
+                        return (_.data.td5 = u), void (t.isFunc(ss6) && ss6(_));
+                      for (var r = a.lastfive.length; r--; )
+                        for (var i = a.lastfive[r].d, l = u.length - 1; l--; )
+                          if (t.dateUtil.stbds(u[l][0].date, i, null)) {
+                            u[l][0].lastfive = Number(a.lastfive[r].c);
+                            break;
+                          }
+                      (d = e.lastfive ? e.lastfive : 0),
+                        (_.data.td5 = u),
+                        t.isFunc(ss6) && ss6(_);
+                    },
+                    function() {
+                      (_.data.td5 = u), t.isFunc(ss6) && ss6(_);
+                    },
+                    { market: c, symbol: e.symbol, type: "lastfive" }
+                  );
             },
             function() {
               (_.data.td5 = s.ctdb(5, l, e, o, c)),
                 (_.msg = "error"),
-                t.isFunc(p) && p(_);
+                t.isFunc(ss6) && ss6(_);
             },
             { market: c, symbol: e.symbol, type: "t5" }
           );
@@ -1523,7 +1581,7 @@ xh5_define("datas.t", ["utils.util"], function(e) {
           break;
         case "CN":
         case "REPO":
-          U();
+          ss5();
           break;
         case "HF":
           0 == u ? N(h) : $(h);

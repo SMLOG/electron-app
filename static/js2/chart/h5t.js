@@ -3171,267 +3171,267 @@ xh5_define(
             }
           };
         })();
-      return (
-        (n = new (function() {
-          var e = this,
-            a = function(a, i) {
-              if (E.hasOwnProperty(a)) {
-                for (var r in i)
-                  if (i.hasOwnProperty(r) && util.isFunc(i[r]))
-                    return void util.trace.error("illegal operation:", r);
-                "DIMENSION" == a && (ie = 1),
-                  oc(E[a], i),
-                  util.stc(a, i),
-                  e.resize();
-              } else util.trace.error("not exist param:", a);
-            },
-            r = function(e, a) {
-              var i;
-              if (E.hasOwnProperty(e)) {
-                i = util.clone(E[e]);
-                for (var r in i)
-                  if (i.hasOwnProperty(r) && util.isFunc(i[r]))
-                    (i[r] = null), delete i[r];
-                  else if (a)
-                    for (var n = a.length; n--; )
-                      typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
+
+      n = new (function() {
+        var e = this,
+          a = function(a, i) {
+            if (E.hasOwnProperty(a)) {
+              for (var r in i)
+                if (i.hasOwnProperty(r) && util.isFunc(i[r]))
+                  return void util.trace.error("illegal operation:", r);
+              "DIMENSION" == a && (ie = 1),
+                oc(E[a], i),
+                util.stc(a, i),
+                e.resize();
+            } else util.trace.error("not exist param:", a);
+          },
+          r = function(e, a) {
+            var i;
+            if (E.hasOwnProperty(e)) {
+              i = util.clone(E[e]);
+              for (var r in i)
+                if (i.hasOwnProperty(r) && util.isFunc(i[r]))
+                  (i[r] = null), delete i[r];
+                else if (a)
+                  for (var n = a.length; n--; )
+                    typeof i[r] === a[n] && ((i[r] = null), delete i[r]);
+            }
+            return i;
+          },
+          n = function(e, t, a) {
+            (a = oc({ toremove: !1, isexclusive: !1, callback: void 0 }, a)),
+              a.toremove
+                ? X.mM.removeAC(t, e)
+                : a.isexclusive
+                ? (X.mM.removeAC(null, e), X.mM.newAC(t, e, a))
+                : X.mM.newAC(t, e, a);
+          },
+          o = function(e) {
+            (viewState.viewId = e),
+              (viewState.start = 1 == e ? 4 : 0),
+              (viewState.end = 5);
+          };
+        this.pushData = function(e, a) {
+          !util.isArr(e) && (e = [e]), X.pushData(e, a);
+        };
+        var s;
+        this.pushTr = function(e) {
+          e &&
+            e.data &&
+            (clearTimeout(s),
+            (s = setTimeout(function() {
+              var t = e.data.split(","),
+                a = e.symbol,
+                i = e.market,
+                r = { symbol: a, data: t[t.length - 1], market: i };
+              X.pushData([r], 1);
+            }, 20)));
+        };
+        this.setScale = function(e) {
+          X.setScale(e), util.stc("t_scale", e);
+        };
+        var l = !0;
+        this.showView = function(e, a) {
+          oe.hideIUis(), l ? (l = !1) : J.hide();
+          var r = globalCfg.URLHASH.vi(e);
+          if (conf.date)
+            return (conf.date = ""), o(r), void this.newSymbol(conf);
+          var n = X.getAllStock()[0];
+          if (
+            (ne.onRange(n),
+            util.stc("t_v", e),
+            util.suda("vw", e),
+            viewState.viewId != r)
+          ) {
+            if ((o(r), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
+              return J.show(), (C = 1), void X.update5Data(e);
+            X.onChangeView(!1, a), ne && ne.onViewPrice();
+          }
+        };
+        var d = function(e) {
+            var a;
+            return (a = util.isStr(e.symbol)
+              ? e.symbol.split(",")
+              : [e.symbol]);
+          },
+          m = [];
+        this.overlay = function(e, t) {
+          if (X && 1 != X.dAdd)
+            if (t) {
+              X.removeCompare(d(e));
+              for (var a = 0; a < m.length; a++)
+                e.symbol == m[a] && m.splice(a, 1);
+              X.getAllStock().length <= 1 && (X.dAdd = 0);
+            } else
+              (conf.overlaycolor = e.linecolor || { K_N: "#cccccc" }),
+                (X.dAdd = 2),
+                X.compare(e),
+                m.push(e.symbol);
+        };
+        this.compare = function(e, a) {
+          if (X) {
+            var i,
+              r = 0;
+            if (a) {
+              if (
+                ((i = util.isStr(e) ? e.split(",") : [e.symbol]),
+                1 == X.dAdd && X.removeCompare(i),
+                X.getAllStock().length <= 1)
+              ) {
+                for (r = 0; r < m.length; r++)
+                  (X.dAdd = 2), X.compare({ symbol: m[r] });
+                m.length < 1 && (X.dAdd = 0);
               }
-              return i;
-            },
-            n = function(e, t, a) {
-              (a = oc({ toremove: !1, isexclusive: !1, callback: void 0 }, a)),
-                a.toremove
-                  ? X.mM.removeAC(t, e)
-                  : a.isexclusive
-                  ? (X.mM.removeAC(null, e), X.mM.newAC(t, e, a))
-                  : X.mM.newAC(t, e, a);
-            },
-            o = function(e) {
-              (viewState.viewId = e),
-                (viewState.start = 1 == e ? 4 : 0),
-                (viewState.end = 5);
-            };
-          this.pushData = function(e, a) {
-            !util.isArr(e) && (e = [e]), X.pushData(e, a);
-          };
-          var s;
-          this.pushTr = function(e) {
-            e &&
-              e.data &&
-              (clearTimeout(s),
-              (s = setTimeout(function() {
-                var t = e.data.split(","),
-                  a = e.symbol,
-                  i = e.market,
-                  r = { symbol: a, data: t[t.length - 1], market: i };
-                X.pushData([r], 1);
-              }, 20)));
-          };
-          this.setScale = function(e) {
-            X.setScale(e), util.stc("t_scale", e);
-          };
-          var l = !0;
-          this.showView = function(e, a) {
-            oe.hideIUis(), l ? (l = !1) : J.hide();
-            var r = globalCfg.URLHASH.vi(e);
-            if (conf.date)
-              return (conf.date = ""), o(r), void this.newSymbol(conf);
-            var n = X.getAllStock()[0];
-            if (
-              (ne.onRange(n),
-              util.stc("t_v", e),
-              util.suda("vw", e),
-              viewState.viewId != r)
-            ) {
-              if ((o(r), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
-                return J.show(), (C = 1), void X.update5Data(e);
-              X.onChangeView(!1, a), ne && ne.onViewPrice();
-            }
-          };
-          var d = function(e) {
-              var a;
-              return (a = util.isStr(e.symbol)
-                ? e.symbol.split(",")
-                : [e.symbol]);
-            },
-            m = [];
-          this.overlay = function(e, t) {
-            if (X && 1 != X.dAdd)
-              if (t) {
-                X.removeCompare(d(e));
-                for (var a = 0; a < m.length; a++)
-                  e.symbol == m[a] && m.splice(a, 1);
-                X.getAllStock().length <= 1 && (X.dAdd = 0);
-              } else
-                (conf.overlaycolor = e.linecolor || { K_N: "#cccccc" }),
-                  (X.dAdd = 2),
-                  X.compare(e),
-                  m.push(e.symbol);
-          };
-          this.compare = function(e, a) {
-            if (X) {
-              var i,
-                r = 0;
-              if (a) {
-                if (
-                  ((i = util.isStr(e) ? e.split(",") : [e.symbol]),
-                  1 == X.dAdd && X.removeCompare(i),
-                  X.getAllStock().length <= 1)
-                ) {
-                  for (r = 0; r < m.length; r++)
-                    (X.dAdd = 2), X.compare({ symbol: m[r] });
-                  m.length < 1 && (X.dAdd = 0);
-                }
-              } else
-                2 == X.dAdd && X.removeCompare(m),
-                  (X.dAdd = 1),
-                  X.compare(e),
-                  util.suda("t_comp");
-              util.stc("t_comp", { rm: a, o: e });
-            }
-          };
-          var p = 0;
-          this.tCharts = function(e, a) {
-            n("tech", e, a),
-              a && !a.noLog && (0 == p ? (p = 1) : util.sudaLog());
-          };
-          var h = 0;
-          this.pCharts = function(e, a) {
-            n("price", e, a),
-              a && !a.noLog && (0 == h ? (h = 1) : util.sudaLog());
-          };
-          this.showPCharts = function(e) {
-            e && (X.mM.togglePt(e), util.stc("t_sp", e));
-          };
-          this.getIndicators = function() {
-            var e = istCharts ? istCharts.getLog() : null,
-              t = ispCharts ? ispCharts.getLog() : null;
-            return { tCharts: e, pCharts: t };
-          };
-          var f;
-          this.showRangeSelector = function(e) {
-            (f = oc({ dispaly: !0, from: void 0, to: void 0 }, e)),
-              X.mM.showRs(f),
-              util.stc("t_rs", e);
-          };
-          this.setLineStyle = function(e) {
-            X && X.setTLineStyle(e), util.stc("t_style", e);
-          };
-          this.setCustom = fBind(a, this, "custom");
-          this.setDimension = fBind(a, this, "DIMENSION");
-          this.getDimension = fBind(r, null, "DIMENSION", ["boolean"]);
-          this.setTheme = function(e) {
-            var t = re.initTheme(e);
-            t && (this.setLineStyle({ linecolor: e }), this.resize());
-          };
-          this.newSymbol = function(e) {
-            (conf.symbol = e.symbol),
-              (conf.date = e.date),
-              oe.hideIUis(),
-              oe.iReset(),
-              X.dcReset(),
-              X.dcInit(conf),
-              tip.hideTip();
-            if (istCharts) {
-              var a = istCharts.getLog();
-              (istCharts = null), a && this.tCharts(a);
-            }
-            if (ispCharts) {
-              var r = ispCharts.getLog();
-              (ispCharts = null), r && this.pCharts(r);
-            }
-            f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
-              util.stc("t_ns", e);
-          };
-          this.resize = function(e, t) {
-            re.resizeAll(!0, e, t);
-          };
-          this.hide = function(e) {
-            (ae = !0),
-              oe.hideIUis(),
-              util.$CONTAINS($, V) && $.removeChild(V),
-              e && X.dcReset();
-          };
-          this.show = function(e) {
-            (ae = !1),
-              e && (util.isStr(e) && (e = $DOM(e)), ($ = e)),
-              util.$CONTAINS($, V) || ($.appendChild(V), re.resizeAll(!0)),
-              ne && ne.onViewPrice();
-          };
-          this.shareTo = function(e) {
-            X.shareTo(e), util.stc("t_share", e);
-            var a = e && e.type ? e.type : "weibo";
-            util.suda("share", a);
-          };
-          this.getChartId = function() {
-            return E.uid;
-          };
-          this.dateTo = function(time, cb) {
-            conf.historytime = time;
-            conf.historycb = cb;
-            var r = time;
-            "object" == typeof time
-              ? (r = dateUtil.ds(time, "-"))
-              : (time = dateUtil.sd(time));
-            var n = j.get();
-            if (null == n) return void (O = 1);
-            for (var o = n.length, s = 0; o > s; s++)
-              if (dateUtil.stbd(time, n[s][0].date))
-                return void X.moving(s, s + 1, "dateTo");
-            conf.date = r;
-            X.hasHistory = cb;
-            util.stc("t_ft", r);
-            this.newSymbol(conf);
-          };
-          this.showScale = function(e) {
-            X && X.setScale(e);
-          };
-          this.resize = function(e, t) {
-            re.resizeAll(!0, e, t);
-          };
-          this.showCompatibleTip = function(e) {
-            re.showCompatibleTip(e);
-          };
-          this.toggleExtend = function(e) {
-            var t,
-              i = E.DIMENSION.posX;
-            (t = e ? "on" == !e : E.DIMENSION.extend_draw),
-              a.call(this, "DIMENSION", {
-                extend_draw: !t,
-                posX: i > 9 ? E.DIMENSION.extend_padding : 55,
-                RIGHT_W: i > 9 ? E.DIMENSION.extend_padding : 55,
-              }),
-              this.resize();
-          };
-          this.historyData = function() {
-            return X.historyData;
-          };
-          this.getExtraData = function(e) {
-            return X.getExtraData(e);
-          };
-          this.patcher = { iMgr: oe.patcher };
-          this.zoom = function(e) {
-            X.zoomApi(e), util.stc("t_zoom", e, 9e3);
-          };
-          this.move = function(e) {
-            (e = parseInt(e)),
-              isNaN(e) || (X.moveApi(e), util.stc("t_move", e, 9e3));
-          };
-          this.getSymbols = function() {
-            return X.getAllSymbols();
-          };
-          this.update = function() {
-            X.updateDataAll(1), util.stc("t_up", "update", 9e3);
-          };
-          this.getCurrentData = function() {
-            return ne.currentData();
-          };
-          (this.viewState = viewState), (this.me = P), (this.type = "h5t");
-        })()),
-        (X = new D()),
-        X.dcInit(conf),
-        n
-      );
+            } else
+              2 == X.dAdd && X.removeCompare(m),
+                (X.dAdd = 1),
+                X.compare(e),
+                util.suda("t_comp");
+            util.stc("t_comp", { rm: a, o: e });
+          }
+        };
+        var p = 0;
+        this.tCharts = function(e, a) {
+          n("tech", e, a), a && !a.noLog && (0 == p ? (p = 1) : util.sudaLog());
+        };
+        var h = 0;
+        this.pCharts = function(e, a) {
+          n("price", e, a),
+            a && !a.noLog && (0 == h ? (h = 1) : util.sudaLog());
+        };
+        this.showPCharts = function(e) {
+          e && (X.mM.togglePt(e), util.stc("t_sp", e));
+        };
+        this.getIndicators = function() {
+          var e = istCharts ? istCharts.getLog() : null,
+            t = ispCharts ? ispCharts.getLog() : null;
+          return { tCharts: e, pCharts: t };
+        };
+        var f;
+        this.showRangeSelector = function(e) {
+          (f = oc({ dispaly: !0, from: void 0, to: void 0 }, e)),
+            X.mM.showRs(f),
+            util.stc("t_rs", e);
+        };
+        this.setLineStyle = function(e) {
+          X && X.setTLineStyle(e), util.stc("t_style", e);
+        };
+        this.setCustom = fBind(a, this, "custom");
+        this.setDimension = fBind(a, this, "DIMENSION");
+        this.getDimension = fBind(r, null, "DIMENSION", ["boolean"]);
+        this.setTheme = function(e) {
+          var t = re.initTheme(e);
+          t && (this.setLineStyle({ linecolor: e }), this.resize());
+        };
+        this.newSymbol = function(e) {
+          (conf.symbol = e.symbol),
+            (conf.date = e.date),
+            oe.hideIUis(),
+            oe.iReset(),
+            X.dcReset(),
+            X.dcInit(conf),
+            tip.hideTip();
+          if (istCharts) {
+            var a = istCharts.getLog();
+            (istCharts = null), a && this.tCharts(a);
+          }
+          if (ispCharts) {
+            var r = ispCharts.getLog();
+            (ispCharts = null), r && this.pCharts(r);
+          }
+          f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
+            util.stc("t_ns", e);
+        };
+        this.resize = function(e, t) {
+          re.resizeAll(!0, e, t);
+        };
+        this.hide = function(e) {
+          (ae = !0),
+            oe.hideIUis(),
+            util.$CONTAINS($, V) && $.removeChild(V),
+            e && X.dcReset();
+        };
+        this.show = function(e) {
+          (ae = !1),
+            e && (util.isStr(e) && (e = $DOM(e)), ($ = e)),
+            util.$CONTAINS($, V) || ($.appendChild(V), re.resizeAll(!0)),
+            ne && ne.onViewPrice();
+        };
+        this.shareTo = function(e) {
+          X.shareTo(e), util.stc("t_share", e);
+          var a = e && e.type ? e.type : "weibo";
+          util.suda("share", a);
+        };
+        this.getChartId = function() {
+          return E.uid;
+        };
+        this.dateTo = function(time, cb) {
+          conf.historytime = time;
+          conf.historycb = cb;
+          var r = time;
+          "object" == typeof time
+            ? (r = dateUtil.ds(time, "-"))
+            : (time = dateUtil.sd(time));
+          var n = j.get();
+          if (null == n) return void (O = 1);
+          for (var o = n.length, s = 0; o > s; s++)
+            if (dateUtil.stbd(time, n[s][0].date))
+              return void X.moving(s, s + 1, "dateTo");
+          conf.date = r;
+          X.hasHistory = cb;
+          util.stc("t_ft", r);
+          this.newSymbol(conf);
+        };
+        this.showScale = function(e) {
+          X && X.setScale(e);
+        };
+        this.resize = function(e, t) {
+          re.resizeAll(!0, e, t);
+        };
+        this.showCompatibleTip = function(e) {
+          re.showCompatibleTip(e);
+        };
+        this.toggleExtend = function(e) {
+          var t,
+            i = E.DIMENSION.posX;
+          t = e ? "on" == !e : E.DIMENSION.extend_draw;
+          a.call(this, "DIMENSION", {
+            extend_draw: !t,
+            posX: i > 9 ? E.DIMENSION.extend_padding : 55,
+            RIGHT_W: i > 9 ? E.DIMENSION.extend_padding : 55,
+          });
+          this.resize();
+        };
+        this.historyData = function() {
+          return X.historyData;
+        };
+        this.getExtraData = function(e) {
+          return X.getExtraData(e);
+        };
+        this.patcher = { iMgr: oe.patcher };
+        this.zoom = function(e) {
+          X.zoomApi(e), util.stc("t_zoom", e, 9e3);
+        };
+        this.move = function(e) {
+          e = parseInt(e);
+          isNaN(e) || (X.moveApi(e), util.stc("t_move", e, 9e3));
+        };
+        this.getSymbols = function() {
+          return X.getAllSymbols();
+        };
+        this.update = function() {
+          X.updateDataAll(1), util.stc("t_up", "update", 9e3);
+        };
+        this.getCurrentData = function() {
+          return ne.currentData();
+        };
+        this.viewState = viewState;
+        this.me = P;
+        this.type = "h5t";
+      })();
+      X = new D();
+      X.dcInit(conf);
+      return n;
     }
     function out() {
       function s1(conf, cb) {

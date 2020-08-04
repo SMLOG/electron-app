@@ -350,7 +350,7 @@ xh5_define(
                   dateUtil.stbd(m.datas[0][0].date, m.hq.date) &&
                   !isNaN(m.hq.totalAmount) &&
                   (m.datas[0][0].volume = m.hq.totalAmount / m.hq.totalVolume));
-              var c = g(m.maxVolume, 0, 0, !0);
+              var c = ccc(m.maxVolume, 0, 0, !0);
               m.labelMaxVol = c[0];
               var d = 0.005;
               m.maxPercent < d &&
@@ -3521,7 +3521,7 @@ xh5_define(
       oc = util.oc,
       dateUtil = util.dateUtil,
       stbd = util.dateUtil.stbd,
-      g = util.xh5_ADJUST_HIGH_LOW.c,
+      ccc = util.xh5_ADJUST_HIGH_LOW.c,
       xh5_BrowserUtil = util.xh5_BrowserUtil,
       fBind = util.fBind,
       ps = util.strUtil.ps,

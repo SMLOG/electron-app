@@ -82,36 +82,38 @@ xh5_define(
           var a,
             i = [],
             r = e;
-          if (((U = A.tcd(I)), market2Num(_this.needMarket) != market2Num(I))) {
-            (a = tDb.get()), (dd1 = util.tUtil.gata(I));
+          U = A.tcd(iii);
+          if (market2Num(_this.needMarket) != market2Num(iii)) {
+            a = tDb.get();
+            dd1 = util.tUtil.gata(iii);
             for (var n = 0; n < a.length; n++)
-              market2Num(_this.needMarket) < market2Num(I)
-                ? (i.push(A.aduk(a[n], _this.market, I, C, a[n][0].date)),
+              market2Num(_this.needMarket) < market2Num(iii)
+                ? (i.push(A.aduk(a[n], _this.market, iii, ccc2, a[n][0].date)),
                   (_this.realLen = util.arrIndexOf(
                     dd1,
-                    C.getHours() + ":" + util.strUtil.zp(C.getMinutes())
+                    ccc2.getHours() + ":" + util.strUtil.zp(ccc2.getMinutes())
                   )),
                   _this.realLen < 0 && (_this.realLen = U))
-                : (i.push(A.rmuk(a[n], I, r)),
+                : (i.push(A.rmuk(a[n], iii, r)),
                   (_this.realLen = util.arrIndexOf(
                     dd1,
-                    C.getHours() + ":" + util.strUtil.zp(C.getMinutes())
+                    ccc2.getHours() + ":" + util.strUtil.zp(ccc2.getMinutes())
                   )));
-            (_this.needMarket = I),
-              tDb.initTState(i),
-              (_this.datas = i[4]),
-              ooo1.setDataRange(),
-              ooo1.createPlayingData();
+            _this.needMarket = iii;
+            tDb.initTState(i);
+            _this.datas = i[4];
+            ooo1.setDataRange();
+            ooo1.createPlayingData();
           }
         };
         var eee1,
           kkk1,
           ddd1,
-          L,
-          C,
-          q = new S(this, conf2);
+          ooo3,
+          ccc2,
+          qqq = new S(this, conf2);
         this.getName = function() {
-          return L || "";
+          return ooo3 || "";
         };
         this.getStockType = function() {
           var e;
@@ -119,14 +121,15 @@ xh5_define(
         };
         this.viewState = viewState;
         var tDb = new (function() {
-            var a = {},
-              r = { rsAmount: void 0 },
-              n = function(e) {
-                if (e) {
+            var db = {},
+              extraDataObj = { rsAmount: void 0 },
+              initState = function(ee3) {
+                if (ee3) {
                   var r,
-                    n = e.length,
+                    n = ee3.length,
                     o = [];
-                  if ((util.clone(e, o), o.length > 5)) {
+                  util.clone(ee3, o);
+                  if (o.length > 5) {
                     if (conf.date) {
                       for (
                         var s,
@@ -150,52 +153,53 @@ xh5_define(
                         : ((r = o.splice(0, 5)),
                           (viewState.start = d),
                           (viewState.end = d + 1)),
-                        (a.tv = viewState.start),
-                        (a.tb = viewState.end);
+                        (db.tv = viewState.start),
+                        (db.tb = viewState.end);
                     }
-                  } else (r = o), (a.tv = conf.date ? 0 : 4), (a.tb = n);
-                  a.t = r;
+                  } else (r = o), (db.tv = conf.date ? 0 : 4), (db.tb = n);
+                  db.t = r;
                 }
               };
-            (this.get = function(e) {
-              return e ? a[e] : a.t;
-            }),
-              (this.set = function(e, t) {
-                "undefined" != typeof a[e] && (a[e] = t);
-              }),
-              (this.initState = n),
-              (this.initTState = function(e) {
-                n(e);
-              }),
-              (this.extraDataObj = r),
-              (this.initExtraData = function() {
-                var a = conf.ssl ? "https" : "http",
-                  n =
-                    a +
-                    "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
-                  o = "KKE_ShareAmount_" + conf2.symbol;
-                util.load(
-                  n
-                    .replace("$symbol", conf2.symbol)
-                    .replace("$rn", String(new Date().getDate()))
-                    .replace("$cb", "var%20" + o + "="),
-                  function() {
-                    var e = window[o];
-                    if (e) {
-                      for (var t, a = [], i = e.length; i--; )
-                        (t = e[i]),
-                          a.push({
-                            amount: Number(t.amount),
-                            date: dateUtil.sd(t.date),
-                          });
-                      a.length && (r.rsAmount = a);
-                    }
+            this.get = function(e) {
+              return e ? db[e] : db.t;
+            };
+            this.set = function(e, t) {
+              "undefined" != typeof db[e] && (db[e] = t);
+            };
+            this.initState = initState;
+            this.initTState = function(e) {
+              initState(e);
+            };
+            this.extraDataObj = extraDataObj;
+            this.initExtraData = function() {
+              var a = conf.ssl ? "https" : "http",
+                n =
+                  a +
+                  "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
+                o = "KKE_ShareAmount_" + conf2.symbol;
+              util.load(
+                n
+                  .replace("$symbol", conf2.symbol)
+                  .replace("$rn", String(new Date().getDate()))
+                  .replace("$cb", "var%20" + o + "="),
+                function() {
+                  var e = window[o];
+                  if (e) {
+                    for (var t, a = [], i = e.length; i--; )
+                      (t = e[i]),
+                        a.push({
+                          amount: Number(t.amount),
+                          date: dateUtil.sd(t.date),
+                        });
+                    a.length && (extraDataObj.rsAmount = a);
                   }
-                );
-              }),
-              (this.gc = function() {
-                (a = null), (r = null);
-              });
+                }
+              );
+            };
+            this.gc = function() {
+              db = null;
+              extraDataObj = null;
+            };
           })(),
           ooo1 = new (function() {
             var e, t, createPlayingData;
@@ -219,7 +223,7 @@ xh5_define(
                     Math.abs(e - _this.minavgPrice)
                   );
                 switch (
-                  (t / e > 0.45 && "US" != I && (E.datas.scaleType = "price"),
+                  (t / e > 0.45 && "US" != iii && (E.datas.scaleType = "price"),
                   t / e > 0.1 &&
                     "newstock" == E.datas.scaleType &&
                     (E.datas.scaleType = "price"),
@@ -477,25 +481,25 @@ xh5_define(
           se = new Date().getTime(),
           le = function() {
             var e;
-            (C = new Date()),
-              (e = 60 * C.getTimezoneOffset() * 1e3),
-              C.setTime(C.getTime() + e),
-              C.setHours(C.getHours() + 8);
+            (ccc2 = new Date()),
+              (e = 60 * ccc2.getTimezoneOffset() * 1e3),
+              ccc2.setTime(ccc2.getTime() + e),
+              ccc2.setHours(ccc2.getHours() + 8);
           },
           ce = function(e) {
             if ((le(), !dd1))
-              switch (I) {
+              switch (iii) {
                 case "HF":
-                  dd1 = util.tUtil.gata(I, futureTime2.time);
+                  dd1 = util.tUtil.gata(iii, futureTime2.time);
                   break;
                 case "NF":
-                  dd1 = util.tUtil.gata(I, futureTime1.time);
+                  dd1 = util.tUtil.gata(iii, futureTime1.time);
                   break;
                 case "global_index":
-                  dd1 = util.tUtil.gata(I, gbiTime.time);
+                  dd1 = util.tUtil.gata(iii, gbiTime.time);
                   break;
                 default:
-                  dd1 = util.tUtil.gata(I);
+                  dd1 = util.tUtil.gata(iii);
               }
             e.index = util.arrIndexOf(dd1, e.time);
             var a = e.index;
@@ -566,7 +570,7 @@ xh5_define(
               n = !0,
               o = function(e) {
                 var a;
-                switch (I) {
+                switch (iii) {
                   case "HF":
                     a = futureTime2.time;
                     break;
@@ -587,7 +591,7 @@ xh5_define(
                   [e.date],
                   a
                 );
-                "NF" == I && e.time >= "21:00"
+                "NF" == iii && e.time >= "21:00"
                   ? ((i[0].date = dateUtil.dd(e.date)),
                     i[0].date.setDate(e.date.getDate() + 1))
                   : (i[0].date = dateUtil.dd(e.date)),
@@ -603,7 +607,7 @@ xh5_define(
                     ((n += Number(o[s][0].totalVolume)), r++);
                 (i[0].lastfive = n / r / 390 || 0),
                   stbd(o[4][0].date, e.date)
-                    ? "NF" == I && e.time >= "21:00"
+                    ? "NF" == iii && e.time >= "21:00"
                       ? (o.shift(), o.push(i))
                       : (o[4] = i)
                     : (o.shift(), o.push(i)),
@@ -723,7 +727,7 @@ xh5_define(
                       (_this.datas && (K = y[4][0]), de(e.date, y[4][0].date))
                     )
                       return void (_this.realLen = U);
-                    (L = e.name || ""), (_this.hq = e);
+                    (ooo3 = e.name || ""), (_this.hq = e);
                     var _ =
                       e.date.getHours() < 10
                         ? "0" + e.date.getHours()
@@ -935,7 +939,7 @@ xh5_define(
                 var r,
                   n,
                   o = a;
-                switch (I) {
+                switch (iii) {
                   case "HF":
                     n = futureTime2.time;
                     break;
@@ -1068,12 +1072,12 @@ xh5_define(
                     }
                     (_this.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
                     var b;
-                    C = new Date();
-                    var y = 60 * C.getTimezoneOffset() * 1e3;
+                    ccc2 = new Date();
+                    var y = 60 * ccc2.getTimezoneOffset() * 1e3;
                     if (
-                      (C.setTime(C.getTime() + y),
-                      C.setHours(C.getHours() + 8),
-                      (L = _this.hq.name || ""),
+                      (ccc2.setTime(ccc2.getTime() + y),
+                      ccc2.setHours(ccc2.getHours() + 8),
+                      (ooo3 = _this.hq.name || ""),
                       ce(_this.hq),
                       l(_this.hq, e.data.td5) && R(_this.market)
                         ? "history" == e.msg
@@ -1130,17 +1134,17 @@ xh5_define(
             ddd1 && ddd1.setDataRange();
         };
         this.draw = function() {
-          q.draw(), eee1 && eee1.allDraw(), kkk1 && kkk1.allDraw();
+          qqq.draw(), eee1 && eee1.allDraw(), kkk1 && kkk1.allDraw();
         };
         this.resize = function(e) {
           ooo1.createPlayingData(),
-            q.resize(),
+            qqq.resize(),
             eee1 && eee1.onResize(e),
             kkk1 && kkk1.onResize(),
             ddd1 && ddd1.onResize();
         };
         this.clear = function() {
-          q.clear(),
+          qqq.clear(),
             eee1 && (eee1.clear(), (eee1 = null)),
             kkk1 && (kkk1.clear(), (kkk1 = null)),
             ddd1 && (ddd1.clear(), (ddd1 = null)),
@@ -1200,7 +1204,7 @@ xh5_define(
               subArea: W,
               cb: he,
               cfg: E,
-              type: "option_cn" == I ? "p" : "t",
+              type: "option_cn" == iii ? "p" : "t",
               usrObj: conf,
               initMgr: re,
             })),
@@ -1222,7 +1226,7 @@ xh5_define(
             (Q = ddd1)),
             ddd1.linkData();
         };
-        this.setTLineStyle = q.setTLineStyle;
+        this.setTLineStyle = qqq.setTLineStyle;
         c();
       }
       function S(e, r) {
@@ -1624,7 +1628,8 @@ xh5_define(
               if (o) {
                 for (s = allStocks.length; s--; )
                   allStocks[s].marketNum(allStocks[s].needMarket) >
-                    allStocks[s].marketNum(I) && (I = allStocks[s].needMarket);
+                    allStocks[s].marketNum(iii) &&
+                    (iii = allStocks[s].needMarket);
                 for (s = allStocks.length; s--; ) changeData(allStocks[s]);
                 for (setViewData(a); f.length; ) {
                   var l = f.shift();
@@ -1754,7 +1759,7 @@ xh5_define(
                         ? a.market
                         : t
                       : a.market),
-                r == allStocks.length - 1 && 0 == o && (I = t);
+                r == allStocks.length - 1 && 0 == o && (iii = t);
             for (r = allStocks.length; r--; ) changeData(allStocks[r], i);
           },
           changeData = function(e, t) {
@@ -1826,7 +1831,7 @@ xh5_define(
             ((4 != t && 5 != a) || (0 != t && 5 != a)) &&
               (viewState.viewId = 0),
             r && 4 != t && 1 == A && ((i = "rs"), (A = 2), (C = 0)),
-            ("HF" == I || "NF" == I) &&
+            ("HF" == iii || "NF" == iii) &&
               0 == C &&
               i &&
               (J.show(), update5Data("t5"), (C = 1), (A = 2));
@@ -1970,7 +1975,7 @@ xh5_define(
       var futureTime2,
         futureTime1,
         gbiTime,
-        I = "CN",
+        iii = "CN",
         M = 1,
         O = 0,
         L = "手",
@@ -2194,8 +2199,8 @@ xh5_define(
       E.datas.isT = !0;
       conf.reorder || (E.custom.indicator_reorder = !1);
       conf.reheight || (E.custom.indicator_reheight = !1);
-      I = util.market(conf.symbol);
-      E.datas.tDataLen = A.tcd(I);
+      iii = util.market(conf.symbol);
+      E.datas.tDataLen = A.tcd(iii);
       var U = E.datas.tDataLen,
         tip = new (function() {
           var e;
@@ -2412,7 +2417,7 @@ xh5_define(
                 o.datas &&
                 (stbd(o.datas[o.datas.length - 1][0].date, o.hq.date)
                   ? (r = o.realLen < 0 || o.realLen > n ? n : (n = o.realLen))
-                  : "NF" == I &&
+                  : "NF" == iii &&
                     futureTime1 &&
                     "21:00" == futureTime1.time[0][0]
                   ? (r = n = o.realLen)
@@ -2426,7 +2431,7 @@ xh5_define(
               ) {
                 var s, l;
                 if (
-                  ("HF" == I
+                  ("HF" == iii
                     ? ((s = futureTime2.time[0][0]),
                       s > a.time
                         ? ((s = o.datas[o.datas.length - 1][0].date),
@@ -2434,7 +2439,7 @@ xh5_define(
                           "hf_CHA50CFD" !== conf.symbol &&
                             l.setDate(l.getDate() + 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
-                    : "NF" == I
+                    : "NF" == iii
                     ? ((s = futureTime1.time[0][0]),
                       s < a.time && "21:00" == s
                         ? ((s = o.datas[o.datas.length - 1][0].date),
@@ -2442,7 +2447,7 @@ xh5_define(
                           l.setDate(l.getDate() - 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
                     : (l = o.datas[o.datas.length - 1][0].date),
-                  "US" == I &&
+                  "US" == iii &&
                     o.hq &&
                     o.datas &&
                     o.datas.length > 0 &&
@@ -2515,7 +2520,7 @@ xh5_define(
                 (d.price = Number(d.price.toFixed(l))),
                 (d.avg_price = Number(d.avg_price.toFixed(c)));
               var m = conf.symbol.length;
-              "HK" == I &&
+              "HK" == iii &&
                 conf.symbol.substring(m - 1, m) >= "A" &&
                 (d.avg_price = 0 / 0),
                 d.volume && d.volume < 0 && (d.volume = 0),
@@ -2676,7 +2681,7 @@ xh5_define(
                   (g.innerHTML = "\u6210\u4ea4");
                 var T = $C("span");
                 (f.style.cssText = p),
-                  "HF" != I &&
+                  "HF" != iii &&
                     (v.appendChild(g),
                     f.appendChild(T),
                     u.appendChild(v),
@@ -2710,9 +2715,9 @@ xh5_define(
                       p = Number(l.avg_price),
                       h = l.change,
                       u = 1 > d || 1 > p ? 4 : s;
-                    "HK" == I || "US" == I || "HF" == I
+                    "HK" == iii || "US" == iii || "HF" == iii
                       ? (u = util.strUtil.nfloat(d))
-                      : "LSE" === I && (u = 3),
+                      : "LSE" === iii && (u = 3),
                       conf.ennfloat && (u = conf.nfloat),
                       (c = isNaN(c) ? "--" : (100 * c).toFixed(2)),
                       (D.innerHTML = d.toFixed(u)),
@@ -2965,7 +2970,7 @@ xh5_define(
                     (W = C[ie]),
                     (B = C[ie].getName()),
                     (j = C[ie].getStockType()),
-                    I)
+                    iii)
                   ) {
                     case "HK":
                     case "US":
@@ -2998,7 +3003,7 @@ xh5_define(
                 -1 === W.realLen && (W.realLen = U),
                   V >= W.realLen && (V = W.realLen);
               else
-                switch (I) {
+                switch (iii) {
                   case "HF":
                   case "NF":
                     V >= W.realLen && 4 == viewState.start && (V = W.realLen);
@@ -3006,7 +3011,7 @@ xh5_define(
                   default:
                     S = U - 1;
                 }
-              R(I) &&
+              R(iii) &&
               dateUtil.stbd(se, dateUtil.sd(le)) &&
               W.hq &&
               W.hq.time >= "09:00" &&
@@ -3028,14 +3033,14 @@ xh5_define(
               var de = d;
               E.custom.stick && (d = L.ix || d);
               var me, pe;
-              "HF" == I
+              "HF" == iii
                 ? ((me = futureTime2.time[0][0]),
                   me > L.time
                     ? ((me = L.date),
                       (pe = new Date(me)),
                       pe.setDate(pe.getDate() + 1))
                     : (pe = L.date))
-                : "NF" == I
+                : "NF" == iii
                 ? ((me = futureTime1.time[0][0]),
                   me <= L.time && "21:00" == me
                     ? ((me = L.date),
@@ -3051,7 +3056,9 @@ xh5_define(
                 "/" +
                 util.dateUtil.nw(pe.getDay()) +
                 (L.time || "");
-              ("GOODS" === I || "hf_CHA50CFD" === conf.symbol || "HF" === I) &&
+              ("GOODS" === iii ||
+                "hf_CHA50CFD" === conf.symbol ||
+                "HF" === iii) &&
                 (he = L.time || "--"),
                 (L.day = he),
                 e &&
@@ -3199,7 +3206,7 @@ xh5_define(
                         (s = 0 > s ? Number.MAX_VALUE : s),
                         b(s);
                     else {
-                      if ("NF" == I && r.hq.time >= "21:00")
+                      if ("NF" == iii && r.hq.time >= "21:00")
                         return (
                           r.realLen >= 0 && (s = r.realLen),
                           void (
@@ -3210,11 +3217,11 @@ xh5_define(
                         );
                       y();
                     }
-                  else if ("HF" == I)
+                  else if ("HF" == iii)
                     4 == viewState.start &&
                       5 == viewState.end &&
                       ne.onViewPrice(o, s, void 0, !k);
-                  else if ("NF" == I) {
+                  else if ("NF" == iii) {
                     var c = new Date(o.date);
                     o.date &&
                       o.time >= "21:00" &&
@@ -3305,7 +3312,9 @@ xh5_define(
           util.stc("t_v", e);
           util.suda("vw", e);
           if (viewState.viewId != viewId) {
-            if ((o(viewId), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
+            if (
+              (o(viewId), ("HF" == iii || "NF" == iii) && "t5" == e && 0 == C)
+            )
               return J.show(), (C = 1), void xxx.update5Data(e);
             xxx.onChangeView(!1, a), ne && ne.onViewPrice();
           }

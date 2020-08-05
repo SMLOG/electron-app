@@ -202,15 +202,15 @@ xh5_define(
             };
           })(),
           ooo1 = new (function() {
-            var e, t, createPlayingData;
-            e = function() {
-              (_this.minPrice = Number.MAX_VALUE),
-                (_this.maxPrice = 0),
-                (_this.minPercent = Number.MAX_VALUE),
-                (_this.maxPercent = -Number.MAX_VALUE),
-                (_this.minavgPrice = Number.MAX_VALUE),
-                (_this.maxavgPrice = 0),
-                (_this.maxVolume = 0);
+            var _default, t, createPlayingData;
+            _default = function() {
+              _this.minPrice = Number.MAX_VALUE;
+              _this.maxPrice = 0;
+              _this.minPercent = Number.MAX_VALUE;
+              _this.maxPercent = -Number.MAX_VALUE;
+              _this.minavgPrice = Number.MAX_VALUE;
+              _this.maxavgPrice = 0;
+              _this.maxVolume = 0;
             };
             t = function() {
               function e(e) {
@@ -265,8 +265,8 @@ xh5_define(
                     0
                   ));
               }
-              (_this.isCompare = xxx.getAllStock().length > 1),
-                (_this.dAdd = xxx.dAdd);
+              _this.isCompare = xxx.getAllStock().length > 1;
+              _this.dAdd = xxx.dAdd;
               var t;
               _this.datas &&
                 0 == _this.datas[0][0].volume &&
@@ -399,25 +399,26 @@ xh5_define(
             };
             createPlayingData = function() {
               var e,
-                t,
-                a,
-                i = E.DIMENSION.h_t,
-                r = i * E.DIMENSION.P_HV,
-                n = i * (1 - E.DIMENSION.P_HV);
-              (t = _this.labelMinP), (a = _this.labelMaxP);
-              var o,
-                s = _this.labelMaxVol;
+                labelMinP,
+                labelMaxP,
+                h_t = E.DIMENSION.h_t,
+                r = h_t * E.DIMENSION.P_HV,
+                n = h_t * (1 - E.DIMENSION.P_HV);
+              labelMinP = _this.labelMinP;
+              labelMaxP = _this.labelMaxP;
+              var prevclose,
+                labelMaxVol = _this.labelMaxVol;
               if (_this.datas) {
-                var l = _this.datas.length;
-                for (e = 0; l > e; e++) {
-                  o = _this.datas[0][0].prevclose;
+                var length = _this.datas.length;
+                for (e = 0; length > e; e++) {
+                  prevclose = _this.datas[0][0].prevclose;
                   for (
                     var c,
-                      d = E.custom.show_underlay_vol,
+                      show_underlay_vol = E.custom.show_underlay_vol,
                       h = _this.isCompare ? "ppp" : "pp",
-                      u = _this.dataLen,
+                      dataLen = _this.dataLen,
                       v = 0;
-                    u > v;
+                    dataLen > v;
                     v++
                   ) {
                     if (((c = _this.datas[e][v]), !c)) return;
@@ -426,25 +427,44 @@ xh5_define(
                       v > 0 &&
                       ((c.price = _this.hq.price),
                       (c.avg_price = _this.datas[e][v - 1].avg_price),
-                      (c.volume = 0)),
-                      (c.change = c.price - o),
-                      (c.percent = c.change / o),
-                      (c.py = xh5_PosUtil[h](c.price, t, a, i, o)),
-                      (c.ay = xh5_PosUtil[h](c.avg_price, t, a, i, o)),
-                      d && (c.vy = xh5_PosUtil.vp(c.volume, s, r) + n);
+                      (c.volume = 0));
+                    c.change = c.price - prevclose;
+                    c.percent = c.change / prevclose;
+                    c.py = xh5_PosUtil[h](
+                      c.price,
+                      labelMinP,
+                      labelMaxP,
+                      h_t,
+                      prevclose
+                    );
+                    c.ay = xh5_PosUtil[h](
+                      c.avg_price,
+                      labelMinP,
+                      labelMaxP,
+                      h_t,
+                      prevclose
+                    );
+                    show_underlay_vol &&
+                      (c.vy = xh5_PosUtil.vp(c.volume, labelMaxVol, r) + n);
                   }
                 }
                 _this.preData.vPos =
                   "CN" == _this.market &&
-                  1 == l &&
+                  1 == length &&
                   stbd(_this.hq.date, _this.datas[0][0].date)
-                    ? xh5_PosUtil[h](_this.preData.data, t, a, i, o)
+                    ? xh5_PosUtil[h](
+                        _this.preData.data,
+                        labelMinP,
+                        labelMaxP,
+                        h_t,
+                        prevclose
+                      )
                     : null;
               }
             };
             this.createPlayingData = createPlayingData;
             this.extValues = function() {
-              e(), t();
+              _default(), t();
             };
             this.setDataRange = function(a) {
               var i = tDb.get();
@@ -460,17 +480,17 @@ xh5_define(
                   : (a && n + 1 > i.length && (viewState.end = n = i.length),
                     tDb.set("tv", r),
                     tDb.set("tb", n));
-                var o = [],
-                  s = [];
-                if (i.length < 2) (s = i), o.push(i);
+                var datas = [],
+                  lineDatas = [];
+                if (i.length < 2) (lineDatas = i), datas.push(i);
                 else
                   for (var l = r; n > l; l++)
-                    (s = s.concat(i[l])), o.push(i[l]);
-                (_this.datas = o),
-                  (_this.lineDatas = s),
-                  (_this.dataLen = o[0].length),
-                  e(),
-                  t();
+                    (lineDatas = lineDatas.concat(i[l])), datas.push(i[l]);
+                _this.datas = datas;
+                _this.lineDatas = lineDatas;
+                _this.dataLen = datas[0].length;
+                _default();
+                t();
               }
             };
           })();

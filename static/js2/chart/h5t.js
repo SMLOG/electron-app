@@ -883,7 +883,7 @@ xh5_define(
                     util.isFunc(o) && o());
                 });
               },
-              loadt5datas = function(td1, r, n) {
+              updateT5Data = function(td1, r, n) {
                 var params = {
                   symbol: r.symbol,
                   date: r.today,
@@ -905,41 +905,41 @@ xh5_define(
                   J.hide();
                 });
               };
-            (this.updateT5Data = loadt5datas),
-              (this.update = function(a, r, o, s, c) {
-                var d,
-                  m,
-                  p,
-                  h = "",
-                  u = "";
-                if (((p = s ? s : util.market(conf2.symbol)), "US" === p))
-                  h = 1 === conf.assisthq ? ",gb_ixic" : u;
-                else if ("HK" === p) {
-                  var v =
-                    "hk" === conf2.symbol.substring(0, 2)
-                      ? ",hkHSI"
-                      : ",rt_hkHSI";
-                  h = 1 === conf.assisthq ? v : u;
-                }
-                o
-                  ? ((d = "datas.hq.parse"),
-                    (m = {
-                      symbol: conf2.symbol + h,
-                      hqStr: o,
-                      market: p,
-                      ssl: conf.ssl,
-                    }))
-                  : ((d = "datas.hq.get"),
-                    (m = {
-                      symbol: conf2.symbol + h,
-                      delay: !0,
-                      cancelEtag: n,
-                      ssl: conf.ssl,
-                    })),
-                  KKE.api(d, m, function(t) {
-                    l(t.dataObj[conf2.symbol], a, c);
-                  });
+            this.updateT5Data = updateT5Data;
+            this.update = function(a, r, o, s, c) {
+              var d,
+                m,
+                p,
+                h = "",
+                u = "";
+              if (((p = s ? s : util.market(conf2.symbol)), "US" === p))
+                h = 1 === conf.assisthq ? ",gb_ixic" : u;
+              else if ("HK" === p) {
+                var v =
+                  "hk" === conf2.symbol.substring(0, 2)
+                    ? ",hkHSI"
+                    : ",rt_hkHSI";
+                h = 1 === conf.assisthq ? v : u;
+              }
+              o
+                ? ((d = "datas.hq.parse"),
+                  (m = {
+                    symbol: conf2.symbol + h,
+                    hqStr: o,
+                    market: p,
+                    ssl: conf.ssl,
+                  }))
+                : ((d = "datas.hq.get"),
+                  (m = {
+                    symbol: conf2.symbol + h,
+                    delay: !0,
+                    cancelEtag: n,
+                    ssl: conf.ssl,
+                  }));
+              KKE.api(d, m, function(t) {
+                l(t.dataObj[conf2.symbol], a, c);
               });
+            };
           })(),
           pe = new (function() {
             var r = void 0,
@@ -986,21 +986,19 @@ xh5_define(
                   [o.hq.date],
                   n
                 );
-                return (
-                  (s[0].name = o.hq.name),
-                  (s[0].symbol = conf2.symbol),
-                  (s[0].today = util.dateUtil.ds(o.hq.date, "-")),
-                  (r = i),
-                  (r[4] = s),
-                  (_this.realLen = 0),
-                  r
-                );
+                s[0].name = o.hq.name;
+                s[0].symbol = conf2.symbol;
+                s[0].today = util.dateUtil.ds(o.hq.date, "-");
+                r = i;
+                r[4] = s;
+                _this.realLen = 0;
+                return r;
               };
             this.init = function(o) {
               var p = viewState.viewId;
               if (r != p) {
-                (r = p),
-                  null != _this.datas && tDb.initTState(p, _this.tDb.get());
+                r = p;
+                null != _this.datas && tDb.initTState(p, _this.tDb.get());
                 var h = {
                   assisthq: conf.assisthq,
                   ssl: conf.ssl,
@@ -1027,116 +1025,116 @@ xh5_define(
                   default:
                     dd1 = util.tUtil.gata(_this.needMarket);
                 }
-                J.show(),
-                  KKE.api("datas.t.get", h, function(e) {
-                    xxx.hasHistory && "history" == e.msg && xxx.hasHistory(M);
-                    var d = e.data.hq.status,
-                      p = "",
-                      u = Number(e.data.hq.state);
-                    if ("empty" == e.msg)
-                      switch (_this.market) {
-                        case "CN":
-                          3 == d &&
-                            ((p = globalCfg.delisted),
-                            tip.showTip({ txt: p, parent: V, noBtn: !0 }));
-                      }
-                    if ("error" == e.msg || "nohistory" == e.msg) {
-                      if (
-                        (isMain &&
-                          "nohistory" == e.msg &&
-                          ((M = 0),
-                          xxx.hasHistory && xxx.hasHistory(M),
-                          tip.showTip({
-                            txt: globalCfg.nohistoryt,
-                            parent: V,
-                            noBtn: !0,
-                          })),
-                        (_this.isErr = !0),
-                        isMain && e.data && e.data.hq)
-                      ) {
-                        if (d)
-                          switch (_this.market) {
-                            case "CN":
-                              switch (d) {
-                                case 2:
-                                  p = globalCfg.notlisted;
-                                  break;
-                                case 3:
-                                  p = globalCfg.delisted;
-                                  break;
-                                case 0:
-                                  p = globalCfg.norecord;
-                              }
-                              break;
-                            case "HK":
-                              switch (d) {
-                                case 5:
-                                  p = globalCfg.notlisted;
-                                  break;
-                                case 0:
-                                  p = globalCfg.delisted;
-                              }
-                          }
-                        else p = globalCfg.norecord;
-                        if (p && 0 != u) {
-                          var v,
-                            g = { txt: p, parent: V, noBtn: !0 };
-                          if (!(E.DIMENSION.getStageW() < 200))
-                            return (
-                              tip.showTip({ txt: p, parent: V, noBtn: !0 }),
-                              void J.hide()
-                            );
-                          (g.bgStyle = { padding: 0, top: "0px" }),
-                            v || ((v = new util.TipM(E.COLOR)), v.genTip(g));
-                        }
-                      }
-                      if (0 != u && 7 != u) {
-                        if ((xxx.onResize(), 1 != d))
-                          return void xxx.removeCompare([h.symbol]);
-                        _this.isErr = !1;
-                      } else _this.isErr = !1;
+                J.show();
+                KKE.api("datas.t.get", h, function(e) {
+                  xxx.hasHistory && "history" == e.msg && xxx.hasHistory(M);
+                  var d = e.data.hq.status,
+                    p = "",
+                    u = Number(e.data.hq.state);
+                  if ("empty" == e.msg)
+                    switch (_this.market) {
+                      case "CN":
+                        3 == d &&
+                          ((p = globalCfg.delisted),
+                          tip.showTip({ txt: p, parent: V, noBtn: !0 }));
                     }
-                    (_this.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
-                    var b;
-                    ccc2 = new Date();
-                    var y = 60 * ccc2.getTimezoneOffset() * 1e3;
+                  if ("error" == e.msg || "nohistory" == e.msg) {
                     if (
-                      (ccc2.setTime(ccc2.getTime() + y),
-                      ccc2.setHours(ccc2.getHours() + 8),
-                      (ooo3 = _this.hq.name || ""),
-                      initDatalen(_this.hq),
-                      l(_this.hq, e.data.td5) && R(_this.market)
-                        ? "history" == e.msg
-                          ? ((b = e.data.td5),
-                            b[4][0].date || (b[4][0].date = _this.hq.date))
-                          : (b = c(_this, e.data.td5))
-                        : ((b = e.data.td5),
-                          "NF" != _this.market ||
-                            !futureTime1 ||
-                            ("09:30" != futureTime1.time[0][0] &&
-                              "09:15" != futureTime1.time[0][0]) ||
-                            (stbd(b[4][0].date, _this.hq.date) &&
-                              _this.hq.time <= futureTime1.time[0][0] &&
-                              (b = c(_this, e.data.td5))),
-                          b && !b[4][0].date && (b[4][0].date = _this.hq.date)),
-                      (xxx.historyData = b),
-                      (_this.date =
-                        (e.data.td1 && e.data.td1[0].today) || _this.hq.date),
-                      tDb.initTState(b),
-                      s(o),
-                      1 == O &&
-                        (n.dateTo(conf.historytime, conf.historycb), (O = 0)),
-                      J.hide(),
-                      conf.loadedChart)
-                    )
-                      if (util.isFunc(conf.loadedChart)) conf.loadedChart();
-                      else if (window[conf.loadedChart])
-                        window[conf.loadedChart]();
-                      else
-                        try {
-                          window.h5chart.loadedChart();
-                        } catch (_) {}
-                  });
+                      (isMain &&
+                        "nohistory" == e.msg &&
+                        ((M = 0),
+                        xxx.hasHistory && xxx.hasHistory(M),
+                        tip.showTip({
+                          txt: globalCfg.nohistoryt,
+                          parent: V,
+                          noBtn: !0,
+                        })),
+                      (_this.isErr = !0),
+                      isMain && e.data && e.data.hq)
+                    ) {
+                      if (d)
+                        switch (_this.market) {
+                          case "CN":
+                            switch (d) {
+                              case 2:
+                                p = globalCfg.notlisted;
+                                break;
+                              case 3:
+                                p = globalCfg.delisted;
+                                break;
+                              case 0:
+                                p = globalCfg.norecord;
+                            }
+                            break;
+                          case "HK":
+                            switch (d) {
+                              case 5:
+                                p = globalCfg.notlisted;
+                                break;
+                              case 0:
+                                p = globalCfg.delisted;
+                            }
+                        }
+                      else p = globalCfg.norecord;
+                      if (p && 0 != u) {
+                        var v,
+                          g = { txt: p, parent: V, noBtn: !0 };
+                        if (!(E.DIMENSION.getStageW() < 200))
+                          return (
+                            tip.showTip({ txt: p, parent: V, noBtn: !0 }),
+                            void J.hide()
+                          );
+                        (g.bgStyle = { padding: 0, top: "0px" }),
+                          v || ((v = new util.TipM(E.COLOR)), v.genTip(g));
+                      }
+                    }
+                    if (0 != u && 7 != u) {
+                      if ((xxx.onResize(), 1 != d))
+                        return void xxx.removeCompare([h.symbol]);
+                      _this.isErr = !1;
+                    } else _this.isErr = !1;
+                  }
+                  (_this.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
+                  var b;
+                  ccc2 = new Date();
+                  var y = 60 * ccc2.getTimezoneOffset() * 1e3;
+                  if (
+                    (ccc2.setTime(ccc2.getTime() + y),
+                    ccc2.setHours(ccc2.getHours() + 8),
+                    (ooo3 = _this.hq.name || ""),
+                    initDatalen(_this.hq),
+                    l(_this.hq, e.data.td5) && R(_this.market)
+                      ? "history" == e.msg
+                        ? ((b = e.data.td5),
+                          b[4][0].date || (b[4][0].date = _this.hq.date))
+                        : (b = c(_this, e.data.td5))
+                      : ((b = e.data.td5),
+                        "NF" != _this.market ||
+                          !futureTime1 ||
+                          ("09:30" != futureTime1.time[0][0] &&
+                            "09:15" != futureTime1.time[0][0]) ||
+                          (stbd(b[4][0].date, _this.hq.date) &&
+                            _this.hq.time <= futureTime1.time[0][0] &&
+                            (b = c(_this, e.data.td5))),
+                        b && !b[4][0].date && (b[4][0].date = _this.hq.date)),
+                    (xxx.historyData = b),
+                    (_this.date =
+                      (e.data.td1 && e.data.td1[0].today) || _this.hq.date),
+                    tDb.initTState(b),
+                    s(o),
+                    1 == O &&
+                      (n.dateTo(conf.historytime, conf.historycb), (O = 0)),
+                    J.hide(),
+                    conf.loadedChart)
+                  )
+                    if (util.isFunc(conf.loadedChart)) conf.loadedChart();
+                    else if (window[conf.loadedChart])
+                      window[conf.loadedChart]();
+                    else
+                      try {
+                        window.h5chart.loadedChart();
+                      } catch (_) {}
+                });
               }
             };
           })();
@@ -1146,35 +1144,37 @@ xh5_define(
         this.doUpdate = vvv.update;
         this.onViewChange = onViewChange;
         this.setPricePos = function(e, t) {
-          (_this.labelMaxP = e[0]),
-            (_this.labelMinP = e[1]),
-            (_this.labelPriceCount = e[2]),
-            (_this.isCompare = t),
-            ooo1.createPlayingData(),
-            kkk1 && kkk1.setPricePos(e);
+          _this.labelMaxP = e[0];
+          _this.labelMinP = e[1];
+          _this.labelPriceCount = e[2];
+          _this.isCompare = t;
+          ooo1.createPlayingData();
+          kkk1 && kkk1.setPricePos(e);
         };
         this.setRange = function() {
-          ooo1.setDataRange(),
-            eee1 && eee1.setDataRange(),
-            kkk1 && kkk1.setDataRange(),
-            ddd1 && ddd1.setDataRange();
+          ooo1.setDataRange();
+          eee1 && eee1.setDataRange();
+          kkk1 && kkk1.setDataRange();
+          ddd1 && ddd1.setDataRange();
         };
         this.draw = function() {
-          qqq.draw(), eee1 && eee1.allDraw(), kkk1 && kkk1.allDraw();
+          qqq.draw();
+          eee1 && eee1.allDraw();
+          kkk1 && kkk1.allDraw();
         };
         this.resize = function(e) {
-          ooo1.createPlayingData(),
-            qqq.resize(),
-            eee1 && eee1.onResize(e),
-            kkk1 && kkk1.onResize(),
-            ddd1 && ddd1.onResize();
+          ooo1.createPlayingData();
+          qqq.resize();
+          eee1 && eee1.onResize(e);
+          kkk1 && kkk1.onResize();
+          ddd1 && ddd1.onResize();
         };
         this.clear = function() {
-          qqq.clear(),
-            eee1 && (eee1.clear(), (eee1 = null)),
-            kkk1 && (kkk1.clear(), (kkk1 = null)),
-            ddd1 && (ddd1.clear(), (ddd1 = null)),
-            isMain && (Q = null);
+          qqq.clear();
+          eee1 && (eee1.clear(), (eee1 = null));
+          kkk1 && (kkk1.clear(), (kkk1 = null));
+          ddd1 && (ddd1.clear(), (ddd1 = null));
+          isMain && (Q = null);
         };
         this.getPriceTech = function() {
           return kkk1 || null;
@@ -1184,7 +1184,8 @@ xh5_define(
             !util.isArr(e) && (e = [e]);
             for (var a = e.length; a--; )
               if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
-                e.splice(a, 1), (E.custom.show_underlay_vol = !1);
+                e.splice(a, 1);
+                E.custom.show_underlay_vol = !1;
                 break;
               }
           } else E.custom.show_underlay_vol = !1;
@@ -1194,9 +1195,9 @@ xh5_define(
           kkk1 && (fBind = kkk1.showHide(e));
         };
         var he = function(e, a, i) {
-          e && re.resizeAll(!0),
-            xxx.onChangeView(),
-            a && util.isFunc(a.callback) && a.callback(),
+          e && re.resizeAll(!0);
+          xxx.onChangeView();
+          a && util.isFunc(a.callback) && a.callback(),
             i && ne.onTechChanged(i[0]);
         };
         this.initPt = function(e, r) {
@@ -1204,7 +1205,8 @@ xh5_define(
             !util.isArr(e) && (e = [e]);
             for (var n = e.length; n--; )
               if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
-                e.splice(n, 1), (E.custom.show_underlay_vol = !0);
+                e.splice(n, 1);
+                E.custom.show_underlay_vol = !0;
                 break;
               }
             kkk1 ||
@@ -1218,8 +1220,8 @@ xh5_define(
                 cfg: E,
                 usrObj: conf,
               })),
-              isMain && (ispCharts = kkk1)),
-              kkk1.createChart(e, r);
+              isMain && (ispCharts = kkk1));
+            kkk1.createChart(e, r);
           }
         };
         this.initTc = function(e, t) {
@@ -1234,8 +1236,8 @@ xh5_define(
               usrObj: conf,
               initMgr: re,
             })),
-            isMain && (istCharts = eee1)),
-            eee1.createChart(e, t);
+            isMain && (istCharts = eee1));
+          eee1.createChart(e, t);
         };
         this.removeTc = function(e) {
           eee1 && eee1.removeChart(e);
@@ -1249,8 +1251,8 @@ xh5_define(
               rc: xxx.moving,
               witht5: 1,
             })),
-            (Q = ddd1)),
-            ddd1.linkData();
+            (Q = ddd1));
+          ddd1.linkData();
         };
         this.setTLineStyle = qqq.setTLineStyle;
         c();
@@ -1314,7 +1316,7 @@ xh5_define(
           d,
           h = {},
           v = 1,
-          f = function(e) {
+          ffff = function(e) {
             o = oc(
               { linetype: "line_" + v, linecolor: o ? o.linecolor || {} : {} },
               e || {}
@@ -1325,21 +1327,23 @@ xh5_define(
               ((t = e.linetype.split("_")),
               t.length > 1 &&
                 ("line" == t[0] || "mountain" == t[0]) &&
-                (v = Number(t[1]) || 1)),
-              (h = o.linecolor || {}),
-              (l = h.K_N || h.T_N || E.COLOR.T_P),
-              (c = h.T_AVG || E.COLOR.T_AVG),
-              (d = h.T_PREV || E.COLOR.T_PREV);
+                (v = Number(t[1]) || 1));
+            h = o.linecolor || {};
+            l = h.K_N || h.T_N || E.COLOR.T_P;
+            c = h.T_AVG || E.COLOR.T_AVG;
+            d = h.T_PREV || E.COLOR.T_PREV;
           },
-          g = function() {
+          ggg2 = function() {
             function a() {
               if (e.isMain && E.custom.show_underlay_vol) {
-                for (var t, a = E.COLOR.V_SD, i = D; N > i; i++)
-                  (S = y[i]),
-                    (t = S.vy),
-                    s.drawVStickC(M, t, I, E.DIMENSION.h_t, a),
-                    (M += T);
-                s.stroke(), (s.getG().lineWidth = 1);
+                for (var t, a = E.COLOR.V_SD, i = D; N > i; i++) {
+                  S = y[i];
+                  t = S.vy;
+                  s.drawVStickC(M, t, I, E.DIMENSION.h_t, a);
+                  M += T;
+                  s.stroke();
+                  s.getG().lineWidth = 1;
+                }
               }
             }
             function r() {
@@ -1370,34 +1374,35 @@ xh5_define(
               }
             }
             function n() {
-              s.newStyle(l, !0, v),
-                (M = T * (0.5 + D)),
-                "CN" == e.market &&
-                  e.preData.vPos &&
-                  (0 == e.realLen && e.hq
-                    ? e.hq.time > "09:29"
-                      ? (s.moveTo(0, e.preData.vPos),
-                        y[0].py || (y[0].py = e.preData.vPos),
-                        s.lineTo(M, y[0].py))
-                      : s.drawDot(M, e.preData.vPos, 1)
-                    : (s.moveTo(0, e.preData.vPos),
+              s.newStyle(l, !0, v);
+              M = T * (0.5 + D);
+              "CN" == e.market &&
+                e.preData.vPos &&
+                (0 == e.realLen && e.hq
+                  ? e.hq.time > "09:29"
+                    ? (s.moveTo(0, e.preData.vPos),
                       y[0].py || (y[0].py = e.preData.vPos),
-                      s.lineTo(M, y[0].py)),
-                  s.stroke());
+                      s.lineTo(M, y[0].py))
+                    : s.drawDot(M, e.preData.vPos, 1)
+                  : (s.moveTo(0, e.preData.vPos),
+                    y[0].py || (y[0].py = e.preData.vPos),
+                    s.lineTo(M, y[0].py)),
+                s.stroke());
             }
             function m() {
               var e;
-              for (k = D; N > k && ((S = y[k]), !(S.price <= 0)); k++)
-                (e = S.py),
-                  k == D || k % U == 0
-                    ? s.moveTo(M, e)
-                    : k % conf.modulo == 0 && s.lineTo(M, e),
-                  (S.ix = M),
-                  (M += T);
-              (O = M),
-                (L = e),
-                s.stroke(),
+              for (k = D; N > k && ((S = y[k]), !(S.price <= 0)); k++) {
+                e = S.py;
+                k == D || k % U == 0
+                  ? s.moveTo(M, e)
+                  : k % conf.modulo == 0 && s.lineTo(M, e);
+                S.ix = M;
+                M += T;
+                O = M;
+                L = e;
+                s.stroke();
                 conf.business && h({ xPos: M, yPos: e });
+              }
             }
             function h(e) {
               s.newStyle(l, !0, 0.5),
@@ -1537,15 +1542,15 @@ xh5_define(
               }
             }
           };
-        (this.draw = g),
+        (this.draw = ggg2),
           (this.clear = function() {
             s.remove(), (s = null);
           }),
           (this.resize = function() {
-            s.resize({ mh: E.DIMENSION.H_MA4K }), g();
+            s.resize({ mh: E.DIMENSION.H_MA4K }), ggg2();
           }),
-          (this.setTLineStyle = f),
-          f(r),
+          (this.setTLineStyle = ffff),
+          ffff(r),
           n();
       }
       function ddd() {

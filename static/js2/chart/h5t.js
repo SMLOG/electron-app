@@ -4,7 +4,7 @@ xh5_define(
   function(settinger, util, painter) {
     "use strict";
     function s2(conf) {
-      function rra(eee2, aaa1) {
+      function rra(conf2, isMain) {
         function onViewChange(e) {
           ooo1.setDataRange(e);
           eee1 && (eee1.linkData(e), eee1.setDataRange());
@@ -12,12 +12,12 @@ xh5_define(
           ddd1 && (ddd1.linkData(e), ddd1.setDataRange());
         }
         function c() {
-          aaa1 && (jjj = tDb),
+          isMain && (jjj = tDb),
             me.update(null, !0),
             "CN" === market &&
-              !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(eee2.symbol);
+              !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(conf2.symbol);
         }
-        eee2 = oc(
+        conf2 = oc(
           {
             symbol: void 0,
             datas: {
@@ -27,12 +27,12 @@ xh5_define(
             linecolor: void 0,
             linetype: void 0,
           },
-          eee2 || {}
+          conf2 || {}
         );
         var dd1,
           _this = this,
-          market = util.market(eee2.symbol),
-          b = function(e) {
+          market = util.market(conf2.symbol),
+          market2Num = function(e) {
             switch (e) {
               case "CN":
                 return 1;
@@ -43,49 +43,49 @@ xh5_define(
             }
             return 1;
           };
-        this.business = eee2.business;
-        this.simple = eee2.simple;
-        (this.dp = eee2.dp),
-          (this.marketNum = b),
-          (this.isErr = !1),
-          (this.witht5 = !0),
-          (this.symbol = eee2.symbol),
-          (this.isMain = aaa1),
-          (this.isCompare = !1),
-          (this.dAdd = 0),
-          (this.uid = eee2.symbol + Math.random()),
-          (this.datas = null),
-          (this.dataLen = 0),
-          (this.dataLenOffset = 0),
-          (this.prevclose = void 0),
-          (this.labelMaxP = 0),
-          (this.maxPrice = 0),
-          (this.labelMinP = Number.MAX_VALUE),
-          (this.minPrice = Number.MAX_VALUE),
-          (this.labelMaxVol = 0),
-          (this.maxVolume = 0),
-          (this.minPercent = Number.MAX_VALUE),
-          (this.maxPercent = -Number.MAX_VALUE),
-          (this.labelPriceCount = void 0),
-          (this.isTotalRedraw = !0),
-          (this.realLen = 0),
-          (this.nfloat = 0 === conf.nfloat ? conf.nfloat : conf.nfloat || 2),
-          (this.ennfloat = conf.ennfloat),
-          (this.market = market),
-          (this.date = null),
-          (this.hq = null),
-          (this.futureTime = x || w || T),
-          (this.gbiTime = T),
-          (this.preData = { data: 0, vPos: null }),
-          (this.needMarket = market);
+        this.business = conf2.business;
+        this.simple = conf2.simple;
+        this.dp = conf2.dp;
+        this.marketNum = market2Num;
+        this.isErr = !1;
+        this.witht5 = !0;
+        this.symbol = conf2.symbol;
+        this.isMain = isMain;
+        this.isCompare = !1;
+        this.dAdd = 0;
+        this.uid = conf2.symbol + Math.random();
+        this.datas = null;
+        this.dataLen = 0;
+        this.dataLenOffset = 0;
+        this.prevclose = void 0;
+        this.labelMaxP = 0;
+        this.maxPrice = 0;
+        this.labelMinP = Number.MAX_VALUE;
+        this.minPrice = Number.MAX_VALUE;
+        this.labelMaxVol = 0;
+        this.maxVolume = 0;
+        this.minPercent = Number.MAX_VALUE;
+        this.maxPercent = -Number.MAX_VALUE;
+        this.labelPriceCount = void 0;
+        this.isTotalRedraw = !0;
+        this.realLen = 0;
+        this.nfloat = 0 === conf.nfloat ? conf.nfloat : conf.nfloat || 2;
+        this.ennfloat = conf.ennfloat;
+        this.market = market;
+        this.date = null;
+        this.hq = null;
+        this.futureTime = futureTime1 || futureTime2 || gbiTime;
+        this.gbiTime = gbiTime;
+        this.preData = { data: 0, vPos: null };
+        this.needMarket = market;
         this.changeMarket = function(e) {
           var a,
             i = [],
             r = e;
-          if (((U = A.tcd(I)), b(_this.needMarket) != b(I))) {
+          if (((U = A.tcd(I)), market2Num(_this.needMarket) != market2Num(I))) {
             (a = tDb.get()), (dd1 = util.tUtil.gata(I));
             for (var n = 0; n < a.length; n++)
-              b(_this.needMarket) < b(I)
+              market2Num(_this.needMarket) < market2Num(I)
                 ? (i.push(A.aduk(a[n], _this.market, I, C, a[n][0].date)),
                   (_this.realLen = util.arrIndexOf(
                     dd1,
@@ -109,7 +109,7 @@ xh5_define(
           ddd1,
           L,
           C,
-          q = new S(this, eee2);
+          q = new S(this, conf2);
         this.getName = function() {
           return L || "";
         };
@@ -173,10 +173,10 @@ xh5_define(
                   n =
                     a +
                     "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
-                  o = "KKE_ShareAmount_" + eee2.symbol;
+                  o = "KKE_ShareAmount_" + conf2.symbol;
                 util.load(
                   n
-                    .replace("$symbol", eee2.symbol)
+                    .replace("$symbol", conf2.symbol)
                     .replace("$rn", String(new Date().getDate()))
                     .replace("$cb", "var%20" + o + "="),
                   function() {
@@ -486,13 +486,13 @@ xh5_define(
             if ((le(), !dd1))
               switch (I) {
                 case "HF":
-                  dd1 = util.tUtil.gata(I, w.time);
+                  dd1 = util.tUtil.gata(I, futureTime2.time);
                   break;
                 case "NF":
-                  dd1 = util.tUtil.gata(I, x.time);
+                  dd1 = util.tUtil.gata(I, futureTime1.time);
                   break;
                 case "global_index":
-                  dd1 = util.tUtil.gata(I, T.time);
+                  dd1 = util.tUtil.gata(I, gbiTime.time);
                   break;
                 default:
                   dd1 = util.tUtil.gata(I);
@@ -512,12 +512,12 @@ xh5_define(
                     e.time < "13:00" &&
                     (a = util.arrIndexOf(dd1, "11:29")),
                   "NF" == _this.market &&
-                    ("21:00" == x.time[0][0]
+                    ("21:00" == futureTime1.time[0][0]
                       ? e.time < "09:00" &&
                         e.time >= "02:30" &&
                         (a = util.arrIndexOf(dd1, "09:00"))
-                      : e.time <= x.time[0][0] &&
-                        (a = util.arrIndexOf(dd1, x.time[0][0]))));
+                      : e.time <= futureTime1.time[0][0] &&
+                        (a = util.arrIndexOf(dd1, futureTime1.time[0][0]))));
                 break;
               case "HK":
                 e.time >= "12:00" && e.time < "13:00" && (a = 150),
@@ -568,13 +568,13 @@ xh5_define(
                 var a;
                 switch (I) {
                   case "HF":
-                    a = w.time;
+                    a = futureTime2.time;
                     break;
                   case "NF":
-                    a = x.time;
+                    a = futureTime1.time;
                     break;
                   case "global_index":
-                    a = T.time;
+                    a = gbiTime.time;
                     break;
                   default:
                     a = [];
@@ -625,7 +625,7 @@ xh5_define(
                       ooo1.extValues();
                       break;
                     case "NF":
-                      x.inited = 1;
+                      futureTime1.inited = 1;
                   }
                   util.isFunc(a) && a();
                 }
@@ -687,13 +687,13 @@ xh5_define(
                   y = tDb.get();
                 switch (_this.needMarket) {
                   case "HF":
-                    dd1 = util.tUtil.gata(_this.needMarket, w.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, futureTime2.time);
                     break;
                   case "NF":
-                    dd1 = util.tUtil.gata(_this.needMarket, x.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, futureTime1.time);
                     break;
                   case "global_index":
-                    dd1 = util.tUtil.gata(_this.needMarket, T.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, gbiTime.time);
                     break;
                   default:
                     dd1 = util.tUtil.gata(_this.needMarket);
@@ -701,7 +701,9 @@ xh5_define(
                 if (e && e.date && _this.datas && !conf.date) {
                   if (((n = !1), (b = y[4]), _this.hq.isDateChange)) {
                     if (
-                      ("NF" == _this.market && x && x.time[0][0] < "21:00") ||
+                      ("NF" == _this.market &&
+                        futureTime1 &&
+                        futureTime1.time[0][0] < "21:00") ||
                       "NF" != _this.market
                     )
                       return void c();
@@ -711,9 +713,9 @@ xh5_define(
                       _this.hq.time < "09:05") ||
                     ("NF" == _this.market &&
                       stbd(_this.hq.date, y[4][0].date) &&
-                      x &&
-                      "21:00" == x.time[0][0] &&
-                      _this.hq.time >= x.time[0][0])
+                      futureTime1 &&
+                      "21:00" == futureTime1.time[0][0] &&
+                      _this.hq.time >= futureTime1.time[0][0])
                   )
                     return void c();
                   if (!p() && !h()) {
@@ -817,7 +819,7 @@ xh5_define(
                   withT5: 0,
                   withI: !1,
                   faker: "",
-                  dataformatter: eee2.datas.t1.dataformatter,
+                  dataformatter: conf2.datas.t1.dataformatter,
                   ssl: conf.ssl,
                   assisthq: conf.assisthq,
                 };
@@ -827,16 +829,17 @@ xh5_define(
                     (a = e.data.td1), ce(_this.hq);
                     var i = tDb.get();
                     ("NF" == _this.market &&
-                      ("21:00" == x.time[0][0] &&
-                        _this.hq.time >= x.time[0][0] &&
+                      ("21:00" == futureTime1.time[0][0] &&
+                        _this.hq.time >= futureTime1.time[0][0] &&
                         0 != _this.hq.date.getDay() &&
                         6 != _this.hq.date.getDay() &&
                         (a[0].date = i[4][0].date),
-                      ("09:30" == x.time[0][0] || "09:15" == x.time[0][0]) &&
+                      ("09:30" == futureTime1.time[0][0] ||
+                        "09:15" == futureTime1.time[0][0]) &&
                         stbd(i[4][0].date, _this.hq.date) &&
-                        _this.hq.time <= x.time[0][0])) ||
+                        _this.hq.time <= futureTime1.time[0][0])) ||
                       ("HF" == _this.market &&
-                        _this.hq.time > w.time[0][0] &&
+                        _this.hq.time > futureTime2.time[0][0] &&
                         0 != _this.hq.date.getDay() &&
                         6 != _this.hq.date.getDay() &&
                         (a[0].date = _this.hq.date),
@@ -858,7 +861,7 @@ xh5_define(
                   dist5: 1,
                   withI: !1,
                   faker: "",
-                  dataformatter: eee2.datas.t1.dataformatter,
+                  dataformatter: conf2.datas.t1.dataformatter,
                   ssl: conf.ssl,
                 };
                 (B = ae = !1),
@@ -879,11 +882,11 @@ xh5_define(
                   p,
                   h = "",
                   u = "";
-                if (((p = s ? s : util.market(eee2.symbol)), "US" === p))
+                if (((p = s ? s : util.market(conf2.symbol)), "US" === p))
                   h = 1 === conf.assisthq ? ",gb_ixic" : u;
                 else if ("HK" === p) {
                   var v =
-                    "hk" === eee2.symbol.substring(0, 2)
+                    "hk" === conf2.symbol.substring(0, 2)
                       ? ",hkHSI"
                       : ",rt_hkHSI";
                   h = 1 === conf.assisthq ? v : u;
@@ -891,20 +894,20 @@ xh5_define(
                 o
                   ? ((d = "datas.hq.parse"),
                     (m = {
-                      symbol: eee2.symbol + h,
+                      symbol: conf2.symbol + h,
                       hqStr: o,
                       market: p,
                       ssl: conf.ssl,
                     }))
                   : ((d = "datas.hq.get"),
                     (m = {
-                      symbol: eee2.symbol + h,
+                      symbol: conf2.symbol + h,
                       delay: !0,
                       cancelEtag: n,
                       ssl: conf.ssl,
                     })),
                   KKE.api(d, m, function(t) {
-                    l(t.dataObj[eee2.symbol], a, c);
+                    l(t.dataObj[conf2.symbol], a, c);
                   });
               });
           })(),
@@ -934,13 +937,13 @@ xh5_define(
                   o = a;
                 switch (I) {
                   case "HF":
-                    n = w.time;
+                    n = futureTime2.time;
                     break;
                   case "NF":
-                    n = x.time;
+                    n = futureTime1.time;
                     break;
                   case "global_index":
-                    n = T.time;
+                    n = gbiTime.time;
                     break;
                   default:
                     n = [];
@@ -955,7 +958,7 @@ xh5_define(
                 );
                 return (
                   (s[0].name = o.hq.name),
-                  (s[0].symbol = eee2.symbol),
+                  (s[0].symbol = conf2.symbol),
                   (s[0].today = util.dateUtil.ds(o.hq.date, "-")),
                   (r = i),
                   (r[4] = s),
@@ -971,23 +974,23 @@ xh5_define(
                 var h = {
                   assisthq: conf.assisthq,
                   ssl: conf.ssl,
-                  symbol: eee2.symbol,
+                  symbol: conf2.symbol,
                   date: conf.date,
                   withT5: 1,
                   dist5: conf.dist5,
                   withI: !0,
                   faker: _this.needMarket,
-                  dataformatter: eee2.datas.t1.dataformatter,
+                  dataformatter: conf2.datas.t1.dataformatter,
                 };
                 switch (_this.needMarket) {
                   case "HF":
-                    dd1 = util.tUtil.gata(_this.needMarket, w.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, futureTime2.time);
                     break;
                   case "NF":
-                    dd1 = util.tUtil.gata(_this.needMarket, x.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, futureTime1.time);
                     break;
                   case "global_index":
-                    dd1 = util.tUtil.gata(_this.needMarket, T.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, gbiTime.time);
                     break;
                   case "LSE":
                     h.symbol = conf.rawsymbol;
@@ -1009,7 +1012,7 @@ xh5_define(
                       }
                     if ("error" == e.msg || "nohistory" == e.msg) {
                       if (
-                        (aaa1 &&
+                        (isMain &&
                           "nohistory" == e.msg &&
                           ((M = 0),
                           xxx.hasHistory && xxx.hasHistory(M),
@@ -1019,7 +1022,7 @@ xh5_define(
                             noBtn: !0,
                           })),
                         (_this.isErr = !0),
-                        aaa1 && e.data && e.data.hq)
+                        isMain && e.data && e.data.hq)
                       ) {
                         if (d)
                           switch (_this.market) {
@@ -1079,11 +1082,11 @@ xh5_define(
                           : (b = c(_this, e.data.td5))
                         : ((b = e.data.td5),
                           "NF" != _this.market ||
-                            !x ||
-                            ("09:30" != x.time[0][0] &&
-                              "09:15" != x.time[0][0]) ||
+                            !futureTime1 ||
+                            ("09:30" != futureTime1.time[0][0] &&
+                              "09:15" != futureTime1.time[0][0]) ||
                             (stbd(b[4][0].date, _this.hq.date) &&
-                              _this.hq.time <= x.time[0][0] &&
+                              _this.hq.time <= futureTime1.time[0][0] &&
                               (b = c(_this, e.data.td5))),
                           b && !b[4][0].date && (b[4][0].date = _this.hq.date)),
                       (xxx.historyData = b),
@@ -1141,7 +1144,7 @@ xh5_define(
             eee1 && (eee1.clear(), (eee1 = null)),
             kkk1 && (kkk1.clear(), (kkk1 = null)),
             ddd1 && (ddd1.clear(), (ddd1 = null)),
-            aaa1 && (Q = null);
+            isMain && (Q = null);
         };
         this.getPriceTech = function() {
           return kkk1 || null;
@@ -1185,7 +1188,7 @@ xh5_define(
                 cfg: E,
                 usrObj: conf,
               })),
-              aaa1 && (ispCharts = kkk1)),
+              isMain && (ispCharts = kkk1)),
               kkk1.createChart(e, r);
           }
         };
@@ -1201,7 +1204,7 @@ xh5_define(
               usrObj: conf,
               initMgr: re,
             })),
-            aaa1 && (istCharts = eee1)),
+            isMain && (istCharts = eee1)),
             eee1.createChart(e, t);
         };
         this.removeTc = function(e) {
@@ -1964,17 +1967,17 @@ xh5_define(
             });
         })();
       }
-      var w,
-        x,
-        T,
+      var futureTime2,
+        futureTime1,
+        gbiTime,
         I = "CN",
         M = 1,
         O = 0,
         L = "手",
         C = 0;
-      (x = conf._nf_window_var),
-        (w = conf._hf_window_var),
-        (T = conf._gbi_window_var);
+      (futureTime1 = conf._nf_window_var),
+        (futureTime2 = conf._hf_window_var),
+        (gbiTime = conf._gbi_window_var);
       var R = function(e) {
           return (
             "CN" === e ||
@@ -1990,7 +1993,7 @@ xh5_define(
             var a;
             switch (e) {
               case "HF":
-                a = util.tUtil.gtAll(w.time).length;
+                a = util.tUtil.gtAll(futureTime2.time).length;
                 break;
               case "REPO":
                 (a = 271), (L = "");
@@ -2020,10 +2023,10 @@ xh5_define(
                 (a = 391), (L = "");
                 break;
               case "NF":
-                (a = util.tUtil.gtAll(x.time).length), (L = "");
+                (a = util.tUtil.gtAll(futureTime1.time).length), (L = "");
                 break;
               case "global_index":
-                a = util.tUtil.gtAll(T.time).length;
+                a = util.tUtil.gtAll(gbiTime.time).length;
                 break;
               default:
                 a = 241;
@@ -2409,7 +2412,9 @@ xh5_define(
                 o.datas &&
                 (stbd(o.datas[o.datas.length - 1][0].date, o.hq.date)
                   ? (r = o.realLen < 0 || o.realLen > n ? n : (n = o.realLen))
-                  : "NF" == I && x && "21:00" == x.time[0][0]
+                  : "NF" == I &&
+                    futureTime1 &&
+                    "21:00" == futureTime1.time[0][0]
                   ? (r = n = o.realLen)
                   : o.realLen < 0 || o.realLen > n
                   ? (r = n)
@@ -2422,7 +2427,7 @@ xh5_define(
                 var s, l;
                 if (
                   ("HF" == I
-                    ? ((s = w.time[0][0]),
+                    ? ((s = futureTime2.time[0][0]),
                       s > a.time
                         ? ((s = o.datas[o.datas.length - 1][0].date),
                           (l = new Date(s)),
@@ -2430,7 +2435,7 @@ xh5_define(
                             l.setDate(l.getDate() + 1))
                         : (l = o.datas[o.datas.length - 1][0].date))
                     : "NF" == I
-                    ? ((s = x.time[0][0]),
+                    ? ((s = futureTime1.time[0][0]),
                       s < a.time && "21:00" == s
                         ? ((s = o.datas[o.datas.length - 1][0].date),
                           (l = new Date(s)),
@@ -3024,14 +3029,14 @@ xh5_define(
               E.custom.stick && (d = L.ix || d);
               var me, pe;
               "HF" == I
-                ? ((me = w.time[0][0]),
+                ? ((me = futureTime2.time[0][0]),
                   me > L.time
                     ? ((me = L.date),
                       (pe = new Date(me)),
                       pe.setDate(pe.getDate() + 1))
                     : (pe = L.date))
                 : "NF" == I
-                ? ((me = x.time[0][0]),
+                ? ((me = futureTime1.time[0][0]),
                   me <= L.time && "21:00" == me
                     ? ((me = L.date),
                       (pe = new Date(me)),

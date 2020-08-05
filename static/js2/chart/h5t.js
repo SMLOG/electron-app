@@ -4,19 +4,20 @@ xh5_define(
   function(settinger, util, painter) {
     "use strict";
     function s2(conf) {
-      function r(e, a) {
+      function rra(eee2, aaa1) {
         function onViewChange(e) {
-          $.setDataRange(e),
-            _ && (_.linkData(e), _.setDataRange()),
-            k && (k.linkData(e), k.setDataRange()),
-            D && (D.linkData(e), D.setDataRange());
+          ooo1.setDataRange(e);
+          eee1 && (eee1.linkData(e), eee1.setDataRange());
+          kkk1 && (kkk1.linkData(e), kkk1.setDataRange());
+          ddd1 && (ddd1.linkData(e), ddd1.setDataRange());
         }
         function c() {
-          a && (j = tDb),
+          aaa1 && (jjj = tDb),
             me.update(null, !0),
-            "CN" === h && !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(e.symbol);
+            "CN" === market &&
+              !/^(sh0|sh1|sh5|sz1|sz399)\d+/i.test(eee2.symbol);
         }
-        e = oc(
+        eee2 = oc(
           {
             symbol: void 0,
             datas: {
@@ -26,11 +27,11 @@ xh5_define(
             linecolor: void 0,
             linetype: void 0,
           },
-          e || {}
+          eee2 || {}
         );
-        var d,
-          m = this,
-          h = util.market(e.symbol),
+        var dd1,
+          _this = this,
+          market = util.market(eee2.symbol),
           b = function(e) {
             switch (e) {
               case "CN":
@@ -42,17 +43,17 @@ xh5_define(
             }
             return 1;
           };
-        this.business = e.business;
-        this.simple = e.simple;
-        (this.dp = e.dp),
+        this.business = eee2.business;
+        this.simple = eee2.simple;
+        (this.dp = eee2.dp),
           (this.marketNum = b),
           (this.isErr = !1),
           (this.witht5 = !0),
-          (this.symbol = e.symbol),
-          (this.isMain = a),
+          (this.symbol = eee2.symbol),
+          (this.isMain = aaa1),
           (this.isCompare = !1),
           (this.dAdd = 0),
-          (this.uid = e.symbol + Math.random()),
+          (this.uid = eee2.symbol + Math.random()),
           (this.datas = null),
           (this.dataLen = 0),
           (this.dataLenOffset = 0),
@@ -70,51 +71,51 @@ xh5_define(
           (this.realLen = 0),
           (this.nfloat = 0 === conf.nfloat ? conf.nfloat : conf.nfloat || 2),
           (this.ennfloat = conf.ennfloat),
-          (this.market = h),
+          (this.market = market),
           (this.date = null),
           (this.hq = null),
           (this.futureTime = x || w || T),
           (this.gbiTime = T),
           (this.preData = { data: 0, vPos: null }),
-          (this.needMarket = h);
+          (this.needMarket = market);
         this.changeMarket = function(e) {
           var a,
             i = [],
             r = e;
-          if (((U = A.tcd(I)), b(m.needMarket) != b(I))) {
-            (a = tDb.get()), (d = util.tUtil.gata(I));
+          if (((U = A.tcd(I)), b(_this.needMarket) != b(I))) {
+            (a = tDb.get()), (dd1 = util.tUtil.gata(I));
             for (var n = 0; n < a.length; n++)
-              b(m.needMarket) < b(I)
-                ? (i.push(A.aduk(a[n], m.market, I, C, a[n][0].date)),
-                  (m.realLen = util.arrIndexOf(
-                    d,
+              b(_this.needMarket) < b(I)
+                ? (i.push(A.aduk(a[n], _this.market, I, C, a[n][0].date)),
+                  (_this.realLen = util.arrIndexOf(
+                    dd1,
                     C.getHours() + ":" + util.strUtil.zp(C.getMinutes())
                   )),
-                  m.realLen < 0 && (m.realLen = U))
+                  _this.realLen < 0 && (_this.realLen = U))
                 : (i.push(A.rmuk(a[n], I, r)),
-                  (m.realLen = util.arrIndexOf(
-                    d,
+                  (_this.realLen = util.arrIndexOf(
+                    dd1,
                     C.getHours() + ":" + util.strUtil.zp(C.getMinutes())
                   )));
-            (m.needMarket = I),
+            (_this.needMarket = I),
               tDb.initTState(i),
-              (m.datas = i[4]),
-              $.setDataRange(),
-              $.createPlayingData();
+              (_this.datas = i[4]),
+              ooo1.setDataRange(),
+              ooo1.createPlayingData();
           }
         };
-        var _,
-          k,
-          D,
+        var eee1,
+          kkk1,
+          ddd1,
           L,
           C,
-          q = new S(this, e);
+          q = new S(this, eee2);
         this.getName = function() {
           return L || "";
         };
         this.getStockType = function() {
           var e;
-          return m.hq && (e = m.hq.type), e || "";
+          return _this.hq && (e = _this.hq.type), e || "";
         };
         this.viewState = viewState;
         var tDb = new (function() {
@@ -172,10 +173,10 @@ xh5_define(
                   n =
                     a +
                     "://stock.finance.sina.com.cn/stock/api/jsonp.php/$cb/StockService.getAmountBySymbol?_=$rn&symbol=$symbol",
-                  o = "KKE_ShareAmount_" + e.symbol;
+                  o = "KKE_ShareAmount_" + eee2.symbol;
                 util.load(
                   n
-                    .replace("$symbol", e.symbol)
+                    .replace("$symbol", eee2.symbol)
                     .replace("$rn", String(new Date().getDate()))
                     .replace("$cb", "var%20" + o + "="),
                   function() {
@@ -196,26 +197,26 @@ xh5_define(
                 (a = null), (r = null);
               });
           })(),
-          $ = new (function() {
+          ooo1 = new (function() {
             var e, t, createPlayingData;
             e = function() {
-              (m.minPrice = Number.MAX_VALUE),
-                (m.maxPrice = 0),
-                (m.minPercent = Number.MAX_VALUE),
-                (m.maxPercent = -Number.MAX_VALUE),
-                (m.minavgPrice = Number.MAX_VALUE),
-                (m.maxavgPrice = 0),
-                (m.maxVolume = 0);
+              (_this.minPrice = Number.MAX_VALUE),
+                (_this.maxPrice = 0),
+                (_this.minPercent = Number.MAX_VALUE),
+                (_this.maxPercent = -Number.MAX_VALUE),
+                (_this.minavgPrice = Number.MAX_VALUE),
+                (_this.maxavgPrice = 0),
+                (_this.maxVolume = 0);
             };
             t = function() {
               function e(e) {
                 var t = Math.max(
-                    Math.abs(e - m.maxPrice),
-                    Math.abs(e - m.minPrice)
+                    Math.abs(e - _this.maxPrice),
+                    Math.abs(e - _this.minPrice)
                   ),
                   a = Math.max(
-                    Math.abs(e - m.maxavgPrice),
-                    Math.abs(e - m.minavgPrice)
+                    Math.abs(e - _this.maxavgPrice),
+                    Math.abs(e - _this.minavgPrice)
                   );
                 switch (
                   (t / e > 0.45 && "US" != I && (E.datas.scaleType = "price"),
@@ -225,150 +226,172 @@ xh5_define(
                   E.datas.scaleType)
                 ) {
                   case "newstock":
-                    (m.minPrice = Number(e) - 0.45 * e),
-                      (m.maxPrice = Number(e) + 0.45 * e);
+                    (_this.minPrice = Number(e) - 0.45 * e),
+                      (_this.maxPrice = Number(e) + 0.45 * e);
                     break;
                   case "tpct":
-                    (m.minPrice =
-                      m.minPrice < Number(e) - 0.1 * e
-                        ? m.minPrice
+                    (_this.minPrice =
+                      _this.minPrice < Number(e) - 0.1 * e
+                        ? _this.minPrice
                         : Number(e) - 0.1 * e),
-                      (m.maxPrice =
-                        m.maxPrice > Number(e) + 0.1 * e
-                          ? m.maxPrice
+                      (_this.maxPrice =
+                        _this.maxPrice > Number(e) + 0.1 * e
+                          ? _this.maxPrice
                           : Number(e) + 0.1 * e);
                     break;
                   case "pct":
-                    var i = m.maxPrice - m.minPrice;
-                    (m.minPrice -= 0.05 * i), (m.maxPrice += 0.05 * i);
+                    var i = _this.maxPrice - _this.minPrice;
+                    (_this.minPrice -= 0.05 * i), (_this.maxPrice += 0.05 * i);
                     break;
                   case "price":
                   default:
-                    (m.minPrice = Number(e) - Number(t)),
-                      (m.maxPrice = Number(e) + Number(t)),
-                      (m.minavgPrice = Number(e) - Number(a)),
-                      (m.maxavgPrice = Number(e) + Number(a));
+                    (_this.minPrice = Number(e) - Number(t)),
+                      (_this.maxPrice = Number(e) + Number(t)),
+                      (_this.minavgPrice = Number(e) - Number(a)),
+                      (_this.maxavgPrice = Number(e) + Number(a));
                 }
-                (m.maxPercent = Math.max((m.maxPrice - e) / e, 0)),
-                  (m.minPercent = Math.min((m.minPrice - e) / e, 0)),
-                  (m.maxavgPercent = Math.max((m.maxavgPrice - e) / e, 0)),
-                  (m.minavgPercent = Math.min((m.minavgPrice - e) / e, 0));
+                (_this.maxPercent = Math.max((_this.maxPrice - e) / e, 0)),
+                  (_this.minPercent = Math.min((_this.minPrice - e) / e, 0)),
+                  (_this.maxavgPercent = Math.max(
+                    (_this.maxavgPrice - e) / e,
+                    0
+                  )),
+                  (_this.minavgPercent = Math.min(
+                    (_this.minavgPrice - e) / e,
+                    0
+                  ));
               }
-              (m.isCompare = xxx.getAllStock().length > 1), (m.dAdd = xxx.dAdd);
+              (_this.isCompare = xxx.getAllStock().length > 1),
+                (_this.dAdd = xxx.dAdd);
               var t;
-              m.datas &&
-                0 == m.datas[0][0].volume &&
-                m.hq.time > "09:30" &&
-                "CN" == m.market &&
-                (t = m.datas[0][0].price),
-                (m.preData.data = m.hq.preopen
+              _this.datas &&
+                0 == _this.datas[0][0].volume &&
+                _this.hq.time > "09:30" &&
+                "CN" == _this.market &&
+                (t = _this.datas[0][0].price),
+                (_this.preData.data = _this.hq.preopen
                   ? t
                     ? t
-                    : m.hq.preopen
-                  : m.preData.data);
-              for (var a = 0, r = m.datas.length; r > a; a++) {
+                    : _this.hq.preopen
+                  : _this.preData.data);
+              for (var a = 0, r = _this.datas.length; r > a; a++) {
                 for (
                   var n,
-                    o = Number(m.datas[0][0].prevclose),
+                    o = Number(_this.datas[0][0].prevclose),
                     s = 0,
-                    l = m.dataLen;
+                    l = _this.dataLen;
                   l > s;
                   s++
                 ) {
                   if (
-                    ((n = m.datas[a][s]),
-                    "LSE" === m.market || "MSCI" === m.market)
+                    ((n = _this.datas[a][s]),
+                    "LSE" === _this.market || "MSCI" === _this.market)
                   ) {
                     if (n.price <= 0) continue;
                   } else if (n.price <= 0 || n.avg_price <= 0) continue;
-                  ("HK" == m.market && m.hq && "indx" == m.hq.type) ||
-                  "LSE" == m.market ||
-                  "MSCI" === m.market
-                    ? ((m.maxPrice = Math.max(m.maxPrice, n.price, o)),
-                      (m.minPrice = Math.min(m.minPrice, n.price, o)))
-                    : stbd(m.datas[a][0].date, m.hq.date) && "CN" == m.market
-                    ? ((m.maxPrice = Math.max(
-                        m.maxPrice,
+                  ("HK" == _this.market &&
+                    _this.hq &&
+                    "indx" == _this.hq.type) ||
+                  "LSE" == _this.market ||
+                  "MSCI" === _this.market
+                    ? ((_this.maxPrice = Math.max(_this.maxPrice, n.price, o)),
+                      (_this.minPrice = Math.min(_this.minPrice, n.price, o)))
+                    : stbd(_this.datas[a][0].date, _this.hq.date) &&
+                      "CN" == _this.market
+                    ? ((_this.maxPrice = Math.max(
+                        _this.maxPrice,
                         n.price,
                         n.avg_price,
                         o,
-                        m.preData.data
+                        _this.preData.data
                       )),
-                      (m.minPrice = Math.min(
-                        m.minPrice,
+                      (_this.minPrice = Math.min(
+                        _this.minPrice,
                         n.price,
                         n.avg_price,
                         o,
-                        m.preData.data
+                        _this.preData.data
                       )))
-                    : ((m.maxPrice = Math.max(
-                        m.maxPrice,
+                    : ((_this.maxPrice = Math.max(
+                        _this.maxPrice,
                         n.price,
                         n.avg_price,
                         o
                       )),
-                      (m.minPrice = Math.min(
-                        m.minPrice,
+                      (_this.minPrice = Math.min(
+                        _this.minPrice,
                         n.price,
                         n.avg_price,
                         o
                       ))),
-                    stbd(m.datas[a][0].date, m.hq.date) && "CN" == m.market
-                      ? ((m.maxavgPrice = Math.max(
-                          m.maxavgPrice,
+                    stbd(_this.datas[a][0].date, _this.hq.date) &&
+                    "CN" == _this.market
+                      ? ((_this.maxavgPrice = Math.max(
+                          _this.maxavgPrice,
                           n.price,
                           o,
-                          m.preData.data
+                          _this.preData.data
                         )),
-                        (m.minavgPrice = Math.min(
-                          m.minavgPrice,
+                        (_this.minavgPrice = Math.min(
+                          _this.minavgPrice,
                           n.price,
                           o,
-                          m.preData.data
+                          _this.preData.data
                         )))
-                      : ((m.maxavgPrice = Math.max(m.maxavgPrice, n.price, o)),
-                        (m.minavgPrice = Math.min(m.minavgPrice, n.price, o))),
-                    (m.labelMaxVol = m.maxVolume = Math.max(
-                      m.maxVolume,
+                      : ((_this.maxavgPrice = Math.max(
+                          _this.maxavgPrice,
+                          n.price,
+                          o
+                        )),
+                        (_this.minavgPrice = Math.min(
+                          _this.minavgPrice,
+                          n.price,
+                          o
+                        ))),
+                    (_this.labelMaxVol = _this.maxVolume = Math.max(
+                      _this.maxVolume,
                       0,
                       n.volume
                     ));
                 }
                 e(o);
               }
-              (m.minPrice < -1e8 || m.maxPrice - m.minPrice < 1e-6) &&
-                (dateUtil.stbd(m.datas[0][0].date, m.hq.date) &&
-                  ((m.datas[0][0].price = m.hq.price),
-                  (m.datas[0][0].avg_price = m.hq.price),
-                  (m.datas[0][0].prevclose = m.hq.prevclose),
-                  (m.datas[0][0].volume = m.hq.totalVolume)),
-                (m.minPrice = o - 0.01 * o),
-                (m.maxPrice = o + 0.01 * o),
-                (m.maxPercent = 0.01),
-                (m.minPercent = -0.01),
-                m.hq.totalVolume > 0 &&
-                  dateUtil.stbd(m.datas[0][0].date, m.hq.date) &&
-                  !isNaN(m.hq.totalAmount) &&
-                  (m.datas[0][0].volume = m.hq.totalAmount / m.hq.totalVolume));
-              var c = ccc(m.maxVolume, 0, 0, !0);
-              m.labelMaxVol = c[0];
+              (_this.minPrice < -1e8 ||
+                _this.maxPrice - _this.minPrice < 1e-6) &&
+                (dateUtil.stbd(_this.datas[0][0].date, _this.hq.date) &&
+                  ((_this.datas[0][0].price = _this.hq.price),
+                  (_this.datas[0][0].avg_price = _this.hq.price),
+                  (_this.datas[0][0].prevclose = _this.hq.prevclose),
+                  (_this.datas[0][0].volume = _this.hq.totalVolume)),
+                (_this.minPrice = o - 0.01 * o),
+                (_this.maxPrice = o + 0.01 * o),
+                (_this.maxPercent = 0.01),
+                (_this.minPercent = -0.01),
+                _this.hq.totalVolume > 0 &&
+                  dateUtil.stbd(_this.datas[0][0].date, _this.hq.date) &&
+                  !isNaN(_this.hq.totalAmount) &&
+                  (_this.datas[0][0].volume =
+                    _this.hq.totalAmount / _this.hq.totalVolume));
+              var c = ccc(_this.maxVolume, 0, 0, !0);
+              _this.labelMaxVol = c[0];
               var d = 0.005;
-              m.maxPercent < d &&
-                ("US" !== m.market || "LSE" !== m.market) &&
+              _this.maxPercent < d &&
+                ("US" !== _this.market || "LSE" !== _this.market) &&
                 "pct" !== E.datas.scaleType &&
-                ((m.minPrice = m.maxavgPrice = o - o * d),
-                (m.maxPrice = m.minavgPrice = o + o * d),
-                (m.maxPercent = m.maxavgPercent = d),
-                (m.minPercent = m.minavgPercent = -d));
+                ((_this.minPrice = _this.maxavgPrice = o - o * d),
+                (_this.maxPrice = _this.minavgPrice = o + o * d),
+                (_this.maxPercent = _this.maxavgPercent = d),
+                (_this.minPercent = _this.minavgPercent = -d));
               var p;
               /^s[hz]51\d{4}$/.test(conf.symbol) && (p = "fund"),
                 p &&
                   "fund" === p &&
                   "pct" !== E.datas.scaleType &&
-                  d > Math.abs(m.minPercent) &&
-                  ((d = Math.abs(m.minPercent)), (conf.nfloat = m.nfloat = 3)),
-                ("gb_brk$a" === m.symbol || "usr_brk$a" === m.symbol) &&
-                  (conf.nfloat = m.nfloat = 1);
+                  d > Math.abs(_this.minPercent) &&
+                  ((d = Math.abs(_this.minPercent)),
+                  (conf.nfloat = _this.nfloat = 3)),
+                ("gb_brk$a" === _this.symbol || "usr_brk$a" === _this.symbol) &&
+                  (conf.nfloat = _this.nfloat = 1);
             };
             createPlayingData = function() {
               var e,
@@ -377,28 +400,28 @@ xh5_define(
                 i = E.DIMENSION.h_t,
                 r = i * E.DIMENSION.P_HV,
                 n = i * (1 - E.DIMENSION.P_HV);
-              (t = m.labelMinP), (a = m.labelMaxP);
+              (t = _this.labelMinP), (a = _this.labelMaxP);
               var o,
-                s = m.labelMaxVol;
-              if (m.datas) {
-                var l = m.datas.length;
+                s = _this.labelMaxVol;
+              if (_this.datas) {
+                var l = _this.datas.length;
                 for (e = 0; l > e; e++) {
-                  o = m.datas[0][0].prevclose;
+                  o = _this.datas[0][0].prevclose;
                   for (
                     var c,
                       d = E.custom.show_underlay_vol,
-                      h = m.isCompare ? "ppp" : "pp",
-                      u = m.dataLen,
+                      h = _this.isCompare ? "ppp" : "pp",
+                      u = _this.dataLen,
                       v = 0;
                     u > v;
                     v++
                   ) {
-                    if (((c = m.datas[e][v]), !c)) return;
+                    if (((c = _this.datas[e][v]), !c)) return;
                     c.price <= 0 &&
-                      m.realLen >= v &&
+                      _this.realLen >= v &&
                       v > 0 &&
-                      ((c.price = m.hq.price),
-                      (c.avg_price = m.datas[e][v - 1].avg_price),
+                      ((c.price = _this.hq.price),
+                      (c.avg_price = _this.datas[e][v - 1].avg_price),
                       (c.volume = 0)),
                       (c.change = c.price - o),
                       (c.percent = c.change / o),
@@ -407,11 +430,11 @@ xh5_define(
                       d && (c.vy = xh5_PosUtil.vp(c.volume, s, r) + n);
                   }
                 }
-                m.preData.vPos =
-                  "CN" == m.market &&
+                _this.preData.vPos =
+                  "CN" == _this.market &&
                   1 == l &&
-                  stbd(m.hq.date, m.datas[0][0].date)
-                    ? xh5_PosUtil[h](m.preData.data, t, a, i, o)
+                  stbd(_this.hq.date, _this.datas[0][0].date)
+                    ? xh5_PosUtil[h](_this.preData.data, t, a, i, o)
                     : null;
               }
             };
@@ -439,9 +462,9 @@ xh5_define(
                 else
                   for (var l = r; n > l; l++)
                     (s = s.concat(i[l])), o.push(i[l]);
-                (m.datas = o),
-                  (m.lineDatas = s),
-                  (m.dataLen = o[0].length),
+                (_this.datas = o),
+                  (_this.lineDatas = s),
+                  (_this.dataLen = o[0].length),
                   e(),
                   t();
               }
@@ -460,23 +483,23 @@ xh5_define(
               C.setHours(C.getHours() + 8);
           },
           ce = function(e) {
-            if ((le(), !d))
+            if ((le(), !dd1))
               switch (I) {
                 case "HF":
-                  d = util.tUtil.gata(I, w.time);
+                  dd1 = util.tUtil.gata(I, w.time);
                   break;
                 case "NF":
-                  d = util.tUtil.gata(I, x.time);
+                  dd1 = util.tUtil.gata(I, x.time);
                   break;
                 case "global_index":
-                  d = util.tUtil.gata(I, T.time);
+                  dd1 = util.tUtil.gata(I, T.time);
                   break;
                 default:
-                  d = util.tUtil.gata(I);
+                  dd1 = util.tUtil.gata(I);
               }
-            e.index = util.arrIndexOf(d, e.time);
+            e.index = util.arrIndexOf(dd1, e.time);
             var a = e.index;
-            switch (m.market) {
+            switch (_this.market) {
               case "CN":
               case "REPO":
               case "option_cn":
@@ -487,40 +510,40 @@ xh5_define(
                 e.index < 0 &&
                   (e.time >= "11:30" &&
                     e.time < "13:00" &&
-                    (a = util.arrIndexOf(d, "11:29")),
-                  "NF" == m.market &&
+                    (a = util.arrIndexOf(dd1, "11:29")),
+                  "NF" == _this.market &&
                     ("21:00" == x.time[0][0]
                       ? e.time < "09:00" &&
                         e.time >= "02:30" &&
-                        (a = util.arrIndexOf(d, "09:00"))
+                        (a = util.arrIndexOf(dd1, "09:00"))
                       : e.time <= x.time[0][0] &&
-                        (a = util.arrIndexOf(d, x.time[0][0]))));
+                        (a = util.arrIndexOf(dd1, x.time[0][0]))));
                 break;
               case "HK":
                 e.time >= "12:00" && e.time < "13:00" && (a = 150),
-                  e.time >= "16:00" && e.time < "16:10" && (a = d.length - 1);
+                  e.time >= "16:00" && e.time < "16:10" && (a = dd1.length - 1);
                 break;
               case "HF":
-                "hf_CHA50CFD" == m.symbol &&
+                "hf_CHA50CFD" == _this.symbol &&
                   e.time > "16:35" &&
                   e.time < "17:00" &&
                   (a = 455);
             }
             if (
               ((e.index = a),
-              (m.realLen = a),
-              (m.hq.open == m.hq.prevclose &&
-                m.hq.high == m.hq.prevclose &&
-                m.hq.low == m.hq.prevclose &&
+              (_this.realLen = a),
+              (_this.hq.open == _this.hq.prevclose &&
+                _this.hq.high == _this.hq.prevclose &&
+                _this.hq.low == _this.hq.prevclose &&
                 0 > a) ||
-                m.hq.time < "09:30")
+                _this.hq.time < "09:30")
             )
-              switch (m.market) {
+              switch (_this.market) {
                 case "CN":
-                  m.realLen = m.hq.time >= "15:00" ? U - 1 : 0;
+                  _this.realLen = _this.hq.time >= "15:00" ? U - 1 : 0;
                   break;
                 case "REPO":
-                  m.realLen = m.hq.time >= "15:30" ? U - 1 : 0;
+                  _this.realLen = _this.hq.time >= "15:30" ? U - 1 : 0;
                   break;
                 case "NF":
                 case "HF":
@@ -530,7 +553,7 @@ xh5_define(
                 case "MSCI":
                   break;
                 default:
-                  m.realLen = 0;
+                  _this.realLen = 0;
               }
           },
           de = function(e, t) {
@@ -560,7 +583,7 @@ xh5_define(
                   1,
                   e.price,
                   !0,
-                  m.needMarket,
+                  _this.needMarket,
                   [e.date],
                   a
                 );
@@ -585,18 +608,21 @@ xh5_define(
                       : (o[4] = i)
                     : (o.shift(), o.push(i)),
                   tDb.initTState(o),
-                  (m.datas = [o[4]]),
-                  (m.date = dateUtil.ds(e.date)),
-                  (m.realLen = 0);
+                  (_this.datas = [o[4]]),
+                  (_this.date = dateUtil.ds(e.date)),
+                  (_this.realLen = 0);
               },
               s = 0,
               l = function(e, a, l) {
                 function c() {
                   switch (
-                    (o(m.hq), onViewChange(), $.createPlayingData(), m.market)
+                    (o(_this.hq),
+                    onViewChange(),
+                    ooo1.createPlayingData(),
+                    _this.market)
                   ) {
                     case "US":
-                      $.extValues();
+                      ooo1.extValues();
                       break;
                     case "NF":
                       x.inited = 1;
@@ -608,32 +634,32 @@ xh5_define(
                   return !isNaN(t_rate) &&
                     t_rate > 0 &&
                     e >= 1e3 * Number(t_rate) &&
-                    0 != m.realLen &&
-                    m.hq.isUpdateTime
-                    ? ((se = new Date().getTime()), g(b, m.hq, a), !0)
+                    0 != _this.realLen &&
+                    _this.hq.isUpdateTime
+                    ? ((se = new Date().getTime()), g(b, _this.hq, a), !0)
                     : !1;
                 }
                 function h() {
                   function i() {
-                    stbd(m.hq.date, y[4][0].date) &&
-                      m.hq.time > "16:00" &&
+                    stbd(_this.hq.date, y[4][0].date) &&
+                      _this.hq.time > "16:00" &&
                       o.price < 0 &&
-                      ((o.price = m.hq.price),
+                      ((o.price = _this.hq.price),
                       (o.avg_price = y[4][y[4].length - 2].avg_price),
                       (o.volume = 0));
                   }
                   function n() {
-                    stbd(m.hq.date, y[4][0].date) &&
-                      m.hq.time > "16:00" &&
-                      ((o.price = m.hq.price),
+                    stbd(_this.hq.date, y[4][0].date) &&
+                      _this.hq.time > "16:00" &&
+                      ((o.price = _this.hq.price),
                       (o.avg_price = y[4][y[4].length - 2].avg_price),
                       (o.volume = 0),
-                      (o.time = m.hq.time),
-                      o.avg_price < 0 && (o.avg_price = m.hq.price));
+                      (o.time = _this.hq.time),
+                      o.avg_price < 0 && (o.avg_price = _this.hq.price));
                   }
-                  if (!m.hq.isUpdateTime) {
+                  if (!_this.hq.isUpdateTime) {
                     var o = y[4][y[4].length - 1];
-                    switch (m.market) {
+                    switch (_this.market) {
                       case "US":
                         i();
                         break;
@@ -641,92 +667,94 @@ xh5_define(
                         n();
                     }
                     return (
-                      ce(m.hq),
+                      ce(_this.hq),
                       onViewChange(!0),
-                      $.createPlayingData(),
+                      ooo1.createPlayingData(),
                       util.isFunc(a) && a(),
                       !0
                     );
                   }
                   return (
-                    "HK" == m.market && l && g(b, e, a),
-                    (m.date =
-                      "NF" == m.market && m.hq.time >= "21:00"
+                    "HK" == _this.market && l && g(b, e, a),
+                    (_this.date =
+                      "NF" == _this.market && _this.hq.time >= "21:00"
                         ? dateUtil.ds(y[4][0].date)
-                        : m.hq.today),
+                        : _this.hq.today),
                     !1
                   );
                 }
                 var b,
                   y = tDb.get();
-                switch (m.needMarket) {
+                switch (_this.needMarket) {
                   case "HF":
-                    d = util.tUtil.gata(m.needMarket, w.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, w.time);
                     break;
                   case "NF":
-                    d = util.tUtil.gata(m.needMarket, x.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, x.time);
                     break;
                   case "global_index":
-                    d = util.tUtil.gata(m.needMarket, T.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, T.time);
                     break;
                   default:
-                    d = util.tUtil.gata(m.needMarket);
+                    dd1 = util.tUtil.gata(_this.needMarket);
                 }
-                if (e && e.date && m.datas && !conf.date) {
-                  if (((n = !1), (b = y[4]), m.hq.isDateChange)) {
+                if (e && e.date && _this.datas && !conf.date) {
+                  if (((n = !1), (b = y[4]), _this.hq.isDateChange)) {
                     if (
-                      ("NF" == m.market && x && x.time[0][0] < "21:00") ||
-                      "NF" != m.market
+                      ("NF" == _this.market && x && x.time[0][0] < "21:00") ||
+                      "NF" != _this.market
                     )
                       return void c();
                   } else if (
-                    ("CN" == m.market &&
-                      !stbd(m.hq.date, y[4][0].date) &&
-                      m.hq.time < "09:05") ||
-                    ("NF" == m.market &&
-                      stbd(m.hq.date, y[4][0].date) &&
+                    ("CN" == _this.market &&
+                      !stbd(_this.hq.date, y[4][0].date) &&
+                      _this.hq.time < "09:05") ||
+                    ("NF" == _this.market &&
+                      stbd(_this.hq.date, y[4][0].date) &&
                       x &&
                       "21:00" == x.time[0][0] &&
-                      m.hq.time >= x.time[0][0])
+                      _this.hq.time >= x.time[0][0])
                   )
                     return void c();
                   if (!p() && !h()) {
-                    if ((m.datas && (K = y[4][0]), de(e.date, y[4][0].date)))
-                      return void (m.realLen = U);
-                    (L = e.name || ""), (m.hq = e);
+                    if (
+                      (_this.datas && (K = y[4][0]), de(e.date, y[4][0].date))
+                    )
+                      return void (_this.realLen = U);
+                    (L = e.name || ""), (_this.hq = e);
                     var _ =
                       e.date.getHours() < 10
                         ? "0" + e.date.getHours()
                         : e.date.getHours();
                     if (
-                      ((m.time =
+                      ((_this.time =
                         _ + ":" + util.strUtil.zp(e.date.getMinutes())),
                       0 == e.index && u(b, e),
-                      util.arrIndexOf(d, m.time) &&
+                      util.arrIndexOf(dd1, _this.time) &&
                         e.index > 0 &&
-                        (util.arrIndexOf(d, m.time) - m.realLen <= 1
+                        (util.arrIndexOf(dd1, _this.time) - _this.realLen <= 1
                           ? u(b, e)
-                          : "US" !== m.market && g(b, e, a),
+                          : "US" !== _this.market && g(b, e, a),
                         1 == e.index && 0 == s))
                     )
                       return (s = 1), void g(b, e, a);
-                    R(m.market) &&
-                      ((m.hq.open == m.hq.prevclose &&
-                        m.hq.high == m.hq.prevclose &&
-                        m.hq.low == m.hq.prevclose &&
-                        m.hq.index < 0) ||
+                    R(_this.market) &&
+                      ((_this.hq.open == _this.hq.prevclose &&
+                        _this.hq.high == _this.hq.prevclose &&
+                        _this.hq.low == _this.hq.prevclose &&
+                        _this.hq.index < 0) ||
                         e.time < "09:30") &&
-                      ("CN" == m.market
+                      ("CN" == _this.market
                         ? ((b[0].avg_price = e.price),
                           (b[0].volume = e.totalVolume))
-                        : "option_cn" == m.market
+                        : "option_cn" == _this.market
                         ? ((b[0].inventory = e.position || e.holdingAmount),
                           (b[0].holdPosition = e.position || e.holdingAmount))
-                        : "HK" == m.market &&
+                        : "HK" == _this.market &&
                           (b[0].avg_price =
                             e.totalAmount / e.totalVolume || e.price)),
                       5 == viewState.end &&
-                        (onViewChange(!0), $.createPlayingData()),
+                        (onViewChange(!0), ooo1.createPlayingData()),
                       util.isFunc(a) && a();
                   }
                 }
@@ -737,7 +765,7 @@ xh5_define(
               u = function(e, t) {
                 var i = e;
                 ce(t);
-                var r = i[m.realLen];
+                var r = i[_this.realLen];
                 r &&
                   (K && !a
                     ? (B
@@ -758,10 +786,10 @@ xh5_define(
                         ? (t.volume = t.totalVolume - ie.totalVolume || 0)
                         : ((t.volume = 0), (ae = !0)),
                       (ie.totalVolume = t.totalVolume)),
-                  ("option_cn" == m.market || "NF" == m.market) &&
+                  ("option_cn" == _this.market || "NF" == _this.market) &&
                     ((r.inventory = t.position || t.holdingAmount),
                     (r.holdPosition = t.position || t.holdingAmount)),
-                  "CN" == m.market
+                  "CN" == _this.market
                     ? (r.avg_price = t.avg_price || r.price)
                     : (t.index > 1
                         ? (r.avg_price =
@@ -769,15 +797,15 @@ xh5_define(
                             (i[t.index - 1].avg_price * t.index + t.price) /
                               (t.index + 1) ||
                             r.price)
-                        : "fund" == m.market ||
+                        : "fund" == _this.market ||
                           (r.avg_price = r.price || t.price),
                       0 == t.index &&
                         (r.avg_price =
                           t.totalAmount / t.totalVolume || t.price),
                       (r.volume = r.volume || 0)),
                   isNaN(t.volume) && (t.volume = 0),
-                  "HK" != m.market &&
-                    "NF" != m.market &&
+                  "HK" != _this.market &&
+                    "NF" != _this.market &&
                     (r.volume += t.volume),
                   (r.price = t.price),
                   r.volume <= 0 && (r.volume = 0));
@@ -789,36 +817,36 @@ xh5_define(
                   withT5: 0,
                   withI: !1,
                   faker: "",
-                  dataformatter: e.datas.t1.dataformatter,
+                  dataformatter: eee2.datas.t1.dataformatter,
                   ssl: conf.ssl,
                   assisthq: conf.assisthq,
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (s.symbol = conf.rawsymbol),
+                  "LSE" == _this.market && (s.symbol = conf.rawsymbol),
                   KKE.api("datas.t.get", s, function(e) {
-                    (a = e.data.td1), ce(m.hq);
+                    (a = e.data.td1), ce(_this.hq);
                     var i = tDb.get();
-                    ("NF" == m.market &&
+                    ("NF" == _this.market &&
                       ("21:00" == x.time[0][0] &&
-                        m.hq.time >= x.time[0][0] &&
-                        0 != m.hq.date.getDay() &&
-                        6 != m.hq.date.getDay() &&
+                        _this.hq.time >= x.time[0][0] &&
+                        0 != _this.hq.date.getDay() &&
+                        6 != _this.hq.date.getDay() &&
                         (a[0].date = i[4][0].date),
                       ("09:30" == x.time[0][0] || "09:15" == x.time[0][0]) &&
-                        stbd(i[4][0].date, m.hq.date) &&
-                        m.hq.time <= x.time[0][0])) ||
-                      ("HF" == m.market &&
-                        m.hq.time > w.time[0][0] &&
-                        0 != m.hq.date.getDay() &&
-                        6 != m.hq.date.getDay() &&
-                        (a[0].date = m.hq.date),
+                        stbd(i[4][0].date, _this.hq.date) &&
+                        _this.hq.time <= x.time[0][0])) ||
+                      ("HF" == _this.market &&
+                        _this.hq.time > w.time[0][0] &&
+                        0 != _this.hq.date.getDay() &&
+                        6 != _this.hq.date.getDay() &&
+                        (a[0].date = _this.hq.date),
                       (i[4] = a),
                       tDb.initTState(i),
-                      "CN" == m.market &&
-                        "HK" == m.needMarket &&
-                        ((m.needMarket = "CN"), xxx.changeData(m)),
+                      "CN" == _this.market &&
+                        "HK" == _this.needMarket &&
+                        ((_this.needMarket = "CN"), xxx.changeData(_this)),
                       5 == viewState.end &&
-                        (onViewChange(!0), $.createPlayingData()),
+                        (onViewChange(!0), ooo1.createPlayingData()),
                       util.isFunc(o) && o());
                   });
               },
@@ -830,15 +858,15 @@ xh5_define(
                   dist5: 1,
                   withI: !1,
                   faker: "",
-                  dataformatter: e.datas.t1.dataformatter,
+                  dataformatter: eee2.datas.t1.dataformatter,
                   ssl: conf.ssl,
                 };
                 (B = ae = !1),
-                  "LSE" == m.market && (o.symbol = conf.rawsymbol),
+                  "LSE" == _this.market && (o.symbol = conf.rawsymbol),
                   KKE.api("datas.t.get", o, function(e) {
                     (a = e.data.td1),
                       tDb.initTState(e.data.td5),
-                      ce(m.hq),
+                      ce(_this.hq),
                       util.isFunc(n) && n(),
                       xxx.moving(viewState.start, viewState.end, "T5"),
                       J.hide();
@@ -851,30 +879,32 @@ xh5_define(
                   p,
                   h = "",
                   u = "";
-                if (((p = s ? s : util.market(e.symbol)), "US" === p))
+                if (((p = s ? s : util.market(eee2.symbol)), "US" === p))
                   h = 1 === conf.assisthq ? ",gb_ixic" : u;
                 else if ("HK" === p) {
                   var v =
-                    "hk" === e.symbol.substring(0, 2) ? ",hkHSI" : ",rt_hkHSI";
+                    "hk" === eee2.symbol.substring(0, 2)
+                      ? ",hkHSI"
+                      : ",rt_hkHSI";
                   h = 1 === conf.assisthq ? v : u;
                 }
                 o
                   ? ((d = "datas.hq.parse"),
                     (m = {
-                      symbol: e.symbol + h,
+                      symbol: eee2.symbol + h,
                       hqStr: o,
                       market: p,
                       ssl: conf.ssl,
                     }))
                   : ((d = "datas.hq.get"),
                     (m = {
-                      symbol: e.symbol + h,
+                      symbol: eee2.symbol + h,
                       delay: !0,
                       cancelEtag: n,
                       ssl: conf.ssl,
                     })),
                   KKE.api(d, m, function(t) {
-                    l(t.dataObj[e.symbol], a, c);
+                    l(t.dataObj[eee2.symbol], a, c);
                   });
               });
           })(),
@@ -883,7 +913,9 @@ xh5_define(
               o = 1,
               s = function(e) {
                 o > 2 ||
-                  (P.re(globalCfg.e.T_DATA_LOADED), util.isFunc(e) && e(), o++);
+                  (_me.re(globalCfg.e.T_DATA_LOADED),
+                  util.isFunc(e) && e(),
+                  o++);
               },
               l = function(e) {
                 var t = e,
@@ -917,49 +949,50 @@ xh5_define(
                   1,
                   o.hq.price,
                   !0,
-                  m.market,
+                  _this.market,
                   [o.hq.date],
                   n
                 );
                 return (
                   (s[0].name = o.hq.name),
-                  (s[0].symbol = e.symbol),
+                  (s[0].symbol = eee2.symbol),
                   (s[0].today = util.dateUtil.ds(o.hq.date, "-")),
                   (r = i),
                   (r[4] = s),
-                  (m.realLen = 0),
+                  (_this.realLen = 0),
                   r
                 );
               };
             this.init = function(o) {
               var p = viewState.viewId;
               if (r != p) {
-                (r = p), null != m.datas && tDb.initTState(p, m.tDb.get());
+                (r = p),
+                  null != _this.datas && tDb.initTState(p, _this.tDb.get());
                 var h = {
                   assisthq: conf.assisthq,
                   ssl: conf.ssl,
-                  symbol: e.symbol,
+                  symbol: eee2.symbol,
                   date: conf.date,
                   withT5: 1,
                   dist5: conf.dist5,
                   withI: !0,
-                  faker: m.needMarket,
-                  dataformatter: e.datas.t1.dataformatter,
+                  faker: _this.needMarket,
+                  dataformatter: eee2.datas.t1.dataformatter,
                 };
-                switch (m.needMarket) {
+                switch (_this.needMarket) {
                   case "HF":
-                    d = util.tUtil.gata(m.needMarket, w.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, w.time);
                     break;
                   case "NF":
-                    d = util.tUtil.gata(m.needMarket, x.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, x.time);
                     break;
                   case "global_index":
-                    d = util.tUtil.gata(m.needMarket, T.time);
+                    dd1 = util.tUtil.gata(_this.needMarket, T.time);
                     break;
                   case "LSE":
                     h.symbol = conf.rawsymbol;
                   default:
-                    d = util.tUtil.gata(m.needMarket);
+                    dd1 = util.tUtil.gata(_this.needMarket);
                 }
                 J.show(),
                   KKE.api("datas.t.get", h, function(e) {
@@ -968,7 +1001,7 @@ xh5_define(
                       p = "",
                       u = Number(e.data.hq.state);
                     if ("empty" == e.msg)
-                      switch (m.market) {
+                      switch (_this.market) {
                         case "CN":
                           3 == d &&
                             ((p = globalCfg.delisted),
@@ -976,7 +1009,7 @@ xh5_define(
                       }
                     if ("error" == e.msg || "nohistory" == e.msg) {
                       if (
-                        (a &&
+                        (aaa1 &&
                           "nohistory" == e.msg &&
                           ((M = 0),
                           xxx.hasHistory && xxx.hasHistory(M),
@@ -985,11 +1018,11 @@ xh5_define(
                             parent: V,
                             noBtn: !0,
                           })),
-                        (m.isErr = !0),
-                        a && e.data && e.data.hq)
+                        (_this.isErr = !0),
+                        aaa1 && e.data && e.data.hq)
                       ) {
                         if (d)
-                          switch (m.market) {
+                          switch (_this.market) {
                             case "CN":
                               switch (d) {
                                 case 2:
@@ -1027,35 +1060,35 @@ xh5_define(
                       if (0 != u && 7 != u) {
                         if ((xxx.onResize(), 1 != d))
                           return void xxx.removeCompare([h.symbol]);
-                        m.isErr = !1;
-                      } else m.isErr = !1;
+                        _this.isErr = !1;
+                      } else _this.isErr = !1;
                     }
-                    (m.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
+                    (_this.hq = e.data.hq), (r = void 0), (h.td1 = e.data.td1);
                     var b;
                     C = new Date();
                     var y = 60 * C.getTimezoneOffset() * 1e3;
                     if (
                       (C.setTime(C.getTime() + y),
                       C.setHours(C.getHours() + 8),
-                      (L = m.hq.name || ""),
-                      ce(m.hq),
-                      l(m.hq, e.data.td5) && R(m.market)
+                      (L = _this.hq.name || ""),
+                      ce(_this.hq),
+                      l(_this.hq, e.data.td5) && R(_this.market)
                         ? "history" == e.msg
                           ? ((b = e.data.td5),
-                            b[4][0].date || (b[4][0].date = m.hq.date))
-                          : (b = c(m, e.data.td5))
+                            b[4][0].date || (b[4][0].date = _this.hq.date))
+                          : (b = c(_this, e.data.td5))
                         : ((b = e.data.td5),
-                          "NF" != m.market ||
+                          "NF" != _this.market ||
                             !x ||
                             ("09:30" != x.time[0][0] &&
                               "09:15" != x.time[0][0]) ||
-                            (stbd(b[4][0].date, m.hq.date) &&
-                              m.hq.time <= x.time[0][0] &&
-                              (b = c(m, e.data.td5))),
-                          b && !b[4][0].date && (b[4][0].date = m.hq.date)),
+                            (stbd(b[4][0].date, _this.hq.date) &&
+                              _this.hq.time <= x.time[0][0] &&
+                              (b = c(_this, e.data.td5))),
+                          b && !b[4][0].date && (b[4][0].date = _this.hq.date)),
                       (xxx.historyData = b),
-                      (m.date =
-                        (e.data.td1 && e.data.td1[0].today) || m.hq.date),
+                      (_this.date =
+                        (e.data.td1 && e.data.td1[0].today) || _this.hq.date),
                       tDb.initTState(b),
                       s(o),
                       1 == O &&
@@ -1080,38 +1113,38 @@ xh5_define(
         this.doUpdate = me.update;
         this.onViewChange = onViewChange;
         this.setPricePos = function(e, t) {
-          (m.labelMaxP = e[0]),
-            (m.labelMinP = e[1]),
-            (m.labelPriceCount = e[2]),
-            (m.isCompare = t),
-            $.createPlayingData(),
-            k && k.setPricePos(e);
+          (_this.labelMaxP = e[0]),
+            (_this.labelMinP = e[1]),
+            (_this.labelPriceCount = e[2]),
+            (_this.isCompare = t),
+            ooo1.createPlayingData(),
+            kkk1 && kkk1.setPricePos(e);
         };
         this.setRange = function() {
-          $.setDataRange(),
-            _ && _.setDataRange(),
-            k && k.setDataRange(),
-            D && D.setDataRange();
+          ooo1.setDataRange(),
+            eee1 && eee1.setDataRange(),
+            kkk1 && kkk1.setDataRange(),
+            ddd1 && ddd1.setDataRange();
         };
         this.draw = function() {
-          q.draw(), _ && _.allDraw(), k && k.allDraw();
+          q.draw(), eee1 && eee1.allDraw(), kkk1 && kkk1.allDraw();
         };
         this.resize = function(e) {
-          $.createPlayingData(),
+          ooo1.createPlayingData(),
             q.resize(),
-            _ && _.onResize(e),
-            k && k.onResize(),
-            D && D.onResize();
+            eee1 && eee1.onResize(e),
+            kkk1 && kkk1.onResize(),
+            ddd1 && ddd1.onResize();
         };
         this.clear = function() {
           q.clear(),
-            _ && (_.clear(), (_ = null)),
-            k && (k.clear(), (k = null)),
-            D && (D.clear(), (D = null)),
-            a && (Q = null);
+            eee1 && (eee1.clear(), (eee1 = null)),
+            kkk1 && (kkk1.clear(), (kkk1 = null)),
+            ddd1 && (ddd1.clear(), (ddd1 = null)),
+            aaa1 && (Q = null);
         };
         this.getPriceTech = function() {
-          return k || null;
+          return kkk1 || null;
         };
         this.removePt = function(e) {
           if (e) {
@@ -1122,10 +1155,10 @@ xh5_define(
                 break;
               }
           } else E.custom.show_underlay_vol = !1;
-          k && k.removeChart(e);
+          kkk1 && kkk1.removeChart(e);
         };
         this.togglePt = function(e) {
-          k && (fBind = k.showHide(e));
+          kkk1 && (fBind = kkk1.showHide(e));
         };
         var he = function(e, a, i) {
           e && re.resizeAll(!0),
@@ -1141,10 +1174,10 @@ xh5_define(
                 e.splice(n, 1), (E.custom.show_underlay_vol = !0);
                 break;
               }
-            k ||
-              ((k = new s({
+            kkk1 ||
+              ((kkk1 = new s({
                 iMgr: oe,
-                stockData: m,
+                stockData: _this,
                 chartArea: G,
                 titleArea: z,
                 cb: he,
@@ -1152,14 +1185,14 @@ xh5_define(
                 cfg: E,
                 usrObj: conf,
               })),
-              a && (ispCharts = k)),
-              k.createChart(e, r);
+              aaa1 && (ispCharts = kkk1)),
+              kkk1.createChart(e, r);
           }
         };
         this.initTc = function(e, t) {
-          _ ||
-            ((_ = new l({
-              stockData: m,
+          eee1 ||
+            ((eee1 = new l({
+              stockData: _this,
               iMgr: oe,
               subArea: W,
               cb: he,
@@ -1168,23 +1201,23 @@ xh5_define(
               usrObj: conf,
               initMgr: re,
             })),
-            a && (istCharts = _)),
-            _.createChart(e, t);
+            aaa1 && (istCharts = eee1)),
+            eee1.createChart(e, t);
         };
         this.removeTc = function(e) {
-          _ && _.removeChart(e);
+          eee1 && eee1.removeChart(e);
         };
         this.initRs = function() {
-          D ||
-            ((D = new o({
-              stockData: m,
+          ddd1 ||
+            ((ddd1 = new o({
+              stockData: _this,
               setting: E,
               state: viewState,
               rc: xxx.moving,
               witht5: 1,
             })),
-            (Q = D)),
-            D.linkData();
+            (Q = ddd1)),
+            ddd1.linkData();
         };
         this.setTLineStyle = q.setTLineStyle;
         c();
@@ -1702,7 +1735,7 @@ xh5_define(
         this.updateDataAll = updateDataAll;
         this.update5Data = update5Data;
         var addCompare = function(t, a) {
-            var i = new r(t, a);
+            var i = new rra(t, a);
             a && (mainStock = i);
             allStocks[allStocks.length] = i;
             L();
@@ -2097,7 +2130,7 @@ xh5_define(
           },
         };
       util.xh5_EvtDispatcher.call(this);
-      var P = this;
+      var _me = this;
       conf = oc(
         {
           symbol: "sh000001",
@@ -2192,7 +2225,7 @@ xh5_define(
         W,
         B,
         xxx,
-        j,
+        jjj,
         istCharts,
         ispCharts,
         Q,
@@ -3028,11 +3061,11 @@ xh5_define(
                 n.pv({ v: he, x: d, ox: m, y: E.DIMENSION.H_MA4K }),
                 b(V),
                 ne.onViewPrice(L, V, B, !k),
-                P.re(globalCfg.e.I_EVT, a.e);
+                _me.re(globalCfg.e.I_EVT, a.e);
             }
           };
           this.globalDragHandler = function(e, t, a, i, r) {
-            isNaN(e) && isNaN(t) && P.re(globalCfg.e.I_EVT, r);
+            isNaN(e) && isNaN(t) && _me.re(globalCfg.e.I_EVT, r);
           };
           this.shortClickHandler = function() {
             ne.shortClickHandler();
@@ -3259,22 +3292,20 @@ xh5_define(
         var l = !0;
         this.showView = function(e, a) {
           oe.hideIUis(), l ? (l = !1) : J.hide();
-          var r = globalCfg.URLHASH.vi(e);
+          var viewId = globalCfg.URLHASH.vi(e);
           if (conf.date)
-            return (conf.date = ""), o(r), void this.newSymbol(conf);
+            return (conf.date = ""), o(viewId), void this.newSymbol(conf);
           var n = xxx.getAllStock()[0];
-          if (
-            (ne.onRange(n),
-            util.stc("t_v", e),
-            util.suda("vw", e),
-            viewState.viewId != r)
-          ) {
-            if ((o(r), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
+          ne.onRange(n);
+          util.stc("t_v", e);
+          util.suda("vw", e);
+          if (viewState.viewId != viewId) {
+            if ((o(viewId), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
               return J.show(), (C = 1), void xxx.update5Data(e);
             xxx.onChangeView(!1, a), ne && ne.onViewPrice();
           }
         };
-        var d = function(e) {
+        var strSymbols = function(e) {
             var a;
             return (a = util.isStr(e.symbol)
               ? e.symbol.split(",")
@@ -3284,7 +3315,7 @@ xh5_define(
         this.overlay = function(e, t) {
           if (xxx && 1 != xxx.dAdd)
             if (t) {
-              xxx.removeCompare(d(e));
+              xxx.removeCompare(strSymbols(e));
               for (var a = 0; a < m.length; a++)
                 e.symbol == m[a] && m.splice(a, 1);
               xxx.getAllStock().length <= 1 && (xxx.dAdd = 0);
@@ -3318,12 +3349,13 @@ xh5_define(
         };
         var p = 0;
         this.tCharts = function(e, a) {
-          n("tech", e, a), a && !a.noLog && (0 == p ? (p = 1) : util.sudaLog());
+          n("tech", e, a);
+          a && !a.noLog && (0 == p ? (p = 1) : util.sudaLog());
         };
         var h = 0;
         this.pCharts = function(e, a) {
-          n("price", e, a),
-            a && !a.noLog && (0 == h ? (h = 1) : util.sudaLog());
+          n("price", e, a);
+          a && !a.noLog && (0 == h ? (h = 1) : util.sudaLog());
         };
         this.showPCharts = function(e) {
           e && (xxx.mM.togglePt(e), util.stc("t_sp", e));
@@ -3335,12 +3367,13 @@ xh5_define(
         };
         var f;
         this.showRangeSelector = function(e) {
-          (f = oc({ dispaly: !0, from: void 0, to: void 0 }, e)),
-            xxx.mM.showRs(f),
-            util.stc("t_rs", e);
+          f = oc({ dispaly: !0, from: void 0, to: void 0 }, e);
+          xxx.mM.showRs(f);
+          util.stc("t_rs", e);
         };
         this.setLineStyle = function(e) {
-          xxx && xxx.setTLineStyle(e), util.stc("t_style", e);
+          xxx && xxx.setTLineStyle(e);
+          util.stc("t_style", e);
         };
         this.setCustom = fBind(a, this, "custom");
         this.setDimension = fBind(a, this, "DIMENSION");
@@ -3359,11 +3392,13 @@ xh5_define(
           tip.hideTip();
           if (istCharts) {
             var a = istCharts.getLog();
-            (istCharts = null), a && this.tCharts(a);
+            istCharts = null;
+            a && this.tCharts(a);
           }
           if (ispCharts) {
             var r = ispCharts.getLog();
-            (ispCharts = null), r && this.pCharts(r);
+            ispCharts = null;
+            r && this.pCharts(r);
           }
           f && ((f.from = void 0), (f.to = void 0), xxx.mM.showRs(f));
           util.stc("t_ns", e);
@@ -3398,7 +3433,7 @@ xh5_define(
           "object" == typeof time
             ? (r = dateUtil.ds(time, "-"))
             : (time = dateUtil.sd(time));
-          var n = j.get();
+          var n = jjj.get();
           if (null == n) return void (O = 1);
           for (var o = n.length, s = 0; o > s; s++)
             if (dateUtil.stbd(time, n[s][0].date))
@@ -3436,7 +3471,8 @@ xh5_define(
         };
         this.patcher = { iMgr: oe.patcher };
         this.zoom = function(e) {
-          xxx.zoomApi(e), util.stc("t_zoom", e, 9e3);
+          xxx.zoomApi(e);
+          util.stc("t_zoom", e, 9e3);
         };
         this.move = function(e) {
           e = parseInt(e);
@@ -3446,13 +3482,14 @@ xh5_define(
           return xxx.getAllSymbols();
         };
         this.update = function() {
-          xxx.updateDataAll(1), util.stc("t_up", "update", 9e3);
+          xxx.updateDataAll(1);
+          util.stc("t_up", "update", 9e3);
         };
         this.getCurrentData = function() {
           return ne.currentData();
         };
         this.viewState = viewState;
-        this.me = P;
+        this.me = _me;
         this.type = "h5t";
       })();
       xxx = new ddd();

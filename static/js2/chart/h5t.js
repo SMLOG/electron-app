@@ -254,7 +254,7 @@ xh5_define(
                   (m.maxavgPercent = Math.max((m.maxavgPrice - e) / e, 0)),
                   (m.minavgPercent = Math.min((m.minavgPrice - e) / e, 0));
               }
-              (m.isCompare = X.getAllStock().length > 1), (m.dAdd = X.dAdd);
+              (m.isCompare = xxx.getAllStock().length > 1), (m.dAdd = xxx.dAdd);
               var t;
               m.datas &&
                 0 == m.datas[0][0].volume &&
@@ -816,7 +816,7 @@ xh5_define(
                       tDb.initTState(i),
                       "CN" == m.market &&
                         "HK" == m.needMarket &&
-                        ((m.needMarket = "CN"), X.changeData(m)),
+                        ((m.needMarket = "CN"), xxx.changeData(m)),
                       5 == viewState.end &&
                         (onViewChange(!0), $.createPlayingData()),
                       util.isFunc(o) && o());
@@ -840,7 +840,7 @@ xh5_define(
                       tDb.initTState(e.data.td5),
                       ce(m.hq),
                       util.isFunc(n) && n(),
-                      X.moving(viewState.start, viewState.end, "T5"),
+                      xxx.moving(viewState.start, viewState.end, "T5"),
                       J.hide();
                   });
               };
@@ -963,7 +963,7 @@ xh5_define(
                 }
                 J.show(),
                   KKE.api("datas.t.get", h, function(e) {
-                    X.hasHistory && "history" == e.msg && X.hasHistory(M);
+                    xxx.hasHistory && "history" == e.msg && xxx.hasHistory(M);
                     var d = e.data.hq.status,
                       p = "",
                       u = Number(e.data.hq.state);
@@ -979,7 +979,7 @@ xh5_define(
                         (a &&
                           "nohistory" == e.msg &&
                           ((M = 0),
-                          X.hasHistory && X.hasHistory(M),
+                          xxx.hasHistory && xxx.hasHistory(M),
                           tip.showTip({
                             txt: globalCfg.nohistoryt,
                             parent: V,
@@ -1025,8 +1025,8 @@ xh5_define(
                         }
                       }
                       if (0 != u && 7 != u) {
-                        if ((X.onResize(), 1 != d))
-                          return void X.removeCompare([h.symbol]);
+                        if ((xxx.onResize(), 1 != d))
+                          return void xxx.removeCompare([h.symbol]);
                         m.isErr = !1;
                       } else m.isErr = !1;
                     }
@@ -1053,7 +1053,7 @@ xh5_define(
                               m.hq.time <= x.time[0][0] &&
                               (b = c(m, e.data.td5))),
                           b && !b[4][0].date && (b[4][0].date = m.hq.date)),
-                      (X.historyData = b),
+                      (xxx.historyData = b),
                       (m.date =
                         (e.data.td1 && e.data.td1[0].today) || m.hq.date),
                       tDb.initTState(b),
@@ -1129,7 +1129,7 @@ xh5_define(
         };
         var he = function(e, a, i) {
           e && re.resizeAll(!0),
-            X.onChangeView(),
+            xxx.onChangeView(),
             a && util.isFunc(a.callback) && a.callback(),
             i && ne.onTechChanged(i[0]);
         };
@@ -1180,7 +1180,7 @@ xh5_define(
               stockData: m,
               setting: E,
               state: viewState,
-              rc: X.moving,
+              rc: xxx.moving,
               witht5: 1,
             })),
             (Q = D)),
@@ -1194,7 +1194,7 @@ xh5_define(
           var r = e.isMain;
           if (r) (l = E.COLOR.T_P), (c = E.COLOR.T_AVG);
           else {
-            2 != X.dAdd || o.linecolor || (o.linecolor = conf.overlaycolor);
+            2 != xxx.dAdd || o.linecolor || (o.linecolor = conf.overlaycolor);
             var n = o.linecolor || "#cccccc";
             l = n.K_N || n.T_N || "#" + util.randomColor();
           }
@@ -1482,7 +1482,7 @@ xh5_define(
           f(r),
           n();
       }
-      function D() {
+      function ddd() {
         var mainStock,
           me = this,
           allStocks = [];
@@ -1701,12 +1701,12 @@ xh5_define(
           };
         this.updateDataAll = updateDataAll;
         this.update5Data = update5Data;
-        var T = function(t, a) {
+        var addCompare = function(t, a) {
             var i = new r(t, a);
-            a && (mainStock = i),
-              (allStocks[allStocks.length] = i),
-              L(),
-              onChangeView();
+            a && (mainStock = i);
+            allStocks[allStocks.length] = i;
+            L();
+            onChangeView();
           },
           M = function(e) {
             for (var t, a, i = e, r = 0, o = 0; r < allStocks.length; r++)
@@ -1802,7 +1802,7 @@ xh5_define(
         this.compare = function(e) {
           for (var t = allStocks.length; t--; )
             if (allStocks[t].symbol == e.symbol) return;
-          T(e, !1);
+          addCompare(e, !1);
         };
         this.removeCompare = function(e) {
           for (var t, a, i = "CN", r = e.length; r--; ) {
@@ -1883,7 +1883,7 @@ xh5_define(
               }
         };
         this.dcInit = function(e) {
-          T(e, !0), updateDataAll();
+          addCompare(e, !0), updateDataAll();
         };
         this.mM = new (function() {
           var t = function(a, i, r) {
@@ -2191,7 +2191,7 @@ xh5_define(
         z,
         W,
         B,
-        X,
+        xxx,
         j,
         istCharts,
         ispCharts,
@@ -2256,8 +2256,8 @@ xh5_define(
             resizeAll = function(e, i, o) {
               var s = a(i, o, 0 / 0);
               if (e || (i && o)) {
-                if (!X) return;
-                X.onResize(s), oe.onResize();
+                if (!xxx) return;
+                xxx.onResize(s), oe.onResize();
               }
               r(),
                 n(),
@@ -2310,12 +2310,12 @@ xh5_define(
               !E.custom.mousewheel_zoom ||
                 (document.activeElement !== V &&
                   document.activeElement.parentNode !== V) ||
-                (X && X.onWheel(e),
+                (xxx && xxx.onWheel(e),
                 xh5_EvtUtil.preventDefault(e),
                 xh5_EvtUtil.stopPropagation(e));
             },
             p = function(e) {
-              E.custom.keyboard && X && X.onKb(e);
+              E.custom.keyboard && xxx && xxx.onKb(e);
             },
             u = function() {
               util.xh5_deviceUtil.istd ||
@@ -2357,9 +2357,9 @@ xh5_define(
           f();
           this.resizeAll = resizeAll;
           this.innerResize = function(e) {
-            X &&
+            xxx &&
               (a(0 / 0, 0 / 0, e),
-              X.onResize(),
+              xxx.onResize(),
               oe.onResize(),
               r(),
               ne.onInnerResize({ height: E.DIMENSION.h_t }));
@@ -2370,7 +2370,7 @@ xh5_define(
           var e = 0,
             currentData = function(a, r) {
               var n = U - 1,
-                o = X.getAllStock()[0];
+                o = xxx.getAllStock()[0];
               if (
                 o &&
                 o.datas &&
@@ -2466,7 +2466,7 @@ xh5_define(
           this.onViewPrice = function(r, n, o, s) {
             if (!ae && util.isFunc(conf.onviewprice)) {
               if ((r || (r = currentData(r, n)), !r)) return;
-              o || (o = X.getMainStock().getName());
+              o || (o = xxx.getMainStock().getName());
               var l,
                 c,
                 d = util.clone(r);
@@ -2483,7 +2483,7 @@ xh5_define(
                 d.volume && d.volume < 0 && (d.volume = 0),
                 conf.onviewprice({
                   curname: o || "",
-                  data_array: X.getAllStock().length,
+                  data_array: xxx.getAllStock().length,
                   data: d,
                   idx: e,
                   left: E.DIMENSION.posX,
@@ -2534,7 +2534,7 @@ xh5_define(
             })(),
             p = function() {
               function r() {
-                var e = X.getAllStock()[0];
+                var e = xxx.getAllStock()[0];
                 return (
                   !("HK" != e.market || "indx" != e.hq.type) ||
                   "LSE" === e.market ||
@@ -2817,20 +2817,20 @@ xh5_define(
                 V.appendChild(n.body);
             },
             hideIUis = function() {
-              iHLineO.display(!1), n.display(!1), c.showFloater(!1);
+              iHLineO.display(!1);
+              n.display(!1);
+              c.showFloater(!1);
             },
             g = function() {
-              var e = X.getAllStock(),
+              var e = xxx.getAllStock(),
                 t = e[0].datas.length,
                 a = 0;
-              return (
-                e[0].realLen >= 0 &&
-                  (a =
-                    5 == viewState.end
-                      ? e[0].realLen + E.datas.tDataLen * (t - 1)
-                      : E.datas.tDataLen * (t - 1)),
-                a
-              );
+              e[0].realLen >= 0 &&
+                (a =
+                  5 == viewState.end
+                    ? e[0].realLen + E.datas.tDataLen * (t - 1)
+                    : E.datas.tDataLen * (t - 1));
+              return a;
             },
             b = function(e) {
               e > 2e3 && (e = g()),
@@ -2839,7 +2839,8 @@ xh5_define(
                   ispCharts && ispCharts.indirectI(e));
             },
             y = function() {
-              b(g()), istCharts && istCharts.allDraw();
+              b(g());
+              istCharts && istCharts.allDraw();
             },
             k = !0,
             S = 0,
@@ -2863,7 +2864,7 @@ xh5_define(
               (0 > p || p > Number(O)) && ((d = 0 / 0), (p = 0 / 0));
             }
             var L,
-              C = X.getAllStock(),
+              C = xxx.getAllStock(),
               A = C.length,
               q = U,
               H = A > 1,
@@ -3046,7 +3047,7 @@ xh5_define(
           this.hideIUis = hideIUis;
           this.iToKb = function(e) {
             (D += e), (S = D);
-            var t = X.getAllStock(),
+            var t = xxx.getAllStock(),
               a = t[0].datas.length,
               i = t[0].datas[0][D],
               r = t.length,
@@ -3121,7 +3122,7 @@ xh5_define(
               (this.switchFloater = n);
           })();
           this.update = function() {
-            var a = X.getAllStock();
+            var a = xxx.getAllStock();
             if (a) {
               var i,
                 r = a[0],
@@ -3223,10 +3224,10 @@ xh5_define(
           n = function(e, t, a) {
             (a = oc({ toremove: !1, isexclusive: !1, callback: void 0 }, a)),
               a.toremove
-                ? X.mM.removeAC(t, e)
+                ? xxx.mM.removeAC(t, e)
                 : a.isexclusive
-                ? (X.mM.removeAC(null, e), X.mM.newAC(t, e, a))
-                : X.mM.newAC(t, e, a);
+                ? (xxx.mM.removeAC(null, e), xxx.mM.newAC(t, e, a))
+                : xxx.mM.newAC(t, e, a);
           },
           o = function(e) {
             (viewState.viewId = e),
@@ -3234,7 +3235,7 @@ xh5_define(
               (viewState.end = 5);
           };
         this.pushData = function(e, a) {
-          !util.isArr(e) && (e = [e]), X.pushData(e, a);
+          !util.isArr(e) && (e = [e]), xxx.pushData(e, a);
         };
         var s;
         this.pushTr = function(e) {
@@ -3243,14 +3244,17 @@ xh5_define(
             (clearTimeout(s),
             (s = setTimeout(function() {
               var t = e.data.split(","),
-                a = e.symbol,
-                i = e.market,
-                r = { symbol: a, data: t[t.length - 1], market: i };
-              X.pushData([r], 1);
+                r = {
+                  symbol: e.symbol,
+                  data: t[t.length - 1],
+                  market: e.market,
+                };
+              xxx.pushData([r], 1);
             }, 20)));
         };
         this.setScale = function(e) {
-          X.setScale(e), util.stc("t_scale", e);
+          xxx.setScale(e);
+          util.stc("t_scale", e);
         };
         var l = !0;
         this.showView = function(e, a) {
@@ -3258,7 +3262,7 @@ xh5_define(
           var r = globalCfg.URLHASH.vi(e);
           if (conf.date)
             return (conf.date = ""), o(r), void this.newSymbol(conf);
-          var n = X.getAllStock()[0];
+          var n = xxx.getAllStock()[0];
           if (
             (ne.onRange(n),
             util.stc("t_v", e),
@@ -3266,8 +3270,8 @@ xh5_define(
             viewState.viewId != r)
           ) {
             if ((o(r), ("HF" == I || "NF" == I) && "t5" == e && 0 == C))
-              return J.show(), (C = 1), void X.update5Data(e);
-            X.onChangeView(!1, a), ne && ne.onViewPrice();
+              return J.show(), (C = 1), void xxx.update5Data(e);
+            xxx.onChangeView(!1, a), ne && ne.onViewPrice();
           }
         };
         var d = function(e) {
@@ -3278,36 +3282,36 @@ xh5_define(
           },
           m = [];
         this.overlay = function(e, t) {
-          if (X && 1 != X.dAdd)
+          if (xxx && 1 != xxx.dAdd)
             if (t) {
-              X.removeCompare(d(e));
+              xxx.removeCompare(d(e));
               for (var a = 0; a < m.length; a++)
                 e.symbol == m[a] && m.splice(a, 1);
-              X.getAllStock().length <= 1 && (X.dAdd = 0);
+              xxx.getAllStock().length <= 1 && (xxx.dAdd = 0);
             } else
               (conf.overlaycolor = e.linecolor || { K_N: "#cccccc" }),
-                (X.dAdd = 2),
-                X.compare(e),
+                (xxx.dAdd = 2),
+                xxx.compare(e),
                 m.push(e.symbol);
         };
         this.compare = function(e, a) {
-          if (X) {
+          if (xxx) {
             var i,
               r = 0;
             if (a) {
               if (
                 ((i = util.isStr(e) ? e.split(",") : [e.symbol]),
-                1 == X.dAdd && X.removeCompare(i),
-                X.getAllStock().length <= 1)
+                1 == xxx.dAdd && xxx.removeCompare(i),
+                xxx.getAllStock().length <= 1)
               ) {
                 for (r = 0; r < m.length; r++)
-                  (X.dAdd = 2), X.compare({ symbol: m[r] });
-                m.length < 1 && (X.dAdd = 0);
+                  (xxx.dAdd = 2), xxx.compare({ symbol: m[r] });
+                m.length < 1 && (xxx.dAdd = 0);
               }
             } else
-              2 == X.dAdd && X.removeCompare(m),
-                (X.dAdd = 1),
-                X.compare(e),
+              2 == xxx.dAdd && xxx.removeCompare(m),
+                (xxx.dAdd = 1),
+                xxx.compare(e),
                 util.suda("t_comp");
             util.stc("t_comp", { rm: a, o: e });
           }
@@ -3322,7 +3326,7 @@ xh5_define(
             a && !a.noLog && (0 == h ? (h = 1) : util.sudaLog());
         };
         this.showPCharts = function(e) {
-          e && (X.mM.togglePt(e), util.stc("t_sp", e));
+          e && (xxx.mM.togglePt(e), util.stc("t_sp", e));
         };
         this.getIndicators = function() {
           var e = istCharts ? istCharts.getLog() : null,
@@ -3332,11 +3336,11 @@ xh5_define(
         var f;
         this.showRangeSelector = function(e) {
           (f = oc({ dispaly: !0, from: void 0, to: void 0 }, e)),
-            X.mM.showRs(f),
+            xxx.mM.showRs(f),
             util.stc("t_rs", e);
         };
         this.setLineStyle = function(e) {
-          X && X.setTLineStyle(e), util.stc("t_style", e);
+          xxx && xxx.setTLineStyle(e), util.stc("t_style", e);
         };
         this.setCustom = fBind(a, this, "custom");
         this.setDimension = fBind(a, this, "DIMENSION");
@@ -3346,13 +3350,13 @@ xh5_define(
           t && (this.setLineStyle({ linecolor: e }), this.resize());
         };
         this.newSymbol = function(e) {
-          (conf.symbol = e.symbol),
-            (conf.date = e.date),
-            oe.hideIUis(),
-            oe.iReset(),
-            X.dcReset(),
-            X.dcInit(conf),
-            tip.hideTip();
+          conf.symbol = e.symbol;
+          conf.date = e.date;
+          oe.hideIUis();
+          oe.iReset();
+          xxx.dcReset();
+          xxx.dcInit(conf);
+          tip.hideTip();
           if (istCharts) {
             var a = istCharts.getLog();
             (istCharts = null), a && this.tCharts(a);
@@ -3361,26 +3365,26 @@ xh5_define(
             var r = ispCharts.getLog();
             (ispCharts = null), r && this.pCharts(r);
           }
-          f && ((f.from = void 0), (f.to = void 0), X.mM.showRs(f)),
-            util.stc("t_ns", e);
+          f && ((f.from = void 0), (f.to = void 0), xxx.mM.showRs(f));
+          util.stc("t_ns", e);
         };
         this.resize = function(e, t) {
           re.resizeAll(!0, e, t);
         };
         this.hide = function(e) {
-          (ae = !0),
-            oe.hideIUis(),
-            util.$CONTAINS($, V) && $.removeChild(V),
-            e && X.dcReset();
+          ae = !0;
+          oe.hideIUis();
+          util.$CONTAINS($, V) && $.removeChild(V);
+          e && xxx.dcReset();
         };
         this.show = function(e) {
-          (ae = !1),
-            e && (util.isStr(e) && (e = $DOM(e)), ($ = e)),
-            util.$CONTAINS($, V) || ($.appendChild(V), re.resizeAll(!0)),
-            ne && ne.onViewPrice();
+          ae = !1;
+          e && (util.isStr(e) && (e = $DOM(e)), ($ = e));
+          util.$CONTAINS($, V) || ($.appendChild(V), re.resizeAll(!0));
+          ne && ne.onViewPrice();
         };
         this.shareTo = function(e) {
-          X.shareTo(e), util.stc("t_share", e);
+          xxx.shareTo(e), util.stc("t_share", e);
           var a = e && e.type ? e.type : "weibo";
           util.suda("share", a);
         };
@@ -3398,14 +3402,14 @@ xh5_define(
           if (null == n) return void (O = 1);
           for (var o = n.length, s = 0; o > s; s++)
             if (dateUtil.stbd(time, n[s][0].date))
-              return void X.moving(s, s + 1, "dateTo");
+              return void xxx.moving(s, s + 1, "dateTo");
           conf.date = r;
-          X.hasHistory = cb;
+          xxx.hasHistory = cb;
           util.stc("t_ft", r);
           this.newSymbol(conf);
         };
         this.showScale = function(e) {
-          X && X.setScale(e);
+          xxx && xxx.setScale(e);
         };
         this.resize = function(e, t) {
           re.resizeAll(!0, e, t);
@@ -3425,24 +3429,24 @@ xh5_define(
           this.resize();
         };
         this.historyData = function() {
-          return X.historyData;
+          return xxx.historyData;
         };
         this.getExtraData = function(e) {
-          return X.getExtraData(e);
+          return xxx.getExtraData(e);
         };
         this.patcher = { iMgr: oe.patcher };
         this.zoom = function(e) {
-          X.zoomApi(e), util.stc("t_zoom", e, 9e3);
+          xxx.zoomApi(e), util.stc("t_zoom", e, 9e3);
         };
         this.move = function(e) {
           e = parseInt(e);
-          isNaN(e) || (X.moveApi(e), util.stc("t_move", e, 9e3));
+          isNaN(e) || (xxx.moveApi(e), util.stc("t_move", e, 9e3));
         };
         this.getSymbols = function() {
-          return X.getAllSymbols();
+          return xxx.getAllSymbols();
         };
         this.update = function() {
-          X.updateDataAll(1), util.stc("t_up", "update", 9e3);
+          xxx.updateDataAll(1), util.stc("t_up", "update", 9e3);
         };
         this.getCurrentData = function() {
           return ne.currentData();
@@ -3451,8 +3455,8 @@ xh5_define(
         this.me = P;
         this.type = "h5t";
       })();
-      X = new D();
-      X.dcInit(conf);
+      xxx = new ddd();
+      xxx.dcInit(conf);
       return n;
     }
     function out() {

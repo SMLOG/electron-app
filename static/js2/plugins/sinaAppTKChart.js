@@ -786,7 +786,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         });
     } else O($, i), this._init(t, e);
   }
-  function E() {
+  function shortClickChart() {
     return window.chart ? "vertical" == window.chart.direction : !1;
   }
   function P() {
@@ -1455,7 +1455,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                   e.tech.switchTechStyle("kChart", t);
                 },
                 onshortclickmain: function() {
-                  E();
+                  shortClickChart();
                 },
               },
               tInitParam: {
@@ -1466,7 +1466,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
                   e.tech.switchTechStyle("tChart", t);
                 },
                 onshortclickmain: function() {
-                  E();
+                  shortClickChart();
                 },
               },
               netWorthInitParam: {
@@ -1580,25 +1580,25 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
         list: ["t1", "t5", "kd", "kw", "km", "more"],
         more: ["kcl", "k5", "k15", "k30", "k60"],
         viewMap: {
-          t1: "\u5206\u65f6",
-          t5: "\u4e94\u65e5",
-          kd: "\u65e5K",
-          kw: "\u5468K",
-          km: "\u6708K",
-          ky: "\u5e74K",
-          kcl: "\u5e74\u7ebf",
-          k1: "1\u5206",
-          k5: "5\u5206",
-          k15: "15\u5206",
-          k30: "30\u5206",
-          k60: "60\u5206",
-          k240: "4\u5c0f\u65f6",
-          more: "\u66f4\u591a",
-          dk: "B/S\u70b9",
-          app: "B/S\u70b9",
-          predict: "\u51c0\u503c\u9884\u6d4b",
-          networth: "\u5386\u53f2\u51c0\u503c",
-          repay: "\u5386\u53f2\u56de\u62a5",
+          t1: "分时",
+          t5: "五日",
+          kd: "日K",
+          kw: "周K",
+          km: "月K",
+          ky: "年K",
+          kcl: "年线",
+          k1: "1分",
+          k5: "5分",
+          k15: "15分",
+          k30: "30分",
+          k60: "60分",
+          k240: "4小时",
+          more: "更多",
+          dk: "B/S点",
+          app: "B/S点",
+          predict: "净值预测",
+          networth: "历史净值",
+          repay: "历史回报",
         },
         style: {
           float: "left",
@@ -1947,14 +1947,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
           padding: "10px 0",
         },
         techMap: {
-          null: "\u65e0",
-          "-1": "\u524d\u590d\u6743",
-          0: "\u4e0d\u590d\u6743",
-          1: "\u540e\u590d\u6743",
-          VOLUME: "\u6210\u4ea4\u91cf",
-          TVOL: "\u6210\u4ea4\u91cf",
-          POSITION: "\u6301\u4ed3\u91cf",
-          LB: "\u91cf\u6bd4",
+          null: "无",
+          "-1": "前复权",
+          0: "不复权",
+          1: "后复权",
+          VOLUME: "成交量",
+          TVOL: "成交量",
+          POSITION: "持仓量",
+          LB: "量比",
         },
       },
       wrap: {
@@ -2073,9 +2073,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
       },
       bsCallUp: {
         tabs: [],
-        tabName: ["B/S\u70b9"],
+        tabName: ["B/S点"],
         mores: [],
-        moreName: ["B/S\u70b9"],
+        moreName: ["B/S点"],
         pix: "chart_",
         show: !1,
         value: "",
@@ -2086,184 +2086,181 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(t) {
     },
     Z = [],
     G = U.prototype;
-  return (
-    (G._init = function(e) {
-      var n = this.symbol;
-      if (j && (e.tab && delete e.tab.more, e.tab && e.tab.list)) {
-        for (var h = 0, o = e.tab.list.length; o--; )
-          "app" == e.tab.list[o] && (h = 1);
-        1 == h && delete e.tab.list;
-      }
-      (this.param = c(e, $)),
-        (this.market = H(n)),
-        (this.hasVolume = S(this.market));
-      var s = this.param.wrap.dom;
-      if (
-        (c(s.style, this.param.wrap.style, !0),
-        s.addEventListener("click", i),
-        s.addEventListener("touchstart", i),
-        s.addEventListener("touchmove", i),
-        z(window.location.href) && 1 != t.localSL.load("tipToApp", "cookie"))
-      ) {
-        t.localSL.save("tipToApp", !0, {
-          mode: "cookie",
-          expires: 10,
-        });
-        var l = r("div"),
-          p = l.style;
-        (p.position = "absolute"),
-          (p.left = "50%"),
-          (p.top = "50%"),
-          (p.width = "300px"),
-          (p.height = "140px"),
-          (p.marginLeft = "-150px"),
-          (p.marginTop = "-90px"),
-          (p.backgroundColor = "rgba(0, 0, 0, 0.8)"),
-          (p.zIndex = "999");
-        var d = r("span"),
-          m = d.style;
-        (m.display = "inline-block"),
-          (m.width = "100%"),
-          (m.height = "100px"),
-          (m.lineHeight = "100px"),
-          (m.textAlign = "center"),
-          (m.color = "#fff"),
-          (m.borderBottom = "1px solid #959595"),
-          (d.innerHTML =
-            "\u524d\u5f80\u65b0\u6d6a\u8d22\u7ecf\u5ba2\u6237\u7aef\u67e5\u770b\u5b8c\u6574\u884c\u60c5"),
-          l.appendChild(d);
-        var u = r("span"),
-          f = u.style;
-        (f.display = "inline-block"),
-          (f["float"] = "left"),
-          (f.width = "50%"),
-          (f.height = "40px"),
-          (f.lineHeight = "40px"),
-          (f.textAlign = "center"),
-          (f.color = "#fff"),
-          (u.innerHTML = "\u6682\u4e0d\u524d\u5f80"),
-          l.appendChild(u);
-        var y = r("span"),
-          k = y.style;
-        (k.display = "inline-block"),
-          (k["float"] = "left"),
-          (k.width = "50%"),
-          (k.height = "40px"),
-          (k.lineHeight = "40px"),
-          (k.textAlign = "center"),
-          (k.color = "#fff"),
-          (y.innerHTML = "\u7acb\u5373\u524d\u5f80"),
-          l.appendChild(y),
-          s.appendChild(l),
+
+  G._init = function(e) {
+    var n = this.symbol;
+    if (j && (e.tab && delete e.tab.more, e.tab && e.tab.list)) {
+      for (var h = 0, o = e.tab.list.length; o--; )
+        "app" == e.tab.list[o] && (h = 1);
+      1 == h && delete e.tab.list;
+    }
+    (this.param = c(e, $)),
+      (this.market = H(n)),
+      (this.hasVolume = S(this.market));
+    var s = this.param.wrap.dom;
+    if (
+      (c(s.style, this.param.wrap.style, !0),
+      s.addEventListener("click", i),
+      s.addEventListener("touchstart", i),
+      s.addEventListener("touchmove", i),
+      z(window.location.href) && 1 != t.localSL.load("tipToApp", "cookie"))
+    ) {
+      t.localSL.save("tipToApp", !0, {
+        mode: "cookie",
+        expires: 10,
+      });
+      var l = r("div"),
+        p = l.style;
+      (p.position = "absolute"),
+        (p.left = "50%"),
+        (p.top = "50%"),
+        (p.width = "300px"),
+        (p.height = "140px"),
+        (p.marginLeft = "-150px"),
+        (p.marginTop = "-90px"),
+        (p.backgroundColor = "rgba(0, 0, 0, 0.8)"),
+        (p.zIndex = "999");
+      var d = r("span"),
+        m = d.style;
+      (m.display = "inline-block"),
+        (m.width = "100%"),
+        (m.height = "100px"),
+        (m.lineHeight = "100px"),
+        (m.textAlign = "center"),
+        (m.color = "#fff"),
+        (m.borderBottom = "1px solid #959595"),
+        (d.innerHTML = "前往新浪财经客户端查看完整行情"),
+        l.appendChild(d);
+      var u = r("span"),
+        f = u.style;
+      (f.display = "inline-block"),
+        (f["float"] = "left"),
+        (f.width = "50%"),
+        (f.height = "40px"),
+        (f.lineHeight = "40px"),
+        (f.textAlign = "center"),
+        (f.color = "#fff"),
+        (u.innerHTML = "暂不前往"),
+        l.appendChild(u);
+      var y = r("span"),
+        k = y.style;
+      (k.display = "inline-block"),
+        (k["float"] = "left"),
+        (k.width = "50%"),
+        (k.height = "40px"),
+        (k.lineHeight = "40px"),
+        (k.textAlign = "center"),
+        (k.color = "#fff"),
+        (y.innerHTML = "立即前往"),
+        l.appendChild(y),
+        s.appendChild(l),
+        (p.display = "none"),
+        s.addEventListener("click", function(t) {
+          (p.display = "block"), t && a(t);
+        }),
+        y.addEventListener("click", function() {
           (p.display = "none"),
-          s.addEventListener("click", function(t) {
-            (p.display = "block"), t && a(t);
-          }),
-          y.addEventListener("click", function() {
-            (p.display = "none"),
-              s.removeChild(l),
-              (window.location =
-                "sinafinance://type=2&stocktype=cn&symbol=" + n),
-              setTimeout(function() {
-                window.location =
-                  "https://stock.sina.com.cn/iphone/jump?type=2&stocktype=cn&symbol=" +
-                  n;
-              }, 1e3);
-          }),
-          u.addEventListener("click", function() {
-            (p.display = "none"), s.removeChild(l);
-          });
-      }
-      (this.tab = new C(this, e.tab)),
-        (this.info = new g(this, e.info)),
-        e.tech.show && (this.tech = new _(this, e.tech)),
-        (this.chart = new A(this, e.chart)),
-        e.zoomBar.show && (this.zoomBar = new L(this, e.zoomBar)),
-        e.closeBtn.show && (this.closeBtn = new D(this, e.closeBtn)),
-        e.mask.show && (this.mask = new T(this, e.mask));
-      var v = /^sz100\d{3}|sz101\d{3}|sz106\d{3}|sz107\d{3}|sz108\d{3}|sz109\d{3}|sz111\d{3}|sz112\d{3}|sz115\d{3}|sz12\d{4}|sz13\d{4}$/,
-        b = /^sh020\d{3}|sh20\d{4}|sh1\d{5}|sh009\d{3}|sh010\d{3}|sh018\d{3}|^sh019\d{3}$/;
-      "CN" === this.market &&
-        (v.test(this.symbol) ||
-          b.test(this.symbol) ||
-          (e.clinicStock.show &&
-            (this.clinicStock = new B(this, e.clinicStock)))),
-        e.bsCallUp.show && (this.bsCallUp = new N(this, e.bsCallUp)),
-        this.setDirection("vertical");
-    }),
-    (G.setDirection = function(t) {
-      var e = this.chart.chart
-          ? this.chart.chart.currentView
-          : this.chart.param.initView,
-        i = f(e);
-      "vertical" == t
-        ? (this.tech && this.tech.hide(),
-          this.tab.moveTo("top"),
-          this.info.simple(!0),
-          this.zoomBar &&
-            this.zoomBar.moveTo(this.clinicStock ? "50px" : "10px", "35px"),
-          this.clinicStock && this.clinicStock.moveTo("10px", "35px"),
-          this.closeBtn && this.closeBtn.hide(),
-          this.mask && this.mask.show())
-        : (this.tech &&
-            ("dk" == e
-              ? this.tech.hide()
-              : ("tChart" === i
-                  ? this.tech.param.tChart.show && this.tech.show()
-                  : "kChart" === i &&
-                    this.tech.param.kChart.show &&
-                    this.tech.show(),
-                this.tech.switchTechList(f(e)))),
-          this.tab.moveTo("bottom"),
-          this.info.simple(!1),
-          this.zoomBar &&
-            this.zoomBar.moveTo(this.clinicStock ? "50px" : "10px", "70px"),
-          this.clinicStock && this.clinicStock.moveTo("10px", "70px"),
-          this.closeBtn && this.closeBtn.show(),
-          this.mask && this.mask.hide()),
-        (this.direction = t),
-        this.resize(),
-        this.update();
-    }),
-    (G.setCustom = function(t) {
-      this.chart && this.chart.chart
-        ? this.chart.chart.setCustom(t)
-        : (c(this.param.chart.kChart.setCustom, t, !0),
-          c(this.param.chart.tChart.setCustom, t, !0));
-    }),
-    (G.resize = function() {
-      this.tab && this.tab.resize(),
-        this.tech && this.tech.isShow && this.tech.resize(),
-        this.chart && this.chart.resize();
-    }),
-    (G.appendTo = function(t) {
-      t.appendChild(this.param.wrap.dom), this.resize();
-    }),
-    (G.update = function() {
-      this.chart && this.chart.chart && this.chart.chart.update();
-    }),
-    (G.pushData = function(t, e) {
-      this.chart && this.chart.chart && this.chart.chart.pushData(t, e);
-    }),
-    (G.callUpApp = function(t) {
-      t && t.isCallUp && (this.param.callUpApp.isCall = t.isCallUp);
-    }),
-    (G._calcChartHeight = function() {
-      var t = this.param.wrap.dom,
-        e = s(t);
-      return (
-        this.tab && (e -= s(this.tab.dom)),
-        this.info && !this.info.isSimple && (e -= s(this.info.dom)),
-        e
-      );
-    }),
-    (G._calcChartWidth = function() {
-      var t = this.param.wrap.dom,
-        e = o(t);
-      return this.tech && this.tech.isShow && (e = e - o(this.tech.dom) - 1), e;
-    }),
-    (window.shortClickChart = E),
-    u(U, Y),
-    P
-  );
+            s.removeChild(l),
+            (window.location = "sinafinance://type=2&stocktype=cn&symbol=" + n),
+            setTimeout(function() {
+              window.location =
+                "https://stock.sina.com.cn/iphone/jump?type=2&stocktype=cn&symbol=" +
+                n;
+            }, 1e3);
+        }),
+        u.addEventListener("click", function() {
+          (p.display = "none"), s.removeChild(l);
+        });
+    }
+    (this.tab = new C(this, e.tab)),
+      (this.info = new g(this, e.info)),
+      e.tech.show && (this.tech = new _(this, e.tech)),
+      (this.chart = new A(this, e.chart)),
+      e.zoomBar.show && (this.zoomBar = new L(this, e.zoomBar)),
+      e.closeBtn.show && (this.closeBtn = new D(this, e.closeBtn)),
+      e.mask.show && (this.mask = new T(this, e.mask));
+    var v = /^sz100\d{3}|sz101\d{3}|sz106\d{3}|sz107\d{3}|sz108\d{3}|sz109\d{3}|sz111\d{3}|sz112\d{3}|sz115\d{3}|sz12\d{4}|sz13\d{4}$/,
+      b = /^sh020\d{3}|sh20\d{4}|sh1\d{5}|sh009\d{3}|sh010\d{3}|sh018\d{3}|^sh019\d{3}$/;
+    "CN" === this.market &&
+      (v.test(this.symbol) ||
+        b.test(this.symbol) ||
+        (e.clinicStock.show &&
+          (this.clinicStock = new B(this, e.clinicStock)))),
+      e.bsCallUp.show && (this.bsCallUp = new N(this, e.bsCallUp)),
+      this.setDirection("vertical");
+  };
+  G.setDirection = function(t) {
+    var e = this.chart.chart
+        ? this.chart.chart.currentView
+        : this.chart.param.initView,
+      i = f(e);
+    "vertical" == t
+      ? (this.tech && this.tech.hide(),
+        this.tab.moveTo("top"),
+        this.info.simple(!0),
+        this.zoomBar &&
+          this.zoomBar.moveTo(this.clinicStock ? "50px" : "10px", "35px"),
+        this.clinicStock && this.clinicStock.moveTo("10px", "35px"),
+        this.closeBtn && this.closeBtn.hide(),
+        this.mask && this.mask.show())
+      : (this.tech &&
+          ("dk" == e
+            ? this.tech.hide()
+            : ("tChart" === i
+                ? this.tech.param.tChart.show && this.tech.show()
+                : "kChart" === i &&
+                  this.tech.param.kChart.show &&
+                  this.tech.show(),
+              this.tech.switchTechList(f(e)))),
+        this.tab.moveTo("bottom"),
+        this.info.simple(!1),
+        this.zoomBar &&
+          this.zoomBar.moveTo(this.clinicStock ? "50px" : "10px", "70px"),
+        this.clinicStock && this.clinicStock.moveTo("10px", "70px"),
+        this.closeBtn && this.closeBtn.show(),
+        this.mask && this.mask.hide()),
+      (this.direction = t),
+      this.resize(),
+      this.update();
+  };
+  G.setCustom = function(t) {
+    this.chart && this.chart.chart
+      ? this.chart.chart.setCustom(t)
+      : (c(this.param.chart.kChart.setCustom, t, !0),
+        c(this.param.chart.tChart.setCustom, t, !0));
+  };
+  G.resize = function() {
+    this.tab && this.tab.resize(),
+      this.tech && this.tech.isShow && this.tech.resize(),
+      this.chart && this.chart.resize();
+  };
+  G.appendTo = function(t) {
+    t.appendChild(this.param.wrap.dom), this.resize();
+  };
+  G.update = function() {
+    this.chart && this.chart.chart && this.chart.chart.update();
+  };
+  G.pushData = function(t, e) {
+    this.chart && this.chart.chart && this.chart.chart.pushData(t, e);
+  };
+  G.callUpApp = function(t) {
+    t && t.isCallUp && (this.param.callUpApp.isCall = t.isCallUp);
+  };
+  G._calcChartHeight = function() {
+    var t = this.param.wrap.dom,
+      e = s(t);
+    return (
+      this.tab && (e -= s(this.tab.dom)),
+      this.info && !this.info.isSimple && (e -= s(this.info.dom)),
+      e
+    );
+  };
+  G._calcChartWidth = function() {
+    var t = this.param.wrap.dom,
+      e = o(t);
+    return this.tech && this.tech.isShow && (e = e - o(this.tech.dom) - 1), e;
+  };
+  window.shortClickChart = shortClickChart;
+  u(U, Y);
+  return P;
 });

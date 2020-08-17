@@ -290,65 +290,71 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     }
   }
   function L(t, e) {
-    (this.parent = t), (this.param = e);
+    this.parent = t;
+    this.param = e;
     var i = createEl("div"),
       n = i.style;
     copyStyle(n, e.style, !0);
     var h = createEl("div"),
       o = h.style;
-    copyStyle(o, e.zoomInStyle, !0),
-      h.addEventListener("click", function(e) {
-        t.chart.chart.zoom(!0), preventDefault(e);
-      }),
-      i.appendChild(h);
+    copyStyle(o, e.zoomInStyle, !0);
+    h.addEventListener("click", function(e) {
+      t.chart.chart.zoom(!0), preventDefault(e);
+    });
+    i.appendChild(h);
+
     var s = createEl("div"),
       l = s.style;
-    copyStyle(l, e.zoomOutStyle, !0),
-      s.addEventListener("click", function(e) {
-        t.chart.chart.zoom(!1), preventDefault(e), M(t, "zoom");
-      }),
-      i.appendChild(s),
-      (this.dom = i),
-      t.param.wrap.dom.appendChild(i);
+    copyStyle(l, e.zoomOutStyle, !0);
+    s.addEventListener("click", function(e) {
+      t.chart.chart.zoom(!1);
+      preventDefault(e);
+      M(t, "zoom");
+    });
+    i.appendChild(s);
+    this.dom = i;
+    t.param.wrap.dom.appendChild(i);
   }
   function D(t, e) {
-    (this.parent = t), (this.param = e);
+    this.parent = t;
+    this.param = e;
     var i = createEl("div"),
       a = i.style;
     copyStyle(a, e.closeBoxStyle, !0);
     var n = createEl("div"),
       h = n.style;
-    copyStyle(h, e.closeStyle, !0),
-      n.addEventListener("click", function() {
-        window.h5chart.closeClickChart();
-      }),
-      i.appendChild(n),
-      (this.dom = i),
-      t.param.wrap.dom.appendChild(i);
+    copyStyle(h, e.closeStyle, !0);
+    n.addEventListener("click", function() {
+      window.h5chart.closeClickChart();
+    });
+    i.appendChild(n);
+    this.dom = i;
+    t.param.wrap.dom.appendChild(i);
   }
   function T(t, e) {
-    (this.parent = t), (this.param = e);
+    this.parent = t;
+    this.param = e;
     var i = createEl("div"),
       a = createEl("div"),
       n = i.style,
       h = a.style;
-    copyStyle(n, e.style, !0),
-      (n.width = t._calcChartWidth() + "px"),
-      (n.height = t._calcChartHeight() + "px"),
-      (h.width = "100%"),
-      (h.height = "100%"),
-      (h.position = "absolute"),
-      (h.background = "rgba(0,0,0)"),
-      (h.zIndex = "999"),
-      (h.top = 0),
-      (this.maskDom = a),
-      this.parent.chart.dom.appendChild(a);
+    copyStyle(n, e.style, !0);
+    n.width = t._calcChartWidth() + "px";
+    n.height = t._calcChartHeight() + "px";
+    h.width = "100%";
+    h.height = "100%";
+    h.position = "absolute";
+    h.background = "rgba(0,0,0)";
+    h.zIndex = "999";
+    h.top = 0;
+    this.maskDom = a;
+    this.parent.chart.dom.appendChild(a);
   }
   function N(t, e) {
-    (this.parent = t),
-      (this.param = e),
-      (this.bag =
-        "http://file.finance.sina.com.cn/finapp/apks/sinafinance_h5chart.apk");
+    this.parent = t;
+    this.param = e;
+    this.bag =
+      "http://file.finance.sina.com.cn/finapp/apks/sinafinance_h5chart.apk";
     var i = {
       eventid: e.key || "universal_callup",
       subname: e.value || "chart_CN_bs",
@@ -356,12 +362,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       androidInstallUrl: e.apk || this.bag,
       needOpenSource: !1,
     };
-    (this.sfc = null),
-      "undefined" != typeof SinaFinanceCallUp &&
-        (this.sfc = new SinaFinanceCallUp.CallUpSinaFinance(i));
+    this.sfc = null;
+    "undefined" != typeof SinaFinanceCallUp &&
+      (this.sfc = new SinaFinanceCallUp.CallUpSinaFinance(i));
   }
   function B(t, e) {
-    (this.parent = t), (this.param = e);
+    this.parent = t;
+    this.param = e;
     var i = this,
       n = createEl("div"),
       h = n.style;
@@ -374,33 +381,33 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         needOpenSource: !1,
       };
     "undefined" != typeof SinaFinanceCallUp &&
-      (o = new SinaFinanceCallUp.CallUpSinaFinance(s)),
-      n.addEventListener("click", function(t) {
-        var e = "http://finance.sina.cn/finance_zt/financeapp/hqzg.shtml?stockcode=@symbol".replace(
-            "@symbol",
-            i.parent.symbol
-          ),
-          r = m(i.parent.symbol)
-            ? e
-            : "http://finance.sina.cn/finance_zt/financeapp/znzg.shtml";
-        o &&
-          o.tryDirectCall({
-            callpagetype: "2",
-            subtype: "1",
-            symbol: i.parent.symbol,
-            position: "fromwaphq",
-            iostoh5: r,
-            isDownload: !1,
-            callfailUrl: r,
-            openBrowser: function() {
-              window.open(r, "_self");
-            },
-          }),
-          V("dsjzg", null, "hq_center_hs"),
-          preventDefault(t);
-      }),
-      (this.dom = n),
-      t.param.wrap.dom.appendChild(n);
+      (o = new SinaFinanceCallUp.CallUpSinaFinance(s));
+    n.addEventListener("click", function(t) {
+      var e = "http://finance.sina.cn/finance_zt/financeapp/hqzg.shtml?stockcode=@symbol".replace(
+          "@symbol",
+          i.parent.symbol
+        ),
+        r = m(i.parent.symbol)
+          ? e
+          : "http://finance.sina.cn/finance_zt/financeapp/znzg.shtml";
+      o &&
+        o.tryDirectCall({
+          callpagetype: "2",
+          subtype: "1",
+          symbol: i.parent.symbol,
+          position: "fromwaphq",
+          iostoh5: r,
+          isDownload: !1,
+          callfailUrl: r,
+          openBrowser: function() {
+            window.open(r, "_self");
+          },
+        }),
+        V("dsjzg", null, "hq_center_hs"),
+        preventDefault(t);
+    });
+    this.dom = n;
+    t.param.wrap.dom.appendChild(n);
   }
   function M(t, e, i) {
     var a = t.param.callUpApp;

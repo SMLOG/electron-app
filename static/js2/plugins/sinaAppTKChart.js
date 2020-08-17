@@ -68,7 +68,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       ? "Null"
       : void 0 === t
       ? "Undefined"
-      : X.call(t).slice(8, -1);
+      : toString.call(t).slice(8, -1);
   }
   function copyStyle(t, e, i) {
     if (!e) return t;
@@ -200,7 +200,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       k30: "touzi_wap_v2_hq_13",
       k60: "touzi_wap_v2_hq_14",
     };
-    e[t] && V(e[t], null, "touzi_wap_v2_hq");
+    e[t] && suda(e[t], null, "touzi_wap_v2_hq");
   }
   function w(t, e, i) {
     return t + ': <span style="color: ' + i + '">' + e + "</span>";
@@ -403,7 +403,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             window.open(r, "_self");
           },
         });
-      V("dsjzg", null, "hq_center_hs");
+      suda("dsjzg", null, "hq_center_hs");
       preventDefault(t);
     });
     this.dom = n;
@@ -513,7 +513,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         case "CN":
           m(e) &&
             ((t.tech.kChart.rek = [-1, 0, 1]),
-            (r = decodeURIComponent(W.load("sina_hqchart_rek"))),
+            (r = decodeURIComponent(localSL.load("sina_hqchart_rek"))),
             (r =
               "null" === r
                 ? -1
@@ -523,7 +523,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           break;
         case "HK":
           (t.tech.kChart.rek = [-1, 0, 1]),
-            (r = decodeURIComponent(W.load("sina_hqchart_rek"))),
+            (r = decodeURIComponent(localSL.load("sina_hqchart_rek"))),
             (r =
               "null" === r
                 ? -1
@@ -537,7 +537,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           break;
         case "US":
           (t.tech.kChart.rek = [-1, 0]),
-            (r = decodeURIComponent(W.load("sina_hqchart_rek"))),
+            (r = decodeURIComponent(localSL.load("sina_hqchart_rek"))),
             (r =
               "null" === r
                 ? -1
@@ -798,8 +798,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var r =
         "https://app.xincai.com/fund/api/jsonp.json/$cb/XinCaiFundService.getFlashDataStep1?symbol=$symbol&___qn=1";
       r = r.replace("$cb", "var%20FundData=").replace("$symbol", i);
-      q(r, function() {
-        (t.chart.isFund = FundData), O($, i, FundData), a._init(t);
+      load(r, function() {
+        t.chart.isFund = FundData;
+        O($, i, FundData);
+        a._init(t);
       });
     } else O($, i), this._init(t, e);
   }
@@ -818,10 +820,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     };
   }
   var getMarket = util.market,
-    V = util.suda,
-    q = util.load,
-    W = util.localSL,
-    X = Object.prototype.toString,
+    suda = util.suda,
+    load = util.load,
+    localSL = util.localSL,
+    toString = Object.prototype.toString,
     j = e(),
     Y = (function() {
       var t = Array.prototype.slice,
@@ -1363,7 +1365,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             e.addEventListener("click", function(t) {
               x.call(this, t, o),
                 n.chart.chart.setReK(t.target.getAttribute("value")),
-                W.save(
+                localSL.save(
                   "sina_hqchart_rek",
                   "rek" + t.target.getAttribute("value")
                 );

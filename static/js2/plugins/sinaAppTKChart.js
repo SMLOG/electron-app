@@ -138,41 +138,43 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     }
     t.appendChild(a);
   }
-  function k(t, e, i, a) {
+  function initNav(t, e, i, a) {
     var r = document.createElement("ul"),
       o = e.list,
       s = o.length;
-    t.appendChild(r),
-      (r.style.display = "none"),
-      copyStyle(r.style, e.navTopStyle, !0);
+    t.appendChild(r);
+    r.style.display = "none";
+    copyStyle(r.style, e.navTopStyle, !0);
     for (var l = 0, p = 0; s > l; l++) {
       var d = document.createElement("li");
-      r.appendChild(d),
-        copyStyle(d.style, e.navItemStyle, !0),
-        "app" !== o[l] || j
-          ? (d.innerHTML = e.viewMap[o[l]])
-          : (i.tabs[p]
-              ? ((d.innerHTML = i.tabs[p].name || "B/S\u70b9"),
-                d.setAttribute(e.attributeDj, i.tabs[p].v))
-              : (d.innerHTML = i.tabName[p] || "B/S\u70b9"),
-            p++),
-        d.setAttribute("type", "nav"),
-        "more" === o[l]
-          ? (y(d, e, i),
-            (a.moreView = d),
-            d.addEventListener("click", function() {
-              toggleEl(this.querySelector("ul"));
-            }))
-          : (d.setAttribute(e.attributeName, o[l]),
-            d.addEventListener("click", function() {
-              for (var e = t.querySelectorAll("li>ul"), i = e.length; i--; )
-                hide(e[i]);
-            }));
+      r.appendChild(d);
+      copyStyle(d.style, e.navItemStyle, !0);
+      "app" !== o[l] || j
+        ? (d.innerHTML = e.viewMap[o[l]])
+        : (i.tabs[p]
+            ? ((d.innerHTML = i.tabs[p].name || "B/S\u70b9"),
+              d.setAttribute(e.attributeDj, i.tabs[p].v))
+            : (d.innerHTML = i.tabName[p] || "B/S\u70b9"),
+          p++);
+      d.setAttribute("type", "nav");
+      "more" === o[l]
+        ? (y(d, e, i),
+          (a.moreView = d),
+          d.addEventListener("click", function() {
+            toggleEl(this.querySelector("ul"));
+          }))
+        : (d.setAttribute(e.attributeName, o[l]),
+          d.addEventListener("click", function() {
+            for (var e = t.querySelectorAll("li>ul"), i = e.length; i--; )
+              hide(e[i]);
+          }));
     }
     return r;
   }
   function C(t, e) {
-    (this.parent = t), (this.param = e), this._init();
+    this.parent = t;
+    this.param = e;
+    this._init();
   }
   function navSubNavStyle(el, nav, subNav) {
     var a = el.getAttribute("type");
@@ -889,7 +891,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         a = createEl("div");
       copyStyle(a.style, e.style, !0);
       i.param.wrap.dom.appendChild(a);
-      this.nav = k(a, this.param, this.parent.param.bsCallUp, this);
+      this.nav = initNav(a, this.param, this.parent.param.bsCallUp, this);
       this.dom = a;
       t = this.nav.querySelector(
         "[" + e.attributeName + "=" + i.param.chart.initView + "]"

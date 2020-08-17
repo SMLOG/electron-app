@@ -906,7 +906,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       this.bindClickEvent();
     },
     setStyle: function() {
-      (this.nav.style.display = "block"), this.resize();
+      this.nav.style.display = "block";
+      this.resize();
     },
     setView: function(t) {
       var e = this.param,
@@ -1030,7 +1031,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     },
   };
   var J = ["t", "k", "netWorth", "repay", "predict"];
-  (g.prototype = {
+  g.prototype = {
     constructor: g,
     _init: function() {
       var e = this.parent,
@@ -1304,315 +1305,305 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     show: function(t, e) {
       this[this.isSimple ? "_showSimple" : "_showComplete"](t, e);
     },
-  }),
-    (_.prototype = {
-      constructor: _,
-      _init: function() {
-        var t = this.parent,
-          e = this.param,
-          i = createEl("div"),
-          a = i.style;
-        copyStyle(a, e.style, !0), (this.dom = i);
-        this._initTechList("tChart"), this._initTechList("kChart");
-        this.switchTechList(toChart(t.param.chart.initView)),
-          this.resize(),
-          t.param.wrap.dom.appendChild(i);
-      },
-      switchTechStyle: function(t, e) {
-        if (false)
-          for (
-            var i = this.param,
-              a = e.Indicator,
-              r = this[t].tCharts.querySelectorAll("li"),
-              n = r.length;
-            n--;
+  };
+  _.prototype = {
+    constructor: _,
+    _init: function() {
+      var t = this.parent,
+        e = this.param,
+        i = createEl("div"),
+        a = i.style;
+      copyStyle(a, e.style, !0), (this.dom = i);
+      this._initTechList("tChart"), this._initTechList("kChart");
+      this.switchTechList(toChart(t.param.chart.initView)),
+        this.resize(),
+        t.param.wrap.dom.appendChild(i);
+    },
+    switchTechStyle: function(t, e) {
+      if (false)
+        for (
+          var i = this.param,
+            a = e.Indicator,
+            r = this[t].tCharts.querySelectorAll("li"),
+            n = r.length;
+          n--;
 
-          ) {
-            copyStyle(r[n].style, i.itemNormalStyle, !0),
-              r[n].setAttribute("selected", "false"),
-              r[n].getAttribute("value") === a.name &&
-                copyStyle(r[n].style, i.itemActiveStyle, !0);
-          }
-        /* e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
+        ) {
+          copyStyle(r[n].style, i.itemNormalStyle, !0),
+            r[n].setAttribute("selected", "false"),
+            r[n].getAttribute("value") === a.name &&
+              copyStyle(r[n].style, i.itemActiveStyle, !0);
+        }
+      /* e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
           e.Indicator.name != this.parent.chart.param.kChart.tCharts[0].name &&
           M(this.parent, "tech", t + "_" + e.Indicator.name);*/
-      },
-      switchTechList: function(t) {
-        this.tChart && (this.tChart.dom.style.display = "none"),
-          this.kChart && (this.kChart.dom.style.display = "none"),
-          ("tChart" == t || "kChart" == t) &&
-            (this[t]
-              ? (this[t].dom.style.display = "block")
-              : this._initTechList(t),
-            (this.isShow = !0));
-      },
-      _initTechList: function(t) {
-        var e,
-          i,
-          a,
-          n = this.parent,
-          h = this.dom,
-          o = this.param,
-          s = createEl("div"),
-          l = s.style;
-        return (
-          (this[t] = {}),
-          (l.width = "100%"),
-          (l.height = "100%"),
-          o[t].rek &&
-            o[t].rek.length &&
-            ((e = this._initOneList(s, o[t].rek, n.param.chart[t].setReK)),
-            e.addEventListener("click", function(t) {
-              x.call(this, t, o),
-                n.chart.chart.setReK(t.target.getAttribute("value")),
-                localSL.save(
-                  "sina_hqchart_rek",
-                  "rek" + t.target.getAttribute("value")
-                );
-            })),
-          (i = this._initOneList(
-            s,
-            o[t].pCharts,
-            n.param.chart[t].pCharts,
-            !0
-          )),
-          i.addEventListener("click", function(e) {
-            var i = e.target;
-            "LI" == e.target.nodeName &&
-              ("true" == i.getAttribute("selected")
-                ? (i.setAttribute("selected", "false"),
-                  copyStyle(i.style, o.itemNormalStyle, !0),
-                  n.chart.chart["tChart" == t ? "hideTTechM" : "hideKTechM"](
-                    i.getAttribute("value")
-                  ))
-                : (i.setAttribute("selected", "true"),
-                  copyStyle(i.style, o.itemActiveStyle, !0),
-                  n.chart.chart["tChart" == t ? "showTTechM" : "showKTechM"](
-                    i.getAttribute("value")
-                  )),
-              M(n, "tech", t + "_" + i.getAttribute("value")));
-          }),
-          (a = this._initOneList(
-            s,
-            o[t].tCharts,
-            n.param.chart[t].tCharts,
-            !0
-          )),
-          a.addEventListener("click", function(e) {
-            x.call(this, e, o),
-              n.chart.chart["tChart" == t ? "switchTTech" : "switchKTech"](
-                e.target.getAttribute("value"),
-                null,
-                e.target.getAttribute("selected") !== "true"
+    },
+    switchTechList: function(t) {
+      this.tChart && (this.tChart.dom.style.display = "none"),
+        this.kChart && (this.kChart.dom.style.display = "none"),
+        ("tChart" == t || "kChart" == t) &&
+          (this[t]
+            ? (this[t].dom.style.display = "block")
+            : this._initTechList(t),
+          (this.isShow = !0));
+    },
+    _initTechList: function(t) {
+      var e,
+        i,
+        a,
+        n = this.parent,
+        h = this.dom,
+        o = this.param,
+        s = createEl("div"),
+        l = s.style;
+      return (
+        (this[t] = {}),
+        (l.width = "100%"),
+        (l.height = "100%"),
+        o[t].rek &&
+          o[t].rek.length &&
+          ((e = this._initOneList(s, o[t].rek, n.param.chart[t].setReK)),
+          e.addEventListener("click", function(t) {
+            x.call(this, t, o),
+              n.chart.chart.setReK(t.target.getAttribute("value")),
+              localSL.save(
+                "sina_hqchart_rek",
+                "rek" + t.target.getAttribute("value")
               );
-          }),
-          (this[t].rek = e),
-          (this[t].pCharts = i),
-          (this[t].tCharts = a),
-          (this[t].dom = s),
-          h.appendChild(s),
-          s
-        );
-      },
-      _initOneList: function(t, e, i, a) {
-        var n = createEl("ul"),
-          h = this.param,
-          o = h.techMap;
-        copyStyle(n.style, h.boxStyle, !0);
-        for (var s = 0, p = e.length; p > s; s++) {
-          var d = createEl("li");
-          if (
-            ((d.innerHTML = o[e[s]] ? o[e[s]] : e[s]),
-            d.setAttribute("value", e[s]),
-            "Array" == l(i))
-          ) {
-            copyStyle(d.style, h.itemNormalStyle, !0);
-            for (var m = i.length; m--; )
-              if (i[m].name == e[s]) {
-                copyStyle(d.style, h.itemActiveStyle, !0),
-                  a && d.setAttribute("selected", "true");
-                break;
-              }
-          } else
-            e[s] == i
-              ? copyStyle(d.style, h.itemActiveStyle, !0)
-              : copyStyle(d.style, h.itemNormalStyle, !0);
-          n.appendChild(d);
-        }
-        return t.appendChild(n), n;
-      },
-      resize: function() {
-        var t,
-          e,
-          i = this.tChart,
-          a = this.kChart,
-          r = this.parent._calcChartHeight(),
-          n = 42,
-          h = 0.5,
-          o = 0.5,
-          s = 3;
-        (t = 3 * n),
-          (this.dom.style.height = r + "px"),
-          i &&
-            ((i.pCharts.style.height = r * h + "px"),
-            (i.tCharts.style.height = r * o + "px")),
-          a &&
-            (a.rek
-              ? ((e = r - t),
-                n * s > e && ((e = r > n * s ? s * n : r), (t = r - e)),
-                (a.rek.style.height = t + "px"))
-              : (e = r),
-            (a.pCharts.style.height = e * h + "px"),
-            (a.tCharts.style.height = e * o + "px"));
-      },
-      show: function() {
-        (this.dom.style.display = "block"), (this.isShow = !0);
-      },
-      hide: function() {
-        (this.dom.style.display = "none"), (this.isShow = !1);
-      },
-    }),
-    (A.prototype = {
-      constructor: A,
-      _init: function() {
-        this._initWrap();
-        var t = this,
-          e = this.parent,
-          i = this.param;
-        KKE.api(
-          "plugins.lightTKChart.get",
-          copyStyle(
-            i,
-            {
-              dom: this.childDom,
-              kInitParam: {
-                onviewprice: function(t) {
-                  e.info.show(t, "kChart");
-                },
-                ontechchanged: function(t) {
-                  e.tech.switchTechStyle("kChart", t);
-                },
-                onshortclickmain: function() {
-                  shortClickChart();
-                },
+          })),
+        (i = this._initOneList(s, o[t].pCharts, n.param.chart[t].pCharts, !0)),
+        i.addEventListener("click", function(e) {
+          var i = e.target;
+          "LI" == e.target.nodeName &&
+            ("true" == i.getAttribute("selected")
+              ? (i.setAttribute("selected", "false"),
+                copyStyle(i.style, o.itemNormalStyle, !0),
+                n.chart.chart["tChart" == t ? "hideTTechM" : "hideKTechM"](
+                  i.getAttribute("value")
+                ))
+              : (i.setAttribute("selected", "true"),
+                copyStyle(i.style, o.itemActiveStyle, !0),
+                n.chart.chart["tChart" == t ? "showTTechM" : "showKTechM"](
+                  i.getAttribute("value")
+                )),
+            M(n, "tech", t + "_" + i.getAttribute("value")));
+        }),
+        (a = this._initOneList(s, o[t].tCharts, n.param.chart[t].tCharts, !0)),
+        a.addEventListener("click", function(e) {
+          x.call(this, e, o),
+            n.chart.chart["tChart" == t ? "switchTTech" : "switchKTech"](
+              e.target.getAttribute("value"),
+              null,
+              e.target.getAttribute("selected") !== "true"
+            );
+        }),
+        (this[t].rek = e),
+        (this[t].pCharts = i),
+        (this[t].tCharts = a),
+        (this[t].dom = s),
+        h.appendChild(s),
+        s
+      );
+    },
+    _initOneList: function(t, e, i, a) {
+      var n = createEl("ul"),
+        h = this.param,
+        o = h.techMap;
+      copyStyle(n.style, h.boxStyle, !0);
+      for (var s = 0, p = e.length; p > s; s++) {
+        var d = createEl("li");
+        if (
+          ((d.innerHTML = o[e[s]] ? o[e[s]] : e[s]),
+          d.setAttribute("value", e[s]),
+          "Array" == l(i))
+        ) {
+          copyStyle(d.style, h.itemNormalStyle, !0);
+          for (var m = i.length; m--; )
+            if (i[m].name == e[s]) {
+              copyStyle(d.style, h.itemActiveStyle, !0),
+                a && d.setAttribute("selected", "true");
+              break;
+            }
+        } else
+          e[s] == i
+            ? copyStyle(d.style, h.itemActiveStyle, !0)
+            : copyStyle(d.style, h.itemNormalStyle, !0);
+        n.appendChild(d);
+      }
+      return t.appendChild(n), n;
+    },
+    resize: function() {
+      var t,
+        e,
+        i = this.tChart,
+        a = this.kChart,
+        r = this.parent._calcChartHeight(),
+        n = 42,
+        h = 0.5,
+        o = 0.5,
+        s = 3;
+      (t = 3 * n),
+        (this.dom.style.height = r + "px"),
+        i &&
+          ((i.pCharts.style.height = r * h + "px"),
+          (i.tCharts.style.height = r * o + "px")),
+        a &&
+          (a.rek
+            ? ((e = r - t),
+              n * s > e && ((e = r > n * s ? s * n : r), (t = r - e)),
+              (a.rek.style.height = t + "px"))
+            : (e = r),
+          (a.pCharts.style.height = e * h + "px"),
+          (a.tCharts.style.height = e * o + "px"));
+    },
+    show: function() {
+      (this.dom.style.display = "block"), (this.isShow = !0);
+    },
+    hide: function() {
+      (this.dom.style.display = "none"), (this.isShow = !1);
+    },
+  };
+  A.prototype = {
+    constructor: A,
+    _init: function() {
+      this._initWrap();
+      var t = this,
+        e = this.parent,
+        i = this.param;
+      KKE.api(
+        "plugins.lightTKChart.get",
+        copyStyle(
+          i,
+          {
+            dom: this.childDom,
+            kInitParam: {
+              onviewprice: function(t) {
+                e.info.show(t, "kChart");
               },
-              tInitParam: {
-                onviewprice: function(t) {
-                  e.info.show(t, "tChart");
-                },
-                ontechchanged: function(t) {
-                  e.tech.switchTechStyle("tChart", t);
-                },
-                onshortclickmain: function() {
-                  shortClickChart();
-                },
+              ontechchanged: function(t) {
+                e.tech.switchTechStyle("kChart", t);
               },
-              netWorthInitParam: {
-                onviewprice: function(t) {
-                  e.info.show(t, "netWorthChart");
-                },
-              },
-              repayInitParam: {
-                onviewprice: function(t) {
-                  e.info.show(t, "repayChart");
-                },
-              },
-              predictInitParam: {
-                onviewprice: function(t) {
-                  e.info.show(t, "predictChart");
-                },
+              onshortclickmain: function() {
+                shortClickChart();
               },
             },
-            !0
-          ),
-          function(e) {
-            (t.chart = e),
-              t.parent.trigger("AppTKChartLoaded", null),
-              t.parent.tab.setStyle(),
-              I(i.symbol, e);
-          }
-        );
-      },
-      _initWrap: function() {
-        var t = this.parent,
-          e = this.param,
-          i = t.param.wrap.dom,
-          a = createEl("div"),
-          n = createEl("div"),
-          h = a.style,
-          o = n.style;
-        copyStyle(h, e.style, !0),
-          (h.position = "relative"),
-          (h.width = t._calcChartWidth() + "px"),
-          (h.height = t._calcChartHeight() + "px"),
-          (o.width = "100%"),
-          (o.height = "100%"),
-          (this.dom = a),
-          (this.childDom = n),
-          a.appendChild(n),
-          i.appendChild(a);
-      },
-      resize: function() {
-        var t = this.dom,
-          e = t.style,
-          i = this.parent;
-        (e.width = i._calcChartWidth() + "px"),
-          (e.height = i._calcChartHeight() + "px"),
-          this.chart && this.chart.resize();
-      },
-      showView: function(t, e) {
-        this.chart &&
-          (this.chart.showView("dk" == t ? "kd" : t),
-          M(this.parent, t, t),
-          (this.currentView = t)),
-          e && this.parent.tab.setView(e);
-      },
-    }),
-    (L.prototype = {
-      moveTo: function(t, e) {
-        (this.dom.style.right = t), (this.dom.style.bottom = e);
-      },
-    }),
-    (D.prototype = {
-      show: function() {
-        this.dom.style.display = "block";
-      },
-      hide: function() {
-        this.dom.style.display = "none";
-      },
-    }),
-    (T.prototype = {
-      show: function() {
-        this.maskDom.style.display = "block";
-      },
-      hide: function() {
-        this.maskDom.style.display = "none";
-      },
-    }),
-    (N.prototype = {
-      callNew: function(t) {
-        var e = this.parent.param.callUpApp;
-        e &&
-          e.callBack({
-            key: "universal_callup",
-            pos: e.pix + this.parent.market + "_" + t,
-            androidurl: this.bag,
-          });
-      },
-      call: function() {
-        this.sfc &&
-          this.sfc.tryDirectCall({
-            callpagetype: "2",
-            symbol: this.parent.symbol,
-            position: this.param.value || "chart_CN_bs",
-          });
-      },
-    }),
-    (B.prototype = {
-      moveTo: function(t, e) {
-        (this.dom.style.right = t), (this.dom.style.bottom = e);
-      },
-    });
+            tInitParam: {
+              onviewprice: function(t) {
+                e.info.show(t, "tChart");
+              },
+              ontechchanged: function(t) {
+                e.tech.switchTechStyle("tChart", t);
+              },
+              onshortclickmain: function() {
+                shortClickChart();
+              },
+            },
+            netWorthInitParam: {
+              onviewprice: function(t) {
+                e.info.show(t, "netWorthChart");
+              },
+            },
+            repayInitParam: {
+              onviewprice: function(t) {
+                e.info.show(t, "repayChart");
+              },
+            },
+            predictInitParam: {
+              onviewprice: function(t) {
+                e.info.show(t, "predictChart");
+              },
+            },
+          },
+          !0
+        ),
+        function(e) {
+          (t.chart = e),
+            t.parent.trigger("AppTKChartLoaded", null),
+            t.parent.tab.setStyle(),
+            I(i.symbol, e);
+        }
+      );
+    },
+    _initWrap: function() {
+      var t = this.parent,
+        e = this.param,
+        i = t.param.wrap.dom,
+        a = createEl("div"),
+        n = createEl("div"),
+        h = a.style,
+        o = n.style;
+      copyStyle(h, e.style, !0),
+        (h.position = "relative"),
+        (h.width = t._calcChartWidth() + "px"),
+        (h.height = t._calcChartHeight() + "px"),
+        (o.width = "100%"),
+        (o.height = "100%"),
+        (this.dom = a),
+        (this.childDom = n),
+        a.appendChild(n),
+        i.appendChild(a);
+    },
+    resize: function() {
+      var t = this.dom,
+        e = t.style,
+        i = this.parent;
+      (e.width = i._calcChartWidth() + "px"),
+        (e.height = i._calcChartHeight() + "px"),
+        this.chart && this.chart.resize();
+    },
+    showView: function(t, e) {
+      this.chart &&
+        (this.chart.showView("dk" == t ? "kd" : t),
+        M(this.parent, t, t),
+        (this.currentView = t)),
+        e && this.parent.tab.setView(e);
+    },
+  };
+  L.prototype = {
+    moveTo: function(t, e) {
+      (this.dom.style.right = t), (this.dom.style.bottom = e);
+    },
+  };
+  D.prototype = {
+    show: function() {
+      this.dom.style.display = "block";
+    },
+    hide: function() {
+      this.dom.style.display = "none";
+    },
+  };
+  T.prototype = {
+    show: function() {
+      this.maskDom.style.display = "block";
+    },
+    hide: function() {
+      this.maskDom.style.display = "none";
+    },
+  };
+  N.prototype = {
+    callNew: function(t) {
+      var e = this.parent.param.callUpApp;
+      e &&
+        e.callBack({
+          key: "universal_callup",
+          pos: e.pix + this.parent.market + "_" + t,
+          androidurl: this.bag,
+        });
+    },
+    call: function() {
+      this.sfc &&
+        this.sfc.tryDirectCall({
+          callpagetype: "2",
+          symbol: this.parent.symbol,
+          position: this.param.value || "chart_CN_bs",
+        });
+    },
+  };
+  B.prototype = {
+    moveTo: function(t, e) {
+      (this.dom.style.right = t), (this.dom.style.bottom = e);
+    },
+  };
   var $ = {
       tab: {
         list: ["t1", "t5", "kd", "kw", "km", "more"],

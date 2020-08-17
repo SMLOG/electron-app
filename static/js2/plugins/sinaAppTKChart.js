@@ -1,6 +1,6 @@
 xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   "use strict";
-  function e() {
+  function isAndroid() {
     var t = navigator.userAgent.toLowerCase();
     return t.indexOf("android") > 0
       ? /ucbrowser|huawei|honor|samsung|sm-/.test(t)
@@ -23,27 +23,25 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   function hide(t) {
     t.style.display = "none";
   }
-  function o(t) {
+  function outWidth(t) {
     var e,
       i =
         "undefined" == typeof getComputedStyle
           ? t.currentStyle
           : getComputedStyle(t);
-    return (
-      i.height
-        ? ((e = parseFloat(i.width)),
-          "content-box" === i.boxSizing &&
-            (e =
-              e +
-              parseFloat(i.paddingLeft) +
-              parseFloat(i.paddingRight) +
-              parseFloat(i.borderLeftWidth) +
-              parseFloat(i.borderRightWidth)))
-        : (e = t.clientWidth || parseFloat(t.style.width)),
-      0 | e
-    );
+    i.height
+      ? ((e = parseFloat(i.width)),
+        "content-box" === i.boxSizing &&
+          (e =
+            e +
+            parseFloat(i.paddingLeft) +
+            parseFloat(i.paddingRight) +
+            parseFloat(i.borderLeftWidth) +
+            parseFloat(i.borderRightWidth)))
+      : (e = t.clientWidth || parseFloat(t.style.width));
+    return 0 | e;
   }
-  function s(t) {
+  function outerHeight(t) {
     var e,
       i =
         "undefined" == typeof getComputedStyle
@@ -820,7 +818,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     load = util.load,
     localSL = util.localSL,
     toString = Object.prototype.toString,
-    j = e(),
+    j = isAndroid(),
     Y = (function() {
       var t = Array.prototype.slice,
         e = function() {
@@ -1005,7 +1003,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         var t = this.nav,
           e = this.nav.querySelectorAll("ul li"),
           i = this.param.list,
-          a = o(t) / i.length,
+          a = outWidth(t) / i.length,
           r = e.length;
         r--;
 
@@ -1091,7 +1089,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             d = p.style;
           topDom.appendChild(p),
             copyStyle(d, e[t + o], !0),
-            (d.lineHeight = s(p) + "px"),
+            (d.lineHeight = outerHeight(p) + "px"),
             h.appendChild(p);
         }
       }
@@ -1121,7 +1119,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       prDom.id = "prDom";
       topDom.appendChild(prDom);
       copyStyle(prDom.style, e.priceStyle, !0),
-        (d.lineHeight = s(prDom) + "px"),
+        (d.lineHeight = outerHeight(prDom) + "px"),
         (this.doms.price = prDom);
       var m = this.isCNK ? 8 : 6;
       return (
@@ -2273,17 +2271,19 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   };
   AppTKChart2p._calcChartHeight = function() {
     var t = this.param.wrap.dom,
-      e = s(t);
+      e = outerHeight(t);
     return (
-      this.tab && (e -= s(this.tab.dom)),
-      this.info && !this.info.isSimple && (e -= s(this.info.dom)),
+      this.tab && (e -= outerHeight(this.tab.dom)),
+      this.info && !this.info.isSimple && (e -= outerHeight(this.info.dom)),
       e
     );
   };
   AppTKChart2p._calcChartWidth = function() {
     var t = this.param.wrap.dom,
-      e = o(t);
-    return this.tech && this.tech.isShow && (e = e - o(this.tech.dom) - 1), e;
+      e = outWidth(t);
+    return (
+      this.tech && this.tech.isShow && (e = e - outWidth(this.tech.dom) - 1), e
+    );
   };
   window.shortClickChart = shortClickChart;
   clone(AppTKChart2, Y);

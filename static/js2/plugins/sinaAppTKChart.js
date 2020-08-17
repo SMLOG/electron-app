@@ -180,11 +180,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   function C(t, e) {
     (this.parent = t), (this.param = e), this._init();
   }
-  function v(t, e, i) {
-    var a = t.getAttribute("type");
+  function navSubNavStyle(el, nav, subNav) {
+    var a = el.getAttribute("type");
     "nav" == a
-      ? copyStyle(t.style, e, !0)
-      : "subNav" == a && copyStyle(t.style, i, !0);
+      ? copyStyle(el.style, nav, !0)
+      : "subNav" == a && copyStyle(el.style, subNav, !0);
   }
   function b(t) {
     var e = {
@@ -209,7 +209,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     return -1 == ["HF", "forex_yt", "forex"].indexOf(t);
   }
   function g(t, e) {
-    (this.parent = t), (this.param = e), this._init(), this.simple(!0);
+    this.parent = t;
+    this.param = e;
+    this._init();
+    this.simple(!0);
   }
   function x(t, e) {
     if ("LI" == t.target.nodeName) {
@@ -228,14 +231,16 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     }
   }
   function _(t, e) {
-    (this.parent = t),
-      (this.param = e),
-      this._init(),
-      (this.isShow = !0),
-      this.hide();
+    this.parent = t;
+    this.param = e;
+    this._init();
+    this.isShow = !0;
+    this.hide();
   }
   function A(t, e) {
-    (this.parent = t), (this.param = e), this._init();
+    this.parent = t;
+    this.param = e;
+    this._init();
   }
   function I(t, e) {
     var i = !1,
@@ -879,17 +884,17 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         e = this.param,
         i = this.parent,
         a = createEl("div");
-      copyStyle(a.style, e.style, !0),
-        i.param.wrap.dom.appendChild(a),
-        (this.nav = k(a, this.param, this.parent.param.bsCallUp, this)),
-        (this.dom = a),
-        (t = this.nav.querySelector(
-          "[" + e.attributeName + "=" + i.param.chart.initView + "]"
-        )),
-        v(t, e.navItemActiveStyle, e.subNavItemActiveStyle),
-        (this.selectedView = t),
-        this.resize(),
-        this.bindClickEvent();
+      copyStyle(a.style, e.style, !0);
+      i.param.wrap.dom.appendChild(a);
+      this.nav = k(a, this.param, this.parent.param.bsCallUp, this);
+      this.dom = a;
+      t = this.nav.querySelector(
+        "[" + e.attributeName + "=" + i.param.chart.initView + "]"
+      );
+      navSubNavStyle(t, e.navItemActiveStyle, e.subNavItemActiveStyle);
+      this.selectedView = t;
+      this.resize();
+      this.bindClickEvent();
     },
     setStyle: function() {
       (this.nav.style.display = "block"), this.resize();
@@ -898,9 +903,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var e = this.param,
         i = t,
         a = this.nav.querySelector("[" + e.attributeName + "=" + i + "]");
-      v(this.selectedView, e.navItemStyle, e.subNavItemStyle);
+      navSubNavStyle(this.selectedView, e.navItemStyle, e.subNavItemStyle);
       this.selectedView = a;
-      v(a, e.navItemActiveStyle, e.subNavItemActiveStyle);
+      navSubNavStyle(a, e.navItemActiveStyle, e.subNavItemActiveStyle);
     },
     bindClickEvent: function() {
       var t,
@@ -971,12 +976,20 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
               }
             a.resize(), (t = h);
           }
-          v(e.selectedView, i.navItemStyle, i.subNavItemStyle);
-          v(selectedView, i.navItemActiveStyle, i.subNavItemActiveStyle);
+          navSubNavStyle(e.selectedView, i.navItemStyle, i.subNavItemStyle);
+          navSubNavStyle(
+            selectedView,
+            i.navItemActiveStyle,
+            i.subNavItemActiveStyle
+          );
           e.moreView &&
             ("subNav" !== s
-              ? v(e.moreView, i.navItemStyle, i.subNavItemStyle)
-              : v(e.moreView, i.navItemActiveStyle, i.subNavItemActiveStyle));
+              ? navSubNavStyle(e.moreView, i.navItemStyle, i.subNavItemStyle)
+              : navSubNavStyle(
+                  e.moreView,
+                  i.navItemActiveStyle,
+                  i.subNavItemActiveStyle
+                ));
           e.selectedView = selectedView;
         }
       });

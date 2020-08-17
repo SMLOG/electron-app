@@ -49,21 +49,19 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         "undefined" == typeof getComputedStyle
           ? t.currentStyle
           : getComputedStyle(t);
-    return (
-      i.height
-        ? ((e = parseFloat(i.height)),
-          "content-box" === i.boxSizing &&
-            (e =
-              e +
-              parseFloat(i.paddingTop) +
-              parseFloat(i.paddingBottom) +
-              parseFloat(i.borderTopWidth) +
-              parseFloat(i.borderBottomWidth)))
-        : (e = t.clientHeight || parseFloat(t.style.height)),
-      0 | e
-    );
+    i.height
+      ? ((e = parseFloat(i.height)),
+        "content-box" === i.boxSizing &&
+          (e =
+            e +
+            parseFloat(i.paddingTop) +
+            parseFloat(i.paddingBottom) +
+            parseFloat(i.borderTopWidth) +
+            parseFloat(i.borderBottomWidth)))
+      : (e = t.clientHeight || parseFloat(t.style.height));
+    return 0 | e;
   }
-  function l(t) {
+  function sss(t) {
     return null === t
       ? "Null"
       : void 0 === t
@@ -75,36 +73,34 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     t || (t = {});
     for (var a in e)
       e.hasOwnProperty(a) &&
-        ("Object" === l(e[a])
+        ("Object" === sss(e[a])
           ? (!t[a] && (t[a] = {}), copyStyle(t[a], e[a], i))
           : (!i && a in t) || (t[a] = e[a]));
     return t;
   }
-  function p(t, e) {
-    if (((t = Number(t)), isNaN(t))) return "-";
-    var i = Math.abs(t);
+  function formatNum(num, scale) {
+    if (((num = Number(num)), isNaN(num))) return "-";
+    var i = Math.abs(num);
     return 1e5 > i
-      ? t.toFixed(0)
+      ? num.toFixed(0)
       : 1e7 > i
-      ? (t / 1e4).toFixed(e) + "\u4e07"
+      ? (num / 1e4).toFixed(scale) + "万"
       : 1e8 > i
-      ? (t / 1e7).toFixed(e) + "\u5343\u4e07"
-      : (t / 1e8).toFixed(e) + "\u4ebf";
+      ? (num / 1e7).toFixed(scale) + "千万"
+      : (num / 1e8).toFixed(scale) + "亿";
   }
   function d(t) {
-    return (
-      "forex" == getMarket(t) && (t = t.slice(-6)),
-      "BTC" == getMarket(t) && (t = t.replace("btc_btc", "")),
-      (t = t.split("_")),
-      (t = t[t.length - 1].toUpperCase())
-    );
+    "forex" == getMarket(t) && (t = t.slice(-6));
+    "BTC" == getMarket(t) && (t = t.replace("btc_btc", ""));
+    t = t.split("_");
+    return (t = t[t.length - 1].toUpperCase());
   }
-  function m(t) {
+  function isCNSymbol(t) {
     return /^sh6\d{5}|sh900\d{3}|sz00\d{4}|sz30\d{4}|sz20\d{4}$/.test(t);
   }
-  function u(t, e, i) {
-    (t = "prototype" in t ? t.prototype : t),
-      (e = "prototype" in e ? e.prototype : e);
+  function clone(t, e, i) {
+    t = "prototype" in t ? t.prototype : t;
+    e = "prototype" in e ? e.prototype : e;
     for (var a in e)
       e.hasOwnProperty(a) && (i ? null != e[a] : null == t[a]) && (t[a] = e[a]);
     return t;
@@ -387,7 +383,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           "@symbol",
           i.parent.symbol
         ),
-        r = m(i.parent.symbol)
+        r = isCNSymbol(i.parent.symbol)
           ? e
           : "http://finance.sina.cn/finance_zt/financeapp/znzg.shtml";
       o &&
@@ -511,7 +507,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var r = "";
       switch (market) {
         case "CN":
-          m(e) &&
+          isCNSymbol(e) &&
             ((t.tech.kChart.rek = [-1, 0, 1]),
             (r = decodeURIComponent(localSL.load("sina_hqchart_rek"))),
             (r =
@@ -800,10 +796,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       r = r.replace("$cb", "var%20FundData=").replace("$symbol", i);
       load(r, function() {
         t.chart.isFund = FundData;
-        O($, i, FundData);
+        O(conf$, i, FundData);
         a._init(t);
       });
-    } else O($, i), this._init(t, e);
+    } else O(conf$, i), this._init(t, e);
   }
   function shortClickChart() {
     return window.chart ? "vertical" == window.chart.direction : !1;
@@ -1173,7 +1169,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             n > 0 ? l : 0 > n ? c : d
           )),
           (a.childNodes[3].innerHTML = this.parent.hasVolume
-            ? "\u91cf: " + p(e.volume, 2)
+            ? "\u91cf: " + formatNum(e.volume, 2)
             : "");
       } else if ("kChart" == t) {
         this._displayNoneExcept("k"),
@@ -1205,14 +1201,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
                 `(${(((e.low - preclose) / preclose) * 100).toFixed(s)}%)`,
               e.low > r ? l : e.low < r ? c : d
             ),
-            this.parent.hasVolume ? "\u91cf: " + p(e.volume, 2) : "",
+            this.parent.hasVolume ? "\u91cf: " + formatNum(e.volume, 2) : "",
           ],
           y = [
             this.parent.hasVolume
-              ? "\u76d8\u540e\u91cf: " + p(e.postVol, 2)
+              ? "\u76d8\u540e\u91cf: " + formatNum(e.postVol, 2)
               : "",
             this.parent.hasVolume
-              ? "\u76d8\u540e\u989d: " + p(e.postAmt, 2)
+              ? "\u76d8\u540e\u989d: " + formatNum(e.postAmt, 2)
               : "",
           ],
           k = this.parent.tab.selectedView,
@@ -1415,7 +1411,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         if (
           ((d.innerHTML = o[e[s]] ? o[e[s]] : e[s]),
           d.setAttribute("value", e[s]),
-          "Array" == l(i))
+          "Array" == sss(i))
         ) {
           copyStyle(d.style, h.itemNormalStyle, !0);
           for (var m = i.length; m--; )
@@ -1604,7 +1600,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       (this.dom.style.right = t), (this.dom.style.bottom = e);
     },
   };
-  var $ = {
+  var conf$ = {
       tab: {
         list: ["t1", "t5", "kd", "kw", "km", "more"],
         more: ["kcl", "k5", "k15", "k30", "k60"],
@@ -2114,16 +2110,16 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       },
     },
     Z = [],
-    G = AppTKChart2.prototype;
+    AppTKChart2p = AppTKChart2.prototype;
 
-  G._init = function(e) {
+  AppTKChart2p._init = function(e) {
     var n = this.symbol;
     if (j && (e.tab && delete e.tab.more, e.tab && e.tab.list)) {
       for (var h = 0, o = e.tab.list.length; o--; )
         "app" == e.tab.list[o] && (h = 1);
       1 == h && delete e.tab.list;
     }
-    (this.param = copyStyle(e, $)),
+    (this.param = copyStyle(e, conf$)),
       (this.market = getMarket(n)),
       (this.hasVolume = S(this.market));
     var s = this.param.wrap.dom;
@@ -2218,7 +2214,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       e.bsCallUp.show && (this.bsCallUp = new N(this, e.bsCallUp)),
       this.setDirection("vertical");
   };
-  G.setDirection = function(t) {
+  AppTKChart2p.setDirection = function(t) {
     var e = this.chart.chart
         ? this.chart.chart.currentView
         : this.chart.param.initView,
@@ -2252,30 +2248,30 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       this.resize(),
       this.update();
   };
-  G.setCustom = function(t) {
+  AppTKChart2p.setCustom = function(t) {
     this.chart && this.chart.chart
       ? this.chart.chart.setCustom(t)
       : (copyStyle(this.param.chart.kChart.setCustom, t, !0),
         copyStyle(this.param.chart.tChart.setCustom, t, !0));
   };
-  G.resize = function() {
+  AppTKChart2p.resize = function() {
     this.tab && this.tab.resize(),
       this.tech && this.tech.isShow && this.tech.resize(),
       this.chart && this.chart.resize();
   };
-  G.appendTo = function(t) {
+  AppTKChart2p.appendTo = function(t) {
     t.appendChild(this.param.wrap.dom), this.resize();
   };
-  G.update = function() {
+  AppTKChart2p.update = function() {
     this.chart && this.chart.chart && this.chart.chart.update();
   };
-  G.pushData = function(t, e) {
+  AppTKChart2p.pushData = function(t, e) {
     this.chart && this.chart.chart && this.chart.chart.pushData(t, e);
   };
-  G.callUpApp = function(t) {
+  AppTKChart2p.callUpApp = function(t) {
     t && t.isCallUp && (this.param.callUpApp.isCall = t.isCallUp);
   };
-  G._calcChartHeight = function() {
+  AppTKChart2p._calcChartHeight = function() {
     var t = this.param.wrap.dom,
       e = s(t);
     return (
@@ -2284,12 +2280,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       e
     );
   };
-  G._calcChartWidth = function() {
+  AppTKChart2p._calcChartWidth = function() {
     var t = this.param.wrap.dom,
       e = o(t);
     return this.tech && this.tech.isShow && (e = e - o(this.tech.dom) - 1), e;
   };
   window.shortClickChart = shortClickChart;
-  u(AppTKChart2, Y);
+  clone(AppTKChart2, Y);
   return AppTKChart;
 });

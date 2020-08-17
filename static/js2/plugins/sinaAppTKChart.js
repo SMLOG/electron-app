@@ -93,8 +93,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   }
   function d(t) {
     return (
-      "forex" == H(t) && (t = t.slice(-6)),
-      "BTC" == H(t) && (t = t.replace("btc_btc", "")),
+      "forex" == getMarket(t) && (t = t.slice(-6)),
+      "BTC" == getMarket(t) && (t = t.replace("btc_btc", "")),
       (t = t.split("_")),
       (t = t[t.length - 1].toUpperCase())
     );
@@ -244,7 +244,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   }
   function I(t, e) {
     var i = !1,
-      a = H(t);
+      a = getMarket(t);
     switch (a) {
       case "BTC":
       case "forex":
@@ -402,9 +402,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           openBrowser: function() {
             window.open(r, "_self");
           },
-        }),
-        V("dsjzg", null, "hq_center_hs"),
-        preventDefault(t);
+        });
+      V("dsjzg", null, "hq_center_hs");
+      preventDefault(t);
     });
     this.dom = n;
     t.param.wrap.dom.appendChild(n);
@@ -433,16 +433,16 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     return !1;
   }
   function initTheme(t) {
-    (t.chart.kInitParam.theme.K_RISE = "#00a800"),
-      (t.chart.kInitParam.theme.K_FALL = "#f11200"),
-      (t.chart.kInitParam.theme.T_RISE = "#00a800"),
-      (t.chart.kInitParam.theme.T_FALL = "#f11200"),
-      (t.chart.tInitParam.theme.K_RISE = "#00a800"),
-      (t.chart.tInitParam.theme.K_FALL = "#f11200"),
-      (t.chart.tInitParam.theme.T_RISE = "#00a800"),
-      (t.chart.tInitParam.theme.T_FALL = "#f11200"),
-      (t.info.upColor = "#00a800"),
-      (t.info.downColor = "#f11200");
+    t.chart.kInitParam.theme.K_RISE = "#00a800";
+    t.chart.kInitParam.theme.K_FALL = "#f11200";
+    t.chart.kInitParam.theme.T_RISE = "#00a800";
+    t.chart.kInitParam.theme.T_FALL = "#f11200";
+    t.chart.tInitParam.theme.K_RISE = "#00a800";
+    t.chart.tInitParam.theme.K_FALL = "#f11200";
+    t.chart.tInitParam.theme.T_RISE = "#00a800";
+    t.chart.tInitParam.theme.T_FALL = "#f11200";
+    t.info.upColor = "#00a800";
+    t.info.downColor = "#f11200";
   }
   function isCNIndex(t) {
     return (
@@ -457,7 +457,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       ].indexOf(t) > -1
     );
   }
-  function K(t) {
+  function fx_s(t) {
     for (
       var e = [
           "USDTRY",
@@ -496,7 +496,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     return !1;
   }
   function O(t, e, i) {
-    var market = H(e);
+    var market = getMarket(e);
     if (i)
       (t.tab.list = ["networth", "repay"]),
         (t.chart.initView = "networth"),
@@ -611,7 +611,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
               "forex_yt" === market
                 ? ["k5", "k30"]
                 : ["k5", "k15", "k30", "k60", "k240"]),
-            (t.chart.initView = K(e) ? "k1" : "kd"),
+            (t.chart.initView = fx_s(e) ? "k1" : "kd"),
             (t.chart.kInitParam.nfloat = 4),
             (t.chart.kInitParam.newthour = "forex_yt" === market ? 6 : 7),
             (t.chart.kChart.tCharts = [
@@ -817,7 +817,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       r.on("AppTKChartLoaded", a, !1);
     };
   }
-  var H = util.market,
+  var getMarket = util.market,
     V = util.suda,
     q = util.load,
     W = util.localSL,
@@ -2131,7 +2131,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       1 == h && delete e.tab.list;
     }
     (this.param = copyStyle(e, $)),
-      (this.market = H(n)),
+      (this.market = getMarket(n)),
       (this.hasVolume = S(this.market));
     var s = this.param.wrap.dom;
     if (

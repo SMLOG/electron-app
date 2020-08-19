@@ -285,37 +285,40 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         });
     }
   }
-  function L(t, e) {
-    this.parent = t;
-    this.param = e;
+  function zoom(parent, param) {
+    this.parent = parent;
+    this.param = param;
     var i = createEl("div"),
       n = i.style;
-    copyStyle(n, e.style, !0);
+    i.id = "zoom";
+
+    copyStyle(n, param.style, !0);
     var h = createEl("div"),
       o = h.style;
-    copyStyle(o, e.zoomInStyle, !0);
+    copyStyle(o, param.zoomInStyle, !0);
     h.addEventListener("click", function(e) {
-      t.chart.chart.zoom(!0), preventDefault(e);
+      parent.chart.chart.zoom(!0), preventDefault(e);
     });
     i.appendChild(h);
 
     var s = createEl("div"),
       l = s.style;
-    copyStyle(l, e.zoomOutStyle, !0);
+    copyStyle(l, param.zoomOutStyle, !0);
     s.addEventListener("click", function(e) {
-      t.chart.chart.zoom(!1);
+      parent.chart.chart.zoom(!1);
       preventDefault(e);
-      M(t, "zoom");
+      McallUpApp(parent, "zoom");
     });
     i.appendChild(s);
     this.dom = i;
-    t.param.wrap.dom.appendChild(i);
+    parent.param.wrap.dom.appendChild(i);
   }
-  function D(t, e) {
+  function closeClickChart(t, e) {
     this.parent = t;
     this.param = e;
     var i = createEl("div"),
       a = i.style;
+    i.id = "closeClickChart";
     copyStyle(a, e.closeBoxStyle, !0);
     var n = createEl("div"),
       h = n.style;
@@ -327,13 +330,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     this.dom = i;
     t.param.wrap.dom.appendChild(i);
   }
-  function T(t, e) {
+  function createMaskDom(t, e) {
     this.parent = t;
     this.param = e;
     var i = createEl("div"),
-      a = createEl("div"),
+      maskDom = createEl("div"),
       n = i.style,
-      h = a.style;
+      h = maskDom.style;
+    maskDom.id = "maskDom";
     copyStyle(n, e.style, !0);
     n.width = t._calcChartWidth() + "px";
     n.height = t._calcChartHeight() + "px";
@@ -343,10 +347,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     h.background = "rgba(0,0,0)";
     h.zIndex = "999";
     h.top = 0;
-    this.maskDom = a;
-    this.parent.chart.dom.appendChild(a);
+    this.maskDom = maskDom;
+    this.parent.chart.dom.appendChild(maskDom);
   }
-  function N(t, e) {
+  function sinafinance_h5chart(t, e) {
     this.parent = t;
     this.param = e;
     this.bag =
@@ -362,7 +366,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     "undefined" != typeof SinaFinanceCallUp &&
       (this.sfc = new SinaFinanceCallUp.CallUpSinaFinance(i));
   }
-  function B(t, e) {
+  function hqzg(t, e) {
     this.parent = t;
     this.param = e;
     var i = this,
@@ -405,7 +409,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     this.dom = n;
     t.param.wrap.dom.appendChild(n);
   }
-  function M(t, e, i) {
+  function McallUpApp(t, e, i) {
     var a = t.param.callUpApp;
     1 != a.isCall &&
       (0 == a.isSE
@@ -491,7 +495,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       if (t === "fx_s" + e[i].toLowerCase()) return !0;
     return !1;
   }
-  function O(t, e, i) {
+  function setupList(t, e, i) {
     var market = getMarket(e);
     if (i)
       (t.tab.list = ["networth", "repay"]),
@@ -796,10 +800,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       r = r.replace("$cb", "var%20FundData=").replace("$symbol", i);
       load(r, function() {
         t.chart.isFund = FundData;
-        O(conf$, i, FundData);
+        setupList(conf$, i, FundData);
         a._init(t);
       });
-    } else O(conf$, i), this._init(t, e);
+    } else setupList(conf$, i), this._init(t, e);
   }
   function shortClickChart() {
     return window.chart ? "vertical" == window.chart.direction : !1;
@@ -1124,15 +1128,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         (d.lineHeight = outerHeight(prDom) + "px"),
         (this.doms.price = prDom);
       var m = this.isCNK ? 8 : 6;
-      return (
-        t("t", 6),
-        t("k", m),
-        t("netWorth", 2),
-        t("repay", 1),
-        t("predict", 3),
-        (this.doms.dom = topDom),
-        topDom
-      );
+      t("t", 6);
+      t("k", m);
+      t("netWorth", 2);
+      t("repay", 1);
+      t("predict", 3);
+      this.doms.dom = topDom;
+      return topDom;
     },
     _displayNoneExcept: function(t) {
       for (var e = J.length; e--; )
@@ -1382,7 +1384,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
                 n.chart.chart["tChart" == t ? "showTTechM" : "showKTechM"](
                   i.getAttribute("value")
                 )),
-            M(n, "tech", t + "_" + i.getAttribute("value")));
+            McallUpApp(n, "tech", t + "_" + i.getAttribute("value")));
         }),
         (a = this._initOneList(s, o[t].tCharts, n.param.chart[t].tCharts, !0)),
         a.addEventListener("click", function(e) {
@@ -1550,17 +1552,17 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     showView: function(t, e) {
       this.chart &&
         (this.chart.showView("dk" == t ? "kd" : t),
-        M(this.parent, t, t),
+        McallUpApp(this.parent, t, t),
         (this.currentView = t)),
         e && this.parent.tab.setView(e);
     },
   };
-  L.prototype = {
+  zoom.prototype = {
     moveTo: function(t, e) {
       (this.dom.style.right = t), (this.dom.style.bottom = e);
     },
   };
-  D.prototype = {
+  closeClickChart.prototype = {
     show: function() {
       this.dom.style.display = "block";
     },
@@ -1568,7 +1570,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       this.dom.style.display = "none";
     },
   };
-  T.prototype = {
+  createMaskDom.prototype = {
     show: function() {
       this.maskDom.style.display = "block";
     },
@@ -1576,7 +1578,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       this.maskDom.style.display = "none";
     },
   };
-  N.prototype = {
+  sinafinance_h5chart.prototype = {
     callNew: function(t) {
       var e = this.parent.param.callUpApp;
       e &&
@@ -1595,7 +1597,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         });
     },
   };
-  B.prototype = {
+  hqzg.prototype = {
     moveTo: function(t, e) {
       (this.dom.style.right = t), (this.dom.style.bottom = e);
     },
@@ -2201,17 +2203,19 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       (this.info = new g(this, e.info)),
       e.tech.show && (this.tech = new _(this, e.tech)),
       (this.chart = new A(this, e.chart)),
-      e.zoomBar.show && (this.zoomBar = new L(this, e.zoomBar)),
-      e.closeBtn.show && (this.closeBtn = new D(this, e.closeBtn)),
-      e.mask.show && (this.mask = new T(this, e.mask));
+      e.zoomBar.show && (this.zoomBar = new zoom(this, e.zoomBar)),
+      e.closeBtn.show &&
+        (this.closeBtn = new closeClickChart(this, e.closeBtn)),
+      e.mask.show && (this.mask = new createMaskDom(this, e.mask));
     var v = /^sz100\d{3}|sz101\d{3}|sz106\d{3}|sz107\d{3}|sz108\d{3}|sz109\d{3}|sz111\d{3}|sz112\d{3}|sz115\d{3}|sz12\d{4}|sz13\d{4}$/,
       b = /^sh020\d{3}|sh20\d{4}|sh1\d{5}|sh009\d{3}|sh010\d{3}|sh018\d{3}|^sh019\d{3}$/;
     "CN" === this.market &&
       (v.test(this.symbol) ||
         b.test(this.symbol) ||
         (e.clinicStock.show &&
-          (this.clinicStock = new B(this, e.clinicStock)))),
-      e.bsCallUp.show && (this.bsCallUp = new N(this, e.bsCallUp)),
+          (this.clinicStock = new hqzg(this, e.clinicStock)))),
+      e.bsCallUp.show &&
+        (this.bsCallUp = new sinafinance_h5chart(this, e.bsCallUp)),
       this.setDirection("vertical");
   };
   AppTKChart2p.setDirection = function(t) {

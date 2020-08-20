@@ -162,39 +162,43 @@ xh5_define("plugins.lightTKChart", [], function() {
               this)
             : this;
         },
-        one: function(t, i, h) {
-          this.on(t, i, h, !0);
+        one: function(eventType, handler, ctx) {
+          this.on(eventType, handler, ctx, !0);
         },
-        off: function(t, i) {
+        off: function(eventType, handler) {
           var h = this.eventList;
-          if (!t) return (this.eventList = {}), this;
-          if (i) {
-            if (h[t]) {
-              for (var e = [], r = 0, a = h[t].length; a > r; r++)
-                h[t][r].handler != i && e.push(h[t][r]);
-              h[t] = e;
+          if (!eventType) return (this.eventList = {}), this;
+          if (handler) {
+            if (h[eventType]) {
+              for (var e = [], r = 0, a = h[eventType].length; a > r; r++)
+                h[eventType][r].handler != handler && e.push(h[eventType][r]);
+              h[eventType] = e;
             }
-            h[t] && 0 === h[t].length && delete h[t];
-          } else delete h[t];
+            h[eventType] && 0 === h[eventType].length && delete h[eventType];
+          } else delete h[eventType];
         },
-        trigger: function(i) {
-          if (this.eventList[i]) {
-            var h = arguments,
-              e = h.length;
-            e > 3 && (h = slice.call(h, 1));
-            for (var r = this.eventList[i], a = r.length, s = 0; a > s; ) {
-              switch (e) {
+        trigger: function(eventType) {
+          if (this.eventList[eventType]) {
+            var args = arguments,
+              len = args.length;
+            len > 3 && (args = slice.call(args, 1));
+            for (
+              var r = this.eventList[eventType], a = r.length, s = 0;
+              a > s;
+
+            ) {
+              switch (len) {
                 case 1:
                   r[s].handler.call(r[s].ctx);
                   break;
                 case 2:
-                  r[s].handler.call(r[s].ctx, h[1]);
+                  r[s].handler.call(r[s].ctx, args[1]);
                   break;
                 case 3:
-                  r[s].handler.call(r[s].ctx, h[1], h[2]);
+                  r[s].handler.call(r[s].ctx, args[1], args[2]);
                   break;
                 default:
-                  r[s].handler.apply(r[s].ctx, h);
+                  r[s].handler.apply(r[s].ctx, args);
               }
               r[s].one ? (r.splice(s, 1), a--) : s++;
             }

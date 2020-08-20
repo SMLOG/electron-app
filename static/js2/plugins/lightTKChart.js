@@ -1,11 +1,11 @@
-xh5_define("plugins.lightTKChart", ["utils.util"], function() {
+xh5_define("plugins.lightTKChart", [], function() {
   "use strict";
   function t(t) {
     return null === t
       ? "Null"
       : void 0 === t
       ? "Undefined"
-      : d.call(t).slice(8, -1);
+      : toString.call(t).slice(8, -1);
   }
   function i(h, e, r) {
     if (!e) return h;
@@ -42,16 +42,16 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
         return "kChart";
     }
   }
-  function a(t, h) {
-    l.call(this),
-      (t = this.param = i(t, p)),
-      (this.param = t),
-      (this.currentView = t.initView),
-      (this.dom = document.getElementById(t.domId)),
-      this._init(h),
-      (this.me = this);
+  function GET(t, h) {
+    l.call(this);
+    t = this.param = i(t, p);
+    this.param = t;
+    this.currentView = t.initView;
+    this.dom = document.getElementById(t.domId);
+    this._init(h);
+    this.me = this;
   }
-  function s(t) {
+  function x2005(t) {
     return "x2005" != t.t2 && "x3021" != t.t2;
   }
   function n(t) {
@@ -64,26 +64,26 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
   }
   function o(t, i, h, e, rm) {
     var r = this;
-    (r.param[t][i] = [
+    r.param[t][i] = [
       {
         name: h,
       },
-    ]),
-      this[t] &&
-        this[t][i](
-          [
-            {
-              name: h,
-            },
-          ],
+    ];
+    this[t] &&
+      this[t][i](
+        [
           {
-            isexclusive: !1,
-            toremove: rm,
-            callback: function() {
-              e && e(t, i, h);
-            },
-          }
-        );
+            name: h,
+          },
+        ],
+        {
+          isexclusive: !1,
+          toremove: rm,
+          callback: function() {
+            e && e(t, i, h);
+          },
+        }
+      );
   }
   function c(t, i, h, e, r) {
     var a = this,
@@ -92,22 +92,22 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
     for (var n = s.length; n--; ) if (s[n].name == h) return;
     s.push({
       name: h,
-    }),
-      this[t] &&
-        this[t][i](
-          [
-            {
-              name: h,
-            },
-          ],
+    });
+    this[t] &&
+      this[t][i](
+        [
           {
-            toremove: e,
-            callback: function() {
-              (a.param[t][i] = s), r && r(t, i, h);
-            },
-            noLog: 1,
-          }
-        );
+            name: h,
+          },
+        ],
+        {
+          toremove: e,
+          callback: function() {
+            (a.param[t][i] = s), r && r(t, i, h);
+          },
+          noLog: 1,
+        }
+      );
   }
   function C(t, i, h, e) {
     var r = this,
@@ -136,75 +136,73 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
             )
           );
   }
-  function u() {
-    (this.VERSION = "1.1.4"),
-      (this.get = function(t, i) {
-        new a(t, i);
-      });
+  function PGET() {
+    this.VERSION = "1.1.4";
+    this.get = function(t, i) {
+      new GET(t, i);
+    };
   }
-  var d = Object.prototype.toString,
+  var toString = Object.prototype.toString,
     l = (function() {
-      var t = Array.prototype.slice,
-        i = function() {
+      var slice = Array.prototype.slice,
+        CommonEvent = function() {
           this.eventList = {};
         };
-      return (
-        (i.prototype = {
-          constructor: i,
-          on: function(t, i, h, e) {
-            var r = this.eventList;
-            return i && t
-              ? (r[t] || (r[t] = []),
-                r[t].push({
-                  handler: i,
-                  one: e,
-                  ctx: h || this,
-                }),
-                this)
-              : this;
-          },
-          one: function(t, i, h) {
-            this.on(t, i, h, !0);
-          },
-          off: function(t, i) {
-            var h = this.eventList;
-            if (!t) return (this.eventList = {}), this;
-            if (i) {
-              if (h[t]) {
-                for (var e = [], r = 0, a = h[t].length; a > r; r++)
-                  h[t][r].handler != i && e.push(h[t][r]);
-                h[t] = e;
-              }
-              h[t] && 0 === h[t].length && delete h[t];
-            } else delete h[t];
-          },
-          trigger: function(i) {
-            if (this.eventList[i]) {
-              var h = arguments,
-                e = h.length;
-              e > 3 && (h = t.call(h, 1));
-              for (var r = this.eventList[i], a = r.length, s = 0; a > s; ) {
-                switch (e) {
-                  case 1:
-                    r[s].handler.call(r[s].ctx);
-                    break;
-                  case 2:
-                    r[s].handler.call(r[s].ctx, h[1]);
-                    break;
-                  case 3:
-                    r[s].handler.call(r[s].ctx, h[1], h[2]);
-                    break;
-                  default:
-                    r[s].handler.apply(r[s].ctx, h);
-                }
-                r[s].one ? (r.splice(s, 1), a--) : s++;
-              }
+      CommonEvent.prototype = {
+        constructor: CommonEvent,
+        on: function(eventType, handler, ctx, one) {
+          var r = this.eventList;
+          return handler && eventType
+            ? (r[eventType] || (r[eventType] = []),
+              r[eventType].push({
+                handler: handler,
+                one: one,
+                ctx: ctx || this,
+              }),
+              this)
+            : this;
+        },
+        one: function(t, i, h) {
+          this.on(t, i, h, !0);
+        },
+        off: function(t, i) {
+          var h = this.eventList;
+          if (!t) return (this.eventList = {}), this;
+          if (i) {
+            if (h[t]) {
+              for (var e = [], r = 0, a = h[t].length; a > r; r++)
+                h[t][r].handler != i && e.push(h[t][r]);
+              h[t] = e;
             }
-            return this;
-          },
-        }),
-        i
-      );
+            h[t] && 0 === h[t].length && delete h[t];
+          } else delete h[t];
+        },
+        trigger: function(i) {
+          if (this.eventList[i]) {
+            var h = arguments,
+              e = h.length;
+            e > 3 && (h = slice.call(h, 1));
+            for (var r = this.eventList[i], a = r.length, s = 0; a > s; ) {
+              switch (e) {
+                case 1:
+                  r[s].handler.call(r[s].ctx);
+                  break;
+                case 2:
+                  r[s].handler.call(r[s].ctx, h[1]);
+                  break;
+                case 3:
+                  r[s].handler.call(r[s].ctx, h[1], h[2]);
+                  break;
+                default:
+                  r[s].handler.apply(r[s].ctx, h);
+              }
+              r[s].one ? (r.splice(s, 1), a--) : s++;
+            }
+          }
+          return this;
+        },
+      };
+      return CommonEvent;
     })(),
     p = {
       domId: void 0,
@@ -262,7 +260,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
       },
     },
     m = ["tChart", "kChart", "netWorthChart", "repayChart", "predictChart"],
-    f = a.prototype;
+    f = GET.prototype;
   return (
     (f.getChartType = function() {
       return r(this.currentView);
@@ -345,13 +343,13 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
           i(
             {
               symbol: "dwjz_" + c,
-              name: s(a.isFund)
+              name: x2005(a.isFund)
                 ? "\u5355\u4f4d\u51c0\u503c"
                 : "\u4e03\u65e5\u5e74\u5316\u6536\u76ca\u7387",
               datas: n(c),
               dual: {
                 symbol: "ljjz_" + c,
-                name: s(a.isFund)
+                name: x2005(a.isFund)
                   ? "\u7d2f\u8ba1\u51c0\u503c"
                   : "\u4e07\u4efd\u6536\u76ca",
                 datas: n(c),
@@ -627,7 +625,7 @@ xh5_define("plugins.lightTKChart", ["utils.util"], function() {
     (f.zoom = function(t, i) {
       i || (i = this.getChartType()), this[i] && this[i].zoom(t);
     }),
-    h(a, l),
-    u
+    h(GET, l),
+    PGET
   );
 });

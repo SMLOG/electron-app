@@ -1407,6 +1407,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var n = createEl("ul"),
         h = this.param,
         o = h.techMap;
+      n.id = "_initOneList";
       copyStyle(n.style, h.boxStyle, !0);
       for (var s = 0, p = e.length; p > s; s++) {
         var d = createEl("li");
@@ -1433,8 +1434,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     resize: function() {
       var t,
         e,
-        i = this.tChart,
-        a = this.kChart,
+        tChart = this.tChart,
+        kChart = this.kChart,
         r = this.parent._calcChartHeight(),
         n = 42,
         h = 0.5,
@@ -1442,17 +1443,17 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         s = 3;
       (t = 3 * n),
         (this.dom.style.height = r + "px"),
-        i &&
-          ((i.pCharts.style.height = r * h + "px"),
-          (i.tCharts.style.height = r * o + "px")),
-        a &&
-          (a.rek
+        tChart &&
+          ((tChart.pCharts.style.height = r * h + "px"),
+          (tChart.tCharts.style.height = r * o + "px")),
+        kChart &&
+          (kChart.rek
             ? ((e = r - t),
               n * s > e && ((e = r > n * s ? s * n : r), (t = r - e)),
-              (a.rek.style.height = t + "px"))
+              (kChart.rek.style.height = t + "px"))
             : (e = r),
-          (a.pCharts.style.height = e * h + "px"),
-          (a.tCharts.style.height = e * o + "px"));
+          (kChart.pCharts.style.height = e * h + "px"),
+          (kChart.tCharts.style.height = e * o + "px"));
     },
     show: function() {
       (this.dom.style.display = "block"), (this.isShow = !0);
@@ -1468,59 +1469,56 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var t = this,
         e = this.parent,
         i = this.param;
-      KKE.api(
-        "plugins.lightTKChart.get",
-        copyStyle(
-          i,
-          {
-            dom: this.childDom,
-            kInitParam: {
-              onviewprice: function(t) {
-                e.info.show(t, "kChart");
-              },
-              ontechchanged: function(t) {
-                e.tech.switchTechStyle("kChart", t);
-              },
-              onshortclickmain: function() {
-                shortClickChart();
-              },
+      var ppp = copyStyle(
+        i,
+        {
+          dom: this.childDom,
+          kInitParam: {
+            onviewprice: function(t) {
+              e.info.show(t, "kChart");
             },
-            tInitParam: {
-              onviewprice: function(t) {
-                e.info.show(t, "tChart");
-              },
-              ontechchanged: function(t) {
-                e.tech.switchTechStyle("tChart", t);
-              },
-              onshortclickmain: function() {
-                shortClickChart();
-              },
+            ontechchanged: function(t) {
+              e.tech.switchTechStyle("kChart", t);
             },
-            netWorthInitParam: {
-              onviewprice: function(t) {
-                e.info.show(t, "netWorthChart");
-              },
-            },
-            repayInitParam: {
-              onviewprice: function(t) {
-                e.info.show(t, "repayChart");
-              },
-            },
-            predictInitParam: {
-              onviewprice: function(t) {
-                e.info.show(t, "predictChart");
-              },
+            onshortclickmain: function() {
+              shortClickChart();
             },
           },
-          !0
-        ),
-        function(e) {
-          (t.chart = e),
-            t.parent.trigger("AppTKChartLoaded", null),
-            t.parent.tab.setStyle(),
-            I(i.symbol, e);
-        }
+          tInitParam: {
+            onviewprice: function(t) {
+              e.info.show(t, "tChart");
+            },
+            ontechchanged: function(t) {
+              e.tech.switchTechStyle("tChart", t);
+            },
+            onshortclickmain: function() {
+              shortClickChart();
+            },
+          },
+          netWorthInitParam: {
+            onviewprice: function(t) {
+              e.info.show(t, "netWorthChart");
+            },
+          },
+          repayInitParam: {
+            onviewprice: function(t) {
+              e.info.show(t, "repayChart");
+            },
+          },
+          predictInitParam: {
+            onviewprice: function(t) {
+              e.info.show(t, "predictChart");
+            },
+          },
+        },
+        !0
       );
+      KKE.api("plugins.lightTKChart.get", ppp, function(e) {
+        t.chart = e;
+        t.parent.trigger("AppTKChartLoaded", null);
+        t.parent.tab.setStyle();
+        I(i.symbol, e);
+      });
     },
     _initWrap: function() {
       var t = this.parent,

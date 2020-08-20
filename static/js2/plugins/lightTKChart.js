@@ -270,11 +270,11 @@ xh5_define("plugins.lightTKChart", [], function() {
     return toChart(this.currentView);
   };
   GETp._initTChart = function(callback) {
-    var h = this,
+    var _GET = this,
       a = this.param,
       tChart = a.tChart,
-      n = a.symbol;
-    a.isFund && (n = a.isFund.exchange.slice(4, 6).toLowerCase() + n);
+      symbol = a.symbol;
+    a.isFund && (symbol = a.isFund.exchange.slice(4, 6).toLowerCase() + symbol);
     this.isPendingTChart = !0;
     KKE.api(
       "chart.h5t.get",
@@ -282,24 +282,24 @@ xh5_define("plugins.lightTKChart", [], function() {
         {
           domid: a.domId,
           dom: a.dom,
-          symbol: n,
+          symbol: symbol,
         },
         a.tInitParam
       ),
       function(tChartObj) {
         mapCall(tChartObj, tChart);
-        h.inited &&
-          tChartObj.showView(h.currentView, {
+        _GET.inited &&
+          tChartObj.showView(_GET.currentView, {
             callback: function() {
-              h.trigger("viewChange", h.currentView);
+              _GET.trigger("viewChange", _GET.currentView);
             },
           });
-        h.inited = 1;
+        _GET.inited = 1;
         "tChart" === toChart(a.initView) &&
-          h.trigger("chartInited", a.initView);
-        h.tChart = tChartObj;
-        h.isPendingTChart = !1;
-        callback && callback(h);
+          _GET.trigger("chartInited", a.initView);
+        _GET.tChart = tChartObj;
+        _GET.isPendingTChart = !1;
+        callback && callback(_GET);
       }
     );
   };

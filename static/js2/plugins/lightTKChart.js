@@ -17,17 +17,19 @@ xh5_define("plugins.lightTKChart", [], function() {
           : (!r && a in h) || (h[a] = e[a]));
     return h;
   }
-  function h(t, i, h) {
-    (t = "prototype" in t ? t.prototype : t),
-      (i = "prototype" in i ? i.prototype : i);
-    for (var e in i)
-      i.hasOwnProperty(e) && (h ? null != i[e] : null == t[e]) && (t[e] = i[e]);
-    return t;
+  function copyPrototype(to, from, h) {
+    (to = "prototype" in to ? to.prototype : to),
+      (from = "prototype" in from ? from.prototype : from);
+    for (var e in from)
+      from.hasOwnProperty(e) &&
+        (h ? null != from[e] : null == to[e]) &&
+        (to[e] = from[e]);
+    return to;
   }
   function e(t, i) {
     for (var h in i) i.hasOwnProperty(h) && t[h] && t[h](i[h]);
   }
-  function r(t) {
+  function toChart(t) {
     switch (t) {
       case "t1":
       case "t5":
@@ -43,7 +45,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     }
   }
   function GET(t, h) {
-    l.call(this);
+    getCommonEvent.call(this);
     t = this.param = i(t, initConf);
     this.param = t;
     this.currentView = t.initView;
@@ -143,7 +145,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     };
   }
   var toString = Object.prototype.toString,
-    l = (function() {
+    getCommonEvent = (function() {
       var slice = Array.prototype.slice,
         CommonEvent = function() {
           this.eventList = {};
@@ -266,7 +268,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     m = ["tChart", "kChart", "netWorthChart", "repayChart", "predictChart"],
     GETp = GET.prototype;
   GETp.getChartType = function() {
-    return r(this.currentView);
+    return toChart(this.currentView);
   };
   GETp._initTChart = function(t) {
     var h = this,
@@ -294,7 +296,8 @@ xh5_define("plugins.lightTKChart", [], function() {
                 },
               }),
             (h.inited = 1),
-            "tChart" === r(a.initView) && h.trigger("chartInited", a.initView),
+            "tChart" === toChart(a.initView) &&
+              h.trigger("chartInited", a.initView),
             (h.tChart = i),
             (h.isPendingTChart = !1),
             t && t(h);
@@ -326,7 +329,8 @@ xh5_define("plugins.lightTKChart", [], function() {
                 h.trigger("viewChange", h.currentView);
               },
             }),
-            "kChart" === r(a.initView) && h.trigger("chartInited", a.initView),
+            "kChart" === toChart(a.initView) &&
+              h.trigger("chartInited", a.initView),
             (h.kChart = i),
             (h.isPendingKChart = !1),
             t && t(h);
@@ -362,7 +366,7 @@ xh5_define("plugins.lightTKChart", [], function() {
         ),
         function(i) {
           e(i, o),
-            "netWorthChart" === r(a.initView) &&
+            "netWorthChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.netWorthChart = i),
             (h.isPendingNetWorthChart = !1),
@@ -391,7 +395,7 @@ xh5_define("plugins.lightTKChart", [], function() {
         ),
         function(i) {
           e(i, s),
-            "repayChart" === r(a.initView) &&
+            "repayChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.repayChart = i),
             (h.isPendingRepayChart = !1),
@@ -417,7 +421,7 @@ xh5_define("plugins.lightTKChart", [], function() {
         ),
         function(i) {
           e(i, s),
-            "predictChart" === r(a.initView) &&
+            "predictChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.predictChart = i),
             (h.isPendingPredictChart = !1),
@@ -625,6 +629,6 @@ xh5_define("plugins.lightTKChart", [], function() {
   GETp.zoom = function(t, i) {
     i || (i = this.getChartType()), this[i] && this[i].zoom(t);
   };
-  h(GET, l);
+  copyPrototype(GET, getCommonEvent);
   return PGET;
 });

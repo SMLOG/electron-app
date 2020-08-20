@@ -44,12 +44,12 @@ xh5_define("plugins.lightTKChart", [], function() {
         return "kChart";
     }
   }
-  function GET(t, h) {
+  function GET(t, callback) {
     getCommonEvent.call(this);
     t = this.param = assign(t, initConf);
     this.currentView = t.initView;
     this.dom = document.getElementById(t.domId);
-    this._init(h);
+    this._init(callback);
     this.me = this;
   }
   function x2005(t) {
@@ -269,39 +269,39 @@ xh5_define("plugins.lightTKChart", [], function() {
   GETp.getChartType = function() {
     return toChart(this.currentView);
   };
-  GETp._initTChart = function(t) {
+  GETp._initTChart = function(callback) {
     var h = this,
       a = this.param,
       tChart = a.tChart,
       n = a.symbol;
-    a.isFund && (n = a.isFund.exchange.slice(4, 6).toLowerCase() + n),
-      (this.isPendingTChart = !0),
-      KKE.api(
-        "chart.h5t.get",
-        assign(
-          {
-            domid: a.domId,
-            dom: a.dom,
-            symbol: n,
-          },
-          a.tInitParam
-        ),
-        function(i) {
-          mapCall(i, tChart),
-            h.inited &&
-              i.showView(h.currentView, {
-                callback: function() {
-                  h.trigger("viewChange", h.currentView);
-                },
-              }),
-            (h.inited = 1),
-            "tChart" === toChart(a.initView) &&
-              h.trigger("chartInited", a.initView),
-            (h.tChart = i),
-            (h.isPendingTChart = !1),
-            t && t(h);
-        }
-      );
+    a.isFund && (n = a.isFund.exchange.slice(4, 6).toLowerCase() + n);
+    this.isPendingTChart = !0;
+    KKE.api(
+      "chart.h5t.get",
+      assign(
+        {
+          domid: a.domId,
+          dom: a.dom,
+          symbol: n,
+        },
+        a.tInitParam
+      ),
+      function(tChartObj) {
+        mapCall(tChartObj, tChart);
+        h.inited &&
+          tChartObj.showView(h.currentView, {
+            callback: function() {
+              h.trigger("viewChange", h.currentView);
+            },
+          });
+        h.inited = 1;
+        "tChart" === toChart(a.initView) &&
+          h.trigger("chartInited", a.initView);
+        h.tChart = tChartObj;
+        h.isPendingTChart = !1;
+        callback && callback(h);
+      }
+    );
   };
   GETp._initKChart = function(t) {
     var h = this,
@@ -428,22 +428,22 @@ xh5_define("plugins.lightTKChart", [], function() {
         }
       );
   };
-  GETp._init = function(t) {
+  GETp._init = function(callback) {
     switch (this.getChartType()) {
       case "tChart":
-        this._initTChart(t);
+        this._initTChart(callback);
         break;
       case "kChart":
-        this._initKChart(t);
+        this._initKChart(callback);
         break;
       case "netWorthChart":
-        this._initNetWorthChart(t);
+        this._initNetWorthChart(callback);
         break;
       case "repayChart":
-        this._initRepayChart(t);
+        this._initRepayChart(callback);
         break;
       case "predictChart":
-        this._initPredictChart(t);
+        this._initPredictChart(callback);
     }
   };
   GETp.hideExcept = function(t) {

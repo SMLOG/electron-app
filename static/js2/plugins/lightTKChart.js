@@ -51,6 +51,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     this.dom = document.getElementById(t.domId);
     this._init(callback);
     this.me = this;
+    window._GET = this;
   }
   function x2005(t) {
     return "x2005" != t.t2 && "x3021" != t.t2;
@@ -449,16 +450,16 @@ xh5_define("plugins.lightTKChart", [], function() {
   GETp.hideExcept = function(t) {
     for (var i = m.length; i--; ) m[i] !== t && this[m[i]] && this[m[i]].hide();
   };
-  GETp.showView = function(t, i) {
-    var h = this;
-    if (t && t !== this.currentView)
-      switch (((this.currentView = t), this.getChartType())) {
+  GETp.showView = function(view, i) {
+    var _GET = this;
+    if (view && view !== this.currentView)
+      switch (((this.currentView = view), this.getChartType())) {
         case "tChart":
           this.tChart
             ? (this.tChart.show(this.dom),
-              this.tChart.showView(t, {
+              this.tChart.showView(view, {
                 callback: function() {
-                  h.trigger("viewChange", t), i && i();
+                  _GET.trigger("viewChange", view), i && i();
                 },
               }))
             : this.isPendingTChart || this._initTChart(i),
@@ -467,9 +468,9 @@ xh5_define("plugins.lightTKChart", [], function() {
         case "kChart":
           this.kChart
             ? (this.kChart.show(this.dom),
-              this.kChart.showView(t, {
+              this.kChart.showView(view, {
                 callback: function() {
-                  h.trigger("viewChange", t), i && i();
+                  _GET.trigger("viewChange", view), i && i();
                 },
               }))
             : this.isPendingKChart || this._initKChart(i),

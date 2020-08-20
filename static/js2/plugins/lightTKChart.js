@@ -304,37 +304,37 @@ xh5_define("plugins.lightTKChart", [], function() {
     );
   };
   GETp._initKChart = function(t) {
-    var h = this,
+    var _GET = this,
       a = this.param,
       s = a.kChart,
-      n = a.symbol;
-    a.isFund && (n = a.isFund.exchange.slice(4, 6).toLowerCase() + n),
-      (this.isPendingKChart = !0),
-      KKE.api(
-        "chart.h5k.get",
-        assign(
-          {
-            domid: a.domId,
-            dom: a.dom,
-            symbol: n,
-            view: h.currentView,
+      symbol = a.symbol;
+    a.isFund && (symbol = a.isFund.exchange.slice(4, 6).toLowerCase() + symbol);
+    this.isPendingKChart = !0;
+    KKE.api(
+      "chart.h5k.get",
+      assign(
+        {
+          domid: a.domId,
+          dom: a.dom,
+          symbol: symbol,
+          view: _GET.currentView,
+        },
+        a.kInitParam
+      ),
+      function(i) {
+        mapCall(i, s);
+        i.showView(_GET.currentView, {
+          callback: function() {
+            _GET.trigger("viewChange", _GET.currentView);
           },
-          a.kInitParam
-        ),
-        function(i) {
-          mapCall(i, s),
-            i.showView(h.currentView, {
-              callback: function() {
-                h.trigger("viewChange", h.currentView);
-              },
-            }),
-            "kChart" === toChart(a.initView) &&
-              h.trigger("chartInited", a.initView),
-            (h.kChart = i),
-            (h.isPendingKChart = !1),
-            t && t(h);
-        }
-      );
+        });
+        "kChart" === toChart(a.initView) &&
+          _GET.trigger("chartInited", a.initView);
+        _GET.kChart = i;
+        _GET.isPendingKChart = !1;
+        t && t(_GET);
+      }
+    );
   };
   GETp._initNetWorthChart = function(t) {
     var h = this,

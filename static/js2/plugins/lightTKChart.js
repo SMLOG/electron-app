@@ -1,19 +1,19 @@
 xh5_define("plugins.lightTKChart", [], function() {
   "use strict";
-  function t(t) {
+  function toString2(t) {
     return null === t
       ? "Null"
       : void 0 === t
       ? "Undefined"
       : toString.call(t).slice(8, -1);
   }
-  function i(h, e, r) {
+  function assign(h, e, r) {
     if (!e) return h;
     h || (h = {});
     for (var a in e)
       e.hasOwnProperty(a) &&
-        ("Object" === t(e[a])
-          ? (!h[a] && (h[a] = {}), i(h[a], e[a], r))
+        ("Object" === toString2(e[a])
+          ? (!h[a] && (h[a] = {}), assign(h[a], e[a], r))
           : (!r && a in h) || (h[a] = e[a]));
     return h;
   }
@@ -26,7 +26,7 @@ xh5_define("plugins.lightTKChart", [], function() {
         (to[e] = from[e]);
     return to;
   }
-  function e(t, i) {
+  function mapCall(t, i) {
     for (var h in i) i.hasOwnProperty(h) && t[h] && t[h](i[h]);
   }
   function toChart(t) {
@@ -46,8 +46,7 @@ xh5_define("plugins.lightTKChart", [], function() {
   }
   function GET(t, h) {
     getCommonEvent.call(this);
-    t = this.param = i(t, initConf);
-    this.param = t;
+    t = this.param = assign(t, initConf);
     this.currentView = t.initView;
     this.dom = document.getElementById(t.domId);
     this._init(h);
@@ -279,7 +278,7 @@ xh5_define("plugins.lightTKChart", [], function() {
       (this.isPendingTChart = !0),
       KKE.api(
         "chart.h5t.get",
-        i(
+        assign(
           {
             domid: a.domId,
             dom: a.dom,
@@ -288,7 +287,7 @@ xh5_define("plugins.lightTKChart", [], function() {
           a.tInitParam
         ),
         function(i) {
-          e(i, tChart),
+          mapCall(i, tChart),
             h.inited &&
               i.showView(h.currentView, {
                 callback: function() {
@@ -313,7 +312,7 @@ xh5_define("plugins.lightTKChart", [], function() {
       (this.isPendingKChart = !0),
       KKE.api(
         "chart.h5k.get",
-        i(
+        assign(
           {
             domid: a.domId,
             dom: a.dom,
@@ -323,7 +322,7 @@ xh5_define("plugins.lightTKChart", [], function() {
           a.kInitParam
         ),
         function(i) {
-          e(i, s),
+          mapCall(i, s),
             i.showView(h.currentView, {
               callback: function() {
                 h.trigger("viewChange", h.currentView);
@@ -345,7 +344,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     (this.isPendingNetWorthChart = !0),
       KKE.api(
         "chart.h5k.dual",
-        i(
+        assign(
           {
             symbol: "dwjz_" + c,
             name: x2005(a.isFund)
@@ -365,7 +364,7 @@ xh5_define("plugins.lightTKChart", [], function() {
           a.netWorthInitParam
         ),
         function(i) {
-          e(i, o),
+          mapCall(i, o),
             "netWorthChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.netWorthChart = i),
@@ -382,7 +381,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     (this.isPendingRepayChart = !0),
       KKE.api(
         "chart.h5k.get",
-        i(
+        assign(
           {
             pcm: 2,
             symbol: "lshb_" + o,
@@ -394,7 +393,7 @@ xh5_define("plugins.lightTKChart", [], function() {
           a.repayInitParam
         ),
         function(i) {
-          e(i, s),
+          mapCall(i, s),
             "repayChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.repayChart = i),
@@ -411,7 +410,7 @@ xh5_define("plugins.lightTKChart", [], function() {
     (this.isPendingPredictChart = !0),
       KKE.api(
         "chart.h5t.get",
-        i(
+        assign(
           {
             domid: a.domId,
             symbol: "fu_" + n,
@@ -420,7 +419,7 @@ xh5_define("plugins.lightTKChart", [], function() {
           a.predictInitParam
         ),
         function(i) {
-          e(i, s),
+          mapCall(i, s),
             "predictChart" === toChart(a.initView) &&
               h.trigger("chartInited", a.initView),
             (h.predictChart = i),

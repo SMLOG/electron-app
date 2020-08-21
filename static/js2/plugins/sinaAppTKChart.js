@@ -889,7 +889,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   C.prototype = {
     constructor: C,
     _init: function() {
-      var t,
+      var selectedView,
         e = this.param,
         i = this.parent,
         a = createEl("div");
@@ -897,11 +897,15 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       i.param.wrap.dom.appendChild(a);
       this.nav = initNav(a, this.param, this.parent.param.bsCallUp, this);
       this.dom = a;
-      t = this.nav.querySelector(
+      selectedView = this.nav.querySelector(
         "[" + e.attributeName + "=" + i.param.chart.initView + "]"
       );
-      navSubNavStyle(t, e.navItemActiveStyle, e.subNavItemActiveStyle);
-      this.selectedView = t;
+      navSubNavStyle(
+        selectedView,
+        e.navItemActiveStyle,
+        e.subNavItemActiveStyle
+      );
+      this.selectedView = selectedView;
       this.resize();
       this.bindClickEvent();
     },

@@ -66,13 +66,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       ? "Undefined"
       : toString.call(t).slice(8, -1);
   }
-  function copyStyle(t, e, i) {
+  function assign(t, e, i) {
     if (!e) return t;
     t || (t = {});
     for (var a in e)
       e.hasOwnProperty(a) &&
         ("Object" === sss(e[a])
-          ? (!t[a] && (t[a] = {}), copyStyle(t[a], e[a], i))
+          ? (!t[a] && (t[a] = {}), assign(t[a], e[a], i))
           : (!i && a in t) || (t[a] = e[a]));
     return t;
   }
@@ -122,11 +122,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     var a = document.createElement("ul"),
       r = e.more,
       n = r.length;
-    copyStyle(a.style, e.subNavStyle, !0), (a.style.display = "none");
+    assign(a.style, e.subNavStyle, !0), (a.style.display = "none");
     for (var h = 0, o = 0; n > h; h++) {
       var s = document.createElement("li");
       a.appendChild(s),
-        copyStyle(s.style, e.subNavItemStyle, !0),
+        assign(s.style, e.subNavItemStyle, !0),
         "app" != r[h] || j
           ? (s.innerHTML = e.viewMap[r[h]])
           : (i.more[o] &&
@@ -144,11 +144,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       s = o.length;
     t.appendChild(r);
     r.style.display = "none";
-    copyStyle(r.style, e.navTopStyle, !0);
+    assign(r.style, e.navTopStyle, !0);
     for (var l = 0, p = 0; s > l; l++) {
       var d = document.createElement("li");
       r.appendChild(d);
-      copyStyle(d.style, e.navItemStyle, !0);
+      assign(d.style, e.navItemStyle, !0);
       "app" !== o[l] || j
         ? (d.innerHTML = e.viewMap[o[l]])
         : (i.tabs[p]
@@ -179,8 +179,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   function navSubNavStyle(el, nav, subNav) {
     var a = el.getAttribute("type");
     "nav" == a
-      ? copyStyle(el.style, nav, !0)
-      : "subNav" == a && copyStyle(el.style, subNav, !0);
+      ? assign(el.style, nav, !0)
+      : "subNav" == a && assign(el.style, subNav, !0);
   }
   function b(t) {
     var e = {
@@ -223,7 +223,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var select = i.getAttribute("selected") == "true";
       i.setAttribute("selected", select ? "false" : "true");
       // c(i.style, e.itemNormalStyle, !0),
-      copyStyle(i.style, select ? e.itemNormalStyle : e.itemActiveStyle, !0); // i.setAttribute("selected", "true");
+      assign(i.style, select ? e.itemNormalStyle : e.itemActiveStyle, !0); // i.setAttribute("selected", "true");
     }
   }
   function _(t, e) {
@@ -233,7 +233,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     this.isShow = !0;
     this.hide();
   }
-  function A(t, e) {
+  function AppTKChartP(t, e) {
     this.parent = t;
     this.param = e;
     this._init();
@@ -292,10 +292,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       n = i.style;
     i.id = "zoom";
 
-    copyStyle(n, param.style, !0);
+    assign(n, param.style, !0);
     var h = createEl("div"),
       o = h.style;
-    copyStyle(o, param.zoomInStyle, !0);
+    assign(o, param.zoomInStyle, !0);
     h.addEventListener("click", function(e) {
       parent.chart.chart.zoom(!0), preventDefault(e);
     });
@@ -303,7 +303,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
 
     var s = createEl("div"),
       l = s.style;
-    copyStyle(l, param.zoomOutStyle, !0);
+    assign(l, param.zoomOutStyle, !0);
     s.addEventListener("click", function(e) {
       parent.chart.chart.zoom(!1);
       preventDefault(e);
@@ -319,10 +319,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     var i = createEl("div"),
       a = i.style;
     i.id = "closeClickChart";
-    copyStyle(a, e.closeBoxStyle, !0);
+    assign(a, e.closeBoxStyle, !0);
     var n = createEl("div"),
       h = n.style;
-    copyStyle(h, e.closeStyle, !0);
+    assign(h, e.closeStyle, !0);
     n.addEventListener("click", function() {
       window.h5chart.closeClickChart();
     });
@@ -338,7 +338,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       n = i.style,
       h = maskDom.style;
     maskDom.id = "maskDom";
-    copyStyle(n, e.style, !0);
+    assign(n, e.style, !0);
     n.width = t._calcChartWidth() + "px";
     n.height = t._calcChartHeight() + "px";
     h.width = "100%";
@@ -372,7 +372,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     var i = this,
       n = createEl("div"),
       h = n.style;
-    copyStyle(h, e.style, !0);
+    assign(h, e.style, !0);
     var o,
       s = {
         eventid: "callup_zhengu",
@@ -893,7 +893,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         e = this.param,
         i = this.parent,
         a = createEl("div");
-      copyStyle(a.style, e.style, !0);
+      assign(a.style, e.style, !0);
       i.param.wrap.dom.appendChild(a);
       this.nav = initNav(a, this.param, this.parent.param.bsCallUp, this);
       this.dom = a;
@@ -1020,13 +1020,13 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       var e = this.nav.querySelector("li>ul");
       "bottom" == t
         ? (this.parent.param.wrap.dom.appendChild(this.dom),
-          copyStyle(this.nav.style, this.param.navBottomStyle, !0),
+          assign(this.nav.style, this.param.navBottomStyle, !0),
           e && (e.style.bottom = "100%"))
         : (this.parent.param.wrap.dom.insertBefore(
             this.dom,
             this.parent.param.wrap.dom.firstChild
           ),
-          copyStyle(this.nav.style, this.param.navTopStyle, !0),
+          assign(this.nav.style, this.param.navTopStyle, !0),
           e && (e.style.bottom = ""));
     },
   };
@@ -1038,7 +1038,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         i = this.param,
         a = createEl("div"),
         n = a.style;
-      copyStyle(n, this.isSimple ? i.simpleStyle : i.completeStyle, !0),
+      assign(n, this.isSimple ? i.simpleStyle : i.completeStyle, !0),
         (this.dom = a),
         (this.isCNK = util.isCNK(this.parent.symbol)),
         e.param.wrap.dom.appendChild(a),
@@ -1048,7 +1048,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       "undefined" == typeof e && (e = !0);
       var i = this.param;
       if (((this.isSimple = e), e)) {
-        copyStyle(this.dom.style, i.simpleStyle, !0),
+        assign(this.dom.style, i.simpleStyle, !0),
           (this.doms.nameBox.style.display = "none"),
           (this.doms.price.style.display = "none");
         for (var a = J.length; a--; )
@@ -1056,16 +1056,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             var r = util.isCNK(this.parent.symbol)
               ? "CNKSimpleDetailStyle"
               : "simpleDetailStyle";
-            copyStyle(this.doms[J[a] + "Detail"].style, i[r], !0);
+            assign(this.doms[J[a] + "Detail"].style, i[r], !0);
           } else
-            copyStyle(
-              this.doms[J[a] + "Detail"].style,
-              i.simpleDetailStyle,
-              !0
-            );
+            assign(this.doms[J[a] + "Detail"].style, i.simpleDetailStyle, !0);
       } else
         for (
-          copyStyle(this.dom.style, i.completeStyle, !0),
+          assign(this.dom.style, i.completeStyle, !0),
             this.doms.nameBox.style.display = "block",
             this.doms.price.style.display = "block",
             a = J.length;
@@ -1076,13 +1072,9 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
             var n = util.isCNK(this.parent.symbol)
               ? "CNKCompleteDetailStyle"
               : "completeDetailStyle";
-            copyStyle(this.doms[J[a] + "Detail"].style, i[n], !0);
+            assign(this.doms[J[a] + "Detail"].style, i[n], !0);
           } else
-            copyStyle(
-              this.doms[J[a] + "Detail"].style,
-              i.completeDetailStyle,
-              !0
-            );
+            assign(this.doms[J[a] + "Detail"].style, i.completeDetailStyle, !0);
     },
     _initDoms: function() {
       function t(t, a) {
@@ -1094,7 +1086,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           var p = createEl("div"),
             d = p.style;
           topDom.appendChild(p),
-            copyStyle(d, e[t + o], !0),
+            assign(d, e[t + o], !0),
             (d.lineHeight = outerHeight(p) + "px"),
             h.appendChild(p);
         }
@@ -1110,21 +1102,20 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         this.dom.appendChild(topDom);
       var nameDom = createEl("div");
       topDom.appendChild(nameDom);
-      copyStyle(nameDom.style, e.nameBoxStyle, !0),
-        (this.doms.nameBox = nameDom);
+      assign(nameDom.style, e.nameBoxStyle, !0), (this.doms.nameBox = nameDom);
       var o = createEl("div");
       nameDom.appendChild(o),
-        copyStyle(o.style, e.nameStyle, !0),
+        assign(o.style, e.nameStyle, !0),
         (this.doms.name = o);
       var l = createEl("div");
       nameDom.appendChild(l),
-        copyStyle(l.style, e.symbolStyle, !0),
+        assign(l.style, e.symbolStyle, !0),
         (this.doms.symbol = l);
       var prDom = createEl("div"),
         d = prDom.style;
       prDom.id = "prDom";
       topDom.appendChild(prDom);
-      copyStyle(prDom.style, e.priceStyle, !0),
+      assign(prDom.style, e.priceStyle, !0),
         (d.lineHeight = outerHeight(prDom) + "px"),
         (this.doms.price = prDom);
       var m = this.isCNK ? 8 : 6;
@@ -1311,7 +1302,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         e = this.param,
         i = createEl("div"),
         a = i.style;
-      copyStyle(a, e.style, !0), (this.dom = i);
+      assign(a, e.style, !0), (this.dom = i);
       this._initTechList("tChart"), this._initTechList("kChart");
       this.switchTechList(toChart(t.param.chart.initView)),
         this.resize(),
@@ -1327,10 +1318,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           n--;
 
         ) {
-          copyStyle(r[n].style, i.itemNormalStyle, !0),
+          assign(r[n].style, i.itemNormalStyle, !0),
             r[n].setAttribute("selected", "false"),
             r[n].getAttribute("value") === a.name &&
-              copyStyle(r[n].style, i.itemActiveStyle, !0);
+              assign(r[n].style, i.itemActiveStyle, !0);
         }
       /* e.Indicator.name != this.parent.chart.param.tChart.tCharts[0].name &&
           e.Indicator.name != this.parent.chart.param.kChart.tCharts[0].name &&
@@ -1375,12 +1366,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           "LI" == e.target.nodeName &&
             ("true" == i.getAttribute("selected")
               ? (i.setAttribute("selected", "false"),
-                copyStyle(i.style, o.itemNormalStyle, !0),
+                assign(i.style, o.itemNormalStyle, !0),
                 n.chart.chart["tChart" == t ? "hideTTechM" : "hideKTechM"](
                   i.getAttribute("value")
                 ))
               : (i.setAttribute("selected", "true"),
-                copyStyle(i.style, o.itemActiveStyle, !0),
+                assign(i.style, o.itemActiveStyle, !0),
                 n.chart.chart["tChart" == t ? "showTTechM" : "showKTechM"](
                   i.getAttribute("value")
                 )),
@@ -1408,7 +1399,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         h = this.param,
         o = h.techMap;
       n.id = "_initOneList";
-      copyStyle(n.style, h.boxStyle, !0);
+      assign(n.style, h.boxStyle, !0);
       for (var s = 0, p = e.length; p > s; s++) {
         var d = createEl("li");
         if (
@@ -1416,17 +1407,17 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
           d.setAttribute("value", e[s]),
           "Array" == sss(i))
         ) {
-          copyStyle(d.style, h.itemNormalStyle, !0);
+          assign(d.style, h.itemNormalStyle, !0);
           for (var m = i.length; m--; )
             if (i[m].name == e[s]) {
-              copyStyle(d.style, h.itemActiveStyle, !0),
+              assign(d.style, h.itemActiveStyle, !0),
                 a && d.setAttribute("selected", "true");
               break;
             }
         } else
           e[s] == i
-            ? copyStyle(d.style, h.itemActiveStyle, !0)
-            : copyStyle(d.style, h.itemNormalStyle, !0);
+            ? assign(d.style, h.itemActiveStyle, !0)
+            : assign(d.style, h.itemNormalStyle, !0);
         n.appendChild(d);
       }
       return t.appendChild(n), n;
@@ -1462,14 +1453,14 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
       (this.dom.style.display = "none"), (this.isShow = !1);
     },
   };
-  A.prototype = {
-    constructor: A,
+  AppTKChartP.prototype = {
+    constructor: AppTKChartP,
     _init: function() {
       this._initWrap();
-      var t = this,
+      var _AppTKChart = this,
         e = this.parent,
         i = this.param;
-      var ppp = copyStyle(
+      var ppp = assign(
         i,
         {
           dom: this.childDom,
@@ -1513,11 +1504,11 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         },
         !0
       );
-      KKE.api("plugins.lightTKChart.get", ppp, function(e) {
-        t.chart = e;
-        t.parent.trigger("AppTKChartLoaded", null);
-        t.parent.tab.setStyle();
-        I(i.symbol, e);
+      KKE.api("plugins.lightTKChart.get", ppp, function(lightTKChart) {
+        _AppTKChart.chart = lightTKChart;
+        _AppTKChart.parent.trigger("AppTKChartLoaded", null);
+        _AppTKChart.parent.tab.setStyle();
+        I(i.symbol, lightTKChart);
       });
     },
     _initWrap: function() {
@@ -1528,7 +1519,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         n = createEl("div"),
         h = a.style,
         o = n.style;
-      copyStyle(h, e.style, !0),
+      assign(h, e.style, !0),
         (h.position = "relative"),
         (h.width = t._calcChartWidth() + "px"),
         (h.height = t._calcChartHeight() + "px"),
@@ -2119,12 +2110,12 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         "app" == e.tab.list[o] && (h = 1);
       1 == h && delete e.tab.list;
     }
-    (this.param = copyStyle(e, conf$)),
+    (this.param = assign(e, conf$)),
       (this.market = getMarket(n)),
       (this.hasVolume = S(this.market));
     var s = this.param.wrap.dom;
     if (
-      (copyStyle(s.style, this.param.wrap.style, !0),
+      (assign(s.style, this.param.wrap.style, !0),
       s.addEventListener("click", stopPropagation),
       s.addEventListener("touchstart", stopPropagation),
       s.addEventListener("touchmove", stopPropagation),
@@ -2200,7 +2191,7 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
     (this.tab = new C(this, e.tab)),
       (this.info = new g(this, e.info)),
       e.tech.show && (this.tech = new _(this, e.tech)),
-      (this.chart = new A(this, e.chart)),
+      (this.chart = new AppTKChartP(this, e.chart)),
       e.zoomBar.show && (this.zoomBar = new zoom(this, e.zoomBar)),
       e.closeBtn.show &&
         (this.closeBtn = new closeClickChart(this, e.closeBtn)),
@@ -2253,8 +2244,8 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
   AppTKChart2p.setCustom = function(t) {
     this.chart && this.chart.chart
       ? this.chart.chart.setCustom(t)
-      : (copyStyle(this.param.chart.kChart.setCustom, t, !0),
-        copyStyle(this.param.chart.tChart.setCustom, t, !0));
+      : (assign(this.param.chart.kChart.setCustom, t, !0),
+        assign(this.param.chart.tChart.setCustom, t, !0));
   };
   AppTKChart2p.resize = function() {
     this.tab && this.tab.resize(),

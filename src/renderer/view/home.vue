@@ -194,7 +194,6 @@ import Right from "@/view/components/Right";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { initwebview } from "@/lib/webview";
 import { loadHQ } from "@/lib/hq";
 import { mouseDragMenu } from "@/lib/WinUtils";
 import { getAllInd } from "@/lib/ind";
@@ -349,7 +348,6 @@ export default {
 
     getAllInd(this.indMap);
 
-    initwebview(this.closeview.bind(this), this.$electron);
     mouseDragMenu(this.$electron, false);
     document.ondblclick = () => {
       let win = $electron.remote.getCurrentWindow();
@@ -495,7 +493,7 @@ export default {
     openlink(item, event, link) {
       link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
       this.openType = link;
-      let webview = $(document.querySelectorAll("webview"));
+      let webview = $(document.querySelectorAll("#webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
       this.item = item;
       let url = link.replace("{{code}}", item.code);

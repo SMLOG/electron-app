@@ -227,11 +227,11 @@ xh5_define(
                 switch (
                   (t / e > 0.45 &&
                     "US" != needmarket &&
-                    (E.datas.scaleType = "price"),
+                    (setting.datas.scaleType = "price"),
                   t / e > 0.1 &&
-                    "newstock" == E.datas.scaleType &&
-                    (E.datas.scaleType = "price"),
-                  E.datas.scaleType)
+                    "newstock" == setting.datas.scaleType &&
+                    (setting.datas.scaleType = "price"),
+                  setting.datas.scaleType)
                 ) {
                   case "newstock":
                     (_this.minPrice = Number(e) - 0.45 * e),
@@ -385,7 +385,7 @@ xh5_define(
               var d = 0.005;
               _this.maxPercent < d &&
                 ("US" !== _this.market || "LSE" !== _this.market) &&
-                "pct" !== E.datas.scaleType &&
+                "pct" !== setting.datas.scaleType &&
                 ((_this.minPrice = _this.maxavgPrice = o - o * d),
                 (_this.maxPrice = _this.minavgPrice = o + o * d),
                 (_this.maxPercent = _this.maxavgPercent = d),
@@ -394,7 +394,7 @@ xh5_define(
               /^s[hz]51\d{4}$/.test(conf.symbol) && (p = "fund"),
                 p &&
                   "fund" === p &&
-                  "pct" !== E.datas.scaleType &&
+                  "pct" !== setting.datas.scaleType &&
                   d > Math.abs(_this.minPercent) &&
                   ((d = Math.abs(_this.minPercent)),
                   (conf.nfloat = _this.nfloat = 3)),
@@ -405,9 +405,9 @@ xh5_define(
               var e,
                 labelMinP,
                 labelMaxP,
-                h_t = E.DIMENSION.h_t,
-                r = h_t * E.DIMENSION.P_HV,
-                n = h_t * (1 - E.DIMENSION.P_HV);
+                h_t = setting.DIMENSION.h_t,
+                r = h_t * setting.DIMENSION.P_HV,
+                n = h_t * (1 - setting.DIMENSION.P_HV);
               labelMinP = _this.labelMinP;
               labelMaxP = _this.labelMaxP;
               var prevclose,
@@ -418,7 +418,7 @@ xh5_define(
                   prevclose = _this.datas[0][0].prevclose;
                   for (
                     var c,
-                      show_underlay_vol = E.custom.show_underlay_vol,
+                      show_underlay_vol = setting.custom.show_underlay_vol,
                       h = _this.isCompare ? "ppp" : "pp",
                       dataLen = _this.dataLen,
                       v = 0;
@@ -1036,7 +1036,7 @@ xh5_define(
                       case "CN":
                         3 == d &&
                           ((p = globalCfg.delisted),
-                          tip.showTip({ txt: p, parent: V, noBtn: !0 }));
+                          tip.showTip({ txt: p, parent: mp, noBtn: !0 }));
                     }
                   if ("error" == e.msg || "nohistory" == e.msg) {
                     if (
@@ -1046,7 +1046,7 @@ xh5_define(
                         xxx.hasHistory && xxx.hasHistory(M),
                         tip.showTip({
                           txt: globalCfg.nohistoryt,
-                          parent: V,
+                          parent: mp,
                           noBtn: !0,
                         })),
                       (_this.isErr = !0),
@@ -1078,14 +1078,15 @@ xh5_define(
                       else p = globalCfg.norecord;
                       if (p && 0 != u) {
                         var v,
-                          g = { txt: p, parent: V, noBtn: !0 };
-                        if (!(E.DIMENSION.getStageW() < 200))
+                          g = { txt: p, parent: mp, noBtn: !0 };
+                        if (!(setting.DIMENSION.getStageW() < 200))
                           return (
-                            tip.showTip({ txt: p, parent: V, noBtn: !0 }),
+                            tip.showTip({ txt: p, parent: mp, noBtn: !0 }),
                             void J.hide()
                           );
                         (g.bgStyle = { padding: 0, top: "0px" }),
-                          v || ((v = new util.TipM(E.COLOR)), v.genTip(g));
+                          v ||
+                            ((v = new util.TipM(setting.COLOR)), v.genTip(g));
                       }
                     }
                     if (0 != u && 7 != u) {
@@ -1185,10 +1186,10 @@ xh5_define(
             for (var a = e.length; a--; )
               if (e[a].name && "VOLUME" === e[a].name.toUpperCase()) {
                 e.splice(a, 1);
-                E.custom.show_underlay_vol = !1;
+                setting.custom.show_underlay_vol = !1;
                 break;
               }
-          } else E.custom.show_underlay_vol = !1;
+          } else setting.custom.show_underlay_vol = !1;
           kkk1 && kkk1.removeChart(e);
         };
         this.togglePt = function(e) {
@@ -1206,18 +1207,18 @@ xh5_define(
             for (var n = e.length; n--; )
               if (e[n].name && "VOLUME" === e[n].name.toUpperCase()) {
                 e.splice(n, 1);
-                E.custom.show_underlay_vol = !0;
+                setting.custom.show_underlay_vol = !0;
                 break;
               }
             kkk1 ||
               ((kkk1 = new s({
                 iMgr: oe,
                 stockData: _this,
-                chartArea: G,
-                titleArea: z,
+                chartArea: mc1,
+                titleArea: mc2,
                 cb: he,
                 type: "t",
-                cfg: E,
+                cfg: setting,
                 usrObj: conf,
               })),
               isMain && (ispCharts = kkk1));
@@ -1229,9 +1230,9 @@ xh5_define(
             ((eee1 = new l({
               stockData: _this,
               iMgr: oe,
-              subArea: W,
+              subArea: mb1,
               cb: he,
-              cfg: E,
+              cfg: setting,
               type: "option_cn" == needmarket ? "p" : "t",
               usrObj: conf,
               initMgr: re,
@@ -1246,7 +1247,7 @@ xh5_define(
           ddd1 ||
             ((ddd1 = new o({
               stockData: _this,
-              setting: E,
+              setting: setting,
               state: viewState,
               rc: xxx.moving,
               witht5: 1,
@@ -1260,19 +1261,19 @@ xh5_define(
       function S(e, r) {
         function n() {
           var r = e.isMain;
-          if (r) (l = E.COLOR.T_P), (c = E.COLOR.T_AVG);
+          if (r) (l = setting.COLOR.T_P), (c = setting.COLOR.T_AVG);
           else {
             2 != xxx.dAdd || o.linecolor || (o.linecolor = conf.overlaycolor);
             var n = o.linecolor || "#cccccc";
             l = n.K_N || n.T_N || "#" + util.randomColor();
           }
           s = new painter.xh5_ibPainter({
-            setting: E,
+            setting: setting,
             sd: e,
             withHBg: r,
             ctn: mainareaDom,
             iMgr: oe,
-            reO: { mh: E.DIMENSION.H_MA4K },
+            reO: { mh: setting.DIMENSION.H_MA4K },
             iTo: function(t, a, i, r) {
               if (
                 (!$CONTAINS(t, oe.iHLineO.body) &&
@@ -1286,11 +1287,12 @@ xh5_define(
                   ? (n =
                       e.labelMaxP * s +
                       s -
-                      (i / E.DIMENSION.h_t) *
+                      (i / setting.DIMENSION.h_t) *
                         (e.labelMaxP * s + s - (e.labelMinP * s + s)))
                   : ((n =
                       e.labelMaxP -
-                      (i / E.DIMENSION.h_t) * (e.labelMaxP - e.labelMinP)),
+                      (i / setting.DIMENSION.h_t) *
+                        (e.labelMaxP - e.labelMinP)),
                     (o = Number((100 * (n - s)) / s).toFixed(2) + "%")),
                   oe.iToD(
                     {
@@ -1298,8 +1300,8 @@ xh5_define(
                       rmark: o,
                       x: a,
                       y: i,
-                      oy: E.DIMENSION.H_MA4K,
-                      ox: E.DIMENSION.posX,
+                      oy: setting.DIMENSION.H_MA4K,
+                      ox: setting.DIMENSION.posX,
                       e: r,
                     },
                     !0,
@@ -1329,17 +1331,17 @@ xh5_define(
                 ("line" == t[0] || "mountain" == t[0]) &&
                 (v = Number(t[1]) || 1));
             h = o.linecolor || {};
-            l = h.K_N || h.T_N || E.COLOR.T_P;
-            c = h.T_AVG || E.COLOR.T_AVG;
-            d = h.T_PREV || E.COLOR.T_PREV;
+            l = h.K_N || h.T_N || setting.COLOR.T_P;
+            c = h.T_AVG || setting.COLOR.T_AVG;
+            d = h.T_PREV || setting.COLOR.T_PREV;
           },
           ggg2 = function() {
             function a() {
-              if (e.isMain && E.custom.show_underlay_vol) {
-                for (var t, a = E.COLOR.V_SD, i = D; N > i; i++) {
+              if (e.isMain && setting.custom.show_underlay_vol) {
+                for (var t, a = setting.COLOR.V_SD, i = D; N > i; i++) {
                   S = y[i];
                   t = S.vy;
-                  s.drawVStickC(M, t, I, E.DIMENSION.h_t, a);
+                  s.drawVStickC(M, t, I, setting.DIMENSION.h_t, a);
                   M += T;
                   s.stroke();
                   s.getG().lineWidth = 1;
@@ -1407,18 +1409,18 @@ xh5_define(
             function h(e) {
               s.newStyle(l, !0, 0.5),
                 s.drawDot(e.xPos, e.yPos, 3, !0),
-                s.newFillStyle_rgba(E.COLOR.M_ARR, 3, 1),
+                s.newFillStyle_rgba(setting.COLOR.M_ARR, 3, 1),
                 s.fill(),
                 s.stroke();
             }
             function u() {
               function t() {
-                s.lineTo(M, E.DIMENSION.h_t),
-                  s.lineTo(0.5 * T, E.DIMENSION.h_t),
+                s.lineTo(M, setting.DIMENSION.h_t),
+                  s.lineTo(0.5 * T, setting.DIMENSION.h_t),
                   s.newFillStyle_rgba(
-                    E.COLOR.M_ARR,
-                    E.DIMENSION.h_t,
-                    E.COLOR.M_ARR_A
+                    setting.COLOR.M_ARR,
+                    setting.DIMENSION.h_t,
+                    setting.COLOR.M_ARR_A
                   ),
                   s.fill();
               }
@@ -1439,28 +1441,28 @@ xh5_define(
                 }
             }
             function f() {
-              (d = E.COLOR.T_PREV), s.newStyle(d, !0, 1);
+              (d = setting.COLOR.T_PREV), s.newStyle(d, !0, 1);
               var t,
                 a = 0,
                 r = 5;
               for (
                 t =
-                  e.isCompare && e.isMain && "pct" === E.datas.scaleType
+                  e.isCompare && e.isMain && "pct" === setting.datas.scaleType
                     ? xh5_PosUtil.pp(
                         0,
                         e.labelMinP,
                         e.labelMaxP,
-                        E.DIMENSION.h_t
+                        setting.DIMENSION.h_t
                       )
                     : xh5_PosUtil.pp(
                         e.datas[0][0].prevclose,
                         e.minPrice,
                         e.maxPrice,
-                        E.DIMENSION.h_t
+                        setting.DIMENSION.h_t
                       ),
                   t = ~~(t + 0.5),
                   t -= 0.5;
-                a < E.DIMENSION.w_t;
+                a < setting.DIMENSION.w_t;
 
               )
                 s.moveTo(a, t), (a += r), s.lineTo(a, t), (a += r);
@@ -1468,7 +1470,7 @@ xh5_define(
                 var n = e.hq.price.toFixed(2),
                   o = s.getG(),
                   l = o.measureText(n).width,
-                  c = E.DIMENSION.w_t - l,
+                  c = setting.DIMENSION.w_t - l,
                   m = l + 10;
                 O > c && (O = c),
                   10 > O && (O = 20),
@@ -1500,7 +1502,7 @@ xh5_define(
                 a.stroke(),
                 a.fill();
             }
-            if (!(E.DIMENSION.getStageH() < 0)) {
+            if (!(setting.DIMENSION.getStageH() < 0)) {
               e.isMain && s.drawBg("T");
               var y = [];
               if (e.datas) {
@@ -1513,11 +1515,13 @@ xh5_define(
                     D,
                     w = o.linetype && 0 == o.linetype.indexOf("mountain"),
                     x = e.datas.length * U,
-                    T = E.DIMENSION.w_t / Math.max(x, E.PARAM.minCandleNum),
+                    T =
+                      setting.DIMENSION.w_t /
+                      Math.max(x, setting.PARAM.minCandleNum),
                     I = 0.5 * T,
                     M = 0;
                   e.isTotalRedraw
-                    ? ((D = 0), s.clear(!0, E.PARAM.getHd()))
+                    ? ((D = 0), s.clear(!0, setting.PARAM.getHd()))
                     : ((D = x - 2),
                       0 > D && (D = 0),
                       (M += T * D),
@@ -1547,7 +1551,7 @@ xh5_define(
             s.remove(), (s = null);
           }),
           (this.resize = function() {
-            s.resize({ mh: E.DIMENSION.H_MA4K }), ggg2();
+            s.resize({ mh: setting.DIMENSION.H_MA4K }), ggg2();
           }),
           (this.setTLineStyle = ffff),
           ffff(r),
@@ -1570,7 +1574,7 @@ xh5_define(
         };
         var c = function() {
             var e,
-              t = E.DIMENSION.h_t;
+              t = setting.DIMENSION.h_t;
             return conf.business
               ? (e = 0)
               : conf.appMode
@@ -1719,7 +1723,7 @@ xh5_define(
                     content: e,
                     txt:
                       '<p style="margin:0 0 9px 0;">\u626b\u63cf\u4e8c\u7ef4\u7801</p>',
-                    parent: V,
+                    parent: mp,
                     btnLb: "\u5173\u95ed",
                   });
                 }
@@ -1727,19 +1731,19 @@ xh5_define(
               break;
             default:
               util.grabM.shareTo({
-                ctn: V,
-                w: E.DIMENSION.getStageW(),
-                h: E.DIMENSION.getStageH() - (B.clientHeight || 0),
-                ignoreZIdxArr: [E.PARAM.I_Z_INDEX],
-                ignoreIdArr: [E.PARAM.LOGO_ID],
-                priorZIdx: E.PARAM.G_Z_INDEX,
+                ctn: mp,
+                w: setting.DIMENSION.getStageW(),
+                h: setting.DIMENSION.getStageH() - (mb2.clientHeight || 0),
+                ignoreZIdxArr: [setting.PARAM.I_Z_INDEX],
+                ignoreIdArr: [setting.PARAM.LOGO_ID],
+                priorZIdx: setting.PARAM.G_Z_INDEX,
                 nologo: !1,
-                top: E.DIMENSION.posY + E.DIMENSION.H_MA4K + 17,
-                right: E.DIMENSION.RIGHT_W + E.DIMENSION.K_RIGHT_W,
-                LOGO_W: E.DIMENSION.LOGO_W,
-                LOGO_H: E.DIMENSION.LOGO_H,
-                color: E.COLOR.LOGO,
-                bgColor: E.COLOR.BG,
+                top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+                right: setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+                LOGO_W: setting.DIMENSION.LOGO_W,
+                LOGO_H: setting.DIMENSION.LOGO_H,
+                color: setting.COLOR.LOGO,
+                bgColor: setting.COLOR.BG,
                 txt: e.wbtext,
                 url: e.url,
                 extra: e.extra,
@@ -1754,8 +1758,8 @@ xh5_define(
           D = function() {
             clearTimeout(k),
               !ae &&
-                V.parentNode &&
-                "none" != V.style.display &&
+                mp.parentNode &&
+                "none" != mp.style.display &&
                 (k = setTimeout(S, 200));
           },
           updateDataAll = function(e) {
@@ -1898,7 +1902,7 @@ xh5_define(
             (e = allStocks.splice(t, 1)[0]), e.clear(), (e = null);
         };
         this.setScale = function(e) {
-          E.datas.scaleType = e;
+          setting.datas.scaleType = e;
         };
         this.setTLineStyle = function(a) {
           if (a) {
@@ -1989,7 +1993,7 @@ xh5_define(
               return o
                 ? (Q
                     ? Q.sh(t)
-                    : (mainStock.initRs(), i(t), B.appendChild(Q.getBody())),
+                    : (mainStock.initRs(), i(t), mb2.appendChild(Q.getBody())),
                   void re.resizeAll(!0))
                 : void KKE.api("plugins.rangeselector.get", null, function(e) {
                     (o = e), i(t);
@@ -2226,17 +2230,17 @@ xh5_define(
           "_" +
           Math.floor(1234567890 * Math.random() + 1) +
           Math.floor(9876543210 * Math.random() + 1),
-        E = settinger.getSetting(q);
-      E.datas.isT = !0;
-      conf.reorder || (E.custom.indicator_reorder = !1);
-      conf.reheight || (E.custom.indicator_reheight = !1);
+        setting = settinger.getSetting(q);
+      setting.datas.isT = !0;
+      conf.reorder || (setting.custom.indicator_reorder = !1);
+      conf.reheight || (setting.custom.indicator_reheight = !1);
       needmarket = util.market(conf.symbol);
-      E.datas.tDataLen = A.tcd(needmarket);
-      var U = E.datas.tDataLen,
+      setting.datas.tDataLen = A.tcd(needmarket);
+      var U = setting.datas.tDataLen,
         tip = new (function() {
           var e;
           this.showTip = function(a) {
-            e || (e = new util.TipM(E.COLOR)), e.genTip(a);
+            e || (e = new util.TipM(setting.COLOR)), e.genTip(a);
           };
           this.hideTip = function() {
             e && e.hide();
@@ -2245,24 +2249,24 @@ xh5_define(
       if (xh5_BrowserUtil.noH5) {
         if ("undefined" == typeof FlashCanvas || conf.fh5)
           return void (util.isFunc(conf.noh5) && conf.noh5(conf));
-        E.PARAM.isFlash = !0;
+        setting.PARAM.isFlash = !0;
       }
       if (
-        (E.PARAM.isFlash &&
-          ((E.COLOR.K_EXT_BG = "#fff"), (E.COLOR.F_BG = "#fff")),
+        (setting.PARAM.isFlash &&
+          ((setting.COLOR.K_EXT_BG = "#fff"), (setting.COLOR.F_BG = "#fff")),
         conf.dim)
       )
         for (var F in conf.dim)
           conf.dim.hasOwnProperty(F) &&
-            util.isNum(E.DIMENSION[F]) &&
-            (E.DIMENSION[F] = conf.dim[F]);
+            util.isNum(setting.DIMENSION[F]) &&
+            (setting.DIMENSION[F] = conf.dim[F]);
       var $,
-        V,
+        mp,
         mainareaDom,
-        G,
-        z,
-        W,
-        B,
+        mc1,
+        mc2,
+        mb1,
+        mb2,
         xxx,
         jjj,
         istCharts,
@@ -2277,53 +2281,54 @@ xh5_define(
           startDate: void 0,
           endDate: void 0,
         },
-        t_rate = isNaN(conf.t_rate) ? E.PARAM.T_RATE : conf.t_rate,
+        t_rate = isNaN(conf.t_rate) ? setting.PARAM.T_RATE : conf.t_rate,
         ae = !1,
         ie = 0,
         re = new (function() {
           var e,
-            a = function(e, t, a) {
+            a = function(width, height, a) {
               var r = !1;
-              isNaN(e) && (e = conf.w || $.offsetWidth),
-                isNaN(t) && (t = conf.h || $.offsetHeight - conf.mh);
+              isNaN(width) && (width = conf.w || $.offsetWidth),
+                isNaN(height) && (height = conf.h || $.offsetHeight - conf.mh);
               for (
-                var n,
-                  o = B.clientHeight || 0,
-                  s = W.clientHeight || 0,
-                  l = E.DIMENSION.getOneWholeTH(),
+                var node,
+                  o = mb2.clientHeight || 0,
+                  s = mb1.clientHeight || 0,
+                  th = setting.DIMENSION.getOneWholeTH(),
                   c = 0,
-                  d = W.childNodes,
-                  m = d.length,
+                  nodes = mb1.childNodes,
+                  m = nodes.length,
                   p = 0,
-                  h = d.length;
+                  h = nodes.length;
                 h--;
 
-              )
-                (n = d[h]),
-                  n.id.indexOf("blankctn") >= 0
-                    ? ((c = n.offsetHeight), m--, (p += c))
-                    : (p += l);
-              return (
-                !isNaN(a) && (s -= a),
-                s / (t - o) > 1 && ((s = p), (r = !0)),
-                E.DIMENSION.setStageW(e),
-                1 == ie
-                  ? m > 0 &&
-                    (E.DIMENSION.setStageH(t, m * l + c + o),
-                    (r = !0),
-                    (ie = 0))
-                  : E.DIMENSION.setStageH(t, s + o),
-                0 > t &&
-                  ((E.DIMENSION.H_T_G = E.DIMENSION.H_T_G - E.DIMENSION.H_T_T),
-                  (E.DIMENSION.H_T_B = E.DIMENSION.H_TIME_PART)),
-                r
-              );
+              ) {
+                node = nodes[h];
+                node.id.indexOf("blankctn") >= 0
+                  ? ((c = node.offsetHeight), m--, (p += c))
+                  : (p += th);
+              }
+              !isNaN(a) && (s -= a);
+              s / (height - o) > 1 && ((s = p), (r = !0));
+              setting.DIMENSION.setStageW(width);
+              1 == ie
+                ? m > 0 &&
+                  (setting.DIMENSION.setStageH(height, m * th + c + o),
+                  (r = !0),
+                  (ie = 0))
+                : setting.DIMENSION.setStageH(height, s + o);
+              0 > height &&
+                (setting.DIMENSION.H_T_G =
+                  setting.DIMENSION.H_T_G - setting.DIMENSION.H_T_T)(
+                  (setting.DIMENSION.H_T_B = setting.DIMENSION.H_TIME_PART)
+                );
+              return r;
             },
             r = function() {
               J.setPosition();
             },
             n = function() {
-              e && (e.style.display = E.custom.show_logo ? "" : "none");
+              e && (e.style.display = setting.custom.show_logo ? "" : "none");
             },
             resizeAll = function(e, i, o) {
               var s = a(i, o, 0 / 0);
@@ -2334,8 +2339,8 @@ xh5_define(
               r(),
                 n(),
                 util.stc("t_wh", [
-                  E.DIMENSION.getStageW(),
-                  E.DIMENSION.getStageH(),
+                  setting.DIMENSION.getStageW(),
+                  setting.DIMENSION.getStageH(),
                 ]);
             },
             createDoms = function() {
@@ -2344,26 +2349,28 @@ xh5_define(
                 (($ = $C("div")),
                 document.body.appendChild($),
                 util.trace.error("missing of dom id"));
-              V = $C("div");
-              V.style.position = "relative";
-              V.style.outlineStyle = "none";
-              V.style.webkitUserSelect = V.style.userSelect = V.style.MozUserSelect =
+              mp = $C("div");
+              mp.style.position = "relative";
+              mp.style.outlineStyle = "none";
+              mp.style.webkitUserSelect = mp.style.userSelect = mp.style.MozUserSelect =
                 "none";
-              mainareaDom = $C("div", "mainarea_" + E.uid);
-              G = $C("div");
-              mainareaDom.appendChild(G);
-              z = $C("div");
-              z.style.position = "absolute";
-              z.style.fontSize = E.STYLE.FONT_SIZE + "px";
-              mainareaDom.appendChild(z);
-              V.appendChild(mainareaDom);
-              W = $C("div");
-              V.appendChild(W);
-              B = $C("div");
-              V.appendChild(B);
-              $.appendChild(V);
+              mainareaDom = $C("div", "mainarea_" + setting.uid);
+              mc1 = $C("div");
+              mainareaDom.appendChild(mc1);
+              mc2 = $C("div");
+              mc2.style.position = "absolute";
+              mc2.style.fontSize = setting.STYLE.FONT_SIZE + "px";
+              mainareaDom.appendChild(mc2);
+              mp.appendChild(mainareaDom);
+              mb1 = $C("div");
+              mb1.id = "mb1";
+              mp.appendChild(mb1);
+              mb2 = $C("div");
+              mb2.id = "mb2";
+              mp.appendChild(mb2);
+              $.appendChild(mp);
               J = new util.LoadingSign();
-              J.appendto(mainareaDom, E);
+              J.appendto(mainareaDom, setting);
             },
             initTheme = function(a) {
               var i = !1;
@@ -2371,58 +2378,61 @@ xh5_define(
                 Q && (i = Q.setTheme(a));
                 for (var r in a)
                   a.hasOwnProperty(r) &&
-                    E.COLOR.hasOwnProperty(r) &&
-                    E.COLOR[r] !== a[r] &&
-                    ((E.COLOR[r] = a[r]), (i = !0));
+                    setting.COLOR.hasOwnProperty(r) &&
+                    setting.COLOR[r] !== a[r] &&
+                    ((setting.COLOR[r] = a[r]), (i = !0));
                 util.stc("t_thm", a);
               }
-              return i && logoM.styleLogo({ logo: e, color: E.COLOR.LOGO }), i;
+              return (
+                i && logoM.styleLogo({ logo: e, color: setting.COLOR.LOGO }), i
+              );
             },
             m = function(e) {
-              !E.custom.mousewheel_zoom ||
-                (document.activeElement !== V &&
-                  document.activeElement.parentNode !== V) ||
+              !setting.custom.mousewheel_zoom ||
+                (document.activeElement !== mp &&
+                  document.activeElement.parentNode !== mp) ||
                 (xxx && xxx.onWheel(e),
                 xh5_EvtUtil.preventDefault(e),
                 xh5_EvtUtil.stopPropagation(e));
             },
             p = function(e) {
-              E.custom.keyboard && xxx && xxx.onKb(e);
+              setting.custom.keyboard && xxx && xxx.onKb(e);
             },
             u = function() {
               util.xh5_deviceUtil.istd ||
                 (xh5_BrowserUtil.info.name.match(/firefox/i)
-                  ? xh5_EvtUtil.addHandler(V, "DOMMouseScroll", m)
-                  : xh5_EvtUtil.addHandler(V, "mousewheel", m),
-                (V.tabIndex = 0),
-                xh5_EvtUtil.addHandler(V, "keydown", p));
+                  ? xh5_EvtUtil.addHandler(mp, "DOMMouseScroll", m)
+                  : xh5_EvtUtil.addHandler(mp, "mousewheel", m),
+                (mp.tabIndex = 0),
+                xh5_EvtUtil.addHandler(mp, "keydown", p));
             },
             v = function(t) {
-              (e = t), V.appendChild(t);
+              (e = t), mp.appendChild(t);
             },
             f = function() {
               createDoms(),
                 initTheme(conf.theme),
                 resizeAll(),
                 u(),
-                E.DIMENSION.h_t < 0 &&
+                setting.DIMENSION.h_t < 0 &&
                   ((mainareaDom.style.display = "none"),
-                  (E.custom.indicator_reorder = !1),
-                  (E.custom.indicator_reheight = !1)),
+                  (setting.custom.indicator_reorder = !1),
+                  (setting.custom.indicator_reheight = !1)),
                 logoM.getLogo({
                   cb: v,
-                  id: E.PARAM.LOGO_ID,
+                  id: setting.PARAM.LOGO_ID,
                   isShare: !1,
-                  top: E.DIMENSION.posY + E.DIMENSION.H_MA4K + 17,
-                  right: E.DIMENSION.RIGHT_W + E.DIMENSION.K_RIGHT_W,
-                  LOGO_W: E.DIMENSION.LOGO_W,
-                  LOGO_H: E.DIMENSION.LOGO_H,
-                  color: E.COLOR.LOGO,
+                  top: setting.DIMENSION.posY + setting.DIMENSION.H_MA4K + 17,
+                  right:
+                    setting.DIMENSION.RIGHT_W + setting.DIMENSION.K_RIGHT_W,
+                  LOGO_W: setting.DIMENSION.LOGO_W,
+                  LOGO_H: setting.DIMENSION.LOGO_H,
+                  color: setting.COLOR.LOGO,
                 }),
                 xh5_BrowserUtil.noH5 &&
                   (tip.showTip({
                     txt: conf.nohtml5info || globalCfg.nohtml5info,
-                    parent: V,
+                    parent: mp,
                   }),
                   util.stc("t_nh5"));
             };
@@ -2434,7 +2444,7 @@ xh5_define(
               xxx.onResize(),
               oe.onResize(),
               r(),
-              ne.onInnerResize({ height: E.DIMENSION.h_t }));
+              ne.onInnerResize({ height: setting.DIMENSION.h_t }));
           };
           this.initTheme = initTheme;
         })(),
@@ -2510,8 +2520,8 @@ xh5_define(
                 conf.ondataupdate({
                   data: util.clone(e),
                   idx: viewState.currentLength - 1,
-                  left: E.DIMENSION.posX,
-                  top: E.DIMENSION.H_MA4K,
+                  left: setting.DIMENSION.posX,
+                  top: setting.DIMENSION.H_MA4K,
                 });
             }
           };
@@ -2525,12 +2535,12 @@ xh5_define(
                 conf.onrange({
                   isCompare: e.isCompare,
                   data: util.clone(e.datas),
-                  width: E.DIMENSION.w_t,
-                  height: E.DIMENSION.h_t,
+                  width: setting.DIMENSION.w_t,
+                  height: setting.DIMENSION.h_t,
                   viewRangeState: util.clone(viewState),
                   range: [e.labelMinP, e.labelMaxP, e.labelMaxVol],
-                  left: E.DIMENSION.posX,
-                  top: E.DIMENSION.H_MA4K,
+                  left: setting.DIMENSION.posX,
+                  top: setting.DIMENSION.H_MA4K,
                 });
             });
           this.onViewChanged = function() {
@@ -2560,8 +2570,8 @@ xh5_define(
                   data_array: xxx.getAllStock().length,
                   data: d,
                   idx: e,
-                  left: E.DIMENSION.posX,
-                  top: E.DIMENSION.H_MA4K,
+                  left: setting.DIMENSION.posX,
+                  top: setting.DIMENSION.H_MA4K,
                   interacting: !!s,
                 });
             }
@@ -2585,20 +2595,27 @@ xh5_define(
             c = new (function() {
               var showFloater = function(t) {
                 var a = e.body.style;
-                t && E.custom.show_floater
-                  ? ((a.backgroundColor = E.COLOR.F_BG),
-                    (a.color = E.COLOR.F_T),
-                    (a.border = "1px solid " + E.COLOR.F_BR),
+                t && setting.custom.show_floater
+                  ? ((a.backgroundColor = setting.COLOR.F_BG),
+                    (a.color = setting.COLOR.F_T),
+                    (a.border = "1px solid " + setting.COLOR.F_BR),
                     (a.display = ""))
                   : (a.display = "none");
               };
               this.pv = function(a) {
                 var i = e.body.style,
-                  r = Math.max(E.DIMENSION.posX, 55) + 9,
-                  n = E.DIMENSION.posX < 55 ? 9 : 0,
-                  o = E.DIMENSION.getStageW() - l - 9 - E.DIMENSION.RIGHT_W - n;
+                  r = Math.max(setting.DIMENSION.posX, 55) + 9,
+                  n = setting.DIMENSION.posX < 55 ? 9 : 0,
+                  o =
+                    setting.DIMENSION.getStageW() -
+                    l -
+                    9 -
+                    setting.DIMENSION.RIGHT_W -
+                    n;
                 (i.left =
-                  (a.x > (E.DIMENSION.getStageW() - E.DIMENSION.RIGHT_W) >> 1
+                  (a.x >
+                  (setting.DIMENSION.getStageW() - setting.DIMENSION.RIGHT_W) >>
+                    1
                     ? r
                     : o) + "px"),
                   (i.top = (a.y || 0) + "px"),
@@ -2628,7 +2645,7 @@ xh5_define(
                   p = "text-align:right;border:0;height:16px;",
                   h = $C("div");
                 h.style.position = "absolute";
-                h.style.zIndex = E.PARAM.I_Z_INDEX + 2;
+                h.style.zIndex = setting.PARAM.I_Z_INDEX + 2;
                 (h.style.padding = "2px"),
                   (h.style.width = l + "px"),
                   (h.style.lineHeight = "16px"),
@@ -2723,11 +2740,11 @@ xh5_define(
                   (b.style.width = "100%"),
                   h.appendChild(b);
                 var M = function(e, t) {
-                  var a = E.COLOR.F_N;
+                  var a = setting.COLOR.F_N;
                   return (
                     e > t
-                      ? (a = E.COLOR.F_RISE)
-                      : t > e && (a = E.COLOR.F_FALL),
+                      ? (a = setting.COLOR.F_RISE)
+                      : t > e && (a = setting.COLOR.F_FALL),
                     a
                   );
                 };
@@ -2780,53 +2797,60 @@ xh5_define(
                   resize = function() {
                     if (
                       ((a.style.borderStyle = "dashed"),
-                      (a.style.borderColor = E.COLOR.IVH_LINE),
+                      (a.style.borderColor = setting.COLOR.IVH_LINE),
                       (i.style.backgroundColor = r.style.backgroundColor =
-                        E.COLOR[e.txtBgCN]),
-                      (i.style.color = r.style.color = E.COLOR[e.txtCN]),
+                        setting.COLOR[e.txtBgCN]),
+                      (i.style.color = r.style.color = setting.COLOR[e.txtCN]),
                       n)
                     )
                       (a.style.borderWidth = "1px 0 0 0"),
                         (body.style.width = a.style.width =
-                          E.DIMENSION.getStageW() - E.DIMENSION.RIGHT_W + "px"),
-                        (i.style.top = -(0.6 * E.STYLE.FONT_SIZE) + "px"),
-                        (r.style.top = -(0.6 * E.STYLE.FONT_SIZE) + "px"),
+                          setting.DIMENSION.getStageW() -
+                          setting.DIMENSION.RIGHT_W +
+                          "px"),
+                        (i.style.top = -(0.6 * setting.STYLE.FONT_SIZE) + "px"),
+                        (r.style.top = -(0.6 * setting.STYLE.FONT_SIZE) + "px"),
                         (i.style.left = 0),
-                        (r.style.left = E.DIMENSION.extend_draw
+                        (r.style.left = setting.DIMENSION.extend_draw
                           ? ""
-                          : E.DIMENSION.getStageW() -
-                            E.DIMENSION.RIGHT_W +
+                          : setting.DIMENSION.getStageW() -
+                            setting.DIMENSION.RIGHT_W +
                             "px"),
                         (r.style.right = 0),
-                        (i.style.width = r.style.width = E.DIMENSION.extend_draw
+                        (i.style.width = r.style.width = setting.DIMENSION
+                          .extend_draw
                           ? ""
-                          : E.DIMENSION.posX + "px"),
+                          : setting.DIMENSION.posX + "px"),
                         (i.style.padding = "1px 0"),
                         (r.style.padding = "1px 0");
                     else {
                       a.style.borderWidth = "0 1px 0 0";
                       var o,
                         s,
-                        l = E.DIMENSION.H_MA4K + E.DIMENSION.H_T_B;
-                      E.DIMENSION.getStageH() < 0
-                        ? ((o = W.clientHeight), (s = o - l))
-                        : ((o = E.DIMENSION.getStageH() - B.clientHeight || 0),
-                          (s = E.DIMENSION.h_t)),
+                        l = setting.DIMENSION.H_MA4K + setting.DIMENSION.H_T_B;
+                      setting.DIMENSION.getStageH() < 0
+                        ? ((o = mb1.clientHeight), (s = o - l))
+                        : ((o =
+                            setting.DIMENSION.getStageH() - mb2.clientHeight ||
+                            0),
+                          (s = setting.DIMENSION.h_t)),
                         (o -= l),
-                        (o += E.DIMENSION.I_V_O),
+                        (o += setting.DIMENSION.I_V_O),
                         (body.style.height = a.style.height = o + "px"),
                         (i.style.top = s + "px"),
                         (i.style.padding = "2px 2px 1px");
                     }
                   };
                 (body.style.position = "absolute"),
-                  (body.style.zIndex = E.PARAM.I_Z_INDEX - 2),
+                  (body.style.zIndex = setting.PARAM.I_Z_INDEX - 2),
                   (i.style.position = r.style.position = a.style.position =
                     "absolute"),
                   (a.style.zIndex = 0),
                   (i.style.zIndex = r.style.zIndex = 1),
                   (i.style.font = r.style.font =
-                    E.STYLE.FONT_SIZE + "px " + E.STYLE.FONT_FAMILY),
+                    setting.STYLE.FONT_SIZE +
+                    "px " +
+                    setting.STYLE.FONT_FAMILY),
                   (i.style.whiteSpace = r.style.whiteSpace = "nowrap"),
                   (i.style.lineHeight = o + "px"),
                   (r.style.lineHeight = o + "px"),
@@ -2834,8 +2858,8 @@ xh5_define(
                     (i.style.textAlign = e.txtA) &&
                     (r.style.textAlign = "left"),
                   e.txtBgCN &&
-                    (i.style.backgroundColor = E.COLOR[e.txtBgCN]) &&
-                    (r.style.backgroundColor = E.COLOR[e.txtBgCN]),
+                    (i.style.backgroundColor = setting.COLOR[e.txtBgCN]) &&
+                    (r.style.backgroundColor = setting.COLOR[e.txtBgCN]),
                   resize(),
                   body.appendChild(i),
                   n && body.appendChild(r),
@@ -2859,15 +2883,15 @@ xh5_define(
                     !isNaN(e.x))
                   ) {
                     var a = e.x + (e.ox || 0),
-                      n = E.DIMENSION.getStageW();
+                      n = setting.DIMENSION.getStageW();
                     body.style.left = a + "px";
                     var o = i.offsetWidth;
                     if ((0 >= o && (o = 112), o > 0)) {
                       var s = o >> 1;
                       e.x < s
                         ? (s = e.x)
-                        : a + s > n - E.DIMENSION.posX &&
-                          (s = a + o - n + E.DIMENSION.posX),
+                        : a + s > n - setting.DIMENSION.posX &&
+                          (s = a + o - n + setting.DIMENSION.posX),
                         (i.style.left = -s + "px");
                     }
                   }
@@ -2890,7 +2914,7 @@ xh5_define(
                   txtBgCN: "T_BG",
                   txtA: "center",
                 })),
-                V.appendChild(n.body);
+                mp.appendChild(n.body);
             },
             hideIUis = function() {
               iHLineO.display(!1);
@@ -2904,8 +2928,8 @@ xh5_define(
               e[0].realLen >= 0 &&
                 (a =
                   5 == viewState.end
-                    ? e[0].realLen + E.datas.tDataLen * (t - 1)
-                    : E.datas.tDataLen * (t - 1));
+                    ? e[0].realLen + setting.datas.tDataLen * (t - 1)
+                    : setting.datas.tDataLen * (t - 1));
               return a;
             },
             b = function(e) {
@@ -2946,7 +2970,7 @@ xh5_define(
               H = A > 1,
               F = C[0].datas.length,
               $ = q * F,
-              V = Math.floor((d * $) / E.DIMENSION.w_t);
+              V = Math.floor((d * $) / setting.DIMENSION.w_t);
             if (isNaN(d) && isNaN(p)) {
               if (
                 ((k = !0),
@@ -3064,7 +3088,7 @@ xh5_define(
             }
             if (L && (L.date || (L.date = se), !L || L.date)) {
               var de = d;
-              E.custom.stick && (d = L.ix || d);
+              setting.custom.stick && (d = L.ix || d);
               var me, pe;
               "HF" == needmarket
                 ? ((me = futureTime2.time[0][0]),
@@ -3101,9 +3125,9 @@ xh5_define(
                     time: he,
                     data: L,
                   }),
-                  c.pv({ x: de, y: E.DIMENSION.T_F_T })),
+                  c.pv({ x: de, y: setting.DIMENSION.T_F_T })),
                 iHLineO.pv({ y: p, oy: h, v: G, p: y }),
-                n.pv({ v: he, x: d, ox: m, y: E.DIMENSION.H_MA4K }),
+                n.pv({ v: he, x: d, ox: m, y: setting.DIMENSION.H_MA4K }),
                 b(V),
                 ne.onViewPrice(L, V, B, !k),
                 _me.re(globalCfg.e.I_EVT, a.e);
@@ -3168,8 +3192,8 @@ xh5_define(
                 data: i,
                 x: i.ix,
                 y: i.py,
-                oy: E.DIMENSION.H_MA4K,
-                ox: E.DIMENSION.posX,
+                oy: setting.DIMENSION.H_MA4K,
+                ox: setting.DIMENSION.posX,
               };
             this.iToD(h, !0, !0);
           };
@@ -3192,7 +3216,7 @@ xh5_define(
                     (n = r[t] ? r[t] : (r[t] = new i[t]())), (e = n);
                   } else e = a;
                 } else e = a;
-                !$CONTAINS(V, e.body) && V.appendChild(e.body);
+                !$CONTAINS(mp, e.body) && mp.appendChild(e.body);
               };
             (this.customFloater = function(e) {
               (i = e), n(), util.stc("t_fl", e);
@@ -3276,20 +3300,20 @@ xh5_define(
       n = new (function() {
         var e = this,
           a = function(a, i) {
-            if (E.hasOwnProperty(a)) {
+            if (setting.hasOwnProperty(a)) {
               for (var r in i)
                 if (i.hasOwnProperty(r) && util.isFunc(i[r]))
                   return void util.trace.error("illegal operation:", r);
               "DIMENSION" == a && (ie = 1),
-                oc(E[a], i),
+                oc(setting[a], i),
                 util.stc(a, i),
                 e.resize();
             } else util.trace.error("not exist param:", a);
           },
           r = function(e, a) {
             var i;
-            if (E.hasOwnProperty(e)) {
-              i = util.clone(E[e]);
+            if (setting.hasOwnProperty(e)) {
+              i = util.clone(setting[e]);
               for (var r in i)
                 if (i.hasOwnProperty(r) && util.isFunc(i[r]))
                   (i[r] = null), delete i[r];
@@ -3457,13 +3481,13 @@ xh5_define(
         this.hide = function(e) {
           ae = !0;
           oe.hideIUis();
-          util.$CONTAINS($, V) && $.removeChild(V);
+          util.$CONTAINS($, mp) && $.removeChild(mp);
           e && xxx.dcReset();
         };
         this.show = function(e) {
           ae = !1;
           e && (util.isStr(e) && (e = $DOM(e)), ($ = e));
-          util.$CONTAINS($, V) || ($.appendChild(V), re.resizeAll(!0));
+          util.$CONTAINS($, mp) || ($.appendChild(mp), re.resizeAll(!0));
           ne && ne.onViewPrice();
         };
         this.shareTo = function(e) {
@@ -3472,7 +3496,7 @@ xh5_define(
           util.suda("share", a);
         };
         this.getChartId = function() {
-          return E.uid;
+          return setting.uid;
         };
         this.dateTo = function(time, cb) {
           conf.historytime = time;
@@ -3502,12 +3526,12 @@ xh5_define(
         };
         this.toggleExtend = function(e) {
           var t,
-            i = E.DIMENSION.posX;
-          t = e ? "on" == !e : E.DIMENSION.extend_draw;
+            i = setting.DIMENSION.posX;
+          t = e ? "on" == !e : setting.DIMENSION.extend_draw;
           a.call(this, "DIMENSION", {
             extend_draw: !t,
-            posX: i > 9 ? E.DIMENSION.extend_padding : 55,
-            RIGHT_W: i > 9 ? E.DIMENSION.extend_padding : 55,
+            posX: i > 9 ? setting.DIMENSION.extend_padding : 55,
+            RIGHT_W: i > 9 ? setting.DIMENSION.extend_padding : 55,
           });
           this.resize();
         };

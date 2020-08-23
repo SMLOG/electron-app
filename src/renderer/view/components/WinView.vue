@@ -25,7 +25,7 @@
     </tr>
     <tr>
       <td>
-        <webview ref="webview" id="figure" style="width:100%;height:100%;" :src="link"></webview>
+        <iframe ref="webview" id="webview" style="width:100%;height:100%;border:none;" :src="link"></iframe>
       </td>
     </tr>
   </table>
@@ -37,7 +37,6 @@ import Calendar from "@/view/components/calendar";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { initwebview } from "@/lib/webview";
 import { filters, getCheckFilters, afilters } from "@/lib/filters";
 import { callFun } from "@/lib/tech-manager";
 import moment from "moment";
@@ -47,32 +46,22 @@ window.$ = $;
 
 export default {
   name: "WinView",
-  data: function() {
+  data: function () {
     return {
       openCode: null,
       openType: null,
-      filters: filters
+      filters: filters,
     };
   },
   props: {
     link: String,
     item: Object,
-    dBclick: Function
+    dBclick: Function,
   },
   components: {
-    Calendar
+    Calendar,
   },
-  mounted() {
-    // initwebview(this.closeview.bind(this));
-
-    const webview = document.querySelector("webview");
-    webview.addEventListener("dom-ready", e => {});
-    webview.addEventListener("did-navigate-in-page", event => {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    });
-  },
+  mounted() {},
   watch: {},
   computed: {},
   methods: {
@@ -85,8 +74,8 @@ export default {
       webviewWrap.hide();
       $(this.$refs.top).css("margin-bottom", "0");
       this.openCode = null;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

@@ -184,101 +184,97 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
             name: e.replace("dataView-", ""),
           };
       });
-
-    KKE.api(
-      "plugins.sinaAppTKChart.get",
-      {
-        wrap: {
-          dom: $("#h5Chart")[0],
-        },
-        chart: {
-          symbol: paperCode,
-          initView: dataView,
-          kInitParam: {
-            rate: 20,
-            theme: cfg.theme,
-          },
-          kChart: {
-            pCharts: pTechlist,
-          },
-          tChart: {
-            toggleExtend: "on",
-            setLineStyle: {
-              linetype: "mountain",
-            },
-          },
-          kInitParam: {
-            theme: {},
-            dim: {
-              H_T_G: 120,
-            },
-            candlenum: 240,
-          },
-          tInitParam: {
-            rate: 20,
-            theme: cfg.theme,
-            dim: {
-              H_T_G: 125,
-            },
-          },
-        },
-        info: {
-          upColor: cfg.chartRed,
-          downColor: cfg.chartGreen,
-        },
-        bsCallUp: {
-          more: [
-            {
-              name: "年线",
-              v: "kcl",
-            },
-            {
-              name: "5分",
-              v: "k5",
-            },
-            {
-              name: "15分",
-              v: "k15",
-            },
-            {
-              name: "30分",
-              v: "k30",
-            },
-            {
-              name: "60分",
-              v: "k60",
-            },
-          ],
-          tabs: [
-            {
-              name: "五日",
-              v: "t5",
-            },
-            {
-              name: "周K",
-              v: "kw",
-            },
-            {
-              name: "月K",
-              v: "km",
-            },
-          ],
-          show: !0,
-        },
-        zoomBar: {
-          show: !0,
-        },
-        clinicStock: {
-          show: false,
-        },
-        callUpApp: {},
+    var params = {
+      wrap: {
+        dom: $("#h5Chart")[0],
       },
-      function(e) {
-        chart = e;
-        window.chart = chart;
-        resizeChart(e);
-      }
-    );
+      chart: {
+        symbol: paperCode,
+        initView: dataView,
+        kInitParam: {
+          rate: 20,
+          theme: cfg.theme,
+        },
+        kChart: {
+          pCharts: pTechlist,
+        },
+        tChart: {
+          toggleExtend: "on",
+          setLineStyle: {
+            linetype: "mountain",
+          },
+        },
+        kInitParam: {
+          theme: {},
+          dim: {
+            H_T_G: 120,
+          },
+          candlenum: 240,
+        },
+        tInitParam: {
+          rate: 20,
+          theme: cfg.theme,
+          dim: {
+            H_T_G: 125,
+          },
+        },
+      },
+      info: {
+        upColor: cfg.chartRed,
+        downColor: cfg.chartGreen,
+      },
+      bsCallUp: {
+        more: [
+          {
+            name: "年线",
+            v: "kcl",
+          },
+          {
+            name: "5分",
+            v: "k5",
+          },
+          {
+            name: "15分",
+            v: "k15",
+          },
+          {
+            name: "30分",
+            v: "k30",
+          },
+          {
+            name: "60分",
+            v: "k60",
+          },
+        ],
+        tabs: [
+          {
+            name: "五日",
+            v: "t5",
+          },
+          {
+            name: "周K",
+            v: "kw",
+          },
+          {
+            name: "月K",
+            v: "km",
+          },
+        ],
+        show: !0,
+      },
+      zoomBar: {
+        show: !0,
+      },
+      clinicStock: {
+        show: false,
+      },
+      callUpApp: {},
+    };
+    KKE.api("plugins.sinaAppTKChart.get", params, function(e) {
+      chart = e;
+      window.chart = chart;
+      resizeChart(e);
+    });
   }
 
   function loadChartMan() {

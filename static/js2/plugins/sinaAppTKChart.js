@@ -1530,9 +1530,10 @@ xh5_define("plugins.sinaAppTKChart", ["utils.util"], function(util) {
         (o.width = "100%"),
         (o.height = "100%"),
         (this.dom = a),
-        (this.childDom = n),
-        a.appendChild(n),
-        i.appendChild(a);
+        (this.childDom = n);
+      n.id = "childDom";
+      a.appendChild(n);
+      i.appendChild(a);
     },
     resize: function() {
       var t = this.dom,

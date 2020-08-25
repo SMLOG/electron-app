@@ -1227,7 +1227,7 @@ xh5_define(
         };
         this.initTc = function(e, t) {
           eee1 ||
-            ((eee1 = new l({
+            ((eee1 = new tech({
               stockData: _this,
               iMgr: oe,
               subArea: mb1,
@@ -1969,13 +1969,13 @@ xh5_define(
                   (n = s), (o = "initPt");
                   break;
                 case "tech":
-                  (n = l), (o = "initTc");
+                  (n = tech), (o = "initTc");
               }
               o &&
                 (n
                   ? mainStock[o](a, r)
                   : KKE.api("plugins.techcharts.get", { type: i }, function(e) {
-                      (l = e.tChart), (s = e.pChart), t(a, i, r);
+                      (tech = e.tChart), (s = e.pChart), t(a, i, r);
                     }));
             },
             a = function(t, a) {
@@ -3660,7 +3660,7 @@ xh5_define(
     var n,
       o,
       s,
-      l,
+      tech,
       $DOM = util.$DOM,
       $C = util.$C,
       $CONTAINS = util.$CONTAINS,

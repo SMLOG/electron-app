@@ -7,7 +7,7 @@ var cookieUtil = {
     var t = document.cookie.match(
       "(?:^|;)\\s*" + this.escape(name) + "=([^;]*)"
     );
-    return t ? t[1] || def : "";
+    return t ? t[1] : def;
   },
   set: function(name, val, n) {
     !n && (n = {}), val || ((val = ""), (n.expires = -1));

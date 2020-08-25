@@ -4708,7 +4708,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
       };
     return (a = new r());
   }
-  function J(i) {
+  function J(params) {
     function r() {
       var i = {
         ASI: e,
@@ -4789,7 +4789,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
                   ? ((h = r), (h.wrap.style.display = ""))
                   : ((h = new l(Z, At, f)), l === a && (r = h)),
                   lt.push(h),
-                  w.appendChild(h.wrap);
+                  subArea.appendChild(h.wrap);
               }
               h.newParam(s.param), o(), yt.doStc(s);
             }
@@ -4868,14 +4868,14 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     }
     var o,
       f,
-      u = i.stockData,
-      b = i.iMgr,
-      w = i.subArea,
-      P = i.cb,
-      E = i.type,
-      Z = i.cfg,
-      J = i.usrObj,
-      it = i.initMgr,
+      u = params.stockData,
+      b = params.iMgr,
+      subArea = params.subArea,
+      P = params.cb,
+      E = params.type,
+      Z = params.cfg,
+      J = params.usrObj,
+      it = params.initMgr,
       rt = [],
       st = function(i, r, a, s, e) {
         if (

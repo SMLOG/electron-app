@@ -96,10 +96,28 @@ export async function mainFinanceAnalyst(code) {
     return readable;
   });
 }
+export async function getFinMap(code) {
+  let res = await basic(code);
+  let infoArr = res.zxzb2
+    .split(/<tr>/)
+    .filter((e) => e.indexOf("<th") > -1)
+    .map((e) =>
+      e.split(/<\/t[dh]>/).map((k) => k.replace(/(<([^>]+)>)/gi, ""))
+    );
+  let ret = {};
+  let infoEle = infoArr[4];
+  ret[infoEle[0]] = infoEle[1];
+  ret[infoEle[0] + "同期"] = infoEle[2];
+  ret[infoEle[3]] = infoEle[4];
+  ret[infoEle[3] + "同期"] = infoEle[5];
+  console.log(ret);
+  //console.log(infoEle[9]);
+  return ret;
+}
 //获取操盘必读数据*http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=SZ000651#zyzb-0*
 export async function basic(code) {
   let url = `http://f10.eastmoney.com/OperationsRequired/OperationsRequiredAjax?times=1&code=${code}`;
-  await axios.get(url).then((resp) => resp.data);
+  return await axios.get(url).then((resp) => resp.data);
 }
 
 //mainFinanceAnalyst("SZ000651");

@@ -25,7 +25,7 @@
     </tr>
     <tr>
       <td>
-        <iframe ref="webview" id="webview" style="width:100%;height:100%;border:none;" :src="link"></iframe>
+        <webview ref="webview" id="webview" style="width:100%;height:100%;" :src="link"></webview>
       </td>
     </tr>
   </table>
@@ -37,6 +37,7 @@ import Calendar from "@/view/components/calendar";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
+import { initwebview } from "@/lib/webview";
 import { filters, getCheckFilters, afilters } from "@/lib/filters";
 import { callFun } from "@/lib/tech-manager";
 import moment from "moment";
@@ -61,7 +62,17 @@ export default {
   components: {
     Calendar,
   },
-  mounted() {},
+  mounted() {
+    // initwebview(this.closeview.bind(this));
+
+    const webview = document.querySelector("webview");
+    webview.addEventListener("dom-ready", (e) => {});
+    webview.addEventListener("did-navigate-in-page", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    });
+  },
   watch: {},
   computed: {},
   methods: {

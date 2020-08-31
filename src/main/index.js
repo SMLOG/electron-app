@@ -10,7 +10,6 @@ import {
 import * as path from "path";
 
 var axios = require("axios"); //使用之前需要npm install axios
-require("../server/server.js");
 
 global.axios = axios;
 /*

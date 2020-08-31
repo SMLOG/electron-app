@@ -14,6 +14,7 @@ const rendererConfig = require("./webpack.renderer.config");
 const serverConfig = require("./webpack.server.config");
 
 let electronProcess = null;
+let serverProcess = null;
 let manualRestart = false;
 let hotMiddleware;
 
@@ -100,7 +101,7 @@ function startHotloadServer() {
 
     compiler.hooks.watchRun.tapAsync("watch-run", (compilation, done) => {
       logStats("Server", chalk.white.bold("compiling..."));
-      hotMiddleware.publish({ action: "compiling" });
+      //hotMiddleware.publish({ action: "compiling" });
       done();
     });
 
@@ -127,7 +128,7 @@ function startHotloadMain() {
 
     compiler.hooks.watchRun.tapAsync("watch-run", (compilation, done) => {
       logStats("Main", chalk.white.bold("compiling..."));
-      hotMiddleware.publish({ action: "compiling" });
+      //hotMiddleware.publish({ action: "compiling" });
       done();
     });
 
@@ -139,13 +140,13 @@ function startHotloadMain() {
 
       logStats("Main", stats);
 
-      if (electronProcess && electronProcess.kill) {
+      if (serverProcess && serverProcess.kill) {
         manualRestart = true;
-        process.kill(electronProcess.pid);
-        process.kill(electronProcess.pid);
+        process.kill(serverProcess.pid);
+        process.kill(serverProcess.pid);
 
         setTimeout(() => {
-          electronProcess = null;
+          serverProcess = null;
           startElectron();
           setTimeout(() => {
             manualRestart = false;
@@ -251,7 +252,7 @@ function init() {
     startHotloadServer(),
   ])
     .then(() => {
-      // startKoaService();
+      startKoaService();
       startElectron();
     })
     .catch((err) => {

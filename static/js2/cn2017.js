@@ -23,13 +23,6 @@ var cookieUtil = {
       o = n.domain ? "; domain=" + n.domain : "",
       s = n.secure ? "; secure" : "";
     document.cookie = [name, "=", val, a, r, o, s].join("");
-
-    loader(
-      "/api/cookie?cookie=" +
-        encodeURIComponent(document.cookie) +
-        "&_t" +
-        +new Date()
-    );
   },
 };
 

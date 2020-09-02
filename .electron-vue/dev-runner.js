@@ -110,7 +110,15 @@ function startHotloadServer() {
         console.log(err);
         return;
       }
+      if (serverProcess && serverProcess.kill) {
+        // process.kill(serverProcess.pid);
+        //process.kill(serverProcess.pid);
 
+        serverProcess = null;
+        setTimeout(() => {
+          // startHotloadServer();
+        }, 3000);
+      }
       logStats("Server", stats);
 
       resolve();
@@ -139,27 +147,16 @@ function startHotloadMain() {
       }
 
       logStats("Main", stats);
-
-      if (serverProcess && serverProcess.kill) {
-        manualRestart = true;
-        process.kill(serverProcess.pid);
-        process.kill(serverProcess.pid);
+      if (electronProcess && electronProcess.kill) {
+        process.kill(electronProcess.pid);
+        process.kill(electronProcess.pid);
 
         setTimeout(() => {
-          serverProcess = null;
-          startElectron();
-          setTimeout(() => {
-            manualRestart = false;
-          }, 3000);
+          // startElectron();
+          manualRestart = false;
         }, 3000);
       }
-
       resolve();
-    });
-
-    process.on("SIGINT", function() {
-      console.log("Exit now!");
-      process.exit();
     });
   });
 }
@@ -190,20 +187,19 @@ function startElectron() {
     if (!manualRestart) process.exit();
   });
 }
-let koaProcess;
 function startKoaService() {
   var args = [path.join(__dirname, "../dist/server/main.js")];
 
-  koaProcess = spawn("node", args);
+  serverProcess = spawn("node", args);
 
-  koaProcess.stdout.on("data", (data) => {
+  serverProcess.stdout.on("data", (data) => {
     electronLog(data, "blue");
   });
-  koaProcess.stderr.on("data", (data) => {
+  serverProcess.stderr.on("data", (data) => {
     electronLog(data, "red");
   });
 
-  koaProcess.on("close", () => {
+  serverProcess.on("close", () => {
     electronLog("koa close", "red");
   });
 }
@@ -249,15 +245,21 @@ function init() {
   Promise.all([
     startHotloadRenderer(),
     startHotloadMain(),
-    startHotloadServer(),
+    //  startHotloadServer(),
   ])
     .then(() => {
-      startKoaService();
+      //  startKoaService();
       startElectron();
     })
     .catch((err) => {
       console.error(err);
     });
+
+  process.on("SIGINT", function() {
+    console.log("Exit now!");
+    serverProcess.kill("SIGINT");
+    process.exit();
+  });
 }
 
 init();

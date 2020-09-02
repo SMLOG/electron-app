@@ -71,12 +71,11 @@ function fmtReportDatas(json) {
   return map;
 }
 
-export function getLastReportDate() {
-  let d = new Date();
-
+export function getLastReportDate(d = new Date()) {
+  console.log(d);
   let now = ((d) =>
     ("0" + (d.getMonth() + 1)).substr(-2, 2) +
-    ("0" + d.getDate()).substr(-2, 2))(new Date());
+    ("0" + d.getDate()).substr(-2, 2))(d);
   for (let e of ["09-30", "06-30", "03-31"]) {
     if (now > e) {
       return d.getFullYear() + "-" + e;
@@ -96,24 +95,123 @@ export async function mainFinanceAnalyst(code) {
     return readable;
   });
 }
-export async function getFinMap(code) {
-  let res = await basic(code);
-  let infoArr = res.zxzb2
-    .split(/<tr>/)
-    .filter((e) => e.indexOf("<th") > -1)
-    .map((e) =>
-      e.split(/<\/t[dh]>/).map((k) => k.replace(/(<([^>]+)>)/gi, ""))
-    );
-  let ret = {};
-  let infoEle = infoArr[4];
-  ret[infoEle[0]] = infoEle[1];
-  ret[infoEle[0] + "同期"] = infoEle[2];
-  ret[infoEle[3]] = infoEle[4];
-  ret[infoEle[3] + "同期"] = infoEle[5];
-  console.log(ret);
-  //console.log(infoEle[9]);
-  return ret;
+class fn {
+  constructor(file, timeml = 43200000, enableCache = true, get = () => {}) {
+    this.file = file;
+    this.timeml = timeml;
+    this.get = get;
+    this.enableCache = enableCache;
+  }
+  isCacheValid(path) {
+    let stat = fs.statSync(`${path}/${this.file}`);
+    let diff = new Date().getTime() - stat.ctime.getTime();
+    return diff < this.timeml;
+  }
 }
+
+class fnReportDate extends fn {
+  constructor() {
+    super("yypl-预约披露日期列表.json");
+    this.get = async function() {
+      let _varname = "OYbodcjJ";
+      let ret;
+      let reportDate = getLastReportDate();
+      let url;
+      do {
+        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p=1&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var=${_varname}&filter=(REPORT_DATE=%27${reportDate}%27)&rt=${+new Date()}`;
+        ret = await axios
+          .get(url)
+          .then((resp) => eval(resp.data + ";" + _varname));
+        if (!ret.success) {
+          let rd = new Date(reportDate);
+          rd.setMonth(rd.getMonth() - 3);
+          reportDate = getLastReportDate(rd);
+        }
+      } while (!ret.success);
+
+      for (let i = 2; i <= ret.result.pages; i++) {
+        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p=${i}&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var=${_varname}&filter=(REPORT_DATE=%27${reportDate}%27)&rt=${+new Date()}`;
+
+        let d = await axios
+          .get(url)
+          .then((resp) => eval(resp.data + ";" + _varname));
+        ret.result.data = ret.result.data.concat(d.result.data);
+      }
+      ret.result.pages = 1;
+      return ret.result.data;
+    };
+  }
+}
+export class fnGetFinBasic extends fn {
+  constructor([code, reportDate]) {
+    super(`${code}-基本财务信息.json`);
+    this.code = code;
+    this.reportDate = reportDate;
+    this.get = async function() {
+      let res = await basic(code);
+      let infoArr = res.zxzb2
+        .split(/<tr>/)
+        .filter((e) => e.indexOf("<th") > -1)
+        .map((e) =>
+          e.split(/<\/t[dh]>/).map((k) => k.replace(/(<([^>]+)>)/gi, ""))
+        );
+      let ret = {};
+      // console.log(infoArr);
+      for (let i = 1; i < infoArr.length; i++) {
+        let infoEle = infoArr[i];
+        ret[infoEle[0]] = infoEle[1];
+        ret[infoEle[0] + "_同期"] = infoEle[2];
+        ret[infoEle[3]] = infoEle[4];
+        ret[infoEle[3] + "_同期"] = infoEle[5];
+        ret[infoEle[6]] = infoEle[7];
+        ret[infoEle[6] + "_同期"] = infoEle[8];
+      }
+      ret["报告"] = infoArr[infoArr.length - 1][9]
+        .match(/数据来源：(.*?)\(最新数据\)/)[1]
+        .replace(/半年报/, "-06-30")
+        .replace(/一季报/, "-03-31")
+        .replace(/三季报/, "-09-30")
+        .replace(/年报/, "-12-31");
+      //console.log(infoEle[9]);
+      return ret;
+    };
+  }
+  isCacheValid(path) {
+    let stat = fs.statSync(`${path}/${this.file}`);
+    let diff = new Date(this.reportDate).getTime() - stat.ctime.getTime();
+    if (diff > 0) return false;
+    return true;
+  }
+}
+export async function cacheObject(FN) {
+  let params = Array.prototype.slice.call(arguments, 1);
+  let fn = new FN(params);
+  let file = `${CONFIG_DIR}/${fn.file}`;
+  if (fn.enableCache && fs.existsSync(file) && fn.isCacheValid(CONFIG_DIR)) {
+    // console.log("from cache " + file);
+    return JSON.parse(fs.readFileSync(file));
+  }
+  let res = await fn.get();
+  fs.writeFileSync(file, JSON.stringify(res));
+  return res;
+}
+false &&
+  (async () => {
+    let data = await cacheObject(fnReportDate);
+    //console.log(data.result.data);
+    // let data = await cacheObject(fnGetFinBasic, "SH600260");
+    for (let i = 0; i < data.length; i++) {
+      let code =
+        (data[i].SECURITY_CODE[0] == 6 ? "sh" : "sz") + data[i].SECURITY_CODE;
+      console.log(`${i}/${data.length} => ${code}`);
+      if (data[i].ACTUAL_PUBLISH_DATE)
+        await cacheObject(fnGetFinBasic, code, data[i].ACTUAL_PUBLISH_DATE);
+    }
+    //let cls = await getLatestDisclosureDateList();
+    //console.log(cls);
+    //updateReport(code,rDate)
+  })();
+
 //获取操盘必读数据*http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=SZ000651#zyzb-0*
 export async function basic(code) {
   let url = `http://f10.eastmoney.com/OperationsRequired/OperationsRequiredAjax?times=1&code=${code}`;
@@ -128,47 +226,3 @@ export async function getLatestDisclosureDateList() {
   let url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=YJBB21_YYPL&token=70f12f2f4f091e459a279469fe49eca5&st=frdate&sr=1&p=1&ps=50000&js=var%20${_varname}={pages:(tp),data:%20(x),font:(font)}&filter=(reportdate=^${getLastReportDate()}^)&rt=${+new Date()}`;
   return await axios.get(url).then((resp) => eval(resp.data + ";aaa"));
 }
-/*
-(async () => {
-  let file = `${CONFIG_DIR}/yypl-预约披露日期列表.json`;
-  let refresh = true;
-  if (fs.existsSync(file)) {
-    let stat = fs.statSync(file);
-    console.log(stat);
-    let hours = (new Date().getTime() - stat.ctime.getTime()) / 1000 / 60 / 60;
-    if (hours < 12) refresh = false;
-  }
-
-  let map;
-  if (refresh) {
-    let result = await getLatestDisclosureDateList();
-    map = {};
-    result.data.forEach((d) => {
-      let mk = d.scode.substring(0, 1) == 6 ? "sh" : "sz";
-
-      for (let dt of [
-        "frdate",
-        "fcdate",
-        "scdate",
-        "tcdate",
-        "radate",
-        "enddate",
-      ]) {
-        if (d[dt] && d[dt] != "-") d[dt] = dateFormat(d[dt], "yyyy-MM-dd");
-      }
-
-      d.last = [d.radate, d.fcdatte, d.frdate, d.reportdate].filter(
-        (e) => e != "-" && d
-      )[0];
-      map[`${mk}${d.scode}`] = d;
-    });
-
-    fs.writeFileSync(file, JSON.stringify(map));
-  } else {
-    console.log("load from file");
-    map = JSON.parse(fs.readFileSync(file));
-  }
-
-  console.log(map);
-})();
-*/

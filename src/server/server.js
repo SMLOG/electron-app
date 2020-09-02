@@ -3,6 +3,7 @@ import { getList } from "./TechMan";
 import { getFilterList } from "./criteria";
 import fs from "fs";
 import { CONFIG_DIR } from "./config";
+import { cacheObject, fnGetFinBasic } from "./basicAnalyst";
 
 const koa = require("koa");
 const logger = require("koa-logger");
@@ -51,6 +52,14 @@ routerApi.get("/sea", async (ctx) => {
   let list = [];
   list = await getList();
 
+  for (let i = 0; i < list.length; i++) {
+    let info = await cacheObject(fnGetFinBasic, list[i].code);
+    list[i] = Object.assign(list[i], info);
+    console.log(`${i}/${list.length} => ${list[i].code}`);
+    // console.log(info);
+    //console.log(list[i]);
+  }
+
   list = await getFilterList(list);
 
   ctx.body = list;
@@ -75,7 +84,22 @@ app.use(async (ctx) => {
   ctx.body = "hello word";
 });
 
-console.log("start");
+console.log("start2");
 app.listen(3000);
 
-process.on("uncaughtException", () => {});
+process.on("uncaughtException", (e) => {
+  console.error("uncaughtException", e);
+  process.exit(0);
+});
+/*
+(async () => {
+  let list = [];
+  list = await getList();
+
+  for (let i = 0; i < list.length; i++) {
+    let info = await cacheObject(fnGetFinBasic, list[i].code);
+    list[i] = Object.assign(list[i], info);
+    // console.log(info);
+    console.log(list[i]);
+  }
+})();*/

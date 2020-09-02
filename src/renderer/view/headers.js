@@ -148,11 +148,11 @@ export let headers = [
   },
   {
     label: "同比",
-    prop: "tbzz",
+    prop: "扣非净利润同比增长(%)",
     type: "number",
     fmt: fmtPercent,
     class: (item) => {
-      if (item.reportDate == reportDate)
+      if (item["报告"] == reportDate)
         return {
           reportUpdate: true,
           up: item.tbzz > 0,

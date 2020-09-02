@@ -4,15 +4,17 @@ import { getFilterList } from "./criteria";
 import fs from "fs";
 import { CONFIG_DIR } from "./config";
 import { cacheObject, fnGetFinBasic } from "./basicAnalyst";
-
+import My from "./controller/MyController";
 const koa = require("koa");
 const logger = require("koa-logger");
 const Router = require("koa-router");
 const onerror = require("koa-onerror");
+const bodyparser = require("koa-bodyparser");
 
 const app = new koa();
 onerror(app);
 app.use(logger());
+app.use(bodyparser());
 //跨域请求和options请求
 app.use(async (ctx, next) => {
   ctx.set("Access-Control-Allow-Origin", "*");
@@ -57,7 +59,7 @@ routerApi.get("/sea", async (ctx) => {
   for (let i = 0; i < list.length; i++) {
     let info = await cacheObject(fnGetFinBasic, list[i].code);
     list[i] = Object.assign(list[i], info);
-    console.log(`${i}/${list.length} => ${list[i].code}`);
+    //console.log(`${i}/${list.length} => ${list[i].code}`);
     // console.log(info);
     //console.log(list[i]);
   }
@@ -76,6 +78,11 @@ routerApi.get("/hxlist", async (ctx) => {
 
   ctx.body = list;
 });
+
+routerApi.post("/my", My.add);
+routerApi.get("/my", My.list);
+routerApi.delete("/my", My.remove);
+routerApi.put("/my", My.put);
 
 let router = new Router();
 router.use("/", routerHome.routes(), routerHome.allowedMethods());

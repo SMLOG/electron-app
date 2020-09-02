@@ -11,10 +11,8 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 
 const mainConfig = require("./webpack.main.config");
 const rendererConfig = require("./webpack.renderer.config");
-const serverConfig = require("./webpack.server.config");
 
 let electronProcess = null;
-let serverProcess = null;
 let manualRestart = false;
 let hotMiddleware;
 
@@ -45,7 +43,7 @@ function logStats(proc, data) {
   console.log(log);
 }
 
-function startHotloadRenderer() {
+function startRenderer() {
   return new Promise((resolve, reject) => {
     rendererConfig.entry.renderer = [path.join(__dirname, "dev-client")].concat(
       rendererConfig.entry.renderer
@@ -91,42 +89,7 @@ function startHotloadRenderer() {
   });
 }
 
-function startHotloadServer() {
-  return new Promise((resolve, reject) => {
-    serverConfig.entry.main = [
-      path.join(__dirname, "../src/server/index.dev.js"),
-    ].concat(serverConfig.entry.main);
-    serverConfig.mode = "development";
-    const compiler = webpack(serverConfig);
-
-    compiler.hooks.watchRun.tapAsync("watch-run", (compilation, done) => {
-      logStats("Server", chalk.white.bold("compiling..."));
-      //hotMiddleware.publish({ action: "compiling" });
-      done();
-    });
-
-    compiler.watch({}, (err, stats) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (serverProcess && serverProcess.kill) {
-        // process.kill(serverProcess.pid);
-        //process.kill(serverProcess.pid);
-
-        serverProcess = null;
-        setTimeout(() => {
-          // startHotloadServer();
-        }, 3000);
-      }
-      logStats("Server", stats);
-
-      resolve();
-    });
-  });
-}
-
-function startHotloadMain() {
+function startMain() {
   return new Promise((resolve, reject) => {
     mainConfig.entry.main = [
       path.join(__dirname, "../src/main/index.dev.js"),
@@ -136,7 +99,7 @@ function startHotloadMain() {
 
     compiler.hooks.watchRun.tapAsync("watch-run", (compilation, done) => {
       logStats("Main", chalk.white.bold("compiling..."));
-      //hotMiddleware.publish({ action: "compiling" });
+      hotMiddleware.publish({ action: "compiling" });
       done();
     });
 
@@ -147,15 +110,18 @@ function startHotloadMain() {
       }
 
       logStats("Main", stats);
+
       if (electronProcess && electronProcess.kill) {
+        manualRestart = true;
         process.kill(electronProcess.pid);
-        process.kill(electronProcess.pid);
+        electronProcess = null;
+        startElectron();
 
         setTimeout(() => {
-          // startElectron();
           manualRestart = false;
-        }, 3000);
+        }, 5000);
       }
+
       resolve();
     });
   });
@@ -185,22 +151,6 @@ function startElectron() {
 
   electronProcess.on("close", () => {
     if (!manualRestart) process.exit();
-  });
-}
-function startKoaService() {
-  var args = [path.join(__dirname, "../dist/server/main.js")];
-
-  serverProcess = spawn("node", args);
-
-  serverProcess.stdout.on("data", (data) => {
-    electronLog(data, "blue");
-  });
-  serverProcess.stderr.on("data", (data) => {
-    electronLog(data, "red");
-  });
-
-  serverProcess.on("close", () => {
-    electronLog("koa close", "red");
   });
 }
 
@@ -242,24 +192,13 @@ function greeting() {
 function init() {
   greeting();
 
-  Promise.all([
-    startHotloadRenderer(),
-    startHotloadMain(),
-    //  startHotloadServer(),
-  ])
+  Promise.all([startRenderer(), startMain()])
     .then(() => {
-      //  startKoaService();
       startElectron();
     })
     .catch((err) => {
       console.error(err);
     });
-
-  process.on("SIGINT", function() {
-    console.log("Exit now!");
-    serverProcess.kill("SIGINT");
-    process.exit();
-  });
 }
 
 init();

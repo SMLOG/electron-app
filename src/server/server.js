@@ -8,8 +8,10 @@ import { cacheObject, fnGetFinBasic } from "./basicAnalyst";
 const koa = require("koa");
 const logger = require("koa-logger");
 const Router = require("koa-router");
+const onerror = require("koa-onerror");
 
 const app = new koa();
+onerror(app);
 app.use(logger());
 //跨域请求和options请求
 app.use(async (ctx, next) => {
@@ -85,12 +87,14 @@ app.use(async (ctx) => {
 });
 
 console.log("start2");
-app.listen(3000);
+//app.listen(3000);
 
 process.on("uncaughtException", (e) => {
   console.error("uncaughtException", e);
   process.exit(0);
 });
+module.exports = app;
+
 /*
 (async () => {
   let list = [];

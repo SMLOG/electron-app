@@ -5,6 +5,7 @@ import fs from "fs";
 import { CONFIG_DIR } from "./config";
 import { cacheObject, fnGetFinBasic } from "./basicAnalyst";
 import My from "./controller/MyController";
+import HQController from "./controller/HQController";
 const koa = require("koa");
 const logger = require("koa-logger");
 const Router = require("koa-router");
@@ -83,6 +84,8 @@ routerApi.post("/my", My.add);
 routerApi.get("/my", My.list);
 routerApi.delete("/my", My.remove);
 routerApi.put("/my", My.put);
+routerApi.get("/hq/indlist", HQController.indlist);
+routerApi.get("/hq/ind", HQController.ind);
 
 let router = new Router();
 router.use("/", routerHome.routes(), routerHome.allowedMethods());

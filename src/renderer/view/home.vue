@@ -1,5 +1,15 @@
 <template>
   <div>
+    <div
+      style="position: fixed;
+    color: black;
+    right: 40px;
+    top: 5px;
+    z-index: 1000000;"
+      @click="fullScreen()"
+    >
+      全屏
+    </div>
     <Setting />
     <Right :item="rightItem" />
     <div
@@ -218,19 +228,13 @@ import Right from "@/view/components/Right";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
-import { initwebview } from "@/lib/webview";
-import { loadHQ } from "@/lib/hq";
-import { mouseDragMenu } from "@/lib/WinUtils";
 import { getAllInd } from "@/lib/ind";
-//import Calendar from "vue-calendar-component";
 import Calendar from "@/view/components/calendar";
-import storejs from "storejs";
 
 import {
   ObjectType,
   parse,
   loadScripts,
-  fetchEval,
   dateFormat,
   timeout,
   openKlineWindow,
@@ -292,7 +296,6 @@ export default {
       show_filter_prop: false,
       fullscreen: false,
       indMap: window.indMap,
-      his: storejs.get("history") || {},
       items3: [],
       zsItems: [{ code: "sh000001" }, { code: "sz399001" }],
       rightItem: false,
@@ -354,8 +357,6 @@ export default {
     },
   },
   mounted() {
-    window.axios = this.$electron.remote.getGlobal("axios");
-
     window.addEventListener("keyup", (event) => {
       switch (event.keyCode) {
         case 27:
@@ -376,13 +377,6 @@ export default {
 
     getAllInd(this.indMap);
 
-    initwebview(this.closeview.bind(this), this.$electron);
-    mouseDragMenu(this.$electron, false);
-    document.ondblclick = () => {
-      let win = $electron.remote.getCurrentWindow();
-      win.setPosition(0, 0);
-      window.resizeTo(screen.availWidth, screen.availHeight);
-    };
     this.reloadData();
     this.initTimer();
   },
@@ -426,6 +420,37 @@ export default {
   },
 
   methods: {
+    fullScreen() {
+      /*判断是否全屏*/
+      var isFullscreen =
+        document.fullScreenElement || //W3C
+        document.msFullscreenElement || //IE
+        document.mozFullScreenElement || //火狐
+        document.webkitFullscreenElement || //谷歌
+        false;
+      if (!isFullscreen) {
+        var el = document.documentElement;
+        if (el.requestFullscreen) {
+          el.requestFullscreen();
+        } else if (el.mozRequestFullScreen) {
+          el.mozRequestFullScreen();
+        } else if (el.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          el.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+    },
     dblclickn(event, item) {
       let items = this.getSourceItems();
       let i = items.indexOf(item);
@@ -522,7 +547,7 @@ export default {
     openlink(item, event, link) {
       link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
       this.openType = link;
-      let webview = $(document.querySelectorAll("webview"));
+      let webview = $(document.querySelectorAll("#webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
       this.item = item;
       let url = link.replace("{{code}}", item.code);
@@ -578,7 +603,6 @@ export default {
     dragEnd(e) {
       e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
       save(this.items);
-      this.sendRefresh();
     },
     reloadData() {
       axios.get("/api/my").then((resp) => {
@@ -595,7 +619,6 @@ export default {
       }
       this.openCode = selectItem.code;
       //this.reloadData();
-      this.sendRefresh();
       monitor(this.items);
 
       let items = getOrFiltersItems(this.items2);
@@ -603,14 +626,8 @@ export default {
       monitor(items);
     },
     initTimer() {
-      (async () => {
-        for (;;) {
-          await this.refresh();
-          await timeout(2000);
-        }
-      })();
       //定时监控
-      (async () => {
+      /*(async () => {
         for (;;) {
           await timeout(60000);
 
@@ -631,27 +648,11 @@ export default {
             this.items3 = items2;
           }
         }
-      })();
-      (async () => {
+      })();*/
+      /*(async () => {
         this.items2.length = 0;
         afilters[SELF].items = this.items;
         afilters["海选"].items = this.items2;
-
-        /*let cacheDateTime = storejs.get("seadatetime") || 0;
-        if (new Date().getTime() - cacheDateTime >= 172800000) {
-          console.log("re-fetch filter items");
-          let items = await getFilterList((e) => {
-            if (e) {
-              this.items2.push(e);
-              toFiltersCount(e, "海选");
-            } else {
-            }
-          });
-          storejs.set("seadatetime", new Date().getTime());
-          storejs.set("sea", this.items2);
-        } else {
-          this.items2.splice(0, 0, ...(storejs.get("sea") || []));
-        }*/
         try {
           let resp = await (await fetch("/api/sea")).json();
           this.items2.splice(0, 0, ...(resp || []));
@@ -664,7 +665,7 @@ export default {
         updateFiltersCount();
         monitor(items);
         this.ready = true;
-      })();
+      })();*/
 
       (async () => {
         for (;;) {
@@ -675,43 +676,12 @@ export default {
         }
       })();
     },
-    async refresh() {
-      let that = this;
-      let needReloadData = false;
-      //loadHQ(this.items);
-      that.sendRefresh();
-    },
-    sendRefresh() {
-      this.$electron.remote.BrowserWindow.getAllWindows().map((win) => {
-        try {
-          win.isVisible() &&
-            win.webContents.send(
-              "refresh",
-              this.items.filter((e) => e.isFocus)
-            );
-        } catch (e) {
-          console.log(e);
-        }
-      });
-      //this.$electron.remote.app.minwin.webContents.send("refresh", this.items);
-    },
-    delItem(item) {
-      //if (confirm("are you sure?")) {
-      //this.items = this.items.slice(this.items.indexOf(item), 1);
-      for (let k in window) {
-        try {
-          if (k.indexOf(item.code) > -1) window[k] = undefined;
-        } catch (e) {}
-      }
-      axios.delete("/api/my", { data: item });
 
+    delItem(item) {
+      axios.delete("/api/my", { data: item });
       this.items.splice(this.items.indexOf(item), 1);
       toFiltersCount(item, SELF, "-");
-
       save(this.items);
-      this.sendRefresh();
-
-      //}
     },
     saveDatas(item) {
       if (item.isFocus) this.addItem(item);

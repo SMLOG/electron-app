@@ -1,10 +1,4 @@
-import { getTdatas } from "./tech";
-import {
-  getTables,
-  loadReports,
-  techAnalyst,
-  isNotTradeTime,
-} from "./getTable";
+import { techAnalyst } from "./getTable";
 import { cache } from "./db";
 
 export async function monitor(items) {
@@ -12,10 +6,6 @@ export async function monitor(items) {
     let item = items[i];
     await techAnalyst(item);
 
-    loadReports(item);
-
     Object.assign(item, cache[name]);
   }
 }
-
-getTables();

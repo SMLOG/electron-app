@@ -8,24 +8,28 @@
     <div
       v-if="item"
       style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;top:25px;"
-    >{{ item.name }}({{ item.code }})</div>
+    >
+      {{ item.name }}({{ item.code }})
+    </div>
     <div v-for="(post, i) in m_posts" :key="i" class="post">
       <div>
         <span class="post_title">{{ post.post_user.user_nickname }}:</span>
         <span class="post_time">{{ post.post_publish_time }}</span>
       </div>
       <div class="post_content">
-        <b v-if="post.content_type>0">[研报]</b>
-        {{ post.post_content||post.post_title }}
+        <b v-if="post.content_type > 0">[研报]</b>
+        {{ post.post_content || post.post_title }}
         <a
           v-if="post.post_pdf_url"
           class="link pdf"
           @click="viewPdf(post.post_pdf_url)"
-        >PDF</a>
+          >PDF</a
+        >
       </div>
       <div v-if="post.replies" class="replies">
         <div v-for="rep in post.replies.re" :key="rep.reply_id" class="reply">
-          <span>{{ rep.reply_user.user_nickname }}</span>:
+          <span>{{ rep.reply_user.user_nickname }}</span
+          >:
           <span>{{ rep.reply_text }}</span>
         </div>
       </div>
@@ -38,7 +42,7 @@ function getPosts(id, type = 1) {
   const data = {
     path: "/content/api/Post/ArticleContent",
     env: "2",
-    param: `postid=${id}&type=0`
+    param: `postid=${id}&type=0`,
   };
   if (type == 2) {
     data.path = "/reply/api/Reply/ArticleReplyList";
@@ -49,11 +53,11 @@ function getPosts(id, type = 1) {
     url:
       "http://mguba.eastmoney.com/interface/GetData.aspx?mt=" + Math.random(),
     headers: {
-      Referer: `http://mguba.eastmoney.com/mguba/article/0/${id}`
+      Referer: `http://mguba.eastmoney.com/mguba/article/0/${id}`,
     },
     data: Object.keys(data)
-      .map(k => `${k}=${encodeURIComponent(data[k])}`)
-      .join("&")
+      .map((k) => `${k}=${encodeURIComponent(data[k])}`)
+      .join("&"),
   }).then(function(response) {
     return response.data;
   });
@@ -67,9 +71,7 @@ export default {
   },
 
   mounted() {
-    window.axios = this.$electron.remote.getGlobal("axios");
-
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       switch (event.keyCode) {
         case 27:
           this.m_posts_item = null;
@@ -79,7 +81,7 @@ export default {
     });
 
     let time = 0;
-    this.$refs.m_posts.addEventListener("scroll", event => {
+    this.$refs.m_posts.addEventListener("scroll", (event) => {
       if (
         this.$refs.m_posts.scrollTop + this.$refs.m_posts.clientHeight >=
         this.$refs.m_posts.scrollHeight - 30
@@ -91,7 +93,7 @@ export default {
       }
     });
 
-    window.addEventListener("click", e => {
+    window.addEventListener("click", (e) => {
       if (
         this.$refs.m_posts &&
         !this.$refs.m_posts.contains(e.target) &&
@@ -110,15 +112,15 @@ export default {
         let jurl = `https://wap.eastmoney.com/info/guba/GetApiResultNewCore?url=webarticlelist%2Fapi%2FArticle%2FArticleListForMobile&query=${encodeURIComponent(
           "code=" + item.code + "&sorttype=0&ps=20&p=" + p
         )}&type=POST&cb=gubadata&callback=jsonp10`;
-        let result = await fetch(jurl).then(res => res.text());
+        let result = await fetch(jurl).then((res) => res.text());
         let posts = null;
-        window.gubadata = p => {
+        window.gubadata = (p) => {
           if (!this.m_posts) {
             this.m_posts = [];
           }
           posts = JSON.parse(p.Result).re;
           posts = posts.filter(
-            e => e.post_user.user_nickname.indexOf("证券") == -1
+            (e) => e.post_user.user_nickname.indexOf("证券") == -1
           );
 
           this.m_posts = this.m_posts.concat(posts);
@@ -195,7 +197,7 @@ export default {
           error: function(e) {
             return (p.errorCall = e), p;
           },
-          request: null
+          request: null,
         };
       try {
         c = new XMLHttpRequest();
@@ -226,7 +228,7 @@ export default {
 
       const win = new this.$electron.remote.BrowserWindow({
         width: Math.min(1024, window.outerWidth),
-        height: window.outerHeight - 40
+        height: window.outerHeight - 40,
       });
 
       pdfwin.addSupport(win);
@@ -235,14 +237,14 @@ export default {
         win.close();
         win.destroy();
       });
-    }
+    },
   },
   computed: {},
   watch: {
     item(nv, ov) {
       this.showMessage(nv);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

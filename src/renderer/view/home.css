@@ -141,20 +141,6 @@ table .descending:before {
   margin-left: -5px;
   font-size: 12px;
 }
-@supports (display: contents) {
-  table {
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-  }
-  table thead,
-  table tbody,
-  table tr {
-    display: contents;
-  }
-  table th {
-    border-color: #af1313;
-  }
-}
 
 .filters {
   margin: 0;

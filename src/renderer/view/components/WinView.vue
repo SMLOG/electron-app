@@ -13,19 +13,28 @@
             <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
             <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
             <span>换手率:{{ item["turnover"] }}%</span>
-            <span :class="{up:item.lb>1,down:item.lb<1}">量比:{{ item["lb"] }}</span>
+            <span :class="{ up: item.lb > 1, down: item.lb < 1 }"
+              >量比:{{ item["lb"] }}</span
+            >
             <span>低:{{ item["low"] }}</span>
             <span>高:{{ item["high"] }}</span>
             <span>振幅:{{ item["zf"] }}%</span>
-            <span>成交额:{{(item.amount/100000000).toFixed(2)}}亿</span>
-            <span :title="item.score_desc">分数:{{item.score}}/{{item.tscore}}</span>
+            <span>成交额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
+            <span :title="item.score_desc"
+              >分数:{{ item.score }}/{{ item.tscore }}</span
+            >
           </div>
         </div>
       </td>
     </tr>
     <tr>
       <td>
-        <webview ref="webview" id="webview" style="width:100%;height:100%;" :src="link"></webview>
+        <iframe
+          ref="webview"
+          id="webview"
+          style="width:100%;height:100%;border:none;"
+          :src="link"
+        ></iframe>
       </td>
     </tr>
   </table>
@@ -47,7 +56,7 @@ window.$ = $;
 
 export default {
   name: "WinView",
-  data: function () {
+  data: function() {
     return {
       openCode: null,
       openType: null,
@@ -62,17 +71,7 @@ export default {
   components: {
     Calendar,
   },
-  mounted() {
-    // initwebview(this.closeview.bind(this));
-
-    const webview = document.querySelector("webview");
-    webview.addEventListener("dom-ready", (e) => {});
-    webview.addEventListener("did-navigate-in-page", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    });
-  },
+  mounted() {},
   watch: {},
   computed: {},
   methods: {

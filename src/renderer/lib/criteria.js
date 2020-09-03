@@ -1,6 +1,5 @@
 import storejs from "storejs";
 import { getCacheData } from "./db";
-import { loadReports } from "./getTable";
 export const criteria = {
   scope: {
     market: {
@@ -218,7 +217,6 @@ export const criteria = {
       unit: "倍",
       order: 2,
       is: async function(e) {
-        await loadReports(e);
         if (
           e.PEG > (this._value1 || Number.MIN_VALUE) &&
           e.PEG < (this._value2 || Number.MAX_VALUE) &&

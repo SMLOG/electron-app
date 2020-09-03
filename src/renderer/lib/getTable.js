@@ -375,75 +375,7 @@ const fieldMap = {
   ldbl: "流动比率",
   sdbl: "速动比率",
 };
-function fmtReportDatas(json) {
-  let reportDate = [];
-  let map = {};
-  for (let it of json) {
-    for (let k in it) {
-      let key = fieldMap[k] || k;
-      if (!map[key]) map[key] = {};
-      map[key][it.date] = it[k];
-    }
-  }
 
-  for (let i in map["date"]) {
-    reportDate.push(i);
-  }
-  reportDate.sort().reverse();
-  reportDate.unshift("报告日期");
-  map["reportDate"] = reportDate;
-  return map;
-}
-export function loadReports(item) {
-  return (async () => {
-    for (let i = 0; i < tbls.length; i++) {
-      let tbname = tbls[i];
-      const tbVarName = "tb_" + tbname + item.code;
-      let disclose = storejs.get(`disclosure_date_${item.code}`);
-
-      let data = await getCacheData(
-        disclose &&
-          new Date().getTime() >= disclose.last &&
-          new Date().getTime() - disclose.last < 2 * 24 * 60 * 60 * 1000
-          ? new Date()
-          : null,
-        tbVarName,
-        async () => {
-          let blob = await fetch(
-            `http://quotes.money.163.com/service/${tbname}_${item.code.replace(
-              /[^0-9]/g,
-              ""
-            )}.html`
-          ).then((res) => res.blob());
-
-          return await new Promise((resolve, rejct) => {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-              var text = reader.result;
-              let tbDatas = csvJSON(text);
-              resolve(tbDatas);
-            };
-            reader.readAsText(blob, "GBK");
-          });
-        }
-      );
-      window[tbVarName] = data;
-    }
-    let zyzb = await getCacheData(null, "zyzb_" + item.code, async () => {
-      let code = item.code.replace("sz", "SZ").replace("sh", "SH");
-      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0&code=${code}`;
-      let json = await fetch(url).then((res) => res.json());
-      console.log(json);
-      try {
-        json = fmtReportDatas(json);
-      } catch (e) {}
-      return json;
-    });
-    window["zyzb_" + item.code] = zyzb;
-
-    await updateItem(item);
-  })();
-}
 async function getYKLineDatas(item) {
   let sid = item.code.replace("sh", "1.").replace("sz", "0.");
   let url = `http://push2his.eastmoney.com/api/qt/stock/kline/get?cb=jQuery18302719163191132177_1572179583739&secid=${sid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58&klt=103&fqt=0&beg=19900101&end=${new Date().getFullYear() +
@@ -477,43 +409,6 @@ async function getKLineDatas(item) {
 }
 window.getKLineDatas = getKLineDatas;
 
-async function getGZlist() {
-  let gzlist = await getCacheData(new Date(), `getGZlist`, async () => {
-    let url = `http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=SECURITYCODE&sr=1&p=1&ps=50000&js=var%20HecYRTyS={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^2019-11-15^)&rt=52466643`;
-    await fetchEval([url]);
-    let ret = window[`HecYRTyS`];
-    try {
-      delete window[`HecYRTyS`];
-    } catch (e) {
-      console.log(e);
-    }
-    return ret;
-  });
-
-  return gzlist;
-}
-window.getGZlist = getGZlist;
-function isCP(klines) {
-  let arr = klines
-    .map((e, i, datas) => {
-      e.preClose = i > 0 ? datas[i - 1].close : 0;
-      e.zf = (
-        (100 * (e.close - Math.max(e.open, e.preClose))) /
-        e.close
-      ).toFixed(2);
-      return e;
-    })
-    .map((e) => (e.close - Math.max(e.open, e.preClose)) / e.close)
-    .reverse();
-  let ret = 0;
-  let retp = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] <= 0 || arr[i] > 0.03) break;
-    ret += 1;
-    retp += arr[i];
-  }
-  return ret > 2 && retp < 0.08;
-}
 export async function getHQTimeTrades(item) {
   let cb = rid("cb");
 
@@ -599,61 +494,6 @@ export async function syncZsItems(items) {
   return items.map((e) => Object.assign(e, map[e.code]));
 }
 
-async function getHXList() {
-  let cb = rid("list");
-
-  let url = `http://25.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=20000&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f27,f28,f29,f22,f11,f62,f124,f128,f136,f115,f152&_=1572107420243`;
-  console.log(new Date());
-  let p = new Promise((resolve, reject) => {
-    window[cb] = function(data) {
-      console.log(data);
-      console.log(new Date());
-
-      resolve(data);
-    };
-  });
-  console.log("awaitTimeout");
-  await awaitTimeout(() => {
-    return fetchEval([url]);
-  });
-
-  let datalist = await p;
-  delete window[cb];
-  datalist = datalist.data.diff;
-  datalist = datalist.map((e) => {
-    return {
-      code: (e.f12.substring(0, 1) == 6 ? "sh" : "sz") + e.f12,
-      name: e.f14,
-      now: e.f2,
-      close: e.f2,
-      changePV: e.f3,
-      changeP: e.f3 + "%",
-      changeV: e.f4,
-      change: e.f4,
-      open: e.f17,
-      preClose: e.f18,
-      preclose: e.f18,
-      turnover: e.f8,
-      pe: e.f9,
-      lb: e.f10,
-      pe_ttm: e.f115,
-      volume: e.f5,
-      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
-      amount: e.f6,
-      high: e.f15,
-      zf: e.f7,
-      low: e.f16,
-      zsz: (e.f20 / 100000000).toFixed(2),
-      lz: (e.f21 / 100000000).toFixed(2),
-      avg: (e.f6 / e.f5).toFixed(2),
-      zf60: e.f24,
-      zf250: e.f25,
-      firstDay: e.f26,
-      date: new Date(e.f124 * 1000),
-    };
-  });
-  return datalist;
-}
 export function isNotTradeTime() {
   let d = new Date();
   let h = d.getHours();

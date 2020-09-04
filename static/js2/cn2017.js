@@ -24,12 +24,12 @@ var cookieUtil = {
       s = n.secure ? "; secure" : "";
     document.cookie = [name, "=", val, a, r, o, s].join("");
 
-    loader(
+    /*loader(
       "/api/cookie?cookie=" +
         encodeURIComponent(document.cookie) +
         "&_t" +
         +new Date()
-    );
+    );*/
   },
 };
 
@@ -126,7 +126,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     );
   }
 
-  loader("/api/cookie?" + "_t" + +new Date());
+  //loader("/api/cookie?" + "_t" + +new Date());
   var chart = null;
 
   function ChartMan(hqData) {

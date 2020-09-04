@@ -4,16 +4,25 @@ import App from "./App";
 import router from "./router";
 import store from "./store";
 
-if (!process.env.IS_WEB) {
-  Vue.use(require("vue-electron"));
-  window.$electron = Vue.prototype.$electron;
-}
-Vue.config.productionTip = false;
+import VueSocketIO from "vue-socket.io";
 
+Vue.config.productionTip = false;
+Vue.use(
+  new VueSocketIO({
+    debug: false,
+    connection: "/socket.io",
+    vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_",
+    },
+    options: {}, //Optional options
+  })
+);
 /* eslint-disable no-new */
 new Vue({
   components: { App },
   router,
   store,
-  template: "<App/>"
+  template: "<App/>",
 }).$mount("#app");

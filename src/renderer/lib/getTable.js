@@ -505,14 +505,14 @@ export function isNotTradeTime() {
   if (h > 15) return true;
   return false;
 }
-export async function batchUpdateHQ(items) {
+export async function batchUpdateHQ(items, datalist) {
   if (!items || !items.length) return;
 
-  let datalist = window.datalist;
+  /*let datalist = window.datalist;
   if (!isNotTradeTime() || !window.datalist) {
     // window.datalist = datalist = await getHXList();
     window.datalist = datalist = await (await fetch("/api/hxlist")).json();
-  }
+  }*/
 
   for (let i = 0; i < datalist.length; i++) {
     let item = datalist[i];

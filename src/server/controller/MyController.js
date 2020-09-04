@@ -1,5 +1,5 @@
 import { CONFIG_DIR } from "../config";
-import { cacheObject, fnGetFinBasic } from "../basicAnalyst";
+import { attachExtractInfoToItems } from "../basicAnalyst";
 
 import fs from "fs";
 let file = `${CONFIG_DIR}/my.json`;
@@ -14,14 +14,7 @@ function getlist() {
 class MyController {
   static async list(ctx) {
     let list = getlist();
-
-    for (let i = 0; i < list.length; i++) {
-      let info = await cacheObject(fnGetFinBasic, list[i].code);
-      list[i] = Object.assign(list[i], info);
-      console.log(`${i}/${list.length} => ${list[i].code}`);
-      // console.log(info);
-      //console.log(list[i]);
-    }
+    await attachExtractInfoToItems(list);
     return (ctx.body = list);
   }
   static add(ctx) {

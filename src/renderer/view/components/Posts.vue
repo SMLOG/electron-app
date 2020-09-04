@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import axios from "axios";
 function getPosts(id, type = 1) {
   const data = {
     path: "/content/api/Post/ArticleContent",

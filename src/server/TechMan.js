@@ -1,5 +1,5 @@
 import JSONP from "node-jsonp";
-
+import axios from "axios";
 const KTYPE = {
   5: "M5",
   15: "M15",

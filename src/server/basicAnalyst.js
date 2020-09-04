@@ -3,6 +3,7 @@ import axios from "axios";
 import { CONFIG_DIR } from "./config";
 import { dateFormat } from "./util";
 import fs from "fs";
+import JSONP from "node-jsonp";
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -109,7 +110,20 @@ class fn {
   }
 }
 
-class fnReportDate extends fn {
+export async function attachExtractInfoToItems(list) {
+  let disclose = await cacheObject(fnReportDate);
+  for (let i = 0; i < list.length; i++) {
+    let info = await cacheObject(fnGetFinBasic, list[i].code);
+    list[i] = Object.assign(list[i], info);
+    let dis = disclose[list[i].code];
+    if (dis && dis.ACTUAL_PUBLISH_DATE)
+      list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
+    //console.log(`${i}/${list.length} => ${list[i].code}`);
+    // console.log(info);
+    //console.log(list[i]);
+  }
+}
+export class fnReportDate extends fn {
   constructor() {
     super("yypl-预约披露日期列表.json");
     this.get = async function() {
@@ -138,7 +152,14 @@ class fnReportDate extends fn {
         ret.result.data = ret.result.data.concat(d.result.data);
       }
       ret.result.pages = 1;
-      return ret.result.data;
+      let data = {};
+      for (let i = 0; i < ret.result.data.length; i++) {
+        let it = ret.result.data[i];
+        data[
+          `${it.SECURITY_CODE[0] == 6 ? "sh" : "sz"}${it.SECURITY_CODE}`
+        ] = it;
+      }
+      return data;
     };
   }
 }

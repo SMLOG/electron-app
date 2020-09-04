@@ -3,7 +3,7 @@ import { getList } from "./TechMan";
 import { getFilterList } from "./criteria";
 import fs from "fs";
 import { CONFIG_DIR } from "./config";
-import { cacheObject, fnGetFinBasic } from "./basicAnalyst";
+import { attachExtractInfoToItems } from "./basicAnalyst";
 import My from "./controller/MyController";
 import HQController from "./controller/HQController";
 const koa = require("koa");
@@ -56,14 +56,7 @@ routerApi.get("/sea", async (ctx) => {
 
   let list = [];
   list = await getList();
-
-  for (let i = 0; i < list.length; i++) {
-    let info = await cacheObject(fnGetFinBasic, list[i].code);
-    list[i] = Object.assign(list[i], info);
-    //console.log(`${i}/${list.length} => ${list[i].code}`);
-    // console.log(info);
-    //console.log(list[i]);
-  }
+  await attachExtractInfoToItems(list);
 
   list = await getFilterList(list);
 

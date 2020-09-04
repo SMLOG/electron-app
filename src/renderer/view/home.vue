@@ -1,13 +1,7 @@
 <template>
   <div>
-
     <Setting />
     <Right :item="rightItem" />
-    <div
-      id="bg"
-      style="position:fixed;top:0;left:0;width:118px;bottom:0;background:#222;z-index:-1; "
-    ></div>
-
     <search-panel @select="addItem"></search-panel>
     <div>
       <div id="menuWrap">
@@ -27,7 +21,7 @@
           <span
             v-for="zi in zsItems"
             :key="zi.code"
-            @click="openIndex(zi, $event)"
+            @click="openlink(zi, $event)"
           >
             {{ zi.name }}
             <em :class="{ up: zi.change > 0, down: zi.change < 0 }"
@@ -117,8 +111,8 @@
                     <a
                       class="post_bt"
                       :name="item.code"
-                      @dblclick="dblclickn($event, item)"
-                      @click="viewItemMsgs(item)"
+                      @dblclick="toTop($event, item)"
+                      @click="showComments(item)"
                       >{{ index + 1 }}</a
                     >
                   </span>
@@ -135,7 +129,6 @@
                   <div
                     :title="item.code"
                     :class="{
-                      lk: item.tables && item.tables.length > 0,
                       link: true,
                       blink: item._S,
                     }"
@@ -178,7 +171,7 @@
       id="webviewWrap"
       ref="webviewWrap"
       class="webview"
-      :class="{ fullscreen: fullscreen }"
+      :class="{ fullFigure: fullFigure }"
     >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
@@ -194,7 +187,7 @@
       <WinView
         :item="item"
         :link="link"
-        @dBclick="fullscreen = !fullscreen"
+        @dBclick="fullFigure = !fullFigure"
       ></WinView>
     </div>
     <Posts :item="showMsgItem" />
@@ -203,9 +196,9 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { callFun } from "@/lib/tech-manager";
-import { tj } from "@/lib/tech-manager";
 import axios from "axios";
+
+import { callFun } from "@/lib/tech-manager";
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import FilterItem from "@/view/components/FilterItem";
@@ -217,21 +210,9 @@ import Posts from "@/view/components/Posts";
 import Sea from "@/view/components/Sea";
 import Right from "@/view/components/Right";
 
-import store from "@/localdata";
 import draggable from "vuedraggable";
-import { getAllInd } from "@/lib/ind";
-import Calendar from "@/view/components/calendar";
 
-import {
-  ObjectType,
-  parse,
-  loadScripts,
-  dateFormat,
-  timeout,
-  openKlineWindow,
-  setCookie,
-  getCookie,
-} from "@/lib/utils";
+import { ObjectType, timeout, setCookie, getCookie } from "@/lib/utils";
 import { getCheckFields } from "./headers";
 import { monitor } from "@/lib/monitor";
 import {
@@ -243,16 +224,8 @@ import {
   updateFiltersCount,
   getOrFiltersItems,
 } from "@/lib/filters";
-import fetchJsonp from "fetch-jsonp";
 
-import {
-  updateItem,
-  getMeetList,
-  getFilterList,
-  batchUpdateHQ,
-  isNotTradeTime,
-  syncZsItems,
-} from "@/lib/getTable";
+import { batchUpdateHQ, syncZsItems } from "@/lib/getTable";
 import $ from "jquery";
 window.indMap = {};
 window.$ = $;
@@ -285,9 +258,8 @@ export default {
       filterables: [],
       filter_prop: "",
       show_filter_prop: false,
-      fullscreen: false,
+      fullFigure: false,
       indMap: window.indMap,
-      items3: [],
       zsItems: [{ code: "sh000001" }, { code: "sz399001" }],
       rightItem: false,
       showMsgItem: null,
@@ -398,7 +370,7 @@ export default {
       batchUpdateHQ(this.items2.concat(this.items), data);
     },
     inds(indmap) {
-      window.indMap = indmap;
+      this.indmap = window.indMap = indmap;
     },
     echo(data) {
       console.log("from server " + data);
@@ -445,8 +417,7 @@ export default {
   },
 
   methods: {
-
-    dblclickn(event, item) {
+    toTop(event, item) {
       let items = this.getSourceItems();
       let i = items.indexOf(item);
 
@@ -458,7 +429,7 @@ export default {
       this.selectSrc = fitem;
       this.selectFilter = fname;
     },
-    viewItemMsgs(item) {
+    showComments(item) {
       if (item == this.showMsgItem) this.showMsgItem = null;
       else this.showMsgItem = item;
     },
@@ -512,7 +483,6 @@ export default {
           .sort((a, b) =>
             a.changeP < b.changeP ? 1 : a.changeP > b.changeP ? -1 : 0
           );
-        console.log(this.show_filter_prop, this.filter_prop, this.filterables);
         this.filter_prop = "_" + prop;
       }
     },
@@ -536,11 +506,9 @@ export default {
       $(this.$refs.top).css("margin-bottom", "0");
       this.openCode = null;
     },
-    openIndex(zitem, event) {
-      this.openlink(zitem, event);
-    },
+
     openlink(item, event, link) {
-      link || (link = "http://localhost:9080/static/tech.html?{{code}}&kd");
+      link || (link = "/static/tech.html?{{code}}&kd");
       this.openType = link;
       let webview = $(document.querySelectorAll("#webview"));
       let webviewWrap = $(this.$refs.webviewWrap);
@@ -564,7 +532,6 @@ export default {
         webview[0].style.height = "100%";
         this.openCode = item.code;
       }
-      //webview bug:need show up
       let timer;
       timer = setInterval(() => {
         if ($(this.$refs.webviewWrap).is(":visible")) {
@@ -572,10 +539,6 @@ export default {
           this.link = url;
         }
       }, 50);
-    },
-    toggleDetail(item) {
-      if (this.selectItem != item) this.selectItem = item;
-      else this.selectItem = null;
     },
     sort(prop) {
       let items = this[this.selectSrc.name];
@@ -596,12 +559,13 @@ export default {
       this.sortby = prop;
     },
     dragEnd(e) {
-      e.preventDefault(); //通知 Web 浏览器不要执行与事件关联的默认动作
+      e.preventDefault();
       save(this.items);
     },
     reloadData() {
       axios.get("/api/my").then((resp) => {
-        this.items = resp.data;
+        afilters[SELF].items = this.items = resp.data;
+
         this.items.forEach((e) => toFiltersCount(e, SELF));
       });
     },
@@ -651,7 +615,6 @@ export default {
         try {
           let resp = await (await fetch("/api/sea")).json();
           this.items2.splice(0, 0, ...(resp || []));
-          console.log(this.item2);
         } catch (err) {
           alert(err);
         }

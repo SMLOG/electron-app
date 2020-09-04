@@ -60,16 +60,16 @@ export let headers = [
   },
   {
     label: "披露日期",
-    prop: "disclosure",
+    prop: "ACTUAL_PUBLISH_DATE",
     type: "string",
 
     fmt: (e, item) => {
-      let data = storejs.get(`disclosure_date_${item.code}`);
-      if (data) {
-        item.disclosure = dateFormat(new Date(data.last), "yyyy-MM-dd");
+      let date = item.ACTUAL_PUBLISH_DATE;
+      if (date) {
+        item.ACTUAL_PUBLISH_DATE = dateFormat(new Date(date), "yyyy-MM-dd");
       }
 
-      return item.disclosure;
+      return item.ACTUAL_PUBLISH_DATE;
     },
   },
   /* {

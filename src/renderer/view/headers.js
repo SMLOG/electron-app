@@ -35,14 +35,11 @@ export let headers = [
     filterable: true,
     type: "string",
     class: (item) => {
-      let hy = window.indMap[item._hy];
+      let hy = window.indMap[item.hy];
       return hy && { down: hy < 0, up: hy > 0 };
-      return {};
     },
     fmt: (e, item) => {
-      item._hy = storejs.get(item.code);
-      if (item._hy) item.hy = `${item._hy}(${storejs.get(item._hy)}%)`;
-
+      if (item.hy) return `${item.hy}(${window.indMap[item.hy]}%)`;
       return item.hy;
     },
   },

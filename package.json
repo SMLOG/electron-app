@@ -11,6 +11,7 @@
     "build:clean": "cross-env BUILD_TARGET=clean node build/build.js",
     "build:web": "cross-env BUILD_TARGET=web node build/build.js",
     "devs": "nodemon -w src/server --exec \"babel-node bin/www\"",
+    "pm2": "pm2 start \"npm run devs\" && pm2 log",
     "devc": "node build/dev-runner.js",
     "dev": "concurrently \"set NODE_ENV=development&&nodemon -w src/server --exec \\\"babel-node bin/www\\\"\" \"node build/dev-runner.js\"",
     "start": "git pull && node build/dev-runner.js",
@@ -55,6 +56,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "cluster": "^0.7.7",
     "debug": "^4.1.1",
     "electron-fetch": "^1.4.0",
     "electron-pdf-window": "^1.0.12",

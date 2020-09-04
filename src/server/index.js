@@ -1,7 +1,7 @@
 const app = require("./server");
 const debug = require("debug")("demo:server");
 const http = require("http");
-import { hx } from "./ws/HQws";
+import { hx, inds } from "./ws/HQws";
 /**
  * Get port from environment and store in Express.
  */
@@ -44,6 +44,8 @@ io.of("socket.io").on("connection", (socket) => {
         let list = await hx();
         socket.broadcast.emit("broadcast", list);
         await sleep(2000);
+        let indmap = await inds();
+        socket.broadcast.emit("inds", indmap);
       } catch (e) {}
     }
   })();
@@ -108,3 +110,8 @@ function onListening() {
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
+process.on("uncaughtException", function(err) {
+  console.error(new Date().toUTCString() + " uncaughtException:", err.message);
+  console.error(err.stack);
+  process.exit(1);
+});

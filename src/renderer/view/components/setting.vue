@@ -1,7 +1,12 @@
 <template>
   <div>
     <div id="setting" ref="settings">
-      <span @click="showSetting=!showSetting" title="设置"></span>
+      <div class="dock">
+        <span @click="fullScreen()">
+          全屏
+        </span>
+        <span @click="showSetting = !showSetting" title="设置">设置</span>
+      </div>
       <div id="setting_contents" v-show="showSetting">
         <ul>
           <li>
@@ -13,7 +18,7 @@
         </ul>
         <draggable v-model="cols" @update="dragEnd" tag="ul">
           <li v-for="col in cols" :key="col.prop">
-            {{col.label}}
+            {{ col.label }}
             <input type="checkbox" v-model="col.checked" @change="changeCols" />
           </li>
         </draggable>
@@ -34,11 +39,11 @@ export default {
   data: function() {
     return {
       showSetting: false,
-      cols: getCheckFields(false)
+      cols: getCheckFields(false),
     };
   },
   mounted() {
-    window.addEventListener("click", e => {
+    window.addEventListener("click", (e) => {
       if (this.$refs.settings) {
         if (this.$refs.settings.contains(e.target)) {
         } else {
@@ -48,11 +53,42 @@ export default {
     });
   },
   components: {
-    draggable
+    draggable,
   },
   watch: {},
 
   methods: {
+    fullScreen() {
+      /*判断是否全屏*/
+      var isFullscreen =
+        document.fullScreenElement || //W3C
+        document.msFullscreenElement || //IE
+        document.mozFullScreenElement || //火狐
+        document.webkitFullscreenElement || //谷歌
+        false;
+      if (!isFullscreen) {
+        var el = document.documentElement;
+        if (el.requestFullscreen) {
+          el.requestFullscreen();
+        } else if (el.mozRequestFullScreen) {
+          el.mozRequestFullScreen();
+        } else if (el.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          el.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+    },
     clearItems() {
       storejs.set("seadatetime", 0);
     },
@@ -66,25 +102,26 @@ export default {
       store.setSetting("tech", +new Date());
       this.showSetting = false;
     },
-    ...mapActions(["setFields"])
-  }
+    ...mapActions(["setFields"]),
+  },
 };
 </script>
-<style scoped >
+<style scoped>
 a {
   cursor: pointer;
 }
-#setting span {
+#setting .dock {
   position: fixed;
   right: 5px;
   top: 5px;
-  display: inline-block;
   height: 22px;
-  width: 22px;
-  background: gray;
-  border-radius: 11px;
+  width: 60px;
   cursor: pointer;
   z-index: 10000;
+}
+#setting .dock span {
+  display: inline-block;
+  font-size: 12px;
 }
 #setting_contents {
   position: fixed;

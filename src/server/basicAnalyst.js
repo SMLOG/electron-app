@@ -1,9 +1,6 @@
 import axios from "axios";
-
-import { CONFIG_DIR } from "./config";
-import { dateFormat } from "./util";
 import fs from "fs";
-import JSONP from "node-jsonp";
+import { fn, cacheObject } from "./lib/fn";
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -96,33 +93,7 @@ export async function mainFinanceAnalyst(code) {
     return readable;
   });
 }
-class fn {
-  constructor(file, timeml = 43200000, enableCache = true, get = () => {}) {
-    this.file = file;
-    this.timeml = timeml;
-    this.get = get;
-    this.enableCache = enableCache;
-  }
-  isCacheValid(path) {
-    let stat = fs.statSync(`${path}/${this.file}`);
-    let diff = new Date().getTime() - stat.ctime.getTime();
-    return diff < this.timeml;
-  }
-}
 
-export async function attachExtractInfoToItems(list) {
-  let disclose = await cacheObject(fnReportDate);
-  for (let i = 0; i < list.length; i++) {
-    let info = await cacheObject(fnGetFinBasic, list[i].code);
-    list[i] = Object.assign(list[i], info);
-    let dis = disclose[list[i].code];
-    if (dis && dis.ACTUAL_PUBLISH_DATE)
-      list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
-    //console.log(`${i}/${list.length} => ${list[i].code}`);
-    // console.log(info);
-    //console.log(list[i]);
-  }
-}
 export class fnReportDate extends fn {
   constructor() {
     super("yypl-预约披露日期列表.json");
@@ -165,7 +136,7 @@ export class fnReportDate extends fn {
 }
 export class fnGetFinBasic extends fn {
   constructor([code, reportDate]) {
-    super(`${code}-基本财务信息.json`);
+    super(`${code}/finace.json`);
     this.code = code;
     this.reportDate = reportDate;
     this.get = async function() {
@@ -204,18 +175,7 @@ export class fnGetFinBasic extends fn {
     return true;
   }
 }
-export async function cacheObject(FN) {
-  let params = Array.prototype.slice.call(arguments, 1);
-  let fn = new FN(params);
-  let file = `${CONFIG_DIR}/${fn.file}`;
-  if (fn.enableCache && fs.existsSync(file) && fn.isCacheValid(CONFIG_DIR)) {
-    // console.log("from cache " + file);
-    return JSON.parse(fs.readFileSync(file));
-  }
-  let res = await fn.get();
-  fs.writeFileSync(file, JSON.stringify(res));
-  return res;
-}
+
 false &&
   (async () => {
     let data = await cacheObject(fnReportDate);

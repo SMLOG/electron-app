@@ -1,11 +1,11 @@
 export const dataUtil = {
-  dd: function (t) {
+  dd: function(t) {
     return new Date(t.getFullYear(), t.getMonth(), t.getDate());
   },
-  ddt: function (t) {
+  ddt: function(t) {
     return new Date(t.getTime());
   },
-  isSameDate: function (t, e) {
+  isSameDate: function(t, e) {
     return t &&
       e &&
       t.getFullYear() == e.getFullYear() &&
@@ -13,18 +13,18 @@ export const dataUtil = {
       ? t.getDate() == e.getDate()
       : !1;
   },
-  isSameTime: function (t, e) {
+  isSameTime: function(t, e) {
     return t && e ? t.getTime() == e.getTime() : !1;
   },
-  stbs: function (t, e, i, n) {
+  stbs: function(t, e, i, n) {
     return t.getFullYear() == e && t.getMonth() == i ? t.getDate() == n : !1;
   },
-  stbds: function (t, e, i) {
+  stbds: function(t, e, i) {
     !i && (i = "-");
     var n = e.split(i);
     return this.stbs(t, Number(n[0]), Number(n[1]) - 1, Number(n[2]));
   },
-  ds: function (t, e, i, n, r, a) {
+  ds: function(t, e, i, n, r, a) {
     "undefined" == typeof e && (e = "-");
     var o = [];
     if ((n || o.push(t[i ? "getUTCFullYear" : "getFullYear"]()), !r)) {
@@ -37,7 +37,7 @@ export const dataUtil = {
     }
     return o.join(e);
   },
-  dss: function (t, e, i) {
+  dss: function(t, e, i) {
     var n = this.ds(t, e, i),
       r = [t["get" + (i ? "UTC" : "") + "Hours"]()],
       a = [t["get" + (i ? "UTC" : "") + "Minutes"]()],
@@ -49,7 +49,7 @@ export const dataUtil = {
       ].join(":");
     return [n, s].join(" ");
   },
-  dst: function (t, e, i) {
+  dst: function(t, e, i) {
     var n = [t["get" + (i ? "UTC" : "") + "Hours"]()],
       r = [t["get" + (i ? "UTC" : "") + "Minutes"]()],
       a = [10 > n ? "0" + n : n, 10 > r ? "0" + r : r];
@@ -59,7 +59,7 @@ export const dataUtil = {
     }
     return a.join(":");
   },
-  sd: function (t, e) {
+  sd: function(t, e) {
     var i = t.split("-"),
       n = i[0],
       r = i[1] - 1 || 0,
@@ -73,25 +73,25 @@ export const dataUtil = {
       new Date(n, r, a, o, s, l)
     );
   },
-  ssd: function (t) {
+  ssd: function(t) {
     var e = t.split(" "),
       i = e[0],
       n = e[1];
     return this.sd(i, n);
   },
-  gw: function (t, e) {
+  gw: function(t, e) {
     var i = 6048e5,
       n = 2592e5,
       r = (t.getTime() - n) / i,
       a = (e.getTime() - n) / i;
     return Math.floor(r) == Math.floor(a);
   },
-  gm: function (t, e) {
+  gm: function(t, e) {
     return t.getFullYear() == e.getFullYear()
       ? t.getMonth() == e.getMonth()
       : !1;
   },
-  gy: function (t, e) {
+  gy: function(t, e) {
     return t.getFullYear() == e.getFullYear();
   },
   weekname: [
@@ -104,22 +104,22 @@ export const dataUtil = {
     "\u516d",
     "\u65e5",
   ],
-  nw: function (t) {
+  nw: function(t) {
     return this.weekname[t] || "";
   },
 };
 export const kUtil = {
-  mw: function (datas, last, prevClose, n, r) {
+  mw: function(datas, last, prevClose, n, r) {
     "number" != typeof n && (n = 0);
-    var a = datas.length,
+    var len = datas.length,
       o = datas[0];
     n > 1 && (o.volume /= n);
     var s,
       wArr = [],
       mArr = [],
       yArr = [];
-    if (1 == a)
-      (wArr[0] = {
+    if (1 == len) {
+      wArr[0] = {
         open: last.open,
         high: last.high,
         low: last.low,
@@ -127,161 +127,170 @@ export const kUtil = {
         volume: last.totalVolume,
         amount: last.totalAmount,
         date: dataUtil.dd(last.date),
-      }),
-        (mArr[0] = {
-          open: last.open,
-          high: last.high,
-          low: last.low,
-          close: last.price,
-          volume: last.totalVolume,
-          amount: last.totalAmount,
-          date: dataUtil.dd(last.date),
-        }),
-        (yArr[0] = {
-          open: last.open,
-          high: last.high,
-          low: last.low,
-          close: last.price,
-          volume: last.totalVolume,
-          amount: last.totalAmount,
-          date: dataUtil.dd(last.date),
-        });
-    else
+      };
+      mArr[0] = {
+        open: last.open,
+        high: last.high,
+        low: last.low,
+        close: last.price,
+        volume: last.totalVolume,
+        amount: last.totalAmount,
+        date: dataUtil.dd(last.date),
+      };
+      yArr[0] = {
+        open: last.open,
+        high: last.high,
+        low: last.low,
+        close: last.price,
+        volume: last.totalVolume,
+        amount: last.totalAmount,
+        date: dataUtil.dd(last.date),
+      };
+    } else {
       for (
         var h,
-          d = o.open,
-          f = o.high,
-          p = o.low,
-          m = o.close,
-          g = o.volume,
-          v = o.date,
-          b = o.amount,
-          N = o.open,
-          y = o.high,
-          w = o.low,
-          x = o.close,
-          S = o.volume,
-          _ = o.date,
-          T = o.amount,
-          k = o.open,
-          A = o.high,
-          D = o.low,
-          P = o.close,
-          O = o.volume,
-          M = o.date,
-          R = o.amount,
+          open = o.open,
+          high = o.high,
+          low = o.low,
+          close = o.close,
+          volume = o.volume,
+          date = o.date,
+          amount = o.amount,
+          open2 = o.open,
+          high2 = o.high,
+          low2 = o.low,
+          close2 = o.close,
+          volume2 = o.volume,
+          date2 = o.date,
+          amount2 = o.amount,
+          open3 = o.open,
+          high3 = o.high,
+          low3 = o.low,
+          close3 = o.close,
+          volume3 = o.volume,
+          date3 = o.date,
+          amount3 = o.amount,
           I = 1;
-        a > I;
+        len > I;
         I++
-      )
-        (o = datas[I]),
-          n > 1 && (o.volume /= n),
-          dataUtil.gw(datas[I - 1].date, o.date)
-            ? (o.high > f && (f = o.high),
-              o.low < p && (p = o.low),
-              (m = o.close),
-              (g += o.volume),
-              (b += o.amount),
-              (v = o.date))
-            : (isNaN(r) ||
-                ((s = v.getDay()),
-                0 == s && (s = 7),
-                (h = s - r),
-                h > 0 && ((v = dataUtil.ddt(v)), v.setDate(v.getDate() - h))),
-              wArr.push({
-                open: d,
-                high: f,
-                low: p,
-                close: m,
-                volume: g,
-                date: v,
-                amount: b,
-              }),
-              (d = o.open),
-              (f = o.high),
-              (p = o.low),
-              (m = o.close),
-              (g = o.volume),
-              (b = o.amount),
-              (v = o.date)),
-          dataUtil.gm(datas[I - 1].date, o.date)
-            ? (o.high > y && (y = o.high),
-              o.low < w && (w = o.low),
-              (x = o.close),
-              (S += o.volume),
-              (T += o.amount),
-              (_ = o.date))
-            : (isNaN(r) ||
-                ((s = _.getDay()),
-                0 == s && (s = 7),
-                (h = s - r),
-                h > 0 && ((_ = dataUtil.ddt(_)), _.setDate(_.getDate() - h))),
-              mArr.push({
-                open: N,
-                high: y,
-                low: w,
-                close: x,
-                volume: S,
-                date: _,
-                amount: T,
-              }),
-              (N = o.open),
-              (y = o.high),
-              (w = o.low),
-              (x = o.close),
-              (S = o.volume),
-              (T = o.amount),
-              (_ = o.date)),
-          dataUtil.gy(datas[I - 1].date, o.date)
-            ? (o.high > A && (A = o.high),
-              o.low < D && (D = o.low),
-              (P = o.close),
-              (O += o.volume),
-              (R += o.amount),
-              (M = o.date))
-            : (yArr.push({
-                open: k,
-                high: A,
-                low: D,
-                close: P,
-                volume: O,
-                date: M,
-                amount: R,
-              }),
-              (k = o.open),
-              (A = o.high),
-              (D = o.low),
-              (P = o.close),
-              (O = o.volume),
-              (M = o.date)),
-          I == a - 1 &&
-            (wArr.push({
-              open: d,
-              high: f,
-              low: p,
-              close: m,
-              volume: g,
-              date: v,
-              amount: b,
+      ) {
+        o = datas[I];
+        n > 1 && (o.volume /= n);
+        if (dataUtil.gw(datas[I - 1].date, o.date)) {
+          o.high > high && (high = o.high),
+            o.low < low && (low = o.low),
+            (close = o.close),
+            (volume += o.volume),
+            (amount += o.amount),
+            (date = o.date);
+        } else {
+          isNaN(r) ||
+            ((s = date.getDay()),
+            0 == s && (s = 7),
+            (h = s - r),
+            h > 0 &&
+              ((date = dataUtil.ddt(date)), date.setDate(date.getDate() - h))),
+            wArr.push({
+              open: open,
+              high: high,
+              low: low,
+              close: close,
+              volume: volume,
+              date: date,
+              amount: amount,
             }),
+            (open = o.open),
+            (high = o.high),
+            (low = o.low),
+            (close = o.close),
+            (volume = o.volume),
+            (amount = o.amount),
+            (date = o.date);
+        }
+
+        dataUtil.gm(datas[I - 1].date, o.date)
+          ? (o.high > high2 && (high2 = o.high),
+            o.low < low2 && (low2 = o.low),
+            (close2 = o.close),
+            (volume2 += o.volume),
+            (amount2 += o.amount),
+            (date2 = o.date))
+          : (isNaN(r) ||
+              ((s = date2.getDay()),
+              0 == s && (s = 7),
+              (h = s - r),
+              h > 0 &&
+                ((date2 = dataUtil.ddt(date2)),
+                date2.setDate(date2.getDate() - h))),
             mArr.push({
-              open: N,
-              high: y,
-              low: w,
-              close: x,
-              volume: S,
-              date: _,
-              amount: T,
+              open: open2,
+              high: high2,
+              low: low2,
+              close: close2,
+              volume: volume2,
+              date: date2,
+              amount: amount2,
             }),
-            yArr.push({
-              open: k,
-              high: A,
-              low: D,
-              close: P,
-              volume: O,
-              date: M,
-              amount: R,
-            }));
+            (open2 = o.open),
+            (high2 = o.high),
+            (low2 = o.low),
+            (close2 = o.close),
+            (volume2 = o.volume),
+            (amount2 = o.amount),
+            (date2 = o.date));
+        dataUtil.gy(datas[I - 1].date, o.date)
+          ? (o.high > high3 && (high3 = o.high),
+            o.low < low3 && (low3 = o.low),
+            (close3 = o.close),
+            (volume3 += o.volume),
+            (amount3 += o.amount),
+            (date3 = o.date))
+          : (yArr.push({
+              open: open3,
+              high: high3,
+              low: low3,
+              close: close3,
+              volume: volume3,
+              date: date3,
+              amount: amount3,
+            }),
+            (open3 = o.open),
+            (high3 = o.high),
+            (low3 = o.low),
+            (close3 = o.close),
+            (volume3 = o.volume),
+            (date3 = o.date));
+        if (I == len - 1) {
+          wArr.push({
+            open: open,
+            high: high,
+            low: low,
+            close: close,
+            volume: volume,
+            date: date,
+            amount: amount,
+          });
+          mArr.push({
+            open: open2,
+            high: high2,
+            low: low2,
+            close: close2,
+            volume: volume2,
+            date: date2,
+            amount: amount2,
+          });
+          yArr.push({
+            open: open3,
+            high: high3,
+            low: low3,
+            close: close3,
+            volume: volume3,
+            date: date3,
+            amount: amount3,
+          });
+        }
+      }
+    }
     return (
       (wArr[0].prevclose = prevClose),
       (mArr[0].prevclose = prevClose),
@@ -289,7 +298,7 @@ export const kUtil = {
       [wArr, mArr, yArr]
     );
   },
-  nc: function (t, e, i, n) {
+  nc: function(t, e, i, n) {
     if (t && !(t.length < 1)) {
       n = n || {};
       var r = t[t.length - 1];
@@ -298,7 +307,9 @@ export const kUtil = {
         (720 == i && dataUtil.gm(r.date, e.date))
       )
         return (
-          (r.day = String(e.today).split("-").join("/")),
+          (r.day = String(e.today)
+            .split("-")
+            .join("/")),
           void (r.date = dataUtil.dd(e.date))
         );
       r = t[t.length - 1];
@@ -313,7 +324,9 @@ export const kUtil = {
         volume: isNaN(n.volume) ? e.totalVolume : n.volume,
         amount: isNaN(n.amount) ? e.totalAmount : n.amount,
         percent: s,
-        day: String(e.today).split("-").join("/"),
+        day: String(e.today)
+          .split("-")
+          .join("/"),
         date: dataUtil.ddt(e.date),
         time: e.time,
         ampP: 0,
@@ -323,7 +336,7 @@ export const kUtil = {
       });
     }
   },
-  pd: function (t, e) {
+  pd: function(t, e) {
     var i = t.length,
       n = t[0],
       r = n.prevclose;
@@ -353,12 +366,12 @@ export const kUtil = {
       n.kke_cs = n.close > n.open ? 1 : n.open > n.close ? -1 : 0;
     }
   },
-  ms: function (t, e, i, n, r) {
+  ms: function(t, e, i, n, r) {
     return (
       i > t && (t += 24), Math.max(1, Math.ceil((60 * (t - i) + e - n) / r))
     );
   },
-  spk: function (t, e, i, n, r) {
+  spk: function(t, e, i, n, r) {
     if (t == e) return !0;
     var a = t.split(":"),
       o = Number(a[0]),
@@ -380,7 +393,7 @@ export const kUtil = {
       ? !0
       : !1;
   },
-  yd: function (t) {
+  yd: function(t) {
     for (
       var e = t[t.length - 1].date.getFullYear(), i = [], n = t.length;
       n-- && t[n].date.getFullYear() == e;
@@ -395,14 +408,14 @@ export const kUtil = {
       i
     );
   },
-  rd: function (t, e) {
+  rd: function(t, e) {
     var i = [],
       n = dataUtil.dd(e);
     n.setFullYear(n.getFullYear() - 5);
     for (var r = t.length; r-- && !(t[r].date < n); ) i[i.length] = t[r];
     return i.reverse(), (i[0].prevclose = t[r] ? t[r].close : i[0].close), i;
   },
-  adbd: function (t, e, i, n) {
+  adbd: function(t, e, i, n) {
     for (
       var r,
         a,
@@ -436,7 +449,7 @@ export const kUtil = {
     }
     return u > 0 && t.splice(0, u), t;
   },
-  ayd: function (t, e, i, n, r) {
+  ayd: function(t, e, i, n, r) {
     for (
       var a, o, s, l, u = dataUtil.isSameDate, c = t.length, h = e.length;
       h--;

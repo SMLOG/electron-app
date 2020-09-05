@@ -1,5 +1,6 @@
 import JSONP from "node-jsonp";
 import axios from "axios";
+import { fn, cacheObject } from "./lib/fn";
 const KTYPE = {
   5: "M5",
   15: "M15",
@@ -24,7 +25,437 @@ const CFG = {
   Hfq: 2,
 };
 //指数行情 https://38.push2.eastmoney.com/api/qt/ulist.np/get?secids=1.000001,0.399001,0.399006,0.399005,fields=f1,f2,f3,f4,f12,f13,f14,f107,f152&ut=6d2ffaa6a585d612eda28417681d58fb',
-
+var n = !0,
+  o = !0,
+  a = 0.02,
+  s = 0,
+  r = 0;
+function et(t, e) {
+  if (o) {
+    if (n) {
+      r = e[t].high;
+      for (var i = 0; i < 2; i++) r < e[t - i].high && (r = e[t - i].high);
+      s = e[t].low;
+      for (i = 0; i < 2; i++) s > e[t - i].low && (s = e[t - i].low);
+      (e[t].SAR = s), (e[t].SAR_RED = !0), (a = 0.02);
+    } else {
+      r = e[t].high;
+      for (i = 0; i < 2; i++) r < e[t - i].high && (r = e[t - i].high);
+      s = e[t].low;
+      for (i = 0; i < 2; i++) s > e[t - i].low && (s = e[t - i].low);
+      (e[t].SAR = r), (e[t].SAR_RED = !1), (a = 0.02);
+    }
+    o = !1;
+  } else
+    n
+      ? ((e[t].SAR = e[t - 1].SAR + a * (r - e[t - 1].SAR)),
+        (e[t].SAR_RED = !0),
+        e[t].high > r && ((r = e[t].high), (a = Math.min(a + 0.02, 0.2))),
+        e[t].SAR > e[t].close && ((o = !(n = !1)), et(t, e)))
+      : ((e[t].SAR = e[t - 1].SAR + a * (s - e[t - 1].SAR)),
+        (e[t].SAR_RED = !1),
+        e[t].low < s && ((s = e[t].low), (a = Math.min(a + 0.02, 0.2))),
+        e[t].SAR < e[t].close && ((o = n = !0), et(t, e)));
+}
+function tech2(t) {
+  null == t || t.Count;
+  for (
+    var e,
+      i,
+      n,
+      o,
+      a,
+      s,
+      r,
+      l,
+      h,
+      d,
+      p,
+      c,
+      A,
+      g,
+      f,
+      u,
+      m,
+      x,
+      w,
+      v,
+      y,
+      M,
+      B,
+      C,
+      I,
+      b,
+      k,
+      D,
+      E,
+      R = [],
+      Q = t.length,
+      _ = 0;
+    _ < Q;
+    _++
+  ) {
+    var O = t[_].split(","),
+      S = {
+        Average5: 0,
+        Average10: 0,
+        Average20: 0,
+        Average30: 0,
+        Average3: 0,
+        Average6: 0,
+        Average12: 0,
+        Average24: 0,
+        Average50: 0,
+        Average60: 0,
+        ASI: 0,
+        BIAS_A: 0,
+        BIAS_B: 0,
+        BIAS_C: 0,
+        BOLL: 0,
+        BOLL_UPPER: 0,
+        BOLL_LOWER: 0,
+        CCI_TYP: 0,
+        CCI: 0,
+        CR_MID: 0,
+        CR_AX: 0,
+        CR_BX: 0,
+        CR: 0,
+        CR_A: 0,
+        CR_B: 0,
+        CR_C: 0,
+        DMI_TR: 0,
+        DMI_DMP: 0,
+        DMI_DMM: 0,
+        DMI_EXPMEMA_TR: 0,
+        DMI_EXPMEMA_DMP: 0,
+        DMI_EXPMEMA_DMM: 0,
+        DMI_PDI: 0,
+        DMI_MDI: 0,
+        DMI_MPDI: 0,
+        DMI_ADX: 0,
+        DMI_ADXR: 0,
+        KDJ_RSV: 0,
+        KDJ_K: 0,
+        KDJ_D: 0,
+        KDJ_J: 0,
+        MACD_AX: 0,
+        MACD_BX: 0,
+        MACD_DIF: 0,
+        MACD_DEA: 0,
+        MACD: 0,
+        OBV: 0,
+        OBV_MA: 0,
+        ROC: 0,
+        ROC_MA: 0,
+        RSI_UP_A: 0,
+        RSI_DN_A: 0,
+        RSI_UP_B: 0,
+        RSI_DN_B: 0,
+        RSI_UP_C: 0,
+        RSI_DN_C: 0,
+        RSI_A: 0,
+        RSI_B: 0,
+        RSI_C: 0,
+        SAR: 0,
+        SAR_RED: 0,
+        VR: 0,
+        VR_MA: 0,
+        WR_A: 0,
+        WR_B: 0,
+        BBI: 0,
+        Zero: 0,
+        volume5: 0,
+        volume10: 0,
+        time: 0,
+        open: 0,
+        close: 0,
+        high: 0,
+        low: 0,
+        volume: 0,
+      };
+    (S.time = O[0]),
+      (S.open = parseFloat(O[1])),
+      (S.close = parseFloat(O[2])),
+      (S.high = parseFloat(O[3])),
+      (S.low = parseFloat(O[4])),
+      (S.volume = Number(O[5])),
+      R.push(S);
+  }
+  var F,
+    G = !0,
+    Y = 0,
+    j = 0;
+  for (_ = 0; _ < Q; _++) {
+    if (4 <= _) {
+      for (var K = (i = e = 0); K < 5; K++)
+        (e += R[_ - K].close), (i += R[_ - K].volume);
+      (R[_].Average5 = e / 5), (R[_].volume5 = i / 5);
+    }
+    if (9 <= _) {
+      for (K = i = e = 0; K < 10; K++)
+        (e += R[_ - K].close), (i += R[_ - K].volume);
+      (R[_].Average10 = e / 10), (R[_].volume10 = i / 10);
+    }
+    if (19 <= _) {
+      for (K = e = 0; K < 20; K++) e += R[_ - K].close;
+      R[_].Average20 = e / 20;
+    }
+    if (29 <= _) {
+      for (K = e = 0; K < 30; K++) e += R[_ - K].close;
+      R[_].Average30 = e / 30;
+    }
+    if (2 <= _) {
+      for (K = e = 0; K < 3; K++) e += R[_ - K].close;
+      R[_].Average3 = e / 3;
+    }
+    if (5 <= _) {
+      for (K = e = 0; K < 6; K++) e += R[_ - K].close;
+      R[_].Average6 = e / 6;
+    }
+    if (11 <= _) {
+      for (K = e = 0; K < 12; K++) e += R[_ - K].close;
+      R[_].Average12 = e / 12;
+    }
+    if (23 <= _) {
+      for (K = e = 0; K < 24; K++) e += R[_ - K].close;
+      R[_].Average24 = e / 24;
+    }
+    if (49 <= _) {
+      for (K = e = 0; K < 50; K++) e += R[_ - K].close;
+      R[_].Average50 = e / 50;
+    }
+    if (59 <= _) {
+      for (K = e = 0; K < 60; K++) e += R[_ - K].close;
+      R[_].Average60 = e / 60;
+    }
+    if (
+      (1 <= _ &&
+        ((n = R[_ - 1].close),
+        (o = Math.abs(R[_].high - n)),
+        (a = Math.abs(R[_].low - n)),
+        (s = Math.abs(R[_].high - R[_ - 1].low)),
+        (r = Math.abs(n - R[_ - 1].open)),
+        (l =
+          a < o && s < o
+            ? o + a / 2 + r / 4
+            : s < a && o < a
+            ? a + o / 2 + r / 4
+            : s + r / 4),
+        (h = R[_].close + (R[_].close - R[_].open) / 2 - R[_ - 1].open),
+        0 != l && (R[_].ASI = R[_ - 1].ASI + ((16 * h) / l) * Math.max(o, a))),
+      5 <= _)
+    ) {
+      for (K = e = 0; K < 6; K++) e += R[_ - K].close;
+      0 != e && (R[_].BIAS_A = 100 * (R[_].close / (e / 6) - 1));
+    }
+    if (11 <= _) {
+      for (K = e = 0; K < 12; K++) e += R[_ - K].close;
+      0 != e && (R[_].BIAS_B = 100 * (R[_].close / (e / 12) - 1));
+    }
+    if (23 <= _) {
+      for (K = e = 0; K < 24; K++) e += R[_ - K].close;
+      0 != e && (R[_].BIAS_C = 100 * (R[_].close / (e / 24) - 1));
+    }
+    if (19 <= _) {
+      for (K = e = 0; K < 20; K++) e += R[_ - K].close;
+      R[_].BOLL = e / 20;
+      for (K = e = 0; K < 20; K++)
+        e += (R[_ - K].close - R[_].BOLL) * (R[_ - K].close - R[_].BOLL);
+      (d = parseFloat(Math.sqrt(e / 20))),
+        (R[_].BOLL_UPPER = R[_].BOLL + 2 * d),
+        (R[_].BOLL_LOWER = R[_].BOLL - 2 * d);
+    }
+    if (((R[_].CCI_TYP = (R[_].high + R[_].low + R[_].close) / 3), 13 <= _)) {
+      for (K = e = 0; K < 14; K++) e += R[_ - K].close;
+      e / 14;
+      for (K = e = 0; K < 14; K++) e += R[_ - K].CCI_TYP;
+      p = e / 14;
+      for (K = e = 0; K < 14; K++) e += Math.abs(R[_ - K].CCI_TYP - p);
+      0 != e && (R[_].CCI = (R[_].CCI_TYP - p) / ((e / 14) * 0.015));
+    }
+    if (((R[_].CR_MID = (R[_].high + R[_].low) / 2), 0 == _))
+      (R[_].CR = 100),
+        (R[_].CR_AX = Math.max(R[_].high - R[_].CR_MID, 0)),
+        (R[_].CR_BX = Math.max(R[_].CR_MID - R[_].low, 0));
+    else {
+      (R[_].CR_AX = Math.max(R[_].high - R[_ - 1].CR_MID, 0)),
+        (R[_].CR_BX = Math.max(R[_ - 1].CR_MID - R[_].low, 0)),
+        (c = A = 0);
+      for (K = 0; K < 26 && K < _ + 1; K++)
+        (c += R[_ - K].CR_AX), (A += R[_ - K].CR_BX);
+      if ((0 != A && (R[_].CR = (c / A) * 100), 9 <= _)) {
+        for (K = e = 0; K < 10; K++) e += R[_ - K].CR;
+        _ + 5 < R.Length && (R[_ + 5].CR_A = e / 10);
+      }
+      if (19 <= _) {
+        for (K = e = 0; K < 20; K++) e += R[_ - K].CR;
+        _ + 9 < R.Length && (R[_ + 9].CR_B = e / 20);
+      }
+      if (39 <= _) {
+        for (K = e = 0; K < 40; K++) e += R[_ - K].CR;
+        _ + 17 < R.Length && (R[_ + 17].CR_C = e / 40);
+      }
+    }
+    if (
+      ((f =
+        0 == _
+          ? ((R[_].DMI_TR = Math.max(
+              Math.max(R[_].high - R[_].low, Math.abs(R[_].high - R[_].close)),
+              Math.abs(R[_].close - R[_].low)
+            )),
+            (g = 0))
+          : ((R[_].DMI_TR = Math.max(
+              Math.max(
+                R[_].high - R[_].low,
+                Math.abs(R[_].high - R[_ - 1].close)
+              ),
+              Math.abs(R[_ - 1].close - R[_].low)
+            )),
+            (g = R[_].high - R[_ - 1].high),
+            R[_ - 1].low - R[_].low)),
+      (R[_].DMI_DMP = 0 < g && f < g ? g : 0),
+      (R[_].DMI_DMM = 0 < f && g < f ? f : 0),
+      13 <= _)
+    ) {
+      if (13 == _) {
+        u = m = x = 0;
+        for (K = 0; K < 14; K++)
+          (u += R[_ - K].DMI_TR),
+            (m += R[_ - K].DMI_DMP),
+            (x += R[_ - K].DMI_DMM);
+        (R[_].DMI_EXPMEMA_TR = u / 14),
+          (R[_].DMI_EXPMEMA_DMP = m / 14),
+          (R[_].DMI_EXPMEMA_DMM = x / 14);
+      } else
+        (R[_].DMI_EXPMEMA_TR =
+          (2 * R[_].DMI_TR + 13 * R[_ - 1].DMI_EXPMEMA_TR) / 15),
+          (R[_].DMI_EXPMEMA_DMP =
+            (2 * R[_].DMI_DMP + 13 * R[_ - 1].DMI_EXPMEMA_DMP) / 15),
+          (R[_].DMI_EXPMEMA_DMM =
+            (2 * R[_].DMI_DMM + 13 * R[_ - 1].DMI_EXPMEMA_DMM) / 15);
+      0 != R[_].DMI_EXPMEMA_TR &&
+        ((R[_].DMI_PDI = (100 * R[_].DMI_EXPMEMA_DMP) / R[_].DMI_EXPMEMA_TR),
+        (R[_].DMI_MDI = (100 * R[_].DMI_EXPMEMA_DMM) / R[_].DMI_EXPMEMA_TR),
+        R[_].DMI_PDI + R[_].DMI_MDI != 0 &&
+          (R[_].DMI_MPDI =
+            (Math.abs(R[_].DMI_MDI - R[_].DMI_PDI) /
+              (R[_].DMI_MDI + R[_].DMI_PDI)) *
+            100));
+    }
+    if (18 <= _)
+      if (18 == _) {
+        for (K = w = 0; K < 6; K++) w += R[_ - K].DMI_MPDI;
+        R[_].DMI_ADX = w / 6;
+      } else R[_].DMI_ADX = (2 * R[_].DMI_MPDI + 5 * R[_ - 1].DMI_ADX) / 7;
+    if (23 <= _)
+      if (23 == _) {
+        for (K = v = 0; K < 6; K++) v += R[_ - K].DMI_ADX;
+        R[_].DMI_ADXR = v / 6;
+      } else R[_].DMI_ADXR = (2 * R[_].DMI_ADX + 5 * R[_ - 1].DMI_ADXR) / 7;
+    (y = R[_].low), (M = R[_].high);
+    for (K = 0; K < 9 && K < _ + 1; K++)
+      M < R[_ - K].high && (M = R[_ - K].high),
+        y > R[_ - K].low && (y = R[_ - K].low);
+    if (
+      (M != y && (R[_].KDJ_RSV = ((R[_].close - y) / (M - y)) * 100),
+      0 == _
+        ? ((R[_].KDJ_K = R[_].KDJ_RSV),
+          (R[_].KDJ_D = R[_].KDJ_RSV),
+          (R[_].KDJ_J = R[_].KDJ_RSV))
+        : ((R[_].KDJ_K = R[_].KDJ_RSV / 3 + (2 * R[_ - 1].KDJ_K) / 3),
+          (R[_].KDJ_D = R[_].KDJ_K / 3 + (2 * R[_ - 1].KDJ_D) / 3),
+          (R[_].KDJ_J = 3 * R[_].KDJ_K - 2 * R[_].KDJ_D)),
+      0 == _
+        ? ((R[_].MACD_AX = R[_].close),
+          (R[_].MACD_BX = R[_].close),
+          (R[_].MACD_DIF = 0),
+          (R[_].MACD_DEA = 0))
+        : ((R[_].MACD_AX = (2 * R[_].close + 11 * R[_ - 1].MACD_AX) / 13),
+          (R[_].MACD_BX = (2 * R[_].close + 25 * R[_ - 1].MACD_BX) / 27),
+          (R[_].MACD_DIF = R[_].MACD_AX - R[_].MACD_BX),
+          (R[_].MACD_DEA = (2 * R[_].MACD_DIF + 8 * R[_ - 1].MACD_DEA) / 10)),
+      0 < _ &&
+        (R[_].close > R[_ - 1].close
+          ? (R[_].OBV = R[_ - 1].OBV + R[_].volume)
+          : R[_].close < R[_ - 1].close
+          ? (R[_].OBV = R[_ - 1].OBV - R[_].volume)
+          : (R[_].OBV = R[_ - 1].OBV),
+        29 <= _))
+    ) {
+      for (K = B = 0; K < 30; K++) B += R[_ - K].OBV;
+      R[_].OBV_MA = B / 30;
+    }
+    if (
+      ((C = Math.min(11, _)),
+      0 != R[_ - C].close &&
+        (R[_].ROC = 100 * (R[_].close / R[_ - C].close - 1)),
+      5 <= _)
+    ) {
+      for (K = e = 0; K < 6; K++) e += R[_ - K].ROC;
+      R[_].ROC_MA = e / 6;
+    }
+    if (
+      (0 < _ &&
+        ((I = Math.max(R[_].close - R[_ - 1].close, 0)),
+        (b = Math.abs(R[_].close - R[_ - 1].close)),
+        1 == _
+          ? ((R[_].RSI_UP_A = I),
+            (R[_].RSI_DN_A = b),
+            (R[_].RSI_UP_B = I),
+            (R[_].RSI_DN_B = b),
+            (R[_].RSI_UP_C = I),
+            (R[_].RSI_DN_C = b))
+          : ((R[_].RSI_UP_A = I + (5 * R[_ - 1].RSI_UP_A) / 6),
+            (R[_].RSI_DN_A = b + (5 * R[_ - 1].RSI_DN_A) / 6),
+            (R[_].RSI_UP_B = I + (11 * R[_ - 1].RSI_UP_B) / 12),
+            (R[_].RSI_DN_B = b + (11 * R[_ - 1].RSI_DN_B) / 12),
+            (R[_].RSI_UP_C = I + (23 * R[_ - 1].RSI_UP_C) / 24),
+            (R[_].RSI_DN_C = b + (23 * R[_ - 1].RSI_DN_C) / 24))),
+      3 == _)
+    ) {
+      if (G) {
+        j = R[_].high;
+        for (var K = 0; K < 4; K++) j < R[_ - K].high && (j = R[_ - K].high);
+        Y = R[_].low;
+        for (var K = 0; K < 4; K++) Y > R[_ - K].low && (Y = R[_ - K].low);
+        (R[_].SAR = Y), (R[_].SAR_RED = !0), (G = !0.02);
+      }
+    } else 3 < _ && et(_, R);
+    k = D = E = 0;
+    for (K = 0; K < 26 && K < _ + 1; K++)
+      K + 1 <= _
+        ? R[_ - K].close > R[_ - K - 1].close
+          ? (k += R[_ - K].volume)
+          : R[_ - K].close < R[_ - K - 1].close
+          ? (D += R[_ - K].volume)
+          : (E += R[_ - K].volume)
+        : ((k += R[_ - K].volume / 3),
+          (D += R[_ - K].volume / 3),
+          (E += R[_ - K].volume / 3));
+    if (
+      (2 * D + E != 0 && (R[_].VR = (100 * (2 * k + E)) / (2 * D + E)), 5 <= _)
+    ) {
+      for (K = F = 0; K < 6; K++) F += R[_ - K].VR;
+      R[_].VR_MA = F / 6;
+    }
+    (y = R[_].low), (M = R[_].high);
+    for (K = 0; K < 10 && K < _ + 1; K++)
+      M < R[_ - K].high && (M = R[_ - K].high),
+        y > R[_ - K].low && (y = R[_ - K].low);
+    M != y && (R[_].WR_A = (100 * (M - R[_].close)) / (M - y)),
+      (y = R[_].low),
+      (M = R[_].high);
+    for (K = 0; K < 6 && K < _ + 1; K++)
+      M < R[_ - K].high && (M = R[_ - K].high),
+        y > R[_ - K].low && (y = R[_ - K].low);
+    M != y && (R[_].WR_B = (100 * (M - R[_].close)) / (M - y)),
+      23 <= _ &&
+        (R[_].BBI =
+          (R[_].Average3 + R[_].Average6 + R[_].Average12 + R[_].Average24) /
+          4);
+  }
+  return R;
+}
 export async function getSelfList(stocklist) {
   let url = "https://38.push2.eastmoney.com/api/qt/ulist/sse";
   //https://38.push2.eastmoney.com/api/qt/ulist/sse?invt=3&pi=0&pz=3&mpi=2000&secids=1.688298,1.605199,1.688060&ut=6d2ffaa6a585d612eda28417681d58fb&fields=f12,f13,f19,f14,f139,f148,f2,f4,f1,f125,f18,f3,f152,f5,f30,f31,f32,f6,f8,f7,f10,f22,f9,f112,f100&po=1
@@ -173,167 +604,34 @@ function strKlines2Objects(kdataStr) {
   }
   return i;
 }
-export async function getKlineData(code) {
-  let url = `http://${Math.floor(
-    99 * Math.random() + 1
-  )}.push2his.eastmoney.com/api/qt/stock/kline/get`;
-  //?secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59&klt=101&fqt=0&end=20500101&lmt=120&_=1592709205309
-  let data = {
-    secid: code,
-    ut: "fa5fd1943c7b386f172d6893dbfba10b",
-    fields1: "f1,f2,f3,f4,f5",
-    fields2: "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60",
-    klt: KTYPE.D,
-    fqt: CFG.Bfq,
-    beg: 0,
-    end: 20500101,
-    smplmt: 460,
-    lmt: 1000000,
-    _: +new Date(),
-  };
-  let json = await new Promise((resolve, reject) => {
-    JSONP(url, data, "cb", (json) => {
-      return resolve(json);
-    });
-  });
-  json.data.klines = strKlines2Objects(json.data.klines);
-  return json;
+
+export async function getDWTechDatas(code) {
+  let dData = await axios
+    .get(
+      `http://${Math.floor(
+        99 * Math.random() + 1
+      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+    )
+    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
+  let wData = await axios
+    .get(
+      `http://${Math.floor(
+        99 * Math.random() + 1
+      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=1.600753&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=102&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+    )
+    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
+
+  return { kd: tech2(dData.data.klines), kw: tech2(wData.data.klines) };
+}
+async function getTech(item) {
+  let dotCode =
+    (item.code.substring(0, 2) == "sh" ? "1" : "0") +
+    "." +
+    item.code.substring(2);
+  let techData = await getDWTechDatas(dotCode);
+  return techData;
 }
 export function tech(klines) {
-  /* function e(techName, klines) {
-    for (
-      var tDatas = cacTechDatas(klines), n = [], a = tDatas.length, s = 0;
-      s < a;
-      s++
-    ) {
-      var r = tDatas[s],
-        l = {};
-      switch (techName) {
-        case "VAVERAGE":
-          var h = void 0 === r.volume5 ? "-" : r.volume5.toFixed(3) / 1,
-            d = void 0 === r.volume10 ? "-" : r.volume10.toFixed(3) / 1;
-          (l = [r.time, h, d]), n.push(l);
-          break;
-        case "CMA":
-          var p = void 0 === r.Average5 ? "-" : r.Average5.toFixed(3) / 1,
-            c = void 0 === r.Average10 ? "-" : r.Average10.toFixed(3) / 1,
-            A = void 0 === r.Average20 ? "-" : r.Average20.toFixed(3) / 1,
-            g = void 0 === r.Average30 ? "-" : r.Average30.toFixed(3) / 1,
-            f = void 0 === r.Average60 ? "-" : r.Average60.toFixed(3) / 1;
-          (l = [r.time, p, c, A, f]), n.push(l);
-          break;
-        case "MA":
-          var p = void 0 === r.Average5 ? "-" : r.Average5.toFixed(3),
-            c = void 0 === r.Average10 ? "-" : r.Average10.toFixed(3),
-            A = void 0 === r.Average20 ? "-" : r.Average20.toFixed(3),
-            g = void 0 === r.Average30 ? "-" : r.Average30.toFixed(3),
-            m = void 0 === r.Average3 ? "-" : r.Average3.toFixed(3),
-            u = void 0 === r.Average6 ? "-" : r.Average6.toFixed(3),
-            x = void 0 === r.Average12 ? "-" : r.Average12.toFixed(3),
-            v = void 0 === r.Average24 ? "-" : r.Average24.toFixed(3),
-            w = void 0 === r.Average50 ? "-" : r.Average50.toFixed(3),
-            f = void 0 === r.Average60 ? "-" : r.Average60.toFixed(3);
-          (l[r.time] = [p, c, A, g, m, u, x, v, w, f]), n.push(l);
-          break;
-        case "ASI":
-          var y = void 0 === r.ASI ? "-" : r.ASI.toFixed(3);
-          (l[r.time] = [y]), n.push(l);
-          break;
-        case "EXPMA":
-          var x = void 0 === r.Average12 ? "-" : r.Average12.toFixed(3),
-            w = void 0 === r.Average50 ? "-" : r.Average50.toFixed(3);
-          (l = [r.time, x, w]), n.push(l);
-          break;
-        case "SAR":
-          var M = void 0 === r.SAR ? "-" : r.SAR.toFixed(3);
-          (l = [r.time, M]), n.push(l);
-          break;
-        case "BBI":
-          var B = void 0 === r.BBI ? "-" : r.BBI.toFixed(3);
-          (l = [r.time, B]), n.push(l);
-          break;
-        case "RSI":
-          if (s > 4) {
-            var C =
-                0 == r.RSI_DN_A
-                  ? "-"
-                  : ((r.RSI_UP_A / r.RSI_DN_A) * 100).toFixed(3) / 1,
-              I =
-                0 == r.RSI_DN_B
-                  ? "-"
-                  : ((r.RSI_UP_B / r.RSI_DN_B) * 100).toFixed(3) / 1,
-              b =
-                "0" == r.RSI_DN_C
-                  ? "-"
-                  : ((r.RSI_UP_C / r.RSI_DN_C) * 100).toFixed(3) / 1;
-            l = [r.time, C, I, b];
-          } else l = ["-", "-", "-", "-"];
-          n.push(l);
-          break;
-        case "KDJ":
-          var k = void 0 === r.KDJ_K ? "-" : r.KDJ_K.toFixed(3) / 1,
-            D = void 0 === r.KDJ_D ? "-" : r.KDJ_D.toFixed(3) / 1,
-            E = void 0 === r.KDJ_J ? "-" : r.KDJ_J.toFixed(3) / 1;
-          (l = [r.time, k, D, E]), n.push(l);
-          break;
-        case "MACD":
-          var R = void 0 === r.MACD_DIF ? "-" : r.MACD_DIF.toFixed(3) / 1,
-            Q = void 0 === r.MACD_DEA ? "-" : r.MACD_DEA.toFixed(3) / 1,
-            _ = void 0 === r.MACD ? "-" : r.MACD.toFixed(3) / 1;
-          "-" != R && "-" != Q && (_ = (2 * (R - Q)).toFixed(3) / 1),
-            (l = [r.time, R, Q, _]),
-            n.push(l);
-          break;
-        case "WR":
-          var j = void 0 === r.WR_A ? "-" : r.WR_A.toFixed(3) / 1,
-            O = void 0 === r.WR_B ? "-" : r.WR_B.toFixed(3) / 1;
-          (l = [r.time, j, O]), n.push(l);
-          break;
-        case "DMI":
-          var S = void 0 === r.DMI_PDI ? "-" : r.DMI_PDI.toFixed(3) / 1,
-            F = void 0 === r.DMI_MDI ? "-" : r.DMI_MDI.toFixed(3) / 1,
-            G = void 0 === r.DMI_ADX ? "-" : r.DMI_ADX.toFixed(3) / 1,
-            Y = void 0 === r.DMI_ADXR ? "-" : r.DMI_ADXR.toFixed(3) / 1;
-          (l = [r.time, S, F, G, Y]), n.push(l);
-          break;
-        case "BIAS":
-          var T = void 0 === r.BIAS_A ? "-" : r.BIAS_A.toFixed(3) / 1,
-            K = void 0 === r.BIAS_B ? "-" : r.BIAS_B.toFixed(3) / 1,
-            U = void 0 === r.BIAS_C ? "-" : r.BIAS_C.toFixed(3) / 1;
-          (l = [r.time, T, K, U]), n.push(l);
-          break;
-        case "OBV":
-          var J = void 0 === r.OBV ? "-" : r.OBV.toFixed(3) / 1,
-            L = void 0 === r.OBV_MA ? "-" : r.OBV_MA.toFixed(3) / 1;
-          (l = [r.time, J, L]), n.push(l);
-          break;
-        case "CCI":
-          var P = void 0 === r.CCI ? "-" : r.CCI.toFixed(3) / 1;
-          (l = [r.time, P]), n.push(l);
-          break;
-        case "ROC":
-          var H = void 0 === r.ROC ? "-" : r.ROC.toFixed(3) / 1,
-            W = void 0 === r.ROC_MA ? "-" : r.ROC_MA.toFixed(3) / 1;
-          (l = [r.time, H, W]), n.push(l);
-          break;
-        case "CR":
-          var N = void 0 === r.CR_A ? "-" : r.CR_A.toFixed(3) / 1,
-            Z = void 0 === r.CR_B ? "-" : r.CR_B.toFixed(3) / 1,
-            V = void 0 === r.CR_C ? "-" : r.CR_C.toFixed(3) / 1,
-            q = void 0 === r.CR ? "-" : r.CR.toFixed(3) / 1;
-          (l = [r.time, N, Z, V, q]), n.push(l);
-          break;
-        case "BOLL":
-          var X = void 0 === r.BOLL ? "-" : r.BOLL.toFixed(3) / 1,
-            z = void 0 === r.BOLL_UPPER ? "-" : r.BOLL_UPPER.toFixed(3) / 1,
-            $ = void 0 === r.BOLL_LOWER ? "-" : r.BOLL_LOWER.toFixed(3) / 1,
-            tt = void 0 === r.high ? "-" : r.high.toFixed(3) / 1;
-          (l = [r.time, X, z, $, tt]), n.push(l);
-      }
-    }
-    return n;
-  }*/
-
   function cacTechDatas(klines) {
     let data = klines.map((e) => Object.assign(a(), e));
     return cacTechObjectDatas(data);
@@ -791,4 +1089,48 @@ export function tech(klines) {
   if (typeof klines[0] === "object") {
     return cacTechObjectDatas(klines);
   } else return cacTechDatas(klines);
+}
+function isMacdGolden(techData) {
+  let i = techData.length - 1;
+  let bar0 = techData[i].MACD_DIF - techData[i].MACD_DEA;
+  let bar1 = techData[i - 1].MACD_DIF - techData[i - 1].MACD_DEA;
+  if (bar0 >= 0 && bar0 > bar1 && bar1 <= 0) return true;
+  return false;
+}
+const techMap = {
+  MACD周: function({ item, kw }) {
+    return isMacdGolden(kw);
+  },
+  换手率大1: function({ item, kd, kw, km }) {
+    return item.turnover >= 1;
+  },
+};
+export const techMaplist = Object.keys(techMap);
+
+export function buildFilters() {
+  let filters = {};
+  for (let name in techMap) {
+    filters[name] = function(items) {
+      return items.filter((e) => e[`_${name}`]);
+    };
+  }
+  return filters;
+}
+
+export async function callFun(item) {
+  let techDatas = await getTech(item);
+  //console.log(techDatas);
+  for (let name in techMap) {
+    techDatas.item = item;
+    item[`_${name}`] = techMap[name](techDatas);
+  }
+  return item;
+}
+export class fnTechData extends fn {
+  constructor([code]) {
+    super(`${code}/tech.json`);
+    this.get = async function() {
+      return await callFun({ code: code });
+    };
+  }
 }

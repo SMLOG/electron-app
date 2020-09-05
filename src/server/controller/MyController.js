@@ -1,5 +1,5 @@
 import { CONFIG_DIR } from "../config";
-import { attachExtractInfoToItems } from "../basicAnalyst";
+import { attachExtractInfoToItems } from "../helper";
 
 import fs from "fs";
 let file = `${CONFIG_DIR}/my.json`;

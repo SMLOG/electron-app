@@ -24,13 +24,7 @@ export const afilters = {
   },
 };
 
-export let filters = {
-  /*Focus: function(items) {
-    return items.filter(function(item) {
-      return item.isFocus;
-    });
-  }*/
-};
+export let filters = {};
 filters = Object.assign(filters, buildFilters());
 
 export function getCheckFilters(name) {

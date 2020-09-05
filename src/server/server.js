@@ -3,7 +3,7 @@ import { getList } from "./TechMan";
 import { getFilterList } from "./criteria";
 import fs from "fs";
 import { CONFIG_DIR } from "./config";
-import { attachExtractInfoToItems } from "./basicAnalyst";
+import { attachExtractInfoToItems } from "./helper";
 import My from "./controller/MyController";
 import HQController from "./controller/HQController";
 const koa = require("koa");
@@ -92,10 +92,6 @@ app.use(async (ctx) => {
 console.log("start2");
 //app.listen(3000);
 
-process.on("uncaughtException", (e) => {
-  console.error("uncaughtException", e);
-  process.exit(0);
-});
 module.exports = app;
 
 /*

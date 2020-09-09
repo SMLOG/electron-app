@@ -91,7 +91,7 @@ export function updateFiltersCount() {
     map[item.name] = item;
     return map;
   }, countMap);
-  console.log(countMap);
+  console.error(countMap);
 }
 function calRes(fnArr, items, index) {
   if (fnArr.length <= index || items.length == 0) return items.length;

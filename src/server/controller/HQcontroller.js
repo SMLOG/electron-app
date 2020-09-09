@@ -1,4 +1,3 @@
-import JSONP from "node-jsonp";
 import axios from "axios";
 export default class HQController {
   static async indlist(ctx) {

@@ -1,7 +1,6 @@
 const app = require("./server");
 const debug = require("debug")("demo:server");
 const http = require("http");
-import { hx, inds } from "./ws/HQws";
 /**
  * Get port from environment and store in Express.
  */
@@ -17,7 +16,7 @@ console.log("当前监听端口号为： " + port);
  */
 
 const server = http.createServer(app.callback());
-const io = require("socket.io")(server);
+require("./ws").default(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -26,35 +25,7 @@ const io = require("socket.io")(server);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
-const sleep = (t) => new Promise((res, rej) => setTimeout(res, t));
 
-const moment = require("moment");
-
-// socket.io
-io.of("socket.io").on("connection", (socket) => {
-  console.log("a user connected");
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-
-  (async () => {
-    for (; true; ) {
-      try {
-        let list = await hx();
-        socket.broadcast.emit("broadcast", list);
-        await sleep(2000);
-        let indmap = await inds();
-        socket.broadcast.emit("inds", indmap);
-      } catch (e) {}
-    }
-  })();
-
-  socket.on("echo", (msg) => {
-    console.log("echo from client: ", msg);
-    socket.emit("echo", msg);
-  });
-});
 /**
  * Normalize a port into a number, string, or false.
  */

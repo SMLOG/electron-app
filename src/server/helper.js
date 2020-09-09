@@ -10,7 +10,7 @@ export async function attachExtractInfoToItems(list) {
     let dis = disclose[code];
     if (dis && dis.ACTUAL_PUBLISH_DATE)
       list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
-    let tdata = await cacheObject(fnTechData, code);
+    let tdata = await cacheObject(fnTechData, list[i]);
     list[i] = Object.assign(list[i], tdata);
   }
 }

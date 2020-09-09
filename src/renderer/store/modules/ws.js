@@ -47,6 +47,7 @@ const actions = {
     state.curFilterIds = curFilterIds;
     commit(MUTATION_TYPE.SET_CURFILTERIDS, curFilterIds);
     storejs.set("curFilterIds", curFilterIds);
+    console.log(curFilterIds);
   },
   setCurFilterIdsAndSave: function({ state, commit }, curFilterIds) {
     storejs.set("curFilterIds", curFilterIds);
@@ -74,6 +75,7 @@ const getters = {
   fields: (state) => state.fields,
   filters: (state) => state.filters,
   curFilterIds: (state) => state.curFilterIds,
+  wsfilters: (state) => state.wsfilters,
 };
 
 export function getFields() {
@@ -83,7 +85,7 @@ export function getFilters() {
   return storejs.get(filters_key) || {};
 }
 export default {
-  namespaced: false,
+  namespaced: true,
   state,
   actions,
   getters,

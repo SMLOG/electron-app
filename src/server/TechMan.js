@@ -1102,6 +1102,7 @@ const techMap = {
     return isMacdGolden(kw);
   },
   换手率大1: function({ item, kd, kw, km }) {
+    console.log(item.code, item.turnover);
     return item.turnover >= 1;
   },
 };
@@ -1127,10 +1128,10 @@ export async function callFun(item) {
   return item;
 }
 export class fnTechData extends fn {
-  constructor([code]) {
-    super(`${code}/tech.json`);
+  constructor([item]) {
+    super(`${item.code}/tech.json`);
     this.get = async function() {
-      return await callFun({ code: code });
+      return await callFun(item);
     };
   }
 }

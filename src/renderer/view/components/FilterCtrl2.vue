@@ -56,26 +56,22 @@
 </template>
 
 <script>
-import {
-  filters,
-  countMap,
-  updateFiltersCount,
-  removeAbandon,
-} from "@/lib/filters";
-console.error(countMap);
-console.error(filters);
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import storejs from "storejs";
 import draggable from "vuedraggable";
-
+function removeAbandon(id, filters) {
+  return id
+    .split("+")
+    .filter((t) => filters.indexOf(t) > -1)
+    .join("+");
+}
 export default {
   name: "filterCtr",
   data: function () {
     return {
-      list: null,
+      list: storejs.get("filter-id-list2") || [],
       selectId: -1,
-      listMap: null,
-      countMap: countMap,
+      listMap: [],
       showTree: false,
     };
   },
@@ -83,18 +79,6 @@ export default {
     draggable,
   },
   mounted() {
-    this.list = (storejs.get("filter-id-list") || []).map((e) =>
-      removeAbandon(e)
-    );
-    this.listMap = [];
-    for (let i = 0; i < this.list.length; i++) {
-      let fs = this.list[i].split("+");
-      let map = {};
-      this.listMap.push(map);
-      for (let j = 0; j < fs.length; j++) {
-        map[fs[j]] = true;
-      }
-    }
     window.addEventListener("click", (e) => {
       if (
         !this.$refs.tree.contains(e.target) &&
@@ -106,7 +90,6 @@ export default {
   },
 
   props: {
-    filtersCount: Array,
     src: String,
   },
   methods: {
@@ -117,6 +100,7 @@ export default {
     selId(id) {
       this.setCurFilterIds(id);
       this.selectId = this.list.indexOf(id);
+      console.log("sedid");
     },
     change(i, filter) {
       let names = Object.keys(this.listMap[i])
@@ -126,7 +110,7 @@ export default {
       this.list[i] = names;
       this.setCurFilterIds(names);
       this.save();
-      updateFiltersCount();
+      // updateFiltersCount();
     },
     del(i) {
       this.list.splice(i, 1);
@@ -144,19 +128,36 @@ export default {
     },
     save() {
       storejs.set(
-        "filter-id-list",
+        "filter-id-list2",
         this.list.filter((e) => e)
       );
     },
-    ...mapActions(["setCurFilterIds", "setCurFilterIdsAndSave"]),
+    ...mapActions("ws", ["setCurFilterIds"]),
   },
   computed: {
-    ...mapGetters(["curFilterIds"]),
+    ...mapGetters("ws", ["curFilterIds", "wsfilters"]),
+    ...mapState("ws", ["filtersCount", "countMap"]),
   },
   watch: {
-    selectId(nv, ov) {
-      if (nv > -1) this.setCurFilterIds(this.list[nv]);
+    wsfilters() {
+      let items = this.list.map((e) => removeAbandon(e, this.wsfilters));
+      this.list.length = 0;
+      this.list.splice(0, 0, ...(items || []));
+
+      this.listMap.length = 0;
+      for (let i = 0; i < this.list.length; i++) {
+        let fs = this.list[i].split("+");
+        let map = {};
+        this.listMap.push(map);
+        for (let j = 0; j < fs.length; j++) {
+          map[fs[j]] = true;
+        }
+      }
     },
+
+    /*selectId(nv, ov) {
+      if (nv > -1) this.setCurFilterIds(this.list[nv]);
+    },*/
   },
 };
 </script>

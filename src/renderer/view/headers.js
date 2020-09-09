@@ -35,11 +35,12 @@ export let headers = [
     filterable: true,
     type: "string",
     class: (item) => {
-      let hy = window.indMap[item.hy];
-      return hy && { down: hy < 0, up: hy > 0 };
+      //let hy = window.indMap[item.hy];
+      //return hy && { down: hy < 0, up: hy > 0 };
     },
     fmt: (e, item) => {
-      if (item.hy) return `${item.hy}(${window.indMap[item.hy]}%)`;
+      if (item.hy && window.indMap)
+        return `${item.hy}(${window.indMap[item.hy]}%)`;
       return item.hy;
     },
   },

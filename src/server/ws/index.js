@@ -12,7 +12,7 @@ function init(server) {
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
-    initmem(socket);
+    initmem(io, socket);
 
     socket.on("echo", (msg) => {
       console.log("echo from client: ", msg);

@@ -79,6 +79,14 @@ export default {
     draggable,
   },
   mounted() {
+    for (let i = 0; i < this.list.length; i++) {
+      let fs = this.list[i].split("+");
+      let map = {};
+      this.listMap.push(map);
+      for (let j = 0; j < fs.length; j++) {
+        map[fs[j]] = true;
+      }
+    }
     window.addEventListener("click", (e) => {
       if (
         !this.$refs.tree.contains(e.target) &&

@@ -2,7 +2,7 @@
   <div>
     <div class="fixed">
       <Setting />
-      <search-panel></search-panel>
+      <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
     </div>
     <div id="menuWrap">
@@ -55,7 +55,9 @@
                 <span>
                   <a class="post_bt" :name="item.code">{{ index + 1 }}</a>
                 </span>
-
+                <span>
+                  <a class="action" @click="removeItem(item)">x</a>
+                </span>
                 <span>
                   <input type="checkbox" v-model="item.isFocus" />
                 </span>
@@ -204,6 +206,16 @@ export default {
       console.log("ws disconnect");
       this.$socket.emit("connect", 1);
     },
+    addItem(data) {
+      this.cats["自选"].items.push(data);
+    },
+    removeItem(item) {
+      let items = this.cats["自选"].items;
+      items.splice(
+        items.findIndex((i) => (i.code = item.code)),
+        1
+      );
+    },
 
     reconnect(data) {},
     indMap(data) {
@@ -237,6 +249,13 @@ export default {
     },
   },
   methods: {
+    addItem(item) {
+      this.$socket.emit("addItem", item);
+    },
+    removeItem(item) {
+      console.log("remove", item.code);
+      this.$socket.emit("removeItem", item);
+    },
     dragEnd(e) {
       e.preventDefault();
     },

@@ -25,40 +25,53 @@ const CFG = {
   Hfq: 2,
 };
 //指数行情 https://38.push2.eastmoney.com/api/qt/ulist.np/get?secids=1.000001,0.399001,0.399006,0.399005,fields=f1,f2,f3,f4,f12,f13,f14,f107,f152&ut=6d2ffaa6a585d612eda28417681d58fb',
-var n = !0,
-  o = !0,
-  a = 0.02,
-  s = 0,
-  r = 0;
-function et(t, e) {
-  if (o) {
-    if (n) {
-      r = e[t].high;
-      for (var i = 0; i < 2; i++) r < e[t - i].high && (r = e[t - i].high);
-      s = e[t].low;
-      for (i = 0; i < 2; i++) s > e[t - i].low && (s = e[t - i].low);
-      (e[t].SAR = s), (e[t].SAR_RED = !0), (a = 0.02);
-    } else {
-      r = e[t].high;
-      for (i = 0; i < 2; i++) r < e[t - i].high && (r = e[t - i].high);
-      s = e[t].low;
-      for (i = 0; i < 2; i++) s > e[t - i].low && (s = e[t - i].low);
-      (e[t].SAR = r), (e[t].SAR_RED = !1), (a = 0.02);
-    }
-    o = !1;
-  } else
-    n
-      ? ((e[t].SAR = e[t - 1].SAR + a * (r - e[t - 1].SAR)),
-        (e[t].SAR_RED = !0),
-        e[t].high > r && ((r = e[t].high), (a = Math.min(a + 0.02, 0.2))),
-        e[t].SAR > e[t].close && ((o = !(n = !1)), et(t, e)))
-      : ((e[t].SAR = e[t - 1].SAR + a * (s - e[t - 1].SAR)),
-        (e[t].SAR_RED = !1),
-        e[t].low < s && ((s = e[t].low), (a = Math.min(a + 0.02, 0.2))),
-        e[t].SAR < e[t].close && ((o = n = !0), et(t, e)));
-}
-function tech2(t) {
-  null == t || t.Count;
+
+function tech2(items, arr) {
+  var p_b1 = !0,
+    p_b2 = !0,
+    p_b3 = 0.02,
+    p_low = 0,
+    p_high = 0;
+  function et(index, items) {
+    if (p_b2) {
+      if (p_b1) {
+        p_high = items[index].high;
+        for (var i = 0; i < 2; i++)
+          p_high < items[index - i].high && (p_high = items[index - i].high);
+        p_low = items[index].low;
+        for (i = 0; i < 2; i++)
+          p_low > items[index - i].low && (p_low = items[index - i].low);
+        (items[index].SAR = p_low), (items[index].SAR_RED = !0), (p_b3 = 0.02);
+      } else {
+        p_high = items[index].high;
+        for (i = 0; i < 2; i++)
+          p_high < items[index - i].high && (p_high = items[index - i].high);
+        p_low = items[index].low;
+        for (i = 0; i < 2; i++)
+          p_low > items[index - i].low && (p_low = items[index - i].low);
+        (items[index].SAR = p_high), (items[index].SAR_RED = !1), (p_b3 = 0.02);
+      }
+      p_b2 = !1;
+    } else
+      p_b1
+        ? ((items[index].SAR =
+            items[index - 1].SAR + p_b3 * (p_high - items[index - 1].SAR)),
+          (items[index].SAR_RED = !0),
+          items[index].high > p_high &&
+            ((p_high = items[index].high), (p_b3 = Math.min(p_b3 + 0.02, 0.2))),
+          items[index].SAR > items[index].close &&
+            ((p_b2 = !(p_b1 = !1)), et(index, items)))
+        : ((items[index].SAR =
+            items[index - 1].SAR + p_b3 * (p_low - items[index - 1].SAR)),
+          (items[index].SAR_RED = !1),
+          items[index].low < p_low &&
+            ((p_low = items[index].low), (p_b3 = Math.min(p_b3 + 0.02, 0.2))),
+          items[index].SAR < items[index].close &&
+            ((p_b2 = p_b1 = !0), et(index, items)));
+  }
+
+  null == arr || arr.Count;
+  var fromIndex = items.length - (items.length > 0 && arr.length == 0 ? 1 : 0);
   for (
     var e,
       i,
@@ -80,8 +93,8 @@ function tech2(t) {
       x,
       w,
       v,
-      y,
-      M,
+      low,
+      high,
       B,
       C,
       I,
@@ -89,14 +102,14 @@ function tech2(t) {
       k,
       D,
       E,
-      R = [],
-      Q = t.length,
-      _ = 0;
-    _ < Q;
-    _++
+      //  items = [],
+      len = arr.length,
+      index = 0;
+    index < len;
+    index++
   ) {
-    var O = t[_].split(","),
-      S = {
+    var itArr = arr[index].split(","),
+      item = {
         Average5: 0,
         Average10: 0,
         Average20: 0,
@@ -173,288 +186,350 @@ function tech2(t) {
         low: 0,
         volume: 0,
       };
-    (S.time = O[0]),
-      (S.open = parseFloat(O[1])),
-      (S.close = parseFloat(O[2])),
-      (S.high = parseFloat(O[3])),
-      (S.low = parseFloat(O[4])),
-      (S.volume = Number(O[5])),
-      R.push(S);
+    (item.time = itArr[0]),
+      (item.open = parseFloat(itArr[1])),
+      (item.close = parseFloat(itArr[2])),
+      (item.high = parseFloat(itArr[3])),
+      (item.low = parseFloat(itArr[4])),
+      (item.volume = Number(itArr[5])),
+      items.push(item);
   }
   var F,
     G = !0,
     Y = 0,
     j = 0;
-  for (_ = 0; _ < Q; _++) {
-    if (4 <= _) {
+  for (index = fromIndex, len = items.length; index < len; index++) {
+    if (4 <= index) {
       for (var K = (i = e = 0); K < 5; K++)
-        (e += R[_ - K].close), (i += R[_ - K].volume);
-      (R[_].Average5 = e / 5), (R[_].volume5 = i / 5);
+        (e += items[index - K].close), (i += items[index - K].volume);
+      (items[index].Average5 = e / 5), (items[index].volume5 = i / 5);
     }
-    if (9 <= _) {
+    if (9 <= index) {
       for (K = i = e = 0; K < 10; K++)
-        (e += R[_ - K].close), (i += R[_ - K].volume);
-      (R[_].Average10 = e / 10), (R[_].volume10 = i / 10);
+        (e += items[index - K].close), (i += items[index - K].volume);
+      (items[index].Average10 = e / 10), (items[index].volume10 = i / 10);
     }
-    if (19 <= _) {
-      for (K = e = 0; K < 20; K++) e += R[_ - K].close;
-      R[_].Average20 = e / 20;
+    if (19 <= index) {
+      for (K = e = 0; K < 20; K++) e += items[index - K].close;
+      items[index].Average20 = e / 20;
     }
-    if (29 <= _) {
-      for (K = e = 0; K < 30; K++) e += R[_ - K].close;
-      R[_].Average30 = e / 30;
+    if (29 <= index) {
+      for (K = e = 0; K < 30; K++) e += items[index - K].close;
+      items[index].Average30 = e / 30;
     }
-    if (2 <= _) {
-      for (K = e = 0; K < 3; K++) e += R[_ - K].close;
-      R[_].Average3 = e / 3;
+    if (2 <= index) {
+      for (K = e = 0; K < 3; K++) e += items[index - K].close;
+      items[index].Average3 = e / 3;
     }
-    if (5 <= _) {
-      for (K = e = 0; K < 6; K++) e += R[_ - K].close;
-      R[_].Average6 = e / 6;
+    if (5 <= index) {
+      for (K = e = 0; K < 6; K++) e += items[index - K].close;
+      items[index].Average6 = e / 6;
     }
-    if (11 <= _) {
-      for (K = e = 0; K < 12; K++) e += R[_ - K].close;
-      R[_].Average12 = e / 12;
+    if (11 <= index) {
+      for (K = e = 0; K < 12; K++) e += items[index - K].close;
+      items[index].Average12 = e / 12;
     }
-    if (23 <= _) {
-      for (K = e = 0; K < 24; K++) e += R[_ - K].close;
-      R[_].Average24 = e / 24;
+    if (23 <= index) {
+      for (K = e = 0; K < 24; K++) e += items[index - K].close;
+      items[index].Average24 = e / 24;
     }
-    if (49 <= _) {
-      for (K = e = 0; K < 50; K++) e += R[_ - K].close;
-      R[_].Average50 = e / 50;
+    if (49 <= index) {
+      for (K = e = 0; K < 50; K++) e += items[index - K].close;
+      items[index].Average50 = e / 50;
     }
-    if (59 <= _) {
-      for (K = e = 0; K < 60; K++) e += R[_ - K].close;
-      R[_].Average60 = e / 60;
+    if (59 <= index) {
+      for (K = e = 0; K < 60; K++) e += items[index - K].close;
+      items[index].Average60 = e / 60;
     }
     if (
-      (1 <= _ &&
-        ((n = R[_ - 1].close),
-        (o = Math.abs(R[_].high - n)),
-        (a = Math.abs(R[_].low - n)),
-        (s = Math.abs(R[_].high - R[_ - 1].low)),
-        (r = Math.abs(n - R[_ - 1].open)),
+      (1 <= index &&
+        ((n = items[index - 1].close),
+        (o = Math.abs(items[index].high - n)),
+        (a = Math.abs(items[index].low - n)),
+        (s = Math.abs(items[index].high - items[index - 1].low)),
+        (r = Math.abs(n - items[index - 1].open)),
         (l =
           a < o && s < o
             ? o + a / 2 + r / 4
             : s < a && o < a
             ? a + o / 2 + r / 4
             : s + r / 4),
-        (h = R[_].close + (R[_].close - R[_].open) / 2 - R[_ - 1].open),
-        0 != l && (R[_].ASI = R[_ - 1].ASI + ((16 * h) / l) * Math.max(o, a))),
-      5 <= _)
+        (h =
+          items[index].close +
+          (items[index].close - items[index].open) / 2 -
+          items[index - 1].open),
+        0 != l &&
+          (items[index].ASI =
+            items[index - 1].ASI + ((16 * h) / l) * Math.max(o, a))),
+      5 <= index)
     ) {
-      for (K = e = 0; K < 6; K++) e += R[_ - K].close;
-      0 != e && (R[_].BIAS_A = 100 * (R[_].close / (e / 6) - 1));
+      for (K = e = 0; K < 6; K++) e += items[index - K].close;
+      0 != e &&
+        (items[index].BIAS_A = 100 * (items[index].close / (e / 6) - 1));
     }
-    if (11 <= _) {
-      for (K = e = 0; K < 12; K++) e += R[_ - K].close;
-      0 != e && (R[_].BIAS_B = 100 * (R[_].close / (e / 12) - 1));
+    if (11 <= index) {
+      for (K = e = 0; K < 12; K++) e += items[index - K].close;
+      0 != e &&
+        (items[index].BIAS_B = 100 * (items[index].close / (e / 12) - 1));
     }
-    if (23 <= _) {
-      for (K = e = 0; K < 24; K++) e += R[_ - K].close;
-      0 != e && (R[_].BIAS_C = 100 * (R[_].close / (e / 24) - 1));
+    if (23 <= index) {
+      for (K = e = 0; K < 24; K++) e += items[index - K].close;
+      0 != e &&
+        (items[index].BIAS_C = 100 * (items[index].close / (e / 24) - 1));
     }
-    if (19 <= _) {
-      for (K = e = 0; K < 20; K++) e += R[_ - K].close;
-      R[_].BOLL = e / 20;
+    if (19 <= index) {
+      for (K = e = 0; K < 20; K++) e += items[index - K].close;
+      items[index].BOLL = e / 20;
       for (K = e = 0; K < 20; K++)
-        e += (R[_ - K].close - R[_].BOLL) * (R[_ - K].close - R[_].BOLL);
+        e +=
+          (items[index - K].close - items[index].BOLL) *
+          (items[index - K].close - items[index].BOLL);
       (d = parseFloat(Math.sqrt(e / 20))),
-        (R[_].BOLL_UPPER = R[_].BOLL + 2 * d),
-        (R[_].BOLL_LOWER = R[_].BOLL - 2 * d);
+        (items[index].BOLL_UPPER = items[index].BOLL + 2 * d),
+        (items[index].BOLL_LOWER = items[index].BOLL - 2 * d);
     }
-    if (((R[_].CCI_TYP = (R[_].high + R[_].low + R[_].close) / 3), 13 <= _)) {
-      for (K = e = 0; K < 14; K++) e += R[_ - K].close;
+    if (
+      ((items[index].CCI_TYP =
+        (items[index].high + items[index].low + items[index].close) / 3),
+      13 <= index)
+    ) {
+      for (K = e = 0; K < 14; K++) e += items[index - K].close;
       e / 14;
-      for (K = e = 0; K < 14; K++) e += R[_ - K].CCI_TYP;
+      for (K = e = 0; K < 14; K++) e += items[index - K].CCI_TYP;
       p = e / 14;
-      for (K = e = 0; K < 14; K++) e += Math.abs(R[_ - K].CCI_TYP - p);
-      0 != e && (R[_].CCI = (R[_].CCI_TYP - p) / ((e / 14) * 0.015));
+      for (K = e = 0; K < 14; K++) e += Math.abs(items[index - K].CCI_TYP - p);
+      0 != e &&
+        (items[index].CCI = (items[index].CCI_TYP - p) / ((e / 14) * 0.015));
     }
-    if (((R[_].CR_MID = (R[_].high + R[_].low) / 2), 0 == _))
-      (R[_].CR = 100),
-        (R[_].CR_AX = Math.max(R[_].high - R[_].CR_MID, 0)),
-        (R[_].CR_BX = Math.max(R[_].CR_MID - R[_].low, 0));
+    if (
+      ((items[index].CR_MID = (items[index].high + items[index].low) / 2),
+      0 == index)
+    )
+      (items[index].CR = 100),
+        (items[index].CR_AX = Math.max(
+          items[index].high - items[index].CR_MID,
+          0
+        )),
+        (items[index].CR_BX = Math.max(
+          items[index].CR_MID - items[index].low,
+          0
+        ));
     else {
-      (R[_].CR_AX = Math.max(R[_].high - R[_ - 1].CR_MID, 0)),
-        (R[_].CR_BX = Math.max(R[_ - 1].CR_MID - R[_].low, 0)),
+      (items[index].CR_AX = Math.max(
+        items[index].high - items[index - 1].CR_MID,
+        0
+      )),
+        (items[index].CR_BX = Math.max(
+          items[index - 1].CR_MID - items[index].low,
+          0
+        )),
         (c = A = 0);
-      for (K = 0; K < 26 && K < _ + 1; K++)
-        (c += R[_ - K].CR_AX), (A += R[_ - K].CR_BX);
-      if ((0 != A && (R[_].CR = (c / A) * 100), 9 <= _)) {
-        for (K = e = 0; K < 10; K++) e += R[_ - K].CR;
-        _ + 5 < R.Length && (R[_ + 5].CR_A = e / 10);
+      for (K = 0; K < 26 && K < index + 1; K++)
+        (c += items[index - K].CR_AX), (A += items[index - K].CR_BX);
+      if ((0 != A && (items[index].CR = (c / A) * 100), 9 <= index)) {
+        for (K = e = 0; K < 10; K++) e += items[index - K].CR;
+        index + 5 < items.Length && (items[index + 5].CR_A = e / 10);
       }
-      if (19 <= _) {
-        for (K = e = 0; K < 20; K++) e += R[_ - K].CR;
-        _ + 9 < R.Length && (R[_ + 9].CR_B = e / 20);
+      if (19 <= index) {
+        for (K = e = 0; K < 20; K++) e += items[index - K].CR;
+        index + 9 < items.Length && (items[index + 9].CR_B = e / 20);
       }
-      if (39 <= _) {
-        for (K = e = 0; K < 40; K++) e += R[_ - K].CR;
-        _ + 17 < R.Length && (R[_ + 17].CR_C = e / 40);
+      if (39 <= index) {
+        for (K = e = 0; K < 40; K++) e += items[index - K].CR;
+        index + 17 < items.Length && (items[index + 17].CR_C = e / 40);
       }
     }
     if (
       ((f =
-        0 == _
-          ? ((R[_].DMI_TR = Math.max(
-              Math.max(R[_].high - R[_].low, Math.abs(R[_].high - R[_].close)),
-              Math.abs(R[_].close - R[_].low)
+        0 == index
+          ? ((items[index].DMI_TR = Math.max(
+              Math.max(
+                items[index].high - items[index].low,
+                Math.abs(items[index].high - items[index].close)
+              ),
+              Math.abs(items[index].close - items[index].low)
             )),
             (g = 0))
-          : ((R[_].DMI_TR = Math.max(
+          : ((items[index].DMI_TR = Math.max(
               Math.max(
-                R[_].high - R[_].low,
-                Math.abs(R[_].high - R[_ - 1].close)
+                items[index].high - items[index].low,
+                Math.abs(items[index].high - items[index - 1].close)
               ),
-              Math.abs(R[_ - 1].close - R[_].low)
+              Math.abs(items[index - 1].close - items[index].low)
             )),
-            (g = R[_].high - R[_ - 1].high),
-            R[_ - 1].low - R[_].low)),
-      (R[_].DMI_DMP = 0 < g && f < g ? g : 0),
-      (R[_].DMI_DMM = 0 < f && g < f ? f : 0),
-      13 <= _)
+            (g = items[index].high - items[index - 1].high),
+            items[index - 1].low - items[index].low)),
+      (items[index].DMI_DMP = 0 < g && f < g ? g : 0),
+      (items[index].DMI_DMM = 0 < f && g < f ? f : 0),
+      13 <= index)
     ) {
-      if (13 == _) {
+      if (13 == index) {
         u = m = x = 0;
         for (K = 0; K < 14; K++)
-          (u += R[_ - K].DMI_TR),
-            (m += R[_ - K].DMI_DMP),
-            (x += R[_ - K].DMI_DMM);
-        (R[_].DMI_EXPMEMA_TR = u / 14),
-          (R[_].DMI_EXPMEMA_DMP = m / 14),
-          (R[_].DMI_EXPMEMA_DMM = x / 14);
+          (u += items[index - K].DMI_TR),
+            (m += items[index - K].DMI_DMP),
+            (x += items[index - K].DMI_DMM);
+        (items[index].DMI_EXPMEMA_TR = u / 14),
+          (items[index].DMI_EXPMEMA_DMP = m / 14),
+          (items[index].DMI_EXPMEMA_DMM = x / 14);
       } else
-        (R[_].DMI_EXPMEMA_TR =
-          (2 * R[_].DMI_TR + 13 * R[_ - 1].DMI_EXPMEMA_TR) / 15),
-          (R[_].DMI_EXPMEMA_DMP =
-            (2 * R[_].DMI_DMP + 13 * R[_ - 1].DMI_EXPMEMA_DMP) / 15),
-          (R[_].DMI_EXPMEMA_DMM =
-            (2 * R[_].DMI_DMM + 13 * R[_ - 1].DMI_EXPMEMA_DMM) / 15);
-      0 != R[_].DMI_EXPMEMA_TR &&
-        ((R[_].DMI_PDI = (100 * R[_].DMI_EXPMEMA_DMP) / R[_].DMI_EXPMEMA_TR),
-        (R[_].DMI_MDI = (100 * R[_].DMI_EXPMEMA_DMM) / R[_].DMI_EXPMEMA_TR),
-        R[_].DMI_PDI + R[_].DMI_MDI != 0 &&
-          (R[_].DMI_MPDI =
-            (Math.abs(R[_].DMI_MDI - R[_].DMI_PDI) /
-              (R[_].DMI_MDI + R[_].DMI_PDI)) *
+        (items[index].DMI_EXPMEMA_TR =
+          (2 * items[index].DMI_TR + 13 * items[index - 1].DMI_EXPMEMA_TR) /
+          15),
+          (items[index].DMI_EXPMEMA_DMP =
+            (2 * items[index].DMI_DMP + 13 * items[index - 1].DMI_EXPMEMA_DMP) /
+            15),
+          (items[index].DMI_EXPMEMA_DMM =
+            (2 * items[index].DMI_DMM + 13 * items[index - 1].DMI_EXPMEMA_DMM) /
+            15);
+      0 != items[index].DMI_EXPMEMA_TR &&
+        ((items[index].DMI_PDI =
+          (100 * items[index].DMI_EXPMEMA_DMP) / items[index].DMI_EXPMEMA_TR),
+        (items[index].DMI_MDI =
+          (100 * items[index].DMI_EXPMEMA_DMM) / items[index].DMI_EXPMEMA_TR),
+        items[index].DMI_PDI + items[index].DMI_MDI != 0 &&
+          (items[index].DMI_MPDI =
+            (Math.abs(items[index].DMI_MDI - items[index].DMI_PDI) /
+              (items[index].DMI_MDI + items[index].DMI_PDI)) *
             100));
     }
-    if (18 <= _)
-      if (18 == _) {
-        for (K = w = 0; K < 6; K++) w += R[_ - K].DMI_MPDI;
-        R[_].DMI_ADX = w / 6;
-      } else R[_].DMI_ADX = (2 * R[_].DMI_MPDI + 5 * R[_ - 1].DMI_ADX) / 7;
-    if (23 <= _)
-      if (23 == _) {
-        for (K = v = 0; K < 6; K++) v += R[_ - K].DMI_ADX;
-        R[_].DMI_ADXR = v / 6;
-      } else R[_].DMI_ADXR = (2 * R[_].DMI_ADX + 5 * R[_ - 1].DMI_ADXR) / 7;
-    (y = R[_].low), (M = R[_].high);
-    for (K = 0; K < 9 && K < _ + 1; K++)
-      M < R[_ - K].high && (M = R[_ - K].high),
-        y > R[_ - K].low && (y = R[_ - K].low);
+    if (18 <= index)
+      if (18 == index) {
+        for (K = w = 0; K < 6; K++) w += items[index - K].DMI_MPDI;
+        items[index].DMI_ADX = w / 6;
+      } else
+        items[index].DMI_ADX =
+          (2 * items[index].DMI_MPDI + 5 * items[index - 1].DMI_ADX) / 7;
+    if (23 <= index)
+      if (23 == index) {
+        for (K = v = 0; K < 6; K++) v += items[index - K].DMI_ADX;
+        items[index].DMI_ADXR = v / 6;
+      } else
+        items[index].DMI_ADXR =
+          (2 * items[index].DMI_ADX + 5 * items[index - 1].DMI_ADXR) / 7;
+
+    (low = items[index].low), (high = items[index].high);
+
+    for (K = 0; K < 9 && K < index + 1; K++)
+      high < items[index - K].high && (high = items[index - K].high),
+        low > items[index - K].low && (low = items[index - K].low);
     if (
-      (M != y && (R[_].KDJ_RSV = ((R[_].close - y) / (M - y)) * 100),
-      0 == _
-        ? ((R[_].KDJ_K = R[_].KDJ_RSV),
-          (R[_].KDJ_D = R[_].KDJ_RSV),
-          (R[_].KDJ_J = R[_].KDJ_RSV))
-        : ((R[_].KDJ_K = R[_].KDJ_RSV / 3 + (2 * R[_ - 1].KDJ_K) / 3),
-          (R[_].KDJ_D = R[_].KDJ_K / 3 + (2 * R[_ - 1].KDJ_D) / 3),
-          (R[_].KDJ_J = 3 * R[_].KDJ_K - 2 * R[_].KDJ_D)),
-      0 == _
-        ? ((R[_].MACD_AX = R[_].close),
-          (R[_].MACD_BX = R[_].close),
-          (R[_].MACD_DIF = 0),
-          (R[_].MACD_DEA = 0))
-        : ((R[_].MACD_AX = (2 * R[_].close + 11 * R[_ - 1].MACD_AX) / 13),
-          (R[_].MACD_BX = (2 * R[_].close + 25 * R[_ - 1].MACD_BX) / 27),
-          (R[_].MACD_DIF = R[_].MACD_AX - R[_].MACD_BX),
-          (R[_].MACD_DEA = (2 * R[_].MACD_DIF + 8 * R[_ - 1].MACD_DEA) / 10)),
-      0 < _ &&
-        (R[_].close > R[_ - 1].close
-          ? (R[_].OBV = R[_ - 1].OBV + R[_].volume)
-          : R[_].close < R[_ - 1].close
-          ? (R[_].OBV = R[_ - 1].OBV - R[_].volume)
-          : (R[_].OBV = R[_ - 1].OBV),
-        29 <= _))
+      (high != low &&
+        (items[index].KDJ_RSV =
+          ((items[index].close - low) / (high - low)) * 100),
+      0 == index
+        ? ((items[index].KDJ_K = items[index].KDJ_RSV),
+          (items[index].KDJ_D = items[index].KDJ_RSV),
+          (items[index].KDJ_J = items[index].KDJ_RSV))
+        : ((items[index].KDJ_K =
+            items[index].KDJ_RSV / 3 + (2 * items[index - 1].KDJ_K) / 3),
+          (items[index].KDJ_D =
+            items[index].KDJ_K / 3 + (2 * items[index - 1].KDJ_D) / 3),
+          (items[index].KDJ_J =
+            3 * items[index].KDJ_K - 2 * items[index].KDJ_D)),
+      0 == index
+        ? ((items[index].MACD_AX = items[index].close),
+          (items[index].MACD_BX = items[index].close),
+          (items[index].MACD_DIF = 0),
+          (items[index].MACD_DEA = 0))
+        : ((items[index].MACD_AX =
+            (2 * items[index].close + 11 * items[index - 1].MACD_AX) / 13),
+          (items[index].MACD_BX =
+            (2 * items[index].close + 25 * items[index - 1].MACD_BX) / 27),
+          (items[index].MACD_DIF = items[index].MACD_AX - items[index].MACD_BX),
+          (items[index].MACD_DEA =
+            (2 * items[index].MACD_DIF + 8 * items[index - 1].MACD_DEA) / 10)),
+      0 < index &&
+        (items[index].close > items[index - 1].close
+          ? (items[index].OBV = items[index - 1].OBV + items[index].volume)
+          : items[index].close < items[index - 1].close
+          ? (items[index].OBV = items[index - 1].OBV - items[index].volume)
+          : (items[index].OBV = items[index - 1].OBV),
+        29 <= index))
     ) {
-      for (K = B = 0; K < 30; K++) B += R[_ - K].OBV;
-      R[_].OBV_MA = B / 30;
+      for (K = B = 0; K < 30; K++) B += items[index - K].OBV;
+      items[index].OBV_MA = B / 30;
     }
     if (
-      ((C = Math.min(11, _)),
-      0 != R[_ - C].close &&
-        (R[_].ROC = 100 * (R[_].close / R[_ - C].close - 1)),
-      5 <= _)
+      ((C = Math.min(11, index)),
+      0 != items[index - C].close &&
+        (items[index].ROC =
+          100 * (items[index].close / items[index - C].close - 1)),
+      5 <= index)
     ) {
-      for (K = e = 0; K < 6; K++) e += R[_ - K].ROC;
-      R[_].ROC_MA = e / 6;
+      for (K = e = 0; K < 6; K++) e += items[index - K].ROC;
+      items[index].ROC_MA = e / 6;
     }
     if (
-      (0 < _ &&
-        ((I = Math.max(R[_].close - R[_ - 1].close, 0)),
-        (b = Math.abs(R[_].close - R[_ - 1].close)),
-        1 == _
-          ? ((R[_].RSI_UP_A = I),
-            (R[_].RSI_DN_A = b),
-            (R[_].RSI_UP_B = I),
-            (R[_].RSI_DN_B = b),
-            (R[_].RSI_UP_C = I),
-            (R[_].RSI_DN_C = b))
-          : ((R[_].RSI_UP_A = I + (5 * R[_ - 1].RSI_UP_A) / 6),
-            (R[_].RSI_DN_A = b + (5 * R[_ - 1].RSI_DN_A) / 6),
-            (R[_].RSI_UP_B = I + (11 * R[_ - 1].RSI_UP_B) / 12),
-            (R[_].RSI_DN_B = b + (11 * R[_ - 1].RSI_DN_B) / 12),
-            (R[_].RSI_UP_C = I + (23 * R[_ - 1].RSI_UP_C) / 24),
-            (R[_].RSI_DN_C = b + (23 * R[_ - 1].RSI_DN_C) / 24))),
-      3 == _)
+      (0 < index &&
+        ((I = Math.max(items[index].close - items[index - 1].close, 0)),
+        (b = Math.abs(items[index].close - items[index - 1].close)),
+        1 == index
+          ? ((items[index].RSI_UP_A = I),
+            (items[index].RSI_DN_A = b),
+            (items[index].RSI_UP_B = I),
+            (items[index].RSI_DN_B = b),
+            (items[index].RSI_UP_C = I),
+            (items[index].RSI_DN_C = b))
+          : ((items[index].RSI_UP_A = I + (5 * items[index - 1].RSI_UP_A) / 6),
+            (items[index].RSI_DN_A = b + (5 * items[index - 1].RSI_DN_A) / 6),
+            (items[index].RSI_UP_B = I + (11 * items[index - 1].RSI_UP_B) / 12),
+            (items[index].RSI_DN_B = b + (11 * items[index - 1].RSI_DN_B) / 12),
+            (items[index].RSI_UP_C = I + (23 * items[index - 1].RSI_UP_C) / 24),
+            (items[index].RSI_DN_C =
+              b + (23 * items[index - 1].RSI_DN_C) / 24))),
+      3 == index)
     ) {
       if (G) {
-        j = R[_].high;
-        for (var K = 0; K < 4; K++) j < R[_ - K].high && (j = R[_ - K].high);
-        Y = R[_].low;
-        for (var K = 0; K < 4; K++) Y > R[_ - K].low && (Y = R[_ - K].low);
-        (R[_].SAR = Y), (R[_].SAR_RED = !0), (G = !0.02);
+        j = items[index].high;
+        for (var K = 0; K < 4; K++)
+          j < items[index - K].high && (j = items[index - K].high);
+        Y = items[index].low;
+        for (var K = 0; K < 4; K++)
+          Y > items[index - K].low && (Y = items[index - K].low);
+        (items[index].SAR = Y), (items[index].SAR_RED = !0), (G = !0.02);
       }
-    } else 3 < _ && et(_, R);
+    } else 3 < index && et(index, items);
     k = D = E = 0;
-    for (K = 0; K < 26 && K < _ + 1; K++)
-      K + 1 <= _
-        ? R[_ - K].close > R[_ - K - 1].close
-          ? (k += R[_ - K].volume)
-          : R[_ - K].close < R[_ - K - 1].close
-          ? (D += R[_ - K].volume)
-          : (E += R[_ - K].volume)
-        : ((k += R[_ - K].volume / 3),
-          (D += R[_ - K].volume / 3),
-          (E += R[_ - K].volume / 3));
+    for (K = 0; K < 26 && K < index + 1; K++)
+      K + 1 <= index
+        ? items[index - K].close > items[index - K - 1].close
+          ? (k += items[index - K].volume)
+          : items[index - K].close < items[index - K - 1].close
+          ? (D += items[index - K].volume)
+          : (E += items[index - K].volume)
+        : ((k += items[index - K].volume / 3),
+          (D += items[index - K].volume / 3),
+          (E += items[index - K].volume / 3));
     if (
-      (2 * D + E != 0 && (R[_].VR = (100 * (2 * k + E)) / (2 * D + E)), 5 <= _)
+      (2 * D + E != 0 && (items[index].VR = (100 * (2 * k + E)) / (2 * D + E)),
+      5 <= index)
     ) {
-      for (K = F = 0; K < 6; K++) F += R[_ - K].VR;
-      R[_].VR_MA = F / 6;
+      for (K = F = 0; K < 6; K++) F += items[index - K].VR;
+      items[index].VR_MA = F / 6;
     }
-    (y = R[_].low), (M = R[_].high);
-    for (K = 0; K < 10 && K < _ + 1; K++)
-      M < R[_ - K].high && (M = R[_ - K].high),
-        y > R[_ - K].low && (y = R[_ - K].low);
-    M != y && (R[_].WR_A = (100 * (M - R[_].close)) / (M - y)),
-      (y = R[_].low),
-      (M = R[_].high);
-    for (K = 0; K < 6 && K < _ + 1; K++)
-      M < R[_ - K].high && (M = R[_ - K].high),
-        y > R[_ - K].low && (y = R[_ - K].low);
-    M != y && (R[_].WR_B = (100 * (M - R[_].close)) / (M - y)),
-      23 <= _ &&
-        (R[_].BBI =
-          (R[_].Average3 + R[_].Average6 + R[_].Average12 + R[_].Average24) /
+    (low = items[index].low), (high = items[index].high);
+    for (K = 0; K < 10 && K < index + 1; K++)
+      high < items[index - K].high && (high = items[index - K].high),
+        low > items[index - K].low && (low = items[index - K].low);
+    high != low &&
+      (items[index].WR_A = (100 * (high - items[index].close)) / (high - low)),
+      (low = items[index].low),
+      (high = items[index].high);
+    for (K = 0; K < 6 && K < index + 1; K++)
+      high < items[index - K].high && (high = items[index - K].high),
+        low > items[index - K].low && (low = items[index - K].low);
+    high != low &&
+      (items[index].WR_B = (100 * (high - items[index].close)) / (high - low)),
+      23 <= index &&
+        (items[index].BBI =
+          (items[index].Average3 +
+            items[index].Average6 +
+            items[index].Average12 +
+            items[index].Average24) /
           4);
   }
-  return R;
+  return items;
 }
 export async function getSelfList(stocklist) {
   let url = "https://38.push2.eastmoney.com/api/qt/ulist/sse";
@@ -586,26 +661,8 @@ export async function getList() {
     console.log(error);
   });
 }
-function strKlines2Objects(kdataStr) {
-  for (var i = [], e = kdataStr.length, o = 0; o < e; o++) {
-    var s = kdataStr[o].split(","),
-      r = {};
-    ((r.date = new Date(s[0])), (r.time = s[0])),
-      (r.open = parseFloat(s[1])),
-      (r.close = parseFloat(s[2])),
-      (r.high = parseFloat(s[3])),
-      (r.low = parseFloat(s[4])),
-      (r.volume = Number(s[5])),
-      (r.amount = Number(s[6])),
-      (r.amplitudeP = Number(s[7])),
-      (r.increaseP = Number(s[8])),
-      (r.increase = Number(s[9])),
-      i.push(r);
-  }
-  return i;
-}
 
-export async function getDWTechDatas(code) {
+export async function getDayWeekTechDatas(code) {
   let dData = await axios
     .get(
       `http://${Math.floor(
@@ -621,474 +678,30 @@ export async function getDWTechDatas(code) {
     )
     .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
 
-  return { kd: tech2(dData.data.klines), kw: tech2(wData.data.klines) };
+  return { kd: tech2([], dData.data.klines), kw: tech2([], wData.data.klines) };
 }
+(async () => {
+  let code = "1.688595";
+  let dData = await axios
+    .get(
+      `http://${Math.floor(
+        99 * Math.random() + 1
+      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+    )
+    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
+  //console.log(dData);
+  console.log(code);
+  console.log(dData.data.klines);
+  let res = tech2([], dData.data.klines);
+  console.log(res[res.length - 1]);
+})();
 async function getTech(item) {
   let dotCode =
     (item.code.substring(0, 2) == "sh" ? "1" : "0") +
     "." +
     item.code.substring(2);
-  let techData = await getDWTechDatas(dotCode);
+  let techData = await getDayWeekTechDatas(dotCode);
   return techData;
-}
-export function tech(klines) {
-  function cacTechDatas(klines) {
-    let data = klines.map((e) => Object.assign(a(), e));
-    return cacTechObjectDatas(data);
-  }
-  function cacTechObjectDatas(i) {
-    var e = i.length;
-    for (
-      var l,
-        h,
-        d,
-        p,
-        c,
-        A,
-        g,
-        f,
-        m,
-        u,
-        x,
-        v,
-        w,
-        y,
-        M,
-        B,
-        C,
-        I,
-        b,
-        k,
-        D,
-        E,
-        R,
-        Q,
-        _,
-        j,
-        O,
-        S,
-        F,
-        G,
-        Y = !0,
-        T = 0,
-        K = 0,
-        o = 0;
-      o < e;
-      o++
-    ) {
-      if (o >= 4) {
-        (l = 0), (h = 0);
-        for (var U = 0; U < 5; U++)
-          (l += i[o - U].close), (h += i[o - U].volume);
-        (i[o].Average5 = l / 5), (i[o].volume5 = h / 5);
-      }
-      if (o >= 9) {
-        (l = 0), (h = 0);
-        for (var U = 0; U < 10; U++)
-          (l += i[o - U].close), (h += i[o - U].volume);
-        (i[o].Average10 = l / 10), (i[o].volume10 = h / 10);
-      }
-      if (o >= 19) {
-        l = 0;
-        for (var U = 0; U < 20; U++) l += i[o - U].close;
-        i[o].Average20 = l / 20;
-      }
-      if (o >= 29) {
-        l = 0;
-        for (var U = 0; U < 30; U++) l += i[o - U].close;
-        i[o].Average30 = l / 30;
-      }
-      if (o >= 2) {
-        l = 0;
-        for (var U = 0; U < 3; U++) l += i[o - U].close;
-        i[o].Average3 = l / 3;
-      }
-      if (o >= 5) {
-        l = 0;
-        for (var U = 0; U < 6; U++) l += i[o - U].close;
-        i[o].Average6 = l / 6;
-      }
-      if (o >= 11) {
-        l = 0;
-        for (var U = 0; U < 12; U++) l += i[o - U].close;
-        i[o].Average12 = l / 12;
-      }
-      if (o >= 23) {
-        l = 0;
-        for (var U = 0; U < 24; U++) l += i[o - U].close;
-        i[o].Average24 = l / 24;
-      }
-      if (o >= 49) {
-        l = 0;
-        for (var U = 0; U < 50; U++) l += i[o - U].close;
-        i[o].Average50 = l / 50;
-      }
-      if (o >= 59) {
-        l = 0;
-        for (var U = 0; U < 60; U++) l += i[o - U].close;
-        i[o].Average60 = l / 60;
-      }
-      if (
-        (o >= 1 &&
-          ((d = i[o - 1].close),
-          (p = Math.abs(i[o].high - d)),
-          (c = Math.abs(i[o].low - d)),
-          (A = Math.abs(i[o].high - i[o - 1].low)),
-          (g = Math.abs(d - i[o - 1].open)),
-          (f =
-            p > c && p > A
-              ? p + c / 2 + g / 4
-              : c > A && c > p
-              ? c + p / 2 + g / 4
-              : A + g / 4),
-          (m = i[o].close + (i[o].close - i[o].open) / 2 - i[o - 1].open),
-          0 != f &&
-            (i[o].ASI = i[o - 1].ASI + ((16 * m) / f) * Math.max(p, c))),
-        o >= 5)
-      ) {
-        l = 0;
-        for (var U = 0; U < 6; U++) l += i[o - U].close;
-        0 != l && (i[o].BIAS_A = 100 * (i[o].close / (l / 6) - 1));
-      }
-      if (o >= 11) {
-        l = 0;
-        for (var U = 0; U < 12; U++) l += i[o - U].close;
-        0 != l && (i[o].BIAS_B = 100 * (i[o].close / (l / 12) - 1));
-      }
-      if (o >= 23) {
-        l = 0;
-        for (var U = 0; U < 24; U++) l += i[o - U].close;
-        0 != l && (i[o].BIAS_C = 100 * (i[o].close / (l / 24) - 1));
-      }
-      if (o >= 19) {
-        l = 0;
-        for (var U = 0; U < 20; U++) l += i[o - U].close;
-        (i[o].BOLL = l / 20), (l = 0);
-        for (var U = 0; U < 20; U++)
-          l += (i[o - U].close - i[o].BOLL) * (i[o - U].close - i[o].BOLL);
-        (u = parseFloat(Math.sqrt(l / 20))),
-          (i[o].BOLL_UPPER = i[o].BOLL + 2 * u),
-          (i[o].BOLL_LOWER = i[o].BOLL - 2 * u);
-      }
-      if (((i[o].CCI_TYP = (i[o].high + i[o].low + i[o].close) / 3), o >= 13)) {
-        l = 0;
-        for (var U = 0; U < 14; U++) l += i[o - U].close;
-        l / 14, (l = 0);
-        for (var U = 0; U < 14; U++) l += i[o - U].CCI_TYP;
-        (x = l / 14), (l = 0);
-        for (var U = 0; U < 14; U++) l += Math.abs(i[o - U].CCI_TYP - x);
-        0 != l && (i[o].CCI = (i[o].CCI_TYP - x) / ((l / 14) * 0.015));
-      }
-      if (((i[o].CR_MID = (i[o].high + i[o].low) / 2), 0 == o))
-        (i[o].CR = 100),
-          (i[o].CR_AX = Math.max(i[o].high - i[o].CR_MID, 0)),
-          (i[o].CR_BX = Math.max(i[o].CR_MID - i[o].low, 0));
-      else {
-        (i[o].CR_AX = Math.max(i[o].high - i[o - 1].CR_MID, 0)),
-          (i[o].CR_BX = Math.max(i[o - 1].CR_MID - i[o].low, 0)),
-          (v = w = 0);
-        for (var U = 0; U < 26 && U < o + 1; U++)
-          (v += i[o - U].CR_AX), (w += i[o - U].CR_BX);
-        if ((0 != w && (i[o].CR = (v / w) * 100), o >= 9)) {
-          l = 0;
-          for (var U = 0; U < 10; U++) l += i[o - U].CR;
-          o + 5 < i.Length && (i[o + 5].CR_A = l / 10);
-        }
-        if (o >= 19) {
-          l = 0;
-          for (var U = 0; U < 20; U++) l += i[o - U].CR;
-          o + 9 < i.Length && (i[o + 9].CR_B = l / 20);
-        }
-        if (o >= 39) {
-          l = 0;
-          for (var U = 0; U < 40; U++) l += i[o - U].CR;
-          o + 17 < i.Length && (i[o + 17].CR_C = l / 40);
-        }
-      }
-      if (
-        (0 == o
-          ? ((i[o].DMI_TR = Math.max(
-              Math.max(i[o].high - i[o].low, Math.abs(i[o].high - i[o].close)),
-              Math.abs(i[o].close - i[o].low)
-            )),
-            (y = 0),
-            (M = 0))
-          : ((i[o].DMI_TR = Math.max(
-              Math.max(
-                i[o].high - i[o].low,
-                Math.abs(i[o].high - i[o - 1].close)
-              ),
-              Math.abs(i[o - 1].close - i[o].low)
-            )),
-            (y = i[o].high - i[o - 1].high),
-            (M = i[o - 1].low - i[o].low)),
-        (i[o].DMI_DMP = y > 0 && y > M ? y : 0),
-        (i[o].DMI_DMM = M > 0 && M > y ? M : 0),
-        o >= 13)
-      ) {
-        if (13 == o) {
-          B = C = I = 0;
-          for (var U = 0; U < 14; U++)
-            (B += i[o - U].DMI_TR),
-              (C += i[o - U].DMI_DMP),
-              (I += i[o - U].DMI_DMM);
-          (i[o].DMI_EXPMEMA_TR = B / 14),
-            (i[o].DMI_EXPMEMA_DMP = C / 14),
-            (i[o].DMI_EXPMEMA_DMM = I / 14);
-        } else
-          (i[o].DMI_EXPMEMA_TR =
-            (2 * i[o].DMI_TR + 13 * i[o - 1].DMI_EXPMEMA_TR) / 15),
-            (i[o].DMI_EXPMEMA_DMP =
-              (2 * i[o].DMI_DMP + 13 * i[o - 1].DMI_EXPMEMA_DMP) / 15),
-            (i[o].DMI_EXPMEMA_DMM =
-              (2 * i[o].DMI_DMM + 13 * i[o - 1].DMI_EXPMEMA_DMM) / 15);
-        0 != i[o].DMI_EXPMEMA_TR &&
-          ((i[o].DMI_PDI = (100 * i[o].DMI_EXPMEMA_DMP) / i[o].DMI_EXPMEMA_TR),
-          (i[o].DMI_MDI = (100 * i[o].DMI_EXPMEMA_DMM) / i[o].DMI_EXPMEMA_TR),
-          i[o].DMI_PDI + i[o].DMI_MDI != 0 &&
-            (i[o].DMI_MPDI =
-              (Math.abs(i[o].DMI_MDI - i[o].DMI_PDI) /
-                (i[o].DMI_MDI + i[o].DMI_PDI)) *
-              100));
-      }
-      if (o >= 18)
-        if (18 == o) {
-          b = 0;
-          for (var U = 0; U < 6; U++) b += i[o - U].DMI_MPDI;
-          i[o].DMI_ADX = b / 6;
-        } else i[o].DMI_ADX = (2 * i[o].DMI_MPDI + 5 * i[o - 1].DMI_ADX) / 7;
-      if (o >= 23)
-        if (23 == o) {
-          k = 0;
-          for (var U = 0; U < 6; U++) k += i[o - U].DMI_ADX;
-          i[o].DMI_ADXR = k / 6;
-        } else i[o].DMI_ADXR = (2 * i[o].DMI_ADX + 5 * i[o - 1].DMI_ADXR) / 7;
-      (D = i[o].low), (E = i[o].high);
-      for (var U = 0; U < 9 && U < o + 1; U++)
-        E < i[o - U].high && (E = i[o - U].high),
-          D > i[o - U].low && (D = i[o - U].low);
-      if (
-        (E != D && (i[o].KDJ_RSV = ((i[o].close - D) / (E - D)) * 100),
-        0 == o
-          ? ((i[o].KDJ_K = i[o].KDJ_RSV),
-            (i[o].KDJ_D = i[o].KDJ_RSV),
-            (i[o].KDJ_J = i[o].KDJ_RSV))
-          : ((i[o].KDJ_K = i[o].KDJ_RSV / 3 + (2 * i[o - 1].KDJ_K) / 3),
-            (i[o].KDJ_D = i[o].KDJ_K / 3 + (2 * i[o - 1].KDJ_D) / 3),
-            (i[o].KDJ_J = 3 * i[o].KDJ_K - 2 * i[o].KDJ_D)),
-        0 == o
-          ? ((i[o].MACD_AX = i[o].close),
-            (i[o].MACD_BX = i[o].close),
-            (i[o].MACD_DIF = 0),
-            (i[o].MACD_DEA = 0))
-          : ((i[o].MACD_AX = (2 * i[o].close + 11 * i[o - 1].MACD_AX) / 13),
-            (i[o].MACD_BX = (2 * i[o].close + 25 * i[o - 1].MACD_BX) / 27),
-            (i[o].MACD_DIF = i[o].MACD_AX - i[o].MACD_BX),
-            (i[o].MACD_DEA = (2 * i[o].MACD_DIF + 8 * i[o - 1].MACD_DEA) / 10)),
-        o > 0 &&
-          (i[o].close > i[o - 1].close
-            ? (i[o].OBV = i[o - 1].OBV + i[o].volume)
-            : i[o].close < i[o - 1].close
-            ? (i[o].OBV = i[o - 1].OBV - i[o].volume)
-            : (i[o].OBV = i[o - 1].OBV),
-          o >= 29))
-      ) {
-        R = 0;
-        for (var U = 0; U < 30; U++) R += i[o - U].OBV;
-        i[o].OBV_MA = R / 30;
-      }
-      if (
-        ((Q = Math.min(11, o)),
-        0 != i[o - Q].close &&
-          (i[o].ROC = 100 * (i[o].close / i[o - Q].close - 1)),
-        o >= 5)
-      ) {
-        l = 0;
-        for (var U = 0; U < 6; U++) l += i[o - U].ROC;
-        i[o].ROC_MA = l / 6;
-      }
-      if (
-        (o > 0 &&
-          ((_ = Math.max(i[o].close - i[o - 1].close, 0)),
-          (j = Math.abs(i[o].close - i[o - 1].close)),
-          1 == o
-            ? ((i[o].RSI_UP_A = _),
-              (i[o].RSI_DN_A = j),
-              (i[o].RSI_UP_B = _),
-              (i[o].RSI_DN_B = j),
-              (i[o].RSI_UP_C = _),
-              (i[o].RSI_DN_C = j))
-            : ((i[o].RSI_UP_A = _ + (5 * i[o - 1].RSI_UP_A) / 6),
-              (i[o].RSI_DN_A = j + (5 * i[o - 1].RSI_DN_A) / 6),
-              (i[o].RSI_UP_B = _ + (11 * i[o - 1].RSI_UP_B) / 12),
-              (i[o].RSI_DN_B = j + (11 * i[o - 1].RSI_DN_B) / 12),
-              (i[o].RSI_UP_C = _ + (23 * i[o - 1].RSI_UP_C) / 24),
-              (i[o].RSI_DN_C = j + (23 * i[o - 1].RSI_DN_C) / 24))),
-        3 == o)
-      ) {
-        if (Y) {
-          var U, U;
-          K = i[o].high;
-          for (var U = 0; U < 4; U++) K < i[o - U].high && (K = i[o - U].high);
-          T = i[o].low;
-          for (var U = 0; U < 4; U++) T > i[o - U].low && (T = i[o - U].low);
-          (i[o].SAR = T), (i[o].SAR_RED = !0), 0.02, (Y = !1);
-        }
-      } else o > 3 && n(o, i);
-      O = S = F = 0;
-      for (var U = 0; U < 26 && U < o + 1; U++)
-        o >= U + 1
-          ? i[o - U].close > i[o - U - 1].close
-            ? (O += i[o - U].volume)
-            : i[o - U].close < i[o - U - 1].close
-            ? (S += i[o - U].volume)
-            : (F += i[o - U].volume)
-          : ((O += i[o - U].volume / 3),
-            (S += i[o - U].volume / 3),
-            (F += i[o - U].volume / 3));
-      if (
-        (2 * S + F != 0 && (i[o].VR = (100 * (2 * O + F)) / (2 * S + F)),
-        o >= 5)
-      ) {
-        G = 0;
-        for (var U = 0; U < 6; U++) G += i[o - U].VR;
-        i[o].VR_MA = G / 6;
-      }
-      (D = i[o].low), (E = i[o].high);
-      for (var U = 0; U < 10 && U < o + 1; U++)
-        E < i[o - U].high && (E = i[o - U].high),
-          D > i[o - U].low && (D = i[o - U].low);
-      E != D && (i[o].WR_A = (100 * (E - i[o].close)) / (E - D)),
-        (D = i[o].low),
-        (E = i[o].high);
-      for (var U = 0; U < 6 && U < o + 1; U++)
-        E < i[o - U].high && (E = i[o - U].high),
-          D > i[o - U].low && (D = i[o - U].low);
-      E != D && (i[o].WR_B = (100 * (E - i[o].close)) / (E - D)),
-        o >= 23 &&
-          (i[o].BBI =
-            (i[o].Average3 + i[o].Average6 + i[o].Average12 + i[o].Average24) /
-            4);
-    }
-    return i;
-  }
-  function n(t, i) {
-    if (_bool) {
-      if (s) {
-        d = i[t].high;
-        for (var e = 0; e < 2; e++) d < i[t - e].high && (d = i[t - e].high);
-        h = i[t].low;
-        for (var e = 0; e < 2; e++) h > i[t - e].low && (h = i[t - e].low);
-        (i[t].SAR = h), (i[t].SAR_RED = !0), (whatisyou = 0.02);
-      } else {
-        d = i[t].high;
-        for (var e = 0; e < 2; e++) d < i[t - e].high && (d = i[t - e].high);
-        h = i[t].low;
-        for (var e = 0; e < 2; e++) h > i[t - e].low && (h = i[t - e].low);
-        (i[t].SAR = d), (i[t].SAR_RED = !1), (whatisyou = 0.02);
-      }
-      _bool = !1;
-    } else
-      s
-        ? ((i[t].SAR = i[t - 1].SAR + whatisyou * (d - i[t - 1].SAR)),
-          (i[t].SAR_RED = !0),
-          i[t].high > d &&
-            ((d = i[t].high), (whatisyou = Math.min(whatisyou + 0.02, 0.2))),
-          i[t].SAR > i[t].close && ((s = !1), (_bool = !0), n(t, i)))
-        : ((i[t].SAR = i[t - 1].SAR + whatisyou * (h - i[t - 1].SAR)),
-          (i[t].SAR_RED = !1),
-          i[t].low < h &&
-            ((h = i[t].low), (whatisyou = Math.min(whatisyou + 0.02, 0.2))),
-          i[t].SAR < i[t].close && ((s = !0), (_bool = !0), n(t, i)));
-  }
-  function a() {
-    return {
-      Average5: 0,
-      Average10: 0,
-      Average20: 0,
-      Average30: 0,
-      Average3: 0,
-      Average6: 0,
-      Average12: 0,
-      Average24: 0,
-      Average50: 0,
-      Average60: 0,
-      ASI: 0,
-      BIAS_A: 0,
-      BIAS_B: 0,
-      BIAS_C: 0,
-      BOLL: 0,
-      BOLL_UPPER: 0,
-      BOLL_LOWER: 0,
-      CCI_TYP: 0,
-      CCI: 0,
-      CR_MID: 0,
-      CR_AX: 0,
-      CR_BX: 0,
-      CR: 0,
-      CR_A: 0,
-      CR_B: 0,
-      CR_C: 0,
-      DMI_TR: 0,
-      DMI_DMP: 0,
-      DMI_DMM: 0,
-      DMI_EXPMEMA_TR: 0,
-      DMI_EXPMEMA_DMP: 0,
-      DMI_EXPMEMA_DMM: 0,
-      DMI_PDI: 0,
-      DMI_MDI: 0,
-      DMI_MPDI: 0,
-      DMI_ADX: 0,
-      DMI_ADXR: 0,
-      KDJ_RSV: 0,
-      KDJ_K: 0,
-      KDJ_D: 0,
-      KDJ_J: 0,
-      MACD_AX: 0,
-      MACD_BX: 0,
-      MACD_DIF: 0,
-      MACD_DEA: 0,
-      MACD: 0,
-      OBV: 0,
-      OBV_MA: 0,
-      ROC: 0,
-      ROC_MA: 0,
-      RSI_UP_A: 0,
-      RSI_DN_A: 0,
-      RSI_UP_B: 0,
-      RSI_DN_B: 0,
-      RSI_UP_C: 0,
-      RSI_DN_C: 0,
-      RSI_A: 0,
-      RSI_B: 0,
-      RSI_C: 0,
-      SAR: 0,
-      SAR_RED: 0,
-      VR: 0,
-      VR_MA: 0,
-      WR_A: 0,
-      WR_B: 0,
-      BBI: 0,
-      Zero: 0,
-      volume5: 0,
-      volume10: 0,
-      time: 0,
-      open: 0,
-      close: 0,
-      high: 0,
-      low: 0,
-      volume: 0,
-    };
-  }
-  // mod.exports = e;
-  var s = !0,
-    _bool = !0,
-    whatisyou = 0.02,
-    h = 0,
-    d = 0;
-  if (typeof klines[0] === "object") {
-    return cacTechObjectDatas(klines);
-  } else return cacTechDatas(klines);
 }
 function isMacdGolden(techData) {
   let i = techData.length - 1;

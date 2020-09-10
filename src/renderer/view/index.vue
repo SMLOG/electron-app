@@ -4,6 +4,7 @@
       <Setting />
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
+      <Posts :item="showMsgItem" />
     </div>
     <div id="menuWrap">
       <ul id="top">
@@ -17,6 +18,7 @@
         </li>
       </ul>
       <FilterCtrl2 :src="curSrc" />
+      <MyIndex :openlink="openlink" />
     </div>
     <div style="clear:both;" id="tbl">
       <table>
@@ -53,7 +55,7 @@
             <td class="firstCol">
               <div class="first">
                 <span>
-                  <a class="post_bt" :name="item.code">{{ index + 1 }}</a>
+                  <a class="post_bt" :name="item.code" @click="showComments(item)">{{ index + 1 }}</a>
                 </span>
                 <span>
                   <a class="action" @click="removeItem(item)">x</a>
@@ -121,6 +123,8 @@ import FilterCtrl2 from "@/view/components/FilterCtrl2";
 import draggable from "vuedraggable";
 import WinView from "@/view/components/WinView";
 import Right from "@/view/components/Right";
+import Posts from "@/view/components/Posts";
+import MyIndex from "@/view/components/MyIndex";
 
 import { setCookie, getCookie } from "@/lib/utils";
 
@@ -149,6 +153,7 @@ export default {
       link: "about:blank",
       item: {},
       rightItem: false,
+      showMsgItem: false,
     };
   },
   mounted() {},
@@ -196,6 +201,8 @@ export default {
     draggable,
     WinView,
     Right,
+    Posts,
+    MyIndex,
   },
   filters: {},
   sockets: {
@@ -249,6 +256,10 @@ export default {
     },
   },
   methods: {
+    showComments(item) {
+      if (item == this.showMsgItem) this.showMsgItem = null;
+      else this.showMsgItem = item;
+    },
     addItem(item) {
       this.$socket.emit("addItem", item);
     },

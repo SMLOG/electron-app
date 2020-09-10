@@ -18,83 +18,89 @@ export const cats = {
     items: getMyList(),
   },
 };
-let socket;
-let socketio;
-let isloop = false;
-export function initmem(io, s) {
-  socket = s;
-  console.error("initmem");
-  socket.emit("mylist", cats["自选"].items);
-  socket.emit("filters", Object.keys(filters));
-  updateFiltersCount();
-  socket.emit("sealist", cats["海选"].items);
-  socket.emit("countMap", countMap);
-  console.log(countMap);
-  socket.emit("filtersCount", filtersCount);
-  if (!isloop) {
-    isloop = true;
-    socketio = io.of("socket.io");
-    (async () => {
-      for (; true; ) {
-        try {
-          if (cats["海选"].items.length == 0) {
-            cats["海选"].items = await getSeaList();
-            console.log("海选:" + cats["海选"].items.length);
-            updateFiltersCount();
+export function initmem(io) {
+  io.on("connection", (socket) => {
+    console.log("a user connected");
 
-            socketio.emit("sealist", cats["海选"].items);
-            socketio.emit("countMap", countMap);
-            socketio.emit("filtersCount", filtersCount);
-          }
+    socket.on("disconnect", () => {
+      console.log("user disconnected");
+    });
 
-          socketio.clients((error, clients) => {
-            if (error) throw error;
-            console.log(clients);
-          });
-          let hxlist = await hx();
-          socketio.emit("hx", hxlist);
-          console.log(new Date(), "hx", hxlist.length);
-          let indMap = await inds();
-          socketio.emit("indMap", indMap);
+    socket.on("echo", (msg) => {
+      console.log("echo from client: ", msg);
+      socket.emit("echo", msg);
+    });
 
-          await sleep(2000);
-        } catch (e) {
-          console.log(e);
+    console.error("initmem");
+    socket.emit("mylist", cats["自选"].items);
+    socket.emit("filters", Object.keys(filters));
+    updateFiltersCount();
+    socket.emit("sealist", cats["海选"].items);
+    socket.emit("countMap", countMap);
+    console.log(countMap);
+    socket.emit("filtersCount", filtersCount);
+
+    socket.on("addItem", (item) => {
+      (async () => {
+        if (cats["自选"].items.filter((e) => e.code == item.code).length == 0) {
+          cats["自选"].items.push(item);
+          await attachExtractInfoToItems([item]);
+          fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
+          toFiltersCount(item, "自选", "+");
+          // socket.emit("mylist", cats["自选"].items);
+          socket.emit("filtersCount", filtersCount);
+          socket.emit("countMap", countMap);
+          socket.emit("addItem", item);
         }
-      }
-    })();
-  }
+      })();
+    });
+    socket.on("removeItem", (item) => {
+      (async () => {
+        let the = cats["自选"].items.filter((e) => e.code == item.code);
+        if (the.length > 0) {
+          cats["自选"].items = cats["自选"].items.filter(function(v) {
+            return the.indexOf(v) === -1;
+          });
+          fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
+          toFiltersCount(item, "自选", "-");
+          socket.emit("mylist", cats["自选"].items);
+          socket.emit("filtersCount", filtersCount);
+          socket.emit("countMap", countMap);
+          socket.emit("removeItem", item);
+        }
+      })();
+    });
+  });
 
-  socket.on("addItem", (item) => {
-    (async () => {
-      if (cats["自选"].items.filter((e) => e.code == item.code).length == 0) {
-        cats["自选"].items.push(item);
-        await attachExtractInfoToItems([item]);
-        fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
-        toFiltersCount(item, "自选", "+");
-        // socket.emit("mylist", cats["自选"].items);
-        socket.emit("filtersCount", filtersCount);
-        socket.emit("countMap", countMap);
-        socket.emit("addItem", item);
-      }
-    })();
-  });
-  socket.on("removeItem", (item) => {
-    (async () => {
-      let the = cats["自选"].items.filter((e) => e.code == item.code);
-      if (the.length > 0) {
-        cats["自选"].items = cats["自选"].items.filter(function(v) {
-          return the.indexOf(v) === -1;
+  (async () => {
+    for (; true; ) {
+      try {
+        if (cats["海选"].items.length == 0) {
+          cats["海选"].items = await getSeaList();
+          console.log("海选:" + cats["海选"].items.length);
+          updateFiltersCount();
+
+          io.emit("sealist", cats["海选"].items);
+          io.emit("countMap", countMap);
+          io.emit("filtersCount", filtersCount);
+        }
+
+        io.clients((error, clients) => {
+          if (error) throw error;
+          console.log(clients);
         });
-        fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
-        toFiltersCount(item, "自选", "-");
-        socket.emit("mylist", cats["自选"].items);
-        socket.emit("filtersCount", filtersCount);
-        socket.emit("countMap", countMap);
-        socket.emit("removeItem", item);
+        let hxlist = await hx();
+        io.emit("hx", hxlist);
+        console.log(new Date(), "hx", hxlist.length);
+        let indMap = await inds();
+        io.emit("indMap", indMap);
+
+        await sleep(2000);
+      } catch (e) {
+        console.log(e);
       }
-    })();
-  });
+    }
+  })();
 }
 export const filtersCount = [];
 {

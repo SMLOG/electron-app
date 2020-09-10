@@ -1,57 +1,54 @@
 <template>
   <div id="filterctr" ref="filterctr">
-    <div>
-      <div>
-        <ul style="margin:0;padding:0;display:flex;justify-content:flex-end">
-          <li ref="tree_ctrl" class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
-          <li class="id" :class="{cur:selectId<0}" @click="showAll">All</li>
-          <draggable v-model="list" @update="dragEnd" tag="li">
-            <li
-              v-for="(id,i) in list"
-              :key="i"
-              :class="{cur:id==curFilterIds}"
-              class="id"
-              @click="selId(id)"
-            >
-              {{id}}
-              <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+    <ul style="margin:0;padding:0;display:flex;justify-content:flex-end">
+      <li ref="tree_ctrl" class="id tree_ctrl" @click="showTree=!showTree" title="tree"></li>
+      <li class="id" :class="{cur:selectId<0}" @click="showAll">All</li>
+      <draggable v-model="list" @update="dragEnd" tag="li">
+        <li
+          v-for="(id,i) in list"
+          :key="i"
+          :class="{cur:id==curFilterIds}"
+          class="id"
+          @click="selId(id)"
+        >
+          {{id}}
+          <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+        </li>
+      </draggable>
+    </ul>
+
+    <ul class="tree" v-show="showTree" ref="tree">
+      <li v-for="(id,i) in list" :key="i" class="leaf">
+        <div @click="selectId=i;" :class="{select:selectId==i}" class="it">
+          <span>+</span>
+          <span>{{id}}</span>
+          <span v-if="countMap[id]">({{countMap[id][src]}})</span>
+        </div>
+        <div v-show="selectId==i" class="sub">
+          <ul>
+            <li v-for="(filter,k) in filtersCount" :key="k">
+              <div class="node">
+                <span>{{ filter.name}}({{filter[src]}})</span>
+                <input
+                  type="checkbox"
+                  @change="change(i,filter)"
+                  v-model="listMap[i][filter.name]"
+                  style="float:right"
+                />
+              </div>
             </li>
-          </draggable>
-        </ul>
-      </div>
-      <ul class="tree" v-show="showTree" ref="tree">
-        <li v-for="(id,i) in list" :key="i" class="item">
-          <div @click="selectId=i;" :class="{select:selectId==i}" class="it">
-            <span>+</span>
-            <span>{{id}}</span>
-            <span v-if="countMap[id]">({{countMap[id][src]}})</span>
-          </div>
-          <div v-show="selectId==i" class="sub">
-            <ul>
-              <li v-for="(filter,k) in filtersCount" :key="k">
-                <div>
-                  <span>{{ filter.name}}({{filter[src]}})</span>
-                  <input
-                    type="checkbox"
-                    @change="change(i,filter)"
-                    v-model="listMap[i][filter.name]"
-                    style="float:right"
-                  />
-                </div>
-              </li>
-              <li>
-                <a @click="del(i)">删除</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          <div>
-            <span @click="add">+</span>
-          </div>
-        </li>
-      </ul>
-    </div>
+            <li>
+              <a @click="del(i)">删除</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div>
+          <span @click="add">+</span>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -66,7 +63,7 @@ function removeAbandon(id, filters) {
     .join("+");
 }
 export default {
-  name: "filterCtr",
+  name: "filterCtr2",
   data: function () {
     return {
       list: storejs.get("filter-id-list2") || [],
@@ -124,6 +121,7 @@ export default {
       this.list.splice(i, 1);
       this.listMap.splice(i, 1);
       this.selectId -= 1;
+      this.save();
     },
     add() {
       this.selectId = this.list.length;
@@ -148,9 +146,9 @@ export default {
   },
   watch: {
     wsfilters() {
-      let items = this.list.map((e) => removeAbandon(e, this.wsfilters));
+      let leafs = this.list.map((e) => removeAbandon(e, this.wsfilters));
       this.list.length = 0;
-      this.list.splice(0, 0, ...(items || []));
+      this.list.splice(0, 0, ...(leafs || []));
 
       this.listMap.length = 0;
       for (let i = 0; i < this.list.length; i++) {
@@ -173,11 +171,11 @@ export default {
 .id {
   display: inline-block;
   padding: 3px;
-  font-size: 60%;
   padding-left: 8px;
-  border-bottom: 1px solid #ccc;
   cursor: pointer;
   min-width: 15px;
+  margin: 3px;
+  border-bottom: 1px solid;
 }
 .select {
   font-weight: bold;
@@ -185,24 +183,17 @@ export default {
 .sub {
   font-size: 80%;
 }
-.item {
-  display: list-item;
+.leaf {
+  display: list-leaf;
 }
-td {
-  padding: 3px 7px;
-}
-table {
-  width: auto !important;
-}
+
 #filterctr.showAll {
   height: auto;
 }
 #filterctr {
   float: left;
   background: white;
-  height: 25px;
   overflow: hidden;
-  border: 1px solid #dadce0;
   border-radius: 8px;
   margin-left: 10px;
 }
@@ -220,21 +211,21 @@ ul {
   padding: 3px 7px;
   list-style: none;
 }
-.item ul {
+.leaf ul {
   margin-left: 10px;
 }
 table {
   float: left;
 }
-.items {
+.leafs {
   background: white;
   padding: 10px;
   position: absolute;
 }
-.filterItem li {
+.filterleaf li {
   display: inline;
 }
-.items li {
+.leafs li {
   display: block;
 }
 
@@ -295,5 +286,12 @@ i.arrow {
 }
 .cur {
   font-weight: bold;
+}
+.node {
+  position: relative;
+}
+.node input {
+  position: absolute;
+  right: 0;
 }
 </style>

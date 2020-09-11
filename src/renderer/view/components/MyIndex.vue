@@ -1,6 +1,6 @@
 <template>
   <ul style="float:left">
-    <li v-for="zi in zsItems" :key="zi.code" @click="openlink(zi, $event)">
+    <li v-for="zi in zsItems" :code="zi.code" :key="zi.code" @click="openlink(zi, $event)">
       {{ zi.name }}
       <em
         :class="{ up: zi.change > 0, down: zi.change < 0 }"
@@ -19,7 +19,12 @@ export default {
   name: "myIndex",
   data: function () {
     return {
-      zsItems: [{ code: "sh000001", name: "" }, { code: "sz399001" }],
+      zsItems: [
+        { code: "sh000001", code2: "1.000001", name: "" },
+        { code: "sz399001", code2: "0.399001" },
+        { code: "hkHSI", code2: "100.HSI" },
+        { code: "gb_$dji", code2: "100.DJIA" },
+      ],
     };
   },
   components: {

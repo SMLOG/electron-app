@@ -431,12 +431,24 @@ export async function getHQTimeTrades(item) {
   delete window[cb];
   return result;
 }
-async function getHSzs() {
+async function getHSzs(items) {
   let cb = rid("list");
+  //https://push2.eastmoney.com/api/qt/clist/get?pi=0&pz=10&po=1&np=1&fields=f1,f2,f3,f4,f12,f13,f14&fltt=2&invt=2&ut=433fd2d0e98eaf36ad3d5001f088614d&fs=i:1.000001,i:100.HSI,i:100.DJIA,i:100.NDX,i:100.FTSE,i:100.GDAXI,i:100.FCHI&cb=jQuery112409180609308351699_1599751861180&_=1599751861217
 
-  let url =
+  //https://push2.eastmoney.com/api/qt/clist/get?pi=0&pz=10&po=1&np=1&fields=f1,f2,f3,f4,f12,f13,f14&fltt=2&invt=2&ut=433fd2d0e98eaf36ad3d5001f088614d&fs=i:100.DJIA,i:100.NDX,i:100.FTSE,i:100.GDAXI,i:100.FCHI&cb=jQuery112409180609308351699_1599751861182&_=1599751861222
+
+  //https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f2,f12,f13,f14,f3,f4,f6,f104,f152&secids=100.ATX,100.FCHI,100.GDAXI,100.HSI,100.N225,100.FTSE,100.NDX,100.DJIA&ut=13697a1cc677c8bfa9a496437bfef419&cb=jQuery112409180609308351699_1599751861188&_=1599751861209
+
+  //http://push2.eastmoney.com/api/qt/ulist.np/get?fid=f3&pi=0&pz=20&po=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&fields=f104,f105,f106&np=1&secids=1.000001%2C0.399001%2C0.399006%2C0.399005&cb=jQuery112404395663590069909_1599752506623&_=1599752506632
+  /*let url =
     `http://21.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=12&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=&fs=b:MK0010&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f11,f62,f128,f136,f115,f152&_=` +
-    +new Date();
+    +new Date();*/
+  //['1.000001','100.HSI','100.DJIA']
+  let indexs = items
+    .map((e) => e.code2)
+    .map((e) => "i:" + e)
+    .join(",");
+  let url = `https://push2.eastmoney.com/api/qt/clist/get?pi=0&pz=10&po=1&np=1&fields=f1,f2,f3,f4,f12,f13,f14&fltt=2&invt=2&ut=433fd2d0e98eaf36ad3d5001f088614d&fs=${indexs}&cb=${cb}&_=${+new Date()}`;
   let p = new Promise((resolve, reject) => {
     window[cb] = function(data) {
       resolve(data);
@@ -448,10 +460,11 @@ async function getHSzs() {
 
   let datalist = await p;
   delete window[cb];
+  if (!datalist.data) return items;
   datalist = datalist.data.diff;
   datalist = datalist.map((e) => {
     return {
-      code: (e.f12.indexOf("0") == 0 ? "sh" : "sz") + e.f12,
+      code2: e.f12,
       name: e.f14,
       now: e.f2,
       close: e.f2,
@@ -459,39 +472,14 @@ async function getHSzs() {
       changeP: e.f3 + "%",
       changeV: e.f4,
       change: e.f4,
-      open: e.f17,
-      preClose: e.f18,
-      preclose: e.f18,
-      turnover: e.f8,
-      pe: e.f9,
-      pe_ttm: e.f115,
-      volume: e.f5,
-      ltg: parseFloat((e.f21 / e.f2 / 100000000).toFixed(2)),
-      amount: e.f6,
-      high: e.f15,
-      low: e.f16,
-      zsz: (e.f20 / 100000000).toFixed(2),
-      lz: (e.f21 / 100000000).toFixed(2),
-      avg: (e.f6 / e.f5).toFixed(2),
-      zf60: e.f24,
-      zf250: e.f25,
-      firstDay: e.f26,
-      date: new Date(e.f124 * 1000),
     };
   });
   return datalist;
 }
 export async function syncZsItems(items) {
-  let zsdatalist = window.zsdatalist;
-  if (!isNotTradeTime() || !window.zsdatalist) {
-    window.zsdatalist = zsdatalist = await getHSzs();
-  }
+  let zsdatalist = await getHSzs(items);
 
-  let map = zsdatalist.reduce(
-    (map, item) => ((map[item.code] = item), map),
-    {}
-  );
-  return items.map((e) => Object.assign(e, map[e.code]));
+  return items.map((e, i) => Object.assign(e, zsdatalist[i]));
 }
 
 export function isNotTradeTime() {

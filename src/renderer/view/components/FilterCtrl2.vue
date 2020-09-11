@@ -175,7 +175,7 @@ export default {
   cursor: pointer;
   min-width: 15px;
   margin: 3px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #ddd;
 }
 .select {
   font-weight: bold;
@@ -200,10 +200,7 @@ export default {
 .curCol {
   border-bottom: 1px solid #222;
 }
-.cur {
-  background: #222;
-  color: white;
-}
+
 .filters {
   list-style: none;
 }
@@ -286,6 +283,7 @@ i.arrow {
 }
 .cur {
   font-weight: bold;
+  border-bottom-color: black;
 }
 .node {
   position: relative;

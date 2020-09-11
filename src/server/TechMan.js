@@ -1,6 +1,9 @@
 import JSONP from "node-jsonp";
 import axios from "axios";
 import { fn, cacheObject } from "./lib/fn";
+import { CONFIG_DIR } from "./config";
+import fs from "fs";
+import { dataUtil } from "./util";
 const KTYPE = {
   5: "M5",
   15: "M15",
@@ -32,6 +35,13 @@ function tech2(items, arr) {
     p_b3 = 0.02,
     p_low = 0,
     p_high = 0;
+  if (items.length > 0) {
+    p_b1 = items[0].p_b1;
+    p_b2 = items[0].p_b2;
+    p_b3 = items[0].p_b3;
+    p_low = items[0].p_low;
+    p_high = items[0].p_high;
+  }
   function et(index, items) {
     if (p_b2) {
       if (p_b1) {
@@ -529,6 +539,14 @@ function tech2(items, arr) {
             items[index].Average24) /
           4);
   }
+  if (items.length > 0) {
+    items[0].p_b1 = p_b1;
+    items[0].p_b2 = p_b2;
+    items[0].p_b3 = p_b3;
+    items[0].p_low = p_low;
+    items[0].p_high = p_high;
+  }
+
   return items;
 }
 export async function getSelfList(stocklist) {
@@ -552,7 +570,6 @@ export async function getSelfList(stocklist) {
 
   return await new Promise((resolve, reject) => {
     JSONP(url, datas, "cb", (json) => {
-      console.log(json);
       let datalist = json.data.diff;
       datalist = datalist.map((e) => {
         return {
@@ -662,48 +679,80 @@ export async function getList() {
   });
 }
 
-export async function getDayWeekTechDatas(code) {
-  let dData = await axios
-    .get(
-      `http://${Math.floor(
-        99 * Math.random() + 1
-      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
-    )
-    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
-  let wData = await axios
-    .get(
-      `http://${Math.floor(
-        99 * Math.random() + 1
-      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=1.600753&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=102&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
-    )
-    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
-
-  return { kd: tech2([], dData.data.klines), kw: tech2([], wData.data.klines) };
-}
-(async () => {
-  let code = "1.688595";
-  let dData = await axios
-    .get(
-      `http://${Math.floor(
-        99 * Math.random() + 1
-      )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
-    )
-    .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
-  //console.log(dData);
-  console.log(code);
-  console.log(dData.data.klines);
-  let res = tech2([], dData.data.klines);
-  console.log(res[res.length - 1]);
-})();
-async function getTech(item) {
-  let dotCode =
+export async function getDayWeekTechDatas(item) {
+  let code =
     (item.code.substring(0, 2) == "sh" ? "1" : "0") +
     "." +
     item.code.substring(2);
-  let techData = await getDayWeekTechDatas(dotCode);
+
+  let file = `${CONFIG_DIR}/${item.code}/klines.json`;
+  let ret;
+  if (fs.existsSync(file)) {
+    let stat = fs.statSync(file);
+    let diff = item.date.getTime() - stat.ctime.getTime();
+    if (diff < 86400000) {
+      let { kd: dItems, kw: wItems } = JSON.parse(fs.readFileSync(file));
+      let dItem = dItems[dItems.length - 1];
+      let wItem = wItems[wItems.length - 1];
+      if (dataUtil.isSameDate(item.date, dItems.date)) {
+        dItem = Object.assign(dItem, item);
+      } else dItems.push(item);
+
+      if (dataUtil.gw(item.date, wItem.date)) {
+        wItem.low = wItem.high = wItem.volume = 0;
+        for (
+          let i = 0, j = dItems.length - 1;
+          dataUtil.gw(item.date, dItems[j - i].date) && i < 7;
+          i++
+        ) {
+          wItem.open = dItems[j - i].open;
+          wItem.low =
+            dItems[j - i].low < wItem.low ? dItems[j - i].low : wItem.low;
+          wItem.high =
+            dItems[j - i].high > wItem.high ? dItems[j - i].low : wItem.high;
+          wItem.volume += parseInt(dItems[j - i]).volume;
+        }
+        wItem.close = item.close;
+      } else {
+        wItems.push(item);
+      }
+      ret = { kd: tech2(dItems, []), kw: tech2(wItems, []) };
+    }
+  }
+  if (!ret) {
+    let dData = await axios
+      .get(
+        `http://${Math.floor(
+          99 * Math.random() + 1
+        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+      )
+      .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
+    let wData = await axios
+      .get(
+        `http://${Math.floor(
+          99 * Math.random() + 1
+        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=102&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+      )
+      .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
+
+    ret = {
+      kd: tech2([], dData.data.klines),
+      kw: tech2([], wData.data.klines),
+    };
+  }
+  return ret;
+}
+(async () => {
+  let code = "1.688595";
+  let ret = await getTech({ code: "sz300883" });
+  console.log(ret);
+})();
+async function getTech(item) {
+  let techData = await getDayWeekTechDatas(item);
   return techData;
 }
 function isMacdGolden(techData) {
+  if (techData.length < 30) return false;
   let i = techData.length - 1;
   let bar0 = techData[i].MACD_DIF - techData[i].MACD_DEA;
   let bar1 = techData[i - 1].MACD_DIF - techData[i - 1].MACD_DEA;
@@ -715,7 +764,6 @@ const techMap = {
     return isMacdGolden(kw);
   },
   换手率大1: function({ item, kd, kw, km }) {
-    console.log(item.code, item.turnover);
     return item.turnover >= 1;
   },
 };
@@ -733,7 +781,6 @@ export function buildFilters() {
 
 export async function callFun(item) {
   let techDatas = await getTech(item);
-  //console.log(techDatas);
   for (let name in techMap) {
     techDatas.item = item;
     item[`_${name}`] = techMap[name](techDatas);

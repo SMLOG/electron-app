@@ -35,7 +35,7 @@ table {
 #tbl table thead th {
   position: -webkit-sticky;
   position: sticky;
-  top: 30px;
+  top: 31px;
   z-index: 1;
 }
 #tbl table thead th:first-child {

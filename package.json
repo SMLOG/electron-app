@@ -12,6 +12,7 @@
     "build:web": "cross-env BUILD_TARGET=web node build/build.js",
     "devs": "nodemon --exitcrash -w src/server --exec \"babel-node bin/www\"",
     "pm2": "pm2 start \"npm run devs\" && pm2 log",
+    "pma": "pm2 start \"npm run devs\" && pm2 start \"npm run devc\" && pm2 log",
     "devc": "node build/dev-runner.js",
     "dev": "concurrently \"set NODE_ENV=development&&nodemon -w src/server --exec \\\"babel-node bin/www\\\"\" \"node build/dev-runner.js\"",
     "start": "git pull && node build/dev-runner.js",

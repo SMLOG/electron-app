@@ -1,48 +1,56 @@
 <template>
-  <table style="height:100%;width:100%;background:white;">
-    <tr v-if="item">
-      <td style="height:27px;">
-        <div>
-          <div @dblclick="dbclick" class="info">
-            <span>{{ item.hy }}</span>
-            <span v-if="item.forecast">{{ item.forecast }}</span>
-            <span>披露:{{ item.disclosure }}</span>
-            <span>流通/亿:{{ item["ltg"] }}</span>
-            <span>流/总:{{ item["lz"] }}</span>
-            <span>TTM:{{ item["pe_ttm"] }}</span>
-            <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
-            <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
-            <span>换手率:{{ item["turnover"] }}%</span>
-            <span :class="{ up: item.lb > 1, down: item.lb < 1 }"
-              >量比:{{ item["lb"] }}</span
-            >
-            <span>低:{{ item["low"] }}</span>
-            <span>高:{{ item["high"] }}</span>
-            <span>振幅:{{ item["zf"] }}%</span>
-            <span>成交额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
-            <span :title="item.score_desc"
-              >分数:{{ item.score }}/{{ item.tscore }}</span
-            >
+  <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullFigure: fullFigure }">
+    <div id="dragBar" ref="dragBar" v-drag draggable="false">
+      <i
+        @click="closeview()"
+        style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
+      ></i>
+      <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+    </div>
+    <table style="height:100%;width:100%;background:white;cellpadding=0;cellspacing	
+=0;">
+      <tr v-if="item">
+        <td style="height:27px;">
+          <div>
+            <div @dblclick="dbclick" class="info">
+              <span>{{ item.name }}</span>
+              <span>{{ item.hy }}</span>
+              <span v-if="item.forecast">{{ item.forecast }}</span>
+              <span>披露:{{ item.disclosure }}</span>
+              <span>流通/亿:{{ item["ltg"] }}</span>
+              <span>流/总:{{ item["lz"] }}</span>
+              <span>TTM:{{ item["pe_ttm"] }}</span>
+              <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
+              <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
+              <span>换手率:{{ item["turnover"] }}%</span>
+              <span :class="{ up: item.lb > 1, down: item.lb < 1 }">量比:{{ item["lb"] }}</span>
+              <span>低:{{ item["low"] }}</span>
+              <span>高:{{ item["high"] }}</span>
+              <span>振幅:{{ item["zf"] }}%</span>
+              <span>成交额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
+              <span :title="item.score_desc">分数:{{ item.score }}/{{ item.tscore }}</span>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <iframe
-          ref="webview"
-          id="webview"
-          style="width:100%;height:100%;border:none;"
-          :src="link"
-        ></iframe>
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <iframe
+            ref="webview"
+            id="webview"
+            style="width:100%;height:100%;border:none;"
+            :src="link"
+          ></iframe>
+        </td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import Calendar from "@/view/components/calendar";
+import { setCookie, getCookie } from "@/lib/utils";
 
 import store from "@/localdata";
 import draggable from "vuedraggable";
@@ -56,11 +64,12 @@ window.$ = $;
 
 export default {
   name: "WinView",
-  data: function() {
+  data: function () {
     return {
       openCode: null,
       openType: null,
       filters: filters,
+      fullFigure: false,
     };
   },
   props: {
@@ -68,13 +77,94 @@ export default {
     item: Object,
     dBclick: Function,
   },
+  directives: {
+    drag(el) {
+      let oDiv = $(el).parent()[0];
+      let self = this;
+      document.onselectstart = function () {
+        return false;
+      };
+      el.onmousedown = function (e) {
+        //鼠标按下，计算当前元素距离可视区的距离
+        let disX = e.clientX - oDiv.offsetLeft;
+        let disY = e.clientY - oDiv.offsetTop;
+        let winH = $(window).outerHeight();
+        document.onmousemove = function (e) {
+          //通过事件委托，计算移动的距离
+          let l = e.clientX - disX;
+          let t = e.clientY - disY;
+          //移动当前元素
+          // target.style.left = l + "px";
+          if (t <= 0) t = 0;
+          else if (t >= winH) t = winH - 8;
+          oDiv.style.top = t + "px";
+        };
+        document.onmouseup = function (e) {
+          document.onmousemove = null;
+          document.onmouseup = null;
+          $("#top").css("margin-bottom", $(oDiv).outerHeight());
+          setCookie(
+            "charTop",
+            ($(window).outerHeight() - $(oDiv).outerHeight()) /
+              $(window).outerHeight()
+          );
+        };
+        //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
+        return false;
+      };
+    },
+  },
   components: {
     Calendar,
   },
-  mounted() {},
-  watch: {},
+  mounted() {
+    document.addEventListener("keyup", (e) => {
+      if (e.keyCode == 27) {
+        this.closeview();
+      }
+    });
+  },
+  watch: {
+    item(o, n) {
+      this.openlink();
+    },
+    link(o, n) {
+      this.openlink();
+    },
+  },
   computed: {},
   methods: {
+    openlink() {
+      let link = this.link;
+      if (this.item == null) {
+        this.closeview();
+      } else {
+        link = link || (link = "/static/tech.html?{{code}}&kd");
+        let webview = $(document.querySelectorAll("#webview"));
+        let webviewWrap = $(this.$refs.webviewWrap);
+        let url = link.replace("{{code}}", this.item.code);
+
+        if (!webviewWrap.is(":visible")) {
+          let chartop =
+            Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
+
+          webviewWrap.css("top", chartop + "px");
+          setTimeout(() => {
+            webviewWrap.css("top", chartop - 1 + "px");
+          }, 10);
+        }
+
+        webviewWrap.show();
+        webview[0].style.height = "100%";
+        let timer;
+        timer = setInterval(() => {
+          if ($(this.$refs.webviewWrap).is(":visible")) {
+            clearInterval(timer);
+            webview[0].src = url;
+          }
+        }, 50);
+      }
+    },
     dbclick() {
       this.$emit("dBclick");
     },
@@ -123,5 +213,11 @@ export default {
 }
 .down {
   color: green;
+}
+table,
+tr,
+td {
+  padding: 0;
+  margin: 0;
 }
 </style>

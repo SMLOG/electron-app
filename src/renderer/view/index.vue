@@ -45,12 +45,13 @@
             </th>
           </tr>
         </thead>
-        <draggable v-model="cats[curSrc].items" @update="dragEnd" tag="tbody">
+        <draggable v-model="cats[curSrc].items" handle=".firstCol" @update="dragEnd" tag="tbody">
           <tr
             :id="'r' + item.code"
             class="item"
             v-for="(item, index) in filteredItems"
             :key="item.code"
+            :class="{ openlink: openCode === item.code }"
           >
             <td class="firstCol">
               <div class="first">
@@ -61,7 +62,7 @@
                   <a class="action" @click="removeItem(item)">x</a>
                 </span>
                 <span>
-                  <input type="checkbox" v-model="item.isFocus" />
+                  <input type="checkbox" v-model="item.isFocus" @change="saveItem(item)" />
                 </span>
                 <div
                   :title="item.code"
@@ -99,16 +100,7 @@
       </table>
     </div>
 
-    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullFigure: fullFigure }">
-      <div id="dragBar" ref="dragBar" v-drag draggable="false">
-        <i
-          @click="closeview()"
-          style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
-        ></i>
-        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
-      </div>
-      <WinView :item="item" :link="link" @dBclick="fullFigure = !fullFigure"></WinView>
-    </div>
+    <WinView ref="webviewWrap" :item="item" :link="link"></WinView>
   </div>
 </template>
 
@@ -125,8 +117,6 @@ import WinView from "@/view/components/WinView";
 import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
-
-import { setCookie, getCookie } from "@/lib/utils";
 
 import $ from "jquery";
 window.$ = $;
@@ -149,51 +139,15 @@ export default {
       headers: getCheckFields(),
       descending: true,
       sortby: "",
-      fullFigure: false,
       link: "about:blank",
-      item: {},
+      item: null,
       rightItem: false,
       showMsgItem: false,
+      openCode: null,
     };
   },
   mounted() {},
-  directives: {
-    drag(el) {
-      let oDiv = $(el).parent()[0];
-      let self = this;
-      document.onselectstart = function () {
-        return false;
-      };
-      el.onmousedown = function (e) {
-        //鼠标按下，计算当前元素距离可视区的距离
-        let disX = e.clientX - oDiv.offsetLeft;
-        let disY = e.clientY - oDiv.offsetTop;
-        let winH = $(window).outerHeight();
-        document.onmousemove = function (e) {
-          //通过事件委托，计算移动的距离
-          let l = e.clientX - disX;
-          let t = e.clientY - disY;
-          //移动当前元素
-          // target.style.left = l + "px";
-          if (t <= 0) t = 0;
-          else if (t >= winH) t = winH - 8;
-          oDiv.style.top = t + "px";
-        };
-        document.onmouseup = function (e) {
-          document.onmousemove = null;
-          document.onmouseup = null;
-          $("#top").css("margin-bottom", $(oDiv).outerHeight());
-          setCookie(
-            "charTop",
-            ($(window).outerHeight() - $(oDiv).outerHeight()) /
-              $(window).outerHeight()
-          );
-        };
-        //return false不加的话可能导致黏连，就是拖到一个地方时div粘在鼠标上不下来，相当于onmouseup失效
-        return false;
-      };
-    },
-  },
+
   components: {
     SearchPanel,
     Setting,
@@ -262,51 +216,31 @@ export default {
     },
     addItem(item) {
       this.$socket.emit("addItem", item);
+      this.openCode = item.code;
     },
     removeItem(item) {
       console.log("remove", item.code);
       this.$socket.emit("removeItem", item);
     },
+    saveItem(item) {
+      if (item.isFocus) this.addItem(item);
+    },
     dragEnd(e) {
       e.preventDefault();
     },
     closeview() {
-      let webviewWrap = $(this.$refs.webviewWrap);
+      let webviewWrap = $(this.$refs.webviewWrap.$el);
       webviewWrap.hide();
       $(this.$refs.top).css("margin-bottom", "0");
       this.openCode = null;
     },
     openlink(item, event, link) {
-      link || (link = "/static/tech.html?{{code}}&kd");
-      let webview = $(document.querySelectorAll("#webview"));
-      let webviewWrap = $(this.$refs.webviewWrap);
-      this.item = item;
-      let url = link.replace("{{code}}", item.code);
-
-      if (webview[0].src.indexOf(url) > -1 && webviewWrap.is(":visible")) {
-        this.closeview();
+      if (item == this.item && link == this.link) {
+        this.item = null;
       } else {
-        if (!webviewWrap.is(":visible")) {
-          let chartop =
-            Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
-
-          webviewWrap.css("top", chartop + "px");
-          setTimeout(() => {
-            webviewWrap.css("top", chartop - 1 + "px");
-          }, 10);
-        }
-
-        webviewWrap.show();
-        webview[0].style.height = "100%";
-        this.openCode = item.code;
+        this.item = item;
+        this.link = link;
       }
-      let timer;
-      timer = setInterval(() => {
-        if ($(this.$refs.webviewWrap).is(":visible")) {
-          clearInterval(timer);
-          this.link = url;
-        }
-      }, 50);
     },
     getclass(col, item) {
       let cls = {};

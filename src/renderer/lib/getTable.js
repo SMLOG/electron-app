@@ -433,17 +433,7 @@ export async function getHQTimeTrades(item) {
 }
 async function getHSzs(items) {
   let cb = rid("list");
-  //https://push2.eastmoney.com/api/qt/clist/get?pi=0&pz=10&po=1&np=1&fields=f1,f2,f3,f4,f12,f13,f14&fltt=2&invt=2&ut=433fd2d0e98eaf36ad3d5001f088614d&fs=i:1.000001,i:100.HSI,i:100.DJIA,i:100.NDX,i:100.FTSE,i:100.GDAXI,i:100.FCHI&cb=jQuery112409180609308351699_1599751861180&_=1599751861217
 
-  //https://push2.eastmoney.com/api/qt/clist/get?pi=0&pz=10&po=1&np=1&fields=f1,f2,f3,f4,f12,f13,f14&fltt=2&invt=2&ut=433fd2d0e98eaf36ad3d5001f088614d&fs=i:100.DJIA,i:100.NDX,i:100.FTSE,i:100.GDAXI,i:100.FCHI&cb=jQuery112409180609308351699_1599751861182&_=1599751861222
-
-  //https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f2,f12,f13,f14,f3,f4,f6,f104,f152&secids=100.ATX,100.FCHI,100.GDAXI,100.HSI,100.N225,100.FTSE,100.NDX,100.DJIA&ut=13697a1cc677c8bfa9a496437bfef419&cb=jQuery112409180609308351699_1599751861188&_=1599751861209
-
-  //http://push2.eastmoney.com/api/qt/ulist.np/get?fid=f3&pi=0&pz=20&po=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&fields=f104,f105,f106&np=1&secids=1.000001%2C0.399001%2C0.399006%2C0.399005&cb=jQuery112404395663590069909_1599752506623&_=1599752506632
-  /*let url =
-    `http://21.push2.eastmoney.com/api/qt/clist/get?cb=${cb}&pn=1&pz=12&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=&fs=b:MK0010&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f11,f62,f128,f136,f115,f152&_=` +
-    +new Date();*/
-  //['1.000001','100.HSI','100.DJIA']
   let indexs = items
     .map((e) => e.code2)
     .map((e) => "i:" + e)
@@ -460,11 +450,10 @@ async function getHSzs(items) {
 
   let datalist = await p;
   delete window[cb];
-  if (!datalist.data) return items;
   datalist = datalist.data.diff;
   datalist = datalist.map((e) => {
     return {
-      code2: e.f12,
+      // code2: e.f12,
       name: e.f14,
       now: e.f2,
       close: e.f2,
@@ -478,7 +467,6 @@ async function getHSzs(items) {
 }
 export async function syncZsItems(items) {
   let zsdatalist = await getHSzs(items);
-
   return items.map((e, i) => Object.assign(e, zsdatalist[i]));
 }
 

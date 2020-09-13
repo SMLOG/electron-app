@@ -45,21 +45,6 @@ export let headers = [
     },
   },
   {
-    label: "Forecast",
-    prop: "forecast",
-    type: "string",
-    title: (item) => {
-      return item.forecast_title;
-    },
-    fmt: (e, item) => {
-      getCacheData(null, "Performance forecast_" + item.code).then((data) => {
-        item.forecast = data && data[0].forecasttype;
-        item.forecast_title = data && data[0].str;
-      });
-      return item.forecast;
-    },
-  },
-  {
     label: "披露日期",
     prop: "ACTUAL_PUBLISH_DATE",
     type: "string",
@@ -72,22 +57,6 @@ export let headers = [
 
       return item.ACTUAL_PUBLISH_DATE;
     },
-  },
-  /* {
-    label: "V",
-    prop: "vol",
-    type: "number",
-    fmt: (e, item) => {
-      return (item.vol = `${((item.volume - item.preVolume) / 100).toFixed(
-        0
-      )}/${item.bsVols && (item.bsVols[5] / 100).toFixed(0)}`);
-    }
-  },*/
-
-  {
-    label: "52周%",
-    prop: "52weekPer",
-    type: "number",
   },
   {
     label: "TO%",

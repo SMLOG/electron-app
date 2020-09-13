@@ -7,8 +7,11 @@ import { inds, hx } from "./HQws";
 import fs from "fs";
 const sleep = (t) => new Promise((res, rej) => setTimeout(res, t));
 
+export async function timeout(afn, timeout, def) {
+  return Promise.race([afn, sleep(timeout).then((r) => def)]);
+}
 const myfile = `${CONFIG_DIR}/my.json`;
-const indMap = {};
+let indMap = {};
 export const filters = buildFilters();
 export const cats = {
   海选: {
@@ -30,15 +33,25 @@ export function initmem(io) {
       console.log("echo from client: ", msg);
       socket.emit("echo", msg);
     });
-
-    console.error("initmem");
-    socket.emit("mylist", cats["自选"].items);
-    socket.emit("filters", Object.keys(filters));
-    updateFiltersCount();
-    socket.emit("sealist", cats["海选"].items);
-    socket.emit("countMap", countMap);
-    console.log(countMap);
-    socket.emit("filtersCount", filtersCount);
+    socket.on("filter-id-list", (data) => {
+      console.log("filter-id-list", data);
+      fs.writeFileSync(filterIdListFile, JSON.stringify(data));
+      updateFiltersCount();
+      socket.emit("sealist", cats["海选"].items);
+      socket.emit("countMap", countMap);
+      console.log(countMap);
+      socket.emit("filtersCount", filtersCount);
+    });
+    setTimeout(() => {
+      console.error("initmem");
+      socket.emit("mylist", cats["自选"].items);
+      socket.emit("filters", Object.keys(filters));
+      updateFiltersCount();
+      socket.emit("sealist", cats["海选"].items);
+      socket.emit("countMap", countMap);
+      console.log(countMap);
+      socket.emit("filtersCount", filtersCount);
+    }, 500);
 
     socket.on("addItem", (item) => {
       (async () => {
@@ -72,27 +85,43 @@ export function initmem(io) {
     });
   });
 
+  setInterval(() => {
+    console.log("setinterval:" + new Date());
+  }, 30000);
+  (async () => {
+    for (; true; ) {
+      if (cats["海选"].items.length == 0) {
+        cats["海选"].items = await timeout(
+          getSeaList(),
+          300000,
+          cats["海选"].items
+        );
+        console.log("海选:" + cats["海选"].items.length);
+        updateFiltersCount();
+
+        io.emit("sealist", cats["海选"].items);
+        io.emit("countMap", countMap);
+        console.log("countMap", countMap);
+        io.emit("filtersCount", filtersCount);
+      } else {
+        return;
+      }
+      sleep(350000);
+    }
+  })();
   (async () => {
     for (; true; ) {
       try {
-        if (cats["海选"].items.length == 0) {
-          cats["海选"].items = await getSeaList();
-          console.log("海选:" + cats["海选"].items.length);
-          updateFiltersCount();
-
-          io.emit("sealist", cats["海选"].items);
-          io.emit("countMap", countMap);
-          io.emit("filtersCount", filtersCount);
-        }
+        console.log(new Date());
 
         io.clients((error, clients) => {
           if (error) throw error;
           console.log(clients);
         });
-        let hxlist = await hx();
+        let hxlist = await timeout(hx(), 10000, []);
         io.emit("hx", hxlist);
         console.log(new Date(), "hx", hxlist.length);
-        let indMap = await inds();
+        indMap = await timeout(inds(), 10000, indMap);
         io.emit("indMap", indMap);
 
         await sleep(2000);
@@ -123,7 +152,9 @@ export function toFiltersCount(item, src, type = "+") {
     it[src] += fc([item]) ? (type == "+" ? 1 : -1) : 0;
   }
 }
-export const countMap = {};
+export let countMap = {};
+let filterIdListFile = `${CONFIG_DIR}/filter-id-list.json`;
+
 export function updateFiltersCount() {
   const keys = Object.keys(filters);
   const akeys = Object.keys(cats);
@@ -137,10 +168,9 @@ export function updateFiltersCount() {
       it[j] = items.length;
     }
   }
-  let file = `${CONFIG_DIR}/filter-id-list.json`;
   let list = [];
-  if (fs.existsSync(file)) {
-    list = JSON.parse(fs.readFileSync(file)) || [];
+  if (fs.existsSync(filterIdListFile)) {
+    list = JSON.parse(fs.readFileSync(filterIdListFile)) || [];
   }
   let fcs = list.map((e) => [
     e,
@@ -157,7 +187,7 @@ export function updateFiltersCount() {
     }
     return ret;
   });
-  ret.reduce((map, item) => {
+  countMap = ret.reduce((map, item) => {
     map[item.name] = item;
     return map;
   }, countMap);

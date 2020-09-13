@@ -75,7 +75,7 @@ export default {
   components: {
     draggable,
   },
-  mounted() {
+  created() {
     for (let i = 0; i < this.list.length; i++) {
       let fs = this.list[i].split("+");
       let map = {};
@@ -137,6 +137,10 @@ export default {
         "filter-id-list2",
         this.list.filter((e) => e)
       );
+      this.$socket.emit(
+        "filter-id-list",
+        this.list.filter((e) => e)
+      );
     },
     ...mapActions("ws", ["setCurFilterIds"]),
   },
@@ -144,6 +148,7 @@ export default {
     ...mapGetters("ws", ["curFilterIds", "wsfilters"]),
     ...mapState("ws", ["filtersCount", "countMap"]),
   },
+  sockets: {},
   watch: {
     wsfilters() {
       let leafs = this.list.map((e) => removeAbandon(e, this.wsfilters));

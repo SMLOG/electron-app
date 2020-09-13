@@ -759,9 +759,21 @@ function isMacdGolden(techData) {
   if (bar0 >= 0 && bar0 > bar1 && bar1 <= 0) return true;
   return false;
 }
+function kdjGold(item, kw) {
+  if (!kw) {
+    console.error(`${item} kw = null`);
+    return false;
+  }
+  let i = kw.length - 1;
+  if (i < 3) return false;
+  return kw[i].KDJ_K > kw[i - 1].KDJ_K && kw[i - 2].KDJ_K > kw[i - 1].KDJ_K;
+}
 const techMap = {
   MACD周: function({ item, kw }) {
     return isMacdGolden(kw);
+  },
+  KDJ周: function({ item, kw }) {
+    return kdjGold(item, kw);
   },
   换手率大1: function({ item, kd, kw, km }) {
     return item.turnover >= 1;

@@ -20,7 +20,7 @@ export default {
   data: function () {
     return {
       zsItems: [
-        { code: "sh000001", code2: "1.000001", name: "" },
+        { code: "sh000001", code2: "1.000001", name: "", close: "" },
         { code: "sz399001", code2: "0.399001" },
         { code: "hkHSI", code2: "100.HSI" },
         { code: "gb_$dji", code2: "100.DJIA" },
@@ -34,8 +34,6 @@ export default {
     (async () => {
       for (;;) {
         await syncZsItems(this.zsItems);
-        console.log(this.zsItems[0].name);
-
         await timeout(3000);
       }
     })();

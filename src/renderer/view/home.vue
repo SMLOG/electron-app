@@ -164,7 +164,7 @@
         ></i>
         <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
       </div>
-      <WinView :item="item" :link="link" @dBclick="fullFigure = !fullFigure"></WinView>
+      <WinView :item="item" :link="link" v-show="item" @dBclick="fullFigure = !fullFigure"></WinView>
     </div>
     <Posts :item="showMsgItem" />
   </div>

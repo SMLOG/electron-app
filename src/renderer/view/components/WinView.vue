@@ -1,5 +1,12 @@
 <template>
-  <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullFigure: fullFigure }">
+  <div
+    id="webviewWrap"
+    ref="webviewWrap"
+    class="webview"
+    v-show="item"
+    :style="{top:chartop+'px'}"
+    :class="{ fullFigure: fullFigure }"
+  >
     <div id="dragBar" ref="dragBar" v-drag draggable="false">
       <i
         @click="closeview()"
@@ -35,12 +42,7 @@
       </tr>
       <tr>
         <td>
-          <iframe
-            ref="webview"
-            id="webview"
-            style="width:100%;height:100%;border:none;"
-            :src="link"
-          ></iframe>
+          <iframe ref="webview" id="webview" style="width:100%;height:100%;border:none;" :src="src"></iframe>
         </td>
       </tr>
     </table>
@@ -70,6 +72,8 @@ export default {
       openType: null,
       filters: filters,
       fullFigure: false,
+      src: "about:_blank",
+      chartop: 500,
     };
   },
   props: {
@@ -125,44 +129,25 @@ export default {
     });
   },
   watch: {
-    item(o, n) {
-      this.openlink();
+    item(n, o) {
+      if (n != null && o == null) {
+        this.chartop =
+          Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
+      }
+
+      this.openlink(n, this.link);
     },
     link(o, n) {
-      this.openlink();
+      this.openlink(this.item);
     },
   },
   computed: {},
   methods: {
-    openlink() {
-      let link = this.link;
-      if (this.item == null) {
-        this.closeview();
-      } else {
+    openlink(item, link) {
+      if (item != null) {
         link = link || (link = "/static/tech.html?{{code}}&kd");
-        let webview = $(document.querySelectorAll("#webview"));
-        let webviewWrap = $(this.$refs.webviewWrap);
         let url = link.replace("{{code}}", this.item.code);
-
-        if (!webviewWrap.is(":visible")) {
-          let chartop =
-            Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
-
-          webviewWrap.css("top", chartop + "px");
-          setTimeout(() => {
-            webviewWrap.css("top", chartop - 1 + "px");
-          }, 10);
-        }
-
-        webviewWrap.show();
-        webview[0].style.height = "100%";
-        let timer;
-        timer = setInterval(() => {
-          if ($(this.$refs.webviewWrap).is(":visible")) {
-            clearInterval(timer);
-            webview[0].src = url;
-          }
-        }, 50);
+        this.src = url;
       }
     },
     dbclick() {

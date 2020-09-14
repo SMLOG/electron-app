@@ -303,7 +303,6 @@ ul.filterp {
   right: 0;
   bottom: 0;
   top: 60%;
-  display: none;
   z-index: 4;
   transition: top 0.5s;
   -webkit-transition: top 0.5s; /* Safari */

@@ -6,7 +6,6 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "index", component: () => import("@/view/index") },
-    { path: "/home", name: "home", component: () => import("@/view/home") },
 
     {
       path: "/notify",

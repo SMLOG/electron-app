@@ -99,7 +99,6 @@
         </draggable>
       </table>
     </div>
-
     <WinView ref="webviewWrap" :item="item" :link="link"></WinView>
   </div>
 </template>
@@ -228,12 +227,7 @@ export default {
     dragEnd(e) {
       e.preventDefault();
     },
-    closeview() {
-      let webviewWrap = $(this.$refs.webviewWrap.$el);
-      webviewWrap.hide();
-      $(this.$refs.top).css("margin-bottom", "0");
-      this.openCode = null;
-    },
+
     openlink(item, event, link) {
       if (item == this.item && link == this.link) {
         this.item = null;

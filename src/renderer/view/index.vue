@@ -105,7 +105,6 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-
 import SearchPanel from "@/view/components/search-panel";
 import Setting from "@/view/components/setting";
 import { getCheckFields } from "./headers";
@@ -226,6 +225,7 @@ export default {
     },
     dragEnd(e) {
       e.preventDefault();
+      this.$socket.emit("updateItems", this.cats["自选"].items);
     },
 
     openlink(item, event, link) {

@@ -137,8 +137,8 @@ export default {
 
       this.openlink(n, this.link);
     },
-    link(o, n) {
-      this.openlink(this.item);
+    link(n, o) {
+      this.openlink(this.item, n);
     },
   },
   computed: {},

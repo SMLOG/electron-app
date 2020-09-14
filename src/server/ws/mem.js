@@ -67,6 +67,13 @@ export function initmem(io) {
         }
       })();
     });
+
+    socket.on("updateItems", (items) => {
+      (async () => {
+        cats["自选"].items = items;
+        fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
+      })();
+    });
     socket.on("removeItem", (item) => {
       (async () => {
         let the = cats["自选"].items.filter((e) => e.code == item.code);

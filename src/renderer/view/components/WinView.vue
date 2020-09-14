@@ -145,7 +145,7 @@ export default {
   methods: {
     openlink(item, link) {
       if (item != null) {
-        link = link || (link = "/static/tech.html?{{code}}&kd");
+        link = link || (link = `/static/tech.html?${item.code}&kd`);
         let url = link.replace("{{code}}", this.item.code);
         this.src = url;
       }

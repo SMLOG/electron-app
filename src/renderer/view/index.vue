@@ -72,15 +72,13 @@
                       blink: item._S,
                     }"
                 >
-                  <span :class="{ sz: item.mk == 'sz' }" @click="openlink(item, $event)">
-                    <a :id="item.code">
-                      {{ item.name }}
-                      <b :class="{ up: item.lb > 1, down: item.lb < 1 }">
-                        {{
-                        item.lb
-                        }}
-                      </b>
-                    </a>
+                  <span :class="{ sz: item.mk == 'sz' }">
+                    <a @click="openlink(item, $event)" :id="item.code">{{ item.name }}</a>
+                    <b :class="{ up: item.lb > 1, down: item.lb < 1 }" @click="selectItem(item)">
+                      {{
+                      item.lb
+                      }}
+                    </b>
                   </span>
                 </div>
               </div>
@@ -208,6 +206,10 @@ export default {
     },
   },
   methods: {
+    selectItem(item) {
+      if (item == this.item) this.item = null;
+      else this.item = item;
+    },
     showComments(item) {
       if (item == this.showMsgItem) this.showMsgItem = null;
       else this.showMsgItem = item;

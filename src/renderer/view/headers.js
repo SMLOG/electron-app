@@ -132,7 +132,7 @@ export let headers = [
     prop: "xjlzzl",
     type: "string",
     click: (item, event, openlink) => {
-      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code=${item.code}#zyzb-0`;
+      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
       openlink(item, event, url);
     },
   },
@@ -151,7 +151,7 @@ export let headers = [
       };
     },
     click: (item, event, openlink) => {
-      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code=${item.code}`;
+      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code={{code}}`;
       openlink(item, event, url);
     },
   },
@@ -187,7 +187,7 @@ export let headers = [
     prop: "roe",
     type: "number",
     click: (item, event, openlink) => {
-      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code=${item.code}#dbfx-0`;
+      let url = `http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{item.code}}#dbfx-0`;
       openlink(item, event, url);
     },
     fmt: (e, item) => {

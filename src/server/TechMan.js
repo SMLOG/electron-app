@@ -778,6 +778,9 @@ const techMap = {
   换手率大1: function({ item, kd, kw, km }) {
     return item.turnover >= 1;
   },
+  上5天: function({ item, kd, kw, km }) {
+    return item.close >= kd.Average5;
+  },
 };
 export const techMaplist = Object.keys(techMap);
 

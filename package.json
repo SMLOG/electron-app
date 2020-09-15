@@ -70,6 +70,7 @@
     "koa-onerror": "^4.1.0",
     "koa-router": "^9.1.0",
     "moment": "^2.27.0",
+    "node-echarts": "^1.1.4",
     "node-jsonp": "^1.0.2",
     "socket.io": "^2.3.0",
     "storejs": "^1.0.25",

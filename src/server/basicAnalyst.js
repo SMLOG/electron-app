@@ -1,6 +1,6 @@
 import axios from "axios";
 import fs from "fs";
-import { fn, cacheObject } from "./lib/fn";
+import { fn } from "./lib/fn";
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -178,7 +178,7 @@ export class fnGetFinBasic extends fn {
 
 false &&
   (async () => {
-    let data = await cacheObject(fnReportDate);
+    let data = await fn.cacheObject(fnReportDate);
     //console.log(data.result.data);
     // let data = await cacheObject(fnGetFinBasic, "SH600260");
     for (let i = 0; i < data.length; i++) {
@@ -186,7 +186,7 @@ false &&
         (data[i].SECURITY_CODE[0] == 6 ? "sh" : "sz") + data[i].SECURITY_CODE;
       console.log(`${i}/${data.length} => ${code}`);
       if (data[i].ACTUAL_PUBLISH_DATE)
-        await cacheObject(fnGetFinBasic, code, data[i].ACTUAL_PUBLISH_DATE);
+        await fn.cacheObject(fnGetFinBasic, code, data[i].ACTUAL_PUBLISH_DATE);
     }
     //let cls = await getLatestDisclosureDateList();
     //console.log(cls);

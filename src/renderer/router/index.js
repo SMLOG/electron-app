@@ -6,7 +6,11 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "index", component: () => import("@/view/index") },
-
+    {
+      path: "/finAnalyst/:code",
+      name: "finAnalyst",
+      component: () => import("@/view/components/FinAnalyst/FinAnalyst.vue"),
+    },
     {
       path: "/notify",
       name: "notify",

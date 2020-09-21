@@ -1,4 +1,5 @@
 "use strict";
+import axios from "axios";
 import { getList } from "./TechMan";
 import { getFilterList } from "./criteria";
 import fs from "fs";
@@ -31,10 +32,25 @@ app.use(async (ctx, next) => {
   }
 });
 let routerHome = new Router();
-routerHome.get("/", async (ctx) => {
+/*routerHome.get("/", async (ctx) => {
   ctx.body = "欢迎欢迎6！";
-});
+});*/
 
+routerHome.get("proxy", async (ctx) => {
+  let url = ctx.query.url;
+
+  delete ctx.query.url;
+  await axios
+    .get(url, { params: ctx.query, responseType: "text" })
+    .then(
+      (resp) =>
+        (ctx.body = resp.data)
+        // ctx.set("Content-Type", "application/json; charset=utf-8")
+    )
+    .catch((e) => {
+      console.error(e);
+    });
+});
 let routerApi = new Router();
 routerApi.get("/cookie", async (ctx) => {
   ctx.response.type = "text/javascript";

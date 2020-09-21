@@ -126,6 +126,10 @@ export let headers = [
           down: item.tbzz < 0,
         };
     },
+    click: (item, event, openlink) => {
+      let url = `/#/finAnalyst/{{code}}`;
+      openlink(item, event, url);
+    },
   },
   {
     label: "现金流",
@@ -151,7 +155,10 @@ export let headers = [
       };
     },
     click: (item, event, openlink) => {
-      let url = `http://f10.eastmoney.com/OperationsRequired/Index?type=web&code={{code}}`;
+      let url = `http://localhost:9080/static/finance_visual.html#/report?date=20200630&securityCode=${item.code.replace(
+        /[a-z]+/gi,
+        ""
+      )}`;
       openlink(item, event, url);
     },
   },

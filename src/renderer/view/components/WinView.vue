@@ -147,7 +147,10 @@ export default {
       if (item != null) {
         link = link || (link = `/static/tech.html?${item.code}&kd`);
         let url = link.replace("{{code}}", this.item.code);
-        this.src = url;
+        this.src = "about:_blank";
+        setTimeout(() => {
+          this.src = url;
+        }, 5);
       }
     },
     dbclick() {

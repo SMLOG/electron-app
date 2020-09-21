@@ -1,0 +1,277 @@
+body {
+  margin-top: 38px;
+}
+.qphox .sckifbox .scklox .cnt,
+.qphox .sckifbox .scklox .cnt .zldx,
+.qphox .sckifbox .scklox .cnt .zjpm,
+.qphox .sckifbox .scklox .cnt .jrzx,
+.qphox .sckifbox .scklox .cnt .sjhq,
+.qphox .sckifbox .sckrox .upox .cnt,
+.qphox .sckifbox .sckrox .dnox .cnt,
+.qphox .sckifbox .sckrox .upox .cnt ul li.b b.u,
+.qphox .sckifbox .sckrox .upox .cnt ul li.b b.d,
+.qphox .weftnbox li,
+.qphox .weftnbox li a.current {
+  background: url(webf10hd.png);
+}
+.qphox .sckifbox {
+  height: 76px;
+}
+.qphox .sckifbox .scklox {
+  float: left;
+  width: 196px;
+  height: 74px;
+  border: 1px solid #67a1cf;
+  border-bottom: none;
+  padding: 1px;
+}
+.qphox .sckifbox .scklox .cnt {
+  background-repeat: repeat-x;
+  height: 74px;
+}
+.qphox .sckifbox .scklox .cnt p {
+  text-align: center;
+  clear: both;
+}
+.qphox .sckifbox .scklox .cnt p a {
+  text-decoration: none;
+  color: #000;
+}
+.qphox .sckifbox .scklox .cnt p.key {
+  font-family: 微软雅黑, 宋体;
+  font-size: 14px;
+  font-weight: bold;
+  height: 32px;
+  line-height: 30px;
+}
+.qphox .sckifbox .scklox .cnt p.key b {
+  font-size: 22px;
+  font-weight: normal;
+  margin-right: 8px;
+}
+.qphox .sckifbox .scklox .cnt .zldx {
+  background-repeat: no-repeat;
+  background-position: 0 -148px;
+  width: 79px;
+  height: 19px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+  margin: 0 12px;
+}
+.qphox .sckifbox .scklox .cnt .zjpm {
+  background-repeat: no-repeat;
+  background-position: 0 -168px;
+  width: 79px;
+  height: 19px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+}
+.qphox .sckifbox .scklox .cnt .jrzx {
+  background-repeat: repeat-x;
+  background-position: 0 -188px;
+  width: 79px;
+  height: 19px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+  margin: 0 12px;
+  margin-top: 2px;
+}
+.qphox .sckifbox .scklox .cnt .sjhq {
+  background-repeat: repeat-x;
+  background-position: 0 -208px;
+  width: 79px;
+  height: 19px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+  margin-top: 2px;
+}
+.qphox .sckifbox .sckrox {
+  float: left;
+  width: 800px;
+}
+.qphox .sckifbox .sckrox .upox {
+  border: 1px solid #bfbfbf;
+  border-left: none;
+  padding: 1px;
+}
+.qphox .sckifbox .sckrox .upox .cnt {
+  background-repeat: repeat-x;
+  background-position: 0 -74px;
+  height: 44px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul {
+  list-style-type: none;
+  margin-left: 30px;
+  font-size: 12px;
+  padding: 5px 0;
+}
+.qphox .sckifbox .sckrox .upox .cnt.tof10 ul {
+  list-style-type: none;
+  margin-left: 5px;
+  font-size: 12px;
+  padding: 5px 0;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li {
+  float: left;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.a {
+  font-family: Arial Black, Helvetica, sans-serif;
+  font-size: 26px;
+  width: 130px;
+  line-height: 32px;
+  text-align: center;
+}
+.qphox .sckifbox .sckrox .upox .cnt.tof10 ul li.a {
+  font-family: Arial Black, Helvetica, sans-serif;
+  font-size: 26px;
+  width: 108px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.b {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  width: 105px;
+  line-height: 36px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.b b {
+  margin-top: 7px;
+  margin-right: 5px;
+  width: 21px;
+  height: 22px;
+  float: left;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.b b.u {
+  background-repeat: no-repeat;
+  background-position: 0 -283px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.b b.d {
+  background-repeat: no-repeat;
+  background-position: -26px -283px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.c {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  width: 100px;
+  line-height: 36px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.d {
+  line-height: 38px;
+  width: 125px;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.e {
+  line-height: 36px;
+  width: 135px;
+  text-align: center;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.f {
+  line-height: 36px;
+  width: 144px;
+  text-align: center;
+}
+.qphox .sckifbox .sckrox .upox .cnt.tof10 ul li.f {
+  line-height: 36px;
+  width: 125px;
+  text-align: center;
+}
+.qphox .sckifbox .sckrox .upox .cnt ul li.g {
+  padding-top: 4px;
+  width: 90px;
+  text-align: center;
+}
+.qphox .sckifbox .sckrox .dnox {
+  border: 1px solid #67a1cf;
+  border-style: none solid none none;
+  padding: 1px;
+  clear: both;
+}
+.qphox .sckifbox .sckrox .dnox .cnt {
+  background-repeat: repeat-x;
+  background-position: 0 -120px;
+  height: 27px;
+}
+.qphox .sckifbox .sckrox .dnox .cnt ul li {
+  float: left;
+  line-height: 27px;
+  padding-left: 18px;
+  padding-right: 8px;
+}
+.qphox .weftnbox {
+  background: url(webf10hbd.png) no-repeat;
+  height: 70px;
+  padding-top: 10px;
+}
+.qphox .weftnbox ul {
+  clear: both;
+  height: 32px;
+  overflow: hidden;
+  width: 990px;
+  margin: 0 auto;
+  padding-left: 4px;
+}
+.qphox .weftnbox li {
+  margin-right: 5px;
+  float: left;
+  width: 94px;
+  height: 27px;
+  line-height: 25px;
+  background-repeat: repeat-x;
+  background-position: 0 -256px;
+  text-align: center;
+  font-size: 14px;
+  overflow: hidden;
+}
+.qphox .weftnbox li.current {
+  background-position: 0 -228px;
+}
+.qphox .weftnbox li a {
+  display: block;
+  text-decoration: none;
+  color: #656565;
+  height: 27px;
+}
+.qphox .weftnbox li a:hover {
+  text-decoration: underline;
+  color: #f00;
+}
+.qphox .weftnbox li.current a {
+  color: #fff;
+}
+
+.qphox .mainnbox .qmbox .nbox .rbox .search-box {
+  padding: 5px 0;
+  z-index: 99;
+}
+
+.qphox .mainnbox .qmbox .nbox .rbox .search-box input[type="text"] {
+  border: none;
+  height: 19px;
+  line-height: 19px;
+  width: 228px;
+  text-indent: 5px;
+  color: #666;
+  border: solid 1px #ff5025;
+  padding: 1px 0;
+  margin: 0px;
+  margin-left: 11px;
+  text-align: left;
+}
+
+.qphox .mainnbox .qmbox .nbox .rbox .search-box input[type="submit"] {
+  border: none;
+  background-color: #ff5025;
+  height: 23px;
+  line-height: 21px;
+  width: 51px;
+  cursor: pointer;
+  color: #fff;
+  padding: 1px 6px;
+  margin: 0px;
+}
+
+.search-box table,
+.search-box table td {
+  border: 0px;
+}

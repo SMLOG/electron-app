@@ -100,7 +100,7 @@ export function initmem(io) {
       if (cats["海选"].items.length == 0) {
         cats["海选"].items = await timeout(
           getSeaList(),
-          300000,
+          60000,
           cats["海选"].items
         );
         console.log("海选:" + cats["海选"].items.length);

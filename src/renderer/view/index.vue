@@ -110,6 +110,7 @@ import { batchUpdateHQ } from "@/lib/getTable";
 import FilterCtrl2 from "@/view/components/FilterCtrl2";
 import draggable from "vuedraggable";
 import WinView from "@/view/components/WinView";
+import FinAnalyst from "@/view/components/FinAnalyst/FinAnalyst";
 import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
@@ -153,6 +154,7 @@ export default {
     Right,
     Posts,
     MyIndex,
+    FinAnalyst,
   },
   filters: {},
   sockets: {

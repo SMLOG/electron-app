@@ -2,6 +2,7 @@
   <div class="main">
     <div id="divBody" style="margin-top:33px;">
       <div class="subnav tip-nav">
+        <b>{{item.name}}</b>
         <a id="zyzb_a" @click="goAnchor('zyzb');">主要指标</a>
         <samp>|</samp>
         <a id="dbfx_a" @click="goAnchor('dbfx');" class>杜邦分析</a>

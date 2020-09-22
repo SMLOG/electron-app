@@ -1441,21 +1441,6 @@ tr.bg td {
   margin-right: 10px;
 }
 
-#EarningsForecastDetailsLoading {
-  border: 1px solid #d7d7d7;
-  width: 986px;
-  height: 200px;
-  background: url(loading.gif) no-repeat center;
-  display: none;
-}
-
-#PPLoading {
-  width: 100%;
-  height: 442px;
-  background: url(loading.gif) no-repeat center;
-  display: none;
-}
-
 .datafm {
   float: right;
   margin-right: 5px;

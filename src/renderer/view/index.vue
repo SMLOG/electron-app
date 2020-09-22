@@ -5,6 +5,17 @@
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
       <Posts :item="showMsgItem" />
+      <FinAnalyst2
+        style="top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1000000;
+    position: fixed;
+    overflow:scroll;
+    background: white"
+        :item="item"
+        v-if="showType=='fin'"
+      />
     </div>
     <div id="menuWrap">
       <ul id="top">
@@ -89,7 +100,7 @@
               :key="col.prop"
               :class="getclass(col, item)"
               :title="col.title && col.title(item)"
-              @click="col.click && col.click(item, $event, openlink)"
+              @click="col.click && col.click(item, $event, openlink,getThis)"
               @mouseover="cellOver($event, item, ci)"
               @mouseout="cellOut($event, item, ci)"
             >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
@@ -97,7 +108,7 @@
         </draggable>
       </table>
     </div>
-    <WinView ref="webviewWrap" :item="item" :link="link"></WinView>
+    <WinView ref="webviewWrap" v-show="showType=='link'&&item&&link" :item="item" :link="link"></WinView>
   </div>
 </template>
 
@@ -110,7 +121,7 @@ import { batchUpdateHQ } from "@/lib/getTable";
 import FilterCtrl2 from "@/view/components/FilterCtrl2";
 import draggable from "vuedraggable";
 import WinView from "@/view/components/WinView";
-import FinAnalyst from "@/view/components/FinAnalyst/FinAnalyst";
+import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
@@ -131,6 +142,7 @@ export default {
           items: [],
         },
       },
+      showFin: false,
       curSrc: "自选",
       techMaplist: [],
       headers: getCheckFields(),
@@ -141,6 +153,7 @@ export default {
       rightItem: false,
       showMsgItem: false,
       openCode: null,
+      showType: null,
     };
   },
   mounted() {},
@@ -154,7 +167,7 @@ export default {
     Right,
     Posts,
     MyIndex,
-    FinAnalyst,
+    FinAnalyst2,
   },
   filters: {},
   sockets: {
@@ -208,6 +221,11 @@ export default {
     },
   },
   methods: {
+    getThis(cb) {
+      if (cb) {
+        cb(this);
+      }
+    },
     selectItem(item) {
       if (item == this.item) this.item = null;
       else this.item = item;
@@ -238,6 +256,7 @@ export default {
       } else {
         this.item = item;
         this.link = link;
+        this.showType = "link";
       }
     },
     getclass(col, item) {

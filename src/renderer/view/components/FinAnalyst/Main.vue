@@ -2,7 +2,7 @@
   <div class="section first">
     <div class="name" id="zyzb">
       <samp class="icon"></samp>
-      <strong>主要指标</strong>
+      <strong>主要指标-{{item.name}}</strong>
     </div>
     <div id="zyzb_chart" v-if="selectZb" class="content" style="text-align:center; ">
       <div class="pic tips-border" style="height: 247px;">
@@ -171,19 +171,11 @@ export default {
       }
       this.chartOptions.series[0].data = data.reverse();
     },
+    item(n, o) {
+      this.loadZyzb();
+    },
   },
 };
 </script>
 
 <style scoped src="./web.css" />
-<style scoped>
-div {
-  font-size: 14px;
-}
-.red {
-  color: red;
-}
-.green {
-  color: green;
-}
-</style>

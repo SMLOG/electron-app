@@ -126,9 +126,16 @@ export let headers = [
           down: item.tbzz < 0,
         };
     },
-    click: (item, event, openlink) => {
+    click: (item, event, openlink, getThis) => {
       let url = `/#/finAnalyst/{{code}}`;
-      openlink(item, event, url);
+      if (getThis) {
+        getThis((self) => {
+          self.link = null;
+          if (item == self.item) (self.item = null), (self.showType = null);
+          else (self.showType = "fin"), (self.item = item);
+        });
+      }
+      //openlink(item, event, url);
     },
   },
   {

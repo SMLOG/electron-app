@@ -3,7 +3,6 @@
     id="webviewWrap"
     ref="webviewWrap"
     class="webview"
-    v-show="item"
     :style="{top:chartop+'px'}"
     :class="{ fullFigure: fullFigure }"
   >

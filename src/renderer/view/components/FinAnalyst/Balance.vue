@@ -265,13 +265,16 @@ export default {
   },
   watch: {
     reportDateType(n, o) {
-      setTimeout(() => this.loadData(), 100);
+      this.loadData();
     },
     reportType() {
-      setTimeout(() => this.loadData(), 100);
+      this.loadData();
     },
     endDate() {
-      setTimeout(() => this.loadData(), 100);
+      this.loadData();
+    },
+    item(n, o) {
+      this.loadData();
     },
   },
 };

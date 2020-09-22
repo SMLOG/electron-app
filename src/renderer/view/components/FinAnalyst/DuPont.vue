@@ -274,6 +274,9 @@ export default {
       }
       this.chartOptions.series[0].data = data.reverse();
     },
+    item(n, o) {
+      this.loadData();
+    },
   },
 };
 </script>

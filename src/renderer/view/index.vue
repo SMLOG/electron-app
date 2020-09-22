@@ -108,7 +108,7 @@
         </draggable>
       </table>
     </div>
-    <WinView ref="webviewWrap" v-show="showType=='link'&&item&&link" :item="item" :link="link"></WinView>
+    <WinView ref="webviewWrap" v-show="showType=='link'&&item" :item="item" :link="link"></WinView>
   </div>
 </template>
 

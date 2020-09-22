@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <div id="divBody">
-      <div class="subnav">
+    <div id="divBody" style="margin-top:33px;">
+      <div class="subnav tip-nav">
         <a id="zyzb_a" @click="goAnchor('zyzb');">主要指标</a>
         <samp>|</samp>
         <a id="dbfx_a" @click="goAnchor('dbfx');" class>杜邦分析</a>
@@ -49,24 +49,12 @@ export default {
   methods: {
     goAnchor(selector) {
       let el = this.$el.querySelector("#" + selector);
-      el && window.scrollTo(0, el.offsetTop - $(".subnav").outerHeight());
+      el && this.$el.scrollTo(0, el.offsetTop - $(".subnav").outerHeight());
     },
   },
 
   mounted() {
     //this.item.code = this.$route.params.code || "SH600332";
-
-    $(window).scroll(function () {
-      var a = Math.max(
-        document.documentElement.scrollTop,
-        document.body.scrollTop
-      );
-      if (a > 77) {
-        $(".subnav").addClass("tip-nav");
-      } else {
-        $(".subnav").removeClass("tip-nav");
-      }
-    });
   },
 };
 </script>

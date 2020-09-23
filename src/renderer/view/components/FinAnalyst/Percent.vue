@@ -453,8 +453,7 @@ export default {
     async load() {
       //主要指标数据加载
 
-      var url =
-        "/proxy?url=http%3A%2F%2Ff10.eastmoney.com/NewFinanceAnalysis%2FPercentAjax_Indx";
+      var url = "/p/NewFinanceAnalysis/PercentAjax_Indx";
       var data = { code: this.item.code };
 
       let result = await axios

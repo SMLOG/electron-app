@@ -139,8 +139,7 @@ export default {
     loadZyzb() {
       //主要指标数据加载
 
-      var url =
-        "/proxy?url=http%3A%2F%2Ff10.eastmoney.com/NewFinanceAnalysis%2FMainTargetAjax";
+      var url = "/p/NewFinanceAnalysis/MainTargetAjax";
       var data = { type: this.tabIndex, code: this.item.code };
 
       axios

@@ -12,6 +12,7 @@
     z-index: 1000000;
     position: fixed;
     overflow:scroll;
+    border: 1px solid #95bad0;
     background: white"
         :item="item"
         v-if="showType=='fin'"
@@ -156,7 +157,13 @@ export default {
       showType: null,
     };
   },
-  mounted() {},
+  mounted() {
+    document.addEventListener("keyup", (e) => {
+      if (e.keyCode == 27) {
+        this.showType = null;
+      }
+    });
+  },
 
   components: {
     SearchPanel,

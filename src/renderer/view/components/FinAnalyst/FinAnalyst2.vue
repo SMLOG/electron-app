@@ -2,26 +2,35 @@
   <div class="main">
     <div id="divBody" style="margin-top:33px;">
       <div class="subnav tip-nav">
-        <b>{{item.name}}</b>
-        <a id="zyzb_a" @click="goAnchor('zyzb');">主要指标</a>
-        <samp>|</samp>
-        <a id="dbfx_a" @click="goAnchor('dbfx');" class>杜邦分析</a>
-        <samp>|</samp>
-        <a id="zcfzb_a" @click="goAnchor('zcfzb');" class>资产负债表</a>
-        <samp>|</samp>
-        <a id="lrb_a" @click="goAnchor('lrb');" class>利润表</a>
-        <samp>|</samp>
-        <a id="xjllb_a" @click="goAnchor('xjllb');" class>现金流量表</a>
-        <samp>|</samp>
-        <a id="bfbbb_a" @click="goAnchor('bfbbb');" class>百分比报表</a>
+        <b style="float:left;margin-left:10px;">{{item.name}}</b>
+
+        <div @mouseover="over=1" @mouseout="over=0" :class="{over:over}" class="groups">
+          <div
+            v-for="(tabs,group) in tabGroups"
+            :class="{curGroup:group==selectGroup}"
+            :key="group"
+          >
+            <b>{{group}}</b>
+            <template v-for="(tab,i) in tabs">
+              <a
+                :key="i"
+                @click="selectGroup=group,selectIndex=i"
+                :class="{current:group==selectGroup&&i==selectIndex}"
+              >{{tab.name}}</a>
+              <samp v-if="i<tabs.length-1" :key="'0_'+i">|</samp>
+            </template>
+          </div>
+        </div>
       </div>
       <div v-if="item&&item.code">
-        <Main id="zyzb" :item="item" />
-        <DuPont id="dbfx" :item="item" />
-        <Balance id="zcfzb" :item="item" name="资产负债表" />
-        <Balance id="lrb" :item="item" name="利润表" />
-        <Balance id="xjllb" :item="item" name="现金流量表" />
-        <Percent id="bfbbb" :item="item" />
+        <keep-alive>
+          <component
+            :key="tabGroups[selectGroup][selectIndex].name"
+            v-bind:is="tabGroups[selectGroup][selectIndex].cp"
+            :name="tabGroups[selectGroup][selectIndex].name"
+            :item="item"
+          ></component>
+        </keep-alive>
       </div>
     </div>
   </div>
@@ -32,6 +41,8 @@ import Main from "./Main";
 import DuPont from "./DuPont";
 import Balance from "./Balance";
 import Percent from "./Percent";
+import BusinessAnalysis from "./BusinessAnalysis";
+
 import $ from "jquery";
 window.$ = $;
 
@@ -39,18 +50,32 @@ export default {
   name: "FinAnalyst2",
   data() {
     return {
-      my: null,
+      over: 0,
+      selectIndex: 0,
+      selectGroup: "财务分析",
+      tabGroups: {
+        财务分析: [
+          { name: "主要指标", cp: "Main" },
+          { name: "杜邦分析", cp: "DuPont" },
+          { name: "资产负债表", cp: "Balance" },
+          { name: "利润表", cp: "Balance" },
+          { name: "现金流量表", cp: "Balance" },
+          { name: "百分比", cp: "Percent" },
+        ],
+        经营分析: [{ name: "主营范围", cp: "BusinessAnalysis" }],
+      },
     };
   },
   props: {
     item: Object,
   },
-  components: { Main, DuPont, Balance, Percent },
+  components: { Main, DuPont, Balance, Percent, BusinessAnalysis },
 
   methods: {
     goAnchor(selector) {
-      let el = this.$el.querySelector("#" + selector);
-      el && this.$el.scrollTo(0, el.offsetTop - $(".subnav").outerHeight());
+      this.selectTab = selector;
+      // let el = this.$el.querySelector("#" + selector);
+      // el && this.$el.scrollTo(0, el.offsetTop - $(".subnav").outerHeight());
     },
   },
 
@@ -61,4 +86,31 @@ export default {
 </script>
 
 <style scoped src="./web.css" />
+<style scoped>
+.over {
+  overflow: visible !important;
+  height: auto !important;
+}
+.groups {
+  overflow: hidden;
+  height: 100%;
+  background: #fff;
+  display: inline-block;
+  text-align: left;
+}
+.groups > div {
+  display: none;
+}
+.over.groups > div {
+  display: block;
+}
+.groups .curGroup {
+  display: block;
+}
+.over .curGroup + div {
+  display: block;
+}
+</style>
+<style lang="less">
+</style>
 

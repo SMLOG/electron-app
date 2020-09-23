@@ -243,8 +243,7 @@ export default {
 
   methods: {
     loadData() {
-      var url =
-        "/proxy?url=http%3A%2F%2Ff10.eastmoney.com/NewFinanceAnalysis%2FDubangAnalysisAjax";
+      var url = "/p/NewFinanceAnalysis/DubangAnalysisAjax";
       var data = { type: this.tabIndex, code: this.item.code };
 
       axios

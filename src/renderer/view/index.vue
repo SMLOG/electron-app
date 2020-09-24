@@ -5,23 +5,41 @@
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
       <Posts :item="showMsgItem" />
-      <FinAnalyst2
-        style="top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1000000;
-    position: fixed;
-    overflow:scroll;
-    border: 1px solid #95bad0;
-    background: white"
+      <HQ
         :item="item"
-        v-if="showType=='fin'"
+        v-show="showType == 'hq'"
+        style="
+          top: 0;
+          bottom: 0;
+          right: 0;
+          z-index: 1000000;
+          width: 1000px;
+          position: fixed;
+          overflow: scroll;
+          border: 1px solid #95bad0;
+          background: white;
+        "
+      />
+      <FinAnalyst2
+        style="
+          top: 0;
+          bottom: 0;
+          right: 0;
+          z-index: 1000000;
+          position: fixed;
+          overflow: scroll;
+          border: 1px solid #95bad0;
+          background: white;
+        "
+        :item="item"
+        v-if="showType == 'fin'"
+        @close="(showType = null), (item = null)"
       />
     </div>
     <div id="menuWrap">
       <ul id="top">
         <li
-          :class="{selected:curSrc==name}"
+          :class="{ selected: curSrc == name }"
           v-for="(cat, name) in cats"
           :key="name"
           @click="selectSrc(name)"
@@ -32,7 +50,7 @@
       <FilterCtrl2 :src="curSrc" />
       <MyIndex :openlink="openlink" />
     </div>
-    <div style="clear:both;" id="tbl">
+    <div style="clear: both" id="tbl">
       <table>
         <thead>
           <tr>
@@ -57,7 +75,12 @@
             </th>
           </tr>
         </thead>
-        <draggable v-model="cats[curSrc].items" handle=".firstCol" @update="dragEnd" tag="tbody">
+        <draggable
+          v-model="cats[curSrc].items"
+          handle=".firstCol"
+          @update="dragEnd"
+          tag="tbody"
+        >
           <tr
             :id="'r' + item.code"
             class="item"
@@ -68,28 +91,40 @@
             <td class="firstCol">
               <div class="first">
                 <span>
-                  <a class="post_bt" :name="item.code" @click="showComments(item)">{{ index + 1 }}</a>
+                  <a
+                    class="post_bt"
+                    :name="item.code"
+                    @click="showComments(item)"
+                    >{{ index + 1 }}</a
+                  >
                 </span>
                 <span>
                   <a class="action" @click="removeItem(item)">x</a>
                 </span>
                 <span>
-                  <input type="checkbox" v-model="item.isFocus" @change="saveItem(item)" />
+                  <input
+                    type="checkbox"
+                    v-model="item.isFocus"
+                    @change="saveItem(item)"
+                  />
                 </span>
                 <div
                   :title="item.code"
-                  style="display:inline-block;"
+                  style="display: inline-block"
                   :class="{
-                      link: true,
-                      blink: item._S,
-                    }"
+                    link: true,
+                    blink: item._S,
+                  }"
                 >
                   <span :class="{ sz: item.mk == 'sz' }">
-                    <a @click="openlink(item, $event)" :id="item.code">{{ item.name }}</a>
-                    <b :class="{ up: item.lb > 1, down: item.lb < 1 }" @click="selectItem(item)">
-                      {{
-                      item.lb
-                      }}
+                    <a @click="openlink(item, $event)" :id="item.code">{{
+                      item.name
+                    }}</a>
+                    <b
+                      :class="{ up: item.lb > 1, down: item.lb < 1 }"
+                      @click="selectItem(item)"
+                    >
+                      {{ item.lb }}
                     </b>
                   </span>
                 </div>
@@ -101,15 +136,22 @@
               :key="col.prop"
               :class="getclass(col, item)"
               :title="col.title && col.title(item)"
-              @click="col.click && col.click(item, $event, openlink,getThis)"
+              @click="col.click && col.click(item, $event, openlink, getThis)"
               @mouseover="cellOver($event, item, ci)"
               @mouseout="cellOut($event, item, ci)"
-            >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+            >
+              {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+            </td>
           </tr>
         </draggable>
       </table>
     </div>
-    <WinView ref="webviewWrap" v-show="showType=='link'&&item" :item="item" :link="link"></WinView>
+    <WinView
+      ref="webviewWrap"
+      v-show="showType == 'link' && item"
+      :item="item"
+      :link="link"
+    ></WinView>
   </div>
 </template>
 
@@ -126,6 +168,7 @@ import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
+import HQ from "@/view/components/hq/HQ";
 
 import $ from "jquery";
 window.$ = $;
@@ -175,6 +218,7 @@ export default {
     Posts,
     MyIndex,
     FinAnalyst2,
+    HQ,
   },
   filters: {},
   sockets: {

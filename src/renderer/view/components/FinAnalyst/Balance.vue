@@ -2,83 +2,117 @@
   <div class="section">
     <div class="name" id="zcfzb">
       <samp class="icon"></samp>
-      <strong>{{name}}</strong>
+      <strong>{{ name }}</strong>
     </div>
-    <div class="content" style="text-align:center;">
+    <div class="content" style="text-align: center">
       <input type="hidden" id="zcfzb_pageIndex" value="1" />
-      <i class="prev" id="zcfzb_prev" style="display:inline;" v-if="showPrev" @click="prev()"></i>
-      <i class="next" id="zcfzb_next" style="display:inline;" v-if="showNext" @click="next()"></i>
+      <i
+        class="prev"
+        id="zcfzb_prev"
+        style="display: inline"
+        v-if="showPrev"
+        @click="prev()"
+      ></i>
+      <i
+        class="next"
+        id="zcfzb_next"
+        style="display: inline"
+        v-if="showNext"
+        @click="next()"
+      ></i>
       <div class="tab tips-fontsize">
         <ul id="zcfzb_ul">
           <li
-            :class="{current:0==reportDateType&&1==reportType&&0==tb}"
-            @click="reportDateType=0,reportType=1,tb=0"
+            :class="{
+              current: 0 == reportDateType && 1 == reportType && 0 == tb,
+            }"
+            @click="(reportDateType = 0), (reportType = 1), (tb = 0)"
           >
             <span>按报告期</span>
           </li>
           <li
-            :class="{current:1==reportDateType&&1==reportType&&0==tb}"
-            @click="reportDateType=1,reportType=1,tb=0"
+            :class="{
+              current: 1 == reportDateType && 1 == reportType && 0 == tb,
+            }"
+            @click="(reportDateType = 1), (reportType = 1), (tb = 0)"
           >
             <span>按年度</span>
           </li>
           <li
-            :class="{current:0==reportDateType&&2==reportType&&0==tb}"
-            @click="reportDateType=0,reportType=2,tb=0"
+            :class="{
+              current: 0 == reportDateType && 2 == reportType && 0 == tb,
+            }"
+            @click="(reportDateType = 0), (reportType = 2), (tb = 0)"
           >
             <span>按单季度</span>
           </li>
           <li
-            :class="{current:0==reportDateType&&1==reportType&&1==tb}"
-            @click="reportDateType=0,reportType=1,tb=1"
+            :class="{
+              current: 0 == reportDateType && 1 == reportType && 1 == tb,
+            }"
+            @click="(reportDateType = 0), (reportType = 1), (tb = 1)"
           >
             <span>报告期同比</span>
           </li>
           <li
-            :class="{current:1==reportDateType&&1==reportType&&1==tb}"
-            @click="reportDateType=1,reportType=1,tb=1"
+            :class="{
+              current: 1 == reportDateType && 1 == reportType && 1 == tb,
+            }"
+            @click="(reportDateType = 1), (reportType = 1), (tb = 1)"
           >
             <span>年度同比</span>
           </li>
           <li
-            :class="{current:0==reportDateType&&2==reportType&&1==tb}"
-            @click="reportDateType=0,reportType=2,tb=1"
+            :class="{
+              current: 0 == reportDateType && 2 == reportType && 1 == tb,
+            }"
+            @click="(reportDateType = 0), (reportType = 2), (tb = 1)"
           >
             <span>单季度同比</span>
           </li>
         </ul>
       </div>
-      <table id="report_zcfzb" style="table-layout: fixed;">
-        <tbody v-if="datalist&&datalist.length<1">
+      <table id="report_zcfzb" style="table-layout: fixed">
+        <tbody v-if="datalist && datalist.length < 1">
           <tr>
             <td>暂无数据</td>
           </tr>
         </tbody>
         <tbody v-else>
           <tr>
-            <th class="tips-colname-Left" style="width: 366px;">
-              <span>{{name}}</span>
+            <th class="tips-colname-Left" style="width: 366px">
+              <span>{{ name }}</span>
             </th>
-            <th v-for="(value,i) in datalist" :key="i">
-              <span>{{formatDate(value.REPORTDATE)}}</span>
+            <th v-for="(value, i) in datalist" :key="i">
+              <span>{{ formatDate(value.REPORTDATE) }}</span>
             </th>
           </tr>
-          <template v-for="(items,name) in tableItems">
+          <template v-for="(items, name) in tableItems">
             <tr :key="name">
-              <td class="tips-fieldname-Left" style="font-weight:bold;">
-                <span>{{name}}</span>
+              <td class="tips-fieldname-Left" style="font-weight: bold">
+                <span>{{ name }}</span>
               </td>
-              <td v-for="(value,i) in datalist" :key="i" class="tips-data-Right">
-                <span></span>
-              </td>
+              <td
+                v-for="(value, i) in datalist"
+                :key="i"
+                class="tips-data-Right"
+              ></td>
             </tr>
-            <tr v-for="(item,i) in items" :key="item[1]+i">
+            <tr v-for="(item, i) in noEmptyItems(items)" :key="item[1] + i">
               <td class="tips-fieldname-Left">
                 <span v-html="item[0]"></span>
               </td>
-              <td v-for="(value,i) in datalist" :key="item[1]+i" class="tips-data-Right">
-                <span v-if="tb==0">{{formatNumber(value[item[1]],2)}}</span>
-                <span v-if="tb==1">{{formatRate(value[item[1]+'_YOY'])}}</span>
+              <td
+                v-for="(value, i) in datalist"
+                :key="item[1] + i"
+                class="tips-data-Right"
+              >
+                <span v-if="tb == 0">{{
+                  formatNumber(value[item[1]], 2)
+                }}</span>
+                <span v-if="tb == 1">{{
+                  formatRate(value[item[1] + "_YOY"])
+                }}</span>
               </td>
             </tr>
           </template>
@@ -132,6 +166,11 @@ export default {
         this.reportDateType,
         this.reportType,
         ReportsMap[this.name]
+      );
+    },
+    noEmptyItems(items) {
+      return items.filter((item) =>
+        this.datalist.some((e) => e[item[1]] != "")
       );
     },
     formatRate(value) {
@@ -218,7 +257,9 @@ export default {
         .then((resp) => resp.data);
 
       this.datalist.length = 0;
+
       this.datalist.splice(0, 0, ...(result || []));
+      console.log(result);
     },
     next() {
       let curEndDate =

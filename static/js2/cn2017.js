@@ -381,7 +381,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
     info: "cnInfo",
   };
 
-  loadChartMan();
+  window.chart = loadChartMan();
 })(Zepto);
 
 let timer = setInterval(() => {

@@ -2,52 +2,77 @@
   <div class="section first">
     <div class="name" id="zyzb">
       <samp class="icon"></samp>
-      <strong>主要指标-{{item.name}}</strong>
+      <strong>主要指标-{{ item.name }}</strong>
     </div>
-    <div id="zyzb_chart" v-if="selectZb" class="content" style="text-align:center; ">
-      <div class="pic tips-border" style="height: 247px;">
-        <v-chart id="zyzbChart" :options="chartOptions" style="width:960px;height:247px;" />
+    <div
+      id="zyzb_chart"
+      v-if="selectZb"
+      class="content"
+      style="text-align: center"
+    >
+      <div class="pic tips-border" style="height: 247px">
+        <v-chart
+          id="zyzbChart"
+          :options="chartOptions"
+          style="width: 960px; height: 247px"
+        />
       </div>
-      <div class="tips-explain">注：点击表格内的指标名称可切换图片查看该指标的历史趋势</div>
+      <div class="tips-explain">
+        注：点击表格内的指标名称可切换图片查看该指标的历史趋势
+      </div>
     </div>
-    <div class="tab" style="margin-top: 10px;">
+    <div class="tab" style="margin-top: 10px">
       <ul id="zyzbTab">
-        <li :class="{current:tabIndex==0}" data-type="0" @click="tabIndex=0">按报告期</li>
-        <li :class="{current:tabIndex==1}" @click="tabIndex=1">按年度</li>
-        <li :class="{current:tabIndex==2}" @click="tabIndex=2">按单季度</li>
+        <li
+          :class="{ current: tabIndex == 0 }"
+          data-type="0"
+          @click="tabIndex = 0"
+        >
+          按报告期
+        </li>
+        <li :class="{ current: tabIndex == 1 }" @click="tabIndex = 1">
+          按年度
+        </li>
+        <li :class="{ current: tabIndex == 2 }" @click="tabIndex = 2">
+          按单季度
+        </li>
       </ul>
     </div>
     <div id="F10MainTargetDiv">
-      <div id="report_zyzb" class="content" style="text-align:center; margin-top:0px;">
+      <div
+        id="report_zyzb"
+        class="content"
+        style="text-align: center; margin-top: 0px"
+      >
         <table>
           <tbody>
-            <template v-for="(value,name) in zbMapList">
+            <template v-for="(value, name) in zbMapList">
               <tr :key="name">
                 <th class="tips-colname-Left">
-                  <span>{{name}}</span>
+                  <span>{{ name }}</span>
                 </th>
                 <th
-                  v-for="(value,i) in zyzb"
+                  v-for="(value, i) in zyzb"
                   :key="i"
                   class="tips-fieldname-Right"
                   :data-value="value.date"
                 >
-                  <span>{{value.date.substr(2,8)}}</span>
+                  <span>{{ value.date.substr(2, 8) }}</span>
                 </th>
               </tr>
 
               <tr
                 v-for="zb in zbMapList[name]"
                 :key="zb[0]"
-                :class="{ChooseBlue:selectZb==zb}"
-                @click="selectZb=zb"
+                :class="{ ChooseBlue: selectZb == zb }"
+                @click="selectZb = zb"
               >
                 <td class="tips-fieldname-Left">
-                  <span>{{zb[0]}}</span>
+                  <span>{{ zb[0] }}</span>
                 </td>
 
-                <td v-for="(value,i) in zyzb" :key="i" class="tips-data-Right">
-                  <span class="a">{{value[zb[1]]}}</span>
+                <td v-for="(value, i) in zyzb" :key="i" class="tips-data-Right">
+                  <span class="a">{{ value[zb[1]] }}</span>
                 </td>
               </tr>
             </template>
@@ -136,7 +161,7 @@ export default {
   },
 
   methods: {
-    loadZyzb() {
+    loadDatas() {
       //主要指标数据加载
 
       var url = "/p/NewFinanceAnalysis/MainTargetAjax";
@@ -152,11 +177,11 @@ export default {
   },
 
   mounted() {
-    this.loadZyzb();
+    this.loadDatas();
   },
   watch: {
     tabIndex(n, o) {
-      this.loadZyzb();
+      this.loadDatas();
     },
     selectZb(n, o) {
       let data = this.zyzb.map((e) => e[n[1]]);
@@ -171,7 +196,7 @@ export default {
       this.chartOptions.series[0].data = data.reverse();
     },
     item(n, o) {
-      this.loadZyzb();
+      this.loadDatas();
     },
   },
 };

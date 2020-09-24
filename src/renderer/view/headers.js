@@ -94,26 +94,6 @@ export let headers = [
     fmt: (e) => e && e.toFixed(2),
   },
   {
-    label: "CAGR",
-    prop: "zzl3",
-    type: "number",
-
-    class: (item) => {
-      return {
-        link: true,
-      };
-    },
-    click: (item, event, openlink) => {
-      openlink(
-        item,
-        event,
-        "http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}"
-      );
-    },
-    fmt: (e, item) =>
-      e && `${parseFloat(e).toFixed(2)}%,${parseFloat(item.zzl2).toFixed(2)}%`,
-  },
-  {
     label: "同比",
     prop: "扣非净利润同比增长(%)",
     type: "number",
@@ -167,33 +147,6 @@ export let headers = [
         ""
       )}`;
       openlink(item, event, url);
-    },
-  },
-  {
-    label: "息%",
-    prop: "GXL",
-    type: "number",
-    fmt: (e, item) => {
-      if (cache["xjfh_" + item.code])
-        item.GXL = ((cache["xjfh_" + item.code] / 10 / item.now) * 100).toFixed(
-          2
-        );
-      return item.GXL;
-    },
-  },
-  {
-    label: "红%",
-    prop: "FHL",
-    type: "number",
-    fmt: (e, item) => {
-      if (cache["xjfh_" + item.code])
-        item.FHL = (
-          (cache["xjfh_" + item.code] /
-            cache["EarningsPerShare_" + item.code] /
-            10) *
-          100
-        ).toFixed(2);
-      return item.FHL;
     },
   },
   {

@@ -1,28 +1,36 @@
 <template>
   <div class="main">
-    <div id="divBody" style="margin-top:33px;">
+    <div id="divBody" style="margin-top: 33px">
       <div class="subnav tip-nav">
-        <b style="float:left;margin-left:10px;">{{item.name}}</b>
-
-        <div @mouseover="over=1" @mouseout="over=0" :class="{over:over}" class="groups">
+        <div style="float: left; margin-left: 10px">
+          <span @click="$emit('close')">x</span>
+          <b>{{ item.name }}</b>
+        </div>
+        <div
+          @mouseover="over = 1"
+          @mouseout="over = 0"
+          :class="{ over: over }"
+          class="groups"
+        >
           <div
-            v-for="(tabs,group) in tabGroups"
-            :class="{curGroup:group==selectGroup}"
+            v-for="(tabs, group) in tabGroups"
+            :class="{ curGroup: group == selectGroup }"
             :key="group"
           >
-            <b>{{group}}</b>
-            <template v-for="(tab,i) in tabs">
+            <b>{{ group }}</b>
+            <template v-for="(tab, i) in tabs">
               <a
                 :key="i"
-                @click="selectGroup=group,selectIndex=i"
-                :class="{current:group==selectGroup&&i==selectIndex}"
-              >{{tab.name}}</a>
-              <samp v-if="i<tabs.length-1" :key="'0_'+i">|</samp>
+                @click="(selectGroup = group), (selectIndex = i)"
+                :class="{ current: group == selectGroup && i == selectIndex }"
+                >{{ tab.name }}</a
+              >
+              <samp v-if="i < tabs.length - 1" :key="'0_' + i">|</samp>
             </template>
           </div>
         </div>
       </div>
-      <div v-if="item&&item.code">
+      <div v-if="item && item.code">
         <keep-alive>
           <component
             :key="tabGroups[selectGroup][selectIndex].name"
@@ -42,6 +50,9 @@ import DuPont from "./DuPont";
 import Balance from "./Balance";
 import Percent from "./Percent";
 import BusinessAnalysis from "./BusinessAnalysis";
+import Dashboard from "./Dashboard";
+import Bonus from "./Bonus";
+import Shareholder from "./Shareholder";
 
 import $ from "jquery";
 window.$ = $;
@@ -62,14 +73,29 @@ export default {
           { name: "现金流量表", cp: "Balance" },
           { name: "百分比", cp: "Percent" },
         ],
-        经营分析: [{ name: "主营范围", cp: "BusinessAnalysis" }],
+        经营分析: [
+          { name: "主营范围", cp: "BusinessAnalysis" },
+          { name: "必读", cp: "Dashboard" },
+          { name: "分红融资", cp: "Bonus" },
+          { name: "股东", cp: "Shareholder" },
+        ],
       },
     };
   },
   props: {
     item: Object,
+    close: Function,
   },
-  components: { Main, DuPont, Balance, Percent, BusinessAnalysis },
+  components: {
+    Main,
+    DuPont,
+    Balance,
+    Percent,
+    BusinessAnalysis,
+    Dashboard,
+    Bonus,
+    Shareholder,
+  },
 
   methods: {
     goAnchor(selector) {

@@ -22,11 +22,7 @@ export let headers = [
       };
     },
     click: (item, event, openlink) => {
-      openlink(
-        item,
-        event,
-        "http://localhost:9080/static/tech.html?{{code}}&t1"
-      );
+      openlink(item, event, "/static/tech.html?{{code}}&t1");
     },
   },
   {
@@ -142,7 +138,7 @@ export let headers = [
       };
     },
     click: (item, event, openlink) => {
-      let url = `http://localhost:9080/static/finance_visual.html#/report?date=20200630&securityCode=${item.code.replace(
+      let url = `/static/finance_visual.html#/report?date=20200630&securityCode=${item.code.replace(
         /[a-z]+/gi,
         ""
       )}`;

@@ -258,8 +258,7 @@ export default {
 
       this.datalist.length = 0;
 
-      this.datalist.splice(0, 0, ...(result || []));
-      console.log(result);
+      this.datalist.splice(0, 0, ...(JSON.parse(result) || []));
     },
     next() {
       let curEndDate =

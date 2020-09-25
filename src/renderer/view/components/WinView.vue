@@ -156,9 +156,10 @@ export default {
         let link = this.$el
           .querySelector("iframe")
           .contentWindow.location.href.replace(
-            new RegExp(o.code, "gi"),
-            "{{code}}"
-          );
+            new RegExp("^" + location.origin),
+            ""
+          )
+          .replace(new RegExp(o.code, "gi"), "{{code}}");
         if (link != this.link) {
           this.$emit("updateLink", link);
           return;
@@ -173,7 +174,7 @@ export default {
   computed: {},
   methods: {
     openlink(item, link) {
-      if (item != null) {
+      if (item && link) {
         let url = link.replace("{{code}}", this.item.code);
         this.src = "about:_blank";
         setTimeout(() => {

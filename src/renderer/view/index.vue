@@ -12,7 +12,7 @@
           top: 0;
           bottom: 0;
           right: 0;
-          z-index: 1000000;
+          z-index: 4;
           width: 1000px;
           position: fixed;
           overflow: scroll;
@@ -25,7 +25,7 @@
           top: 0;
           bottom: 0;
           right: 0;
-          z-index: 1000000;
+          z-index: 4;
           position: fixed;
           overflow: scroll;
           border: 1px solid #95bad0;

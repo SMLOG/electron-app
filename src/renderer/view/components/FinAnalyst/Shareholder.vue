@@ -109,17 +109,18 @@
             <li
               v-for="(value, i) in sdltgd"
               :key="i"
-              :class="{ 'first current': i == 0 }"
+              :class="{ current: i == sdltgdCurIndex }"
+              @click="sdltgdCurIndex = i"
             >
               <span>{{ value.rq }}</span>
             </li>
           </ul>
         </div>
-        <div class="content first" id="TTCS_Table_Div">
+        <div class="content first">
           <table
             v-for="(value, i) in sdltgd"
             :key="i"
-            :style="'display:' + i == 0 ? 'table' : 'none'"
+            :style="{ display: sdltgdCurIndex == i ? 'table' : 'none' }"
           >
             <tbody>
               <tr>
@@ -252,16 +253,21 @@
         </div>
         <div class="tab">
           <ul>
-            <li v-for="(value, i) in sdgd" :key="i">
+            <li
+              v-for="(value, i) in sdgd"
+              :key="i"
+              @click="sdgdCurIndex = i"
+              :class="{ current: sdgdCurIndex == i }"
+            >
               <span>{{ value.rq }}</span>
             </li>
           </ul>
         </div>
-        <div class="content first" id="TTS_Table_Div">
+        <div class="content first">
           <table
             v-for="(value, i) in sdgd"
             :key="i"
-            :style="'display:' + i == 0 ? 'table' : 'none'"
+            :style="{ display: i == sdgdCurIndex ? 'table' : 'none' }"
           >
             <tbody>
               <tr>
@@ -413,103 +419,17 @@ export default {
   data() {
     return {
       sdltgd: null,
+      sdltgdCurIndex: 0,
       sdgd: null,
+      sdgdCurIndex: 0,
       xsjj: null,
       gdrs: null,
       sdgdcgbd: null,
       zlcc_rz: null,
+      sdltgd_chart: null,
       option2: null,
       option3: null,
-      option: {
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            crossStyle: {
-              color: "#999",
-            },
-          },
-        },
-        legend: {
-          data: [
-            {
-              name: "股东人数(户)",
-            },
-            {
-              name: "股价(元)",
-            },
-          ],
-        },
-        grid: {
-          left: "5%",
-          right: "5%",
-          bottom: "3%",
-          containLabel: true,
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: null,
-            axisTick: {
-              alignWithLabel: true,
-            },
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-            name: "股东人数(户)",
-            min: 0,
-            max: 0,
-            splitNumber: 5,
-            interval: 0,
-            position: "left",
-            axisLabel: {
-              formatter: function (value, index) {
-                return parseFloat(value.toFixed(0)).toLocaleString();
-              },
-              show: true,
-            },
-            splitLine: {
-              lineStyle: {
-                type: "dashed",
-              },
-            },
-          },
-          {
-            type: "value",
-            name: "股价(元)",
-            min: 0,
-            max: 0,
-            splitNumber: 5,
-            interval: 0,
-            position: "right",
-            axisLabel: {
-              formatter: function (value, index) {
-                return value.toFixed(0);
-              },
-              show: true,
-            },
-          },
-        ],
-        series: [
-          {
-            name: "股东人数(户)",
-            type: "bar",
-            barWidth: "30%",
-            yAxis: 1,
-            itemStyle: { normal: { color: "#ecaf3c" } },
-            data: null,
-          },
-          {
-            name: "股价(元)",
-            type: "line",
-            yAxisIndex: 1,
-            itemStyle: { normal: { color: "#006600" } },
-            data: null,
-          },
-        ],
-      },
+      option: null,
     };
   },
 
@@ -795,7 +715,15 @@ export default {
 
       data = data[index];
       this.showChart1(data);
+    },
+    sdltgd_chart(data) {
+      if (data == undefined || data == null || data.length <= 0) {
+        return;
+      }
 
+      let index = 0;
+
+      data = data[index];
       this.showChart2(data);
     },
 
@@ -834,13 +762,97 @@ export default {
       }
       maxdata1 = this.formatChartMinOrMax(maxdata1, 5);
       maxdata2 = this.formatChartMinOrMax(maxdata2, 5);
-      this.option.xAxis.data = dataAxis.reverse();
-      this.option.yAxis[0].max = maxdata1;
-      this.option.yAxis[0].interval = Number((maxdata1 / 5).toFixed(2));
-      this.option.yAxis[1].max = maxdata2;
-      this.option.yAxis[1].interval = Number((maxdata2 / 5).toFixed(2));
-      this.option.series[0].data = data1.reverse();
-      this.option.series[1].data = data2.reverse();
+
+      this.option = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999",
+            },
+          },
+        },
+        legend: {
+          data: [
+            {
+              name: "股东人数(户)",
+            },
+            {
+              name: "股价(元)",
+            },
+          ],
+        },
+        grid: {
+          left: "5%",
+          right: "5%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: dataAxis.reverse(),
+            axisTick: {
+              alignWithLabel: true,
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "股东人数(户)",
+            min: 0,
+            max: maxdata1,
+            splitNumber: 5,
+            interval: Number((maxdata1 / 5).toFixed(2)),
+            position: "left",
+            axisLabel: {
+              formatter: function (value, index) {
+                return parseFloat(value.toFixed(0)).toLocaleString();
+              },
+              show: true,
+            },
+            splitLine: {
+              lineStyle: {
+                type: "dashed",
+              },
+            },
+          },
+          {
+            type: "value",
+            name: "股价(元)",
+            min: 0,
+            max: maxdata2,
+            splitNumber: 5,
+            interval: Number((maxdata2 / 5).toFixed(2)),
+            position: "right",
+            axisLabel: {
+              formatter: function (value, index) {
+                return value.toFixed(0);
+              },
+              show: true,
+            },
+          },
+        ],
+        series: [
+          {
+            name: "股东人数(户)",
+            type: "bar",
+            barWidth: "30%",
+            yAxis: 1,
+            itemStyle: { normal: { color: "#ecaf3c" } },
+            data: data1.reverse(),
+          },
+          {
+            name: "股价(元)",
+            type: "line",
+            yAxisIndex: 1,
+            itemStyle: { normal: { color: "#006600" } },
+            data: data2.reverse(),
+          },
+        ],
+      };
     },
   },
 };

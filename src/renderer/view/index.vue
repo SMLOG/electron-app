@@ -310,7 +310,7 @@ export default {
       this.$socket.emit("updateItems", this.cats["自选"].items);
     },
 
-    openlink(item, event, link) {
+    openlink(item, event, link = `/static/tech.html?{{code}}&kd`) {
       if (item == this.item && link == this.link) {
         this.item = null;
       } else {

@@ -3,20 +3,38 @@
     id="webviewWrap"
     ref="webviewWrap"
     class="webview"
-    :style="{top:chartop+'px'}"
+    :style="{ top: chartop + 'px' }"
     :class="{ fullFigure: fullFigure }"
   >
     <div id="dragBar" ref="dragBar" v-drag draggable="false">
       <i
-        @click="closeview()"
-        style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
+        @click="$emit('close')"
+        style="
+          position: relative;
+          top: -10px;
+          cursor: pointer;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          border-left: none;
+          border-right: none;
+          height: 1px;
+          width: 30px;
+          display: inline-block;
+          font-size: 1px;
+        "
       ></i>
-      <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+      <i
+        v-if="false"
+        class="arrow down"
+        style="position: relative; top: -10px; cursor: pointer"
+      ></i>
     </div>
-    <table style="height:100%;width:100%;background:white;cellpadding=0;cellspacing	
-=0;">
+    <table
+      style="height:100%;width:100%;background:white;cellpadding=0;cellspacing	
+=0;"
+    >
       <tr v-if="item">
-        <td style="height:27px;">
+        <td style="height: 27px">
           <div>
             <div @dblclick="dbclick" class="info">
               <span>{{ item.name }}</span>
@@ -29,19 +47,28 @@
               <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
               <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
               <span>换手率:{{ item["turnover"] }}%</span>
-              <span :class="{ up: item.lb > 1, down: item.lb < 1 }">量比:{{ item["lb"] }}</span>
+              <span :class="{ up: item.lb > 1, down: item.lb < 1 }"
+                >量比:{{ item["lb"] }}</span
+              >
               <span>低:{{ item["low"] }}</span>
               <span>高:{{ item["high"] }}</span>
               <span>振幅:{{ item["zf"] }}%</span>
               <span>成交额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
-              <span :title="item.score_desc">分数:{{ item.score }}/{{ item.tscore }}</span>
+              <span :title="item.score_desc"
+                >分数:{{ item.score }}/{{ item.tscore }}</span
+              >
             </div>
           </div>
         </td>
       </tr>
       <tr>
         <td>
-          <iframe ref="webview" id="webview" style="width:100%;height:100%;border:none;" :src="src"></iframe>
+          <iframe
+            ref="webview"
+            id="webview"
+            style="width: 100%; height: 100%; border: none"
+            :src="src"
+          ></iframe>
         </td>
       </tr>
     </table>
@@ -67,9 +94,6 @@ export default {
   name: "WinView",
   data: function () {
     return {
-      openCode: null,
-      openType: null,
-      filters: filters,
       fullFigure: false,
       src: "about:_blank",
       chartop: 500,
@@ -79,6 +103,7 @@ export default {
     link: String,
     item: Object,
     dBclick: Function,
+    updateLink: Function,
   },
   directives: {
     drag(el) {
@@ -120,20 +145,25 @@ export default {
   components: {
     Calendar,
   },
-  mounted() {
-    document.addEventListener("keyup", (e) => {
-      if (e.keyCode == 27) {
-        this.closeview();
-      }
-    });
-  },
+  mounted() {},
   watch: {
     item(n, o) {
       if (n != null && o == null) {
         this.chartop =
           Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
       }
-
+      if (o) {
+        let link = this.$el
+          .querySelector("iframe")
+          .contentWindow.location.href.replace(
+            new RegExp(o.code, "gi"),
+            "{{code}}"
+          );
+        if (link != this.link) {
+          this.$emit("updateLink", link);
+          return;
+        }
+      }
       this.openlink(n, this.link);
     },
     link(n, o) {
@@ -144,7 +174,6 @@ export default {
   methods: {
     openlink(item, link) {
       if (item != null) {
-        link = link || (link = `/static/tech.html?${item.code}&kd`);
         let url = link.replace("{{code}}", this.item.code);
         this.src = "about:_blank";
         setTimeout(() => {
@@ -160,7 +189,6 @@ export default {
       let webviewWrap = $(this.$refs.webviewWrap);
       webviewWrap.hide();
       $(this.$refs.top).css("margin-bottom", "0");
-      this.openCode = null;
     },
   },
 };

@@ -226,7 +226,7 @@ export default {
     // 报表数据加载
     async getReportData(reportDateType, reportType, reportTab) {
       let url =
-        "/proxy?url=http%3A%2F%2Ff10.eastmoney.com/NewFinanceAnalysis%2F" +
+        "/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/" +
         reportTab +
         "DateAjax";
       let data = {
@@ -240,7 +240,7 @@ export default {
         .then((result) => result.data);
 
       url =
-        "/proxy?url=http%3A%2F%2Ff10.eastmoney.com/NewFinanceAnalysis%2F" +
+        "/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/" +
         reportTab +
         "Ajax";
 

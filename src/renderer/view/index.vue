@@ -117,9 +117,13 @@
                   }"
                 >
                   <span :class="{ sz: item.mk == 'sz' }">
-                    <a @click="openlink(item, $event)" :id="item.code">{{
-                      item.name
-                    }}</a>
+                    <a
+                      @click="
+                        openlink(item, $event, `/static/tech.html?{{code}}&kd`)
+                      "
+                      :id="item.code"
+                      >{{ item.name }}</a
+                    >
                     <b
                       :class="{ up: item.lb > 1, down: item.lb < 1 }"
                       @click="selectItem(item)"
@@ -151,6 +155,8 @@
       v-show="showType == 'link' && item"
       :item="item"
       :link="link"
+      @close="(showType = null), (item = null)"
+      @updateLink="updateLink"
     ></WinView>
   </div>
 </template>
@@ -272,6 +278,9 @@ export default {
     },
   },
   methods: {
+    updateLink(newlink) {
+      this.link = newlink;
+    },
     getThis(cb) {
       if (cb) {
         cb(this);

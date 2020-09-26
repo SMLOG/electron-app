@@ -152,19 +152,20 @@ export default {
         this.chartop =
           Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
       }
-      if (o) {
-        let link = this.$el
-          .querySelector("iframe")
-          .contentWindow.location.href.replace(
-            new RegExp("^" + location.origin),
-            ""
-          )
-          .replace(new RegExp(o.code, "gi"), "{{code}}");
-        if (link != this.link) {
-          this.$emit("updateLink", link);
-          return;
-        }
-      }
+      /*if (n && o) {
+        setTimeout(() => {
+          let link = this.$el
+            .querySelector("iframe")
+            .contentWindow.location.href.replace(
+              new RegExp("^" + location.origin),
+              ""
+            )
+            .replace(new RegExp(o.code, "gi"), "{{code}}");
+          if (link != this.link) {
+            this.openlink(n, link);
+          }
+        }, 100);
+      }*/
       this.openlink(n, this.link);
     },
     link(n, o) {

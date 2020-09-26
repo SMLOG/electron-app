@@ -1,0 +1,33 @@
+//var n = i(2);
+
+export const dashed = {
+  dashed: function(t, e, i, a, o, r, s) {
+    (r = void 0 === r ? 4 : r), (s = void 0 === s ? 5 : s);
+    var l = Math.abs(e - a),
+      h = Math.abs(i - o),
+      d = Math.sqrt(Math.pow(e - a, 2) + Math.pow(i - o, 2)),
+      c = d % (r + s);
+    0 == c && (c = r / 2), c > r && (c = (c % r) / 2);
+    var p = 0,
+      g = h / d,
+      f = l / d;
+    t.beginPath();
+    for (var A = !0; p < d; ) {
+      var u = n.format(e + p * f),
+        m = n.format(i + p * g);
+      t.lineWidth % 2 == 0 &&
+        ((u = Math.round(e + p * f)), (m = Math.round(i + p * g))),
+        t.moveTo(u, m),
+        A ? ((p += c), (A = !1)) : (p += r),
+        p > d && (p = d);
+      var C = n.format(e + p * f),
+        v = n.format(i + p * g);
+      t.lineWidth % 2 == 0 &&
+        ((C = Math.round(e + p * f)), (v = Math.round(i + p * g))),
+        t.lineTo(C, v),
+        (p += s),
+        t.stroke();
+    }
+    t.closePath();
+  },
+};

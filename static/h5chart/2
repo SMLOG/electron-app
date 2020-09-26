@@ -1,0 +1,7 @@
+//2
+export const i2 = {
+  format: function(t) {
+    var e = Math.round(t);
+    return e < t ? e + 0.5 : e - 0.5;
+  },
+};

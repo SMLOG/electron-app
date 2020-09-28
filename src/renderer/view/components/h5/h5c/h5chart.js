@@ -166,12 +166,13 @@ function h5chart() {
         top: 0,
         bottom: 20,
       },
+      show: { indicatorArea: true },
       onComplete: function() {
         $("#chart-container").trigger("drawComplete.emchart");
       },
       // update: 60 * 1000
     };
-    this.chartType = options.type;
+    //this.chartType = options.type;
     var timeloader = new chartmanager("time", options),
       kloader = new chartmanager("k", options),
       timechart,

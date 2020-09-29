@@ -82,7 +82,29 @@ export let headers = [
     type: "string",
     fmt: (e, item) => `${e}/${item.zsz}`,
   },
-  { label: "TTM", prop: "pe_ttm", type: "number" },
+  {
+    label: "TTM",
+    prop: "pe_ttm",
+    type: "number",
+    class: (item) => {
+      return {
+        link: true,
+      };
+    },
+    click: (item, event, openlink, getThis) => {
+      if (getThis) {
+        getThis((self) => {
+          self.link = null;
+          if (item == self.item && self.curComponent == "Chart")
+            (self.item = null), (self.showType = null);
+          else
+            (self.showType = "fin"),
+              (self.curComponent = "Chart"),
+              (self.item = item);
+        });
+      }
+    },
+  },
   {
     label: "PEG",
     prop: "PEG",
@@ -103,12 +125,15 @@ export let headers = [
         };
     },
     click: (item, event, openlink, getThis) => {
-      let url = `/#/finAnalyst/{{code}}`;
       if (getThis) {
         getThis((self) => {
           self.link = null;
-          if (item == self.item) (self.item = null), (self.showType = null);
-          else (self.showType = "fin"), (self.item = item);
+          if (item == self.item && self.curComponent == "FinAnalyst2")
+            (self.item = null), (self.showType = null);
+          else
+            (self.showType = "fin"),
+              (self.curComponent = "FinAnalyst2"),
+              (self.item = item);
         });
       }
       //openlink(item, event, url);

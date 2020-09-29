@@ -1,12 +1,12 @@
 <template>
-  <div class="page-container">
-    <div class="container body-content">
-      <div class="wrap clearfix">
-        <div class="l-box fl">
+  <div class="mywrap">
+    <div class="wrap clearfix">
+      <div class="l-box fl">
+        <div id="top">
           <div class="hq-data clearfix">
             <div class="fl hq-data-zxj">
-              <span id="quote-name" class="stock-name">----</span>
-              <span id="quote-code" class="stock-code"></span>
+              <span v-if="false" id="quote-name" class="stock-name">----</span>
+              <span v-if="false" id="quote-code" class="stock-code"></span>
               <span class="zxj"
                 ><b id="quote-close-main"></b><b class="" id="quote-arrow"></b
               ></span>
@@ -45,27 +45,6 @@
                       >-</span
                     >
                   </td>
-                  <td>
-                    成交量：<span
-                      class="cjl quote-volume-custom"
-                      id="quote-volume-custom"
-                      >-</span
-                    >
-                  </td>
-                  <td>
-                    市盈：<span
-                      class="sy quote-PERation-custom"
-                      id="quote-PERation-custom"
-                      >-</span
-                    >
-                  </td>
-                  <td>
-                    总市值：<span
-                      class="zsz quote-marketValue-custom"
-                      id="quote-marketValue-custom"
-                      >-</span
-                    >
-                  </td>
                 </tr>
                 <tr>
                   <td>
@@ -92,6 +71,33 @@
                       >-</span
                     >
                   </td>
+                </tr>
+              </table>
+              <table class="clearfix hq-data-table fl">
+                <tr>
+                  <td>
+                    成交量：<span
+                      class="cjl quote-volume-custom"
+                      id="quote-volume-custom"
+                      >-</span
+                    >
+                  </td>
+                  <td>
+                    市盈：<span
+                      class="sy quote-PERation-custom"
+                      id="quote-PERation-custom"
+                      >-</span
+                    >
+                  </td>
+                  <td>
+                    总市值：<span
+                      class="zsz quote-marketValue-custom"
+                      id="quote-marketValue-custom"
+                      >-</span
+                    >
+                  </td>
+                </tr>
+                <tr>
                   <td>
                     成交额：<span
                       class="cje quote-amount-custom"
@@ -225,152 +231,149 @@
               <li id="btn-stretchout">拉长</li>
             </ul>
           </div>
-          <div
-            id="chart-container"
-            class="chart-box mt10"
-            data-charttype="r"
-            tabindex="-1"
-          ></div>
         </div>
-        <div class="main-right fr" id="r-box-table">
-          <table class="wbc-table">
+        <div
+          id="chart-container"
+          class="chart-box mt10"
+          data-charttype="r"
+          tabindex="-1"
+          :style="{ height: chartHeight + 'px' }"
+        ></div>
+      </div>
+      <div class="main-right fr" id="r-box-table">
+        <table class="wbc-table">
+          <tr>
+            <td class="wb-td">委比：<span class="wb" id="quote-cr">-</span></td>
+            <td class="wc-td">委差：<span class="wc" id="quote-cd">-</span></td>
+          </tr>
+        </table>
+
+        <div class="mm-fb-table">
+          <table id="buy-table" class="sell5">
+            <tr class="is-hide">
+              <td class="label">涨停</td>
+              <td class="mm-price">
+                <span id="quote-raisePrice-main">-</span>
+              </td>
+              <td class=""></td>
+              <td class="last-td"></td>
+              <td class=""></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">卖五</td>
+              <td class="mm-price"><span id="quote-s5p">-</span></td>
+              <td class="power">
+                <div id="quote-s5vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td volumn mr">
+                <span id="quote-s5v">-</span>
+              </td>
+              <td class="diff" id="quote-s5d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">卖四</td>
+              <td class="mm-price"><span id="quote-s4p">-</span></td>
+              <td class="power">
+                <div id="quote-s4vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-s4v">-</span></td>
+              <td class="diff" id="quote-s4d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">卖三</td>
+              <td class="mm-price"><span id="quote-s3p">-</span></td>
+              <td class="power">
+                <div id="quote-s3vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-s3v">-</span></td>
+              <td class="diff" id="quote-s3d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">卖二</td>
+              <td class="mm-price"><span id="quote-s2p">-</span></td>
+              <td class="power">
+                <div id="quote-s2vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-s2v">-</span></td>
+              <td class="diff" id="quote-s2d"></td>
+            </tr>
             <tr>
-              <td class="wb-td">
-                委比：<span class="wb" id="quote-cr">-</span>
+              <td class="label">卖一</td>
+              <td class="mm-price"><span id="quote-s1p">-</span></td>
+              <td class="power">
+                <div id="quote-s1vp" class="gdnl-box"></div>
               </td>
-              <td class="wc-td">
-                委差：<span class="wc" id="quote-cd">-</span>
-              </td>
+              <td class="last-td"><span id="quote-s1v">-</span></td>
+              <td class="diff" id="quote-s1d"></td>
             </tr>
           </table>
 
-          <div class="mm-fb-table">
-            <table id="buy-table" class="sell5">
-              <tr class="is-hide">
-                <td class="label">涨停</td>
-                <td class="mm-price">
-                  <span id="quote-raisePrice-main">-</span>
-                </td>
-                <td class=""></td>
-                <td class="last-td"></td>
-                <td class=""></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">卖五</td>
-                <td class="mm-price"><span id="quote-s5p">-</span></td>
-                <td class="power">
-                  <div id="quote-s5vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td volumn mr">
-                  <span id="quote-s5v">-</span>
-                </td>
-                <td class="diff" id="quote-s5d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">卖四</td>
-                <td class="mm-price"><span id="quote-s4p">-</span></td>
-                <td class="power">
-                  <div id="quote-s4vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-s4v">-</span></td>
-                <td class="diff" id="quote-s4d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">卖三</td>
-                <td class="mm-price"><span id="quote-s3p">-</span></td>
-                <td class="power">
-                  <div id="quote-s3vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-s3v">-</span></td>
-                <td class="diff" id="quote-s3d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">卖二</td>
-                <td class="mm-price"><span id="quote-s2p">-</span></td>
-                <td class="power">
-                  <div id="quote-s2vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-s2v">-</span></td>
-                <td class="diff" id="quote-s2d"></td>
-              </tr>
-              <tr>
-                <td class="label">卖一</td>
-                <td class="mm-price"><span id="quote-s1p">-</span></td>
-                <td class="power">
-                  <div id="quote-s1vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-s1v">-</span></td>
-                <td class="diff" id="quote-s1d"></td>
-              </tr>
-            </table>
+          <table id="sell-table" class="buy5">
+            <tr>
+              <td class="label">买一</td>
+              <td class="mm-price"><span id="quote-b1p">-</span></td>
+              <td class="power">
+                <div id="quote-b1vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-b1v">-</span></td>
+              <td class="diff" id="quote-b1d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">买二</td>
+              <td class="mm-price"><span id="quote-b2p">-</span></td>
+              <td class="power">
+                <div id="quote-b2vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-b2v">-</span></td>
+              <td class="diff" id="quote-b2d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">买三</td>
+              <td class="mm-price"><span id="quote-b3p">-</span></td>
+              <td class="power">
+                <div id="quote-b3vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-b3v">-</span></td>
+              <td class="diff" id="quote-b3d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">买四</td>
+              <td class="mm-price"><span id="quote-b4p">-</span></td>
+              <td class="power">
+                <div id="quote-b4vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-b4v">-</span></td>
+              <td class="diff" id="quote-b4d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">买五</td>
+              <td class="mm-price"><span id="quote-b5p">-</span></td>
+              <td class="power">
+                <div id="quote-b5vp" class="gdnl-box"></div>
+              </td>
+              <td class="last-td"><span id="quote-b5v">-</span></td>
+              <td class="diff" id="quote-b5d"></td>
+            </tr>
+            <tr class="is-hide">
+              <td class="label">跌停</td>
+              <td class="mm-price">
+                <span id="quote-fallPrice-main">-</span>
+              </td>
+              <td class=""></td>
+              <td class="last-td"></td>
+              <td class=""></td>
+            </tr>
+          </table>
 
-            <table id="sell-table" class="buy5">
-              <tr>
-                <td class="label">买一</td>
-                <td class="mm-price"><span id="quote-b1p">-</span></td>
-                <td class="power">
-                  <div id="quote-b1vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-b1v">-</span></td>
-                <td class="diff" id="quote-b1d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">买二</td>
-                <td class="mm-price"><span id="quote-b2p">-</span></td>
-                <td class="power">
-                  <div id="quote-b2vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-b2v">-</span></td>
-                <td class="diff" id="quote-b2d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">买三</td>
-                <td class="mm-price"><span id="quote-b3p">-</span></td>
-                <td class="power">
-                  <div id="quote-b3vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-b3v">-</span></td>
-                <td class="diff" id="quote-b3d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">买四</td>
-                <td class="mm-price"><span id="quote-b4p">-</span></td>
-                <td class="power">
-                  <div id="quote-b4vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-b4v">-</span></td>
-                <td class="diff" id="quote-b4d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">买五</td>
-                <td class="mm-price"><span id="quote-b5p">-</span></td>
-                <td class="power">
-                  <div id="quote-b5vp" class="gdnl-box"></div>
-                </td>
-                <td class="last-td"><span id="quote-b5v">-</span></td>
-                <td class="diff" id="quote-b5d"></td>
-              </tr>
-              <tr class="is-hide">
-                <td class="label">跌停</td>
-                <td class="mm-price">
-                  <span id="quote-fallPrice-main">-</span>
-                </td>
-                <td class=""></td>
-                <td class="last-td"></td>
-                <td class=""></td>
-              </tr>
-            </table>
-
-            <div class="detail-box is-hide">
-              <div class="tips-box" id="tips-box">
-                <span><b class="purple-b"></b>大于20万外盘</span>
-                <span><b class="blue-b"></b>大于20万内盘</span>
-              </div>
-              <div id="deal_detail" class="deal_detail"></div>
-              <p class="msg-more" id="detail-msg-more">
-                <a href="" target="_blank">点击查看更多分时成交</a>
-              </p>
+          <div class="detail-box is-hide">
+            <div class="tips-box" id="tips-box">
+              <span><b class="purple-b"></b>大于20万外盘</span>
+              <span><b class="blue-b"></b>大于20万内盘</span>
             </div>
+            <div id="deal_detail" class="deal_detail"></div>
+            <p class="msg-more" id="detail-msg-more">
+              <a href="" target="_blank">点击查看更多分时成交</a>
+            </p>
           </div>
         </div>
       </div>
@@ -382,18 +385,35 @@ import axios from "axios";
 //var canvasExtension = require("chart/common/canvasExtension");
 var canvasExtension = require("./ec/webpack/emcharts");
 //var imgpng = require("images/water_mark.png");
-
+const h5chart = require("./h5c/h5chart");
+import $ from "jquery";
+window.$ = $;
 export default {
   components: {},
   props: {
     item: Object,
-    name: String,
   },
   data() {
-    return {};
+    return { chartHeight: 0 };
   },
 
-  methods: {},
+  methods: {
+    resize() {
+      this.chartHeight =
+        $(this.$el).height() - $("#top", this.$el).outerHeight() - 10;
+      console.info(this.chartHeight);
+    },
+    loadchart(item) {
+      if (item) {
+        let query = {
+          code: item.code.replace(/[a-z]+/gi, ""),
+          market: item.code.indexOf("sh") > -1 ? 1 : 0,
+          type: "k",
+        };
+        new h5chart(query).init();
+      }
+    },
+  },
 
   mounted() {
     /* let script = document.createElement("script");
@@ -401,15 +421,44 @@ export default {
     script.src = "//emcharts.dfcfw.com/ec/3.16.1/emcharts.min.js";
     document.getElementsByTagName("head")[0].appendChild(script);
     script.onload = () => {*/
-    const h5chart = require("./h5c/h5chart");
-
-    new h5chart().init();
     //};
+    this.resize();
+    $(window).resize(() => {
+      this.resize();
+    });
+    this.loadchart(this.item || { code: "sh600566" });
   },
   computed: {},
-  watch: {},
+  watch: {
+    item(n) {
+      this.resize();
+
+      this.loadchart(n);
+    },
+  },
 };
 </script>
 
 <style scoped src="./h5c/chart.css" />
+<style scoped>
+/deep/ .icon-mine {
+  background: url(h5c/img/h5chart-icons.png) no-repeat -9999px -9999px;
+}
+/deep/ .icon-mine {
+  background-position: -23px -20px;
+  width: 9px;
+  height: 9px;
+}
+#top {
+  height: 96px;
+  overflow: hidden;
+}
+.mywrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+</style>
 

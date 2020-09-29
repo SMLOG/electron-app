@@ -156,6 +156,7 @@ function deals(args) {
   function onerror(jqXHR, textStatus, error) {
     console.error(error);
   }
+  return this;
 }
 
 module.exports = deals;

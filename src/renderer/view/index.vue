@@ -20,18 +20,9 @@
           background: white;
         "
       />
-      <FinAnalyst2
-        style="
-          top: 0;
-          bottom: 0;
-          right: 0;
-          z-index: 4;
-          position: fixed;
-          overflow: scroll;
-          border: 1px solid #95bad0;
-          background: white;
-        "
+      <WinWrap
         :item="item"
+        :curComponent="curComponent"
         v-if="showType == 'fin'"
         @close="(showType = null), (item = null)"
       />
@@ -170,7 +161,10 @@ import { batchUpdateHQ } from "@/lib/getTable";
 import FilterCtrl2 from "@/view/components/FilterCtrl2";
 import draggable from "vuedraggable";
 import WinView from "@/view/components/WinView";
+import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
+import Chart from "@/view/components/h5/Chart";
+
 import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
@@ -192,6 +186,7 @@ export default {
           items: [],
         },
       },
+      curComponent: null,
       showFin: false,
       curSrc: "自选",
       techMaplist: [],
@@ -225,6 +220,8 @@ export default {
     MyIndex,
     FinAnalyst2,
     HQ,
+    Chart,
+    WinWrap,
   },
   filters: {},
   sockets: {

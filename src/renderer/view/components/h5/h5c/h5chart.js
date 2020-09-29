@@ -7,7 +7,7 @@ var cookie = utils.cookie;
 var chartmanager = require("./em-chartmanager");
 var minutedeals = require("./components/quote-parts/deals");
 var TopSpeedQuote = require("./components/quote-parts/push");
-
+var minutedealsObj = {};
 var headdata = require("./cybhqdata"); //头部行情及其它
 
 require("./modules/jquery.tooltip");
@@ -25,14 +25,6 @@ function getstockinfos(secid, stockentry) {
     "fltt=2&fields=f107,f111,f279,f288,f293,f294,f292,f295&secid=" +
     secid +
     "&cb=?";
-
-  if (window.location.search.indexOf("env=test") > 0) {
-    _url =
-      "http://61.152.230.207/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&" +
-      "fltt=2&fields=f107,f111,f279,f288,f293,f294,f292,f295&secid=" +
-      secid +
-      "&cb=?";
-  }
 
   return $.ajax({
     async: false,
@@ -100,14 +92,14 @@ function getstockinfos(secid, stockentry) {
   });
 }
 
-function h5chart() {
-  var query = URI.parseQuery("?code=600185&market=1&type=k");
+function h5chart(query) {
+  //var query = URI.parseQuery("?code=600185&market=1&type=k");
   var stockentry = {
     code: query.code,
     marketnum: query.market,
-    shortmarket: query.market === "1" ? "sh" : "sz",
+    shortmarket: query.market == "1" ? "sh" : "sz",
     id: query.id || query.code + query.market,
-    newmarket: query.market === "1" ? "1" : "0", //1sh 0sz
+    newmarket: query.market == "1" ? "1" : "0", //1sh 0sz
   };
 
   this.init = function() {
@@ -120,11 +112,13 @@ function h5chart() {
     var chartTpye = (query.type || "").toLowerCase();
 
     //老的分时成交
-    new minutedeals({
-      id: stockentry.id,
-      code: stockentry.code,
-      newmarket: stockentry.newmarket,
-    }).load();
+    minutedeals
+      .call(minutedealsObj, {
+        id: stockentry.id,
+        code: stockentry.code,
+        newmarket: stockentry.newmarket,
+      })
+      .load();
 
     renderQuote.apply(this);
 
@@ -139,19 +133,15 @@ function h5chart() {
   };
 
   var tsq;
+  var timeloader, kloader;
   function renderChart(type) {
     type = type || "r";
-    var wh = Math.max(568, $(window).height());
-    var offset_h = $("#chart-container").offset().top;
-    var _width, _height;
-    _height = Math.floor(wh - offset_h) - 5;
-    var rBoxW = $("#r-box-table").outerWidth(true);
 
-    if ($(window).width() >= 1200) {
-      _width = Math.floor($(window).width() - rBoxW);
-    } else {
-      _width = 1200 - rBoxW;
-    }
+    var _width, _height;
+
+    _height = $("#chart-container").height();
+    _width = $("#chart-container").width();
+
     var cyqtypes = ["k", "wk", "mk", "m5k", "m15k", "m30k", "m60k"];
     var authority = getExrightsType();
     var options = {
@@ -173,10 +163,13 @@ function h5chart() {
       // update: 60 * 1000
     };
     //this.chartType = options.type;
-    var timeloader = new chartmanager("time", options),
-      kloader = new chartmanager("k", options),
-      timechart,
-      kchart;
+    if (timeloader) {
+      timeloader.stop(true);
+      kloader.stop(true);
+    }
+    (timeloader = new chartmanager("time", options)),
+      (kloader = new chartmanager("k", options));
+    var timechart, kchart;
 
     var $cr = $("#type-selector i[data-type=cr]");
     $("#quote-time")
@@ -221,7 +214,7 @@ function h5chart() {
       if (chartloader) chartloader.stop();
       chartloader = timeloader;
       var $dom = $(this);
-      if ($dom.hasClass("cur")) return false;
+      //if ($dom.hasClass("cur")) return false;
       var type = $dom.data("type");
       var displayTools = false;
       $("#type-selector .dataType.cur,#day-selector.cur").removeClass("cur");
@@ -461,7 +454,7 @@ function h5chart() {
     $("#chart-container")
       .on("loadcyq.emchart", function(e) {
         $("#chart-container").data("cyq", true);
-        options.width = $(window).width();
+        options.width = $(".mywrap").width();
         options.cyq = {
           width: 270,
           gap: 10,
@@ -478,7 +471,7 @@ function h5chart() {
         $cyqtips.hide();
         options.width = _width;
         options.cyq = false;
-        options.padding.right = 65;
+        options.padding.right = 0;
       });
 
     // JS图画图完成事件

@@ -2,19 +2,7 @@ var _ = require("lodash");
 var marge = _.merge;
 var $ = require("jquery");
 
-function textColor(text, num) {
-  if (num == null || num == undefined || isNaN(num)) {
-    return text;
-  }
-  if (num > 0) {
-    return '<span class="red">' + text + "</span>";
-  } else if (num < 0) {
-    return '<span class="green">' + text + "</span>";
-  } else {
-    return text;
-  }
-}
-
+var getsseFSdata_evtSource, sseHeadData_evtSource;
 //新
 function getHeadData(stockentry) {
   var secids = stockentry.newmarket + "." + stockentry.code;
@@ -24,13 +12,7 @@ function getHeadData(stockentry) {
     (Math.floor(Math.random() * 99) + 1) +
     ".push2.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531,f59&secid=" +
     secids;
-  //测试地址：
-  //var url = "http://61.152.230.191/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531&secid=" + secids;
-  if (window.location.search.indexOf("env=test") > -1) {
-    url =
-      "http://61.152.230.207/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531,f59&secid=" +
-      secids;
-  }
+
   $.ajax({
     url: url,
     scriptCharset: "utf-8",
@@ -56,13 +38,10 @@ function sseHeadData(stockentry) {
     (Math.floor(Math.random() * 99) + 1) +
     ".push2.eastmoney.com/api/qt/stock/sse?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531&secid=" +
     secids;
-  if (window.location.search.indexOf("env=test") > -1) {
-    url =
-      "http://61.152.230.207/api/qt/stock/sse?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531&secid=" +
-      secids;
-  }
-  var evtSource = new EventSource(url);
-  evtSource.onmessage = function(msg) {
+  sseHeadData_evtSource &&
+    (sseHeadData_evtSource.close(), (sseHeadData_evtSource = null));
+  sseHeadData_evtSource = new EventSource(url);
+  sseHeadData_evtSource.onmessage = function(msg) {
     // console.log('head sse 推送')
     var obj = JSON.parse(msg.data);
     if (obj.data) {
@@ -1293,16 +1272,10 @@ function getsseFSdata() {
     ".push2.eastmoney.com/" +
     "api/qt/stock/details/sse?" +
     parStringify(data);
-  //测试地址
-  // var fullurl = "http://61.152.230.191/" + "api/qt/stock/details/sse?" + parStringify(data);
-  if (window.location.search.indexOf("env=test") > -1) {
-    fullurl =
-      "http://61.152.230.207/" +
-      "api/qt/stock/details/sse?" +
-      parStringify(data);
-  }
-  var evtSource = new EventSource(fullurl);
-  evtSource.onmessage = function(msg) {
+  getsseFSdata_evtSource &&
+    (getsseFSdata_evtSource.close(), (getsseFSdata_evtSource = null));
+  getsseFSdata_evtSource = new EventSource(fullurl);
+  getsseFSdata_evtSource.onmessage = function(msg) {
     // console.log('推送')
     var obj = JSON.parse(msg.data);
     if (obj.data) {

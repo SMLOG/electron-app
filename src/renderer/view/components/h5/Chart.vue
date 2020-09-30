@@ -21,6 +21,7 @@
                     今开：<span
                       class="jk quote-open-custom"
                       id="quote-open-custom"
+                      :class="upDown(item2.open)"
                       >{{ item2.open }}</span
                     >
                   </td>
@@ -28,6 +29,7 @@
                     最高：<span
                       class="zg quote-high-custom"
                       id="quote-high-custom"
+                      :class="upDown(item2.high)"
                       >{{ item2.high }}</span
                     >
                   </td>
@@ -56,6 +58,7 @@
                     最低：<span
                       class="zd quote-low-custom"
                       id="quote-low-custom"
+                      :class="upDown(item2.low)"
                       >{{ item2.low }}</span
                     >
                   </td>
@@ -81,7 +84,7 @@
                     成交量：<span
                       class="cjl quote-volume-custom"
                       id="quote-volume-custom"
-                      >{{ item2["volume"] }}</span
+                      >{{ formatNum(item2["volume"]) }} 手</span
                     >
                   </td>
                   <td>
@@ -95,7 +98,7 @@
                     总市值：<span
                       class="zsz quote-marketValue-custom"
                       id="quote-marketValue-custom"
-                      >{{ item2["totalValue"] }}</span
+                      >{{ formatNum(item2["totalValue"]) }}</span
                     >
                   </td>
                 </tr>
@@ -104,7 +107,7 @@
                     成交额：<span
                       class="cje quote-amount-custom"
                       id="quote-amount-custom"
-                      >{{ item2["amount"] }}</span
+                      >{{ formatNum(item2["amount"]) }}</span
                     >
                   </td>
                   <td>
@@ -118,7 +121,7 @@
                     流通市值：<span
                       class="ltsz quote-flowCapitalValue-custom"
                       id="quote-flowCapitalValue-custom"
-                      >{{ item2["flowValue"] }}</span
+                      >{{ formatNum(item2["flowValue"]) }}</span
                     >
                   </td>
                 </tr>
@@ -248,10 +251,20 @@
         <table class="wbc-table">
           <tr>
             <td class="wb-td">
-              委比：<span class="wb" id="quote-cr">{{ item2.weiby }}</span>
+              委比：<span
+                :class="upDown(item2.weiby, 0)"
+                class="wb"
+                id="quote-cr"
+                >{{ item2.weiby }}</span
+              >
             </td>
             <td class="wc-td">
-              委差：<span class="wc" id="quote-cd">{{ item2["委差"] }}</span>
+              委差：<span
+                :class="upDown(item2['委差'], 0)"
+                class="wc"
+                id="quote-cd"
+                >{{ item2["委差"] }}</span
+              >
             </td>
           </tr>
         </table>
@@ -261,7 +274,7 @@
             <tr class="is-hide">
               <td class="label">涨停</td>
               <td class="mm-price">
-                <span id="quote-raisePrice-main">-</span>
+                <span id="quote-raisePrice-main">{{ item2["涨停"] }}</span>
               </td>
               <td class=""></td>
               <td class="last-td"></td>
@@ -271,13 +284,17 @@
             <tr v-for="i in 5" :key="i" :class="{ 'is-hide': i < 5 }">
               <td class="label">卖{{ 6 - i }}</td>
               <td class="mm-price">
-                <span id="quote-s1p">{{ item2[`sell${6 - i}`] }}</span>
+                <span id="quote-s1p" :class="upDown(item2[`sell${6 - i}`])">{{
+                  item2[`sell${6 - i}`]
+                }}</span>
               </td>
               <td class="power">
                 <div id="quote-s1vp" class="gdnl-box"></div>
               </td>
               <td class="last-td">
-                <span id="quote-s1v">{{ item2[`sell${6 - i}Volume`] }}</span>
+                <span id="quote-s1v">{{
+                  kcbMyformatNum(item2[`sell${6 - i}Volume`])
+                }}</span>
               </td>
               <td class="diff" id="quote-s1d"></td>
             </tr>
@@ -287,13 +304,17 @@
             <tr v-for="i in (1, 5)" :key="i" :class="{ 'is-hide': i > 1 }">
               <td class="label">买{{ i }}</td>
               <td class="mm-price">
-                <span id="quote-b1p">{{ item2["buy" + i] }}</span>
+                <span id="quote-b1p" :class="upDown(item2['buy' + i])">{{
+                  item2["buy" + i]
+                }}</span>
               </td>
               <td class="power">
                 <div id="quote-b1vp" class="gdnl-box"></div>
               </td>
               <td class="last-td">
-                <span id="quote-b1v">{{ item2[`buy${i}Volume`] }}</span>
+                <span id="quote-b1v">{{
+                  kcbMyformatNum(item2[`buy${i}Volume`])
+                }}</span>
               </td>
               <td class="diff" id="quote-b1d"></td>
             </tr>
@@ -301,7 +322,7 @@
             <tr class="is-hide">
               <td class="label">跌停</td>
               <td class="mm-price">
-                <span id="quote-fallPrice-main">-</span>
+                <span id="quote-fallPrice-main">{{ item2["跌停"] }}</span>
               </td>
               <td class=""></td>
               <td class="last-td"></td>
@@ -391,11 +412,19 @@ export default {
         amountPh: "-",
         isSameRight: "-",
         是否盈利: "-",
+        涨停: "-",
+        跌停: "-",
       },
     };
   },
 
   methods: {
+    upDown(v1, v2) {
+      if (!v2) v2 = this.item2.preClose;
+      if (v1 > v2) return "red";
+      else if (v1 < v2) return "green";
+      else return "";
+    },
     getheadInfo() {
       var url =
         "//" +
@@ -447,8 +476,8 @@ export default {
           volume: d.f47,
           amount: d.f48,
           lb: d.f50,
-          raisePrice: d.f51,
-          fallPrice: d.f52,
+          涨停: d.f51,
+          跌停: d.f52,
           name: d.f58,
           preClose: d.f60,
           totalValue: d.f116,
@@ -471,6 +500,99 @@ export default {
       );
       Object.assign(this.item2, data);
       console.error(data, this.item2.lb);
+    },
+    kcbMyformatNum(num) {
+      if (num == undefined || num == "" || isNaN(num) || num == "-") {
+        return "";
+      }
+
+      var hz = "";
+      var num2 = "";
+
+      if (num >= 0 && num <= 99.999999999) {
+        num2 = parseFloat(num).toFixed(2);
+      } else if (num >= 100 && num <= 999) {
+        num2 = parseFloat(num).toFixed(1);
+      } else if (num >= 1000) {
+        num2 = parseFloat(num).toFixed(0);
+      }
+
+      //处理小于0
+      if (num < 0) {
+        num = Math.abs(num);
+
+        if (num >= 0 && num <= 99) {
+          num2 = parseFloat(num).toFixed(2);
+        } else if (num >= 100 && num <= 999) {
+          num2 = parseFloat(num).toFixed(1);
+        } else if (num >= 1000) {
+          num2 = parseFloat(num).toFixed(0);
+        }
+        num2 = "-" + num2;
+      }
+      return num2.toString() + hz;
+    },
+    formatNum(num) {
+      if (num == 0) {
+        return num;
+      }
+      if (num == undefined || num == "" || isNaN(num) || num == "-") {
+        return "-";
+      }
+
+      var hz = "";
+      var num2 = "";
+      if (num >= 10000000000000) {
+        num = num / 1000000000000;
+        hz = "万亿";
+        num2 = parseFloat(num).toFixed(0);
+      } else if (num >= 1000000000000 && num < 10000000000000) {
+        num = num / 1000000000000;
+        hz = "万亿";
+        num2 = parseFloat(num).toFixed(1);
+      } else if (num >= 100000000000 && num < 1000000000000) {
+        num = num / 100000000;
+        hz = "亿";
+        num2 = parseFloat(num).toFixed(0);
+      } else if (num >= 10000000000 && num < 100000000000) {
+        num = num / 100000000;
+        hz = "亿";
+        num2 = parseFloat(num).toFixed(1);
+      } else if (num >= 100000000 && num < 10000000000) {
+        num = num / 100000000;
+        hz = "亿";
+        num2 = parseFloat(num).toFixed(2);
+      } else if (num >= 10000000 && num < 100000000) {
+        num = num / 10000;
+        hz = "万";
+        num2 = parseFloat(num).toFixed(0);
+      } else if (num >= 1000000 && num < 10000000) {
+        num = num / 10000;
+        hz = "万";
+        num2 = parseFloat(num).toFixed(1);
+      } else if (num >= 10000 && num < 1000000) {
+        num = num / 10000;
+        hz = "万";
+        num2 = parseFloat(num).toFixed(2);
+      } else if (num >= 1000 && num < 10000) {
+        num2 = parseFloat(num).toFixed(0);
+      } else if (num >= 100 && num < 1000) {
+        num2 = parseFloat(num).toFixed(1);
+      } else if (num >= 1 && num < 100) {
+        num2 = parseFloat(num).toFixed(2);
+      } else if (num >= 0 && num < 1) {
+        num2 = parseFloat(num).toFixed(3);
+      } else if (num < 0) {
+        num2 = parseFloat(num).toFixed(2);
+      } else {
+        num2 = parseFloat(num).toFixed(2);
+        // return num;
+      }
+      // if(parseInt(num) >= 1000){ //整数部分超过4位
+      //   num2 = num.toFixed(1);
+      // }
+
+      return num2.toString() + hz;
     },
     getSecid() {
       return this.item.code.replace(/sh/, "1.").replace(/sz/, "0.");

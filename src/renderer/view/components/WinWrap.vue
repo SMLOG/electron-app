@@ -26,7 +26,7 @@
           cursor: pointer;
         "
       >
-        <span @click="$emit('close')">x</span>
+        <span class="close" @click="$emit('close')">x</span>
         <b>{{ item.name }}</b>
       </div>
     </div>
@@ -61,6 +61,15 @@ export default {
 </script>
 
 <style scoped>
+.close {
+  width: 1em;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  display: block;
+  background: red;
+  border-radius: 50%;
+}
 </style>
 
 

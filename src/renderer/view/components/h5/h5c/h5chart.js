@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var $ = require("jquery");
-var URI = require("./em-urijs");
 var marge = _.merge;
 var utils = require("./em-utils");
 var cookie = utils.cookie;
@@ -8,7 +7,7 @@ var chartmanager = require("./em-chartmanager");
 var minutedeals = require("./components/quote-parts/deals");
 var TopSpeedQuote = require("./components/quote-parts/push");
 var minutedealsObj = {};
-var headdata = require("./cybhqdata"); //头部行情及其它
+//var headdata = require("./cybhqdata"); //头部行情及其它
 
 require("./modules/jquery.tooltip");
 require("./modules/jquery.fullscreen");
@@ -77,16 +76,10 @@ function getstockinfos(secid, stockentry) {
         }
 
         //创业板
-        setTimeout(function() {
-          headdata.init(stockentry);
-        }, 100);
       } else {
         $("#h5chartheadwrap").show();
         $("#h5chartheadwrapcyb").remove();
         $("#fs_ph_tab").css({ display: "none" });
-        setTimeout(function() {
-          headdata.init(stockentry);
-        }, 100);
       }
     } catch (error) {}
   });
@@ -167,8 +160,8 @@ function h5chart(query) {
       timeloader.stop(true);
       kloader.stop(true);
     }
-    (timeloader = new chartmanager("time", options)),
-      (kloader = new chartmanager("k", options));
+    timeloader = new chartmanager("time", options);
+    kloader = new chartmanager("k", options);
     var timechart, kchart;
 
     var $cr = $("#type-selector i[data-type=cr]");

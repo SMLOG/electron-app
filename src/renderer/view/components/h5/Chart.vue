@@ -14,21 +14,21 @@
               <span id="quote-change-main" class="zde">-</span>
               <span id="quote-changePercent-main" class="zdf">-</span>
             </div>
-            <div id="h5chartheadwrap">
+            <div id="h5chartheadwrap" v-show="show_head">
               <table class="clearfix hq-data-table fl">
                 <tr>
                   <td>
                     今开：<span
                       class="jk quote-open-custom"
                       id="quote-open-custom"
-                      >-</span
+                      >{{ item2.open }}</span
                     >
                   </td>
                   <td>
                     最高：<span
                       class="zg quote-high-custom"
                       id="quote-high-custom"
-                      >-</span
+                      >{{ item2.high }}</span
                     >
                   </td>
                   <td>
@@ -42,19 +42,21 @@
                     换手：<span
                       class="hs quote-turnoverRate-custom"
                       id="quote-turnoverRate-custom"
-                      >-</span
+                      >{{ item2.turnover }}</span
                     >
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    昨收：<span class="zs quote-pc" id="quote-pc">-</span>
+                    昨收：<span class="zs quote-pc" id="quote-pc">{{
+                      item2.preClose
+                    }}</span>
                   </td>
                   <td>
                     最低：<span
                       class="zd quote-low-custom"
                       id="quote-low-custom"
-                      >-</span
+                      >{{ item2.low }}</span
                     >
                   </td>
                   <td>
@@ -68,7 +70,7 @@
                     量比：<span
                       class="lb quote-volumeRate-custom"
                       id="quote-volumeRate-custom"
-                      >-</span
+                      >{{ item2["lb"] }}</span
                     >
                   </td>
                 </tr>
@@ -79,21 +81,21 @@
                     成交量：<span
                       class="cjl quote-volume-custom"
                       id="quote-volume-custom"
-                      >-</span
+                      >{{ item2["volume"] }}</span
                     >
                   </td>
                   <td>
                     市盈：<span
                       class="sy quote-PERation-custom"
                       id="quote-PERation-custom"
-                      >-</span
+                      >{{ item2["pe"] }}</span
                     >
                   </td>
                   <td>
                     总市值：<span
                       class="zsz quote-marketValue-custom"
                       id="quote-marketValue-custom"
-                      >-</span
+                      >{{ item2["totalValue"] }}</span
                     >
                   </td>
                 </tr>
@@ -102,19 +104,21 @@
                     成交额：<span
                       class="cje quote-amount-custom"
                       id="quote-amount-custom"
-                      >-</span
+                      >{{ item2["amount"] }}</span
                     >
                   </td>
                   <td>
-                    市净：<span class="sj quote-PB-custom" id="quote-PB-custom"
-                      >-</span
+                    市净：<span
+                      class="sj quote-PB-custom"
+                      id="quote-PB-custom"
+                      >{{ item2["pb"] }}</span
                     >
                   </td>
                   <td>
                     流通市值：<span
                       class="ltsz quote-flowCapitalValue-custom"
                       id="quote-flowCapitalValue-custom"
-                      >-</span
+                      >{{ item2["flowValue"] }}</span
                     >
                   </td>
                 </tr>
@@ -188,7 +192,7 @@
                 data-type="ar"
                 id="fs_ph_tab"
                 class="dataType"
-                style="display: none"
+                v-show="ph_tab"
               >
                 盘后
               </li>
@@ -243,8 +247,12 @@
       <div class="main-right fr" id="r-box-table">
         <table class="wbc-table">
           <tr>
-            <td class="wb-td">委比：<span class="wb" id="quote-cr">-</span></td>
-            <td class="wc-td">委差：<span class="wc" id="quote-cd">-</span></td>
+            <td class="wb-td">
+              委比：<span class="wb" id="quote-cr">{{ item2.weiby }}</span>
+            </td>
+            <td class="wc-td">
+              委差：<span class="wc" id="quote-cd">{{ item2["委差"] }}</span>
+            </td>
           </tr>
         </table>
 
@@ -259,101 +267,37 @@
               <td class="last-td"></td>
               <td class=""></td>
             </tr>
-            <tr class="is-hide">
-              <td class="label">卖五</td>
-              <td class="mm-price"><span id="quote-s5p">-</span></td>
-              <td class="power">
-                <div id="quote-s5vp" class="gdnl-box"></div>
+
+            <tr v-for="i in 5" :key="i" :class="{ 'is-hide': i < 5 }">
+              <td class="label">卖{{ 6 - i }}</td>
+              <td class="mm-price">
+                <span id="quote-s1p">{{ item2[`sell${6 - i}`] }}</span>
               </td>
-              <td class="last-td volumn mr">
-                <span id="quote-s5v">-</span>
-              </td>
-              <td class="diff" id="quote-s5d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">卖四</td>
-              <td class="mm-price"><span id="quote-s4p">-</span></td>
-              <td class="power">
-                <div id="quote-s4vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-s4v">-</span></td>
-              <td class="diff" id="quote-s4d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">卖三</td>
-              <td class="mm-price"><span id="quote-s3p">-</span></td>
-              <td class="power">
-                <div id="quote-s3vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-s3v">-</span></td>
-              <td class="diff" id="quote-s3d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">卖二</td>
-              <td class="mm-price"><span id="quote-s2p">-</span></td>
-              <td class="power">
-                <div id="quote-s2vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-s2v">-</span></td>
-              <td class="diff" id="quote-s2d"></td>
-            </tr>
-            <tr>
-              <td class="label">卖一</td>
-              <td class="mm-price"><span id="quote-s1p">-</span></td>
               <td class="power">
                 <div id="quote-s1vp" class="gdnl-box"></div>
               </td>
-              <td class="last-td"><span id="quote-s1v">-</span></td>
+              <td class="last-td">
+                <span id="quote-s1v">{{ item2[`sell${6 - i}Volume`] }}</span>
+              </td>
               <td class="diff" id="quote-s1d"></td>
             </tr>
           </table>
 
           <table id="sell-table" class="buy5">
-            <tr>
-              <td class="label">买一</td>
-              <td class="mm-price"><span id="quote-b1p">-</span></td>
+            <tr v-for="i in (1, 5)" :key="i" :class="{ 'is-hide': i > 1 }">
+              <td class="label">买{{ i }}</td>
+              <td class="mm-price">
+                <span id="quote-b1p">{{ item2["buy" + i] }}</span>
+              </td>
               <td class="power">
                 <div id="quote-b1vp" class="gdnl-box"></div>
               </td>
-              <td class="last-td"><span id="quote-b1v">-</span></td>
+              <td class="last-td">
+                <span id="quote-b1v">{{ item2[`buy${i}Volume`] }}</span>
+              </td>
               <td class="diff" id="quote-b1d"></td>
             </tr>
-            <tr class="is-hide">
-              <td class="label">买二</td>
-              <td class="mm-price"><span id="quote-b2p">-</span></td>
-              <td class="power">
-                <div id="quote-b2vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-b2v">-</span></td>
-              <td class="diff" id="quote-b2d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">买三</td>
-              <td class="mm-price"><span id="quote-b3p">-</span></td>
-              <td class="power">
-                <div id="quote-b3vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-b3v">-</span></td>
-              <td class="diff" id="quote-b3d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">买四</td>
-              <td class="mm-price"><span id="quote-b4p">-</span></td>
-              <td class="power">
-                <div id="quote-b4vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-b4v">-</span></td>
-              <td class="diff" id="quote-b4d"></td>
-            </tr>
-            <tr class="is-hide">
-              <td class="label">买五</td>
-              <td class="mm-price"><span id="quote-b5p">-</span></td>
-              <td class="power">
-                <div id="quote-b5vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td"><span id="quote-b5v">-</span></td>
-              <td class="diff" id="quote-b5d"></td>
-            </tr>
+
             <tr class="is-hide">
               <td class="label">跌停</td>
               <td class="mm-price">
@@ -386,6 +330,7 @@ import axios from "axios";
 var canvasExtension = require("./ec/webpack/emcharts");
 //var imgpng = require("images/water_mark.png");
 const h5chart = require("./h5c/h5chart");
+import _ from "lodash";
 import $ from "jquery";
 window.$ = $;
 export default {
@@ -394,10 +339,190 @@ export default {
     item: Object,
   },
   data() {
-    return { chartHeight: 0 };
+    return {
+      chartHeight: 0,
+      state: "open",
+      show_head: false,
+      ph_tab: false,
+      item2: {
+        buy5: "-",
+        buy5Volume: "-",
+        buy4: "-",
+        buy4Volume: "-",
+        buy3: "-",
+        buy3Volume: "-",
+        buy2: "-",
+        buy2Volume: "-",
+        buy1: "-",
+        buy1Volume: "-",
+        sell5: "-",
+        sell5Volume: "-",
+        sell4: "-",
+        sell4Volume: "-",
+        sell3: "-",
+        sell3Volume: "-",
+        sell2: "-",
+        sell2Volume: "-",
+        sell1: "-",
+        sell1Volume: "-",
+        close: "-",
+        high: "-",
+        low: "-",
+        open: "-",
+        volume: "-",
+        amount: "-",
+        lb: "-",
+        raisePrice: "-",
+        fallPrice: "-",
+        name: "-",
+        preClose: "-",
+        totalValue: "-",
+        flowValue: "-",
+        decimal: "-",
+        pe: "-",
+        pb: "-",
+        turnover: "-",
+        change: "-",
+        changeP: "-",
+        weiby: "-",
+        委差: "-",
+        差量: "-",
+        volumePh: "-",
+        amountPh: "-",
+        isSameRight: "-",
+        是否盈利: "-",
+      },
+    };
   },
 
   methods: {
+    getheadInfo() {
+      var url =
+        "//" +
+        (Math.floor(Math.random() * 99) + 1) +
+        ".push2.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531,f59&secid=" +
+        this.getSecid();
+
+      $.ajax({
+        url: url,
+        scriptCharset: "utf-8",
+        dataType: "jsonp",
+        jsonp: "cb",
+        success: (json) => {
+          if (json.data) {
+            let d = json.data;
+            this.formatHead(d);
+            this.sseHeadData();
+          }
+        },
+      });
+    },
+    formatHead(d) {
+      let data = _.pickBy(
+        {
+          buy5: d.f11,
+          buy5Volume: d.f12,
+          buy4: d.f13,
+          buy4Volume: d.f14,
+          buy3: d.f15,
+          buy3Volume: d.f16,
+          buy2: d.f17,
+          buy2Volume: d.f18,
+          buy1: d.f19,
+          buy1Volume: d.f20,
+          sell5: d.f31,
+          sell5Volume: d.f32,
+          sell4: d.f33,
+          sell4Volume: d.f34,
+          sell3: d.f35,
+          sell3Volume: d.f36,
+          sell2: d.f37,
+          sell2Volume: d.f38,
+          sell1: d.f39,
+          sell1Volume: d.f40,
+          close: d.f43,
+          high: d.f44,
+          low: d.f45,
+          open: d.f46,
+          volume: d.f47,
+          amount: d.f48,
+          lb: d.f50,
+          raisePrice: d.f51,
+          fallPrice: d.f52,
+          name: d.f58,
+          preClose: d.f60,
+          totalValue: d.f116,
+          flowValue: d.f117,
+          decimal: d.f152,
+          pe: d.f162,
+          pb: d.f167,
+          turnover: d.f168 + "%",
+          change: d.f169,
+          changeP: d.f170,
+          weiby: d.f191,
+          委差: d.f192,
+          差量: d.f206,
+          volumePh: d.f260,
+          amountPh: d.f261,
+          isSameRight: d.f279,
+          是否盈利: d.f288,
+        },
+        _.identity
+      );
+      Object.assign(this.item2, data);
+      console.error(data, this.item2.lb);
+    },
+    getSecid() {
+      return this.item.code.replace(/sh/, "1.").replace(/sz/, "0.");
+    },
+    getinfo() {
+      var _url =
+        "//push2.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&" +
+        "fltt=2&fields=f107,f111,f279,f288,f293,f294,f292,f295&secid=" +
+        this.getSecid() +
+        "&cb=?";
+
+      return $.ajax({
+        async: false,
+        url: _url,
+        dataType: "jsonp",
+        jsonp: "cb",
+      }).then((json) => {
+        var data = json.data;
+        data.f292 == 11 && (this.state = "pre");
+        data.f292 == 12 && (this.state = "next");
+        data.f292 == 5 && (this.state = "close");
+        data.f292 == 2 && (this.state = "open");
+
+        //创业板
+        if (data.f107 == 0 && data.f111 == 80) {
+        } else {
+          this.show_head = true;
+          this.ph_tab = false;
+        }
+        setTimeout(() => {
+          this.getheadInfo();
+        }, 10);
+      });
+    },
+    sseHeadData() {
+      var secids = this.getSecid();
+      var url =
+        "//" +
+        (Math.floor(Math.random() * 99) + 1) +
+        ".push2.eastmoney.com/api/qt/stock/sse?ut=fa5fd1943c7b386f172d6893dbfba10b&fltt=2&invt=2&volt=2&fields=f152,f288,f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f198,f259,f260,f261,f171,f277,f278,f279,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f20,f19,f18,f17,f16,f15,f14,f13,f12,f11,f531&secid=" +
+        secids;
+      var sseHeadData_evtSource = this.sseHeadData_evtSource;
+      sseHeadData_evtSource &&
+        (sseHeadData_evtSource.close(), (sseHeadData_evtSource = null));
+      this.sseHeadData_evtSource = sseHeadData_evtSource = new EventSource(url);
+      sseHeadData_evtSource.onmessage = (msg) => {
+        var obj = JSON.parse(msg.data);
+        if (obj.data) {
+          this.formatHead(obj.data);
+        }
+      };
+    },
     resize() {
       this.chartHeight =
         $(this.$el).height() - $("#top", this.$el).outerHeight() - 10;
@@ -411,6 +536,7 @@ export default {
           type: "k",
         };
         new h5chart(query).init();
+        this.getheadInfo();
       }
     },
   },

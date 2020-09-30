@@ -7,7 +7,6 @@
       right: 0;
       z-index: 4;
       position: fixed;
-      overflow: scroll;
       border: 1px solid #95bad0;
       background: white;
       width: 1000px;
@@ -17,10 +16,14 @@
       <div
         style="
           position: absolute;
-          margin-left: 10px;
-          top: 0;
-          left: 0;
+          padding-left: 3px;
+          top: 0px;
+          padding-right: 3px;
+          left: -16px;
           z-index: 1;
+          width: 1em;
+          background: white;
+          cursor: pointer;
         "
       >
         <span @click="$emit('close')">x</span>

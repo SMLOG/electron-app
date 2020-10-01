@@ -190,36 +190,58 @@
           </div>
           <div class="rk-box mt10" id="rk-box">
             <ul class="fl k-box" id="type-selector">
-              <li data-type="cr" class="dataType">盘前</li>
-              <li
-                data-type="ar"
-                id="fs_ph_tab"
-                class="dataType"
-                v-show="ph_tab"
+              <template
+                v-for="(t, name) in {
+                  盘前: 'cr',
+                  分时: 'r',
+                  日K: 'k',
+                  '5日': {
+                    '1日': 'r',
+                    '2日': 't2',
+                    '3日': 't3',
+                    '4日': 't4',
+                    '5日': 't5',
+                  },
+                  周K: 'wk',
+                  月K: 'mk',
+                  '5分钟': 'm5k',
+                  '15分钟': 'm15k',
+                  '30分钟': 'm30k',
+                  '60分钟': 'm60k',
+                }"
               >
-                盘后
-              </li>
-              <li data-type="r" class="dataType cur fshBox">分时</li>
-              <li class="rk-a" id="day-selector">
-                <span
-                  ><span data-type="t5" class="selected-box dataType">5日</span
-                  ><span class="click-icon"><i class="select-icon"></i></span
-                ></span>
-                <div class="rk-options">
-                  <span data-type="r" class="data-type">1日</span>
-                  <span data-type="t2" class="data-type">2日</span>
-                  <span data-type="t3" class="data-type">3日</span>
-                  <span data-type="t4" class="data-type">4日</span>
-                  <span data-type="t5" class="data-type cur">5日</span>
-                </div>
-              </li>
-              <li data-type="k" class="dataType">日K</li>
-              <li data-type="wk" class="dataType">周K</li>
-              <li data-type="mk" class="dataType">月K</li>
-              <li data-type="m5k" class="dataType">5分钟</li>
-              <li data-type="m15k" class="dataType">15分钟</li>
-              <li data-type="m30k" class="dataType">30分钟</li>
-              <li data-type="m60k" class="dataType">60分钟</li>
+                <li
+                  :key="name"
+                  v-if="name == '5日'"
+                  class="rk-a"
+                  id="day-selector"
+                >
+                  <span
+                    ><span data-type="t5" class="selected-box dataType"
+                      >5日</span
+                    ><span class="click-icon"><i class="select-icon"></i></span
+                  ></span>
+                  <div class="rk-options">
+                    <span
+                      v-for="(t5, name5) in t"
+                      :key="name5"
+                      :data-type="t5"
+                      class="data-type"
+                      >{{ name5 }}</span
+                    >
+                  </div>
+                </li>
+                <li
+                  v-else
+                  :key="name"
+                  :data-type="t"
+                  @click="curType = t"
+                  :class="{ cur: curType == t }"
+                  class="dataType"
+                >
+                  {{ name }}
+                </li>
+              </template>
             </ul>
             <ul class="fr r-box" id="kchart-toolbar">
               <li class="cmfb-li" id="btn-cyq">筹码分布</li>
@@ -699,7 +721,6 @@ export default {
 }
 #top {
   height: 96px;
-  overflow: hidden;
 }
 .mywrap {
   position: absolute;

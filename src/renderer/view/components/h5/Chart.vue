@@ -243,17 +243,48 @@
                 </li>
               </template>
             </ul>
-            <ul class="fr r-box" id="kchart-toolbar">
+            <ul
+              class="fr r-box"
+              id="kchart-toolbar"
+              :curType="curType"
+              :style="{ display: curType.indexOf('k') > -1 ? 'block' : 'none' }"
+            >
               <li class="cmfb-li" id="btn-cyq">筹码分布</li>
               <li class="rk-a cur" id="select-authority">
                 <span
-                  ><span class="selected-box" value="">前复权</span
+                  ><span
+                    class="selected-box"
+                    value=""
+                    @click.stop="toggleFQ($event, false)"
+                    >{{
+                      复权 == "fa"
+                        ? "前复权"
+                        : 复权 == "ba"
+                        ? "后复权"
+                        : "不复权"
+                    }}</span
                   ><i class="select-icon"></i
                 ></span>
-                <div class="rk-options k-options" id="authority-options">
-                  <span value="fa" class="cur">前复权</span>
-                  <span value="ba">后复权</span>
-                  <span>不复权</span>
+                <div
+                  class="rk-options k-options"
+                  id="authority-options"
+                  :style="{ display: showFQ ? 'block' : 'none' }"
+                >
+                  <span
+                    value="fa"
+                    :class="{ cur: 复权 == 'fa' }"
+                    @click="复权 = 'fa'"
+                    >前复权</span
+                  >
+                  <span
+                    value="ba"
+                    :class="{ cur: 复权 == 'ba' }"
+                    @click="复权 = 'ba'"
+                    >后复权</span
+                  >
+                  <span :class="{ cur: 复权 == '' }" @click="复权 = ''"
+                    >不复权</span
+                  >
                 </div>
               </li>
               <li id="btn-drawback">缩短</li>
@@ -369,10 +400,15 @@
 </template>
 <script>
 import axios from "axios";
+import storejs from "storejs";
 //var canvasExtension = require("chart/common/canvasExtension");
 var canvasExtension = require("./ec/webpack/emcharts");
 //var imgpng = require("images/water_mark.png");
 const h5chart = require("./h5c/h5chart");
+import { kcbMyformatNum, formatNum, formatHead } from "./format";
+
+var utils = require("./h5c/em-utils");
+var cookie = utils.cookie;
 import _ from "lodash";
 import $ from "jquery";
 window.$ = $;
@@ -384,63 +420,26 @@ export default {
   data() {
     return {
       chartHeight: 0,
+      复权: storejs.get("复权") || "fa",
+      showFQ: 0,
       state: "open",
       show_head: false,
       ph_tab: false,
-      item2: {
-        buy5: "-",
-        buy5Volume: "-",
-        buy4: "-",
-        buy4Volume: "-",
-        buy3: "-",
-        buy3Volume: "-",
-        buy2: "-",
-        buy2Volume: "-",
-        buy1: "-",
-        buy1Volume: "-",
-        sell5: "-",
-        sell5Volume: "-",
-        sell4: "-",
-        sell4Volume: "-",
-        sell3: "-",
-        sell3Volume: "-",
-        sell2: "-",
-        sell2Volume: "-",
-        sell1: "-",
-        sell1Volume: "-",
-        close: "-",
-        high: "-",
-        low: "-",
-        open: "-",
-        volume: "-",
-        amount: "-",
-        lb: "-",
-        raisePrice: "-",
-        fallPrice: "-",
-        name: "-",
-        preClose: "-",
-        totalValue: "-",
-        flowValue: "-",
-        decimal: "-",
-        pe: "-",
-        pb: "-",
-        turnover: "-",
-        change: "-",
-        changeP: "-",
-        weiby: "-",
-        委差: "-",
-        差量: "-",
-        volumePh: "-",
-        amountPh: "-",
-        isSameRight: "-",
-        是否盈利: "-",
-        涨停: "-",
-        跌停: "-",
-      },
+      curType: "k",
+      item2: formatHead({}, true),
     };
   },
 
   methods: {
+    toggleFQ(event, bool) {
+      this.showFQ = !this.showFQ;
+      event.preventDefault();
+      return false;
+    },
+    setFQ(type) {
+      this.复权 == type;
+      storejs.set("复权", type);
+    },
     upDown(v1, v2) {
       if (!v2) v2 = this.item2.preClose;
       if (v1 > v2) return "red";
@@ -469,157 +468,18 @@ export default {
       });
     },
     formatHead(d) {
-      let data = _.pickBy(
-        {
-          buy5: d.f11,
-          buy5Volume: d.f12,
-          buy4: d.f13,
-          buy4Volume: d.f14,
-          buy3: d.f15,
-          buy3Volume: d.f16,
-          buy2: d.f17,
-          buy2Volume: d.f18,
-          buy1: d.f19,
-          buy1Volume: d.f20,
-          sell5: d.f31,
-          sell5Volume: d.f32,
-          sell4: d.f33,
-          sell4Volume: d.f34,
-          sell3: d.f35,
-          sell3Volume: d.f36,
-          sell2: d.f37,
-          sell2Volume: d.f38,
-          sell1: d.f39,
-          sell1Volume: d.f40,
-          close: d.f43,
-          high: d.f44,
-          low: d.f45,
-          open: d.f46,
-          volume: d.f47,
-          amount: d.f48,
-          lb: d.f50,
-          涨停: d.f51,
-          跌停: d.f52,
-          name: d.f58,
-          preClose: d.f60,
-          totalValue: d.f116,
-          flowValue: d.f117,
-          decimal: d.f152,
-          pe: d.f162,
-          pb: d.f167,
-          turnover: d.f168 + "%",
-          change: d.f169,
-          changeP: d.f170,
-          weiby: d.f191,
-          委差: d.f192,
-          差量: d.f206,
-          volumePh: d.f260,
-          amountPh: d.f261,
-          isSameRight: d.f279,
-          是否盈利: d.f288,
-        },
-        _.identity
-      );
-      Object.assign(this.item2, data);
-      console.error(data, this.item2.lb);
+      Object.assign(this.item2, formatHead(d));
     },
     kcbMyformatNum(num) {
-      if (num == undefined || num == "" || isNaN(num) || num == "-") {
-        return "";
-      }
-
-      var hz = "";
-      var num2 = "";
-
-      if (num >= 0 && num <= 99.999999999) {
-        num2 = parseFloat(num).toFixed(2);
-      } else if (num >= 100 && num <= 999) {
-        num2 = parseFloat(num).toFixed(1);
-      } else if (num >= 1000) {
-        num2 = parseFloat(num).toFixed(0);
-      }
-
-      //处理小于0
-      if (num < 0) {
-        num = Math.abs(num);
-
-        if (num >= 0 && num <= 99) {
-          num2 = parseFloat(num).toFixed(2);
-        } else if (num >= 100 && num <= 999) {
-          num2 = parseFloat(num).toFixed(1);
-        } else if (num >= 1000) {
-          num2 = parseFloat(num).toFixed(0);
-        }
-        num2 = "-" + num2;
-      }
-      return num2.toString() + hz;
+      return kcbMyformatNum(num);
     },
     formatNum(num) {
-      if (num == 0) {
-        return num;
-      }
-      if (num == undefined || num == "" || isNaN(num) || num == "-") {
-        return "-";
-      }
-
-      var hz = "";
-      var num2 = "";
-      if (num >= 10000000000000) {
-        num = num / 1000000000000;
-        hz = "万亿";
-        num2 = parseFloat(num).toFixed(0);
-      } else if (num >= 1000000000000 && num < 10000000000000) {
-        num = num / 1000000000000;
-        hz = "万亿";
-        num2 = parseFloat(num).toFixed(1);
-      } else if (num >= 100000000000 && num < 1000000000000) {
-        num = num / 100000000;
-        hz = "亿";
-        num2 = parseFloat(num).toFixed(0);
-      } else if (num >= 10000000000 && num < 100000000000) {
-        num = num / 100000000;
-        hz = "亿";
-        num2 = parseFloat(num).toFixed(1);
-      } else if (num >= 100000000 && num < 10000000000) {
-        num = num / 100000000;
-        hz = "亿";
-        num2 = parseFloat(num).toFixed(2);
-      } else if (num >= 10000000 && num < 100000000) {
-        num = num / 10000;
-        hz = "万";
-        num2 = parseFloat(num).toFixed(0);
-      } else if (num >= 1000000 && num < 10000000) {
-        num = num / 10000;
-        hz = "万";
-        num2 = parseFloat(num).toFixed(1);
-      } else if (num >= 10000 && num < 1000000) {
-        num = num / 10000;
-        hz = "万";
-        num2 = parseFloat(num).toFixed(2);
-      } else if (num >= 1000 && num < 10000) {
-        num2 = parseFloat(num).toFixed(0);
-      } else if (num >= 100 && num < 1000) {
-        num2 = parseFloat(num).toFixed(1);
-      } else if (num >= 1 && num < 100) {
-        num2 = parseFloat(num).toFixed(2);
-      } else if (num >= 0 && num < 1) {
-        num2 = parseFloat(num).toFixed(3);
-      } else if (num < 0) {
-        num2 = parseFloat(num).toFixed(2);
-      } else {
-        num2 = parseFloat(num).toFixed(2);
-        // return num;
-      }
-      // if(parseInt(num) >= 1000){ //整数部分超过4位
-      //   num2 = num.toFixed(1);
-      // }
-
-      return num2.toString() + hz;
+      return formatNum(num);
     },
     getSecid() {
       return this.item.code.replace(/sh/, "1.").replace(/sz/, "0.");
     },
-    getinfo() {
+    getstockinfos() {
       var _url =
         "//push2.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&" +
         "fltt=2&fields=f107,f111,f279,f288,f293,f294,f292,f295&secid=" +
@@ -649,6 +509,19 @@ export default {
         }, 10);
       });
     },
+    getExrightsType() {
+      var type = cookie("emhq_picfq");
+      switch (type) {
+        case "0":
+          return "";
+        case "1":
+          return "fa";
+        case "2":
+          return "ba";
+        default:
+          return "fa";
+      }
+    },
     sseHeadData() {
       var secids = this.getSecid();
       var url =
@@ -670,17 +543,61 @@ export default {
     resize() {
       this.chartHeight =
         $(this.$el).height() - $("#top", this.$el).outerHeight() - 10;
-      console.info(this.chartHeight);
+
+      var offset_tips_h = $("#deal_detail").offset().top;
+      var msg_h = $("#detail-msg-more").height();
+      var _height = $(window).height() - offset_tips_h - msg_h;
+      if (_height <= 90) {
+        _height = 90;
+      }
+      $("#deal_detail").height(_height);
     },
     loadchart(item) {
       if (item) {
         let query = {
           code: item.code.replace(/[a-z]+/gi, ""),
           market: item.code.indexOf("sh") > -1 ? 1 : 0,
-          type: "k",
+          type: this.curType,
         };
-        new h5chart(query).init();
-        this.getheadInfo();
+        //this.getstockinfos();
+
+        let type = this.curType || "r";
+
+        var _width, _height;
+
+        _height = $("#chart-container").height();
+        _width = $("#chart-container").width();
+
+        var authority = this.getExrightsType();
+        var stockentry = {
+          code: query.code,
+          marketnum: query.market,
+          shortmarket: query.market == "1" ? "sh" : "sz",
+          id: query.id || query.code + query.market,
+          newmarket: query.market == "1" ? "1" : "0", //1sh 0sz
+        };
+        var stock_state = "close";
+        var options = {
+          entry: stockentry,
+          type: type,
+          width: _width,
+          height: _height,
+          iscr: stock_state == "pre",
+          authorityType: authority,
+          update: stock_state == "close" ? -1 : 60 * 1000, //
+          padding: {
+            top: 0,
+            bottom: 20,
+          },
+          show: { indicatorArea: true },
+          onComplete: function () {
+            $("#chart-container").trigger("drawComplete.emchart");
+          },
+          // update: 60 * 1000
+        };
+
+        new h5chart(query).init(options);
+        //this.getheadInfo();
       }
     },
   },
@@ -697,6 +614,9 @@ export default {
       this.resize();
     });
     this.loadchart(this.item || { code: "sh600566" });
+    $(document).click(() => {
+      this.showFQ = 0;
+    });
   },
   computed: {},
   watch: {

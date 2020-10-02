@@ -39,10 +39,7 @@ function DealFSTime(val) {
  */
 function deals(args) {
   var apiurl = "//push2ex.eastmoney.com/";
-  if (window.location.search.indexOf("env=test") > 0) {
-    // apiurl = "http://61.152.230.32:26891/"
-    apiurl = "http://61.152.230.141/";
-  }
+
   var _opt = extend(
     {
       container: "#deal_detail",

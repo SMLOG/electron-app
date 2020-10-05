@@ -81,14 +81,14 @@ function manager(type, args) {
       case "compatible-k":
       case "compatible-r":
       case "compatible":
-        return pictureLoader.apply(this, [args, type.split("-")[1]]);
+        return pictureLoader.apply(this, [this.args, type.split("-")[1]]);
       case "time":
-        return timeLoader.apply(this, [args]);
+        return timeLoader.apply(this, [this.args]);
       case "k":
-        return kLoader.apply(this, [args]);
+        return kLoader.apply(this, [this.args]);
       default:
         if (typeof emcharts35[type] === "function")
-          return new emcharts35[type](args);
+          return new emcharts35[type](this.args);
         else return null;
     }
   }

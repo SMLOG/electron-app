@@ -18,9 +18,10 @@ var makepoints = require("./makepoints");
  * @param {Object.<string, object>} args.styles 样式配置集合
  * @param {Object.<string, string>} args.serverUrls 服务端地址
  */
-function kChartLoader(args) {
+function kChartLoader() {
   var self = this;
   var timer, chart;
+  var args = this.args;
   var _opt = (this.args = merge(
     {
       entry: {},
@@ -65,8 +66,8 @@ function kChartLoader(args) {
       onDragEnd: function() {
         clearTimeout(timer);
         timer = setTimeout(function() {
-          if (_opt.show.infomine) {
-            makepoints["infomine"].apply(self, [chart, _opt]);
+          if (args.show.infomine) {
+            makepoints["infomine"].apply(self, [chart, args]);
           }
         }, 500);
       },
@@ -98,7 +99,7 @@ function kChartLoader(args) {
     //     type: _opt.type,
     //     authorityType: _opt.authorityType
     // }, 'cb', function (json) {
-
+    var _opt = this.args;
     var typestr = "101";
     if (_opt.type == "wk") {
       typestr = "102";
@@ -114,19 +115,13 @@ function kChartLoader(args) {
       typestr = "60";
     }
 
-    var fuquanstr = "1"; //前复权
-    if (_opt.authorityType == "ba") {
-      fuquanstr = "2";
-    } else if (_opt.authorityType == "" || _opt.authorityType == undefined) {
-      fuquanstr = "0";
-    }
-
+    //1前复权
+    var fuquanstr = !_opt.authorityType
+      ? "0"
+      : _opt.authorityType == "ba"
+      ? "2"
+      : "1";
     var chartDataUrl_k_new = _opt.serverUrls.chartDataUrl_k_new;
-    if (window.location.search.indexOf("env=test") > 0) {
-      chartDataUrl_k_new =
-        "http://61.152.230.207/api/qt/stock/kline/get?fields1=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&beg=0&end=20500101&ut=fa5fd1943c7b386f172d6893dbfba10b";
-    }
-
     jsonp(
       chartDataUrl_k_new,
       {
@@ -231,7 +226,7 @@ function kChartLoader(args) {
           },
           _opt
         );
-        chart.draw();
+        chart.draw(true);
         if (!throttled) {
           throttled = throttle(function() {
             if (_opt.show.infomine) {

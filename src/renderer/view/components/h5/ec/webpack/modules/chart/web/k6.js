@@ -172,6 +172,9 @@ k.prototype._clearCanvas = function() {
  */
 k.prototype.draw = function() {
   this.options.isdraw = true;
+
+  initParameter.call(this); // 初始化参数
+
   var _this = this;
 
   var cyq = this.options.cyq || {};

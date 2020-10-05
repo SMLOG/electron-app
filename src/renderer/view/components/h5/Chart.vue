@@ -584,7 +584,7 @@ export default {
           height: _height,
           iscr: stock_state == "pre",
           authorityType: authority,
-          update: stock_state == "close" ? -1 : 60 * 1000, //
+          // update: stock_state == "close" ? -1 : 60 * 1000, //
           padding: {
             top: 0,
             bottom: 20,
@@ -593,7 +593,7 @@ export default {
           onComplete: function () {
             $("#chart-container").trigger("drawComplete.emchart");
           },
-          // update: 60 * 1000
+          update: 60 * 1000,
         };
 
         new h5chart(query).init(options);
@@ -613,7 +613,8 @@ export default {
     $(window).resize(() => {
       this.resize();
     });
-    this.loadchart(this.item || { code: "sh600566" });
+    setTimeout(() => this.loadchart(this.item || { code: "sh600566" }), 1000);
+
     $(document).click(() => {
       this.showFQ = 0;
     });

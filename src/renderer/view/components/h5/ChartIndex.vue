@@ -2,106 +2,10 @@
   <div class="mywrap">
     <div class="wrap clearfix">
       <div class="l-box fl">
-        <div id="top">
-          <Head :item="item" />
-          <Chart :item="item" />
-        </div>
+        <Head :item="item2" />
+        <Chart :item="item" />
       </div>
-      <div class="main-right fr" id="r-box-table">
-        <table class="wbc-table">
-          <tr>
-            <td class="wb-td">
-              委比：<span
-                :class="upDown(item2.weiby, 0)"
-                class="wb"
-                id="quote-cr"
-                >{{ item2.weiby }}</span
-              >
-            </td>
-            <td class="wc-td">
-              委差：<span
-                :class="upDown(item2['委差'], 0)"
-                class="wc"
-                id="quote-cd"
-                >{{ item2["委差"] }}</span
-              >
-            </td>
-          </tr>
-        </table>
-
-        <div class="mm-fb-table">
-          <table id="buy-table" class="sell5">
-            <tr class="is-hide">
-              <td class="label">涨停</td>
-              <td class="mm-price">
-                <span id="quote-raisePrice-main">{{ item2["涨停"] }}</span>
-              </td>
-              <td class=""></td>
-              <td class="last-td"></td>
-              <td class=""></td>
-            </tr>
-
-            <tr v-for="i in 5" :key="i" :class="{ 'is-hide': i < 5 }">
-              <td class="label">卖{{ 6 - i }}</td>
-              <td class="mm-price">
-                <span id="quote-s1p" :class="upDown(item2[`sell${6 - i}`])">{{
-                  item2[`sell${6 - i}`]
-                }}</span>
-              </td>
-              <td class="power">
-                <div id="quote-s1vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td">
-                <span id="quote-s1v">{{
-                  kcbMyformatNum(item2[`sell${6 - i}Volume`])
-                }}</span>
-              </td>
-              <td class="diff" id="quote-s1d"></td>
-            </tr>
-          </table>
-
-          <table id="sell-table" class="buy5">
-            <tr v-for="i in (1, 5)" :key="i" :class="{ 'is-hide': i > 1 }">
-              <td class="label">买{{ i }}</td>
-              <td class="mm-price">
-                <span id="quote-b1p" :class="upDown(item2['buy' + i])">{{
-                  item2["buy" + i]
-                }}</span>
-              </td>
-              <td class="power">
-                <div id="quote-b1vp" class="gdnl-box"></div>
-              </td>
-              <td class="last-td">
-                <span id="quote-b1v">{{
-                  kcbMyformatNum(item2[`buy${i}Volume`])
-                }}</span>
-              </td>
-              <td class="diff" id="quote-b1d"></td>
-            </tr>
-
-            <tr class="is-hide">
-              <td class="label">跌停</td>
-              <td class="mm-price">
-                <span id="quote-fallPrice-main">{{ item2["跌停"] }}</span>
-              </td>
-              <td class=""></td>
-              <td class="last-td"></td>
-              <td class=""></td>
-            </tr>
-          </table>
-
-          <div class="detail-box is-hide">
-            <div class="tips-box" id="tips-box">
-              <span><b class="purple-b"></b>大于20万外盘</span>
-              <span><b class="blue-b"></b>大于20万内盘</span>
-            </div>
-            <div id="deal_detail" class="deal_detail"></div>
-            <p class="msg-more" id="detail-msg-more">
-              <a href="" target="_blank">点击查看更多分时成交</a>
-            </p>
-          </div>
-        </div>
-      </div>
+      <Right :item="item2" />
     </div>
   </div>
 </template>
@@ -112,6 +16,8 @@ import storejs from "storejs";
 import { kcbMyformatNum, formatNum, formatHead } from "./format";
 import Chart from "./Chart";
 import Head from "./Head";
+import Right from "./Right";
+
 var utils = require("./h5c/em-utils");
 var cookie = utils.cookie;
 import _ from "lodash";
@@ -119,15 +25,13 @@ import $ from "jquery";
 window.$ = $;
 
 export default {
-  components: { Chart, Head },
+  components: { Chart, Head, Right },
   props: {
     item: Object,
   },
   data() {
     return {
       state: "open",
-      show_head: false,
-      ph_tab: false,
       item2: formatHead({}, true),
     };
   },

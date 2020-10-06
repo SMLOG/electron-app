@@ -62,7 +62,7 @@
 </template>
 <script>
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
-import ChartIndex from "@/view/components/h5/ChartIndex";
+import Chart from "@/view/components/h5/Chart";
 export default {
   data() {
     return { chartop: 45 };
@@ -106,7 +106,7 @@ export default {
   },
   components: {
     FinAnalyst2,
-    ChartIndex,
+    Chart,
   },
 
   methods: {},

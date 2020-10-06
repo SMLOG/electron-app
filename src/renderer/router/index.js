@@ -14,7 +14,7 @@ export default new Router({
     {
       path: "/chart",
       name: "Chart",
-      component: () => import("@/view/components/h5/Chart.vue"),
+      component: () => import("@/view/components/h5/ChartIndex.vue"),
     },
     {
       path: "/notify",

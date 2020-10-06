@@ -18,10 +18,9 @@ var makepoints = require("./makepoints");
  * @param {Object.<string, object>} args.styles 样式配置集合
  * @param {Object.<string, string>} args.serverUrls 服务端地址
  */
-function kChartLoader() {
+function kChartLoader(args) {
   var self = this;
   var timer, chart;
-  var args = this.args;
   var _opt = (this.args = merge(
     {
       entry: {},
@@ -87,7 +86,7 @@ function kChartLoader() {
     _opt.kgap.top = 18 + 9;
   }
 
-  chart = new emcharts3.k6(_opt);
+  chart = new emcharts3.k2(_opt);
   /**@type {throttle} */
   var throttled;
 
@@ -226,6 +225,7 @@ function kChartLoader() {
           },
           _opt
         );
+
         chart.draw(true);
         if (!throttled) {
           throttled = throttle(function() {

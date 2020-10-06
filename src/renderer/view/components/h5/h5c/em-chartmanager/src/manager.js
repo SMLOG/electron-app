@@ -56,6 +56,7 @@ function manager(type, args) {
   this.stop = function(destory) {
     destory = typeof destory !== "undefined" ? destory : true;
     clearInterval(timer);
+    // chart._clearCanvas();
     if (destory) {
       chart = null;
     }

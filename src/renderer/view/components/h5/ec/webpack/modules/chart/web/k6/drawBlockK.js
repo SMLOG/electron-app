@@ -292,11 +292,12 @@ drawBlockK.prototype.axisY = function() {
 
   var cyqRight = options.width - padding.right;
   var cyqStart = cyqRight - (cyq.width || 0);
-
+  console.error(padding.left, region.h);
   cc.clearRect(0, 0, padding.left, region.h);
   if (cyq.width) {
     cc.clearRect(cyqStart, 0, cyq.width, region.h);
   }
+  window.cc = cc;
 
   for (var i = 0, len = splity.length; i < len; i++) {
     var val = splity[i];
@@ -312,7 +313,7 @@ drawBlockK.prototype.axisY = function() {
         txt = (val / 1).toFixed(1);
       }
       var valw = cc.measureText(txt).width;
-      cc.fillText(txt + "", padding.left + 4, y);
+      cc.fillText(txt + "", padding.left - valw - 4, y);
 
       if (cyq.width && y > top + font.size / 2 && y < top + h - font.size / 2) {
         cc.fillText(txt + "", cyqRight - valw - 4, y);

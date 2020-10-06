@@ -8,7 +8,7 @@ var extend = require("chart/common/extend2");
 var setting = require("../defaultSetting");
 var initIsShow = require("./initIsShow");
 
-module.exports = function initParameter() {
+module.exports = function initParameter(no) {
   var option = this.option;
 
   // 增加 筹码分布
@@ -31,7 +31,10 @@ module.exports = function initParameter() {
 
   ops = extend(setting, option, true);
 
-  this.options = ops;
+  if (!no) this.options = ops;
+  else {
+    Object.assign(this.options, option);
+  }
 
   initIsShow.call(this);
 };

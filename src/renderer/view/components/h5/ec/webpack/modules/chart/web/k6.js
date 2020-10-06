@@ -56,6 +56,8 @@ function k(option) {
   var _this = this;
   this.option = option;
   this.options = {};
+  this.sdata = {};
+  this.sdata.dot = {};
 
   this.stauts = {
     indexv: "CMA",
@@ -75,9 +77,6 @@ function k(option) {
 
 k.prototype._init = function() {
   var dt = getDeviceType();
-
-  this.sdata = {};
-  this.sdata.dot = {};
 
   initParameter.call(this); // 初始化参数
   initLayer.call(this); // 初始化各个层
@@ -172,9 +171,6 @@ k.prototype._clearCanvas = function() {
  */
 k.prototype.draw = function() {
   this.options.isdraw = true;
-
-  initParameter.call(this); // 初始化参数
-
   var _this = this;
 
   var cyq = this.options.cyq || {};
@@ -261,6 +257,14 @@ k.prototype.setOption = function(ops) {
   dataSplit.slice.call(this);
 };
 
+k.prototype.clear2 = function() {
+  this._clear();
+
+  this._init();
+
+  dataFormat.formatK.call(this); // 格式化数据
+  dataSplit.slice.call(this);
+};
 k.prototype.setData = function(data, option) {
   if (!this.sdata) {
     this.sdata = {};

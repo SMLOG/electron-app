@@ -144,7 +144,9 @@ export function formatHead(d, empty = false) {
     是否盈利: d.f288,
   };
   if (empty) {
-    return Object.keys(item).map((e) => (item[e] = "-"));
+    let r = {};
+    Object.keys(item).map((e) => (r[e] = "-"));
+    return r;
   } else {
     return _.pickBy(item, _.identity);
   }

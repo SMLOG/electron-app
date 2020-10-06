@@ -1,121 +1,109 @@
 <template>
-  <div class="mywrap">
-    <div class="wrap clearfix">
-      <div class="l-box fl" style="height: 100%">
-        <Head :item="item" @refresh="refresh"></Head>
-        <div class="rk-box mt10" id="rk-box">
-          <ul class="fl k-box" id="type-selector">
-            <template
-              v-for="(t, name) in {
-                盘前: 'cr',
-                分时: 'r',
-                日K: 'k',
-                '5日': {
-                  '1日': 'r',
-                  '2日': 't2',
-                  '3日': 't3',
-                  '4日': 't4',
-                  '5日': 't5',
-                },
-                周K: 'wk',
-                月K: 'mk',
-                '5分钟': 'm5k',
-                '15分钟': 'm15k',
-                '30分钟': 'm30k',
-                '60分钟': 'm60k',
-              }"
+  <div>
+    <div class="rk-box mt10" id="rk-box">
+      <ul class="fl k-box" id="type-selector">
+        <template
+          v-for="(t, name) in {
+            盘前: 'cr',
+            分时: 'r',
+            日K: 'k',
+            '5日': {
+              '1日': 'r',
+              '2日': 't2',
+              '3日': 't3',
+              '4日': 't4',
+              '5日': 't5',
+            },
+            周K: 'wk',
+            月K: 'mk',
+            '5分钟': 'm5k',
+            '15分钟': 'm15k',
+            '30分钟': 'm30k',
+            '60分钟': 'm60k',
+          }"
+        >
+          <li :key="name" v-if="name == '5日'" class="rk-a" id="day-selector">
+            <span @click.stop="show5d = !show5d"
+              ><span data-type="t5" class="selected-box dataType">{{
+                getSelect5Day(t)
+              }}</span
+              ><span class="click-icon"><i class="select-icon"></i></span
+            ></span>
+            <div
+              class="rk-options"
+              :style="{ display: show5d ? 'block' : 'none' }"
             >
-              <li
-                :key="name"
-                v-if="name == '5日'"
-                class="rk-a"
-                id="day-selector"
-              >
-                <span @click.stop="show5d = !show5d"
-                  ><span data-type="t5" class="selected-box dataType">{{
-                    getSelect5Day(t)
-                  }}</span
-                  ><span class="click-icon"><i class="select-icon"></i></span
-                ></span>
-                <div
-                  class="rk-options"
-                  :style="{ display: show5d ? 'block' : 'none' }"
-                >
-                  <span
-                    v-for="(t5, name5) in t"
-                    :key="name5"
-                    :data-type="t5"
-                    @click="curType = t5"
-                    class="data-type"
-                    >{{ name5 }}</span
-                  >
-                </div>
-              </li>
-              <li
-                v-else
-                :key="name"
-                :data-type="t"
-                @click="curType = t"
-                :class="{ cur: curType == t }"
-                class="dataType"
-              >
-                {{ name }}
-              </li>
-            </template>
-          </ul>
-          <ul
-            class="fr r-box"
-            id="kchart-toolbar"
-            :curType="curType"
-            :style="{ display: curType.indexOf('k') > -1 ? 'block' : 'none' }"
-          >
-            <li
-              class="cmfb-li"
-              id="btn-cyq"
-              :class="{ cur: isCmfb }"
-              @click="isCmfb = !isCmfb"
-            >
-              筹码分布
-            </li>
-            <li class="rk-a cur" id="select-authority">
               <span
-                ><span
-                  class="selected-box"
-                  value=""
-                  @click.stop="toggleFQ($event)"
-                  >{{
-                    fq == "fa" ? "前复权" : fq == "ba" ? "后复权" : "不复权"
-                  }}</span
-                ><i class="select-icon"></i
-              ></span>
-              <div
-                class="rk-options k-options"
-                id="authority-options"
-                :style="{ display: showFQ ? 'block' : 'none' }"
+                v-for="(t5, name5) in t"
+                :key="name5"
+                :data-type="t5"
+                @click="curType = t5"
+                class="data-type"
+                >{{ name5 }}</span
               >
-                <span value="fa" :class="{ cur: fq == 'fa' }" @click="fq = 'fa'"
-                  >前复权</span
-                >
-                <span value="ba" :class="{ cur: fq == 'ba' }" @click="fq = 'ba'"
-                  >后复权</span
-                >
-                <span :class="{ cur: fq == '' }" @click="fq = ''">不复权</span>
-              </div>
-            </li>
-            <li id="btn-drawback">缩短</li>
-            <li id="btn-stretchout">拉长</li>
-          </ul>
-        </div>
-        <div
-          id="chart-container"
-          class="chart-box mt10"
-          data-charttype="r"
-          tabindex="-1"
-        ></div>
-      </div>
-
-      <Right2 :item="item2" />
+            </div>
+          </li>
+          <li
+            v-else
+            :key="name"
+            :data-type="t"
+            @click="curType = t"
+            :class="{ cur: curType == t }"
+            class="dataType"
+          >
+            {{ name }}
+          </li>
+        </template>
+      </ul>
+      <ul
+        class="fr r-box"
+        id="kchart-toolbar"
+        :curType="curType"
+        :style="{ display: curType.indexOf('k') > -1 ? 'block' : 'none' }"
+      >
+        <li
+          class="cmfb-li"
+          id="btn-cyq"
+          :class="{ cur: isCmfb }"
+          @click="isCmfb = !isCmfb"
+        >
+          筹码分布
+        </li>
+        <li class="rk-a cur" id="select-authority">
+          <span
+            ><span
+              class="selected-box"
+              value=""
+              @click.stop="toggleFQ($event)"
+              >{{
+                fq == "fa" ? "前复权" : fq == "ba" ? "后复权" : "不复权"
+              }}</span
+            ><i class="select-icon"></i
+          ></span>
+          <div
+            class="rk-options k-options"
+            id="authority-options"
+            :style="{ display: showFQ ? 'block' : 'none' }"
+          >
+            <span value="fa" :class="{ cur: fq == 'fa' }" @click="fq = 'fa'"
+              >前复权</span
+            >
+            <span value="ba" :class="{ cur: fq == 'ba' }" @click="fq = 'ba'"
+              >后复权</span
+            >
+            <span :class="{ cur: fq == '' }" @click="fq = ''">不复权</span>
+          </div>
+        </li>
+        <li id="btn-drawback">缩短</li>
+        <li id="btn-stretchout">拉长</li>
+      </ul>
     </div>
+    <div
+      id="chart-container"
+      class="chart-box mt10"
+      data-charttype="r"
+      tabindex="-1"
+    ></div>
   </div>
 </template>
 <script>

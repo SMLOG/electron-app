@@ -95,11 +95,11 @@ export let headers = [
       if (getThis) {
         getThis((self) => {
           self.link = null;
-          if (item == self.item && self.curComponent == "Chart")
+          if (item == self.item && self.curComponent == "ChartIndex")
             (self.item = null), (self.showType = null);
           else
             (self.showType = "fin"),
-              (self.curComponent = "Chart"),
+              (self.curComponent = "ChartIndex"),
               (self.item = item);
         });
       }

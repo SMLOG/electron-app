@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <div id="divBody" style="margin-top: 33px">
+  <div class="main" style="margin-top: 33px">
+    <div id="divBody">
       <div class="subnav tip-nav">
         <div style="float: left; margin-left: 10px">
           <span @click="$emit('close')">x</span>

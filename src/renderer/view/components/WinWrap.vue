@@ -53,7 +53,7 @@
         <b>{{ item.name }}</b>
       </div>
     </div>
-    <div style="height: 100%; width: 100%">
+    <div style="height: 100%; width: 100%; overflow: auto">
       <keep-alive>
         <component v-bind:is="curComponent" :item="item"></component>
       </keep-alive>

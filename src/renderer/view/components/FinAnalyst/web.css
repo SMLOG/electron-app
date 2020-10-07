@@ -149,11 +149,9 @@ td {
 .tip-nav {
   width: 998px;
   position: fixed;
-  _position: absolute;
-  top: 0px;
   background-color: #fff;
   z-index: 60000;
-  _top: expression(documentElement.scrollTop + 80+"px");
+  margin-top:-33px;
 }
 /*content*/
 .subnav {

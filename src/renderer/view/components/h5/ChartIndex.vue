@@ -37,12 +37,6 @@ export default {
   },
 
   methods: {
-    upDown(v1, v2) {
-      if (!v2) v2 = this.item2.preClose;
-      if (v1 > v2) return "red";
-      else if (v1 < v2) return "green";
-      else return "";
-    },
     getheadInfo() {
       var url =
         "//" +
@@ -106,19 +100,7 @@ export default {
         }, 10);
       });
     },
-    getExrightsType() {
-      var type = cookie("emhq_picfq");
-      switch (type) {
-        case "0":
-          return "";
-        case "1":
-          return "fa";
-        case "2":
-          return "ba";
-        default:
-          return "fa";
-      }
-    },
+
     sseHeadData() {
       var secids = this.getSecid();
       var url =
@@ -163,9 +145,7 @@ export default {
   width: 9px;
   height: 9px;
 }
-#top {
-  height: 96px;
-}
+
 .mywrap {
   position: absolute;
   top: 0;

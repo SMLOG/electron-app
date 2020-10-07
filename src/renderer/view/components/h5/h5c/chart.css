@@ -260,10 +260,6 @@ b {
   font-size: 12px;
 }
 
-.hq-data-zxj {
-  line-height: 56px;
-}
-
 .hq-data-table {
   line-height: 28px;
 }
@@ -303,7 +299,6 @@ b {
 
 .rk-box {
   height: 30px;
-  line-height: 30px;
   background: #ea5404;
 }
 
@@ -393,7 +388,6 @@ b {
 
 .wbc-table {
   width: 100%;
-  height: 56px;
   background: #eee;
 }
 
@@ -413,14 +407,12 @@ b {
 .buy5,
 .sell5 {
   width: 100%;
-  line-height: 30px;
   border-bottom: 1px solid #e5e5e5;
 }
 
 .deal_detail,
 .my_detail_table {
   width: 97%;
-  line-height: 30px;
 }
 
 .mm-fb-table .label {
@@ -472,7 +464,6 @@ b {
 .buy5 td,
 .deal_detail td,
 .sell5 td {
-  line-height: 30px;
   text-indent: 5px;
 }
 
@@ -480,7 +471,6 @@ b {
   display: inline-block;
   text-align: center;
   width: 48%;
-  line-height: 30px;
 }
 
 .detail-box .tips-box b {

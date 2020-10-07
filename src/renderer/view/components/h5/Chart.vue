@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="rk-box mt10" id="rk-box">
+    <div class="rk-box" id="rk-box">
       <ul class="fl k-box" id="type-selector">
         <template
           v-for="(t, name) in {
@@ -171,7 +171,7 @@ export default {
       var options = {
         entry: stockentry,
         type: this.curType,
-        height: $(".mywrap").height() - 96,
+        height: $(".mywrap").height() - 78,
         width: width - 270,
         padding: {
           top: 0,
@@ -304,9 +304,7 @@ export default {
   width: 9px;
   height: 9px;
 }
-#top {
-  height: 96px;
-}
+
 .mywrap {
   position: absolute;
   top: 0;

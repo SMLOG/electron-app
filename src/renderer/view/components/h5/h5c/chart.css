@@ -231,7 +231,6 @@ b {
 .wrap {
   width: 100%;
   height: 100%;
-  font-size: 14px;
   position: relative;
   background: #fff;
 }
@@ -251,7 +250,6 @@ b {
 
 .l-box .hq-data {
   padding: 0 10px;
-  height: 56px;
   background: #eee;
 }
 

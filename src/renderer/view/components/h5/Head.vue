@@ -1,162 +1,50 @@
 <template>
   <div class="hq-data clearfix">
-    <div class="fl hq-data-zxj">
-      <span v-if="false" id="quote-name" class="stock-name">----</span>
-      <span v-if="false" id="quote-code" class="stock-code"></span>
-      <span class="zxj"
-        ><b id="quote-close-main"></b><b class="" id="quote-arrow"></b
-      ></span>
-      <span title="停牌" class="tp-box" id="quote-close-tp"></span>
-      <span id="quote-change-main" class="zde">-</span>
-      <span id="quote-changePercent-main" class="zdf">-</span>
-    </div>
-    <div id="h5chartheadwrap">
-      <table class="clearfix hq-data-table fl">
-        <tr>
-          <td>
-            今开：<span
-              class="jk quote-open-custom"
-              id="quote-open-custom"
-              :class="upDown(item.open)"
-              >{{ item.open }}</span
-            >
-          </td>
-          <td>
-            最高：<span
-              class="zg quote-high-custom"
-              id="quote-high-custom"
-              :class="upDown(item.high)"
-              >{{ item.high }}</span
-            >
-          </td>
-          <td>
-            涨停：<span
-              class="zt quote-raisePrice-custom"
-              id="quote-raisePrice-custom"
-              >-</span
-            >
-          </td>
-          <td>
-            换手：<span
-              class="hs quote-turnoverRate-custom"
-              id="quote-turnoverRate-custom"
-              >{{ item.turnover }}</span
-            >
-          </td>
-        </tr>
-        <tr>
-          <td>
-            昨收：<span class="zs quote-pc" id="quote-pc">{{
-              item.preClose
-            }}</span>
-          </td>
-          <td>
-            最低：<span
-              class="zd quote-low-custom"
-              id="quote-low-custom"
-              :class="upDown(item.low)"
-              >{{ item.low }}</span
-            >
-          </td>
-          <td>
-            跌停：<span
-              class="dt quote-fallPrice-custom"
-              id="quote-fallPrice-custom"
-              >-</span
-            >
-          </td>
-          <td>
-            量比：<span
-              class="lb quote-volumeRate-custom"
-              id="quote-volumeRate-custom"
-              >{{ item["lb"] }}</span
-            >
-          </td>
-        </tr>
-      </table>
-      <table class="clearfix hq-data-table fl">
-        <tr>
-          <td>
-            成交量：<span
-              class="cjl quote-volume-custom"
-              id="quote-volume-custom"
-              >{{ formatNum(item["volume"]) }} 手</span
-            >
-          </td>
-          <td>
-            市盈：<span
-              class="sy quote-PERation-custom"
-              id="quote-PERation-custom"
-              >{{ item["pe"] }}</span
-            >
-          </td>
-          <td>
-            总市值：<span
-              class="zsz quote-marketValue-custom"
-              id="quote-marketValue-custom"
-              >{{ formatNum(item["totalValue"]) }}</span
-            >
-          </td>
-        </tr>
-        <tr>
-          <td>
-            成交额：<span
-              class="cje quote-amount-custom"
-              id="quote-amount-custom"
-              >{{ formatNum(item["amount"]) }}</span
-            >
-          </td>
-          <td>
-            市净：<span class="sj quote-PB-custom" id="quote-PB-custom">{{
-              item["pb"]
-            }}</span>
-          </td>
-          <td>
-            流通市值：<span
-              class="ltsz quote-flowCapitalValue-custom"
-              id="quote-flowCapitalValue-custom"
-              >{{ formatNum(item["flowValue"]) }}</span
-            >
-          </td>
-        </tr>
-      </table>
-    </div>
+    <ul>
+      <li :class="upDown(item.close)" class="price">
+        <b>{{ item.close }}</b>
+        (<span>{{ item.change > 0 ? "+" : "" }}{{ item.change }}</span
+        >)
+        <span>{{ item.changeP }}%</span>
+      </li>
+      <li>
+        今开：<span :class="upDown(item.open)">{{ item.open }}</span>
+      </li>
+      <li>
+        昨收：<span>{{ item.preClose }}</span>
+      </li>
+      <li>
+        最高：<span :class="upDown(item.high)">{{ item.high }}</span>
+      </li>
+      <li>
+        最低：<span :class="upDown(item.low)">{{ item.low }}</span>
+      </li>
+      <li>
+        换手：<span>{{ item.turnover }}</span>
+      </li>
 
-    <!-- 创业板专用 -->
-    <div id="h5chartheadwrapcyb" style="display: none">
-      <table class="clearfix hq-data-table fl">
-        <tr>
-          <td>今开：<span class="jk" id="quote-open-custom">-</span></td>
-          <td>最高：<span class="zg" id="quote-high-custom">-</span></td>
-          <td>
-            换手：<span class="hs" id="quote-turnoverRate-custom">-</span>
-          </td>
-          <td>成交量：<span class="cjl" id="quote-volume-custom">-</span></td>
-          <td>
-            市盈率ttm：<span class="sy" id="quote-PERation-custom">-</span>
-          </td>
-          <td>盈利：<span class="yl" id="quote-YL-custom">-</span></td>
-          <td>是否注册制：<span class="zcz" id="quote-ZCZ-custom">-</span></td>
-        </tr>
-        <tr>
-          <td>昨收：<span class="zs quote-pc" id="quote-pc">-</span></td>
-          <td>最低：<span class="zd" id="quote-low-custom">-</span></td>
-          <td>量比：<span class="lb" id="quote-volumeRate-custom">-</span></td>
-          <td>成交额：<span class="cje" id="quote-amount-custom">-</span></td>
-          <!-- <td>市净：<span class="zsz quote-marketValue-custom" id="quote-marketValue-custom">-</span></td> -->
-          <td>
-            总市值：<span class="zsz" id="quote-marketValue-custom">-</span>
-          </td>
-          <!-- <td>同股同权：<span class="tgtq quote-TGTQ-custom" id="quote-TGTQ-custom">-</span></td> -->
-          <td>
-            表决权差异：<span class="tgtq" id="quote-BJCY-custom">-</span>
-          </td>
-          <td>
-            协议控制架构：<span class="xyjg" id="quote-XYJG-custom">-</span>
-          </td>
-        </tr>
-      </table>
-    </div>
+      <li>
+        量比：<span>{{ item["lb"] }}</span>
+      </li>
+      <li>
+        成交量：<span>{{ formatNum(item["volume"]) }}手</span>
+      </li>
+      <li>
+        成交额：<span>{{ formatNum(item["amount"]) }}</span>
+      </li>
+      <li>
+        市盈：<span>{{ item["pe"] }}</span>
+      </li>
+      <li>
+        市净：<span>{{ item["pb"] }}</span>
+      </li>
+      <li>
+        总市值：<span>{{ formatNum(item["totalValue"]) }}</span>
+      </li>
+      <li>
+        流通市值：<span>{{ formatNum(item["flowValue"]) }}</span>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -201,6 +89,14 @@ export default {
   background-position: -23px -20px;
   width: 9px;
   height: 9px;
+}
+.hq-data li {
+  float: left;
+  padding-right: 5px;
+  line-height: 2em;
+}
+.price {
+  font-weight: bold;
 }
 </style>
 

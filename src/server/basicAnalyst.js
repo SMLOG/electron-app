@@ -1,6 +1,7 @@
 import axios from "axios";
 import fs from "fs";
 import { fn } from "./lib/fn";
+import { YJ_KEY_MAP, mapKeys } from "./lib/keymap";
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -94,6 +95,47 @@ export async function mainFinanceAnalyst(code) {
   });
 }
 
+export class fn业绩 extends fn {
+  constructor() {
+    super("yj-业绩.json");
+    this.get = async function() {
+      let _varname = `var_${+new Date()}`;
+      let ret;
+      let reportDate = getLastReportDate();
+      let url;
+      do {
+        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p=1&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var=${_varname}&filter=(REPORTDATE=%27${reportDate}%27)&rt=${+new Date()}`;
+        ret = await axios
+          .get(url)
+          .then((resp) => eval(resp.data + ";" + _varname));
+        if (!ret.success) {
+          let rd = new Date(reportDate);
+          rd.setMonth(rd.getMonth() - 3);
+          reportDate = getLastReportDate(rd);
+        }
+      } while (!ret.success);
+
+      for (let i = 2; i <= ret.result.pages; i++) {
+        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p=${i}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var=${_varname}&filter=(REPORTDATE=%27${reportDate}%27)&rt=${+new Date()}`;
+
+        let d = await axios
+          .get(url)
+          .then((resp) => eval(resp.data + ";" + _varname));
+        ret.result.data = ret.result.data.concat(d.result.data);
+      }
+      ret.result.pages = 1;
+      let data = {};
+      for (let i = 0; i < ret.result.data.length; i++) {
+        let it = ret.result.data[i];
+        data[
+          `${it.SECURITY_CODE[0] == 6 ? "sh" : "sz"}${it.SECURITY_CODE}`
+        ] = mapKeys([it], YJ_KEY_MAP);
+      }
+      return data;
+    };
+  }
+}
+
 export class fnReportDate extends fn {
   constructor() {
     super("yypl-预约披露日期列表.json");
@@ -141,6 +183,8 @@ export class fnGetFinBasic extends fn {
     this.reportDate = reportDate;
     this.get = async function() {
       let res = await basic(code);
+      console.error(code, reportDate);
+      if (!res.zxzb2) return {};
       let infoArr = res.zxzb2
         .split(/<tr>/)
         .filter((e) => e.indexOf("<th") > -1)
@@ -178,9 +222,10 @@ export class fnGetFinBasic extends fn {
 
 false &&
   (async () => {
-    let data = await fn.cacheObject(fnReportDate);
+    let data = await fn.cacheObject(fn业绩);
     //console.log(data.result.data);
     // let data = await cacheObject(fnGetFinBasic, "SH600260");
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
       let code =
         (data[i].SECURITY_CODE[0] == 6 ? "sh" : "sz") + data[i].SECURITY_CODE;

@@ -172,21 +172,11 @@ export let headers = [
   },
   {
     label: "ROE",
-    prop: "roe",
+    prop: "加权净资产收益率(%)",
     type: "number",
     click: (item, event, openlink) => {
       let url = `/f10/NewFinanceAnalysis/Index?type=web&code={{item.code}}#dbfx-0`;
       openlink(item, event, url);
-    },
-    fmt: (e, item) => {
-      try {
-        let tb = cache["tb_zycwzb" + item.code];
-        if (tb && tb.reportDate) {
-          tb.reportDate[1];
-          let n = "净资产收益率加权(%)";
-          return (item.roe = parseFloat(tb[n][tb.reportDate[1]]));
-        }
-      } catch (e) {}
     },
   },
   {

@@ -10,11 +10,12 @@ export async function hx() {
   return await getList();
 }
 let file = `${CONFIG_DIR}/my.json`;
-export function getMyList() {
+export async function getMyList() {
   let list = [];
 
   if (fs.existsSync(file)) {
     list = JSON.parse(fs.readFileSync(file));
+    await attachExtractInfoToItems(list);
   }
   return list;
 }

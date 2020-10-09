@@ -176,3 +176,33 @@ export default {
 </script>
 
 <style scoped src="./web.css" />
+<style scoped>
+/deep/ .section .content table tr th {
+  border: 1px solid #d7d7d7;
+  background-color: #e7e7e7;
+  color: #333;
+  height: 21px;
+}
+/deep/ .tips-fieldname-Left {
+  color: #333;
+  font-weight: normal;
+  text-align: left;
+}
+/deep/ .section .content table tr td {
+  border: 1px solid #d7d7d7;
+}
+/deep/ .tips-data-Left {
+  color: #333;
+  font-weight: normal;
+  text-align: left;
+}
+/deep/ .section .content table {
+  width: 100%;
+  border: 1px solid #d7d7d7;
+  line-height: 21px;
+}
+/deep/ table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+</style>

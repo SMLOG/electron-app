@@ -18,21 +18,16 @@ export const cats = {
     items: [],
   },
   自选: {
-    items: getMyList(),
+    items: [],
   },
 };
 export function initmem(io) {
   io.on("connection", (socket) => {
-    console.log("a user connected");
-
+    console.log(`connect ${new Date()}`);
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      console.log(`disconnect ${new Date()}`);
     });
 
-    socket.on("echo", (msg) => {
-      console.log("echo from client: ", msg);
-      socket.emit("echo", msg);
-    });
     socket.on("filter-id-list", (data) => {
       console.log("filter-id-list", data);
       fs.writeFileSync(filterIdListFile, JSON.stringify(data));
@@ -43,14 +38,17 @@ export function initmem(io) {
       socket.emit("filtersCount", filtersCount);
     });
     setTimeout(() => {
-      console.error("initmem");
-      socket.emit("mylist", cats["自选"].items);
-      socket.emit("filters", Object.keys(filters));
-      updateFiltersCount();
-      socket.emit("sealist", cats["海选"].items);
-      socket.emit("countMap", countMap);
-      console.log(countMap);
-      socket.emit("filtersCount", filtersCount);
+      (async () => {
+        console.error("initmem");
+        cats["自选"].items = await getMyList();
+        socket.emit("mylist", cats["自选"].items);
+        socket.emit("filters", Object.keys(filters));
+        updateFiltersCount();
+        socket.emit("sealist", cats["海选"].items);
+        socket.emit("countMap", countMap);
+        console.log(countMap);
+        socket.emit("filtersCount", filtersCount);
+      })();
     }, 500);
 
     socket.on("addItem", (item) => {

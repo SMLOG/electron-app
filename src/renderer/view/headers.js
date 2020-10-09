@@ -116,13 +116,12 @@ export let headers = [
     prop: "扣非净利润同比增长(%)",
     type: "number",
     fmt: fmtPercent,
-    class: (item) => {
-      if (item["报告"] == reportDate)
-        return {
-          reportUpdate: true,
-          up: item.tbzz > 0,
-          down: item.tbzz < 0,
-        };
+    class: (item, value) => {
+      return {
+        reportUpdate: item["报告"] == reportDate && true,
+        up: value > 0,
+        down: value < 0,
+      };
     },
     click: (item, event, openlink, getThis) => {
       if (getThis) {
@@ -141,33 +140,37 @@ export let headers = [
   },
   {
     label: "现金流",
-    prop: "xjlzzl",
+    prop: "每股现金流量",
     type: "string",
     click: (item, event, openlink) => {
       let url = `/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
       openlink(item, event, url);
     },
+    fmt: (value, item) => {
+      if (value) return value.toFixed(2);
+      return "";
+    },
+    class: (item, value) => {
+      return {
+        link: true,
+        down: value < 0,
+        up: value > 0,
+      };
+    },
   },
   {
-    label: "扣非净利润",
-    prop: "zzl",
+    label: "每股收益",
+    prop: "每股收益",
     type: "string",
     title: (item) => {
       return item.reportDate;
     },
-    class: (item) => {
+    class: (item, value) => {
       return {
         link: true,
-        down: item.tbzz < 0,
-        up: item.tbzz > 0,
+        down: value < 0,
+        up: value > 0,
       };
-    },
-    click: (item, event, openlink) => {
-      let url = `/static/finance_visual.html#/report?date=20200630&securityCode=${item.code.replace(
-        /[a-z]+/gi,
-        ""
-      )}`;
-      openlink(item, event, url);
     },
   },
   {

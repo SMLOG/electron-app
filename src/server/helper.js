@@ -1,6 +1,7 @@
 import { fn } from "./lib/fn";
 import { fnGetFinBasic, fnReportDate, fn业绩 } from "./basicAnalyst";
 import { fnTechData } from "./TechMan";
+
 export async function attachExtractInfoToItems(list) {
   let disclose = await fn.cacheObject(fnReportDate);
   let yj = await fn.cacheObject(fn业绩);

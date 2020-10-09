@@ -22,14 +22,10 @@ export const YJ_KEY_MAP = {
   UPDATE_DATE: "公告日期",
 };
 
-export function mapKeys(arr, keyMap) {
-  let ret = [];
-  for (let i in arr) {
-    let it = {};
-    for (var k in arr[i]) {
-      it[keyMap[k]] = arr[i][k];
-    }
-    ret.push(it);
+export function mapKeys(item, keyMap) {
+  let it = {};
+  for (var k in item) {
+    it[keyMap[k] || k] = item[k];
   }
-  return ret;
+  return it;
 }

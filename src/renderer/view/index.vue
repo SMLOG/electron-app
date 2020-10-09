@@ -129,7 +129,7 @@
             <td
               v-for="(col, ci) in headers"
               :key="col.prop"
-              :class="getclass(col, item)"
+              :class="getclass(col, item, item[col.prop])"
               :title="col.title && col.title(item)"
               @click="col.click && col.click(item, $event, openlink, getThis)"
               @mouseover="cellOver($event, item, ci)"
@@ -316,9 +316,9 @@ export default {
         this.showType = "link";
       }
     },
-    getclass(col, item) {
+    getclass(col, item, value) {
       let cls = {};
-      col.class && (cls = col.class(item));
+      col.class && (cls = col.class(item, value));
       if (col.click) {
         if (!cls) cls = {};
         cls["link"] = true;

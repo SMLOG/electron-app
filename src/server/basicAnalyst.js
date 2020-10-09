@@ -1,6 +1,8 @@
 import axios from "axios";
 import fs from "fs";
 import { fn } from "./lib/fn";
+import { getLastReportDate } from "./lib/util";
+
 import { YJ_KEY_MAP, mapKeys } from "./lib/keymap";
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
@@ -70,19 +72,6 @@ function fmtReportDatas(json) {
   return map;
 }
 
-export function getLastReportDate(d = new Date()) {
-  console.log(d);
-  let now = ((d) =>
-    ("0" + (d.getMonth() + 1)).substr(-2, 2) +
-    ("0" + d.getDate()).substr(-2, 2))(d);
-  for (let e of ["09-30", "06-30", "03-31"]) {
-    if (now > e) {
-      return d.getFullYear() + "-" + e;
-    }
-  }
-
-  return d.getFullYear() - 1 + "-12-31";
-}
 //主要指标
 export async function mainFinanceAnalyst(code) {
   let url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0`;
@@ -129,7 +118,7 @@ export class fn业绩 extends fn {
         let it = ret.result.data[i];
         data[
           `${it.SECURITY_CODE[0] == 6 ? "sh" : "sz"}${it.SECURITY_CODE}`
-        ] = mapKeys([it], YJ_KEY_MAP);
+        ] = mapKeys(it, YJ_KEY_MAP);
       }
       return data;
     };

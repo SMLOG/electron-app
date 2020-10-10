@@ -1,6 +1,7 @@
 import axios from "axios";
 import fs from "fs";
 import { fn } from "./lib/fn";
+import _ from "lodash";
 import { getLastReportDate } from "./lib/util";
 
 import { YJ_KEY_MAP, mapKeys } from "./lib/keymap";
@@ -87,40 +88,38 @@ export async function mainFinanceAnalyst(code) {
 export class fn业绩 extends fn {
   constructor() {
     super("yj-业绩.json");
-    this.get = async function() {
+    async function getData(reportDate) {
       let _varname = `var_${+new Date()}`;
-      let ret;
-      let reportDate = getLastReportDate();
-      let url;
-      do {
-        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p=1&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var=${_varname}&filter=(REPORTDATE=%27${reportDate}%27)&rt=${+new Date()}`;
-        ret = await axios
-          .get(url)
-          .then((resp) => eval(resp.data + ";" + _varname));
-        if (!ret.success) {
-          let rd = new Date(reportDate);
-          rd.setMonth(rd.getMonth() - 3);
-          reportDate = getLastReportDate(rd);
-        }
-      } while (!ret.success);
 
-      for (let i = 2; i <= ret.result.pages; i++) {
-        url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p=${i}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var=${_varname}&filter=(REPORTDATE=%27${reportDate}%27)&rt=${+new Date()}`;
+      let arr = [];
+      for (let i = 1, pages = 1; i <= pages; i++) {
+        let url = `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p=${i}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var=${_varname}&filter=(REPORTDATE=%27${reportDate}%27)&rt=${+new Date()}`;
 
         let d = await axios
           .get(url)
           .then((resp) => eval(resp.data + ";" + _varname));
-        ret.result.data = ret.result.data.concat(d.result.data);
+        arr = arr.concat(d.result.data);
+        if (!d.success) break;
+        pages = d.result.pages;
       }
-      ret.result.pages = 1;
       let data = {};
-      for (let i = 0; i < ret.result.data.length; i++) {
-        let it = ret.result.data[i];
+      for (let i = 0; i < arr.length; i++) {
+        let it = arr[i];
         data[
           `${it.SECURITY_CODE[0] == 6 ? "sh" : "sz"}${it.SECURITY_CODE}`
         ] = mapKeys(it, YJ_KEY_MAP);
       }
       return data;
+    }
+    this.get = async function() {
+      let reportDate = getLastReportDate();
+      let data1 = await getData(reportDate);
+      let rd = new Date(reportDate);
+      rd.setMonth(rd.getMonth() - 3);
+      let preReportDate = getLastReportDate(rd);
+      let data2 = await getData(preReportDate);
+
+      return _.assign(data2, data1);
     };
   }
 }

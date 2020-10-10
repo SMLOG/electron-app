@@ -742,11 +742,7 @@ export async function getDayWeekTechDatas(item) {
   }
   return ret;
 }
-(async () => {
-  let code = "1.688595";
-  let ret = await getTech({ code: "sz300883" });
-  console.log(ret);
-})();
+
 async function getTech(item) {
   let techData = await getDayWeekTechDatas(item);
   return techData;

@@ -2,20 +2,10 @@
   <div>
     <div id="setting" ref="settings">
       <div class="dock">
-        <span @click="fullScreen()">
-          全屏
-        </span>
+        <span @click="fullScreen()"> 全屏 </span>
         <span @click="showSetting = !showSetting" title="设置">设置</span>
       </div>
       <div id="setting_contents" v-show="showSetting">
-        <ul>
-          <li>
-            <a @click="clearTechData">Clear Tech Data</a>
-          </li>
-          <li>
-            <a @click="clearItems()">清除缓存海选</a>
-          </li>
-        </ul>
         <draggable v-model="cols" @update="dragEnd" tag="ul">
           <li v-for="col in cols" :key="col.prop">
             {{ col.label }}
@@ -36,7 +26,7 @@ import storejs from "storejs";
 
 export default {
   name: "setting",
-  data: function() {
+  data: function () {
     return {
       showSetting: false,
       cols: getCheckFields(false),
@@ -89,19 +79,13 @@ export default {
         }
       }
     },
-    clearItems() {
-      storejs.set("seadatetime", 0);
-    },
     dragEnd() {
       this.changeCols();
     },
     changeCols() {
       this.setFields(this.cols);
     },
-    clearTechData() {
-      store.setSetting("tech", +new Date());
-      this.showSetting = false;
-    },
+
     ...mapActions(["setFields"]),
   },
 };

@@ -18,5 +18,8 @@ export async function attachExtractInfoToItems(list) {
       list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
     let tdata = await fn.cacheObject(fnTechData, list[i]);
     list[i] = Object.assign(list[i], tdata);
+    if (i == 0) {
+      console.error(list[i], yj[code]);
+    }
   }
 }

@@ -1,7 +1,5 @@
 import { getLastReportDate, dateFormat } from "../lib/utils";
-import { cache, getCacheData } from "../lib/db";
 import { getFields } from "../store/modules/suspension";
-import storejs from "storejs";
 
 const reportDate = getLastReportDate();
 const fmtPercent = (value) => {

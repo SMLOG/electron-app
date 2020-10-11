@@ -53,6 +53,12 @@ export default {
         default:
       }
     });
+
+    window.addEventListener("click", (e) => {
+      if (!this.$el.contains(e.target)) {
+        this.$emit("close");
+      }
+    });
   },
   components: { Item },
   props: ["item", "comp"],

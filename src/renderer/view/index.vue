@@ -5,7 +5,12 @@
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
       <Posts :item="showMsgItem" />
-      <Title :item="titleItem" :comp="'Item'" />
+      <Title
+        :item="titleItem"
+        :comp="'Item'"
+        @mouseenter.native="enterTitle()"
+        @close="titleItem = null"
+      />
       <HQ
         :item="item"
         v-show="showType == 'hq'"
@@ -176,8 +181,8 @@ import Title from "@/view/components/title/Title";
 
 import $ from "jquery";
 window.$ = $;
+let unTitlteTimer = 0;
 export default {
-  name: "index",
   data: function () {
     return {
       cats: {
@@ -292,10 +297,15 @@ export default {
       }
     },
     doTitleItem(item) {
+      clearTimeout(unTitlteTimer);
       this.titleItem = item;
     },
     unTitleItem(item) {
-      this.titleItem = null;
+      unTitlteTimer = setTimeout(() => (this.titleItem = null), 500);
+    },
+    enterTitle() {
+      clearTimeout(unTitlteTimer);
+      console.error(unTitlteTimer);
     },
     updateLink(newlink) {
       this.link = newlink;

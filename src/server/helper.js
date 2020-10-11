@@ -11,6 +11,8 @@ export async function attachExtractInfoToItems(list) {
     let info = await fn.cacheObject(fnGetFinBasic, code);
     list[i] = Object.assign(list[i], info);
     list[i] = Object.assign(list[i], yj[code]);
+    list[i] = Object.assign(list[i], disclose[code]);
+
     //console.error("yj", list[i]);
 
     let dis = disclose[code];
@@ -18,8 +20,9 @@ export async function attachExtractInfoToItems(list) {
       list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
     let tdata = await fn.cacheObject(fnTechData, list[i]);
     list[i] = Object.assign(list[i], tdata);
+
     if (i == 0) {
-      console.error(list[i], yj[code]);
+      console.error(code, list[i], yj[code], disclose[code]);
     }
   }
 }

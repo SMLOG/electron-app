@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @selectstart.stop="selectstart">
     <ul>
       <li v-for="e in arr" :key="e[0]">
         <span>{{ e[0] }}</span
@@ -17,6 +17,9 @@ export default {
 
   props: ["item"],
   methods: {
+    selectstart() {
+      return true;
+    },
     formateItem(item) {
       this.arr.length = 0;
       for (let i in item) {

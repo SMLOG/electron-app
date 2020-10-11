@@ -6,6 +6,15 @@ const fmtPercent = (value) => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
 };
+function getReportSub(item) {
+  return item["报告"].indexOf("6-30")
+    ? 2
+    : item["报告"].indexOf("9-30")
+    ? 3
+    : item["报告"].indexOf("12-31")
+    ? 4
+    : 1;
+}
 export let headers = [
   {
     label: "Now",
@@ -92,13 +101,7 @@ export let headers = [
     click: (item, event, openlink, getThis) => {
       if (getThis) {
         getThis((self) => {
-          self.link = null;
-          if (item == self.item && self.curComponent == "ChartIndex")
-            (self.item = null), (self.showType = null);
-          else
-            (self.showType = "fin"),
-              (self.curComponent = "ChartIndex"),
-              (self.item = item);
+          self.togglePop(item, "ChartIndex", "fin");
         });
       }
     },
@@ -113,7 +116,7 @@ export let headers = [
     label: "同比",
     prop: "扣非净利润同比增长(%)",
     type: "number",
-    fmt: fmtPercent,
+    fmt: (e, item) => e + "%(" + getReportSub(item) + ")",
     class: (item, value) => {
       return {
         reportUpdate: item["报告"] == reportDate && true,
@@ -124,13 +127,7 @@ export let headers = [
     click: (item, event, openlink, getThis) => {
       if (getThis) {
         getThis((self) => {
-          self.link = null;
-          if (item == self.item && self.curComponent == "FinAnalyst2")
-            (self.item = null), (self.showType = null);
-          else
-            (self.showType = "fin"),
-              (self.curComponent = "FinAnalyst2"),
-              (self.item = item);
+          self.togglePop(item, "FinAnalyst2", "fin");
         });
       }
       //openlink(item, event, url);

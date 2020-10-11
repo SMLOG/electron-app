@@ -5,6 +5,7 @@
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
       <Posts :item="showMsgItem" />
+      <Title :item="titleItem" :comp="'Item'" />
       <HQ
         :item="item"
         v-show="showType == 'hq'"
@@ -86,6 +87,8 @@
                     class="post_bt"
                     :name="item.code"
                     @click="showComments(item)"
+                    @mouseover="doTitleItem(item)"
+                    @mouseout="unTitleItem(item)"
                     >{{ index + 1 }}</a
                   >
                 </span>
@@ -169,6 +172,7 @@ import Right from "@/view/components/Right";
 import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
 import HQ from "@/view/components/hq/HQ";
+import Title from "@/view/components/title/Title";
 
 import $ from "jquery";
 window.$ = $;
@@ -199,6 +203,7 @@ export default {
       showMsgItem: false,
       openCode: null,
       showType: null,
+      titleItem: null,
     };
   },
   mounted() {
@@ -222,6 +227,7 @@ export default {
     HQ,
     Chart,
     WinWrap,
+    Title,
   },
   filters: {},
   sockets: {
@@ -275,6 +281,22 @@ export default {
     },
   },
   methods: {
+    togglePop(item, comp, type) {
+      if (item == this.item && this.curComponent == comp) {
+        this.item = null;
+        this.showType = null;
+      } else {
+        this.showType = type;
+        this.curComponent = comp;
+        this.item = item;
+      }
+    },
+    doTitleItem(item) {
+      this.titleItem = item;
+    },
+    unTitleItem(item) {
+      this.titleItem = null;
+    },
     updateLink(newlink) {
       this.link = newlink;
     },

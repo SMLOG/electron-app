@@ -56,6 +56,15 @@ async function getAllData(options) {
         key: "SECURITY_CODE",
         url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p={page}&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
       });
+      for (let code in res) {
+        let d = res[code];
+        res[code].tempPubDate =
+          d["ACTUAL_PUBLISH_DATE"] ||
+          d["THIRD_CHANGE_DATE"] ||
+          d["SECOND_CHANGE_DATE"] ||
+          d["FIRST_CHANGE_DATE"] ||
+          d["FIRST_APPOINT_DATE"];
+      }
 
       return res;
     },

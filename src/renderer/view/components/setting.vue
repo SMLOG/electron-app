@@ -86,7 +86,7 @@ export default {
       this.setFields(this.cols);
     },
 
-    ...mapActions(["setFields"]),
+    ...mapActions("ws", ["setFields"]),
   },
 };
 </script>

@@ -7,14 +7,14 @@ const fmtPercent = (value) => {
   return value;
 };
 function getReportSub(item) {
-  if (item["DATEMMDD"])
-    return item["DATEMMDD"].indexOf("半年") > -1
+  if (item["业绩_QDATE"])
+    return item["业绩_QDATE"].indexOf("Q1") > -1
+      ? 1
+      : item["业绩_QDATE"].indexOf("Q2") > -1
       ? 2
-      : item["DATEMMDD"].indexOf("三") > -1
+      : item["业绩_QDATE"].indexOf("Q3") > -1
       ? 3
-      : item["DATEMMDD"].indexOf("年") > -1
-      ? 4
-      : 1;
+      : 4;
   return "";
 }
 export let headers = [
@@ -137,7 +137,7 @@ export let headers = [
   },
   {
     label: "现金流",
-    prop: "每股现金流量",
+    prop: "业绩_每股现金流量",
     type: "string",
     click: (item, event, openlink) => {
       let url = `/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
@@ -157,7 +157,7 @@ export let headers = [
   },
   {
     label: "每股收益",
-    prop: "每股收益",
+    prop: "业绩_每股收益",
     type: "string",
     title: (item) => {
       return item.reportDate;
@@ -172,7 +172,7 @@ export let headers = [
   },
   {
     label: "ROE",
-    prop: "加权净资产收益率(%)",
+    prop: "业绩_净资产收益率",
     type: "number",
     click: (item, event, openlink) => {
       let url = `/f10/NewFinanceAnalysis/Index?type=web&code={{item.code}}#dbfx-0`;

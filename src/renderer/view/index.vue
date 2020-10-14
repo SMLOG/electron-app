@@ -289,7 +289,14 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    fields: {
+      deep: true,
+      handler(newValue, oldValue) {
+        this.headers = getCheckFields();
+      },
+    },
+  },
   computed: {
     filteredItems: function () {
       return this.getfilterItems();

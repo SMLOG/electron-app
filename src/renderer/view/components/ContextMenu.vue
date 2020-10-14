@@ -82,6 +82,12 @@ export default {
     contextMenuHandler(e) {
       this.x = e.clientX;
       this.y = e.clientY;
+      if (window.innerWidth - this.x - 20 < $(this.$el).width()) {
+        this.x = e.clientX - $(this.$el).width();
+      }
+      if (window.innerHeight - this.y - 20 < $(this.$el).width()) {
+        this.y = e.clientY - $(this.$el).height();
+      }
       this.layout();
       this.$emit("update:show", true);
       e.preventDefault();

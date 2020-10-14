@@ -10,7 +10,8 @@ async function getData(options) {
   for (let i = 1, pages = 1; i <= pages; i++) {
     let url = options.url;
     for (let k in options) {
-      url = url.replace(new RegExp(`{${k}}`, "g"), options[k]);
+      if (url.indexOf(`{${k}}`) > -1)
+        url = url.replace(new RegExp(`{${k}}`, "g"), options[k]);
     }
     url = url.replace(/\{var\}/g, _varname);
     url = url.replace(/\{page\}/g, i);
@@ -49,52 +50,8 @@ async function getAllData(options) {
 }
 
 (async () => {
-  let res = await doRun({
-    job: JOB_MAP.预约披露日期列表,
-    get: async function(option) {
-      let res = await getAllData({
-        key: "SECURITY_CODE",
-        url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p={page}&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
-      });
-      for (let code in res) {
-        let d = res[code];
-        res[code].tempPubDate =
-          d["ACTUAL_PUBLISH_DATE"] ||
-          d["THIRD_CHANGE_DATE"] ||
-          d["SECOND_CHANGE_DATE"] ||
-          d["FIRST_CHANGE_DATE"] ||
-          d["FIRST_APPOINT_DATE"];
-      }
-
-      return res;
-    },
-  });
-  // console.log(res);
-  res = await doRun({
-    job: JOB_MAP.业绩,
-
-    get: async function(option) {
-      let res = await getAllData({
-        key: "SECURITY_CODE",
-        url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORTDATE=%27{reportDate}%27)&rt={timestamp}`,
-      });
-
-      return res;
-    },
-  });
-  console.log(res);
-
-  res = await doRun({
-    job: JOB_MAP.业绩快报,
-
-    get: async function(option) {
-      let res = await getAllData({
-        key: "SECURITY_CODE",
-        url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_FCI_PERFORMANCEE&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
-      });
-
-      return res;
-    },
-  });
-  console.log(res);
+  for (let k in JOB_MAP) {
+    JOB_MAP[k].get = JOB_MAP[k].get || getAllData;
+    await doRun(JOB_MAP[k]);
+  }
 })();

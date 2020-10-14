@@ -9,23 +9,62 @@ import { KEYMAP, compressToArray, decompressToMapList } from "../lib/keymap";
 export const JOB_MAP = {
   预约披露日期列表: {
     file: "job-yy预约披露日期列表.json",
+    key: "SECURITY_CODE",
     keymap: KEYMAP.YJ_KEY_MAP_业绩,
     _cronTime: "0 0 */2 * * *",
+    url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p={page}&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
   },
   业绩: {
     file: "job-yj业绩.json",
+    key: "SECURITY_CODE",
+
     keymap: KEYMAP.YJ_KEY_MAP_业绩,
     _cronTime: "0 0 */2 * * *",
+    url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORTDATE=%27{reportDate}%27)&rt={timestamp}`,
   },
   业绩快报: {
     file: "job-kb业绩快报.json",
+    key: "SECURITY_CODE",
+
     keymap: KEYMAP.YJ_KEY_MAP_业绩,
     _cronTime: "0 0 */2 * * *",
+    url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_FCI_PERFORMANCEE&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
   },
-  估值: {
-    file: "job-gz估值.json",
+  业绩预告: {
+    file: "job-yg业绩预告.json",
+    key: "SECURITY_CODE",
+
     keymap: KEYMAP.YJ_KEY_MAP_业绩,
     _cronTime: "0 0 */2 * * *",
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_OP_PREDICT&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORTDATE=%27{reportDate}%27)(IsLatest=%22T%22)&rt={timestamp}",
+  },
+  资产负债表: {
+    file: "job-zcfz资产负债表.json",
+    key: "SECURITY_CODE",
+
+    keymap: KEYMAP.YJ_KEY_MAP_业绩,
+    _cronTime: "0 0 */2 * * *",
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_BALANCE&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
+  },
+  利润表: {
+    file: "job-lr利润表.json",
+    key: "SECURITY_CODE",
+
+    keymap: KEYMAP.YJ_KEY_MAP_业绩,
+    _cronTime: "0 0 */2 * * *",
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_INCOME&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
+  },
+  现金流量表: {
+    file: "job-xjll现金流量表.json",
+    key: "SECURITY_CODE",
+
+    keymap: KEYMAP.YJ_KEY_MAP_业绩,
+    _cronTime: "0 0 */2 * * *",
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_CASHFLOW&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
   },
 };
 
@@ -41,20 +80,24 @@ function mkdirsSync(dirname) {
 }
 
 export async function doRun(option) {
-  console.info(option.job.file);
-  let options = _.extend(option, { _file: `${CONFIG_DIR}/${option.job.file}` });
+  console.info(option.file);
+  let options = _.extend(option, { _file: `${CONFIG_DIR}/${option.file}` });
 
   let task = async () => {
     mkdirsSync(path.dirname(options._file));
     let res = await option.get(options);
-    res = compressToArray(res, options.job.keymap);
+    res = compressToArray(res, options.keymap);
     fs.writeFileSync(options._file, JSON.stringify(res));
 
     return res;
   };
-  if (option.job._cronTime)
+  if (!option._cronTime) return await task();
+  else if (!fs.existsSync(options._file)) {
+    await task();
+  }
+  if (option._cronTime)
     new CronJob(
-      option.job._cronTime,
+      option._cronTime,
       function() {
         task();
       },
@@ -62,7 +105,6 @@ export async function doRun(option) {
       true,
       "Asia/Chongqing"
     );
-  else return await task();
 }
 
 export function load(type) {
@@ -72,5 +114,3 @@ export function load(type) {
     return decompressToMapList(arr);
   } else return {};
 }
-let data = load(JOB_MAP.业绩);
-console.log(data);

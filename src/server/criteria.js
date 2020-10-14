@@ -1,4 +1,3 @@
-import { get } from "./data";
 export const criteria = {
   scope: {},
   basic: {
@@ -42,18 +41,11 @@ export const criteria = {
     peg: {
       label: "市盈增长比率 PEG",
       order: 2,
-      _enable: true,
+      _enable: false,
       _value1: 0,
       _value2: 2,
       is: async function(e) {
-        let peg = await get(e, "PEG");
-        if (
-          (peg > (this._value1 || Number.MIN_VALUE) &&
-            peg < (this._value2 || Number.MAX_VALUE)) ||
-          e.pe_ttm < 20
-        ) {
-          return true;
-        }
+        return true;
       },
     },
 

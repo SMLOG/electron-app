@@ -7,13 +7,15 @@ const fmtPercent = (value) => {
   return value;
 };
 function getReportSub(item) {
-  return item["报告"].indexOf("6-30")
-    ? 2
-    : item["报告"].indexOf("9-30")
-    ? 3
-    : item["报告"].indexOf("12-31")
-    ? 4
-    : 1;
+  if (item["DATEMMDD"])
+    return item["DATEMMDD"].indexOf("半年") > -1
+      ? 2
+      : item["DATEMMDD"].indexOf("三") > -1
+      ? 3
+      : item["DATEMMDD"].indexOf("年") > -1
+      ? 4
+      : 1;
+  return "";
 }
 export let headers = [
   {
@@ -114,7 +116,7 @@ export let headers = [
   },
   {
     label: "同比",
-    prop: "扣非净利润同比增长(%)",
+    prop: "业绩_净利润同比增长",
     type: "number",
     fmt: (e, item) => e + "%(" + getReportSub(item) + ")",
     class: (item, value) => {
@@ -200,14 +202,7 @@ export let headers = [
     label: "资产负债率",
     prop: "资产负债率(%)",
     type: "number",
-    fmt: (e, item) => {
-      if (window["zyzb_" + item.code]) {
-        let data = window["zyzb_" + item.code];
-        return (item["资产负债率(%)"] = parseFloat(
-          data["资产负债率(%)"][data["reportDate"][1]]
-        ));
-      }
-    },
+    fmt: fmtPercent,
   },
   {
     label: "分",

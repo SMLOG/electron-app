@@ -14,6 +14,7 @@ const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
 
 const URL = require("url");
+require("./jobs/index");
 
 function proxyContentReplace(baseUrl, content) {
   return content.replace(/(<(\S+)(\s.*?)(src|href)=")(.*?)"/gi, function() {
@@ -193,16 +194,3 @@ console.log("start2");
 //app.listen(3000);
 
 module.exports = app;
-
-/*
-(async () => {
-  let list = [];
-  list = await getList();
-
-  for (let i = 0; i < list.length; i++) {
-    let info = await cacheObject(fnGetFinBasic, list[i].code);
-    list[i] = Object.assign(list[i], info);
-    // console.log(info);
-    console.log(list[i]);
-  }
-})();*/

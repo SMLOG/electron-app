@@ -1,28 +1,26 @@
-import { fn } from "./lib/fn";
-import { fnGetFinBasic, fnReportDate, fn业绩 } from "./basicAnalyst";
-import { fnTechData } from "./TechMan";
+import { load, JOB_MAP } from "./jobs/worker";
 
+function prefixKey(prefix, data) {
+  if (data)
+    return Object.keys(data).reduce((newData, key) => {
+      let newKey = prefix + key;
+      newData[newKey] = data[key];
+      return newData;
+    }, {});
+  else return {};
+}
 export async function attachExtractInfoToItems(list) {
-  let disclose = await fn.cacheObject(fnReportDate);
-  let yj = await fn.cacheObject(fn业绩);
+  let yj = load(JOB_MAP.业绩);
+  let disclose = load(JOB_MAP.预约披露日期列表);
 
   for (let i = 0; i < list.length; i++) {
     let code = list[i].code;
-    let info = await fn.cacheObject(fnGetFinBasic, code);
-    list[i] = Object.assign(list[i], info);
-    list[i] = Object.assign(list[i], yj[code]);
-    list[i] = Object.assign(list[i], disclose[code]);
+    // list[i].basic = await fn.cacheObject(fnGetFinBasic, code);
+    Object.assign(list[i], prefixKey("业绩_", yj[code]));
 
-    //console.error("yj", list[i]);
+    list[i].预约披露日期 = disclose[code];
 
-    let dis = disclose[code];
-    if (dis && dis.ACTUAL_PUBLISH_DATE)
-      list[i].ACTUAL_PUBLISH_DATE = dis.ACTUAL_PUBLISH_DATE;
-    let tdata = await fn.cacheObject(fnTechData, list[i]);
-    list[i] = Object.assign(list[i], tdata);
-
-    if (i == 0) {
-      console.error(code, list[i], yj[code], disclose[code]);
-    }
+    //let tdata = await fn.cacheObject(fnTechData, list[i]);
+    //list[i] = Object.assign(list[i], tdata);
   }
 }

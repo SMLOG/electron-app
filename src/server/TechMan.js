@@ -800,7 +800,7 @@ export async function callFun(item) {
 }
 export class fnTechData extends fn {
   constructor([item]) {
-    super(`${item.code}/tech.json`);
+    super(`${item.code}/tech2.json`);
     this.get = async function() {
       return await callFun(item);
     };

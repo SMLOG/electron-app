@@ -58,6 +58,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cluster": "^0.7.7",
+    "cron": "^1.8.2",
     "debug": "^4.1.1",
     "echarts": "^4.9.0",
     "electron-fetch": "^1.4.0",

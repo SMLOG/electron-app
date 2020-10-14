@@ -55,7 +55,7 @@ export default {
     });
 
     window.addEventListener("click", (e) => {
-      if (!this.$el.contains(e.target)) {
+      if (this.$el.style.display != "none" && !this.$el.contains(e.target)) {
         this.$emit("close");
       }
     });

@@ -1,6 +1,17 @@
 <template>
   <div>
     <div class="fixed">
+      <context-menu
+        class="right-menu"
+        :target="'.item'"
+        :show="contextMenuVisible"
+        @update:show="(show) => (contextMenuVisible = show)"
+      >
+        <a href="javascript:;" @click="toTop()">置顶</a>
+        <a href="javascript:;" @click.stop="doTitleItem(contentMenuTargetItem)"
+          >显示</a
+        >
+      </context-menu>
       <Setting />
       <search-panel @select="addItem"></search-panel>
       <Right :item="rightItem" />
@@ -84,6 +95,7 @@
             v-for="(item, index) in filteredItems"
             :key="item.code"
             :class="{ openlink: openCode === item.code }"
+            @contextmenu="contentMenuTargetItem = item"
           >
             <td class="firstCol">
               <div class="first">
@@ -92,8 +104,6 @@
                     class="post_bt"
                     :name="item.code"
                     @click="showComments(item)"
-                    @mouseover="doTitleItem(item)"
-                    @mouseout="unTitleItem(item)"
                     >{{ index + 1 }}</a
                   >
                 </span>
@@ -178,6 +188,7 @@ import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
 import HQ from "@/view/components/hq/HQ";
 import Title from "@/view/components/title/Title";
+import ContextMenu from "@/view/components/ContextMenu";
 
 import $ from "jquery";
 window.$ = $;
@@ -185,6 +196,9 @@ let unTitlteTimer = 0;
 export default {
   data: function () {
     return {
+      contextMenuTarget: document.body,
+      contentMenuTargetItem: null,
+      contextMenuVisible: false,
       cats: {
         海选: {
           is_search: true,
@@ -233,6 +247,7 @@ export default {
     Chart,
     WinWrap,
     Title,
+    ContextMenu,
   },
   filters: {},
   sockets: {
@@ -286,6 +301,16 @@ export default {
     },
   },
   methods: {
+    toTop() {
+      if (this.contentMenuTargetItem) {
+        let items = this.cats["自选"].items;
+        let index = items.indexOf(this.contentMenuTargetItem);
+        items.splice(index, 1);
+        items.unshift(this.contentMenuTargetItem);
+        this.$socket.emit("updateItems", this.cats["自选"].items);
+      }
+      this.contextMenuVisible = false;
+    },
     togglePop(item, comp, type) {
       if (item == this.item && this.curComponent == comp) {
         this.item = null;
@@ -297,11 +322,11 @@ export default {
       }
     },
     doTitleItem(item) {
-      clearTimeout(unTitlteTimer);
       this.titleItem = item;
+      this.contextMenuVisible = false;
     },
-    unTitleItem(item) {
-      unTitlteTimer = setTimeout(() => (this.titleItem = null), 500);
+    unTitleItem() {
+      this.titleItem = null;
     },
     enterTitle() {
       clearTimeout(unTitlteTimer);

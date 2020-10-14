@@ -17,8 +17,7 @@ export async function attachExtractInfoToItems(list) {
     let code = list[i].code;
     // list[i].basic = await fn.cacheObject(fnGetFinBasic, code);
     Object.assign(list[i], prefixKey("业绩_", yj[code]));
-
-    list[i].预约披露日期 = disclose[code];
+    Object.assign(list[i], prefixKey("预约_", disclose[code]));
 
     //let tdata = await fn.cacheObject(fnTechData, list[i]);
     //list[i] = Object.assign(list[i], tdata);

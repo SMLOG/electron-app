@@ -110,7 +110,7 @@ export let headers = [
   },
   {
     label: "PEG",
-    prop: "PEG",
+    prop: "估值_PEG1",
     type: "number",
     fmt: (e) => e && e.toFixed(2),
   },
@@ -179,6 +179,7 @@ export let headers = [
       openlink(item, event, url);
     },
   },
+
   {
     label: "净利率",
     prop: "净利率(%)",

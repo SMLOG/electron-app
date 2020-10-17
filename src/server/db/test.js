@@ -28,7 +28,7 @@ User.update(
 });
 */
 
-const Profit = require("./model/Profit");
+const Lrb = require("./model/Lrb");
 import axios from "axios";
 
 async function getReportData() {
@@ -37,8 +37,8 @@ async function getReportData() {
   console.log(url);
 
   let result = await axios.get(url, {}).then((resp) => resp.data);
-  console.log(JSON.parse(result)[0]);
-  // await Profit.bulkCreate(JSON.parse(result));
+  //console.log(JSON.parse(result)[0]);
+  await Lrb.bulkCreate(JSON.parse(result));
 }
 (async () => {
   await getReportData();

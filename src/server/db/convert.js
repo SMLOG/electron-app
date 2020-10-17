@@ -133,14 +133,15 @@ const u = ["SECURITYCODE", "REPORTDATE", "date", "code"];
       if (u.indexOf(field) > -1) f["unique"] = "compositeIndex";
     }
     let attrs = JSON.stringify(out[tab], null, 4).replace(
-      /"(DataTypes)"/g,
+      /"(DataTypes.*?)"/g,
       "$1"
     );
+    let cls = tab[0].toUpperCase() + tab.substring(1);
     let content = `const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
     
-    class ${tab} extends Model {}
-    Profit.init(
+    class ${cls} extends Model {}
+    ${cls}.init(
       ${attrs}
     ,
       {
@@ -148,13 +149,12 @@ const u = ["SECURITYCODE", "REPORTDATE", "date", "code"];
         modelName: "${tab}",
       }
     );
-    module.exports = ${tab};
+    module.exports = ${cls};
     `;
     //console.log(content);
-    fs.writeFileSync(
-      `/Users/alexwang/git/electron-suspension/src/server/db/model/${tab}.js`,
-      content
-    );
+    let file = `/Users/alexwang/git/electron-suspension/src/server/db/model/${cls}.js`;
+    console.log(file);
+    fs.writeFileSync(file, content);
     //fs.writeFileSync(options._file, JSON.stringify(res));
   }
 

@@ -101,13 +101,27 @@ function getFieldDisplay(tab, map) {
   );
   return r;
 }
-const u = ["SECURITYCODE", "REPORTDATE", "date", "code"];
+const u = [
+  "SECURITYCODE",
+  "reportDate",
+  "date",
+  "code",
+  "REPORTDATETYPE",
+  "REPORTTYPE",
+];
 (async () => {
   let colMap = await getcolumDisplayMap();
   let sampMap = await getSampDatas();
   let out = {};
   for (let tab in sampMap) {
     let samp = sampMap[tab];
+    delete samp["REPORTDATE"];
+    samp = _.defaults(samp, {
+      REPORTTYPE: "",
+      REPORTDATETYPE: "",
+      reportDate: "",
+    });
+
     let res = (out[tab] = {});
     res["id"] = {
       type: "DataTypes.INTEGER",
@@ -129,7 +143,7 @@ const u = ["SECURITYCODE", "REPORTDATE", "date", "code"];
         f.display = display;
       }
       f["type"] = "DataTypes.STRING(30)";
-      f["field"] = field;
+      if (!field.match(/[a-z]/)) f["field"] = field;
       if (u.indexOf(field) > -1) f["unique"] = "compositeIndex";
     }
     let attrs = JSON.stringify(out[tab], null, 4).replace(
@@ -139,7 +153,8 @@ const u = ["SECURITYCODE", "REPORTDATE", "date", "code"];
     let cls = tab[0].toUpperCase() + tab.substring(1);
     let content = `const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    
+    const { defaults } = require("lodash");
+
     class ${cls} extends Model {}
     ${cls}.init(
       ${attrs}

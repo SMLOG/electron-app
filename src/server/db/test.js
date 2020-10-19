@@ -29,17 +29,48 @@ User.update(
 */
 
 const Lrb = require("./model/Lrb");
+const Zcfzb = require("./model/Zcfzb");
+const Xjllb = require("./model/Xjllb");
 import axios from "axios";
+import moment from "moment";
+import _ from "lodash";
+async function getReportData(tab, code) {
+  let dateurl = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}DateAjax?reportDateType=0&code=${code}`;
 
-async function getReportData() {
-  let url =
-    "http://f10.eastmoney.com/NewFinanceAnalysis/lrbAjax?companyType=4&reportDateType=0&reportType=1&endDate=&code=SH605018";
-  console.log(url);
+  let dates = await axios.get(dateurl, {}).then((resp) => resp.data.data);
 
-  let result = await axios.get(url, {}).then((resp) => resp.data);
-  //console.log(JSON.parse(result)[0]);
-  await Lrb.bulkCreate(JSON.parse(result));
+  let endDate = "";
+
+  for (;;) {
+    let url = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}Ajax?companyType=4&reportDateType=0&reportType=1&endDate=${endDate}&code=${code}`;
+    console.log(url);
+
+    let result = await axios.get(url, {}).then((resp) => resp.data);
+    //console.log(JSON.parse(result)[0]);
+    result = JSON.parse(result);
+    result = result.map((e) =>
+      _.defaults(e, {
+        REPORTDATETYPE: 0,
+        REPORTTYPE: 1,
+        reportDate: moment(new Date(e.REPORTDATE)).format("YYYY-MM-DD"),
+      })
+    );
+
+    endDate = moment(new Date(result[result.length - 1].REPORTDATE)).format(
+      "YYYY-MM-DD"
+    );
+    console.log(endDate, dates[dates.length - 1]);
+    for (let i = 0; i < result.length; i++)
+      try {
+        if (tab == "rlb") await Lrb.create(result[i]);
+        else if (tab == "zcfzb") await Zcfzb.create(result[i]);
+        else if (tab == "xjllb") await Xjllb.create(result[i]);
+      } catch (e) {
+        return;
+      }
+    if (endDate == dates[dates.length - 1]) break;
+  }
 }
 (async () => {
-  await getReportData();
+  await getReportData("zcfzb", "sh600031");
 })();

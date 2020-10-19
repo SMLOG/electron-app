@@ -1,6 +1,7 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    
+    const { defaults } = require("lodash");
+
     class Xjllb extends Model {}
     Xjllb.init(
       {
@@ -16,20 +17,17 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "REPORTTYPE": {
         "type": DataTypes.STRING(30),
-        "field": "REPORTTYPE"
+        "field": "REPORTTYPE",
+        "unique": "compositeIndex"
     },
     "REPORTDATETYPE": {
         "type": DataTypes.STRING(30),
-        "field": "REPORTDATETYPE"
+        "field": "REPORTDATETYPE",
+        "unique": "compositeIndex"
     },
     "TYPE": {
         "type": DataTypes.STRING(30),
         "field": "TYPE"
-    },
-    "REPORTDATE": {
-        "type": DataTypes.STRING(30),
-        "field": "REPORTDATE",
-        "unique": "compositeIndex"
     },
     "CURRENCY": {
         "type": DataTypes.STRING(30),
@@ -1186,6 +1184,10 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     "SUBSIDIARYREDUCTCAPITAL_YOY": {
         "type": DataTypes.STRING(30),
         "field": "SUBSIDIARYREDUCTCAPITAL_YOY"
+    },
+    "reportDate": {
+        "type": DataTypes.STRING(30),
+        "unique": "compositeIndex"
     }
 }
     ,

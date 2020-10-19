@@ -5,7 +5,7 @@ const sequelize = new Sequelize(dbName, user, password, {
   dialect: "mysql",
   host,
   port,
-  logging: console.log,
+  logging: false,
   timezone: "+08:00",
   define: {
     // create_time && update_time

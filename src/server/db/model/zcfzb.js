@@ -1,6 +1,7 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    
+    const { defaults } = require("lodash");
+
     class Zcfzb extends Model {}
     Zcfzb.init(
       {
@@ -16,20 +17,17 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "REPORTTYPE": {
         "type": DataTypes.STRING(30),
-        "field": "REPORTTYPE"
+        "field": "REPORTTYPE",
+        "unique": "compositeIndex"
     },
     "REPORTDATETYPE": {
         "type": DataTypes.STRING(30),
-        "field": "REPORTDATETYPE"
+        "field": "REPORTDATETYPE",
+        "unique": "compositeIndex"
     },
     "TYPE": {
         "type": DataTypes.STRING(30),
         "field": "TYPE"
-    },
-    "REPORTDATE": {
-        "type": DataTypes.STRING(30),
-        "field": "REPORTDATE",
-        "unique": "compositeIndex"
     },
     "CURRENCY": {
         "type": DataTypes.STRING(30),
@@ -1839,6 +1837,10 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     "AUDITOPINIONSDOMESTICJW": {
         "type": DataTypes.STRING(30),
         "field": "AUDITOPINIONSDOMESTICJW"
+    },
+    "reportDate": {
+        "type": DataTypes.STRING(30),
+        "unique": "compositeIndex"
     }
 }
     ,

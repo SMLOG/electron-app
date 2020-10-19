@@ -1,6 +1,7 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    
+    const { defaults } = require("lodash");
+
     class Lrb extends Model {}
     Lrb.init(
       {
@@ -20,16 +21,12 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "REPORTTYPE": {
         "type": DataTypes.STRING(30),
-        "field": "REPORTTYPE"
+        "field": "REPORTTYPE",
+        "unique": "compositeIndex"
     },
     "TYPE": {
         "type": DataTypes.STRING(30),
         "field": "TYPE"
-    },
-    "REPORTDATE": {
-        "type": DataTypes.STRING(30),
-        "field": "REPORTDATE",
-        "unique": "compositeIndex"
     },
     "CURRENCY": {
         "type": DataTypes.STRING(30),
@@ -700,6 +697,15 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     "COMBINEDNETPROFITB_YOY": {
         "type": DataTypes.STRING(30),
         "field": "COMBINEDNETPROFITB_YOY"
+    },
+    "REPORTDATETYPE": {
+        "type": DataTypes.STRING(30),
+        "field": "REPORTDATETYPE",
+        "unique": "compositeIndex"
+    },
+    "reportDate": {
+        "type": DataTypes.STRING(30),
+        "unique": "compositeIndex"
     }
 }
     ,

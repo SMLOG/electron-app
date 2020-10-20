@@ -2,6 +2,7 @@ import { CONFIG_DIR } from "../config";
 import { attachExtractInfoToItems } from "../helper";
 
 import fs from "fs";
+
 let file = `${CONFIG_DIR}/my.json`;
 function getlist() {
   let list = [];

@@ -39,6 +39,7 @@
 <script>
 import axios from "axios";
 import Item from "./Item";
+import Summary from "./Summary";
 export default {
   data: function () {
     return { _item: null, _comp: null };
@@ -60,7 +61,7 @@ export default {
       }
     });
   },
-  components: { Item },
+  components: { Item, Summary },
   props: ["item", "comp"],
   methods: {},
   computed: {},

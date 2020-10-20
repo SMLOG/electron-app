@@ -7,6 +7,7 @@ import { CONFIG_DIR } from "./config";
 import { attachExtractInfoToItems } from "./helper";
 import My from "./controller/MyController";
 import HQController from "./controller/HQController";
+import DataController from "./controller/DataController";
 const koa = require("koa");
 const logger = require("koa-logger");
 const Router = require("koa-router");
@@ -182,6 +183,10 @@ routerApi.get("/hq/indlist", HQController.indlist);
 routerApi.get("/hq/ind", HQController.ind);
 
 let router = new Router();
+for (let i in DataController) {
+  console.log(i);
+  routerApi.get("/" + i, DataController[i]);
+}
 router.use("/", routerHome.routes(), routerHome.allowedMethods());
 router.use("/api", routerApi.routes(), routerApi.allowedMethods());
 app.use(router.routes()).use(router.allowedMethods());

@@ -1,5 +1,10 @@
 import axios from "axios";
 import { fn } from "../lib/fn";
+const Lrb = require("../db/model/Lrb");
+const Zcfzb = require("../db/model/Zcfzb");
+const Xjllb = require("../db/model/Xjllb");
+const Zyzb = require("../db/model/Zyzb");
+const Dbfx = require("../db/model/Dbfx");
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -36,7 +41,20 @@ const fieldMap = {
   sdbl: "速动比率",
 };
 
-export class fn财务分析_主要指标 extends fn {
+module.exports = {
+  summary: async (ctx) => {
+    let code = ctx.query.code;
+    let data = await Dbfx.findAll({
+      where: {
+        REPORTTYPE: 0,
+      },
+      order: [["reportDate", "DESC"]],
+    });
+    ctx.body = data;
+  },
+};
+
+class fn财务分析_主要指标 extends fn {
   constructor([item]) {
     super(`${item.code}/财务分析_主要指标.json`);
     this.code = item.code;
@@ -47,7 +65,7 @@ export class fn财务分析_主要指标 extends fn {
   }
 }
 
-export default class DataController {
+class DataController {
   static async 财务分析(ctx) {
     let code = ctx.query.code;
     let res = await fn.cacheObject(fn财务分析_主要指标, { code: code });

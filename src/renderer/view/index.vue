@@ -7,7 +7,12 @@
         :show="contextMenuVisible"
         @update:show="(show) => (contextMenuVisible = show)"
       >
-        <a href="javascript:;" @click="toTop()">置顶</a>
+        <a href="javascript:;" @click.stop="toTop()">置顶</a>
+        <a
+          href="javascript:;"
+          @click.stop="doTitleSummary(contentMenuTargetItem)"
+          >总结</a
+        >
         <a href="javascript:;" @click.stop="doTitleItem(contentMenuTargetItem)"
           >显示</a
         >
@@ -18,7 +23,7 @@
       <Posts :item="showMsgItem" />
       <Title
         :item="titleItem"
-        :comp="'Item'"
+        :comp="'Summary'"
         @mouseenter.native="enterTitle()"
         @close="titleItem = null"
       />
@@ -332,9 +337,11 @@ export default {
       this.titleItem = item;
       this.contextMenuVisible = false;
     },
-    unTitleItem() {
-      this.titleItem = null;
+    doTitleSummary(item) {
+      this.titleItem = item;
+      this.contextMenuVisible = false;
     },
+
     enterTitle() {
       clearTimeout(unTitlteTimer);
       console.error(unTitlteTimer);

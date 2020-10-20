@@ -34,7 +34,8 @@ const sequelize = new Sequelize(dbName, user, password, {
 });
 // 创建模型
 sequelize.sync({
-  alter: true,
+  sync: false,
+  alter: false,
 });
 module.exports = {
   sequelize,

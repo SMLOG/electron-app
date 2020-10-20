@@ -11,6 +11,7 @@ export const JOB_MAP = {
     alias: "预披露日",
     file: "job-yy预约披露日期列表.json",
     key: "SECURITY_CODE",
+    tableName: "yyplrq",
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -26,6 +27,7 @@ export const JOB_MAP = {
   业绩: {
     file: "job-yj业绩.json",
     key: "SECURITY_CODE",
+    tableName: "yj",
 
     keymap: {
       SECURITY_CODE: "代码",
@@ -51,6 +53,7 @@ export const JOB_MAP = {
   业绩快报: {
     file: "job-kb业绩快报.json",
     key: "SECURITY_CODE",
+    tableName: "yjkb",
     alias: "快报",
     keymap: {
       SECURITY_CODE: "代码",
@@ -76,6 +79,7 @@ export const JOB_MAP = {
     file: "job-yg业绩预告.json",
     key: "SECURITY_CODE",
     alias: "预告",
+    tableName: "yjyg",
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -93,6 +97,7 @@ export const JOB_MAP = {
     file: "job-zcfz资产负债表.json",
     key: "SECURITY_CODE",
     alias: "负债",
+    tableName: "zcfz",
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -138,6 +143,7 @@ export const JOB_MAP = {
   利润表: {
     file: "job-lr利润表.json",
     key: "SECURITY_CODE",
+    tableName: "lr",
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -182,6 +188,7 @@ export const JOB_MAP = {
   现金流量表: {
     file: "job-xjll现金流量表.json",
     key: "SECURITY_CODE",
+    tableName: "xjll",
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -202,6 +209,7 @@ export const JOB_MAP = {
   估值: {
     file: "job-gz估值.json",
     key: "SECURITYCODE",
+    tableName: "gz",
     keymap: {
       SECURITYCODE: "代码",
       SName: "股票简称 ",

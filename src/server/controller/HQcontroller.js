@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export default class HQController {
   static async indlist(ctx) {
     let cb = ctx.query.cb;

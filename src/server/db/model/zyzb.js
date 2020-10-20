@@ -1,6 +1,5 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    const { defaults } = require("lodash");
 
     class Zyzb extends Model {}
     Zyzb.init(
@@ -135,7 +134,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "type": DataTypes.DOUBLE
     },
     "zcfzl": {
-        "display": "资产负债率(%)",
+        "display": "资产负债率",
         "type": DataTypes.DOUBLE
     },
     "ldzczfz": {

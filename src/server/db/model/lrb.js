@@ -1,6 +1,5 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    const { defaults } = require("lodash");
 
     class Lrb extends Model {}
     Lrb.init(

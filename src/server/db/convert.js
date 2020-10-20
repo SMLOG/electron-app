@@ -44,6 +44,61 @@ async function getcolumDisplayMap() {
       }
     }
   }
+  let dbfx = _.map(
+    {
+      jzcsyl: "roe",
+      zzcjll: "总资产净利率",
+      gsmgsgddjlr: "归属母公司股东的净利润占比",
+      qycs: "权益乘数",
+      yyjlrl: "营业净利润",
+      zzczzl: "总资产周转率",
+      zcfzl: "资产负债率",
+      jlr: "净利润",
+      yysr: "营业总收入",
+      zcze: "资产总额",
+      fzze: "负债总额",
+      srze: "收入总额",
+      cbze: "成本总额",
+      ldzc: "流动资产",
+      fldzc: "非流动资产",
+      yycb: "营业成本",
+      qjfy: "期间费用",
+      hbzj: "货币资金",
+      kgcsjrzc: "可供出售金融资产",
+      wxzc: "无形资产",
+      gyjzbdsy: "公允价值变动收益",
+      yysjjfj: "营业税金及附加",
+      jyxjrzc: "交易性金融资产",
+      cyzdqtz: "持有至到期投资",
+      kfzc: "开发支出",
+      yywsr: "营业外收入",
+      sdsfy: "所得税费用",
+      cwfy: "财务费用",
+      yszk: "应收账款",
+      cqgqtz: "长期股权投资",
+      sy: "商誉",
+      tzsy: "投资收益",
+      zcjzss: "资产减值损失",
+      xsfy: "销售费用",
+      yfzk: "应付账款",
+      tzxfdc: "投资性房地产",
+      cqdtfy: "长期待摊费用",
+      yywzc: "营业外收入",
+      glfy: "管理费用",
+      qtysk: "其他应收款",
+      gdzc: "固定资产",
+      dysdszc: "递延所得税资产",
+      ch: "存货",
+      zjgc: "在建工程",
+      qtfldzc: "其他非流动资产",
+      qtldzc: "其他流动资产",
+    },
+    (value, key) => [key, value]
+  );
+  res = _.merge(res, {
+    dbfx: dbfx,
+  });
+  //console.log(res);
   return res;
 }
 import _ from "lodash";
@@ -165,7 +220,6 @@ const u = [
     let cls = tab[0].toUpperCase() + tab.substring(1);
     let content = `const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-    const { defaults } = require("lodash");
 
     class ${cls} extends Model {}
     ${cls}.init(

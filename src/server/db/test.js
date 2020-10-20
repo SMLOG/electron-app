@@ -31,6 +31,9 @@ User.update(
 const Lrb = require("./model/Lrb");
 const Zcfzb = require("./model/Zcfzb");
 const Xjllb = require("./model/Xjllb");
+const Zyzb = require("./model/Zyzb");
+const Dbfx = require("./model/Dbfx");
+
 import axios from "axios";
 import moment from "moment";
 import _ from "lodash";
@@ -50,6 +53,7 @@ async function getReportData(tab, code) {
     result = JSON.parse(result);
     result = result.map((e) =>
       _.defaults(e, {
+        code: code,
         REPORTDATETYPE: 0,
         REPORTTYPE: 1,
         reportDate: moment(new Date(e.REPORTDATE)).format("YYYY-MM-DD"),
@@ -71,6 +75,46 @@ async function getReportData(tab, code) {
     if (endDate == dates[dates.length - 1]) break;
   }
 }
+async function getZyzb(type, code) {
+  var url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0&code=${code}`;
+  var data = { type: type, code: code };
+
+  let result = await axios.get(url, { params: data }).then((resp) => resp.data);
+  for (let i = 0; i < result.length; i++) {
+    let row = result[i];
+    row = _.mapValues(row, (e) => (e == "--" ? null : e));
+    row = _.defaults(row, {
+      code: code,
+      REPORTTYPE: type,
+      reportDate: row.date,
+    });
+    console.log(JSON.stringify(row, null, 4));
+
+    await Zyzb.create(row);
+  }
+}
+async function getDbfx(code) {
+  var url = `http://f10.eastmoney.com/NewFinanceAnalysis/DubangAnalysisAjax?type=0&code=${code}`;
+  var data = { code: code };
+
+  let dbfx = await axios.get(url, { params: data }).then((resp) => resp.data);
+  for (let type of ["nd", "bgq"]) {
+    for (let i = 0; i < dbfx[type].length; i++) {
+      let row = dbfx[type][i];
+      row = _.mapValues(row, (e) => (e == "--" ? null : e));
+      row = _.defaults(row, {
+        code: code,
+        REPORTTYPE: type == "nd" ? 1 : 0,
+        reportDate: row.date,
+      });
+      console.log(JSON.stringify(row, null, 4));
+
+      await Dbfx.create(row);
+    }
+  }
+}
+
 (async () => {
-  await getReportData("zcfzb", "sh600031");
+  await getDbfx("sh600031");
+  // await getReportData("zcfzb", "sh600031");
 })();

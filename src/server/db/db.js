@@ -5,16 +5,16 @@ const sequelize = new Sequelize(dbName, user, password, {
   dialect: "mysql",
   host,
   port,
-  logging: false,
+  logging: console.log,
   timezone: "+08:00",
   define: {
     // create_time && update_time
-    timestamps: true,
+    timestamps: false,
     // delete_time
-    paranoid: true,
+    /*paranoid: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-    deletedAt: "deleted_at",
+    deletedAt: "deleted_at",*/
     freezeTableName: true,
     // 把驼峰命名转换为下划线
     underscored: true,

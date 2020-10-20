@@ -119,7 +119,7 @@ const u = [
     samp = _.defaults(samp, {
       REPORTTYPE: "",
       REPORTDATETYPE: "",
-      reportDate: "",
+      reportDate: "2020-12-30",
     });
 
     let res = (out[tab] = {});
@@ -128,9 +128,14 @@ const u = [
       autoIncrement: true,
       primaryKey: true,
     };
-    if (_.intersection(_.keys(samp), u).length < 2) {
+    let keys = _.keys(samp);
+    console.log(
+      tab,
+      keys.filter((e) => e.toLowerCase().indexOf("code") > -1)
+    );
+    if (keys.filter((e) => e.toLowerCase().indexOf("code") > -1).length == 0) {
       res["code"] = {
-        type: "DataTypes.STRING(30)",
+        type: "DataTypes.STRING(10)",
         unique: "compositeIndex",
       };
     }
@@ -142,7 +147,14 @@ const u = [
       if (display) {
         f.display = display;
       }
-      f["type"] = "DataTypes.STRING(30)";
+      console.log(
+        field,
+        samp[field] * 1 == samp[field],
+        samp[field] * 1,
+        samp[field]
+      );
+      if (samp[field] * 1 == samp[field]) f["type"] = "DataTypes.DOUBLE";
+      else f["type"] = "DataTypes.STRING(10)";
       if (!field.match(/[a-z]/)) f["field"] = field;
       if (u.indexOf(field) > -1) f["unique"] = "compositeIndex";
     }

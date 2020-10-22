@@ -26,7 +26,10 @@ async function getJsonpData(options) {
       .get(url, {
         headers: { "User-Agent": userAgent },
       })
-      .then((resp) => eval(resp.data.replace(options.jsonp, "")));
+      .then((resp) => {
+        console.log(resp.data);
+        eval(resp.data.replace(options.jsonp, ""));
+      });
     arr = arr.concat(d);
     if (d.length == 0) break;
     pages += 1;
@@ -68,7 +71,7 @@ async function getData(options) {
         return eval(str + ";" + _varname);
       });
     arr = arr.concat(d.data || d.result.data);
-    if (!d.success) break;
+    if (!d.pages) break;
     pages = d.pages || d.result.pages;
   }
   for (let i = 0; i < arr.length; i++) {
@@ -81,19 +84,20 @@ async function getData(options) {
 }
 
 (async () => {
-  let startDate = getLastReportDate();
-  for (; startDate >= "2020-06-31"; ) {
+  let reportDates = ["2020-09-30", "2020-06-30", "2020-03-31", "2019-12-31"];
+  for (const reportDate of reportDates) {
     for (let k in JOB_MAP) {
       let options = JOB_MAP[k];
-      if (!options.enable) continue;
+      if (!options.enable || k != "估值") continue;
+      if (["估值"].indexOf(k) > -1 && reportDates.indexOf(reportDate) > 0)
+        continue;
       options.get = options.get || (options.jsonp ? getJsonpData : getData);
-      if (options.reportDate) {
-        startDate = options.reportDate = prevReportDate(options.reportDate);
-      } else {
-        options.reportDate = startDate;
-      }
 
+      options.today = "2020-10-22";
+      options.reportDate = reportDate;
+      console.log(reportDate, k);
       let datas = await options.get(options);
+      console.log(reportDate, k, datas.length);
 
       for (let k = 0; k < datas.length; k++) {
         datas[k] = _.mapValues(datas[k], (e, ky) => {

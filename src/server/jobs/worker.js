@@ -229,25 +229,34 @@ export const JOB_MAP = {
     file: "job-gz估值.json",
     key: "SECURITYCODE",
     tableName: "gz",
-    enable: false,
+    enable: true,
     keymap: {
       SECURITYCODE: "代码",
       SName: "股票简称 ",
       CHG: "最新价",
       CHG: "涨跌幅",
-      PE9: "PE动",
-      PE7: " PE静",
-      PB8: "市净率",
-      PEG1: "PEG值",
-      PS9: "市销率",
-      PCFJYXJL9: "市现率",
       HYName: "所属行业",
       PE: "行业平均PE(动态)",
+      TRADEDATE: "数据日期",
+      NEW: "当日收盘价<br/>(元)",
+      CHG: "当日涨跌幅<br/>(%)",
+      ZSZ: "总市值(元)",
+      AGSZBHXS: "流通市值(元)",
+      ZGB: "总股本(股)",
+      LTAG: "流通股本",
+      PE9: "PE(TTM)",
+      PE7: "PE(静)",
+      PB8: "市净率",
+      PEG1: "PEG值",
+      PCFJYXJL9: "市现率",
+      PS9: "市销率",
     },
     _cronTime: "0 0 */2 * * *",
-    jsonp: "jsonp",
+    //http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=-1&p=2&ps=50&js=var%20vTpUbxvA={pages:(tp),data:(x),font:(font)}&filter=(SECURITYCODE=%27601398%27)&rt=53445923
+    //http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=-1&p=3&ps=50&js=var%20lLnKJNds={pages:(tp),data:(x),font:(font)}&filter=(SECURITYCODE=%27000069%27)&rt=53445795
+    //http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=1&p=1&ps=50&js=var%20KxDNlnUa={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^2020-10-22^)(SECURITYCODE=%27601398%27)&rt=53445631
     url:
-      "http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get?type=GZFX_GGZB&token=70f12f2f4f091e459a279469fe49eca5&cmd==&filter=(TRADEDATE=%272020-10-14%27)(PE9%3E%270%27)&st=PE9&sr=1&p={page}&ps=500&rt={timestamp}&callback=jsonp&_=1602736510847",
+      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=-1&p={page}&ps=500&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^{today}^)&rt={timestamp}",
   },
   行情: {
     key: "code",
@@ -274,9 +283,9 @@ export const JOB_MAP = {
   },
 };
 
-(async () => {
+/*(async () => {
   await JOB_MAP["行情"].get();
-})();
+})();*/
 export function load(type) {
   let file = `${CONFIG_DIR}/${type.file}`;
   if (fs.existsSync(file)) {

@@ -1,5 +1,4 @@
 export function getLastReportDate(d = new Date()) {
-  console.log(d);
   let now = ((d) =>
     ("0" + (d.getMonth() + 1)).substr(-2, 2) +
     ("0" + d.getDate()).substr(-2, 2))(d);

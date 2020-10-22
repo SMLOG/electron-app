@@ -109,7 +109,13 @@ async function getData(options) {
         datas,
         options.tableName,
         options.keymap,
-        ["SECURITY_CODE", "REPORT_DATE", "REPORTDATE", "code", "NoticeDate"],
+        options.pks || [
+          "SECURITY_CODE",
+          "REPORT_DATE",
+          "REPORTDATE",
+          "code",
+          "NoticeDate",
+        ],
         k
       );
 

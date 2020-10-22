@@ -215,14 +215,15 @@ export const JOB_MAP = {
   股东数: {
     file: "job-gd股东数.json",
     key: "SecurityCode",
+    pks: ["SecurityCode", "NoticeDate"],
     tableName: "gds",
-    class: 1,
+    enable: true,
     keymap: {
       SECURITYCODE: "代码",
     },
     _cronTime: "0 0 */2 * * *",
     url:
-      "http://data.eastmoney.com/DataCenter_V3/gdhs/GetList.ashx?reportdate=&market=&changerate==&range==&pagesize=500&page={page}&sortRule=-1&sortType=NoticeDate&js=var%20{var}&param=&rt={timestamp}",
+      "http://data.eastmoney.com/DataCenter_V3/gdhs/GetList.ashx?reportdate={reportDate}&market=&changerate==&range==&pagesize=500&page={page}&sortRule=-1&sortType=NoticeDate&js=var%20{var}&param=&rt={timestamp}",
   },
   估值: {
     file: "job-gz估值.json",

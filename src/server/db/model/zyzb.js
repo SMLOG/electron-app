@@ -1,6 +1,6 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
-
+  
     class Zyzb extends Model {}
     Zyzb.init(
       {

@@ -1,15 +1,19 @@
 const Sequelize = require("sequelize");
 const { dbName, host, port, user, password } = require("./config").database;
-
+//set global max_allowed_packet=10*1024*1024;
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: "mysql",
   host,
   port,
-  logging: console.log,
+  logging: false,
   timezone: "+08:00",
   define: {
     // create_time && update_time
     timestamps: false,
+    charset: "utf8",
+    dialectOptions: {
+      collate: "utf8_general_ci",
+    },
     // delete_time
     /*paranoid: true,
     createdAt: "created_at",
@@ -35,7 +39,7 @@ const sequelize = new Sequelize(dbName, user, password, {
 // 创建模型
 sequelize.sync({
   sync: false,
-  alter: false,
+  alter: true,
 });
 module.exports = {
   sequelize,

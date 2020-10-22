@@ -11,3 +11,8 @@ export function getLastReportDate(d = new Date()) {
 
   return d.getFullYear() - 1 + "-12-31";
 }
+export function prevReportDate(date) {
+  let rd = new Date(date);
+  rd.setMonth(rd.getMonth() - 3);
+  return getLastReportDate(rd);
+}

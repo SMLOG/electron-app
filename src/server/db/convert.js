@@ -1,5 +1,6 @@
 import axios from "axios";
-import fs from "fs";
+import _ from "lodash";
+import { genModel } from "./utils";
 async function getcolumDisplayMap() {
   const bburls = {
     qs:
@@ -101,7 +102,6 @@ async function getcolumDisplayMap() {
   //console.log(res);
   return res;
 }
-import _ from "lodash";
 async function getSampDatas() {
   let typemap = {
     "1": "sh600999",
@@ -156,86 +156,30 @@ function getFieldDisplay(tab, map) {
   );
   return r;
 }
-const u = [
-  "SECURITYCODE",
-  "reportDate",
-  "date",
-  "code",
-  "REPORTDATETYPE",
-  "REPORTTYPE",
-];
+
 (async () => {
   let colMap = await getcolumDisplayMap();
   let sampMap = await getSampDatas();
-  let out = {};
-  for (let tab in sampMap) {
-    let samp = sampMap[tab];
-    delete samp["REPORTDATE"];
-    samp = _.defaults(samp, {
+  const compositeFields = [
+    "SECURITYCODE",
+    "reportDate",
+    "date",
+    "code",
+    "REPORTDATETYPE",
+    "REPORTTYPE",
+  ];
+  for (let modelName in sampMap) {
+    let sampleRow = sampMap[modelName];
+    let fieldMap = getFieldDisplay(modelName, colMap);
+
+    delete sampleRow["REPORTDATE"];
+    sampleRow = _.defaults(sampleRow, {
       REPORTTYPE: "",
       REPORTDATETYPE: "",
       reportDate: "2020-12-30",
     });
+    genModel(sampleRow, modelName, fieldMap, compositeFields);
 
-    let res = (out[tab] = {});
-    res["id"] = {
-      type: "DataTypes.INTEGER",
-      autoIncrement: true,
-      primaryKey: true,
-    };
-    let keys = _.keys(samp);
-    console.log(
-      tab,
-      keys.filter((e) => e.toLowerCase().indexOf("code") > -1)
-    );
-    if (keys.filter((e) => e.toLowerCase().indexOf("code") > -1).length == 0) {
-      res["code"] = {
-        type: "DataTypes.STRING(10)",
-        unique: "compositeIndex",
-      };
-    }
-    let displayFieldMap = getFieldDisplay(tab, colMap);
-
-    for (let field in samp) {
-      let f = (res[field] = {});
-      let display = displayFieldMap[field];
-      if (display) {
-        f.display = display;
-      }
-      console.log(
-        field,
-        samp[field] * 1 == samp[field],
-        samp[field] * 1,
-        samp[field]
-      );
-      if (samp[field] * 1 == samp[field]) f["type"] = "DataTypes.DOUBLE";
-      else f["type"] = "DataTypes.STRING(10)";
-      if (!field.match(/[a-z]/)) f["field"] = field;
-      if (u.indexOf(field) > -1) f["unique"] = "compositeIndex";
-    }
-    let attrs = JSON.stringify(out[tab], null, 4).replace(
-      /"(DataTypes.*?)"/g,
-      "$1"
-    );
-    let cls = tab[0].toUpperCase() + tab.substring(1);
-    let content = `const { Sequelize, Model, DataTypes } = require("sequelize");
-    const { sequelize: db } = require("../db");
-
-    class ${cls} extends Model {}
-    ${cls}.init(
-      ${attrs}
-    ,
-      {
-        sequelize: db,
-        modelName: "${tab}",
-      }
-    );
-    module.exports = ${cls};
-    `;
-    //console.log(content);
-    let file = `/Users/alexwang/git/electron-suspension/src/server/db/model/${cls}.js`;
-    console.log(file);
-    fs.writeFileSync(file, content);
     //fs.writeFileSync(options._file, JSON.stringify(res));
   }
 

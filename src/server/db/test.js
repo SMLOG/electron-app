@@ -33,7 +33,14 @@ const Zcfzb = require("./model/Zcfzb");
 const Xjllb = require("./model/Xjllb");
 const Zyzb = require("./model/Zyzb");
 const Dbfx = require("./model/Dbfx");
-
+const Yyplrq = require("./model/Yyplrq");
+const Yj = require("./model/Yj");
+const Yjkb = require("./model/Yjkb");
+const Yjyg = require("./model/Yjyg");
+const Zcfz = require("./model/Zcfz");
+const Lr = require("./model/Lr");
+const Xjll = require("./model/Xjll");
+const Gz = require("./model/Gz");
 import axios from "axios";
 import moment from "moment";
 import _ from "lodash";

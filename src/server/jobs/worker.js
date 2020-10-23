@@ -229,7 +229,7 @@ export const JOB_MAP = {
     file: "job-gz估值.json",
     key: "SECURITYCODE",
     tableName: "gz",
-    enable: true,
+    enable: false,
     keymap: {
       SECURITYCODE: "代码",
       SName: "股票简称 ",
@@ -257,6 +257,25 @@ export const JOB_MAP = {
     //http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=1&p=1&ps=50&js=var%20KxDNlnUa={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^2020-10-22^)(SECURITYCODE=%27601398%27)&rt=53445631
     url:
       "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=-1&p={page}&ps=500&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^{today}^)&rt={timestamp}",
+  },
+  公告: {
+    file: "job-gg.json",
+    key: "stock_code",
+    tableName: "notice",
+    pks: ["ann_type", "stock_code", "art_code"],
+    enable: true,
+    onece: true,
+    mapValues: function(datas) {
+      return datas.map((data) => {
+        let row = _.merge({}, data, data.codes[0], data.columns[0]);
+        _.unset(row, "codes");
+        _.unset(row, "columns");
+        return row;
+      });
+    },
+    keymap: {},
+    url:
+      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
   },
   行情: {
     key: "code",

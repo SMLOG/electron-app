@@ -1,0 +1,118 @@
+const { Sequelize, Model, DataTypes } = require("sequelize");
+    const { sequelize: db } = require("../db");
+  /*预约披露日期列表*/
+    class Yyplrq extends Model {}
+    Yyplrq.init(
+      {
+    "id": {
+        "type": DataTypes.INTEGER,
+        "autoIncrement": true,
+        "primaryKey": true
+    },
+    "SECURITY_CODE": {
+        "display": "代码",
+        "type": DataTypes.DOUBLE,
+        "field": "SECURITY_CODE",
+        "unique": "index_unique"
+    },
+    "SECURITY_NAME_ABBR": {
+        "display": "名称",
+        "type": DataTypes.STRING(10),
+        "field": "SECURITY_NAME_ABBR"
+    },
+    "REPORT_TYPE": {
+        "type": DataTypes.DOUBLE,
+        "field": "REPORT_TYPE"
+    },
+    "REPORT_YEAR": {
+        "type": DataTypes.DOUBLE,
+        "field": "REPORT_YEAR"
+    },
+    "FIRST_APPOINT_DATE": {
+        "display": "首次预约时间",
+        "type": DataTypes.STRING(19),
+        "field": "FIRST_APPOINT_DATE"
+    },
+    "FIRST_CHANGE_DATE": {
+        "display": "一次变更时间",
+        "type": DataTypes.STRING(10),
+        "field": "FIRST_CHANGE_DATE"
+    },
+    "SECOND_CHANGE_DATE": {
+        "display": "二次变更时间",
+        "type": DataTypes.STRING(10),
+        "field": "SECOND_CHANGE_DATE"
+    },
+    "THIRD_CHANGE_DATE": {
+        "display": "三次变更时间",
+        "type": DataTypes.STRING(10),
+        "field": "THIRD_CHANGE_DATE"
+    },
+    "ACTUAL_PUBLISH_DATE": {
+        "display": "实际披露时间",
+        "type": DataTypes.STRING(10),
+        "field": "ACTUAL_PUBLISH_DATE"
+    },
+    "SECURITY_TYPE_CODE": {
+        "type": DataTypes.DOUBLE,
+        "field": "SECURITY_TYPE_CODE"
+    },
+    "SECURITY_TYPE": {
+        "type": DataTypes.STRING(10),
+        "field": "SECURITY_TYPE"
+    },
+    "TRADE_MARKET_CODE": {
+        "type": DataTypes.DOUBLE,
+        "field": "TRADE_MARKET_CODE"
+    },
+    "TRADE_MARKET": {
+        "type": DataTypes.STRING(10),
+        "field": "TRADE_MARKET"
+    },
+    "REPORT_DATE": {
+        "type": DataTypes.STRING(19),
+        "field": "REPORT_DATE",
+        "unique": "index_unique"
+    },
+    "APPOINT_PUBLISH_DATE": {
+        "type": DataTypes.STRING(19),
+        "field": "APPOINT_PUBLISH_DATE"
+    },
+    "RESIDUAL_DAYS": {
+        "type": DataTypes.DOUBLE,
+        "field": "RESIDUAL_DAYS"
+    },
+    "REPORT_TYPE_NAME": {
+        "type": DataTypes.STRING(10),
+        "field": "REPORT_TYPE_NAME"
+    },
+    "IS_PUBLISH": {
+        "type": DataTypes.DOUBLE,
+        "field": "IS_PUBLISH"
+    },
+    "MARKET": {
+        "type": DataTypes.DOUBLE,
+        "field": "MARKET"
+    },
+    "EITIME": {
+        "type": DataTypes.STRING(19),
+        "field": "EITIME"
+    },
+    "SECUCODE": {
+        "type": DataTypes.STRING(10),
+        "field": "SECUCODE"
+    },
+    "code": {
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique"
+    }
+}
+    ,
+      {
+        sequelize: db,
+        charset: 'utf8',
+        modelName: "yyplrq",
+      }
+    );
+    module.exports = Yyplrq;
+    

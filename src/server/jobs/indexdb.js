@@ -74,12 +74,18 @@ async function getData(options) {
     if (!d.pages) break;
     pages = d.pages || d.result.pages;
   }
-  for (let i = 0; i < arr.length; i++) {
-    let it = arr[i];
-    let code = it[options.key];
-    if (code[0] * 1 == code[0]) code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
-    it.code = code;
+  console.log(arr);
+  if (options.mapValues) {
+    arr = options.mapValues(arr);
+  } else {
+    for (let i = 0; i < arr.length; i++) {
+      let it = arr[i];
+      let code = it[options.key];
+      if (code[0] * 1 == code[0]) code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+      it.code = code;
+    }
   }
+
   return arr;
 }
 
@@ -88,9 +94,8 @@ async function getData(options) {
   for (const reportDate of reportDates) {
     for (let k in JOB_MAP) {
       let options = JOB_MAP[k];
-      if (!options.enable || k != "估值") continue;
-      if (["估值"].indexOf(k) > -1 && reportDates.indexOf(reportDate) > 0)
-        continue;
+      if (k != "公告") continue;
+      if (options.onece && reportDates.indexOf(reportDate) > 0) continue;
       options.get = options.get || (options.jsonp ? getJsonpData : getData);
 
       options.today = "2020-10-22";
@@ -128,7 +133,7 @@ async function getData(options) {
           updateOnDuplicate: Object.keys(datas[0]),
         });
       } catch (ee) {
-        console.error(modelName);
+        console.error(options.tableName);
         console.error(ee);
         return;
       }

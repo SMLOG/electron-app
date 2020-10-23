@@ -10,7 +10,7 @@ function prefixKey(prefix, data) {
   else return {};
 }
 export async function attachExtractInfoToItems(list) {
-  let mapDatas = {};
+  /*let mapDatas = {};
   for (let key in JOB_MAP) {
     mapDatas[key] = load(JOB_MAP[key]);
   }
@@ -22,8 +22,8 @@ export async function attachExtractInfoToItems(list) {
         list[i],
         prefixKey(JOB_MAP[key].alias || key + "_", mapDatas[key][code])
       );
-    }
-    //let tdata = await fn.cacheObject(fnTechData, list[i]);
-    //list[i] = Object.assign(list[i], tdata);
-  }
+    }*/
+  //let tdata = await fn.cacheObject(fnTechData, list[i]);
+  //list[i] = Object.assign(list[i], tdata);
+  //}
 }

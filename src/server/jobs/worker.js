@@ -289,6 +289,7 @@ export const JOB_MAP = {
     key: "code",
     tableName: "hq",
     pks: ["code"],
+    _cronTime: "*/1 * 9-12 * * *",
     get: async function(options) {
       let rows = await getList();
 

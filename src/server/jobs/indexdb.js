@@ -2,6 +2,7 @@ import { JOB_MAP } from "./worker";
 import axios from "axios";
 import iconv from "iconv-lite";
 import _ from "lodash";
+import moment from "moment";
 import { ifNoExistGenModel } from "../db/utils";
 const AsyncQueue = require("@wxaxiaoyao/async-queue");
 
@@ -90,13 +91,21 @@ async function getData(options) {
 }
 
 async function task(taskName, option = {}) {
-  let options = _.defaults(option, JOB_MAP[taskName]);
+  let options = _.defaults({}, option, JOB_MAP[taskName]);
   options.get = options.get || (options.jsonp ? getJsonpData : getData);
-
-  console.log(options.reportDate, taskName);
+  console.log(
+    moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    "taskName:",
+    taskName,
+    option
+  );
   let datas = await options.get(options);
-  console.log(options.reportDate, taskName, datas.length);
-
+  console.log(
+    moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    "taskName:",
+    taskName,
+    datas.length
+  );
   for (let k = 0; k < datas.length; k++) {
     datas[k] = _.mapValues(datas[k], (e, ky) => {
       if (ky.toUpperCase().endsWith("DATE") && _.isString(e)) {

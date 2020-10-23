@@ -4,6 +4,8 @@ import axios from "axios";
 import iconv from "iconv-lite";
 import _ from "lodash";
 import { ifNoExistGenModel } from "../db/utils";
+const AsyncQueue = require("@wxaxiaoyao/async-queue");
+
 const userAgent =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.80 Safari/537.36";
 async function getJsonpData(options) {
@@ -89,6 +91,49 @@ async function getData(options) {
   return arr;
 }
 
+async function task(taskName, option = {}) {
+  let options = _.defaults(option, JOB_MAP[taskName]);
+  options.get = options.get || (options.jsonp ? getJsonpData : getData);
+
+  console.log(options.reportDate, taskName);
+  let datas = await options.get(options);
+  console.log(options.reportDate, taskName, datas.length);
+
+  for (let k = 0; k < datas.length; k++) {
+    datas[k] = _.mapValues(datas[k], (e, ky) => {
+      if (ky.toUpperCase().endsWith("DATE") && e) {
+        return e.replace(/[T\s]00:00:00/, "");
+      }
+      if (e === "") return null;
+      return e;
+    });
+  }
+
+  let model = await ifNoExistGenModel(
+    datas,
+    options.tableName,
+    options.keymap,
+    options.pks || [
+      "SECURITY_CODE",
+      "REPORT_DATE",
+      "REPORTDATE",
+      "code",
+      "NoticeDate",
+    ],
+    taskName
+  );
+
+  try {
+    await model.bulkCreate(datas, {
+      updateOnDuplicate: Object.keys(datas[0]),
+    });
+  } catch (ee) {
+    console.error(options.tableName);
+    console.error(ee);
+    return;
+  }
+}
+
 (async () => {
   let reportDates = ["2020-09-30", "2020-06-30", "2020-03-31", "2019-12-31"];
   for (const reportDate of reportDates) {
@@ -96,47 +141,12 @@ async function getData(options) {
       let options = JOB_MAP[k];
       if (k != "公告") continue;
       if (options.onece && reportDates.indexOf(reportDate) > 0) continue;
-      options.get = options.get || (options.jsonp ? getJsonpData : getData);
 
-      options.today = "2020-10-22";
-      options.reportDate = reportDate;
-      console.log(reportDate, k);
-      let datas = await options.get(options);
-      console.log(reportDate, k, datas.length);
+      await AsyncQueue.exec(k, async () => {
+        task(k, { today: "2020-10-22", reportDate: reportDate });
+      });
 
-      for (let k = 0; k < datas.length; k++) {
-        datas[k] = _.mapValues(datas[k], (e, ky) => {
-          if (ky.toUpperCase().endsWith("DATE") && e) {
-            return e.replace(/[T\s]00:00:00/, "");
-          }
-          if (e === "") return null;
-          return e;
-        });
-      }
-
-      let model = await ifNoExistGenModel(
-        datas,
-        options.tableName,
-        options.keymap,
-        options.pks || [
-          "SECURITY_CODE",
-          "REPORT_DATE",
-          "REPORTDATE",
-          "code",
-          "NoticeDate",
-        ],
-        k
-      );
-
-      try {
-        await model.bulkCreate(datas, {
-          updateOnDuplicate: Object.keys(datas[0]),
-        });
-      } catch (ee) {
-        console.error(options.tableName);
-        console.error(ee);
-        return;
-      }
+      //await task(k, { today: "2020-10-22", reportDate: reportDate });
     }
   }
 

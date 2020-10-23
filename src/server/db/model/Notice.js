@@ -17,7 +17,7 @@ const { Model, DataTypes } = require("sequelize");
         "unique": "index_unique"
     },
     "title": {
-        "type": DataTypes.STRING(100)
+        "type": DataTypes.STRING(110)
     },
     "short_name": {
         "type": DataTypes.STRING(10)

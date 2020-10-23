@@ -1,5 +1,4 @@
 import { JOB_MAP } from "./worker";
-import { getLastReportDate, prevReportDate } from "../lib/util";
 import axios from "axios";
 import iconv from "iconv-lite";
 import _ from "lodash";
@@ -76,7 +75,6 @@ async function getData(options) {
     if (!d.pages) break;
     pages = d.pages || d.result.pages;
   }
-  console.log(arr);
   if (options.mapValues) {
     arr = options.mapValues(arr);
   } else {
@@ -101,7 +99,7 @@ async function task(taskName, option = {}) {
 
   for (let k = 0; k < datas.length; k++) {
     datas[k] = _.mapValues(datas[k], (e, ky) => {
-      if (ky.toUpperCase().endsWith("DATE") && e) {
+      if (ky.toUpperCase().endsWith("DATE") && _.isString(e)) {
         return e.replace(/[T\s]00:00:00/, "");
       }
       if (e === "") return null;
@@ -134,19 +132,30 @@ async function task(taskName, option = {}) {
   }
 }
 
+var CronJob = require("cron").CronJob;
+
 (async () => {
-  let reportDates = ["2020-09-30", "2020-06-30", "2020-03-31", "2019-12-31"];
-  for (const reportDate of reportDates) {
-    for (let k in JOB_MAP) {
-      let options = JOB_MAP[k];
-      if (k != "公告") continue;
-      if (options.onece && reportDates.indexOf(reportDate) > 0) continue;
-
-      await AsyncQueue.exec(k, async () => {
-        task(k, { today: "2020-10-22", reportDate: reportDate });
-      });
-
-      //await task(k, { today: "2020-10-22", reportDate: reportDate });
+  for (let k in JOB_MAP) {
+    let job = JOB_MAP[k];
+    if (job._cronTime)
+      new CronJob(
+        job._cronTime,
+        function() {
+          let options = (job.getOptions && job.getOptions()) || [{}];
+          for (let option of options) {
+            AsyncQueue.exec(k, async () => {
+              task(k, option);
+            });
+          }
+        },
+        null,
+        true
+      );
+    else {
+      let options = (job.getOptions && job.getOptions()) || [{}];
+      for (let option of options) {
+        await task(k, option);
+      }
     }
   }
 

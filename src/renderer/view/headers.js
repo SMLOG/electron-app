@@ -175,7 +175,10 @@ export let headers = [
     prop: "业绩_净资产收益率",
     type: "number",
     click: (item, event, openlink) => {
-      let url = `/f10/NewFinanceAnalysis/Index?type=web&code={{item.code}}#dbfx-0`;
+      let url = `http://data.eastmoney.com/stockdata/${item.code.replace(
+        /[a-z]+/g,
+        ""
+      )}.html`;
       openlink(item, event, url);
     },
   },

@@ -53,7 +53,14 @@ export let headers = [
     label: "披露日期",
     prop: "ACTUAL_PUBLISH_DATE",
     type: "string",
-
+    click: (item, event, openlink) => {
+      openlink(item, event, (item) => {
+        return `http://data.eastmoney.com/stockcalendar/${item.code.replace(
+          /[a-z]+/g,
+          ""
+        )}.html`;
+      });
+    },
     fmt: (e, item) => {
       let date = item.ACTUAL_PUBLISH_DATE;
       if (date) {
@@ -175,11 +182,15 @@ export let headers = [
     prop: "业绩_净资产收益率",
     type: "number",
     click: (item, event, openlink) => {
-      let url = `http://data.eastmoney.com/stockdata/${item.code.replace(
-        /[a-z]+/g,
-        ""
-      )}.html`;
-      openlink(item, event, url);
+      openlink(
+        item,
+        event,
+        (item) =>
+          `http://data.eastmoney.com/stockdata/${item.code.replace(
+            /[a-z]+/g,
+            ""
+          )}.html`
+      );
     },
   },
 

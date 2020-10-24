@@ -87,6 +87,7 @@ import { filters, getCheckFilters, afilters } from "@/lib/filters";
 import { callFun } from "@/lib/tech-manager";
 import moment from "moment";
 
+import _ from "lodash";
 import $ from "jquery";
 window.$ = $;
 
@@ -100,7 +101,7 @@ export default {
     };
   },
   props: {
-    link: String,
+    link: [String, Function],
     item: Object,
     dBclick: Function,
     updateLink: Function,
@@ -176,7 +177,9 @@ export default {
   methods: {
     openlink(item, link) {
       if (item && link) {
-        let url = link.replace("{{code}}", this.item.code);
+        let url = _.isFunction(link)
+          ? link(item)
+          : link.replace("{{code}}", this.item.code);
         this.src = "about:_blank";
         setTimeout(() => {
           this.src = url;

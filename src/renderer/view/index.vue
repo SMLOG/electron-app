@@ -94,73 +94,101 @@
           @update="dragEnd"
           tag="tbody"
         >
-          <tr
-            :id="'r' + item.code"
-            class="item"
-            v-for="(item, index) in filteredItems"
-            :key="item.code"
-            :class="{ openlink: openCode === item.code }"
-            @contextmenu="contentMenuTargetItem = item"
-          >
-            <td class="firstCol">
-              <div class="first">
-                <span>
-                  <a
-                    class="post_bt"
-                    :name="item.code"
-                    @click="showComments(item)"
-                    >{{ index + 1 }}</a
-                  >
-                </span>
-                <span>
-                  <a class="action" @click="removeItem(item)">x</a>
-                </span>
-                <span>
-                  <input
-                    type="checkbox"
-                    v-model="item.isFocus"
-                    @change="saveItem(item)"
-                  />
-                </span>
-                <div
-                  :title="item.code"
-                  style="display: inline-block"
-                  :class="{
-                    link: true,
-                    blink: item._S,
-                  }"
-                >
-                  <span :class="{ sz: item.mk == 'sz' }">
-                    <a
-                      @click="
-                        openlink(item, $event, `/static/tech.html?{{code}}&kd`)
-                      "
-                      :id="item.code"
-                      >{{ item.name }}</a
-                    >
-                    <b
-                      :class="{ up: item.lb > 1, down: item.lb < 1 }"
-                      @click="selectItem(item)"
-                    >
-                      {{ item.lb }}
-                    </b>
-                  </span>
-                </div>
-              </div>
-            </td>
-
-            <td
-              v-for="(col, ci) in headers"
-              :key="col.prop"
-              :class="getclass(col, item, item[col.prop])"
-              :title="col.title && col.title(item)"
-              @click="col.click && col.click(item, $event, openlink, getThis)"
-              @mouseover="cellOver($event, item, ci)"
-              @mouseout="cellOut($event, item, ci)"
+          <template v-for="(item, index) in filteredItems">
+            <tr
+              :id="'r' + item.code"
+              class="item"
+              :key="item.code"
+              :class="{ openlink: openCode === item.code }"
+              @contextmenu="contentMenuTargetItem = item"
             >
-              {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
-            </td>
-          </tr>
+              <td class="firstCol">
+                <div class="first">
+                  <span>
+                    <a
+                      class="post_bt"
+                      :name="item.code"
+                      @click="showComments(item)"
+                      >{{ index + 1 }}</a
+                    >
+                  </span>
+                  <span>
+                    <a class="action" @click="removeItem(item)">x</a>
+                  </span>
+                  <span>
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveItem(item)"
+                    />
+                  </span>
+                  <div
+                    :title="item.code"
+                    style="display: inline-block"
+                    :class="{
+                      link: true,
+                      blink: item._S,
+                    }"
+                  >
+                    <span :class="{ sz: item.mk == 'sz' }">
+                      <a
+                        @click="
+                          openlink(
+                            item,
+                            $event,
+                            `/static/tech.html?{{code}}&kd`
+                          )
+                        "
+                        :id="item.code"
+                        >{{ item.name }}</a
+                      >
+                      <b
+                        :class="{ up: item.lb > 1, down: item.lb < 1 }"
+                        @click="selectItem(item)"
+                      >
+                        {{ item.lb }}
+                      </b>
+                    </span>
+                  </div>
+                </div>
+              </td>
+
+              <td
+                v-for="(col, ci) in headers"
+                :key="col.prop"
+                :class="getclass(col, item, item[col.prop])"
+                :title="col.title && col.title(item)"
+                @click="col.click && col.click(item, $event, openlink, getThis)"
+                @mouseover="cellOver($event, item, ci)"
+                @mouseout="cellOut($event, item, ci)"
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
+            </tr>
+            <tr
+              v-for="item2 in yjitems[item.code] || []"
+              :id="'r' + item2.yj_id"
+              class="item"
+              :key="item.code + item2.yj_id"
+              v-if="item.REPORTDATE != item2.REPORTDATE"
+            >
+              <td class="firstCol"></td>
+
+              <td
+                v-for="col in headers"
+                :key="col.prop"
+                :class="getclass(col, item2, item2[col.prop])"
+                :title="col.title && col.title(item2)"
+                @click="
+                  col.click && col.click(item2, $event, openlink, getThis)
+                "
+              >
+                {{
+                  col.fmt ? col.fmt(item2[col.prop], item2) : item2[col.prop]
+                }}
+              </td>
+            </tr>
+          </template>
         </draggable>
       </table>
     </div>
@@ -195,6 +223,7 @@ import HQ from "@/view/components/hq/HQ";
 import Title from "@/view/components/title/Title";
 import ContextMenu from "@/view/components/ContextMenu";
 
+import axios from "axios";
 import $ from "jquery";
 window.$ = $;
 let unTitlteTimer = 0;
@@ -204,6 +233,7 @@ export default {
       contextMenuTarget: document.body,
       contentMenuTargetItem: null,
       contextMenuVisible: false,
+      yjitems: {},
       cats: {
         海选: {
           is_search: true,

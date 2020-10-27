@@ -1,107 +1,134 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
-const { sequelize: db } = require("../db");
-/*行情*/
-class Hq extends Model {}
-Hq.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+const { Model, DataTypes } = require("sequelize");
+    const { sequelize: db } = require("../db");
+  /*行情*/
+    class Hq extends Model {}
+    Hq.init(
+      {
+    "hq_id": {
+        "type": DataTypes.INTEGER,
+        "autoIncrement": true,
+        "primaryKey": true
     },
-    code: {
-      type: DataTypes.STRING(10),
-      unique: "index_unique",
+    "code": {
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "code"
     },
-    name: {
-      type: DataTypes.STRING(10),
+    "name": {
+        "type": DataTypes.STRING(10),
+        "field": "name"
     },
-    now: {
-      type: DataTypes.DOUBLE,
+    "now": {
+        "type": DataTypes.DOUBLE,
+        "field": "now"
     },
-    close: {
-      type: DataTypes.DOUBLE,
+    "close": {
+        "type": DataTypes.DOUBLE,
+        "field": "close"
     },
-    changePV: {
-      type: DataTypes.DOUBLE,
+    "changePV": {
+        "type": DataTypes.DOUBLE,
+        "field": "changePV"
     },
-    changeP: {
-      type: DataTypes.STRING(10),
+    "changeP": {
+        "type": DataTypes.STRING(10),
+        "field": "changeP"
     },
-    changeV: {
-      type: DataTypes.DOUBLE,
+    "changeV": {
+        "type": DataTypes.DOUBLE,
+        "field": "changeV"
     },
-    change: {
-      type: DataTypes.DOUBLE,
+    "change": {
+        "type": DataTypes.DOUBLE,
+        "field": "change"
     },
-    open: {
-      type: DataTypes.DOUBLE,
+    "open": {
+        "type": DataTypes.DOUBLE,
+        "field": "open"
     },
-    preClose: {
-      type: DataTypes.DOUBLE,
+    "preclose": {
+        "type": DataTypes.DOUBLE,
+        "field": "preclose"
     },
-    preclose: {
-      type: DataTypes.DOUBLE,
+    "turnover": {
+        "type": DataTypes.DOUBLE,
+        "field": "turnover"
     },
-    turnover: {
-      type: DataTypes.DOUBLE,
+    "pe": {
+        "type": DataTypes.DOUBLE,
+        "field": "pe"
     },
-    pe: {
-      type: DataTypes.DOUBLE,
+    "pe_ttm": {
+        "type": DataTypes.DOUBLE,
+        "field": "pe_ttm"
     },
-    lb: {
-      type: DataTypes.STRING(10),
+    "volume": {
+        "type": DataTypes.DOUBLE,
+        "field": "volume"
     },
-    pe_ttm: {
-      type: DataTypes.DOUBLE,
+    "ltg": {
+        "type": DataTypes.DOUBLE,
+        "field": "ltg"
     },
-    volume: {
-      type: DataTypes.DOUBLE,
+    "amount": {
+        "type": DataTypes.DOUBLE,
+        "field": "amount"
     },
-    ltg: {
-      type: DataTypes.DOUBLE,
+    "high": {
+        "type": DataTypes.DOUBLE,
+        "field": "high"
     },
-    amount: {
-      type: DataTypes.DOUBLE,
+    "zf": {
+        "type": DataTypes.DOUBLE,
+        "field": "zf"
     },
-    high: {
-      type: DataTypes.DOUBLE,
+    "low": {
+        "type": DataTypes.DOUBLE,
+        "field": "low"
     },
-    zf: {
-      type: DataTypes.DOUBLE,
+    "zsz": {
+        "type": DataTypes.DOUBLE,
+        "field": "zsz"
     },
-    low: {
-      type: DataTypes.DOUBLE,
+    "lz": {
+        "type": DataTypes.DOUBLE,
+        "field": "lz"
     },
-    zsz: {
-      type: DataTypes.DOUBLE,
+    "avg": {
+        "type": DataTypes.DOUBLE,
+        "field": "avg"
     },
-    lz: {
-      type: DataTypes.DOUBLE,
+    "zf60": {
+        "type": DataTypes.DOUBLE,
+        "field": "zf60"
     },
-    avg: {
-      type: DataTypes.DOUBLE,
+    "zf250": {
+        "type": DataTypes.DOUBLE,
+        "field": "zf250"
     },
-    zf60: {
-      type: DataTypes.DOUBLE,
+    "firstDay": {
+        "type": DataTypes.DOUBLE,
+        "field": "firstDay"
     },
-    zf250: {
-      type: DataTypes.DOUBLE,
+    "hy": {
+        "type": DataTypes.STRING(10),
+        "field": "hy"
     },
-    firstDay: {
-      type: DataTypes.DOUBLE,
+    "date": {
+        "type": DataTypes.DATE,
+        "field": "date"
     },
-    hy: {
-      type: DataTypes.STRING(10),
-    },
-    date: {
-      type: DataTypes.DATE,
-    },
-  },
-  {
-    sequelize: db,
-    charset: "utf8",
-    modelName: "hq",
-  }
-);
-module.exports = Hq;
+    "lb": {
+        "type": DataTypes.DOUBLE,
+        "field": "lb"
+    }
+}
+    ,
+      {
+        sequelize: db,
+        charset: 'utf8',
+        modelName: "hq",
+      }
+    );
+    module.exports = Hq;
+    

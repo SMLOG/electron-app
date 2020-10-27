@@ -2,7 +2,7 @@ import _ from "lodash";
 import fs from "fs";
 const { sequelize: db } = require("./db");
 
-export function genModel(rows, tab, displayFieldMap, u, comment = "") {
+export function genModel(rows, tab, displayFieldMap = {}, u, comment = "") {
   let res = {};
 
   let sampleRow = rows.reduce((map, data) => {
@@ -13,9 +13,9 @@ export function genModel(rows, tab, displayFieldMap, u, comment = "") {
       }
     }
     return map;
-  }, {});
+  }, _.cloneDeep(rows[0]));
 
-  res["id"] = {
+  res[tab.toLowerCase() + "_id"] = {
     type: "DataTypes.INTEGER",
     autoIncrement: true,
     primaryKey: true,
@@ -28,7 +28,7 @@ export function genModel(rows, tab, displayFieldMap, u, comment = "") {
       unique: "index_unique",
     };
   }
-
+  console.log(sampleRow);
   for (let field in sampleRow) {
     let f = (res[field] = {});
     let display = displayFieldMap[field];
@@ -36,6 +36,9 @@ export function genModel(rows, tab, displayFieldMap, u, comment = "") {
       f.display = display;
     }
 
+    if (_.isEmpty(sampleRow[field])) {
+      console.log(sampleRow);
+    }
     let len = sampleRow[field].length;
     if (
       sampleRow[field] * 1 == sampleRow[field] &&
@@ -51,8 +54,9 @@ export function genModel(rows, tab, displayFieldMap, u, comment = "") {
         10,
         sampleRow[field] && Math.round(Math.ceil(len / 10)) * 10
       )})`;
-    if (!field.match(/[a-z]/)) f["field"] = field;
     if (u.indexOf(field) > -1) f["unique"] = "index_unique";
+
+    f["field"] = field;
   }
   let attrs = JSON.stringify(res, null, 4).replace(/"(DataTypes.*?)"/g, "$1");
   let cls = tab[0].toUpperCase() + tab.substring(1);

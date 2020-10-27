@@ -1,19 +1,19 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
   /*业绩预告*/
     class Yjyg extends Model {}
     Yjyg.init(
       {
-    "id": {
+    "yjyg_id": {
         "type": DataTypes.INTEGER,
         "autoIncrement": true,
         "primaryKey": true
     },
     "SECURITY_CODE": {
         "display": "代码",
-        "type": DataTypes.DOUBLE,
-        "field": "SECURITY_CODE",
-        "unique": "index_unique"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "SECURITY_CODE"
     },
     "SECURITY_NAME_ABBR": {
         "display": "名称",
@@ -22,13 +22,13 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "NOTICE_DATE": {
         "display": "公告日期",
-        "type": DataTypes.STRING(19),
+        "type": DataTypes.STRING(10),
         "field": "NOTICE_DATE"
     },
     "REPORTDATE": {
-        "type": DataTypes.STRING(19),
-        "field": "REPORTDATE",
-        "unique": "index_unique"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "REPORTDATE"
     },
     "FORECASTL": {
         "display": "预计净利润",
@@ -49,7 +49,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "INCREASET"
     },
     "FORECASTCONTENT": {
-        "type": DataTypes.STRING(98),
+        "type": DataTypes.STRING(100),
         "field": "FORECASTCONTENT"
     },
     "CHANGEREASONDSCRPT": {
@@ -71,7 +71,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "TRADE_MARKET"
     },
     "TRADE_MARKET_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(20),
         "field": "TRADE_MARKET_CODE"
     },
     "SECURITY_TYPE": {
@@ -79,7 +79,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "SECURITY_TYPE"
     },
     "SECURITY_TYPE_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "SECURITY_TYPE_CODE"
     },
     "PUBLISHNAME": {
@@ -87,7 +87,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "PUBLISHNAME"
     },
     "ORG_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(20),
         "field": "ORG_CODE"
     },
     "INCREASEJZ": {
@@ -108,7 +108,8 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "code": {
         "type": DataTypes.STRING(10),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "code"
     }
 }
     ,

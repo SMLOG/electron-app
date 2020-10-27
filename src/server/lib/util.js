@@ -15,3 +15,14 @@ export function prevReportDate(date = new Date()) {
   rd.setMonth(rd.getMonth() - 3);
   return getLastReportDate(rd);
 }
+
+export function getLastNReportDates(n) {
+  let ret = [];
+  let rd = new Date();
+  for (let i = 0; i < n; i++) {
+    rd.setMonth(rd.getMonth() - 3);
+    let reportDate = getLastReportDate(rd);
+    ret.push(reportDate);
+  }
+  return ret;
+}

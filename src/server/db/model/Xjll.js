@@ -1,59 +1,59 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
   /*现金流量表*/
     class Xjll extends Model {}
     Xjll.init(
       {
-    "id": {
+    "xjll_id": {
         "type": DataTypes.INTEGER,
         "autoIncrement": true,
         "primaryKey": true
     },
     "SECUCODE": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.STRING(10),
         "field": "SECUCODE"
     },
     "SECURITY_CODE": {
         "display": "代码",
-        "type": DataTypes.DOUBLE,
-        "field": "SECURITY_CODE",
-        "unique": "compositeIndex"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "SECURITY_CODE"
     },
     "INDUSTRY_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "INDUSTRY_CODE"
     },
     "ORG_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(20),
         "field": "ORG_CODE"
     },
     "SECURITY_NAME_ABBR": {
         "display": "名称",
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.STRING(10),
         "field": "SECURITY_NAME_ABBR"
     },
     "INDUSTRY_NAME": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.STRING(10),
         "field": "INDUSTRY_NAME"
     },
     "MARKET": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.STRING(10),
         "field": "MARKET"
     },
     "SECURITY_TYPE_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "SECURITY_TYPE_CODE"
     },
     "TRADE_MARKET_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(20),
         "field": "TRADE_MARKET_CODE"
     },
     "DATE_TYPE_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "DATE_TYPE_CODE"
     },
     "REPORT_TYPE_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "REPORT_TYPE_CODE"
     },
     "DATA_STATE": {
@@ -62,13 +62,13 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "NOTICE_DATE": {
         "display": "公告日期",
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.STRING(10),
         "field": "NOTICE_DATE"
     },
     "REPORT_DATE": {
-        "type": DataTypes.STRING(20),
-        "field": "REPORT_DATE",
-        "unique": "compositeIndex"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "REPORT_DATE"
     },
     "NETCASH_OPERATE": {
         "display": "经营性现金流现金流量净额(元)",
@@ -143,80 +143,81 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "CCE_ADD_RATIO"
     },
     "CUSTOMER_DEPOSIT_ADD": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "CUSTOMER_DEPOSIT_ADD"
     },
     "CDA_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "CDA_RATIO"
     },
     "DEPOSIT_IOFI_OTHER": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "DEPOSIT_IOFI_OTHER"
     },
     "DIO_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "DIO_RATIO"
     },
     "LOAN_ADVANCE_ADD": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "LOAN_ADVANCE_ADD"
     },
     "LAA_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "LAA_RATIO"
     },
     "RECEIVE_INTEREST_COMMISSION": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "RECEIVE_INTEREST_COMMISSION"
     },
     "RIC_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "RIC_RATIO"
     },
     "INVEST_PAY_CASH": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "INVEST_PAY_CASH"
     },
     "IPC_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "IPC_RATIO"
     },
     "BEGIN_CCE": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "BEGIN_CCE"
     },
     "BEGIN_CCE_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "BEGIN_CCE_RATIO"
     },
     "END_CCE": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "END_CCE"
     },
     "END_CCE_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "END_CCE_RATIO"
     },
     "RECEIVE_ORIGIC_PREMIUM": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "RECEIVE_ORIGIC_PREMIUM"
     },
     "ROP_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "ROP_RATIO"
     },
     "PAY_ORIGIC_COMPENSATE": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "PAY_ORIGIC_COMPENSATE"
     },
     "POC_RATIO": {
-        "type": DataTypes.STRING(20),
+        "type": DataTypes.DOUBLE,
         "field": "POC_RATIO"
     },
     "code": {
-        "type": DataTypes.STRING(20),
-        "unique": "compositeIndex"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "code"
     }
 }
     ,

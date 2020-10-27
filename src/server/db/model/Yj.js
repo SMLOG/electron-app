@@ -1,19 +1,19 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 const { sequelize: db } = require("../db");
 /*业绩*/
 class Yj extends Model {}
 Yj.init(
   {
-    id: {
+    yj_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     SECURITY_CODE: {
       display: "代码",
-      type: DataTypes.DOUBLE,
-      field: "SECURITY_CODE",
+      type: DataTypes.STRING(10),
       unique: "index_unique",
+      field: "SECURITY_CODE",
     },
     SECURITY_NAME_ABBR: {
       display: "名称",
@@ -21,7 +21,7 @@ Yj.init(
       field: "SECURITY_NAME_ABBR",
     },
     TRADE_MARKET_CODE: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.STRING(20),
       field: "TRADE_MARKET_CODE",
     },
     TRADE_MARKET: {
@@ -29,7 +29,7 @@ Yj.init(
       field: "TRADE_MARKET",
     },
     SECURITY_TYPE_CODE: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.STRING(10),
       field: "SECURITY_TYPE_CODE",
     },
     SECURITY_TYPE: {
@@ -38,13 +38,13 @@ Yj.init(
     },
     UPDATE_DATE: {
       display: "公告日期",
-      type: DataTypes.STRING(19),
+      type: DataTypes.STRING(10),
       field: "UPDATE_DATE",
     },
     REPORTDATE: {
-      type: DataTypes.STRING(19),
-      field: "REPORTDATE",
+      type: DataTypes.STRING(10),
       unique: "index_unique",
+      field: "REPORTDATE",
     },
     BASIC_EPS: {
       display: "每股收益",
@@ -52,7 +52,7 @@ Yj.init(
       field: "BASIC_EPS",
     },
     DEDUCT_BASIC_EPS: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.DOUBLE,
       field: "DEDUCT_BASIC_EPS",
     },
     TOTAL_OPERATE_INCOME: {
@@ -107,11 +107,11 @@ Yj.init(
     },
     ASSIGNDSCRPT: {
       display: "利润分配",
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(50),
       field: "ASSIGNDSCRPT",
     },
     PAYYEAR: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.DOUBLE,
       field: "PAYYEAR",
     },
     PUBLISHNAME: {
@@ -124,11 +124,11 @@ Yj.init(
       field: "ZXGXL",
     },
     NOTICE_DATE: {
-      type: DataTypes.STRING(19),
+      type: DataTypes.STRING(10),
       field: "NOTICE_DATE",
     },
     ORG_CODE: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.STRING(20),
       field: "ORG_CODE",
     },
     TRADE_MARKET_ZJG: {
@@ -156,7 +156,7 @@ Yj.init(
       field: "DATEMMDD",
     },
     EITIME: {
-      type: DataTypes.STRING(19),
+      type: DataTypes.STRING(20),
       field: "EITIME",
     },
     SECUCODE: {
@@ -166,6 +166,7 @@ Yj.init(
     code: {
       type: DataTypes.STRING(10),
       unique: "index_unique",
+      field: "code",
     },
   },
   {
@@ -174,4 +175,12 @@ Yj.init(
     modelName: "yj",
   }
 );
+
+let fields = [];
+for (var i in Yj.rawAttributes)
+  fields.push(`{
+    label: "${Yj.rawAttributes[i].display || Yj.rawAttributes[i].field}",
+    prop: "${Yj.rawAttributes[i].field}",
+  }`);
+console.error(fields.join(",\n"));
 module.exports = Yj;

@@ -15,7 +15,6 @@ const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
 
 const URL = require("url");
-require("./jobs/index");
 
 function proxyContentReplace(baseUrl, content) {
   return content.replace(/(<(\S+)(\s.*?)(src|href)=")(.*?)"/gi, function() {

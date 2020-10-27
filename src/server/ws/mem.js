@@ -3,7 +3,10 @@ import { CONFIG_DIR } from "../config";
 import { attachExtractInfoToItems } from "../helper";
 import { buildFilters } from "../TechMan";
 import { inds, hx } from "./HQws";
-
+import { emitter } from "../jobs/jobIndex";
+import My from "../db/model/My";
+import { db } from "../db/db";
+import _ from "lodash";
 import fs from "fs";
 const sleep = (t) => new Promise((res, rej) => setTimeout(res, t));
 
@@ -40,7 +43,13 @@ export function initmem(io) {
     setTimeout(() => {
       (async () => {
         console.error("initmem");
-        cats["自选"].items = await getMyList();
+        // cats["自选"].items = await getMyList();
+        cats[
+          "自选"
+        ].items = await db.query(
+          `select * from my a left join gzview b on b.code=a.code `,
+          { type: db.QueryTypes.SELECT }
+        );
         socket.emit("mylist", cats["自选"].items);
         socket.emit("filters", Object.keys(filters));
         updateFiltersCount();
@@ -62,6 +71,7 @@ export function initmem(io) {
           socket.emit("filtersCount", filtersCount);
           socket.emit("countMap", countMap);
           socket.emit("addItem", item);
+          My.create(item);
         }
       })();
     });
@@ -70,6 +80,10 @@ export function initmem(io) {
       (async () => {
         cats["自选"].items = items;
         fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
+        await My.destroy({ where: {}, truncate: true });
+        items = items.map((e) => ((e.id = null), e));
+        console.log(items);
+        await My.bulkCreate(items);
       })();
     });
     socket.on("removeItem", (item) => {
@@ -86,8 +100,13 @@ export function initmem(io) {
           socket.emit("countMap", countMap);
           socket.emit("removeItem", item);
         }
+        await My.destroy({ where: { code: [item.code] } });
       })();
     });
+  });
+
+  emitter.addListener("hx", function(datas) {
+    console.log("emitter", datas);
   });
 
   setInterval(() => {

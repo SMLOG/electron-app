@@ -5,6 +5,7 @@ const Zcfzb = require("../db/model/Zcfzb");
 const Xjllb = require("../db/model/Xjllb");
 const Zyzb = require("../db/model/Zyzb");
 const Dbfx = require("../db/model/Dbfx");
+const Yj = require("../db/model/Yj");
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -50,6 +51,12 @@ module.exports = {
       },
       order: [["reportDate", "DESC"]],
     });
+    ctx.body = data;
+  },
+  yjlist: async (ctx) => {
+    let code = ctx.query.code;
+
+    let data = await Yj.findAll({ where: { code: code } });
     ctx.body = data;
   },
 };

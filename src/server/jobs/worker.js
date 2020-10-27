@@ -5,7 +5,11 @@ import _ from "lodash";
 import { decompressToMapList } from "../lib/keymap";
 import { getList } from "../TechMan";
 import { ifNoExistGenModel } from "../db/utils";
-import { getLastReportDate, prevReportDate } from "../lib/util";
+import {
+  getLastReportDate,
+  prevReportDate,
+  getLastNReportDates,
+} from "../lib/util";
 
 const defGetOptions = function(k) {
   return [
@@ -14,6 +18,32 @@ const defGetOptions = function(k) {
   ];
 };
 export const JOB_MAP = {
+  自选: {
+    key: "code",
+    tableName: "my",
+    pks: ["code"],
+    enable: false,
+    get: function(options) {
+      return [{ code: "sh6000001" }];
+    },
+  },
+  job: {
+    tableName: "job",
+    pks: ["jobname"],
+    enable: false,
+    get: function(options) {
+      return [{ jobname: "sh6000001", runtime: new Date(), status: 0 }];
+    },
+  },
+  大事: {
+    key: "gpdm",
+    tableName: "event",
+    pks: ["gpdm", "sjlxz", "rq"],
+    jsonp: "jsonp",
+    enable: false,
+    url:
+      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=GGSJ20_ZDGZ&token=70f12f2f4f091e459a279469fe49eca5&st=rq&sr=-1&ps=500&p={page}&filter=(rq%3E=^2019-10-24^%20and%20rq%3C=^2021-4-24^)&callback={jsonp}&_=1603546180276",
+  },
   预约披露日期列表: {
     alias: "预披露日",
     file: "job-yy预约披露日期列表.json",
@@ -21,6 +51,7 @@ export const JOB_MAP = {
     tableName: "yyplrq",
     enable: true,
     getOptions: defGetOptions,
+
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -37,7 +68,10 @@ export const JOB_MAP = {
     key: "SECURITY_CODE",
     tableName: "yj",
     enable: true,
-    getOptions: defGetOptions,
+    getOptions: () =>
+      getLastNReportDates(1).map((e) => {
+        return { reportDate: e };
+      }),
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -267,6 +301,7 @@ export const JOB_MAP = {
   公告: {
     file: "job-gg.json",
     key: "stock_code",
+    _cronTime: "0 0 9 * * *",
     tableName: "notice",
     pks: ["ann_type", "stock_code", "art_code"],
     enable: true,
@@ -289,7 +324,8 @@ export const JOB_MAP = {
     key: "code",
     tableName: "hq",
     pks: ["code"],
-    _cronTime: "*/1 * 9-12 * * *",
+    minTime: 30000000,
+    enable: true,
     get: async function(options) {
       let rows = await getList();
 
@@ -309,7 +345,8 @@ export const JOB_MAP = {
 };
 
 /*(async () => {
-  await JOB_MAP["行情"].get();
+  let datas = await JOB_MAP["行情"].get();
+  console.log(datas);
 })();*/
 export function load(type) {
   let file = `${CONFIG_DIR}/${type.file}`;

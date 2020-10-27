@@ -4,40 +4,49 @@ const { Model, DataTypes } = require("sequelize");
     class Notice extends Model {}
     Notice.init(
       {
-    "id": {
+    "notice_id": {
         "type": DataTypes.INTEGER,
         "autoIncrement": true,
         "primaryKey": true
     },
     "notice_date": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "notice_date"
     },
     "art_code": {
         "type": DataTypes.STRING(20),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "art_code"
     },
     "title": {
-        "type": DataTypes.STRING(110)
+        "type": DataTypes.STRING(100),
+        "field": "title"
     },
     "short_name": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "short_name"
     },
     "market_code": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "market_code"
     },
     "ann_type": {
         "type": DataTypes.STRING(20),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "ann_type"
     },
     "stock_code": {
         "type": DataTypes.STRING(10),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "stock_code"
     },
     "column_code": {
-        "type": DataTypes.STRING(30)
+        "type": DataTypes.STRING(30),
+        "field": "column_code"
     },
     "column_name": {
-        "type": DataTypes.STRING(20)
+        "type": DataTypes.STRING(20),
+        "field": "column_name"
     }
 }
     ,

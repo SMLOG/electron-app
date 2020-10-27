@@ -1,7 +1,21 @@
 import { getLastReportDate, dateFormat } from "../lib/utils";
 import { getFields } from "../store/modules/suspension";
-
+import _ from "lodash";
+import axios from "axios";
 const reportDate = getLastReportDate();
+const fmtNumber = function(value) {
+  if (_.isNumber(value)) {
+    let abs = Math.abs(value);
+    let r =
+      abs > 100000000
+        ? (value / 100000000).toFixed(2) + "亿"
+        : abs > 10000
+        ? (value / 10000).toFixed(2) + "万"
+        : value.toFixed(2);
+    return r;
+  }
+  return value;
+};
 const fmtPercent = (value) => {
   if (value) return parseFloat(value).toFixed(2) + "%";
   return value;
@@ -22,7 +36,7 @@ export let headers = [
     label: "Now",
     prop: "now",
     type: "number",
-    fmt: (e, item) => `${e}(${item.changeP})`,
+    fmt: (e, item) => (e ? `${e}(${item.changeP})` : "--"),
     class: (item) => {
       return {
         up: item.change > 0,
@@ -51,7 +65,7 @@ export let headers = [
   },
   {
     label: "披露日期",
-    prop: "ACTUAL_PUBLISH_DATE",
+    prop: "discloseDate",
     type: "string",
     click: (item, event, openlink) => {
       openlink(item, event, (item) => {
@@ -60,14 +74,6 @@ export let headers = [
           ""
         )}.html`;
       });
-    },
-    fmt: (e, item) => {
-      let date = item.ACTUAL_PUBLISH_DATE;
-      if (date) {
-        item.ACTUAL_PUBLISH_DATE = dateFormat(new Date(date), "yyyy-MM-dd");
-      }
-
-      return item.ACTUAL_PUBLISH_DATE;
     },
   },
   {
@@ -96,7 +102,7 @@ export let headers = [
     label: "流/总",
     prop: "lz",
     type: "string",
-    fmt: (e, item) => `${e}/${item.zsz}`,
+    fmt: (e, item) => `${fmtNumber(e)}/${fmtNumber(item.zsz)}`,
   },
   {
     label: "TTM",
@@ -120,78 +126,6 @@ export let headers = [
     prop: "估值_PEG1",
     type: "number",
     fmt: (e) => e && e.toFixed(2),
-  },
-  {
-    label: "同比",
-    prop: "业绩_净利润同比增长",
-    type: "number",
-    fmt: (e, item) => e + "%(" + getReportSub(item) + ")",
-    class: (item, value) => {
-      return {
-        reportUpdate: item["报告"] == reportDate && true,
-        up: value > 0,
-        down: value < 0,
-      };
-    },
-    click: (item, event, openlink, getThis) => {
-      if (getThis) {
-        getThis((self) => {
-          self.togglePop(item, "FinAnalyst2", "fin");
-        });
-      }
-      //openlink(item, event, url);
-    },
-  },
-  {
-    label: "现金流",
-    prop: "业绩_每股现金流量",
-    type: "string",
-    click: (item, event, openlink) => {
-      let url = `/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
-      openlink(item, event, url);
-    },
-    fmt: (value, item) => {
-      if (value) return value.toFixed(2);
-      return "";
-    },
-    class: (item, value) => {
-      return {
-        link: true,
-        down: value < 0,
-        up: value > 0,
-      };
-    },
-  },
-  {
-    label: "每股收益",
-    prop: "业绩_每股收益",
-    type: "string",
-    title: (item) => {
-      return item.reportDate;
-    },
-    class: (item, value) => {
-      return {
-        link: true,
-        down: value < 0,
-        up: value > 0,
-      };
-    },
-  },
-  {
-    label: "ROE",
-    prop: "业绩_净资产收益率",
-    type: "number",
-    click: (item, event, openlink) => {
-      openlink(
-        item,
-        event,
-        (item) =>
-          `http://data.eastmoney.com/stockdata/${item.code.replace(
-            /[a-z]+/g,
-            ""
-          )}.html`
-      );
-    },
   },
 
   {
@@ -225,6 +159,183 @@ export let headers = [
     type: "number",
     fmt: (e, item) => e,
     title: (item) => item.score_desc,
+  },
+
+  {
+    label: "TRADE_MARKET_CODE",
+    prop: "TRADE_MARKET_CODE",
+  },
+  {
+    label: "TRADE_MARKET",
+    prop: "TRADE_MARKET",
+  },
+  {
+    label: "SECURITY_TYPE_CODE",
+    prop: "SECURITY_TYPE_CODE",
+  },
+  {
+    label: "SECURITY_TYPE",
+    prop: "SECURITY_TYPE",
+  },
+  {
+    label: "公告日期",
+    prop: "UPDATE_DATE",
+  },
+  {
+    label: "REPORTDATE",
+    prop: "REPORTDATE",
+    click: (item, event, openlink, getThis) => {
+      if (getThis) {
+        getThis((self) => {
+          if (self.yjitems[item.code]) self.yjitems[item.code] = null;
+          else
+            axios
+              .get("/api/yjlist", { params: { code: item.code } })
+              .then((resp) => {
+                //self.yjitems[item.code] = resp.data;
+                self.$set(self.yjitems, item.code, resp.data);
+                //console.error(self.yjitems);
+              });
+        });
+      }
+    },
+  },
+  {
+    label: "股收益",
+    prop: "BASIC_EPS",
+    fmt: fmtNumber,
+  },
+  {
+    label: "扣非每股",
+    prop: "DEDUCT_BASIC_EPS",
+    fmt: function(e) {
+      return e == null ? "--" : e.toFixed(2);
+    },
+  },
+  {
+    label: "营收",
+    prop: "TOTAL_OPERATE_INCOME",
+    fmt: fmtNumber,
+  },
+  {
+    label: "净利润",
+    prop: "PARENT_NETPROFIT",
+    fmt: fmtNumber,
+  },
+  {
+    label: "ROE",
+    prop: "WEIGHTAVG_ROE",
+    fmt: fmtPercent,
+    click: (item, event, openlink) => {
+      openlink(
+        item,
+        event,
+        (item) =>
+          `http://data.eastmoney.com/stockdata/${item.code.replace(
+            /[a-z]+/g,
+            ""
+          )}.html`
+      );
+    },
+  },
+  {
+    label: "营收同比",
+    prop: "YSTZ",
+    fmt: fmtPercent,
+  },
+  {
+    label: "净利同比",
+    prop: "SJLTZ",
+    fmt: fmtPercent,
+    click: (item, event, openlink, getThis) => {
+      if (getThis) {
+        getThis((self) => {
+          self.togglePop(item, "FinAnalyst2", "fin");
+        });
+      }
+      //openlink(item, event, url);
+    },
+  },
+  {
+    label: "每股净资产",
+    prop: "BPS",
+    fmt: fmtNumber,
+  },
+  {
+    label: "每股现金流量",
+    prop: "MGJYXJJE",
+    fmt: fmtNumber,
+    click: (item, event, openlink) => {
+      let url = `/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
+      openlink(item, event, url);
+    },
+  },
+  {
+    label: "销售毛利率",
+    prop: "XSMLL",
+    fmt: fmtPercent,
+  },
+  {
+    label: "季度环比增长",
+    prop: "YSHZ",
+    fmt: fmtPercent,
+  },
+  {
+    label: "季度环比增长",
+    prop: "SJLHZ",
+    fmt: fmtPercent,
+  },
+  {
+    label: "利润分配",
+    prop: "ASSIGNDSCRPT",
+  },
+  {
+    label: "PAYYEAR",
+    prop: "PAYYEAR",
+  },
+  {
+    label: "所属行业",
+    prop: "PUBLISHNAME",
+  },
+  {
+    label: "ZXGXL",
+    prop: "ZXGXL",
+  },
+  {
+    label: "NOTICE_DATE",
+    prop: "NOTICE_DATE",
+  },
+  {
+    label: "ORG_CODE",
+    prop: "ORG_CODE",
+  },
+  {
+    label: "TRADE_MARKET_ZJG",
+    prop: "TRADE_MARKET_ZJG",
+  },
+  {
+    label: "ISNEW",
+    prop: "ISNEW",
+  },
+  {
+    label: "QDATE",
+    prop: "QDATE",
+  },
+  {
+    label: "DATATYPE",
+    prop: "DATATYPE",
+  },
+  {
+    label: "DATAYEAR",
+    prop: "DATAYEAR",
+  },
+  {
+    label: "DATEMMDD",
+    prop: "DATEMMDD",
+  },
+  {
+    label: "EITIME",
+    prop: "EITIME",
   },
 ];
 

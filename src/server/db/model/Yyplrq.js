@@ -1,19 +1,19 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
     const { sequelize: db } = require("../db");
   /*预约披露日期列表*/
     class Yyplrq extends Model {}
     Yyplrq.init(
       {
-    "id": {
+    "yyplrq_id": {
         "type": DataTypes.INTEGER,
         "autoIncrement": true,
         "primaryKey": true
     },
     "SECURITY_CODE": {
         "display": "代码",
-        "type": DataTypes.DOUBLE,
-        "field": "SECURITY_CODE",
-        "unique": "index_unique"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "SECURITY_CODE"
     },
     "SECURITY_NAME_ABBR": {
         "display": "名称",
@@ -30,7 +30,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "FIRST_APPOINT_DATE": {
         "display": "首次预约时间",
-        "type": DataTypes.STRING(19),
+        "type": DataTypes.STRING(10),
         "field": "FIRST_APPOINT_DATE"
     },
     "FIRST_CHANGE_DATE": {
@@ -54,7 +54,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "ACTUAL_PUBLISH_DATE"
     },
     "SECURITY_TYPE_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(10),
         "field": "SECURITY_TYPE_CODE"
     },
     "SECURITY_TYPE": {
@@ -62,7 +62,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "SECURITY_TYPE"
     },
     "TRADE_MARKET_CODE": {
-        "type": DataTypes.DOUBLE,
+        "type": DataTypes.STRING(20),
         "field": "TRADE_MARKET_CODE"
     },
     "TRADE_MARKET": {
@@ -70,12 +70,12 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "TRADE_MARKET"
     },
     "REPORT_DATE": {
-        "type": DataTypes.STRING(19),
-        "field": "REPORT_DATE",
-        "unique": "index_unique"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "REPORT_DATE"
     },
     "APPOINT_PUBLISH_DATE": {
-        "type": DataTypes.STRING(19),
+        "type": DataTypes.STRING(10),
         "field": "APPOINT_PUBLISH_DATE"
     },
     "RESIDUAL_DAYS": {
@@ -95,7 +95,7 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
         "field": "MARKET"
     },
     "EITIME": {
-        "type": DataTypes.STRING(19),
+        "type": DataTypes.STRING(20),
         "field": "EITIME"
     },
     "SECUCODE": {
@@ -104,7 +104,8 @@ const { Sequelize, Model, DataTypes } = require("sequelize");
     },
     "code": {
         "type": DataTypes.STRING(10),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "code"
     }
 }
     ,

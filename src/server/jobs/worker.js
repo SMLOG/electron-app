@@ -1,5 +1,5 @@
 import fs from "fs";
-
+import moment from "moment";
 import { CONFIG_DIR } from "../config";
 import _ from "lodash";
 import { decompressToMapList } from "../lib/keymap";
@@ -301,16 +301,49 @@ export const JOB_MAP = {
   公告: {
     file: "job-gg.json",
     key: "stock_code",
-    _cronTime: "0 0 9 * * *",
     tableName: "notice",
-    pks: ["ann_type", "stock_code", "art_code"],
+    pks: ["ann_type", "code", "art_code", "notice_date"],
     enable: true,
     getOptions: function(k) {
-      return [{ today: "2020-10-22" }];
+      return [
+        {
+          from: moment()
+            .subtract(0, "days")
+            .format("YYYY-MM-DD"),
+          to: moment()
+            .add(1, "days")
+            .format("YYYY-MM-DD"),
+        },
+      ];
     },
     mapValues: function(datas) {
       return datas.map((data) => {
         let row = _.merge({}, data, data.codes[0], data.columns[0]);
+
+        if (data.columns && data.columns.length > 0)
+          row.type = data.columns[0].column_name;
+
+        if (data.codes && data.codes.length > 0) {
+          var temp = data.codes[0];
+          if (data.codes.length > 1) {
+            //多个股票信息的情况
+            for (var i in data.codes) {
+              if (data.codes[i].ann_type.split(",").indexOf("A") != -1) {
+                temp = data.codes[i];
+                break;
+              }
+            }
+          }
+          if (temp) {
+            Object.assign(row, temp);
+          }
+        }
+        row.code =
+          (row.stock_code[0] == "6"
+            ? "sh"
+            : row.stock_code[0] == "0" || row.stock_code[0] == "3"
+            ? "sz"
+            : "") + row.stock_code;
         _.unset(row, "codes");
         _.unset(row, "columns");
         return row;
@@ -318,7 +351,9 @@ export const JOB_MAP = {
     },
     keymap: {},
     url:
-      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
+      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=500&jsObj={var}&SecNodeType=0&filter=(Time%3E=^{from}^%20and%Time%3C=^{to}^)&rt={timestamp}",
+    //  url:
+    //  "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
   },
   行情: {
     key: "code",

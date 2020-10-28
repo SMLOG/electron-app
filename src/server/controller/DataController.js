@@ -1,4 +1,6 @@
 import axios from "axios";
+const Sequelize = require("sequelize");
+
 import { fn } from "../lib/fn";
 const Lrb = require("../db/model/Lrb");
 const Zcfzb = require("../db/model/Zcfzb");
@@ -6,6 +8,8 @@ const Xjllb = require("../db/model/Xjllb");
 const Zyzb = require("../db/model/Zyzb");
 const Dbfx = require("../db/model/Dbfx");
 const Yj = require("../db/model/Yj");
+const Notice = require("../db/model/Notice");
+const { db } = require("../db/db");
 const fieldMap = {
   jbmgsy: "基本每股收益(元)",
   kfmgsy: "扣非每股收益(元)",
@@ -57,6 +61,32 @@ module.exports = {
     let code = ctx.query.code;
 
     let data = await Yj.findAll({ where: { code: code } });
+    ctx.body = data;
+  },
+  notices: async (ctx) => {
+    let type = ctx.query.type;
+    let p = ctx.query.p || 0;
+
+    let sql = `select * from notice a left join  v_latest_yj b on b.code=a.code where 1=1 ${
+      type ? "and a.column_name like '%" + type + "%'" : ""
+    } order by a.notice_date desc limit 20 offset :offset`;
+
+    let rows = await db.query(sql, {
+      type: db.QueryTypes.SELECT,
+      raw: true,
+      replacements: { offset: 20 * p },
+    });
+    /* let data = await Notice.findAndCountAll({
+      where: type ? { column_name: { [Sequelize.Op.like]: `%${type}%` } } : {},
+      limit: 20,
+      offset: 20 * p,
+    });*/
+    let data = {};
+    data.rows = rows;
+    data.count = 10000;
+    data.pages = Math.ceil(10000 / 20);
+    data.pageSize = 20;
+    data.page = p;
     ctx.body = data;
   },
 };

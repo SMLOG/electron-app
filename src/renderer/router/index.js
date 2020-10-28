@@ -5,7 +5,12 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    { path: "/", name: "index", component: () => import("@/view/index") },
+    { path: "/hq", name: "index", component: () => import("@/view/index") },
+    {
+      path: "/",
+      name: "notice",
+      component: () => import("@/view/components/Notice"),
+    },
     {
       path: "/finAnalyst/:code",
       name: "finAnalyst",

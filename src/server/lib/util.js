@@ -20,7 +20,7 @@ export function getLastNReportDates(n) {
   let ret = [];
   let rd = new Date();
   for (let i = 0; i < n; i++) {
-    rd.setMonth(rd.getMonth() - 3);
+    rd.setMonth(rd.getMonth() - (i == 0 ? 0 : 3));
     let reportDate = getLastReportDate(rd);
     ret.push(reportDate);
   }

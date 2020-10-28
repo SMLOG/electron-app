@@ -42,3 +42,20 @@ select
 from
     my a
     left join hx b on b.code = a.code;
+
+create
+or replace view v_latest_yj as
+select
+    yj.*
+from
+    yj,
+    (
+        select
+            code,
+            max(reportdate) reportdate
+        from
+            yj
+        group by
+            code
+    ) t on yj.code = t.code
+    and yj.reportdate = t.reportdate;

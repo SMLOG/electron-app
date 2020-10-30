@@ -10,7 +10,7 @@ import {
   prevReportDate,
   getLastNReportDates,
 } from "../lib/util";
-
+console.log(_.range(1, 8).map((e) => e));
 const defGetOptions = function(k) {
   return [
     { reportDate: getLastReportDate() },
@@ -304,19 +304,8 @@ export const JOB_MAP = {
     tableName: "notice",
     pks: ["ann_type", "code", "art_code", "notice_date"],
     enable: true,
-    getOptions: function(k) {
-      return [
-        {
-          from: moment()
-            .subtract(0, "days")
-            .format("YYYY-MM-DD"),
-          to: moment()
-            .add(1, "days")
-            .format("YYYY-MM-DD"),
-        },
-      ];
-    },
-    mapValues: function(datas) {
+
+    mapValues: function(datas, options) {
       return datas.map((data) => {
         let row = _.merge({}, data, data.codes[0], data.columns[0]);
 
@@ -334,6 +323,7 @@ export const JOB_MAP = {
               }
             }
           }
+          row.type_id = options.FirstNodeType;
           if (temp) {
             Object.assign(row, temp);
           }
@@ -350,10 +340,21 @@ export const JOB_MAP = {
       });
     },
     keymap: {},
+    getOptions: function(k) {
+      let options = _.range(1, 8).map((e) => {
+        return {
+          FirstNodeType: e,
+          date: moment()
+            .add(1, "days")
+            .format("YYYY-MM-DD"),
+        };
+      });
+      return options;
+    },
     url:
-      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=500&jsObj={var}&SecNodeType=0&filter=(Time%3E=^{from}^%20and%Time%3C=^{to}^)&rt={timestamp}",
+      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=100&jsObj={var}&SecNodeType=0&Time={date}&rt={timestamp}",
     //  url:
-    //  "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType=0&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
+    //  "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
   },
   行情: {
     key: "code",

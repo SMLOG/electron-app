@@ -95,6 +95,15 @@ export async function ifNoExistGenModel(
   } catch (ee) {
     isSync = true;
     genModel(datas, tableName, keymap, uColums, comment);
+    if (datas && datas.length > 0 && "code" in datas[0]) {
+      let ddl = `CREATE TABLE IF NOT EXISTS \`n_notice\`(
+        \`code\` VARCHAR(10) NOT NULL,
+        \`notice_date\` VARCHAR(20) NOT NULL,
+        PRIMARY KEY (\`code\`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8`;
+      console.log(ddl);
+      await db.query(ddl);
+    }
   }
 
   let modelName = tableName[0].toUpperCase() + tableName.substring(1);

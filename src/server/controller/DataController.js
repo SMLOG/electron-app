@@ -10,41 +10,7 @@ const Dbfx = require("../db/model/Dbfx");
 const Yj = require("../db/model/Yj");
 const Notice = require("../db/model/Notice");
 const { db } = require("../db/db");
-const fieldMap = {
-  jbmgsy: "基本每股收益(元)",
-  kfmgsy: "扣非每股收益(元)",
-  xsmgsy: "稀释每股收益(元)",
-  mgjzc: "每股净资产(元)",
-  mggjj: "每股公积金(元)",
-  mgwfply: "每股未分配利润(元)",
-  mgjyxjl: "每股经营现金流(元)",
-  yyzsr: "营业总收入(元)",
-  mlr: "毛利润(元)",
-  gsjlr: "归属净利润(元)",
-  kfjlr: "扣非净利润(元)",
-  yyzsrtbzz: "营业总收入同比增长(%)",
-  gsjlrtbzz: "归属净利润同比增长(%)",
-  kfjlrtbzz: "扣非净利润同比增长(%)",
-  yyzsrgdhbzz: "营业总收入滚动环比增长(%)",
-  gsjlrgdhbzz: "归属净利润滚动环比增长(%)",
-  kfjlrgdhbzz: "扣非净利润滚动环比增长(%)",
-  jqjzcsyl: "加权净资产收益率(%)",
-  tbjzcsyl: "摊薄净资产收益率(%)",
-  tbzzcsyl: "摊薄总资产收益率(%)",
-  mll: "毛利率(%)",
-  jll: "净利率(%)",
-  sjsl: "实际税率(%)",
-  yskyysr: "预收款/营业收入",
-  xsxjlyysr: "销售现金流/营业收入",
-  jyxjlyysr: "经营现金流/营业收入",
-  zzczzy: "总资产周转率(次)",
-  yszkzzts: "应收账款周转天数(天)",
-  chzzts: "存货周转天数(天)",
-  zcfzl: "资产负债率(%)",
-  ldzczfz: "流动负债/总负债(%)",
-  ldbl: "流动比率",
-  sdbl: "速动比率",
-};
+import _ from "lodash";
 
 module.exports = {
   summary: async (ctx) => {
@@ -64,29 +30,90 @@ module.exports = {
     ctx.body = data;
   },
   notices: async (ctx) => {
-    let type = ctx.query.type;
-    let p = ctx.query.p || 0;
+    let type_id = ctx.query.type_id;
+    let p = ctx.query.p || 1;
+    p < 1 && (p = 1);
+    let pageSize = 30;
 
-    let sql = `select * from notice a left join  v_latest_yj b on b.code=a.code where 1=1 ${
-      type ? "and a.column_name like '%" + type + "%'" : ""
-    } order by a.notice_date desc limit 20 offset :offset`;
+    let sql = `select code,max(notice_date) notice_date from notice where (:type_id<>0 and type_id=:type_id) or (:type_id=0) group by code`;
+    let count = (
+      await db.query(`select count(1) as count from (${sql}) t `, {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        limit: pageSize,
+        offset: pageSize * (p - 1),
+        replacements: {
+          type_id: type_id,
+        },
+      })
+    )[0].count;
+    let rows = await db.query(
+      `${sql} order by notice_date desc limit :limit offset :offset`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          type_id: type_id,
+          limit: pageSize,
+          offset: pageSize * (p - 1),
+        },
+      }
+    );
 
-    let rows = await db.query(sql, {
-      type: db.QueryTypes.SELECT,
-      raw: true,
-      replacements: { offset: 20 * p },
-    });
-    /* let data = await Notice.findAndCountAll({
-      where: type ? { column_name: { [Sequelize.Op.like]: `%${type}%` } } : {},
-      limit: 20,
-      offset: 20 * p,
-    });*/
+    let rows2 = await db.query(
+      `select * from notice where code in(:codes) and notice_date >=:notice_date order by notice_date desc`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          codes: rows.map((e) => e.code),
+          notice_date: _.min(rows.map((e) => e.notice_date)),
+        },
+      }
+    );
+    let yjrows = await db.query(
+      `select * from yj where code in(:codes) order by reportdate desc`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          codes: rows.map((e) => e.code),
+        },
+      }
+    );
+
+    let rowsMap = rows2.reduce((m, r) => {
+      let code = r.code;
+      if (!m[code]) m[code] = [];
+      m[code].push(r);
+      return m;
+    }, {});
+
+    let yjMap = yjrows.reduce((m, r) => {
+      let code = r.code;
+      if (!m[code]) m[code] = [];
+      m[code].push(r);
+      return m;
+    }, {});
+
+    rows.map(
+      (r) => (
+        (r.noticedetails = rowsMap[r.code]), (r.yjdetails = yjMap[r.code])
+      )
+    );
+    console.log(count, rows, rows2);
+
     let data = {};
-    data.rows = rows;
-    data.count = 10000;
-    data.pages = Math.ceil(10000 / 20);
-    data.pageSize = 20;
+    //data.rows = rows;
+    //data.count = 10000;
+    data.pages = Math.ceil(count / pageSize);
+    data.pageSize = pageSize;
     data.page = p;
+    data.rows = rows;
     ctx.body = data;
   },
 };
@@ -156,6 +183,3 @@ function chart(xData, yData) {
     enableAutoDispose: true, //Enable auto-dispose echarts after the image is created.
   });
 }
-(async () => {
-  DataController.财务分析({ query: { code: "sh600062" } });
-})();

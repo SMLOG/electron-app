@@ -20,7 +20,23 @@ export function loadScripts(scripts) {
     });
   }, Promise.resolve());
 }
-
+export function fmtNumber(value) {
+  if (_.isNumber(value)) {
+    let abs = Math.abs(value);
+    let r =
+      abs > 100000000
+        ? (value / 100000000).toFixed(2) + "亿"
+        : abs > 10000
+        ? (value / 10000).toFixed(2) + "万"
+        : value.toFixed(2);
+    return r;
+  }
+  return value;
+}
+export function fmtPercent(value) {
+  if (value) return parseFloat(value).toFixed(2) + "%";
+  return value;
+}
 export async function fetchEval(urls, encode, callback) {
   for (let i = 0; i < urls.length; i++) {
     let url = urls[i];

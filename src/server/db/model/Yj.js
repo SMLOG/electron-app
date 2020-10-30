@@ -175,12 +175,12 @@ Yj.init(
     modelName: "yj",
   }
 );
-
+/*
 let fields = [];
 for (var i in Yj.rawAttributes)
   fields.push(`{
     label: "${Yj.rawAttributes[i].display || Yj.rawAttributes[i].field}",
     prop: "${Yj.rawAttributes[i].field}",
   }`);
-console.error(fields.join(",\n"));
+console.error(fields.join(",\n"));*/
 module.exports = Yj;

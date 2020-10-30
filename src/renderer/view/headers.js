@@ -1,25 +1,14 @@
-import { getLastReportDate, dateFormat } from "../lib/utils";
+import {
+  getLastReportDate,
+  dateFormat,
+  fmtNumber,
+  fmtPercent,
+} from "../lib/utils";
 import { getFields } from "../store/modules/suspension";
 import _ from "lodash";
 import axios from "axios";
 const reportDate = getLastReportDate();
-const fmtNumber = function(value) {
-  if (_.isNumber(value)) {
-    let abs = Math.abs(value);
-    let r =
-      abs > 100000000
-        ? (value / 100000000).toFixed(2) + "亿"
-        : abs > 10000
-        ? (value / 10000).toFixed(2) + "万"
-        : value.toFixed(2);
-    return r;
-  }
-  return value;
-};
-const fmtPercent = (value) => {
-  if (value) return parseFloat(value).toFixed(2) + "%";
-  return value;
-};
+
 function getReportSub(item) {
   if (item["业绩_QDATE"])
     return item["业绩_QDATE"].indexOf("Q1") > -1

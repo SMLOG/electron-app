@@ -4,43 +4,53 @@ const { Model, DataTypes } = require("sequelize");
     class Event extends Model {}
     Event.init(
       {
-    "id": {
+    "event_id": {
         "type": DataTypes.INTEGER,
         "autoIncrement": true,
         "primaryKey": true
     },
     "gpdm": {
-        "type": DataTypes.DOUBLE,
-        "unique": "index_unique"
+        "type": DataTypes.STRING(10),
+        "unique": "index_unique",
+        "field": "gpdm"
     },
     "sjlx": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "sjlx"
     },
     "sjlxz": {
         "type": DataTypes.STRING(10),
-        "unique": "index_unique"
-    },
-    "rq": {
-        "type": DataTypes.STRING(20),
-        "unique": "index_unique"
+        "unique": "index_unique",
+        "field": "sjlxz"
     },
     "sjms": {
-        "type": DataTypes.STRING(210)
+        "type": DataTypes.STRING(255),
+        "field": "sjms"
     },
     "tszd": {
-        "type": DataTypes.STRING(50)
+        "type": DataTypes.STRING(50),
+        "field": "tszd"
     },
     "zdf": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "zdf"
     },
     "spj": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "spj"
     },
     "px": {
-        "type": DataTypes.DOUBLE
+        "type": DataTypes.DOUBLE,
+        "field": "px"
+    },
+    "rq_date": {
+        "type": DataTypes.STRING(20),
+        "unique": "index_unique",
+        "field": "rq_date"
     },
     "code": {
-        "type": DataTypes.STRING(10)
+        "type": DataTypes.STRING(10),
+        "field": "code"
     }
 }
     ,

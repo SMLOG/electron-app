@@ -48,7 +48,14 @@
         <template v-for="r in notices">
           <tr v-for="(gg, i) in r.noticedetails" :key="gg.notice_id">
             <td v-if="0 == i" :rowspan="r.noticedetails.length">
-              {{ r.code }}
+              <a
+                target="_blank"
+                :href="`http://data.eastmoney.com/stockdata/${r.code.replace(
+                  /[a-z]+/g,
+                  ''
+                )}.html`"
+                >{{ r.code }}</a
+              >
             </td>
             <td v-if="0 == i" :rowspan="r.noticedetails.length">
               {{ gg.short_name }}
@@ -64,6 +71,23 @@
             <td>{{ gg.type }}</td>
             <td>
               <span> {{ gg.notice_date }}</span>
+            </td>
+          </tr>
+          <tr
+            v-if="r.events"
+            :key="'event' + r.code"
+            style="background-color: #eee"
+          >
+            <td></td>
+            <td></td>
+            <td colspan="5">
+              <table>
+                <tr v-for="event in r.events" :key="'event' + event.event_id">
+                  <td>{{ event.rq_date }}</td>
+                  <td>{{ event.sjlx }}</td>
+                  <td>{{ event.sjms }}</td>
+                </tr>
+              </table>
             </td>
           </tr>
           <tr v-if="r.yjdetails" :key="r.code" style="background-color: #eee">

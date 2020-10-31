@@ -2,8 +2,16 @@ import _ from "lodash";
 import fs from "fs";
 const { sequelize: db } = require("./db");
 
-export function genModel(rows, tab, displayFieldMap = {}, u, comment = "") {
+export function genModel(
+  rows,
+  tab,
+  displayFieldMap = {},
+  u,
+  comment = "",
+  fieldDef
+) {
   let res = {};
+  if (!fieldDef) fieldDef = {};
 
   let sampleRow = rows.reduce((map, data) => {
     for (let k in data) {
@@ -39,21 +47,26 @@ export function genModel(rows, tab, displayFieldMap = {}, u, comment = "") {
     if (_.isEmpty(sampleRow[field])) {
       console.log(sampleRow);
     }
-    let len = sampleRow[field].length;
-    if (
-      sampleRow[field] * 1 == sampleRow[field] &&
-      !field.toLowerCase().endsWith("code")
-    )
-      f["type"] = "DataTypes.DOUBLE";
-    else if (_.isDate(sampleRow[field])) {
-      f["type"] = `DataTypes.DATE`;
-    } else if (sampleRow[field] && len > 255) {
-      f["type"] = `DataTypes.TEXT`;
-    } else
-      f["type"] = `DataTypes.STRING(${Math.max(
-        10,
-        sampleRow[field] && Math.round(Math.ceil(len / 10)) * 10
-      )})`;
+    if (fieldDef[field]) {
+      f["type"] = "DataTypes." + fieldDef[field];
+    } else {
+      let len = sampleRow[field].length;
+      if (
+        sampleRow[field] * 1 == sampleRow[field] &&
+        !field.toLowerCase().endsWith("code")
+      )
+        f["type"] = "DataTypes.DOUBLE";
+      else if (_.isDate(sampleRow[field])) {
+        f["type"] = `DataTypes.DATE`;
+      } else if (sampleRow[field] && len > 255) {
+        f["type"] = `DataTypes.TEXT`;
+      } else
+        f["type"] = `DataTypes.STRING(${Math.max(
+          10,
+          sampleRow[field] && Math.round(Math.ceil(len / 10)) * 10
+        )})`;
+    }
+
     if (u.indexOf(field) > -1) f["unique"] = "index_unique";
 
     f["field"] = field;
@@ -87,14 +100,15 @@ export async function ifNoExistGenModel(
   tableName,
   keymap,
   uColums,
-  comment
+  comment,
+  fieldDefitions
 ) {
   let isSync = false;
   try {
     await db.query(`SELECT 1 FROM ${tableName} limit 1`);
   } catch (ee) {
     isSync = true;
-    genModel(datas, tableName, keymap, uColums, comment);
+    genModel(datas, tableName, keymap, uColums, comment, fieldDefitions);
     if (datas && datas.length > 0 && "code" in datas[0]) {
       let ddl = `CREATE TABLE IF NOT EXISTS \`n_notice\`(
         \`code\` VARCHAR(10) NOT NULL,

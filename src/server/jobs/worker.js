@@ -11,7 +11,7 @@ import {
   getLastNReportDates,
 } from "../lib/util";
 console.log(_.range(1, 8).map((e) => e));
-const defGetOptions = function(k) {
+const defGetOptions = function() {
   return [
     { reportDate: getLastReportDate() },
     { reportDate: prevReportDate() },
@@ -38,15 +38,27 @@ export const JOB_MAP = {
   大事: {
     key: "gpdm",
     tableName: "event",
-    pks: ["gpdm", "sjlxz", "rq"],
+    pks: ["gpdm", "sjlxz", "rq_date"],
     jsonp: "jsonp",
-    enable: false,
+    enable: true,
+    fieldDefitions: { gpdm: "STRING(10)", sjms: "STRING(255)" },
+    mapValues: function(datas, options) {
+      return datas.map((data) => {
+        data.rq_date = data.rq.replace(/T00:00:00/, "");
+        _.unset(data, "rq");
+        let code = data.gpdm;
+        if (code[0] * 1 == code[0])
+          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+        data.code = code;
+        return data;
+      });
+    },
+    getOptions: function() {},
     url:
-      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=GGSJ20_ZDGZ&token=70f12f2f4f091e459a279469fe49eca5&st=rq&sr=-1&ps=500&p={page}&filter=(rq%3E=^2019-10-24^%20and%20rq%3C=^2021-4-24^)&callback={jsonp}&_=1603546180276",
+      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=GGSJ20_ZDGZ&token=70f12f2f4f091e459a279469fe49eca5&st=rq&sr=-1&ps=1000&p={page}&filter=(rq%3E=^2020-9-1^%20and%20rq%3C=^2020-12-31^)&callback={jsonp}&_={timestamp}",
   },
   预约披露日期列表: {
     alias: "预披露日",
-    file: "job-yy预约披露日期列表.json",
     key: "SECURITY_CODE",
     tableName: "yyplrq",
     enable: true,
@@ -64,7 +76,6 @@ export const JOB_MAP = {
     url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_BS_APPOIN&sty=ALL&p={page}&ps=500&st=FIRST_APPOINT_DATE,SECURITY_CODE&sr=1,1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
   },
   业绩: {
-    file: "job-yj业绩.json",
     key: "SECURITY_CODE",
     tableName: "yj",
     enable: true,
@@ -93,7 +104,6 @@ export const JOB_MAP = {
     url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_LICO_FN_CPD&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORTDATE=%27{reportDate}%27)&rt={timestamp}`,
   },
   业绩快报: {
-    file: "job-kb业绩快报.json",
     key: "SECURITY_CODE",
     tableName: "yjkb",
     alias: "快报",
@@ -119,7 +129,6 @@ export const JOB_MAP = {
     url: `http://datacenter.eastmoney.com/api/data/get?type=RPT_FCI_PERFORMANCEE&sty=ALL&p={page}&ps=500&st=UPDATE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}`,
   },
   业绩预告: {
-    file: "job-yg业绩预告.json",
     key: "SECURITY_CODE",
     alias: "预告",
     tableName: "yjyg",
@@ -138,7 +147,6 @@ export const JOB_MAP = {
       "http://datacenter.eastmoney.com/api/data/get?type=RPT_PUBLIC_OP_PREDICT&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORTDATE=%27{reportDate}%27)(IsLatest=%22T%22)&rt={timestamp}",
   },
   资产负债表: {
-    file: "job-zcfz资产负债表.json",
     key: "SECURITY_CODE",
     alias: "负债",
     tableName: "zcfz",
@@ -186,7 +194,6 @@ export const JOB_MAP = {
       "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_BALANCE&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
   },
   利润表: {
-    file: "job-lr利润表.json",
     key: "SECURITY_CODE",
     tableName: "lr",
     getOptions: defGetOptions,
@@ -232,7 +239,6 @@ export const JOB_MAP = {
       "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_INCOME&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
   },
   现金流量表: {
-    file: "job-xjll现金流量表.json",
     key: "SECURITY_CODE",
     tableName: "xjll",
     getOptions: defGetOptions,
@@ -254,7 +260,6 @@ export const JOB_MAP = {
       "http://datacenter.eastmoney.com/api/data/get?type=RPT_DMSK_FN_CASHFLOW&sty=ALL&p={page}&ps=500&st=NOTICE_DATE,SECURITY_CODE&sr=-1,-1&var={var}&filter=(REPORT_DATE=%27{reportDate}%27)&rt={timestamp}",
   },
   股东数: {
-    file: "job-gd股东数.json",
     key: "SecurityCode",
     pks: ["SecurityCode", "NoticeDate"],
     tableName: "gds",
@@ -267,7 +272,6 @@ export const JOB_MAP = {
       "http://data.eastmoney.com/DataCenter_V3/gdhs/GetList.ashx?reportdate={reportDate}&market=&changerate==&range==&pagesize=500&page={page}&sortRule=-1&sortType=NoticeDate&js=var%20{var}&param=&rt={timestamp}",
   },
   估值: {
-    file: "job-gz估值.json",
     key: "SECURITYCODE",
     tableName: "gz",
     enable: true,
@@ -299,7 +303,6 @@ export const JOB_MAP = {
       "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GZFX_GGZB&token=894050c76af8597a853f5b408b759f5d&st=TRADEDATE&sr=-1&p={page}&ps=500&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(TRADEDATE=^{today}^)&rt={timestamp}",
   },
   公告: {
-    file: "job-gg.json",
     key: "stock_code",
     tableName: "notice",
     pks: ["ann_type", "code", "art_code", "notice_date"],

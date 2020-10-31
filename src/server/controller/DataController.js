@@ -1,5 +1,6 @@
 import axios from "axios";
 const Sequelize = require("sequelize");
+import moment from "moment";
 
 import { fn } from "../lib/fn";
 const Lrb = require("../db/model/Lrb");
@@ -48,7 +49,7 @@ module.exports = {
         },
       })
     )[0].count;
-    let rows = await db.query(
+    let codeRows = await db.query(
       `${sql} order by notice_date desc limit :limit offset :offset`,
       {
         logging: console.log,
@@ -69,8 +70,8 @@ module.exports = {
         type: db.QueryTypes.SELECT,
         raw: true,
         replacements: {
-          codes: rows.map((e) => e.code),
-          notice_date: _.min(rows.map((e) => e.notice_date)),
+          codes: codeRows.map((e) => e.code),
+          notice_date: _.min(codeRows.map((e) => e.notice_date)),
         },
       }
     );
@@ -81,7 +82,22 @@ module.exports = {
         type: db.QueryTypes.SELECT,
         raw: true,
         replacements: {
-          codes: rows.map((e) => e.code),
+          codes: codeRows.map((e) => e.code),
+        },
+      }
+    );
+
+    let eventRows = await db.query(
+      `select * from event where code in(:codes) and rq_date <:fdate  order by rq_date desc`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          codes: codeRows.map((e) => e.code),
+          fdate: moment()
+            .add(30, "days")
+            .format("YYYY-MM-DD"),
         },
       }
     );
@@ -99,13 +115,20 @@ module.exports = {
       m[code].push(r);
       return m;
     }, {});
-
-    rows.map(
+    let eventMap = eventRows.reduce((m, r) => {
+      let code = r.code;
+      if (!m[code]) m[code] = [];
+      m[code].push(r);
+      return m;
+    }, {});
+    codeRows.map(
       (r) => (
-        (r.noticedetails = rowsMap[r.code]), (r.yjdetails = yjMap[r.code])
+        (r.noticedetails = rowsMap[r.code]),
+        (r.yjdetails = yjMap[r.code]),
+        (r.events = eventMap[r.code])
       )
     );
-    console.log(count, rows, rows2);
+    console.log(count, codeRows, rows2);
 
     let data = {};
     //data.rows = rows;
@@ -113,7 +136,7 @@ module.exports = {
     data.pages = Math.ceil(count / pageSize);
     data.pageSize = pageSize;
     data.page = p;
-    data.rows = rows;
+    data.rows = codeRows;
     ctx.body = data;
   },
 };

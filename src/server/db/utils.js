@@ -58,7 +58,7 @@ export function genModel(
         f["type"] = "DataTypes.DOUBLE";
       else if (_.isDate(sampleRow[field])) {
         f["type"] = `DataTypes.DATE`;
-      } else if (sampleRow[field] && len > 255) {
+      } else if (sampleRow[field] && len > 500) {
         f["type"] = `DataTypes.TEXT`;
       } else
         f["type"] = `DataTypes.STRING(${Math.max(

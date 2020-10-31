@@ -121,10 +121,29 @@ module.exports = {
       m[code].push(r);
       return m;
     }, {});
+
+    let gzRows = await db.query(
+      `select  * from gz where tradedate=(select max(tradedate) from gz) and code in(:codes)`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          codes: codeRows.map((e) => e.code),
+        },
+      }
+    );
+    let gzMap = gzRows.reduce((m, r) => {
+      let code = r.code;
+      if (!m[code]) m[code] = [];
+      m[code].push(r);
+      return m;
+    }, {});
     codeRows.map(
       (r) => (
         (r.noticedetails = rowsMap[r.code]),
         (r.yjdetails = yjMap[r.code]),
+        (r.gzs = gzMap[r.code]),
         (r.events = eventMap[r.code])
       )
     );

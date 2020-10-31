@@ -46,20 +46,33 @@
       </thead>
       <tbody>
         <template v-for="r in notices">
+          <tr v-if="r.gzs" :key="'gz' + r.code">
+            <td colspan="7">
+              <table>
+                <tr v-for="it in r.gzs" :key="'event' + it.gz_id">
+                  <td>
+                    <a
+                      target="_blank"
+                      :href="`http://data.eastmoney.com/stockdata/${r.code.replace(
+                        /[a-z]+/g,
+                        ''
+                      )}.html`"
+                      >{{ r.code }}</a
+                    >
+                  </td>
+                  <td>{{ it.SName }}</td>
+                  <td>价格: {{ it.NEW }}({{ it.CHG }}%)</td>
+                  <td>行业:{{ it.HYName }}</td>
+                  <td>PE(TTM):{{ it.PE9 }}</td>
+                  <td>PEG:{{ it.PEG1 }}</td>
+                  <td>总市值:{{ it.ZSZ }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
           <tr v-for="(gg, i) in r.noticedetails" :key="gg.notice_id">
-            <td v-if="0 == i" :rowspan="r.noticedetails.length">
-              <a
-                target="_blank"
-                :href="`http://data.eastmoney.com/stockdata/${r.code.replace(
-                  /[a-z]+/g,
-                  ''
-                )}.html`"
-                >{{ r.code }}</a
-              >
-            </td>
-            <td v-if="0 == i" :rowspan="r.noticedetails.length">
-              {{ gg.short_name }}
-            </td>
+            <td v-if="0 == i" :rowspan="r.noticedetails.length"></td>
+            <td v-if="0 == i" :rowspan="r.noticedetails.length"></td>
             <td>
               <a
                 target="_blank"
@@ -73,6 +86,7 @@
               <span> {{ gg.notice_date }}</span>
             </td>
           </tr>
+
           <tr
             v-if="r.events"
             :key="'event' + r.code"
@@ -90,6 +104,7 @@
               </table>
             </td>
           </tr>
+
           <tr v-if="r.yjdetails" :key="r.code" style="background-color: #eee">
             <td></td>
             <td></td>

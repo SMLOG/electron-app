@@ -10,7 +10,7 @@ import {
   prevReportDate,
   getLastNReportDates,
 } from "../lib/util";
-console.log(_.range(1, 8).map((e) => e));
+
 const defGetOptions = function() {
   return [
     { reportDate: getLastReportDate() },
@@ -25,6 +25,22 @@ export const JOB_MAP = {
     enable: false,
     get: function(options) {
       return [{ code: "sh6000001" }];
+    },
+  },
+  urls: {
+    tableName: "urls",
+    enable: true,
+    pks: ["url", "params"],
+    get: function(options) {
+      return [
+        {
+          job: "sh6000001",
+          url: "a".repeat(500),
+          params: "a".repeat(255),
+          status: 0,
+          udate: new Date(),
+        },
+      ];
     },
   },
   job: {
@@ -274,9 +290,16 @@ export const JOB_MAP = {
   估值: {
     key: "SECURITYCODE",
     tableName: "gz",
+    pks: ["TRADEDATE", "code"],
     enable: true,
     getOptions: function(k) {
-      return [{ today: "2020-10-22" }];
+      return _.range(0, 30).map((e) => {
+        return {
+          today: moment()
+            .subtract(e, "days")
+            .format("YYYY-MM-DD"),
+        };
+      });
     },
     keymap: {
       SECURITYCODE: "代码",

@@ -24,7 +24,7 @@ export function fmtNumber(value) {
   if (_.isNumber(value)) {
     let abs = Math.abs(value);
     let r =
-      abs > 100000000
+      abs > 10000000
         ? (value / 100000000).toFixed(2) + "亿"
         : abs > 10000
         ? (value / 10000).toFixed(2) + "万"

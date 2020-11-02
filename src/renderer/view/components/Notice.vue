@@ -61,11 +61,11 @@
                     >
                   </td>
                   <td>{{ it.SName }}</td>
-                  <td>价格: {{ it.NEW }}({{ it.CHG }}%)</td>
+                  <td>价格: {{ it.NEW }}({{ $fmtPercent(it.CHG) }})</td>
                   <td>行业:{{ it.HYName }}</td>
-                  <td>PE(TTM):{{ it.PE9 }}</td>
-                  <td>PEG:{{ it.PEG1 }}</td>
-                  <td>总市值:{{ it.ZSZ }}</td>
+                  <td>PE(TTM):{{ $fmtNumber(it.PE9) }}</td>
+                  <td>PEG:{{ $fmtNumber(it.PEG1) }}</td>
+                  <td>总市值:{{ $fmtNumber(it.ZSZ) }}</td>
                 </tr>
               </table>
             </td>
@@ -99,7 +99,15 @@
                 <tr v-for="event in r.events" :key="'event' + event.event_id">
                   <td>{{ event.rq_date }}</td>
                   <td>{{ event.sjlx }}</td>
-                  <td>{{ event.sjms }}</td>
+                  <td>
+                    <a
+                      v-if="event.tszd.length > 1"
+                      target="_blank"
+                      :href="`https://pdf.dfcfw.com/pdf/H2_${event.tszd}_1.pdf`"
+                      >{{ event.sjms }}</a
+                    >
+                    <a v-else>{{ event.sjms }}</a>
+                  </td>
                 </tr>
               </table>
             </td>
@@ -113,10 +121,14 @@
                 <tr v-for="yj in r.yjdetails" :key="'yj' + yj.yj_id">
                   <td>
                     <div>
-                      {{ yj.REPORTDATE }}: 营业收入同比增长:{{
-                        yj.YSTZ && yj.YSTZ.toFixed(2)
-                      }}% 净利润同比增长:{{ yj.SJLTZ && yj.SJLTZ.toFixed(2) }}%
-                      净利润{{ yj.PARENT_NETPROFIT_fmt }}净资产收益率
+                      {{ yj.REPORTDATE }}: 营业收入:{{
+                        $fmtNumber(yj.TOTAL_OPERATE_INCOME)
+                      }}
+                      同比增长:{{ yj.YSTZ && yj.YSTZ.toFixed(2) }}% 净利润:{{
+                        $fmtNumber(yj.PARENT_NETPROFIT)
+                      }}
+                      同比增长:{{ yj.SJLTZ && yj.SJLTZ.toFixed(2) }}%
+                      净资产收益率
                       {{ yj.WEIGHTAVG_ROE && yj.WEIGHTAVG_ROE.toFixed(2) }}%
                     </div>
                   </td>
@@ -169,6 +181,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import axios from "axios";
+import _ from "lodash";
 
 export default {
   data: function () {

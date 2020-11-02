@@ -10,6 +10,7 @@ import {
   prevReportDate,
   getLastNReportDates,
 } from "../lib/util";
+import { tableName } from "../db/model/Yj";
 
 const defGetOptions = function() {
   return [
@@ -29,7 +30,7 @@ export const JOB_MAP = {
   },
   urls: {
     tableName: "urls",
-    enable: true,
+    enable: false,
     pks: ["url", "params"],
     get: function(options) {
       return [
@@ -50,6 +51,88 @@ export const JOB_MAP = {
     get: function(options) {
       return [{ jobname: "sh6000001", runtime: new Date(), status: 0 }];
     },
+  },
+  股东增减持: {
+    key: "SCode",
+    tableName: "gdzjc",
+    pks: ["SCode", "NOTICEDATE", "ShareHdName"],
+    jsonp: "jsonp",
+    enable: true,
+    fieldDefitions: {
+      SCode: "STRING(10)",
+    },
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      let fields = rawDatas.Data[0].FieldName.split(",");
+
+      rows = rawDatas.Data[0].Data.map((r) => {
+        let row = r.split("|").reduce((m, v, i) => {
+          m[fields[i]] = v;
+          return m;
+        }, {});
+        return row;
+      });
+
+      return { arr: rows, totalPage: rawDatas.Data[0].TotalPage };
+    },
+    url:
+      "http://datainterface3.eastmoney.com/EM_DataCenter_V3/api/GDZC/GetGDZC?js=jsonp&pageSize=100&pageNum=1&tkn=eastmoney&cfg=gdzc&secucode=&fx=&sharehdname=&sortFields=BDJZ&sortDirec=1&startDate=&endDate=&p={page}&pageNo={page}&_={timestamp}",
+  },
+  解禁: {
+    key: "gpdm",
+    tableName: "xsjj",
+    pks: ["gpdm", "ltsj", "xsglx"],
+    keymap: {
+      gpdm: "代码",
+      sname: "股票简称",
+      ltsj: "解禁时间",
+      xsglx: "限售股类型",
+      kjjsl: "解禁数量(股)",
+      jjsl: "实际解禁数量(股)",
+      jjsz: "实际解禁市值(万元)",
+      zb: "占解禁前流通市值比",
+      new: "解禁前一日收盘价",
+      jjqesrzdf: "解禁前20涨跌幅",
+      jjhesrzdf: "解禁后20涨跌幅",
+    },
+    enable: true,
+    fieldDefitions: {
+      gpdm: "STRING(10)",
+      jjqesrzdf: "STRING(30)",
+      jjhesrzdf: "STRING(30)",
+    },
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      rows = rows.map((row) => {
+        row = _.mapValues(row, (str) => {
+          str = str.toString();
+          var data = rawDatas.font.FontMapping;
+
+          for (var i = 0; i < data.length; i++) {
+            var re = new RegExp(data[i].code, "g");
+            str = str.replace(re, data[i].value);
+          }
+          return str;
+        });
+        row.ltsj_date = row.ltsj.replace(/T00:00:00/, "");
+        _.unset(row, "ltsj");
+
+        let code = row.gpdm;
+        if (code[0] * 1 == code[0])
+          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+        row.code = code;
+
+        return row;
+      });
+
+      return rows;
+    },
+    url:
+      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?token=70f12f2f4f091e459a279469fe49eca5&st=ltsj&sr=1&p={page}&ps=100&type=XSJJ_NJ_PC&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(mkt=)(ltsj%3E=^2020-11-02^%20and%20ltsj%3C=^2022-11-02^)&rt={timestamp}",
   },
   大事: {
     key: "gpdm",

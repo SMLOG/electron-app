@@ -47,6 +47,7 @@ export function genModel(
     if (_.isEmpty(sampleRow[field])) {
       console.log(sampleRow);
     }
+    console.log(field);
     if (fieldDef[field]) {
       f["type"] = "DataTypes." + fieldDef[field];
     } else {

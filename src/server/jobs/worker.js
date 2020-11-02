@@ -52,6 +52,103 @@ export const JOB_MAP = {
       return [{ jobname: "sh6000001", runtime: new Date(), status: 0 }];
     },
   },
+  分红送配: {
+    key: "orgcode",
+    tableName: "fhsp",
+    pks: ["code", "NOTICEDATE"],
+    enable: true,
+    jsonp: "jsonp",
+    keymap: {
+      Code: "代码",
+      Name: "名称",
+      SZZBL: "送转<br>总比例",
+      SGBL: "送股<br>比例",
+      ZGBL: "转股<br>比例",
+      XJFH: "现金分红<br>比例",
+      GXL: "股息<br>率(%)",
+      EarningsPerShare: "每股<br>收益(元)",
+      NetAssetsPerShare: "每股<br>净资产(元)",
+      MGGJJ: "每股<br>公积金(元)",
+      MGWFPLY: "每股<br>未分配<br>利润(元)",
+      JLYTBZZ: "净利润<br>同比增长(%)",
+      TotalEquity: "总股本(亿)",
+      YAGGR: "预案<br>公告日",
+      GQDJR: "股权<br>登记日",
+      CQCXR: "除权<br>除息日",
+      ProjectProgress: "方案进度",
+      NOTICEDATE: "最新<br>公告日期",
+    },
+    fieldDefitions: {},
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      rows = rows.map((r) => {
+        r.orgcode = r.Code;
+        _.unset(r, "Code");
+        r = _.mapValues(r, (v) => (v == "-" || v == null ? null : v));
+        return r;
+      });
+      return rows;
+    },
+    url:
+      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?callback=jsonp&st=YAGGR&sr=-1&ps=100&p={page}&type=DCSOBS&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D&token=894050c76af8597a853f5b408b759f5d&filter=(ReportingPeriod%3D%5E2020-06-30%5E)",
+  },
+  回购: {
+    key: "dim_scode",
+    tableName: "gphg",
+    pks: ["dim_scode", "noticedate", "upd"],
+    enable: true,
+    keymap: {
+      newprice: "最新价",
+      repurpricelower: "已回购股</br>份价格区</br>间(元)",
+      repurnumlower: "计划回购数量区间(股)",
+      zszxx: "占公告前</br>一日总股</br>本比例(%)",
+      repuramountlower: "计划回购金额</br>区间(元)",
+      repurstartdate: "回购起始时间",
+      repurnum: "已回购股</br>份数量</br>(股)",
+      repuramount: "已回购金额",
+      upd: "公告日期",
+    },
+    fieldDefitions: {
+      dim_scode: "STRING(10)",
+      remark2: "STRING(255)",
+    },
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      rows = rows.map((r) => {
+        let process;
+        switch (r.repurprogress) {
+          case "001":
+            process = "董事会预案";
+            break;
+          case "002":
+            process = "股东大会通过";
+            break;
+          case "003":
+            process = "股东大会否决";
+            break;
+          case "004":
+            process = "实施中";
+            break;
+          case "005":
+            process = "停止实施";
+            break;
+          case "006":
+            process = "完成实施";
+            break;
+          default:
+        }
+        r.process_status = process;
+        return r;
+      });
+      return rows;
+    },
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_GETHGLIST&sty=ALL&source=WEB&p={page}&ps=100&st=dim_date&sr=-1&var={var}&rt={timestamp}",
+  },
   股东增减持: {
     key: "SCode",
     tableName: "gdzjc",

@@ -52,6 +52,141 @@ export const JOB_MAP = {
       return [{ jobname: "sh6000001", runtime: new Date(), status: 0 }];
     },
   },
+  增发: {
+    key: "scode",
+    tableName: "gszf",
+    pks: ["code", "fxdate"],
+    enable: true,
+    keymap: {},
+    fieldDefitions: {},
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      let fields = "scode,name,type,total_vol,price,newprice,fxdate,mkdate,-,zfcode,online,zxgbdate,zxrate,-,oneper,-,-".split(
+        ","
+      );
+
+      rows = rows.map((r) => {
+        let row = r.split(",").reduce((m, v, i) => {
+          if (fields[i] != "-") m[fields[i]] = v;
+          return m;
+        }, {});
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+
+        return row;
+      });
+
+      return rows;
+    },
+    url:
+      "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=SR&sty=ZF&st=8&sr=-1&p={page}&ps=100&js=var%20{var}={pages:(pc),data:[(x)]}&stat=0&rt={timestamp}",
+  },
+  并购重组: {
+    key: "SCODE",
+    tableName: "bgcz",
+    pks: ["code", "H", "SCGGRQ"],
+    enable: true,
+    keymap: {
+      SNAME: "股票简称 ",
+      SCODE: "股票代码",
+      SNAME: "股票简称",
+      H: "交易标的",
+      S: "买方",
+      G: "卖方",
+      JYJE: "交易金额",
+      TJEBZH: "币种",
+      ZRBL: "股权转让比例",
+      ZRFS: "并购方式",
+      SCGGRQ: "披露日期",
+      ANNOUNDATE: "公告日期",
+    },
+    fieldDefitions: { frozenreason: "STRING(255)" },
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      rows = rows.map((row) => {
+        row = _.mapValues(row, (str) => {
+          if (!rawDatas.font) return str;
+          str = str.toString();
+
+          var data = rawDatas.font.FontMapping;
+
+          for (var i = 0; i < data.length; i++) {
+            var re = new RegExp(data[i].code, "g");
+            str = str.replace(re, data[i].value);
+          }
+          return str;
+        });
+
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+
+        let code = row[options.key];
+        if (code[0] * 1 == code[0])
+          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+        row.code = code;
+
+        return row;
+      });
+
+      return rows;
+    },
+    url:
+      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_BGCZMX&sty=ALL&source=WEB&p={page}&ps=100&st=scggrq&sr=-1&var={var}&rt={timestamp}",
+  },
+  股权质押: {
+    key: "scode",
+    tableName: "gqjy",
+    pks: ["code", "gdmc", "ndate"],
+    enable: true,
+    keymap: {
+      jgmc: "质押机构",
+      gdmc: "股东名称",
+      scode: "股票代码",
+      sharefrozennum: "质押股份<br/>数量(股)",
+      frozenratio: "占所持股份比例(%)",
+      frozenintotal: "占总股本比例(%)",
+      newprice_new: "最新价(元)",
+      spj: "质押日收盘价(元)",
+      pcx: "预估平<br/>仓线(元)",
+      sdate: "质押开始日期",
+      ndate: "公告日期",
+    },
+    fieldDefitions: { frozenreason: "STRING(255)" },
+    getOptions: function() {
+      return [{}];
+    },
+    mapValues(rows, options, rawDatas) {
+      rows = rows.map((row) => {
+        row = _.mapValues(row, (str) => {
+          str = str.toString();
+          var data = rawDatas.font.FontMapping;
+
+          for (var i = 0; i < data.length; i++) {
+            var re = new RegExp(data[i].code, "g");
+            str = str.replace(re, data[i].value);
+          }
+          return str;
+        });
+        row.sdate = row.sdate.replace(/T00:00:00/, "");
+        row.upd = row.upd.replace(/T00:00:00/, "");
+
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+
+        let code = row.scode;
+        if (code[0] * 1 == code[0])
+          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+        row.code = code;
+
+        return row;
+      });
+
+      return rows;
+    },
+    url:
+      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GDZY_LB&token=70f12f2f4f091e459a279469fe49eca5&cmd=&st=ndate&sr=-1&p={page}&ps=100&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(datatype=1)&rt={timestamp}",
+  },
   分红送配: {
     key: "orgcode",
     tableName: "fhsp",

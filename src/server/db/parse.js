@@ -1,33 +1,102 @@
 var str = `                
-row.cells[3].innerHTML = '<a class="red" href="/gphg/detail/' + gpdm + "-" + new Date(data.dim_date).getTime() + '.html">详细</a>';
-var star = data.sffhsp == 0 ? "*" : "";
-row.cells[4].innerHTML = '<span>' + getValOrEmpty(data.newprice, 2, 1) + star + '</span>'; //最新价
-
-row.cells[5].innerHTML = '<span>' + getValRegion(data.repurpricelower, data.repurpricecap) + '</span>'; //计划回购价格区间(元)
-row.cells[6].innerHTML = '<span>' + getValRegion(data.repurnumlower, data.repurnumcap, true) + '</span>';//计划回购数量区间(股)
-row.cells[7].innerHTML = '<span>' + getValRegion(data.zszxx, data.zszsx) + '</span>'; //占公告前</br>一日总股</br>本比例(%)
-row.cells[8].innerHTML = '<span>' + getValRegion(data.repuramountlower, data.repuramountlimit, true) + '</span>';//计划回购金额</br>区间(元)
-row.cells[9].innerHTML = '<span title="' + dateFormat(data.repurstartdate, 'yyyy-MM-dd') + '">' + dateFormat(data.repurstartdate, 'yyyy-MM-dd') + '</span>'; //回购起始时间
-var process = "";
-switch (data.repurprogress) {
-    case "001": process = "董事会预案"; break;
-    case "002": process = "股东大会通过"; break;
-    case "003": process = "股东大会否决"; break;
-    case "004": process = "实施中"; break;
-    case "005": process = "停止实施"; break;
-    case "006": process = "完成实施"; break;
-    default:
+_gb_link = "http://guba.eastmoney.com/list," + _code + ".html";
+// 代码
+row.cells[0].innerHTML = "<a href=\"" + _hq_link + "\">" + _code + "</a>" || "-";
+// 简称
+row.cells[1].innerHTML = "<a href=\"" + _sj_link + "\">" + data[1] + "</a>" || "-";
+d
+var fxrq = data[6] || "";
+var fxrqStr = "";
+if (fxrq != "") {
+    fxrqStr = fxrq.substr(0, 4) + fxrq.substr(5, 2) + fxrq.substr(8, 2);
 }
 
-row.cells[10].innerHTML = '<span>' + process + '</span>'; //实施进度
-row.cells[11].innerHTML = '<span>' + getValRegion(data.repurpricelower1, data.repurpricecap1) + '</span>'; //已回购股</br>份价格区</br>间(元)
-row.cells[12].innerHTML = '<span>' + getValRegion(data.repurnum, data.repurnum, true) + '</span>'; //已回购股</br>份数量</br>(股)
-row.cells[13].innerHTML = '<span>' + getValRegion(data.repuramount, data.repuramount, true) + '</span>'; //已回购金额
-row.cells[14].innerHTML = '<span title="' + dateFormat(data.upd, 'yyyy-MM-dd') + '">' + dateFormat(data.upd, 'yyyy-MM-dd') + '</span>'; //公告日期`;
+if (_t.options.param.mk_type.value == 1) {
+    // 相关链接
+    row.cells[2].innerHTML = "<a class=\"red\" href=\"/other/zf/" + _code + "-1-" + fxrqStr + "-" + data[3] + ".html\">详细</a> <a href=\"" + _sj_link + "\">数据</a> <a href=\"" + _gb_link + "\">股吧</a>";
+    row.cells[2].style.width = "110px";
+    // 发行方式
+    var fxfs = data[2] || "-";
+    fxfs = fxfs.replaceAll("&sbquo", " ");
+    row.cells[3].innerHTML = fxfs;
+    // 发行总数
+    row.cells[4].innerHTML = data[3].format(2, 4);
+    // 发行价格
+    row.cells[5].innerHTML = data[4].format(2);
+    // 最新价
+    row.cells[6].innerHTML = "<span class=\"" + getColor(data[5]) + "\">" + data[5].format(2) + "</span>";//data[5].format(2);
+    // 发行日期
+    fxrq = fxrq == "" ? "-" : '<span class="txt" title="' + fxrq + '">' + fxrq.substr(5) + '</span>';
+    row.cells[7].innerHTML = fxrq;
+    // 增发上市日期
+    var zfssrq = data[7] || "-";
+    zfssrq = zfssrq == "-" ? "-" : '<span class="txt" title="' + zfssrq + '">' + zfssrq.substr(5) + '</span>';
+    row.cells[8].innerHTML = zfssrq;
+    // 锁定期
+    row.cells[9].innerHTML = '1-3年';
+} else if (_t.options.param.mk_type.value == 0) {
+    var fxfs = data[2] || "-";
+    fxfs = fxfs.replaceAll("&sbquo", " ");
+    var fxfsIndex = fxfs.indexOf('定向增发') == -1 ? '2' : '1';
+    // 相关链接
+    row.cells[2].innerHTML = "<a class=\"red\" href=\"/other/zf/" + _code + "-" + fxfsIndex + "-" + fxrqStr + "-" + data[3] + ".html\">详细</a> <a href=\"" + _sj_link + "\">数据</a> <a href=\"" + _gb_link + "\">股吧</a>";
+    // 增发代码
+    row.cells[3].innerHTML = data[9];
+    // 发行方式
+    row.cells[4].innerHTML = fxfs;
+    // 发行总数
+    row.cells[5].innerHTML = data[3].format(2, 4);
+    // 网上发行
+    row.cells[6].innerHTML = data[10].format(2, 4);
+    // 发行价格
+    row.cells[7].innerHTML = data[4].format(2);
+    // 最新价
+    row.cells[8].innerHTML = "<span class=\"" + getColor(data[5]) + "\">" + data[5].format(2) + "</span>";
+    // 发行日期
+    fxrq = fxrq == "" ? "-" : '<span class="txt" title="' + fxrq + '">' + fxrq.substr(5) + '</span>';
+    row.cells[9].innerHTML = fxrq;
+    // 增发上市日期
+    var zfssrq = data[7] || "-";
+    zfssrq = zfssrq == "-" ? "-" : '<span class="txt" title="' + zfssrq + '">' + zfssrq.substr(5) + '</span>';
+    row.cells[10].innerHTML = zfssrq;
+    if (_t.options.param.mk_type.value == 0)
+        row.cells[11].innerHTML = '1-3年';
+    else
+
+    scode,name,type,total_vol,price,newprice,fxdate,mkdate,-,zfcode,online,zxgbdate,zxrate,-,oneper,-,2
+
+        // 每中一股约
+        row.cells[11].innerHTML = data[14].format(2);
+} else {
+    // 相关链接
+    row.cells[2].innerHTML = "<a class=\"red\" href=\"/other/zf/" + _code + "-2-" + fxrqStr + "-" + data[3] + ".html\">详细</a> <a href=\"" + _sj_link + "\">数据</a> <a href=\"" + _gb_link + "\">股吧</a>";
+    // 增发代码
+    row.cells[3].innerHTML = data[9];
+    // 发行总数
+    row.cells[4].innerHTML = data[3].format(2, 4);
+    // 网上发行
+    row.cells[5].innerHTML = data[10].format(2, 4);
+    // 发行价格
+    row.cells[6].innerHTML = data[4].format(2);
+    // 最新价
+    row.cells[7].innerHTML = "<span class=\"" + getColor(data[5]) + "\">" + data[5].format(2) + "</span>";//data[5].format(2); 
+    // 发行日期
+    fxrq = fxrq == "" ? "-" : '<span class="txt" title="' + fxrq + '">' + fxrq.substr(5) + '</span>';
+    row.cells[8].innerHTML = fxrq;
+    // 中签号公布日
+    var zqhgbr = data[11] || "-";
+    zqhgbr = zqhgbr == "-" ? "-" : '<span class="txt" title="' + zqhgbr + '">' + zqhgbr.substr(5) + '</span>';
+    row.cells[9].innerHTML = zqhgbr;
+    // 增发上市日期
+    var zfssrq = data[7] || "-";
+    zfssrq = zfssrq == "-" ? "-" : '<span class="txt" title="' + zfssrq + '">' + zfssrq.substr(5) + '</span>';
+    row.cells[10].innerHTML = zfssrq;
+    // 中签率
+    row.cells[11].innerHTML = data[12].format(2, 0, "%");`;
 
 var lines = str.split("\n");
 var obj = lines
-  .map((e) => e.match(/.*?data\.(.*?)[^a-z].*?\/\/(.+)/))
+  .map((e) => e.match(/.*?data\.(.*?)[^a-z].*?\/\/(.+)/i))
   .filter((e) => e && e.length == 3)
   .reduce((m, e) => {
     m[e[1]] = e[2];

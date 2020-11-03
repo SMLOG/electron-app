@@ -66,7 +66,20 @@ concat(ifnull(process_status,''),
 '回购起始时间:',ifnull(repurstartdate,''),
 '计划回购金额:',ifnull(repuramountlower,''),'~',ifnull(repuramountlimit,''))
 from gphg
-) t where t.code = 'sh601339' order by t.notice_date desc;
+union all 
+select gqjy_id as id , code, ndate,ndate, 'gqjy' as type,
+ concat(
+    '股东:',ifnull(gdmc,''),
+    '质押开始日期:',ifnull(sdate,''),
+    '质押机构:',ifnull(jgmc,''),
+    '预估平仓线(元):',ifnull(pcx,''),
+    '质押股份数量(股):',ifnull(sharefrozennum,''),
+    '占总股本比例(%)',ifnull(frozenintotal,''),
+    ''
+) as descr
+from gqjy 
+
+) t where t.code = 'sh600031' order by t.notice_date desc;
 
 
 select yyplrq_id as id , code,report_date ,  'yyplrq' as type,
@@ -104,3 +117,15 @@ select concat(ifnull(process_status,''),
 
 select fhsp_id as id , code, noticedate,NOTICEDATE, 'fhsp' as type
 from fhsp;
+
+select gqjy_id as id , code, ndate,ndate, 'gqjy' as type,
+ concat(
+    '股东:',ifnull(gdmc,''),
+    '质押开始日期:',ifnull(sdate,''),
+    '质押机构:',ifnull(jgmc,''),
+    '预估平仓线(元):',ifnull(pcx,''),
+    '质押股份数量(股):',ifnull(sharefrozennum,''),
+    '占总股本比例(%)',ifnull(frozenintotal,''),
+    ''
+) as descr
+from gqjy order by sdate desc;

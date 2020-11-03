@@ -47,12 +47,15 @@ async function getData(options, taskName) {
       },
     });
     console.log(urlRow);
+    let today = moment().format("YYYY-MM-DD");
+    if (urlRow && urlRow.url.indexOf(today) > -1) {
+      console.log(today);
+    }
     if (
       !urlRow ||
-      urlRow.url.indexOf(
-        moment().format("YYYY-MM-DD") > -1 &&
-          new Date().getTime() - urlRow.udate.getTime() > 3600 * 1000
-      )
+      !urlRow.udate ||
+      (urlRow.url.indexOf(today) > -1 &&
+        new Date().getTime() - urlRow.udate.getTime() > 3600 * 1000)
     ) {
       url = url.replace(/\{var\}/g, _varname);
       url = url.replace(/\{page\}/g, i);
@@ -183,6 +186,7 @@ export async function task(JOB_MAP, taskName) {
             job: batch[3],
             params: batch[2],
             status: 0,
+            udate: new Date(),
           },
           {
             logging: console.log,

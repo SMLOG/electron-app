@@ -83,7 +83,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=SR&sty=ZF&st=8&sr=-1&p={page}&ps=100&js=var%20{var}={pages:(pc),data:[(x)]}&stat=0&rt={timestamp}",
+      "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=SR&sty=ZF&st=8&sr=-1&p={page}&ps=1000&js=var%20{var}={pages:(pc),data:[(x)]}&stat=0&rt={timestamp}",
   },
   并购重组: {
     key: "SCODE",
@@ -104,7 +104,7 @@ export const JOB_MAP = {
       SCGGRQ: "披露日期",
       ANNOUNDATE: "公告日期",
     },
-    fieldDefitions: { frozenreason: "STRING(255)" },
+    fieldDefitions: { frozenreason: "STRING(1024)" },
     getOptions: function() {
       return [{}];
     },
@@ -132,7 +132,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_BGCZMX&sty=ALL&source=WEB&p={page}&ps=100&st=scggrq&sr=-1&var={var}&rt={timestamp}",
+      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_BGCZMX&sty=ALL&source=WEB&p={page}&ps=1000&st=scggrq&sr=-1&var={var}&rt={timestamp}",
   },
   股权质押: {
     key: "scode",
@@ -180,7 +180,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GDZY_LB&token=70f12f2f4f091e459a279469fe49eca5&cmd=&st=ndate&sr=-1&p={page}&ps=100&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(datatype=1)&rt={timestamp}",
+      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=GDZY_LB&token=70f12f2f4f091e459a279469fe49eca5&cmd=&st=ndate&sr=-1&p={page}&ps=1000&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(datatype=1)&rt={timestamp}",
   },
   分红送配: {
     key: "orgcode",
@@ -222,7 +222,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?callback=jsonp&st=YAGGR&sr=-1&ps=100&p={page}&type=DCSOBS&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D&token=894050c76af8597a853f5b408b759f5d&filter=(ReportingPeriod%3D%5E2020-06-30%5E)",
+      "http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?callback=jsonp&st=YAGGR&sr=-1&ps=1000&p={page}&type=DCSOBS&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D&token=894050c76af8597a853f5b408b759f5d&filter=(ReportingPeriod%3D%5E2020-06-30%5E)",
   },
   回购: {
     key: "dim_scode",
@@ -277,7 +277,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_GETHGLIST&sty=ALL&source=WEB&p={page}&ps=100&st=dim_date&sr=-1&var={var}&rt={timestamp}",
+      "http://datacenter.eastmoney.com/api/data/get?type=RPTA_WEB_GETHGLIST&sty=ALL&source=WEB&p={page}&ps=1000&st=dim_date&sr=-1&var={var}&rt={timestamp}",
   },
   股东增减持: {
     key: "SCode",
@@ -287,6 +287,7 @@ export const JOB_MAP = {
     enable: true,
     fieldDefitions: {
       SCode: "STRING(10)",
+      ShareHdName: "STRING(120)",
     },
     getOptions: function() {
       return [{}];
@@ -305,7 +306,7 @@ export const JOB_MAP = {
       return { arr: rows, totalPage: rawDatas.Data[0].TotalPage };
     },
     url:
-      "http://datainterface3.eastmoney.com/EM_DataCenter_V3/api/GDZC/GetGDZC?js=jsonp&pageSize=100&pageNum=1&tkn=eastmoney&cfg=gdzc&secucode=&fx=&sharehdname=&sortFields=BDJZ&sortDirec=1&startDate=&endDate=&p={page}&pageNo={page}&_={timestamp}",
+      "http://datainterface3.eastmoney.com/EM_DataCenter_V3/api/GDZC/GetGDZC?js=jsonp&pageSize=1000&pageNum=1&tkn=eastmoney&cfg=gdzc&secucode=&fx=&sharehdname=&sortFields=BDJZ&sortDirec=1&startDate=&endDate=&p={page}&pageNo={page}&_={timestamp}",
   },
   解禁: {
     key: "gpdm",
@@ -357,7 +358,7 @@ export const JOB_MAP = {
       return rows;
     },
     url:
-      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?token=70f12f2f4f091e459a279469fe49eca5&st=ltsj&sr=1&p={page}&ps=100&type=XSJJ_NJ_PC&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(mkt=)(ltsj%3E=^2020-11-02^%20and%20ltsj%3C=^2022-11-02^)&rt={timestamp}",
+      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?token=70f12f2f4f091e459a279469fe49eca5&st=ltsj&sr=1&p={page}&ps=1000&type=XSJJ_NJ_PC&js=var%20{var}={pages:(tp),data:(x),font:(font)}&filter=(mkt=)(ltsj%3E=^2020-11-02^%20and%20ltsj%3C=^2022-11-02^)&rt={timestamp}",
   },
   大事: {
     key: "gpdm",
@@ -379,7 +380,7 @@ export const JOB_MAP = {
     },
     getOptions: function() {},
     url:
-      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=GGSJ20_ZDGZ&token=70f12f2f4f091e459a279469fe49eca5&st=rq&sr=-1&ps=1000&p={page}&filter=(rq%3E=^2020-9-1^%20and%20rq%3C=^2020-12-31^)&callback={jsonp}&_={timestamp}",
+      "http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?type=GGSJ20_ZDGZ&token=70f12f2f4f091e459a279469fe49eca5&st=rq&sr=-1&ps=10000&p={page}&filter=(rq%3E=^2020-9-1^%20and%20rq%3C=^2020-12-31^)&callback={jsonp}&_={timestamp}",
   },
   预约披露日期列表: {
     alias: "预披露日",
@@ -683,7 +684,7 @@ export const JOB_MAP = {
       return options;
     },
     url:
-      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=100&jsObj={var}&SecNodeType=0&Time={date}&rt={timestamp}",
+      "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=1000&jsObj={var}&SecNodeType=0&Time={date}&rt={timestamp}",
   },
   行情: {
     key: "code",

@@ -101,7 +101,7 @@
                   <td>{{ event.sjlx }}</td>
                   <td>
                     <a
-                      v-if="event.tszd.length > 1"
+                      v-if="event.tszd"
                       target="_blank"
                       :href="`https://pdf.dfcfw.com/pdf/H2_${event.tszd}_1.pdf`"
                       >{{ event.sjms }}</a

@@ -4,13 +4,12 @@ import { CONFIG_DIR } from "../config";
 import _ from "lodash";
 import { decompressToMapList } from "../lib/keymap";
 import { getList } from "../TechMan";
-import { ifNoExistGenModel } from "../db/utils";
+import { task } from "./jobIndex";
 import {
   getLastReportDate,
   prevReportDate,
   getLastNReportDates,
 } from "../lib/util";
-import { tableName } from "../db/model/Yj";
 
 const defGetOptions = function() {
   return [
@@ -732,3 +731,29 @@ export function load(type) {
     return decompressToMapList(arr);
   } else return {};
 }
+
+var CronJob = require("cron").CronJob;
+const AsyncQueue = require("@wxaxiaoyao/async-queue");
+
+(async () => {
+  for (let k in JOB_MAP) {
+    let job = JOB_MAP[k];
+    if (!job.enable) continue;
+    if (job._cronTime)
+      new CronJob(
+        job._cronTime,
+        function() {
+          AsyncQueue.exec(k, async () => {
+            task(k);
+          });
+        },
+        null,
+        true
+      );
+    else {
+      await task(k);
+    }
+  }
+
+  console.log("done");
+})();

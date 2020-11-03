@@ -8,7 +8,6 @@ import { userAgent } from "../config";
 import { axios } from "../axios";
 const Urls = require("../db/model/Urls");
 
-const AsyncQueue = require("@wxaxiaoyao/async-queue");
 const events = require("events");
 export const emitter = new events.EventEmitter();
 
@@ -109,7 +108,7 @@ async function getData(options, taskName) {
   return pageDatas;
 }
 
-async function task(taskName) {
+export async function task(taskName) {
   let job = JOB_MAP[taskName];
   let jobInfo = await Job.findByPk(taskName);
   if (
@@ -212,28 +211,3 @@ async function task(taskName) {
     }
   }
 }
-
-var CronJob = require("cron").CronJob;
-
-(async () => {
-  for (let k in JOB_MAP) {
-    let job = JOB_MAP[k];
-    if (!job.enable) continue;
-    if (job._cronTime)
-      new CronJob(
-        job._cronTime,
-        function() {
-          AsyncQueue.exec(k, async () => {
-            task(k);
-          });
-        },
-        null,
-        true
-      );
-    else {
-      await task(k);
-    }
-  }
-
-  console.log("done");
-})();

@@ -1,4 +1,3 @@
-import { JOB_MAP } from "./worker";
 import iconv from "iconv-lite";
 import _ from "lodash";
 import moment from "moment";
@@ -48,7 +47,13 @@ async function getData(options, taskName) {
       },
     });
     console.log(urlRow);
-    if (!urlRow) {
+    if (
+      !urlRow ||
+      urlRow.url.indexOf(
+        moment().format("YYYY-MM-DD") > -1 &&
+          new Date().getTime() - urlRow.udate.getTime() > 3600 * 1000
+      )
+    ) {
       url = url.replace(/\{var\}/g, _varname);
       url = url.replace(/\{page\}/g, i);
       url = url.replace(/\{timestamp\}/g, +new Date());
@@ -85,10 +90,7 @@ async function getData(options, taskName) {
       pageDatas.push(pageData);
 
       console.log(pageData);
-      if (
-        (options.pageDatasProcess && options.enablePageDatasProcess) ||
-        total > 10000
-      ) {
+      if (!options.enablePageDatasProcess) {
         console.log("pageDatasProcess");
         await options.pageDatasProcess(pageDatas);
         total = 0;
@@ -108,17 +110,9 @@ async function getData(options, taskName) {
   return pageDatas;
 }
 
-export async function task(taskName) {
+export async function task(JOB_MAP, taskName) {
   let job = JOB_MAP[taskName];
-  let jobInfo = await Job.findByPk(taskName);
-  if (
-    jobInfo &&
-    new Date().getTime() - jobInfo.runtime.getTime() <
-      (job.minTime || 4 * 3600 * 1000)
-  ) {
-    console.log(`${jobInfo.runtime} skip ${taskName}`);
-    return;
-  }
+
   let optionsArr = (job.getOptions && job.getOptions()) || [{}];
   let pageDatas = [];
   for (let option of optionsArr) {
@@ -139,16 +133,7 @@ export async function task(taskName) {
   console.log("mapAndProcessDatas");
   await mapAndProcessDatas(pageDatas);
 
-  try {
-    jobInfo = Job.findByPk(taskName);
-    Job.upsert({ jobname: taskName, runtime: new Date(), status: 0 });
-  } catch (ee) {
-    console.error(job.tableName);
-    console.error(ee);
-    return;
-  }
-  //console.log("emit", taskName);
-  //emitter.emit(taskName, allDatas);
+  Job.upsert({ jobname: taskName, runtime: new Date(), status: 0 });
 
   async function mapAndProcessDatas(pageDatas) {
     let datas = pageDatas.reduce((arr, r) => arr.concat(r[0]), []);
@@ -189,7 +174,7 @@ export async function task(taskName) {
       if (datas.length > 0)
         await model.bulkCreate(datas, {
           updateOnDuplicate: Object.keys(datas[0]),
-          logging: console.log,
+          logging: false,
         });
       for (let batch of pageDatas) {
         await Urls.upsert(

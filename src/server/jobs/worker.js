@@ -1,8 +1,6 @@
 import fs from "fs";
 import moment from "moment";
-import { CONFIG_DIR } from "../config";
 import _ from "lodash";
-import { decompressToMapList } from "../lib/keymap";
 import { getList } from "../TechMan";
 import { task } from "./jobIndex";
 import {
@@ -17,6 +15,12 @@ const defGetOptions = function() {
     { reportDate: prevReportDate() },
   ];
 };
+function codeField(row, options) {
+  let code = row[options.key];
+  if (code[0] * 1 == code[0]) code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+  row.code = code;
+  return row;
+}
 export const JOB_MAP = {
   自选: {
     key: "code",
@@ -120,11 +124,7 @@ export const JOB_MAP = {
         });
 
         row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
-
-        let code = row[options.key];
-        if (code[0] * 1 == code[0])
-          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
-        row.code = code;
+        row = codeField(row, options);
 
         return row;
       });
@@ -172,11 +172,7 @@ export const JOB_MAP = {
         row.upd = row.upd.replace(/T00:00:00/, "");
 
         row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
-
-        let code = row.scode;
-        if (code[0] * 1 == code[0])
-          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
-        row.code = code;
+        row = codeField(row, options);
 
         return row;
       });
@@ -352,10 +348,8 @@ export const JOB_MAP = {
         row.ltsj_date = row.ltsj.replace(/T00:00:00/, "");
         _.unset(row, "ltsj");
 
-        let code = row.gpdm;
-        if (code[0] * 1 == code[0])
-          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
-        row.code = code;
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+        row = codeField(row, options);
 
         return row;
       });
@@ -373,14 +367,14 @@ export const JOB_MAP = {
     enable: true,
     fieldDefitions: { gpdm: "STRING(10)", sjms: "STRING(255)" },
     mapValues: function(datas, options) {
-      return datas.map((data) => {
-        data.rq_date = data.rq.replace(/T00:00:00/, "");
-        _.unset(data, "rq");
-        let code = data.gpdm;
-        if (code[0] * 1 == code[0])
-          code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
-        data.code = code;
-        return data;
+      return datas.map((row) => {
+        row.rq_date = row.rq.replace(/T00:00:00/, "");
+        _.unset(row, "rq");
+
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+        row = codeField(row, options);
+
+        return row;
       });
     },
     getOptions: function() {},
@@ -668,14 +662,11 @@ export const JOB_MAP = {
             Object.assign(row, temp);
           }
         }
-        row.code =
-          (row.stock_code[0] == "6"
-            ? "sh"
-            : row.stock_code[0] == "0" || row.stock_code[0] == "3"
-            ? "sz"
-            : "") + row.stock_code;
         _.unset(row, "codes");
         _.unset(row, "columns");
+        row = _.mapValues(row, (v) => (v == "-" || v == null ? null : v));
+        row = codeField(row, options);
+
         return row;
       });
     },
@@ -693,15 +684,13 @@ export const JOB_MAP = {
     },
     url:
       "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=100&jsObj={var}&SecNodeType=0&Time={date}&rt={timestamp}",
-    //  url:
-    //  "http://data.eastmoney.com/notices/getdata.ashx?StockCode=&FirstNodeType={FirstNodeType}&CodeType=A&PageIndex={page}&PageSize=50&jsObj={var}&SecNodeType=0&Time={today}&rt={timestamp}",
   },
   行情: {
     key: "code",
     tableName: "hq",
     pks: ["code"],
     minTime: 30000000,
-    enable: true,
+    enable: false,
     get: async function(options) {
       let rows = await getList();
 
@@ -720,18 +709,6 @@ export const JOB_MAP = {
   },
 };
 
-/*(async () => {
-  let datas = await JOB_MAP["行情"].get();
-  console.log(datas);
-})();*/
-export function load(type) {
-  let file = `${CONFIG_DIR}/${type.file}`;
-  if (fs.existsSync(file)) {
-    let arr = JSON.parse(fs.readFileSync(file));
-    return decompressToMapList(arr);
-  } else return {};
-}
-
 var CronJob = require("cron").CronJob;
 const AsyncQueue = require("@wxaxiaoyao/async-queue");
 
@@ -744,14 +721,14 @@ const AsyncQueue = require("@wxaxiaoyao/async-queue");
         job._cronTime,
         function() {
           AsyncQueue.exec(k, async () => {
-            task(k);
+            task(JOB_MAP, k);
           });
         },
         null,
         true
       );
     else {
-      await task(k);
+      await task(JOB_MAP, k);
     }
   }
 

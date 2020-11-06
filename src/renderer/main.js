@@ -6,7 +6,12 @@ import store from "./store";
 // 插件
 import formater from "./plugin/formater"; // 引入
 import VueSocketIO from "vue-socket.io";
+import VTooltip from "v-tooltip";
+import Peity from "vue-peity";
 
+Vue.use(VTooltip);
+Vue.use(Peity);
+Vue.component("peity", Peity);
 Vue.config.productionTip = false;
 
 Vue.use(formater); // 添加

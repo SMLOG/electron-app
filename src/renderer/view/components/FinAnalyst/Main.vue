@@ -10,7 +10,7 @@
       class="content"
       style="text-align: center"
     >
-      <div class="pic tips-border" style="height: 247px">
+      <div v-if="false" class="pic tips-border" style="height: 247px">
         <v-chart
           id="zyzbChart"
           :options="chartOptions"
@@ -68,7 +68,16 @@
                 @click="selectZb = zb"
               >
                 <td class="tips-fieldname-Left">
-                  <span>{{ zb[0] }}</span>
+                  <span :title="zb.length > 2 ? zb[2] : ''">{{ zb[0] }}</span>
+                  <peity
+                    :type="'bar'"
+                    :data="
+                      zyzb
+                        .map((e) => e[zb[1]])
+                        .reverse()
+                        .toString()
+                    "
+                  ></peity>
                 </td>
 
                 <td v-for="(value, i) in zyzb" :key="i" class="tips-data-Right">

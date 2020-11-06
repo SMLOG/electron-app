@@ -169,6 +169,13 @@ export let headers = [
   {
     label: "公告日期",
     prop: "UPDATE_DATE",
+    click: (item, event, openlink) => {
+      openlink(
+        item,
+        event,
+        `https://caibaoshuo.com/companies/${item.code.replace(/[a-z]+/g, "")}`
+      );
+    },
   },
   {
     label: "REPORTDATE",

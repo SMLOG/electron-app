@@ -12,6 +12,10 @@ export default new Router({
       component: () => import("@/view/components/Notice"),
     },
     {
+      path: "/kelly",
+      component: () => import("@/view/components/Kelly"),
+    },
+    {
       path: "/finAnalyst/:code",
       name: "finAnalyst",
       component: () => import("@/view/components/FinAnalyst/FinAnalyst.vue"),

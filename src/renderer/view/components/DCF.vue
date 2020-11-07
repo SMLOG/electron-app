@@ -68,12 +68,24 @@
                   <div class="present-value" title="现值">
                     <div class="data-box">
                       <div class="value">
-                        <input
-                          type="text"
-                          value="11.60"
-                          disabled="disabled"
-                          autocomplete="off"
-                        />
+                        <div class="value">
+                          <span
+                            disabled="disabled"
+                            v-if="stage.presentValue != null"
+                            >{{ stage.presentValue.toFixed(2) }}</span
+                          >
+                          <input
+                            v-if="false"
+                            type="text"
+                            :value="
+                              stage.presentValue != null
+                                ? stage.presentValue.toFixed(2)
+                                : ''
+                            "
+                            disabled="disabled"
+                            autocomplete="off"
+                          />
+                        </div>
                       </div>
                       <div class="unit">￥</div>
                     </div>
@@ -108,7 +120,6 @@
                           type="text"
                           name="year"
                           v-model="stage.to"
-                          greater-than="2019"
                           required="required"
                           title=""
                           autocomplete="off"

@@ -8,7 +8,8 @@ export function genModel(
   displayFieldMap = {},
   u,
   comment = "",
-  fieldDef
+  fieldDef,
+  deftype
 ) {
   let res = {};
   if (!fieldDef) fieldDef = {};
@@ -48,24 +49,31 @@ export function genModel(
       console.log(sampleRow);
     }
     console.log(field);
+    if (deftype) {
+      f["type"] = "DataTypes." + deftype;
+    }
     if (fieldDef[field]) {
       f["type"] = "DataTypes." + fieldDef[field];
     } else {
-      let len = sampleRow[field].length;
-      if (
-        sampleRow[field] * 1 == sampleRow[field] &&
-        !field.toLowerCase().endsWith("code")
-      )
-        f["type"] = "DataTypes.DOUBLE";
-      else if (_.isDate(sampleRow[field])) {
-        f["type"] = `DataTypes.DATE`;
-      } else if (sampleRow[field] && len > 500) {
-        f["type"] = `DataTypes.TEXT`;
-      } else
-        f["type"] = `DataTypes.STRING(${Math.max(
-          10,
-          sampleRow[field] && Math.round(Math.ceil(len / 10)) * 10
-        )})`;
+      if (sampleRow[field] == null && !f["type"])
+        console.error(`field ${field} is null`);
+      if (sampleRow[field]) {
+        let len = sampleRow[field].length;
+        if (
+          sampleRow[field] * 1 == sampleRow[field] &&
+          !field.toLowerCase().endsWith("code")
+        )
+          f["type"] = "DataTypes.DOUBLE";
+        else if (_.isDate(sampleRow[field])) {
+          f["type"] = `DataTypes.DATE`;
+        } else if (sampleRow[field] && len > 500) {
+          f["type"] = `DataTypes.TEXT`;
+        } else
+          f["type"] = `DataTypes.STRING(${Math.max(
+            10,
+            sampleRow[field] && Math.round(Math.ceil(len / 10)) * 10
+          )})`;
+      }
     }
 
     if (u.indexOf(field) > -1) f["unique"] = "index_unique";
@@ -95,6 +103,13 @@ export function genModel(
   fs.writeFileSync(file, content);
   return cls;
 }
+export function codeField(row, key) {
+  let code = row[key];
+  if (code != undefined && code[0] * 1 == code[0])
+    code = `${code[0] == 6 ? "sh" : "sz"}${code}`;
+  row.code = code;
+  return row;
+}
 
 export async function ifNoExistGenModel(
   datas,
@@ -102,15 +117,24 @@ export async function ifNoExistGenModel(
   keymap,
   uColums,
   comment,
-  fieldDefitions
+  fieldDefitions,
+  deftype
 ) {
   let isSync = false;
   try {
     await db.query(`SELECT 1 FROM ${tableName} limit 1`);
   } catch (ee) {
     isSync = true;
-    genModel(datas, tableName, keymap, uColums, comment, fieldDefitions);
-    if (datas && datas.length > 0 && "code" in datas[0]) {
+    genModel(
+      datas,
+      tableName,
+      keymap,
+      uColums,
+      comment,
+      fieldDefitions,
+      deftype
+    );
+    /*if (datas && datas.length > 0 && "code" in datas[0]) {
       let ddl = `CREATE TABLE IF NOT EXISTS \`n_notice\`(
         \`code\` VARCHAR(10) NOT NULL,
         \`notice_date\` VARCHAR(20) NOT NULL,
@@ -118,7 +142,7 @@ export async function ifNoExistGenModel(
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8`;
       console.log(ddl);
       await db.query(ddl);
-    }
+    }*/
   }
 
   let modelName = tableName[0].toUpperCase() + tableName.substring(1);

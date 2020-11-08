@@ -1,86 +1,111 @@
-/*const User = require("./model/User");
-// Find all users
-User.findAll().then((users) => {
-  console.log("All users:", JSON.stringify(users, null, 4));
-});
-// Create a new user
-User.create({ firstName: "Jane", lastName: "Doe" }).then((jane) => {
-  console.log("Jane's auto-generated ID:", jane.id);
-});
-// Delete everyone named "Jane"
-User.destroy({
-  where: {
-    firstName: "Jane",
-  },
-}).then(() => {
-  console.log("Done");
-});
-// Change everyone without a last name to "Doe"
-User.update(
-  { lastName: "Doe" },
-  {
-    where: {
-      lastName: null,
-    },
-  }
-).then(() => {
-  console.log("Done");
-});
-*/
-
-const Lrb = require("./model/Lrb");
-const Zcfzb = require("./model/Zcfzb");
-const Xjllb = require("./model/Xjllb");
 const Zyzb = require("./model/Zyzb");
 const Dbfx = require("./model/Dbfx");
-const Yyplrq = require("./model/Yyplrq");
-const Yj = require("./model/Yj");
-const Yjkb = require("./model/Yjkb");
-const Yjyg = require("./model/Yjyg");
-const Zcfz = require("./model/Zcfz");
-const Lr = require("./model/Lr");
-const Xjll = require("./model/Xjll");
-const Gz = require("./model/Gz");
+
 import axios from "axios";
 import moment from "moment";
 import _ from "lodash";
-async function getReportData(tab, code) {
-  let dateurl = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}DateAjax?reportDateType=0&code=${code}`;
+import { ifNoExistGenModel, codeField } from "./utils";
+import { getFieldsMap } from "./convert";
 
+async function getReportData(tab, code, typename = "单季") {
+  let reportDateType = 2;
+  let reportDateType2 = 0;
+  let reportType = 2;
+
+  let fieldMap = await getFieldsMap(tab);
+
+  switch (typename) {
+    case "单季":
+      reportDateType = 2;
+      reportDateType2 = 0;
+      reportType = 2;
+      break;
+    case "年度":
+      reportDateType = 1;
+      reportDateType2 = 1;
+      reportType = 1;
+      break;
+
+    case "报告期":
+      reportDateType = 0;
+      reportDateType2 = 0;
+      reportType = 1;
+      break;
+  }
+  let dateurl = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}DateAjax?reportDateType=${reportDateType}&code=${code}`;
+
+  console.log(dateurl);
   let dates = await axios.get(dateurl, {}).then((resp) => resp.data.data);
 
   let endDate = "";
 
+  let allrows = [];
   for (;;) {
-    let url = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}Ajax?companyType=4&reportDateType=0&reportType=1&endDate=${endDate}&code=${code}`;
+    let url = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}Ajax?companyType=4&reportDateType=${reportDateType2}&reportType=${reportType}&endDate=${endDate}&code=${code}`;
     console.log(url);
 
-    let result = await axios.get(url, {}).then((resp) => resp.data);
+    let rows = await axios.get(url, {}).then((resp) => resp.data);
     //console.log(JSON.parse(result)[0]);
-    result = JSON.parse(result);
-    result = result.map((e) =>
-      _.defaults(e, {
-        code: code,
-        REPORTDATETYPE: 0,
-        REPORTTYPE: 1,
-        reportDate: moment(new Date(e.REPORTDATE)).format("YYYY-MM-DD"),
-      })
-    );
-
-    endDate = moment(new Date(result[result.length - 1].REPORTDATE)).format(
+    rows = JSON.parse(rows);
+    allrows = allrows.concat(rows);
+    endDate = moment(new Date(allrows[allrows.length - 1].REPORTDATE)).format(
       "YYYY-MM-DD"
     );
-    console.log(endDate, dates[dates.length - 1]);
-    for (let i = 0; i < result.length; i++)
-      try {
-        if (tab == "rlb") await Lrb.create(result[i]);
-        else if (tab == "zcfzb") await Zcfzb.create(result[i]);
-        else if (tab == "xjllb") await Xjllb.create(result[i]);
-      } catch (e) {
-        return;
-      }
     if (endDate == dates[dates.length - 1]) break;
   }
+
+  allrows = allrows.map((e) =>
+    _.defaults(e, {
+      code: code.toString(),
+      REPORTDATETYPE: reportDateType2,
+      REPORTTYPE: reportType,
+      typename: typename,
+    })
+  );
+
+  console.log(endDate, dates[dates.length - 1], tab);
+  allrows = allrows.map((row) => {
+    row.REPORTDATE = moment(new Date(row.REPORTDATE)).format("YYYY-MM-DD");
+    row.PREPORTDATE =
+      parseInt(row.REPORTDATE.substring(0, 4)) -
+      1 +
+      row.REPORTDATE.substring(4);
+    return (row = _.mapValues(row, (v) =>
+      v == "-" || v == null || v.toString().trim() == "" ? null : v
+    ));
+  });
+
+  if (typename == "单季" && allrows.length > 0) {
+    let ttmrow = {};
+    for (let i = Math.min(allrows.length, 3); i >= 0; i--) {
+      ttmrow = _.mapValues(allrows[i], (value, key) => {
+        return /^\-?\d+\.?\d*$/.test(value)
+          ? parseFloat(value) + (ttmrow[key] ? ttmrow[key] : 0)
+          : value;
+      });
+    }
+    ttmrow.REPORTTYPE = 1;
+    ttmrow.TYPE = 4;
+    ttmrow.REPORTDATE = ttmrow.REPORTDATE.substring(0, 4) + "-12-31";
+    ttmrow.PREPORTDATE =
+      parseInt(ttmrow.REPORTDATE.substring(0, 4)) - 1 + "-12-31";
+    console.log(ttmrow);
+    allrows = allrows.concat(ttmrow);
+  }
+
+  let model = await ifNoExistGenModel(
+    allrows,
+    tab,
+    fieldMap,
+    ["code", "REPORT_DATE", "REPORTDATE", "REPORTTYPE"],
+    tab,
+    {},
+    "DOUBLE"
+  );
+  await model.bulkCreate(allrows, {
+    updateOnDuplicate: Object.keys(allrows[0]),
+    logging: false,
+  });
 }
 async function getZyzb(type, code) {
   var url = `http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=0&code=${code}`;
@@ -91,9 +116,10 @@ async function getZyzb(type, code) {
     let row = result[i];
     row = _.mapValues(row, (e) => (e == "--" ? null : e));
     row = _.defaults(row, {
-      code: code,
+      code: code.toLowerCase(),
       REPORTTYPE: type,
-      reportDate: row.date,
+      REPORTDATE: row.date,
+      typename: typename,
     });
     console.log(JSON.stringify(row, null, 4));
 
@@ -122,6 +148,7 @@ async function getDbfx(code) {
 }
 
 (async () => {
-  await getDbfx("sh600031");
-  // await getReportData("zcfzb", "sh600031");
+  //await getDbfx("sh600031");
+  //  await getReportData("zcfzb", "SZ000651");
+  await getReportData("zcfzb", "SZ000651", "报告期");
 })();

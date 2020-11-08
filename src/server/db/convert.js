@@ -156,8 +156,12 @@ function getFieldDisplay(tab, map) {
   );
   return r;
 }
-
-(async () => {
+export async function getFieldsMap(modelName) {
+  let colMap = await getcolumDisplayMap();
+  let fieldMap = getFieldDisplay(modelName, colMap);
+  return fieldMap;
+}
+async () => {
   let colMap = await getcolumDisplayMap();
   let sampMap = await getSampDatas();
   const compositeFields = [
@@ -185,4 +189,4 @@ function getFieldDisplay(tab, map) {
 
   //console.log(JSON.stringify(out, null, 4));
   //console.log(colMap, sampMap);
-})();
+};

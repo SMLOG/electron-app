@@ -129,3 +129,15 @@ select gqjy_id as id , code, ndate,ndate, 'gqjy' as type,
     ''
 ) as descr
 from gqjy order by sdate desc;
+
+
+
+select fmt(sum(OPERATEREVE)) "营业收入", fmt(sum(OPERATEPROFIT)) "营业利润",
+fmt(sum(TOTALOPERATEEXP)) "营业总成本",
+fmt(sum(SUMPROFIT)) "利润总额",
+fmt(sum(NETPROFIT)) "净利润" ,
+fmt(sum(OPERATEREVE)/sum(TOTALOPERATEEXP)*100) "净利%" ,
+fmt(sum(PARENTNETPROFIT)) "归属于母公司股东的净利润",
+fmt(sum(BASICEPS )) "基本每股收益"
+from (
+   select code,typename,OPERATEPROFIT,TOTALOPERATEEXP,SUMPROFIT,NETPROFIT,PARENTNETPROFIT,BASICEPS,OPERATEREVE  from lrb   order by reportdate desc limit 4) t;

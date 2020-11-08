@@ -12,9 +12,16 @@ export default new Router({
       component: () => import("@/view/components/Notice"),
     },
     {
-      path: "/dcf",
-      name: "dcf",
-      component: () => import("@/view/components/DCF"),
+      path: "/tools/dcf",
+      component: () => import("@/view/components/tools/DCF"),
+    },
+    {
+      path: "/tools/irr",
+      component: () => import("@/view/components/tools/IRR"),
+    },
+    {
+      path: "/tools/kelly",
+      component: () => import("@/view/components/tools/Kelly"),
     },
     {
       path: "/finAnalyst/:code",

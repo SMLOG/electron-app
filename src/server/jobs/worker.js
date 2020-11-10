@@ -55,6 +55,32 @@ export const JOB_MAP = {
       return [{ jobname: "sh6000001", runtime: new Date(), status: 0 }];
     },
   },
+  rdate: {
+    tableName: "rdate",
+    pks: ["code", "type", "rd"],
+    enable: true,
+    get: function(options) {
+      return [[[{ code: "sz000651", rd: "2020-09-30", type: "b" }]]];
+    },
+  },
+  rptdate: {
+    tableName: "rptdate",
+    pks: ["code", "p", "y"],
+    enable: true,
+    get: function(options) {
+      return [
+        [
+          [
+            { code: "2020-12-31", p: "2019-12-31", type: "y" },
+            { code: "2020-09-30", p: "2019-09-30", type: "y" },
+            { code: "2020-06-30", p: "2019-06-30", type: "y" },
+            { code: "2020-03-31", p: "2019-03-31", type: "y" },
+            { code: "2019-12-31", p: "2018-12-31", type: "y" },
+          ],
+        ],
+      ];
+    },
+  },
   增发: {
     key: "scode",
     tableName: "gszf",

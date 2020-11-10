@@ -38,13 +38,18 @@ async function getReportData(tab, code, typename = "单季") {
   let dates = await axios.get(dateurl, {}).then((resp) => resp.data.data);
 
   let endDate = "";
-
+  console.log(dates);
   let allrows = [];
   for (;;) {
     let url = `http://f10.eastmoney.com/NewFinanceAnalysis/${tab}Ajax?companyType=4&reportDateType=${reportDateType2}&reportType=${reportType}&endDate=${endDate}&code=${code}`;
     console.log(url);
-
-    let rows = await axios.get(url, {}).then((resp) => resp.data);
+    let rows;
+    try {
+      rows = await axios.get(url, {}).then((resp) => resp.data);
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    }
     //console.log(JSON.parse(result)[0]);
     rows = JSON.parse(rows);
     allrows = allrows.concat(rows);
@@ -65,7 +70,10 @@ async function getReportData(tab, code, typename = "单季") {
 
   console.log(endDate, dates[dates.length - 1], tab);
   allrows = allrows.map((row) => {
-    row.REPORTDATE = moment(new Date(row.REPORTDATE)).format("YYYY-MM-DD");
+    row.RREPORTDATE = row.REPORTDATE = moment(new Date(row.REPORTDATE)).format(
+      "YYYY-MM-DD"
+    );
+
     row.PREPORTDATE =
       parseInt(row.REPORTDATE.substring(0, 4)) -
       1 +
@@ -84,6 +92,8 @@ async function getReportData(tab, code, typename = "单季") {
           : value;
       });
     }
+    ttmrow.RREPORTDATE = allrows[0].RREPORTDATE;
+
     ttmrow.REPORTTYPE = 1;
     ttmrow.TYPE = 4;
     ttmrow.REPORTDATE = ttmrow.REPORTDATE.substring(0, 4) + "-12-31";
@@ -149,6 +159,9 @@ async function getDbfx(code) {
 
 (async () => {
   //await getDbfx("sh600031");
-  //  await getReportData("zcfzb", "SZ000651");
+  await getReportData("lrb", "SZ000651");
+  await getReportData("lrb", "SZ000651", "年度");
+  // await getReportData("xjllb", "SZ000651");
+  // await getReportData("xjllb", "SZ000651", "年度");
   await getReportData("zcfzb", "SZ000651", "报告期");
 })();

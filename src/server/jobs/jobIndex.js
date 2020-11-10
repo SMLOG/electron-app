@@ -129,7 +129,7 @@ export async function task(JOB_MAP, taskName) {
       option
     );
     job.pageDatasProcess = options.pageDatasProcess = mapAndProcessDatas;
-    let pageDatas1 = await getData(options, taskName);
+    let pageDatas1 = await options.get(options, taskName);
     pageDatas = pageDatas.concat(pageDatas1);
   }
 

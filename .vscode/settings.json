@@ -9,11 +9,11 @@
       "server": "localhost",
       "port": 3306,
       "driver": "MySQL",
-      "name": "mysql-test",
+      "name": "test",
       "group": "test",
       "database": "test",
       "username": "root",
-      "password": ""
+      "password": "password"
     }
   ]
 }

@@ -1,0 +1,45 @@
+DELIMITER $$
+DROP FUNCTION IF EXISTS fmt$$
+CREATE FUNCTION fmt(value DOUBLE) RETURNS varchar(20)
+     BEGIN
+       DECLARE str VARCHAR(20) DEFAULT '';
+     
+     set @str= concat(convert(value,decimal(8,2)),'元');
+      
+      if ABS(value)<10000  then SET @str=concat(convert(value,decimal(8,2)),'元') ;
+      elseif ABS(value)<100000000 then SET @str=concat(convert(value/10000,decimal(8,2)),'万'); 
+      else SET @str=concat(convert(value/100000000,decimal(8,2)),'亿'); 
+      end if;
+     
+     return @str;
+     END 
+     $$
+     DELIMITER ;
+
+
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_rpd$$
+CREATE FUNCTION fn_rpd(reportdate varchar(10),t int) RETURNS varchar(10)
+     BEGIN
+       DECLARE str VARCHAR(10) DEFAULT '';
+       DECLARE m int DEFAULT 0;
+       DECLARE y int DEFAULT 0;
+ 
+    if t>0 then
+      set @y=cast(SUBSTR(reportdate,1,4) as SIGNED) + floor(t/4);
+      set @m=cast(SUBSTR(reportdate,6,2) as SIGNED)+3*(t%4);
+    else 
+      set @y=cast(SUBSTR(reportdate,1,4) as SIGNED) + ceil(t/4);
+      set @m=cast(SUBSTR(reportdate,6,2) as SIGNED)+3*(t%4);
+    end if;
+      
+       if @m>12 then set @y=@y+1;set @m=@m-12;end if;
+       if @m<=0 then set @y=@y-1;set @m=@m+12;end if;
+
+     if @m=3 or @m=12 then set @str=concat(@y,'-',lpad(@m,2,'0'),'-','31') ;
+     else set @str=concat(@y,'-',lpad(@m,2,'0'),'-','30') ; end if;
+     return @str;
+     END 
+ $$
+DELIMITER ;

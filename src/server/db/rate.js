@@ -172,16 +172,15 @@ var conf = [
     "",
     "现金流量允当比率(%)",
     "https://caibaoshuo.com/terms/000651/cashflow_adequacy_ratio",
-    "现金流量允当比率 = 最近5年度营业活动净现金流量 / 最近5年度（资本支出 + 存货増加额+ 现金股利)",
+    "现金流量允当比率 = 最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
   ],
   [
     "",
     "现金再投资比率(%)",
     "https://caibaoshuo.com/terms/000651/cash_reinvestment_ratio",
-    "现金再投资比率 = (业活动净现金流 - 现金股利) / (固定资产毛额 + 长期投资 + 其他资产 + 运营资金)",
+    "现金再投资比率 = (营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
   ],
 ];
-
 var all = conf.reduce((r, ar) => {
   var a = ar[3].split(/=|＝/);
   var l = a[0].trim();
@@ -199,27 +198,65 @@ m = _.mapKeys(m, (v, k) => {
 const regex = /\p{Unified_Ideograph}+[^+\/x)\s*-]*/gu;
 
 //console.log('净资产收益率 (ROE%)'.match(regex));
-m["营业总收入"] = "TOTALOPERATEREVE";
+m["营业总收入"] = "lr.TOTALOPERATEREVE";
 m["杠杆倍数"] = "权益乘数";
-m["净收益"] = m["净利润"] = "NETPROFIT";
-m["营业收入"] = m["主营业务成本"] = m["销售收入"] = "OPERATEREVE";
+m["净收益"] = m["净利润"] = "lr.NETPROFIT";
+m["营业收入"] = m["主营业务成本"] = m["销售收入"] = "lr.OPERATEREVE";
 m["流动资产总额"] = "z.SUMLASSET";
 m["流动负债总额"] = "z.SUMLLIAB";
-m["营业支出"] = m["营业成本"] = m["货物销售成本"] = "OPERATEEXP";
+m["营业支出"] = m["营业成本"] = m["货物销售成本"] = "lr.OPERATEEXP";
 m["总资产"] = m["期末总资产"] = "z.SUMLIABSHEQUITY";
 m["期初总资产"] = "z2.SUMLIABSHEQUITY";
-m["归属于母公司股东的净利润"] = "PARENTNETPROFIT";
+m["归属于母公司股东的净利润"] = "lr.PARENTNETPROFIT";
 m["负债"] = m["负债总额"] = "z.SUMLIAB";
 m["期初负债总额"] = "z2.SUMLIAB";
 m["存货"] = m["期末存货总额"] = "z.INVENTORY";
 m["预付费用"] = "z.ADVANCEPAY";
 m["利息费用"] = "z.INTERESTPAY";
-m["利润总额"] = m["营业净利"] = m["营业利润"] = "SUMPROFIT";
+m["利润总额"] = m["营业净利"] = m["营业利润"] = "lr.SUMPROFIT";
 m["期初存货总额"] = "z2.INVENTORY";
 m["期初应付账款"] = "z2.ACCOUNTBILLPAY";
 m["期末应付账款"] = "z.ACCOUNTBILLPAY";
 m["期初应收账款"] = "z2.ACCOUNTBILLREC";
 m["期末应收账款"] = "z.ACCOUNTBILLREC";
+m["五年内分红"] = `( select 
+  fmt(sum(ifnull(l.DIVIPROFITORINTPAY,0) ))
+   from xjllb l where 
+    l.reporttype=1
+   and l.rreportdate<=ll.rreportdate
+   and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+   )`;
+m["五年内处置"] = `( select 
+    fmt(sum(ifnull(l.DISPFILASSETREC,0) ))
+     from xjllb l where 
+     l.code = ll.code 
+     and l.reporttype=ll.reporttype
+     and l.rreportdate<=ll.rreportdate
+     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+     )`;
+m["五年内购建"] = `( select 
+      fmt(sum(ifnull(l.CASHEQUIENDING,0) ))
+       from xjllb l where 
+       l.code = ll.code 
+       and l.reporttype=ll.reporttype
+       and l.rreportdate<=ll.rreportdate
+       and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+       )`;
+m["最近5年度营业活动净现金流量"] = `( select 
+        fmt(sum(ifnull(l.CASHEQUIENDING,0) ))
+         from xjllb l where 
+         l.code = ll.code 
+         and l.reporttype=ll.reporttype
+         and l.rreportdate<=ll.rreportdate
+         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+         )`;
+m["五年前期初存货"] = `
+         (select 
+         fmt(z5.INVENTORY)
+         from zcfzb z5 
+         where z5.code=ll.code 
+         and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+         ) `;
 var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
 营业利润利率=净利润/营业总收入
 毛利=营业收入-营业支出
@@ -231,6 +268,7 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
 总资产周转率 = 营业总收入 / (( 期初总资产 + 期末总资产) / 2)
 平均总资产=(期初总资产 + 期末总资产)/2
 存货总额=平均存货总额
+存货=z.INVENTORY
 平均存货总额=(期初存货总额 + 期末存货总额)/2
 期初期末应付账款平均值=(期初应付账款 + 期末应付账款)/2
 平均应收账款=(期初应收账款 + 期末应收账款)/2
@@ -238,6 +276,12 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
 本期主营业务收入=营业收入
 上期主营业务收入=lr2.OPERATEREVE
 上期主要业务收入=上期主营业务收入
+本年营业利润总额=lr.OPERATEPROFIT
+上年营业利润总额=lr2.OPERATEPROFIT
+流动负债=流动负债总额
+营业活动净现金流量=ll.NETOPERATECASHFLOW
+筹资活动现金流出=ll.SUMFINAFLOWOUT
+总资产=期末总资产
 `
   .trim()
   .split(/\n/)
@@ -250,6 +294,97 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
   }, {});
 m = _.assign(m, m2);
 
+function loopRun(map, arr, exist) {
+  if (arr.length == 0) {
+    let select = _.omit(
+      map,
+      _.toPairs(map)
+        .filter((e) => e[1].match(/[^\x00-\x7F]/))
+        .map((e) => e[0])
+    );
+
+    arr.push(select);
+    _.defaults(exist, select);
+    return loopRun(map, arr, exist);
+  } else {
+    let select2 = _.toPairs(_.omit(map, Object.keys(exist))).filter((e) => {
+      if (exist[e[1]]) return false;
+      let matches = e[1].match(/[^\x00-\x7F]+/g);
+      if (matches) {
+        return matches.filter((a) => exist[a]).length == matches.length;
+      }
+      return false;
+    });
+    if (select2.length == 0) {
+      let last = _.omit(map, Object.keys(exist));
+      let select = _.pick(
+        map,
+        _.toPairs(last)
+          .filter((e) => exist[e[1]])
+          .map((e) => e[0])
+      );
+      arr.push(select);
+      _.defaults(exist, select);
+      return arr;
+    }
+    let result = _.pick(
+      map,
+      select2.map((e) => e[0])
+    );
+    arr.push(result);
+    _.defaults(exist, result);
+    return loopRun(map, arr, exist);
+  }
+}
+
+//m2 = _.mapValues(m2, (v) => v.replace("x", "*"));
+
+function gensql(arr, query, len) {
+  let last = arr.pop();
+  let sql = _.toPairs(last)
+    .map(
+      (e) =>
+        `${e[1].replace(/[^\x00-\x7F]+[\d]*/g, function(v) {
+          return `\`${v}\``;
+        })} "${e[0]}"`
+    )
+    .join(",\n");
+  let id = arr.length;
+  if (arr.length == 0) {
+    return `select ${sql} from ${query}  `;
+  }
+  return `select ${sql},* from (${gensql(
+    arr,
+    query,
+    len || arr.length
+  )}) t${id} `;
+}
+let resArr = loopRun(m, [], {});
+
+console.log(
+  gensql(
+    resArr,
+    `  
+lrb lr
+left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
+
+left join zcfzb z on z.code = lr.code
+and z.reportdate = lr.rreportdate
+
+left join zcfzb z2 on lr.code = z.code
+and z2.reportdate = z.preportdate
+
+left join xjllb ll on ll.code = lr.code
+and ll.rreportdate = lr.rreportdate
+and ll.reporttype=lr.reporttype
+
+left join xjllb ll2 on ll2.code = lr.code
+and ll2.rreportdate=lr2.rreportdate and ll2.reporttype=lr2.reporttype
+
+where
+lr.reporttype = 1`
+  )
+);
 function expf(nameExp) {
   let exp = nameExp;
 
@@ -278,8 +413,8 @@ function expf(nameExp) {
 }
 //console.log(expf("净资本增长率"));
 
-if (true)
-  conf
+if (false) {
+  var out = conf
     .map((e) => [
       e[1],
 
@@ -291,8 +426,21 @@ if (true)
       ),
     ])
     .filter((e) => e[1].match(regex))
-    .map((e) => console.log(e[0], "=", e[1]));
+    .map((e) => `fmt(${e[1]}) "${e[0]}" `)
+    .join(",\n")
+    .replace(/×/g, "*")
+    .replace(/－/g, "-")
+    .replace(/x/g, "*");
+  console.log(
+    `
+  select lr.code,lr.typename,lr.reportdate,
+  ${out}
 
+order by
+    lr.reportdate desc;
+  `
+  );
+}
 if (false)
   conf
     .map((e) => [

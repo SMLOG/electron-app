@@ -1331,6 +1331,10 @@ const { Model, DataTypes } = require("sequelize");
         "type": DataTypes.STRING(10),
         "field": "typename"
     },
+    "RREPORTDATE": {
+        "type": DataTypes.STRING(10),
+        "field": "RREPORTDATE"
+    },
     "PREPORTDATE": {
         "type": DataTypes.STRING(10),
         "field": "PREPORTDATE"

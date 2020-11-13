@@ -1,4 +1,6 @@
 import _ from "lodash";
+import sqlFormatter from "sql-formatter";
+
 var conf = [
   [
     "财务结构",
@@ -219,6 +221,10 @@ m["期初应付账款"] = "z2.ACCOUNTBILLPAY";
 m["期末应付账款"] = "z.ACCOUNTBILLPAY";
 m["期初应收账款"] = "z2.ACCOUNTBILLREC";
 m["期末应收账款"] = "z.ACCOUNTBILLREC";
+m["code"] = "lr.code";
+m["财报日期"] = "lr.rreportdate";
+m["财报类型"] = "lr.reporttype";
+m["财报类型名"] = "lr.typename";
 m["五年内分红"] = `( select 
   fmt(sum(ifnull(l.DIVIPROFITORINTPAY,0) ))
    from xjllb l where 
@@ -353,18 +359,18 @@ function gensql(arr, query, len) {
   if (arr.length == 0) {
     return `select ${sql} from ${query}  `;
   }
-  return `select ${sql},* from (${gensql(
+  return `select ${sql},t${id}.* from (${gensql(
     arr,
     query,
     len || arr.length
   )}) t${id} `;
 }
-let resArr = loopRun(m, [], {});
 
 console.log(
-  gensql(
-    resArr,
-    `  
+  sqlFormatter.format(
+    gensql(
+      loopRun(m, [], {}),
+      `  
 lrb lr
 left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
 
@@ -383,6 +389,7 @@ and ll2.rreportdate=lr2.rreportdate and ll2.reporttype=lr2.reporttype
 
 where
 lr.reporttype = 1`
+    )
   )
 );
 function expf(nameExp) {

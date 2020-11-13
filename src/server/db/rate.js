@@ -42,7 +42,7 @@ var conf = [
     "",
     "应收款项周转天数(天)",
     "https://caibaoshuo.com/terms/000651/receivable_turnover_date",
-    "应收款项周转天数 = 平均应收账款 × 365 / 销售收入",
+    "应收款项周转天数 = 平均应收账款 * 365 / 销售收入",
   ],
   [
     "",
@@ -96,7 +96,7 @@ var conf = [
     "",
     "ROE=净资产收益率(%)",
     "https://caibaoshuo.com/terms/000651/roe",
-    "净资产收益率 (ROE%)=  净利率 x 总资产周转率 x 杠杆倍数",
+    "净资产收益率 (ROE%)=  净利率 * 总资产周转率 * 杠杆倍数",
   ],
   [
     "",
@@ -162,7 +162,7 @@ var conf = [
     "",
     "净资本增长率(%)",
     "https://caibaoshuo.com/terms/000651/net_assets_growth",
-    "净资本增长率 =（期末净资产 — 期初净资产）/ 期初净资产",
+    "净资本增长率 =（期末净资产 - 期初净资产）/ 期初净资产",
   ],
   [
     "现金流量",
@@ -196,10 +196,8 @@ var m = _.defaults(rawVar, all);
 m = _.mapKeys(m, (v, k) => {
   return k.replace(/\(.*?\)/g, "").trim();
 });
-//console.log(m);
 const regex = /\p{Unified_Ideograph}+[^+\/x)\s*-]*/gu;
 
-//console.log('净资产收益率 (ROE%)'.match(regex));
 m["营业总收入"] = "lr.TOTALOPERATEREVE";
 m["杠杆倍数"] = "权益乘数";
 m["净收益"] = m["净利润"] = "lr.NETPROFIT";
@@ -300,12 +298,17 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
   }, {});
 m = _.assign(m, m2);
 
+const itemRegex = /([^\x00-\x7F]+\d*)+/g;
 function loopRun(map, arr, exist) {
+  if (!map) return null;
+  if (!arr) arr = [];
+  if (!exist) exist = [];
+
   if (arr.length == 0) {
     let select = _.omit(
       map,
       _.toPairs(map)
-        .filter((e) => e[1].match(/[^\x00-\x7F]/))
+        .filter((e) => e[1].match(itemRegex))
         .map((e) => e[0])
     );
 
@@ -313,29 +316,37 @@ function loopRun(map, arr, exist) {
     _.defaults(exist, select);
     return loopRun(map, arr, exist);
   } else {
-    let select2 = _.toPairs(_.omit(map, Object.keys(exist))).filter((e) => {
-      if (exist[e[1]]) return false;
-      let matches = e[1].match(/[^\x00-\x7F]+/g);
+    let select = _.toPairs(_.omit(map, Object.keys(exist))).filter((e) => {
+      let matches = e[1].match(itemRegex);
       if (matches) {
         return matches.filter((a) => exist[a]).length == matches.length;
       }
       return false;
     });
-    if (select2.length == 0) {
-      let last = _.omit(map, Object.keys(exist));
-      let select = _.pick(
-        map,
-        _.toPairs(last)
-          .filter((e) => exist[e[1]])
-          .map((e) => e[0])
-      );
-      arr.push(select);
-      _.defaults(exist, select);
+    if (select.length == 0) {
+      let stil = _.omit(map, Object.keys(exist));
+      _.toPairs(stil).length > 0 && console.warn("below not fould:");
+
+      _.toPairs(stil).forEach((e) => {
+        let matches = e[1].match(itemRegex);
+        if (matches) {
+          let notFindList = matches.filter((a) => !exist[a]);
+          if (notFindList.length > 0) {
+            console.warn(
+              e[0],
+              "=",
+              e[1],
+              "**missing** ",
+              notFindList.join(",")
+            );
+          }
+        }
+      });
       return arr;
     }
     let result = _.pick(
       map,
-      select2.map((e) => e[0])
+      select.map((e) => e[0])
     );
     arr.push(result);
     _.defaults(exist, result);
@@ -343,14 +354,12 @@ function loopRun(map, arr, exist) {
   }
 }
 
-//m2 = _.mapValues(m2, (v) => v.replace("x", "*"));
-
 function gensql(arr, query, len) {
   let last = arr.pop();
   let sql = _.toPairs(last)
     .map(
       (e) =>
-        `${e[1].replace(/[^\x00-\x7F]+[\d]*/g, function(v) {
+        `${e[1].replace(itemRegex, function(v) {
           return `\`${v}\``;
         })} "${e[0]}"`
     )
@@ -369,7 +378,7 @@ function gensql(arr, query, len) {
 console.log(
   sqlFormatter.format(
     gensql(
-      loopRun(m, [], {}),
+      loopRun(m),
       `  
 lrb lr
 left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
@@ -392,76 +401,7 @@ lr.reporttype = 1`
     )
   )
 );
-function expf(nameExp) {
-  let exp = nameExp;
 
-  while (m[nameExp]) {
-    exp = m[nameExp];
-    // console.log(nameExp, "=", exp);
-    nameExp = exp;
-  }
-  exp = exp
-    .replace(/—/g, "-")
-    .replace(/（/g, "(")
-    .replace(/）/g, ")");
-  if (exp.match(/[x\/*+—-]/)) {
-    let r = exp.replace(regex, (a, i, exp, d) => {
-      let exp2 = a.trim();
-      // console.log("exp2:", exp2);
-      if (m[a.trim()]) exp2 = a.trim();
-      return expf(exp2);
-    });
-
-    //console.log(exp, "=", r);
-    return `(${r})`;
-  } else {
-    return exp;
-  }
-}
-//console.log(expf("净资本增长率"));
-
-if (false) {
-  var out = conf
-    .map((e) => [
-      e[1],
-
-      expf(
-        e[3]
-          .split(/=|＝/)[0]
-          .replace(/\(.*?\)/g, "")
-          .trim()
-      ),
-    ])
-    .filter((e) => e[1].match(regex))
-    .map((e) => `fmt(${e[1]}) "${e[0]}" `)
-    .join(",\n")
-    .replace(/×/g, "*")
-    .replace(/－/g, "-")
-    .replace(/x/g, "*");
-  console.log(
-    `
-  select lr.code,lr.typename,lr.reportdate,
-  ${out}
-
-order by
-    lr.reportdate desc;
-  `
-  );
-}
-if (false)
-  conf
-    .map((e) => [
-      e[1],
-
-      expf(
-        e[3]
-          .split(/=|＝/)[0]
-          .replace(/\(.*?\)/g, "")
-          .trim()
-      ),
-    ])
-    .filter((e) => !e[1].match(regex))
-    .map((e) => console.log(e[0], "=", e[1]));
 if (false)
   (async () => {
     var ls = $("#alkey-yearly tbody tr")

@@ -159,9 +159,10 @@ async function getDbfx(code) {
 
 (async () => {
   //await getDbfx("sh600031");
-  await getReportData("lrb", "SZ000651");
-  await getReportData("lrb", "SZ000651", "年度");
-  await getReportData("xjllb", "SZ000651");
-  await getReportData("xjllb", "SZ000651", "年度");
-  await getReportData("zcfzb", "SZ000651", "报告期");
+  let code = 'sh600031';
+  await getReportData("lrb", code);
+  await getReportData("lrb", code, "年度");
+  await getReportData("xjllb", code);
+  await getReportData("xjllb", code, "年度");
+  await getReportData("zcfzb", code, "报告期");
 })();

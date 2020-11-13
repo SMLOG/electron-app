@@ -66,7 +66,7 @@ var conf = [
     "",
     "完整生意周期(天)",
     "https://caibaoshuo.com/terms/000651/total_turnover_date",
-    "完整生意周期 = 存货在库天数（平均销货日数）+ 平均收现日数",
+    "完整生意周期 = 存货在库天数(平均销货日数)+ 平均收现日数",
   ],
   [
     "",
@@ -78,7 +78,7 @@ var conf = [
     "",
     "缺钱天数(天)",
     "https://caibaoshuo.com/terms/000651/money_needed_date",
-    "缺钱的天数（现金转换周期) = 做生意的完整周期 - 应付帐款付款天数",
+    "缺钱的天数(现金转换周期) = 做生意的完整周期 - 应付帐款付款天数",
   ],
   [
     "",
@@ -150,7 +150,7 @@ var conf = [
     "成长能力",
     "营收增长率(%)",
     "https://caibaoshuo.com/terms/000651/operating_revenue_growth",
-    "营收增长率 ＝ （本期主营业务收入 － 上期主要业务收入）/ 上期主营业务收入",
+    "营收增长率 ＝ (本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
   ],
   [
     "",
@@ -162,7 +162,7 @@ var conf = [
     "",
     "净资本增长率(%)",
     "https://caibaoshuo.com/terms/000651/net_assets_growth",
-    "净资本增长率 =（期末净资产 - 期初净资产）/ 期初净资产",
+    "净资本增长率 =(期末净资产 - 期初净资产)/ 期初净资产",
   ],
   [
     "现金流量",
@@ -183,6 +183,105 @@ var conf = [
     "现金再投资比率 = (营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
   ],
 ];
+
+const conf2 = [
+  [
+    "资产",
+    "现金与约当现金(%)",
+    "https://caibaoshuo.com/terms/000651/cash_ratio",
+    "现金与约当现金占总资产比率 = (现金+约当现金) /总资产",
+  ],
+  [
+    "",
+    "应收款项(%)",
+    "https://caibaoshuo.com/terms/000651/receiv_ratio",
+    "应收款项占总资产比率 = 应收款项 / 总资产",
+  ],
+  [
+    "",
+    "存货(%)",
+    "https://caibaoshuo.com/terms/000651/inventories_ratio",
+    "存货占总资产比率 = 存货 / 总资产",
+  ],
+  [
+    "",
+    "其他流动资产(%)",
+    "https://caibaoshuo.com/terms/000651/other_current_assets_ratio",
+    "其他流动资产占总资产比率 = 其他流动资产 / 总资产",
+  ],
+  [
+    "",
+    "流动资产(%)",
+    "https://caibaoshuo.com/terms/000651/tca_ratio",
+    "流动资产占总资产比率 = 流动资产 / 总资产",
+  ],
+  [
+    "",
+    "商誉(%)",
+    "https://caibaoshuo.com/terms/000651/goodwill_ratio",
+    "商誉比率 = 商誉 / 总资产",
+  ],
+  [
+    "",
+    "非流动资产(%)",
+    "https://caibaoshuo.com/terms/000651/tnca_ratio",
+    "非流动资产占总资产比率 = 非流动资产 / 总资产",
+  ],
+  [
+    "负债",
+    "应付款项(%)",
+    "https://caibaoshuo.com/terms/000651/ap_ratio",
+    "应付款项占总资产比率 = 应付款项 / 总资产",
+  ],
+  [
+    "",
+    "流动负债(%)",
+    "https://caibaoshuo.com/terms/000651/tcl_ratio",
+    "流动负债总资产比率 = 流动负债 / 总资产",
+  ],
+  [
+    "",
+    "非流动负债(%)",
+    "https://caibaoshuo.com/terms/000651/tncl_ratio",
+    "非流动负债占总资产比率 = 非流动负债 / 总资产",
+  ],
+  [
+    "股权",
+    "股东权益(%)",
+    "https://caibaoshuo.com/terms/000651/total_equity_ratio",
+    "股东权益比率 ＝ 股东权益 / 总资产",
+  ],
+];
+const conf3 = [
+  ["", "期初现金", false],
+  [
+    "",
+    "+ 营业活动现金流量\n    \n    \n       (from 损益表)",
+    "https://caibaoshuo.com/terms/000651/ocf",
+    "",
+  ],
+  [
+    "",
+    "+ 投资活动现金流量\n    \n    \n       (from 资产负债表左)",
+    "https://caibaoshuo.com/terms/000651/invest_cash_flow",
+    "投资活动现金流量 = 购置物业、厂房、设备 + 出售物业、厂房、设备 + 购买业务  + 出售业务 + 购买投资 + 出售投资 + 无形资产购销净额 + 已终止投资活动的现金 + 其他投资活动的现金",
+  ],
+  [
+    "",
+    "+ 融资活动现金流量\n    \n    \n       (from 资产负债表右)",
+    "https://caibaoshuo.com/terms/000651/finance_cash_flow",
+    "融资活动现金流量 = 股票净发行 + 债务净发行 + 优先股净发行 + 股息现金流 + 其他融资",
+  ],
+  ["", "期末现金", false],
+  [
+    "",
+    "自由现金流(FCF)",
+    "https://caibaoshuo.com/terms/000651/free_cash_flow",
+    "自由现金流(FCF) = 营业活动现金流量(OCF) - 资本支出",
+  ],
+];
+
+conf = conf.concat(conf2);
 var all = conf.reduce((r, ar) => {
   var a = ar[3].split(/=|＝/);
   var l = a[0].trim();
@@ -286,6 +385,22 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
 营业活动净现金流量=ll.NETOPERATECASHFLOW
 筹资活动现金流出=ll.SUMFINAFLOWOUT
 总资产=期末总资产
+基本每股收益=lr.BASICEPS
+股东权益=z.SUMSHEQUITY
+流动资产=z.SUMLASSET
+非流动资产=z.SUMNONLASSET
+非流动负债=z.SUMNONLLIAB
+商誉=z.GOODWILL
+其他流动资产=z.OTHERLASSET
+应付款项=z.ACCOUNTBILLPAY
+应收款项=z.ACCOUNTBILLREC
+货币资金=z.MONETARYFUND
+有价证券=z.FVALUEFASSET
+现金=货币资金
+约当现金=有价证券
+营业活动现金流量=ll.NETOPERATECASHFLOW
+投资活动现金流量=ll.NETINVCASHFLOW
+融资活动现金流量=ll.NETFINACASHFLOW
 `
   .trim()
   .split(/\n/)
@@ -404,7 +519,7 @@ lr.reporttype = 1`
 
 if (false)
   (async () => {
-    var ls = $("#alkey-yearly tbody tr")
+    var ls = $("#albs-yearly tbody tr")
       .toArray()
       .map((e) => {
         var tds = $(e).find("td");
@@ -416,6 +531,7 @@ if (false)
         return [
           ths
             .eq(0)
+            .find(":visible")
             .text()
             .trim(),
           tds
@@ -432,6 +548,7 @@ if (false)
       let resp = await $.get(ls[i][2]);
       let t = $(resp);
       let con = t.find(".card-content:contains(计算公式)");
+      console.log(con);
       let formula = con
         .find("blockquote")
         .eq(0)

@@ -60,7 +60,7 @@ var conf = [
     "",
     "固定资产周转率(次/年)",
     "https://caibaoshuo.com/terms/000651/fixed_assets_turnover_ratio",
-    "固定资产周转率 ＝ 产品销售收入净额 / 固定资产平均净值",
+    "固定资产周转率 = 产品销售收入净额 / 固定资产平均净值",
   ],
   [
     "",
@@ -72,7 +72,7 @@ var conf = [
     "",
     "应付款项周转天数(天)",
     "https://caibaoshuo.com/terms/000651/ap_turnover_date",
-    "应付款项周转天数 ＝ 期初期末应付账款平均值 * 360 / 主营业务成本",
+    "应付款项周转天数 = 期初期末应付账款平均值 * 360 / 主营业务成本",
   ],
   [
     "",
@@ -150,7 +150,7 @@ var conf = [
     "成长能力",
     "营收增长率(%)",
     "https://caibaoshuo.com/terms/000651/operating_revenue_growth",
-    "营收增长率 ＝ (本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
+    "营收增长率 = (本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
   ],
   [
     "",
@@ -249,7 +249,7 @@ const conf2 = [
     "股权",
     "股东权益(%)",
     "https://caibaoshuo.com/terms/000651/total_equity_ratio",
-    "股东权益比率 ＝ 股东权益 / 总资产",
+    "股东权益比率 = 股东权益 / 总资产",
   ],
 ];
 const conf3 = [
@@ -282,110 +282,41 @@ const conf3 = [
 ];
 
 conf = conf.concat(conf2);
-var all = conf.reduce((r, ar) => {
-  var a = ar[3].split(/=|＝/);
+var m = conf.reduce((r, ar) => {
+  var a = ar[3].split(/=|=/);
   var l = a[0].trim();
   var rr = a[1].trim();
   r[l] = rr;
   return r;
 }, {});
 
-var rawVar = {};
-var m = _.defaults(rawVar, all);
 m = _.mapKeys(m, (v, k) => {
   return k.replace(/\(.*?\)/g, "").trim();
 });
-const regex = /\p{Unified_Ideograph}+[^+\/x)\s*-]*/gu;
 
-m["营业总收入"] = "lr.TOTALOPERATEREVE";
-m["杠杆倍数"] = "权益乘数";
-m["净收益"] = m["净利润"] = "lr.NETPROFIT";
-m["营业收入"] = m["主营业务成本"] = m["销售收入"] = "lr.OPERATEREVE";
-m["流动资产总额"] = "z.SUMLASSET";
-m["流动负债总额"] = "z.SUMLLIAB";
-m["营业支出"] = m["营业成本"] = m["货物销售成本"] = "lr.OPERATEEXP";
-m["总资产"] = m["期末总资产"] = "z.SUMLIABSHEQUITY";
-m["期初总资产"] = "z2.SUMLIABSHEQUITY";
-m["归属于母公司股东的净利润"] = "lr.PARENTNETPROFIT";
-m["负债"] = m["负债总额"] = "z.SUMLIAB";
-m["期初负债总额"] = "z2.SUMLIAB";
-m["存货"] = m["期末存货总额"] = "z.INVENTORY";
-m["预付费用"] = "z.ADVANCEPAY";
-m["利息费用"] = "z.INTERESTPAY";
-m["利润总额"] = m["营业净利"] = m["营业利润"] = "lr.SUMPROFIT";
-m["期初存货总额"] = "z2.INVENTORY";
-m["期初应付账款"] = "z2.ACCOUNTBILLPAY";
-m["期末应付账款"] = "z.ACCOUNTBILLPAY";
-m["期初应收账款"] = "z2.ACCOUNTBILLREC";
-m["期末应收账款"] = "z.ACCOUNTBILLREC";
-m["code"] = "lr.code";
-m["财报日期"] = "lr.rreportdate";
-m["财报类型"] = "lr.reporttype";
-m["财报类型名"] = "lr.typename";
-m["五年内分红"] = `( select 
-  fmt(sum(ifnull(l.DIVIPROFITORINTPAY,0) ))
-   from xjllb l where 
-    l.reporttype=1
-   and l.rreportdate<=ll.rreportdate
-   and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
-   )`;
-m["五年内处置"] = `( select 
-    fmt(sum(ifnull(l.DISPFILASSETREC,0) ))
-     from xjllb l where 
-     l.code = ll.code 
-     and l.reporttype=ll.reporttype
-     and l.rreportdate<=ll.rreportdate
-     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
-     )`;
-m["五年内购建"] = `( select 
-      fmt(sum(ifnull(l.CASHEQUIENDING,0) ))
-       from xjllb l where 
-       l.code = ll.code 
-       and l.reporttype=ll.reporttype
-       and l.rreportdate<=ll.rreportdate
-       and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
-       )`;
-m["最近5年度营业活动净现金流量"] = `( select 
-        fmt(sum(ifnull(l.CASHEQUIENDING,0) ))
-         from xjllb l where 
-         l.code = ll.code 
-         and l.reporttype=ll.reporttype
-         and l.rreportdate<=ll.rreportdate
-         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
-         )`;
-m["五年前期初存货"] = `
-         (select 
-         fmt(z5.INVENTORY)
-         from zcfzb z5 
-         where z5.code=ll.code 
-         and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
-         ) `;
-var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
-营业利润利率=净利润/营业总收入
-毛利=营业收入-营业支出
-权益乘数=1/(1-资产负债率)
-资产负债率 = 负债总额 / 期末总资产
-净利率=净利润/营业收入
-期末净资产=期末总资产-负债总额
-期初净资产=期初总资产-期初负债总额
-总资产周转率 = 营业总收入 / (( 期初总资产 + 期末总资产) / 2)
-平均总资产=(期初总资产 + 期末总资产)/2
-存货总额=平均存货总额
-存货=z.INVENTORY
-平均存货总额=(期初存货总额 + 期末存货总额)/2
-期初期末应付账款平均值=(期初应付账款 + 期末应付账款)/2
-平均应收账款=(期初应收账款 + 期末应收账款)/2
-应收帐款周转天数=应收款项周转天数
+var m2 = `
+code=lr.code
+reportdate=lr.rreportdate
+reporttype=lr.reporttype
+typename=lr.typename
+-- 利润表
+营业总收入=lr.TOTALOPERATEREVE
+营业收入 = 主营业务成本 = 销售收入=lr.OPERATEREVE
+营业支出 = 营业成本 = 货物销售成本=lr.OPERATEEXP
+净收益 = 净利润=lr.NETPROFIT
+基本每股收益=lr.BASICEPS
 本期主营业务收入=营业收入
-上期主营业务收入=lr2.OPERATEREVE
-上期主要业务收入=上期主营业务收入
+上期主要业务收入=上期主营业务收入=lr2.OPERATEREVE
 本年营业利润总额=lr.OPERATEPROFIT
 上年营业利润总额=lr2.OPERATEPROFIT
+利润总额=营业净利=营业利润=lr.SUMPROFIT
+营业利润利率=净利润/营业总收入
+毛利=营业收入-营业支出
+
+-- 资产负债表
 流动负债=流动负债总额
 营业活动净现金流量=ll.NETOPERATECASHFLOW
 筹资活动现金流出=ll.SUMFINAFLOWOUT
-总资产=期末总资产
-基本每股收益=lr.BASICEPS
 股东权益=z.SUMSHEQUITY
 流动资产=z.SUMLASSET
 非流动资产=z.SUMNONLASSET
@@ -398,19 +329,89 @@ var m2 = `权益乘数 ＝ 资产总额/归属于母公司股东权益总额
 有价证券=z.FVALUEFASSET
 现金=货币资金
 约当现金=有价证券
+流动资产总额=z.SUMLASSET
+流动负债总额=z.SUMLLIAB
+总资产=期末总资产=z.SUMLIABSHEQUITY
+期初总资产=z2.SUMLIABSHEQUITY
+归属于母公司股东的净利润=lr.PARENTNETPROFIT
+负债 = 负债总额=z.SUMLIAB
+期初负债总额=z2.SUMLIAB
+存货 = 期末存货总额=z.INVENTORY
+预付费用=z.ADVANCEPAY
+利息费用=z.INTERESTPAY
+期初存货总额=z2.INVENTORY
+期初应付账款=z2.ACCOUNTBILLPAY
+期末应付账款=z.ACCOUNTBILLPAY
+期初应收账款=z2.ACCOUNTBILLREC
+期末应收账款=z.ACCOUNTBILLREC
+杠杆倍数=权益乘数=1/(1-资产负债率)
+资产负债率 = 负债总额 / 期末总资产
+净利率=营业利润利率*总资产周转率
+期末净资产=期末总资产-负债总额
+期初净资产=期初总资产-期初负债总额
+总资产周转率 = 营业总收入 / (( 期初总资产 + 期末总资产) / 2)
+平均总资产=(期初总资产 + 期末总资产)/2
+存货总额=平均存货总额
+存货=z.INVENTORY
+平均存货总额=(期初存货总额 + 期末存货总额)/2
+期初期末应付账款平均值=(期初应付账款 + 期末应付账款)/2
+平均应收账款=(期初应收账款 + 期末应收账款)/2
+应收帐款周转天数=应收款项周转天数
+
+--现金流表
 营业活动现金流量=ll.NETOPERATECASHFLOW
 投资活动现金流量=ll.NETINVCASHFLOW
 融资活动现金流量=ll.NETFINACASHFLOW
 `
   .trim()
   .split(/\n/)
-  .reduce((r, ar) => {
-    var a = ar.split(/=|＝/);
-    var l = a[0].trim();
-    var rr = a[1].trim();
-    r[l] = rr;
+  .filter((e) => e.indexOf("--") == -1)
+  .reduce((r, line) => {
+    var parts = line.split(/=/);
+    var val = parts.pop();
+    parts.forEach((v) => (r[v.trim()] = val.trim()));
+
     return r;
   }, {});
+
+m2["五年内分红"] = `( select 
+    sum(ifnull(l.DIVIPROFITORINTPAY,0) )
+     from xjllb l where 
+      l.reporttype=1
+     and l.rreportdate<=ll.rreportdate
+     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+     )`;
+m2["五年内处置"] = `( select 
+      sum(ifnull(l.DISPFILASSETREC,0) )
+       from xjllb l where 
+       l.code = ll.code 
+       and l.reporttype=ll.reporttype
+       and l.rreportdate<=ll.rreportdate
+       and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+       )`;
+m2["五年内购建"] = `( select 
+        sum(ifnull(l.CASHEQUIENDING,0) )
+         from xjllb l where 
+         l.code = ll.code 
+         and l.reporttype=ll.reporttype
+         and l.rreportdate<=ll.rreportdate
+         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+         )`;
+m2["最近5年度营业活动净现金流量"] = `( select 
+          sum(ifnull(l.CASHEQUIENDING,0) )
+           from xjllb l where 
+           l.code = ll.code 
+           and l.reporttype=ll.reporttype
+           and l.rreportdate<=ll.rreportdate
+           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+           )`;
+m2["五年前期初存货"] = `
+           (select 
+           z5.INVENTORY
+           from zcfzb z5 
+           where z5.code=ll.code 
+           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+           ) `;
 m = _.assign(m, m2);
 
 const itemRegex = /([^\x00-\x7F]+\d*)+/g;
@@ -483,26 +484,40 @@ function gensql(arr, query, len) {
   if (arr.length == 0) {
     return `select ${sql} from ${query}  `;
   }
-  return `select ${sql},t${id}.* from (${gensql(
+  return `select t${id}.*,${sql} from (${gensql(
     arr,
     query,
     len || arr.length
   )}) t${id} `;
 }
 
+function wrapFmt(arr, sql) {
+  let cols = arr.reduce((arr, a) => {
+    return arr.concat(Object.keys(a));
+  }, []);
+
+  let wrapSelects = cols
+    .map((e) => (e.match(itemRegex) ? `fmt(\`${e}\`) "${e}"` : e))
+    .join(",");
+
+  return `select ${wrapSelects} from (${sql}) w`;
+}
 console.log(
   sqlFormatter.format(
-    gensql(
-      loopRun(m),
-      `  
+    `create or replace view v_summary as ` +
+      wrapFmt(
+        loopRun(m),
+        gensql(
+          loopRun(m),
+          `  
 lrb lr
 left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
 
 left join zcfzb z on z.code = lr.code
 and z.reportdate = lr.rreportdate
 
-left join zcfzb z2 on lr.code = z.code
-and z2.reportdate = z.preportdate
+left join zcfzb z2 on   z2.code =lr.code
+and z2.reportdate = lr.preportdate
 
 left join xjllb ll on ll.code = lr.code
 and ll.rreportdate = lr.rreportdate
@@ -513,50 +528,7 @@ and ll2.rreportdate=lr2.rreportdate and ll2.reporttype=lr2.reporttype
 
 where
 lr.reporttype = 1`
-    )
+        )
+      )
   )
 );
-
-if (false)
-  (async () => {
-    var ls = $("#albs-yearly tbody tr")
-      .toArray()
-      .map((e) => {
-        var tds = $(e).find("td");
-        var ths = $(e).find("th");
-        if (ths.length > 0) {
-          ths.eq(0).text();
-        }
-
-        return [
-          ths
-            .eq(0)
-            .find(":visible")
-            .text()
-            .trim(),
-          tds
-            .eq(0)
-            .text()
-            .trim(),
-          tds
-            .eq(0)
-            .find("a")
-            .eq(0)[0].href,
-        ];
-      });
-    for (var i = 0; i < ls.length; i++) {
-      let resp = await $.get(ls[i][2]);
-      let t = $(resp);
-      let con = t.find(".card-content:contains(计算公式)");
-      console.log(con);
-      let formula = con
-        .find("blockquote")
-        .eq(0)
-        .text()
-        .trim();
-      ls[i].push(formula);
-      // ls[i].push(con.html());
-    }
-    let str = JSON.stringify(ls, null, 4);
-    console.log(str);
-  })();

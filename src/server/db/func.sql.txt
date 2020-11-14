@@ -6,7 +6,7 @@ CREATE FUNCTION fmt(value DOUBLE) RETURNS varchar(20)
      
      set @str= concat(convert(value,decimal(8,2)),'元');
       
-      if ABS(value)<10000  then SET @str=concat(convert(value,decimal(8,2)),'元') ;
+      if ABS(value)<10000  then SET @str=concat(convert(value,decimal(8,2)),'') ;
       elseif ABS(value)<100000000 then SET @str=concat(convert(value/10000,decimal(8,2)),'万'); 
       else SET @str=concat(convert(value/100000000,decimal(8,2)),'亿'); 
       end if;

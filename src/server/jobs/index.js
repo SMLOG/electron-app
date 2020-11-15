@@ -95,11 +95,11 @@ async function getAllData(options) {
 
   return _.assign(data2, data1);
 }
-
-(async () => {
-  for (let k in JOB_MAP) {
-    JOB_MAP[k].get =
-      JOB_MAP[k].get || (JOB_MAP[k].jsonp ? getAllJsonpData : getAllData);
-    await doRun(JOB_MAP[k]);
-  }
-})();
+if (false)
+  (async () => {
+    for (let k in JOB_MAP) {
+      JOB_MAP[k].get =
+        JOB_MAP[k].get || (JOB_MAP[k].jsonp ? getAllJsonpData : getAllData);
+      await doRun(JOB_MAP[k]);
+    }
+  })();

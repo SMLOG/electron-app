@@ -44,12 +44,13 @@ export function initmem(io) {
       (async () => {
         console.error("initmem");
         // cats["自选"].items = await getMyList();
-        cats[
-          "自选"
-        ].items = await db.query(
-          `select * from my a left join gzview b on b.code=a.code `,
-          { type: db.QueryTypes.SELECT }
-        );
+        if (false)
+          cats[
+            "自选"
+          ].items = await db.query(
+            `select * from my a left join gzview b on b.code=a.code `,
+            { type: db.QueryTypes.SELECT }
+          );
         socket.emit("mylist", cats["自选"].items);
         socket.emit("filters", Object.keys(filters));
         updateFiltersCount();

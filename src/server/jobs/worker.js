@@ -738,26 +738,26 @@ export const JOB_MAP = {
 
 var CronJob = require("cron").CronJob;
 const AsyncQueue = require("@wxaxiaoyao/async-queue");
-
-(async () => {
-  for (let k in JOB_MAP) {
-    let job = JOB_MAP[k];
-    if (!job.enable) continue;
-    if (job._cronTime)
-      new CronJob(
-        job._cronTime,
-        function() {
-          AsyncQueue.exec(k, async () => {
-            task(JOB_MAP, k);
-          });
-        },
-        null,
-        true
-      );
-    else {
-      await task(JOB_MAP, k);
+if (false)
+  (async () => {
+    for (let k in JOB_MAP) {
+      let job = JOB_MAP[k];
+      if (!job.enable) continue;
+      if (job._cronTime)
+        new CronJob(
+          job._cronTime,
+          function() {
+            AsyncQueue.exec(k, async () => {
+              task(JOB_MAP, k);
+            });
+          },
+          null,
+          true
+        );
+      else {
+        await task(JOB_MAP, k);
+      }
     }
-  }
 
-  console.log("done");
-})();
+    console.log("done");
+  })();

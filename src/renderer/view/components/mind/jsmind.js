@@ -5,8 +5,8 @@
  * Project Home:
  *   https://github.com/hizzgdev/jsmind/
  */
-
-"use strict";
+import $ from "jquery";
+("use strict");
 // set 'jsMind' as the library name.
 // __name__ should be a const value, Never try to change it easily.
 var __name__ = "jsMind";
@@ -2394,7 +2394,7 @@ jm.layout_provider.prototype = {
 
 jm.graph_canvas = function(view) {
   this.opts = view.opts;
-  this.e_canvas = $c("canvas");
+  this.e_canvas = $("canvas", this.container)[0] || $c("canvas");
   this.canvas_ctx = this.e_canvas.getContext("2d");
   this.size = { w: 0, h: 0 };
 };
@@ -2565,8 +2565,8 @@ jm.view_provider.prototype = {
       logger.error("the options.view.container was not be found in dom");
       return;
     }
-    this.e_panel = $c("div");
-    this.e_nodes = $c("jmnodes");
+    this.e_panel = $(".jsmind-inner")[0] || $c("div");
+    this.e_nodes = $("jmnodes")[0]; //|| $c("jmnodes");
     this.e_editor = $c("input");
 
     this.graph =
@@ -2704,11 +2704,11 @@ jm.view_provider.prototype = {
       node._data.view = view_data;
     }
 
-    var d = $c("jmnode");
+    var d = $("jmnode[nodeid=" + node.id + "]")[0]; //|| $c("jmnode");
     if (node.isroot) {
       d.className = "root";
     } else {
-      var d_e = $c("jmexpander");
+      var d_e = $("jmexpander[nodeid=" + node.id + "]")[0] || $c("jmexpander");
       $t(d_e, "-");
       d_e.setAttribute("nodeid", node.id);
       d_e.style.visibility = "hidden";
@@ -2717,9 +2717,9 @@ jm.view_provider.prototype = {
     }
     if (!!node.topic) {
       if (this.opts.support_html) {
-        $h(d, node.topic);
+        //$h(d, node.topic);
       } else {
-        $t(d, node.topic);
+        //$t(d, node.topic);
       }
     }
     d.setAttribute("nodeid", node.id);
@@ -2942,7 +2942,7 @@ jm.view_provider.prototype = {
       node._data.view.element = null;
       node._data.view.expander = null;
     }
-    this.e_nodes.innerHTML = "";
+    //this.e_nodes.innerHTML = "";
   },
 
   show_nodes: function() {

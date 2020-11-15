@@ -1,6 +1,30 @@
 <template>
   <div :key="refresh" :style="{ height }">
-    <div id="jsmind_container" ref="jsmind_container"></div>
+    <div id="jsmind_container" ref="jsmind_container">
+      <div class="jsmind-inner">
+        <canvas width="2092" height="4572"></canvas>
+        <jmnodes>
+          <template v-for="node in value.data">
+            <jmnode :key="node.id" :nodeid="node.id">
+              <div>
+                <span class="label">{{ node.topic.replace("(%)", "") }}</span
+                ><span class="value">{{ getTopic(node) }}</span>
+                <peity
+                  :type="'line'"
+                  :options="{ fill: ['red'] }"
+                  :data="getTrendDatas(node)"
+                ></peity>
+              </div>
+            </jmnode>
+            <jmexpander
+              v-if="node.id != 'root'"
+              :key="'e' + node.id"
+              :nodeid="node.id"
+            ></jmexpander>
+          </template>
+        </jmnodes>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,11 +98,33 @@ export default {
     },
   },
   methods: {
+    getTrendDatas(node) {
+      return this.value.rawDatas
+        .map((e) => e[node.alias])
+        .filter((e, i) => i < 5)
+        .reverse()
+        .join(",");
+    },
+    getTopic(node) {
+      let rawDatas = this.value.rawDatas;
+      let type =
+        node.topic.indexOf("%") > 0 ||
+        (node.topic.indexOf("率") > 0 && node.topic.indexOf("周转") == -1)
+          ? 1
+          : 0;
+      return (
+        (rawDatas[0][node.alias] &&
+          (type ? this.$fmtPercent : this.$fmtNumber)(
+            (type ? 100 : 1) * rawDatas[0][node.alias]
+          )) ||
+        ""
+      );
+    },
     init() {
       this.value = this.values;
-      this.$refs.jsmind_container.innerHTML = "";
+      console.log(this.value.data);
       const options = Object.assign(this.default_options, this.options);
-      this.jm = jm.show(options, this.value);
+      if (this.value.data.length > 0) this.jm = jm.show(options, this.value);
     },
   },
 };

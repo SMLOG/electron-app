@@ -17,33 +17,12 @@ export default {
   data() {
     return {
       height: 1000,
-      rawDatas: [],
       theme_value: "",
       mind: {
+        rawDatas: [],
         meta: {},
-        getTopic(node) {
-          let type =
-            node.topic.indexOf("%") > 0 ||
-            (node.topic.indexOf("率") > 0 && node.topic.indexOf("周转") == -1)
-              ? 1
-              : 0;
-          return `<div><span class="label">${node.topic.replace(
-            "(%)",
-            ""
-          )}</span><span class="value">${
-            (rawDatas[0][node.alias] &&
-              self &&
-              (type ? self.$fmtPercent : self.$fmtNumber)(
-                (type ? 100 : 1) * rawDatas[0][node.alias]
-              )) ||
-            ""
-          }</span></div>`;
-        },
         format: "node_array",
         data: [],
-
-        shortCutVal: "",
-        keyCode: "",
       },
       options: {
         mode: "side",
@@ -54,9 +33,9 @@ export default {
   mounted() {
     self = this;
     this.$http.get("/api/mind?code=sh600031").then((resp) => {
-      window.rawDatas = resp.data;
+      this.mind.rawDatas.splice(0, -1, ...resp.data);
       this.$http.get("/static/test.json").then((resp) => {
-        this.mind.data = this.mind.data.concat(resp.data);
+        this.mind.data.splice(0, -1, ...resp.data);
         setTimeout(() => {
           this.jm = this.$refs.jsMind.jm;
         }, 1000);

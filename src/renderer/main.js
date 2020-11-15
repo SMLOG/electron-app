@@ -9,6 +9,9 @@ import VueSocketIO from "vue-socket.io";
 import VTooltip from "v-tooltip";
 import Peity from "vue-peity";
 
+import axios from "axios";
+Vue.prototype.$http = axios;
+
 Vue.use(VTooltip);
 Vue.use(Peity);
 Vue.component("peity", Peity);

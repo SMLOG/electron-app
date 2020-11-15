@@ -17,7 +17,7 @@ export default new Router({
     },
     {
       path: "/mind",
-      component: () => import("@/view/components/JsMind/MindAdmin"),
+      component: () => import("@/view/components/mind/MindAdmin"),
     },
     {
       path: "/tools/irr",

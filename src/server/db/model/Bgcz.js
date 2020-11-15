@@ -18,11 +18,11 @@ const { Model, DataTypes } = require("sequelize");
         "field": "H_COMNAME"
     },
     "G_GOMNAME": {
-        "type": DataTypes.TEXT,
+        "type": DataTypes.STRING(280),
         "field": "G_GOMNAME"
     },
     "S_COMNAME": {
-        "type": DataTypes.TEXT,
+        "type": DataTypes.STRING(330),
         "field": "S_COMNAME"
     },
     "SCODE": {

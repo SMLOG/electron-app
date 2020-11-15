@@ -16,6 +16,10 @@ export default new Router({
       component: () => import("@/view/components/tools/DCF"),
     },
     {
+      path: "/mind",
+      component: () => import("@/view/components/JsMind/MindAdmin"),
+    },
+    {
       path: "/tools/irr",
       component: () => import("@/view/components/tools/IRR"),
     },

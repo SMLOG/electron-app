@@ -1,5 +1,6 @@
 import _ from "lodash";
 import sqlFormatter from "sql-formatter";
+import fs from "fs";
 
 var conf = [
   [
@@ -490,6 +491,73 @@ function gensql(arr, query, len) {
     len || arr.length
   )}) t${id} `;
 }
+
+let mmap = loopRun(m).reduce((mmap, i) => {
+  return _.assign(mmap, i);
+}, {});
+
+function getchildnodes(node) {
+  let nodes = [];
+  if (mmap[node.alias]) {
+    let content = mmap[node.alias];
+    let pnode = {};
+    pnode.id = ++id;
+    pnode.topic = content;
+    pnode.parentid = node.id;
+    nodes.push(pnode);
+    let matchs = content.match(itemRegex);
+    if (matchs) {
+      let i = matchs.length;
+      while (i-- > 0) {
+        let cnode = {};
+        cnode.id = ++id;
+        cnode.topic = cnode.alias = matchs[i];
+        if (pnode.topic == cnode.topic) cnode.parentid = node.id;
+        else cnode.parentid = pnode.id;
+        nodes.push(cnode);
+        nodes = nodes.concat(getchildnodes(cnode));
+      }
+    }
+  }
+  return nodes;
+}
+let id = 0;
+function genTree(conf) {
+  let nodes = [{ id: "root", isroot: true, topic: "财务分析" }];
+  let cat = "";
+  let pid;
+  for (let row of conf) {
+    cat = row[0] || cat;
+    if (row[0]) {
+      pid = ++id;
+      let pnode = {};
+      pnode.id = pid;
+      pnode.topic = cat;
+      pnode.direction = "right";
+      pnode.parentid = "root";
+      nodes.push(pnode);
+    }
+    let name = row[1];
+    let alias = row[3]
+      .split(/=|=/)[0]
+      .replace(/\(.*?\)/g, "")
+      .trim();
+
+    let node = {};
+    node.id = node.topic = name;
+    node.parentid = pid;
+    node.alias = alias;
+    let childnodes = getchildnodes(node);
+    nodes.push(node);
+    nodes = nodes.concat(childnodes);
+  }
+  return nodes;
+}
+
+fs.writeFileSync(
+  "/Users/alexwang/git/electron-suspension/static/test.json",
+  JSON.stringify(genTree(conf), null, 4)
+);
 
 function wrapFmt(arr, sql) {
   let cols = arr.reduce((arr, a) => {

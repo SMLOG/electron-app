@@ -6,7 +6,7 @@
  *   https://github.com/hizzgdev/jsmind/
  */
 
-(function ($w) {
+(function($w) {
   "use strict";
   // set 'jsMind' as the library name.
   // __name__ should be a const value, Never try to change it easily.
@@ -17,7 +17,7 @@
   var __author__ = "hizzgdev@163.com";
 
   // an noop function define
-  var _noop = function () {};
+  var _noop = function() {};
   var logger =
     typeof console === "undefined"
       ? {
@@ -39,13 +39,13 @@
 
   // shortcut of methods in dom
   var $d = $w.document;
-  var $g = function (id) {
+  var $g = function(id) {
     return $d.getElementById(id);
   };
-  var $c = function (tag) {
+  var $c = function(tag) {
     return $d.createElement(tag);
   };
-  var $t = function (n, t) {
+  var $t = function(n, t) {
     if (n.hasChildNodes()) {
       n.firstChild.nodeValue = t;
     } else {
@@ -53,7 +53,7 @@
     }
   };
 
-  var $h = function (n, t) {
+  var $h = function(n, t) {
     if (t instanceof HTMLElement) {
       n.innerHTML = "";
       n.appendChild(t);
@@ -62,7 +62,7 @@
     }
   };
   // detect isElement
-  var $i = function (el) {
+  var $i = function(el) {
     return (
       !!el &&
       typeof el === "object" &&
@@ -72,7 +72,7 @@
     );
   };
   if (typeof String.prototype.startsWith != "function") {
-    String.prototype.startsWith = function (p) {
+    String.prototype.startsWith = function(p) {
       return this.slice(0, p.length) === p;
     };
   }
@@ -119,7 +119,7 @@
   };
 
   // core object
-  var jm = function (options) {
+  var jm = function(options) {
     jm.current = this;
 
     this.version = __version__;
@@ -143,7 +143,7 @@
   jm.event_type = { show: 1, resize: 2, edit: 3, select: 4 };
   jm.key = { meta: 1 << 13, ctrl: 1 << 12, alt: 1 << 11, shift: 1 << 10 };
 
-  jm.node = function (
+  jm.node = function(
     sId,
     iIndex,
     sTopic,
@@ -176,7 +176,7 @@
     this._data = {};
   };
 
-  jm.node.compare = function (node1, node2) {
+  jm.node.compare = function(node1, node2) {
     // '-1' is alwary the last
     var r = 0;
     var i1 = node1.index;
@@ -196,7 +196,7 @@
     return r;
   };
 
-  jm.node.inherited = function (pnode, node) {
+  jm.node.inherited = function(pnode, node) {
     if (!!pnode && !!node) {
       if (pnode.id === node.id) {
         return true;
@@ -217,14 +217,14 @@
   };
 
   jm.node.prototype = {
-    get_location: function () {
+    get_location: function() {
       var vd = this._data.view;
       return {
         x: vd.abs_x,
         y: vd.abs_y,
       };
     },
-    get_size: function () {
+    get_size: function() {
       var vd = this._data.view;
       return {
         w: vd.width,
@@ -233,7 +233,7 @@
     },
   };
 
-  jm.mind = function () {
+  jm.mind = function() {
     this.name = null;
     this.author = null;
     this.version = null;
@@ -243,7 +243,7 @@
   };
 
   jm.mind.prototype = {
-    get_node: function (nodeid) {
+    get_node: function(nodeid) {
       if (nodeid in this.nodes) {
         return this.nodes[nodeid];
       } else {
@@ -252,7 +252,7 @@
       }
     },
 
-    set_root: function (nodeid, topic, data) {
+    set_root: function(nodeid, topic, data) {
       if (this.root == null) {
         this.root = new jm.node(nodeid, 0, topic, data, true);
         this._put_node(this.root);
@@ -261,7 +261,7 @@
       }
     },
 
-    add_node: function (
+    add_node: function(
       parent_node,
       nodeid,
       topic,
@@ -346,7 +346,7 @@
       return node;
     },
 
-    insert_node_before: function (node_before, nodeid, topic, data) {
+    insert_node_before: function(node_before, nodeid, topic, data) {
       if (!jm.util.is_node(node_before)) {
         var the_node_before = this.get_node(node_before);
         if (!the_node_before) {
@@ -362,7 +362,7 @@
       return this.add_node(node_before.parent, nodeid, topic, data, node_index);
     },
 
-    get_node_before: function (node) {
+    get_node_before: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -383,7 +383,7 @@
       }
     },
 
-    insert_node_after: function (node_after, nodeid, topic, data) {
+    insert_node_after: function(node_after, nodeid, topic, data) {
       if (!jm.util.is_node(node_after)) {
         var the_node_after = this.get_node(node_before);
         if (!the_node_after) {
@@ -399,7 +399,7 @@
       return this.add_node(node_after.parent, nodeid, topic, data, node_index);
     },
 
-    get_node_after: function (node) {
+    get_node_after: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -421,7 +421,7 @@
       }
     },
 
-    move_node: function (node, beforeid, parentid, direction) {
+    move_node: function(node, beforeid, parentid, direction) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -437,7 +437,7 @@
       return this._move_node(node, beforeid, parentid, direction);
     },
 
-    _flow_node_direction: function (node, direction) {
+    _flow_node_direction: function(node, direction) {
       if (typeof direction === "undefined") {
         direction = node.direction;
       } else {
@@ -449,7 +449,7 @@
       }
     },
 
-    _move_node_internal: function (node, beforeid) {
+    _move_node_internal: function(node, beforeid) {
       if (!!node && !!beforeid) {
         if (beforeid == "_last_") {
           node.index = -1;
@@ -472,7 +472,7 @@
       return node;
     },
 
-    _move_node: function (node, beforeid, parentid, direction) {
+    _move_node: function(node, beforeid, parentid, direction) {
       if (!!node && !!parentid) {
         if (node.parent.id != parentid) {
           // remove from parent's children
@@ -503,7 +503,7 @@
       return node;
     },
 
-    remove_node: function (node) {
+    remove_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -553,7 +553,7 @@
       return true;
     },
 
-    _put_node: function (node) {
+    _put_node: function(node) {
       if (node.id in this.nodes) {
         logger.warn("the nodeid '" + node.id + "' has been already exist.");
         return false;
@@ -563,7 +563,7 @@
       }
     },
 
-    _reindex: function (node) {
+    _reindex: function(node) {
       if (node instanceof jm.node) {
         node.children.sort(jm.node.compare);
         for (var i = 0; i < node.children.length; i++) {
@@ -584,7 +584,7 @@
         format: "node_tree",
         data: { id: "root", topic: "jsMind Example" },
       },
-      get_mind: function (source) {
+      get_mind: function(source) {
         var df = jm.format.node_tree;
         var mind = new jm.mind();
         mind.name = source.meta.name;
@@ -593,7 +593,7 @@
         df._parse(mind, source.data);
         return mind;
       },
-      get_data: function (mind) {
+      get_data: function(mind) {
         var df = jm.format.node_tree;
         var json = {};
         json.meta = {
@@ -606,7 +606,7 @@
         return json;
       },
 
-      _parse: function (mind, node_root) {
+      _parse: function(mind, node_root) {
         var df = jm.format.node_tree;
         var data = df._extract_data(node_root);
         mind.set_root(node_root.id, node_root.topic, data);
@@ -618,7 +618,7 @@
         }
       },
 
-      _extract_data: function (node_json) {
+      _extract_data: function(node_json) {
         var data = {};
         for (var k in node_json) {
           if (
@@ -635,7 +635,7 @@
         return data;
       },
 
-      _extract_subnode: function (mind, node_parent, node_json) {
+      _extract_subnode: function(mind, node_parent, node_json) {
         var df = jm.format.node_tree;
         var data = df._extract_data(node_json);
         var d = null;
@@ -662,7 +662,7 @@
         }
       },
 
-      _buildnode: function (node) {
+      _buildnode: function(node) {
         var df = jm.format.node_tree;
         if (!(node instanceof jm.node)) {
           return;
@@ -703,17 +703,18 @@
         data: [{ id: "root", topic: "jsMind Example", isroot: true }],
       },
 
-      get_mind: function (source) {
+      get_mind: function(source) {
         var df = jm.format.node_array;
         var mind = new jm.mind();
         mind.name = source.meta.name;
         mind.author = source.meta.author;
         mind.version = source.meta.version;
+        mind.getTopic = source.getTopic;
         df._parse(mind, source.data);
         return mind;
       },
 
-      get_data: function (mind) {
+      get_data: function(mind) {
         var df = jm.format.node_array;
         var json = {};
         json.meta = {
@@ -727,7 +728,7 @@
         return json;
       },
 
-      _parse: function (mind, node_array) {
+      _parse: function(mind, node_array) {
         var df = jm.format.node_array;
         var narray = node_array.slice(0);
         // reverse array for improving looping performance
@@ -740,7 +741,7 @@
         }
       },
 
-      _extract_root: function (mind, node_array) {
+      _extract_root: function(mind, node_array) {
         var df = jm.format.node_array;
         var i = node_array.length;
         while (i--) {
@@ -755,7 +756,7 @@
         return null;
       },
 
-      _extract_subnode: function (mind, parentid, node_array) {
+      _extract_subnode: function(mind, parentid, node_array) {
         var df = jm.format.node_array;
         var i = node_array.length;
         var node_json = null;
@@ -776,7 +777,7 @@
             mind.add_node(
               parentid,
               node_json.id,
-              node_json.topic,
+              (mind.getTopic && mind.getTopic(node_json)) || node_json.topic,
               data,
               null,
               d,
@@ -799,7 +800,7 @@
         return extract_count;
       },
 
-      _extract_data: function (node_json) {
+      _extract_data: function(node_json) {
         var data = {};
         for (var k in node_json) {
           if (
@@ -817,12 +818,12 @@
         return data;
       },
 
-      _array: function (mind, node_array) {
+      _array: function(mind, node_array) {
         var df = jm.format.node_array;
         df._array_node(mind.root, node_array);
       },
 
-      _array_node: function (node, node_array) {
+      _array_node: function(node, node_array) {
         var df = jm.format.node_array;
         if (!(node instanceof jm.node)) {
           return;
@@ -866,7 +867,7 @@
         data:
           '<map version="1.0.1"><node ID="root" TEXT="freemind Example"/></map>',
       },
-      get_mind: function (source) {
+      get_mind: function(source) {
         var df = jm.format.freemind;
         var mind = new jm.mind();
         mind.name = source.meta.name;
@@ -879,7 +880,7 @@
         return mind;
       },
 
-      get_data: function (mind) {
+      get_data: function(mind) {
         var df = jm.format.freemind;
         var json = {};
         json.meta = {
@@ -896,7 +897,7 @@
         return json;
       },
 
-      _parse_xml: function (xml) {
+      _parse_xml: function(xml) {
         var xml_doc = null;
         if (window.DOMParser) {
           var parser = new DOMParser();
@@ -910,7 +911,7 @@
         return xml_doc;
       },
 
-      _find_root: function (xml_doc) {
+      _find_root: function(xml_doc) {
         var nodes = xml_doc.childNodes;
         var node = null;
         var root = null;
@@ -936,7 +937,7 @@
         return node;
       },
 
-      _load_node: function (mind, parent_id, xml_node) {
+      _load_node: function(mind, parent_id, xml_node) {
         var df = jm.format.freemind;
         var node_id = xml_node.getAttribute("ID");
         var node_topic = xml_node.getAttribute("TEXT");
@@ -991,7 +992,7 @@
         }
       },
 
-      _load_attributes: function (xml_node) {
+      _load_attributes: function(xml_node) {
         var children = xml_node.childNodes;
         var attr = null;
         var attr_data = {};
@@ -1004,7 +1005,7 @@
         return attr_data;
       },
 
-      _buildmap: function (node, xmllines) {
+      _buildmap: function(node, xmllines) {
         var df = jm.format.freemind;
         var pos = null;
         if (!!node.parent && node.parent.isroot) {
@@ -1046,11 +1047,11 @@
   // ============= utility object =============================================
 
   jm.util = {
-    is_node: function (node) {
+    is_node: function(node) {
       return !!node && node instanceof jm.node;
     },
     ajax: {
-      _xhr: function () {
+      _xhr: function() {
         var xhr = null;
         if (window.XMLHttpRequest) {
           xhr = new XMLHttpRequest();
@@ -1061,10 +1062,10 @@
         }
         return xhr;
       },
-      _eurl: function (url) {
+      _eurl: function(url) {
         return encodeURIComponent(url);
       },
-      request: function (url, param, method, callback, fail_callback) {
+      request: function(url, param, method, callback, fail_callback) {
         var a = jm.util.ajax;
         var p = null;
         var tmp_param = [];
@@ -1078,7 +1079,7 @@
         if (!xhr) {
           return;
         }
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function() {
           if (xhr.readyState == 4) {
             if (xhr.status == 200 || xhr.status == 0) {
               if (typeof callback === "function") {
@@ -1111,17 +1112,17 @@
           xhr.send();
         }
       },
-      get: function (url, callback) {
+      get: function(url, callback) {
         return jm.util.ajax.request(url, {}, "GET", callback);
       },
-      post: function (url, param, callback) {
+      post: function(url, param, callback) {
         return jm.util.ajax.request(url, param, "POST", callback);
       },
     },
 
     dom: {
       //target,eventType,handler
-      add_event: function (t, e, h) {
+      add_event: function(t, e, h) {
         if (!!t.addEventListener) {
           t.addEventListener(e, h, false);
         } else {
@@ -1131,9 +1132,9 @@
     },
 
     file: {
-      read: function (file_data, fn_callback) {
+      read: function(file_data, fn_callback) {
         var reader = new FileReader();
-        reader.onload = function () {
+        reader.onload = function() {
           if (typeof fn_callback === "function") {
             fn_callback(this.result, file_data.name);
           }
@@ -1141,7 +1142,7 @@
         reader.readAsText(file_data);
       },
 
-      save: function (file_data, type, name) {
+      save: function(file_data, type, name) {
         var blob;
         if (typeof $w.Blob === "function") {
           blob = new Blob([file_data], { type: type });
@@ -1178,7 +1179,7 @@
     },
 
     json: {
-      json2string: function (json) {
+      json2string: function(json) {
         if (!!JSON) {
           try {
             var json_str = JSON.stringify(json);
@@ -1190,7 +1191,7 @@
           }
         }
       },
-      string2json: function (json_str) {
+      string2json: function(json_str) {
         if (!!JSON) {
           try {
             var json = JSON.parse(json_str);
@@ -1202,7 +1203,7 @@
           }
         }
       },
-      merge: function (b, a) {
+      merge: function(b, a) {
         for (var o in a) {
           if (o in b) {
             if (
@@ -1224,16 +1225,18 @@
     },
 
     uuid: {
-      newid: function () {
+      newid: function() {
         return (
           new Date().getTime().toString(16) +
-          Math.random().toString(16).substr(2)
+          Math.random()
+            .toString(16)
+            .substr(2)
         ).substr(2, 16);
       },
     },
 
     text: {
-      is_empty: function (s) {
+      is_empty: function(s) {
         if (!s) {
           return true;
         }
@@ -1243,7 +1246,7 @@
   };
 
   jm.prototype = {
-    init: function () {
+    init: function() {
       if (this.inited) {
         return;
       }
@@ -1282,17 +1285,17 @@
       jm.init_plugins(this);
     },
 
-    enable_edit: function () {
+    enable_edit: function() {
       this.options.editable = true;
     },
 
-    disable_edit: function () {
+    disable_edit: function() {
       this.options.editable = false;
     },
 
     // call enable_event_handle('dblclick')
     // options are 'mousedown', 'click', 'dblclick'
-    enable_event_handle: function (event_handle) {
+    enable_event_handle: function(event_handle) {
       this.options.default_event_handle[
         "enable_" + event_handle + "_handle"
       ] = true;
@@ -1300,17 +1303,17 @@
 
     // call disable_event_handle('dblclick')
     // options are 'mousedown', 'click', 'dblclick'
-    disable_event_handle: function (event_handle) {
+    disable_event_handle: function(event_handle) {
       this.options.default_event_handle[
         "enable_" + event_handle + "_handle"
       ] = false;
     },
 
-    get_editable: function () {
+    get_editable: function() {
       return this.options.editable;
     },
 
-    set_theme: function (theme) {
+    set_theme: function(theme) {
       var theme_old = this.options.theme;
       this.options.theme = !!theme ? theme : null;
       if (theme_old != this.options.theme) {
@@ -1318,13 +1321,13 @@
         this.view.reset_custom_style();
       }
     },
-    _event_bind: function () {
+    _event_bind: function() {
       this.view.add_event(this, "mousedown", this.mousedown_handle);
       this.view.add_event(this, "click", this.click_handle);
       this.view.add_event(this, "dblclick", this.dblclick_handle);
     },
 
-    mousedown_handle: function (e) {
+    mousedown_handle: function(e) {
       if (!this.options.default_event_handle["enable_mousedown_handle"]) {
         return;
       }
@@ -1339,7 +1342,7 @@
       }
     },
 
-    click_handle: function (e) {
+    click_handle: function(e) {
       if (!this.options.default_event_handle["enable_click_handle"]) {
         return;
       }
@@ -1353,7 +1356,7 @@
       }
     },
 
-    dblclick_handle: function (e) {
+    dblclick_handle: function(e) {
       if (!this.options.default_event_handle["enable_dblclick_handle"]) {
         return;
       }
@@ -1366,7 +1369,7 @@
       }
     },
 
-    begin_edit: function (node) {
+    begin_edit: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1384,11 +1387,11 @@
       }
     },
 
-    end_edit: function () {
+    end_edit: function() {
       this.view.edit_node_end();
     },
 
-    toggle_node: function (node) {
+    toggle_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1407,7 +1410,7 @@
       this.view.restore_location(node);
     },
 
-    expand_node: function (node) {
+    expand_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1426,7 +1429,7 @@
       this.view.restore_location(node);
     },
 
-    collapse_node: function (node) {
+    collapse_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1445,28 +1448,28 @@
       this.view.restore_location(node);
     },
 
-    expand_all: function () {
+    expand_all: function() {
       this.layout.expand_all();
       this.view.relayout();
     },
 
-    collapse_all: function () {
+    collapse_all: function() {
       this.layout.collapse_all();
       this.view.relayout();
     },
 
-    expand_to_depth: function (depth) {
+    expand_to_depth: function(depth) {
       this.layout.expand_to_depth(depth);
       this.view.relayout();
     },
 
-    _reset: function () {
+    _reset: function() {
       this.view.reset();
       this.layout.reset();
       this.data.reset();
     },
 
-    _show: function (mind) {
+    _show: function(mind) {
       var m = mind || jm.format.node_array.example;
 
       this.mind = this.data.load(m);
@@ -1489,12 +1492,12 @@
       this.invoke_event_handle(jm.event_type.show, { data: [mind] });
     },
 
-    show: function (mind) {
+    show: function(mind) {
       this._reset();
       this._show(mind);
     },
 
-    get_meta: function () {
+    get_meta: function() {
       return {
         name: this.mind.name,
         author: this.mind.author,
@@ -1502,20 +1505,20 @@
       };
     },
 
-    get_data: function (data_format) {
+    get_data: function(data_format) {
       var df = data_format || "node_tree";
       return this.data.get_data(df);
     },
 
-    get_root: function () {
+    get_root: function() {
       return this.mind.root;
     },
 
-    get_node: function (nodeid) {
+    get_node: function(nodeid) {
       return this.mind.get_node(nodeid);
     },
 
-    add_node: function (parent_node, nodeid, topic, data) {
+    add_node: function(parent_node, nodeid, topic, data) {
       if (this.get_editable()) {
         var node = this.mind.add_node(parent_node, nodeid, topic, data);
         if (!!node) {
@@ -1537,7 +1540,7 @@
       }
     },
 
-    insert_node_before: function (node_before, nodeid, topic, data) {
+    insert_node_before: function(node_before, nodeid, topic, data) {
       if (this.get_editable()) {
         var beforeid = jm.util.is_node(node_before)
           ? node_before.id
@@ -1565,7 +1568,7 @@
       }
     },
 
-    insert_node_after: function (node_after, nodeid, topic, data) {
+    insert_node_after: function(node_after, nodeid, topic, data) {
       if (this.get_editable()) {
         var afterid = jm.util.is_node(node_after) ? node_after.id : node_after;
         var node = this.mind.insert_node_after(node_after, nodeid, topic, data);
@@ -1586,7 +1589,7 @@
       }
     },
 
-    remove_node: function (node) {
+    remove_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1622,7 +1625,7 @@
       }
     },
 
-    update_node: function (nodeid, topic) {
+    update_node: function(nodeid, topic) {
       if (this.get_editable()) {
         if (jm.util.text.is_empty(topic)) {
           logger.warn("fail, topic can not be empty");
@@ -1651,7 +1654,7 @@
       }
     },
 
-    move_node: function (nodeid, beforeid, parentid, direction) {
+    move_node: function(nodeid, beforeid, parentid, direction) {
       if (this.get_editable()) {
         var node = this.mind.move_node(nodeid, beforeid, parentid, direction);
         if (!!node) {
@@ -1670,7 +1673,7 @@
       }
     },
 
-    select_node: function (node) {
+    select_node: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1687,7 +1690,7 @@
       this.view.select_node(node);
     },
 
-    get_selected_node: function () {
+    get_selected_node: function() {
       if (!!this.mind) {
         return this.mind.selected;
       } else {
@@ -1695,18 +1698,18 @@
       }
     },
 
-    select_clear: function () {
+    select_clear: function() {
       if (!!this.mind) {
         this.mind.selected = null;
         this.view.select_clear();
       }
     },
 
-    is_node_visible: function (node) {
+    is_node_visible: function(node) {
       return this.layout.is_visible(node);
     },
 
-    find_node_before: function (node) {
+    find_node_before: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1739,7 +1742,7 @@
       return n;
     },
 
-    find_node_after: function (node) {
+    find_node_after: function(node) {
       if (!jm.util.is_node(node)) {
         var the_node = this.get_node(node);
         if (!the_node) {
@@ -1775,7 +1778,7 @@
       return n;
     },
 
-    set_node_color: function (nodeid, bgcolor, fgcolor) {
+    set_node_color: function(nodeid, bgcolor, fgcolor) {
       if (this.get_editable()) {
         var node = this.mind.get_node(nodeid);
         if (!!node) {
@@ -1793,7 +1796,7 @@
       }
     },
 
-    set_node_font_style: function (nodeid, size, weight, style) {
+    set_node_font_style: function(nodeid, size, weight, style) {
       if (this.get_editable()) {
         var node = this.mind.get_node(nodeid);
         if (!!node) {
@@ -1817,7 +1820,7 @@
       }
     },
 
-    set_node_background_image: function (
+    set_node_background_image: function(
       nodeid,
       image,
       width,
@@ -1850,7 +1853,7 @@
       }
     },
 
-    set_node_background_rotation: function (nodeid, rotation) {
+    set_node_background_rotation: function(nodeid, rotation) {
       if (this.get_editable()) {
         var node = this.mind.get_node(nodeid);
         if (!!node) {
@@ -1872,25 +1875,25 @@
       }
     },
 
-    resize: function () {
+    resize: function() {
       this.view.resize();
     },
 
     // callback(type ,data)
-    add_event_listener: function (callback) {
+    add_event_listener: function(callback) {
       if (typeof callback === "function") {
         this.event_handles.push(callback);
       }
     },
 
-    invoke_event_handle: function (type, data) {
+    invoke_event_handle: function(type, data) {
       var j = this;
-      $w.setTimeout(function () {
+      $w.setTimeout(function() {
         j._invoke_event_handle(type, data);
       }, 0);
     },
 
-    _invoke_event_handle: function (type, data) {
+    _invoke_event_handle: function(type, data) {
       var l = this.event_handles.length;
       for (var i = 0; i < l; i++) {
         this.event_handles[i](type, data);
@@ -1900,20 +1903,20 @@
 
   // ============= data provider =============================================
 
-  jm.data_provider = function (jm) {
+  jm.data_provider = function(jm) {
     this.jm = jm;
   };
 
   jm.data_provider.prototype = {
-    init: function () {
+    init: function() {
       logger.debug("data.init");
     },
 
-    reset: function () {
+    reset: function() {
       logger.debug("data.reset");
     },
 
-    load: function (mind_data) {
+    load: function(mind_data) {
       var df = null;
       var mind = null;
       if (typeof mind_data === "object") {
@@ -1938,7 +1941,7 @@
       return mind;
     },
 
-    get_data: function (data_format) {
+    get_data: function(data_format) {
       var data = null;
       if (data_format == "node_array") {
         data = jm.format.node_array.get_data(this.jm.mind);
@@ -1955,7 +1958,7 @@
 
   // ============= layout provider ===========================================
 
-  jm.layout_provider = function (jm, options) {
+  jm.layout_provider = function(jm, options) {
     this.opts = options;
     this.jm = jm;
     this.isside = this.opts.mode == "side";
@@ -1965,24 +1968,24 @@
   };
 
   jm.layout_provider.prototype = {
-    init: function () {
+    init: function() {
       logger.debug("layout.init");
     },
-    reset: function () {
+    reset: function() {
       logger.debug("layout.reset");
       this.bounds = { n: 0, s: 0, w: 0, e: 0 };
     },
-    layout: function () {
+    layout: function() {
       logger.debug("layout.layout");
       this.layout_direction();
       this.layout_offset();
     },
 
-    layout_direction: function () {
+    layout_direction: function() {
       this._layout_direction_root();
     },
 
-    _layout_direction_root: function () {
+    _layout_direction_root: function() {
       var node = this.jm.mind.root;
       // logger.debug(node);
       var layout_data = null;
@@ -2025,7 +2028,7 @@
       }
     },
 
-    _layout_direction_side: function (node, direction, side_index) {
+    _layout_direction_side: function(node, direction, side_index) {
       var layout_data = null;
       if ("layout" in node._data) {
         layout_data = node._data.layout;
@@ -2044,7 +2047,7 @@
       }
     },
 
-    layout_offset: function () {
+    layout_offset: function() {
       var node = this.jm.mind.root;
       var layout_data = node._data.layout;
       layout_data.offset_x = 0;
@@ -2080,7 +2083,7 @@
     },
 
     // layout both the x and y axis
-    _layout_offset_subnodes: function (nodes) {
+    _layout_offset_subnodes: function(nodes) {
       var total_height = 0;
       var nodes_count = nodes.length;
       var i = nodes_count;
@@ -2128,7 +2131,7 @@
     },
 
     // layout the y axis only, for collapse/expand a node
-    _layout_offset_subnodes_height: function (nodes) {
+    _layout_offset_subnodes_height: function(nodes) {
       var total_height = 0;
       var nodes_count = nodes.length;
       var i = nodes_count;
@@ -2169,7 +2172,7 @@
       return total_height;
     },
 
-    get_node_offset: function (node) {
+    get_node_offset: function(node) {
       var layout_data = node._data.layout;
       var offset_cache = null;
       if ("_offset_" in layout_data && this.cache_valid) {
@@ -2192,7 +2195,7 @@
       return offset_cache;
     },
 
-    get_node_point: function (node) {
+    get_node_point: function(node) {
       var view_data = node._data.view;
       var offset_p = this.get_node_offset(node);
       //logger.debug(offset_p);
@@ -2204,12 +2207,12 @@
       return p;
     },
 
-    get_node_point_in: function (node) {
+    get_node_point_in: function(node) {
       var p = this.get_node_offset(node);
       return p;
     },
 
-    get_node_point_out: function (node) {
+    get_node_point_out: function(node) {
       var layout_data = node._data.layout;
       var pout_cache = null;
       if ("_pout_" in layout_data && this.cache_valid) {
@@ -2236,7 +2239,7 @@
       return pout_cache;
     },
 
-    get_expander_point: function (node) {
+    get_expander_point: function(node) {
       var p = this.get_node_point_out(node);
       var ex_p = {};
       if (node._data.layout.direction == jm.direction.right) {
@@ -2248,7 +2251,7 @@
       return ex_p;
     },
 
-    get_min_size: function () {
+    get_min_size: function() {
       var nodes = this.jm.mind.nodes;
       var node = null;
       var pout = null;
@@ -2268,7 +2271,7 @@
       };
     },
 
-    toggle_node: function (node) {
+    toggle_node: function(node) {
       if (node.isroot) {
         return;
       }
@@ -2279,19 +2282,19 @@
       }
     },
 
-    expand_node: function (node) {
+    expand_node: function(node) {
       node.expanded = true;
       this.part_layout(node);
       this.set_visible(node.children, true);
     },
 
-    collapse_node: function (node) {
+    collapse_node: function(node) {
       node.expanded = false;
       this.part_layout(node);
       this.set_visible(node.children, false);
     },
 
-    expand_all: function () {
+    expand_all: function() {
       var nodes = this.jm.mind.nodes;
       var c = 0;
       var node;
@@ -2309,7 +2312,7 @@
       }
     },
 
-    collapse_all: function () {
+    collapse_all: function() {
       var nodes = this.jm.mind.nodes;
       var c = 0;
       var node;
@@ -2327,7 +2330,7 @@
       }
     },
 
-    expand_to_depth: function (target_depth, curr_nodes, curr_depth) {
+    expand_to_depth: function(target_depth, curr_nodes, curr_depth) {
       if (target_depth < 1) {
         return;
       }
@@ -2351,7 +2354,7 @@
       }
     },
 
-    part_layout: function (node) {
+    part_layout: function(node) {
       var root = this.jm.mind.root;
       if (!!root) {
         var root_layout_data = root._data.layout;
@@ -2383,7 +2386,7 @@
       }
     },
 
-    set_visible: function (nodes, visible) {
+    set_visible: function(nodes, visible) {
       var i = nodes.length;
       var node = null;
       var layout_data = null;
@@ -2401,11 +2404,11 @@
       }
     },
 
-    is_expand: function (node) {
+    is_expand: function(node) {
       return node.expanded;
     },
 
-    is_visible: function (node) {
+    is_visible: function(node) {
       var layout_data = node._data.layout;
       if ("visible" in layout_data && !layout_data.visible) {
         return false;
@@ -2415,7 +2418,7 @@
     },
   };
 
-  jm.graph_canvas = function (view) {
+  jm.graph_canvas = function(view) {
     this.opts = view.opts;
     this.e_canvas = $c("canvas");
     this.canvas_ctx = this.e_canvas.getContext("2d");
@@ -2423,22 +2426,22 @@
   };
 
   jm.graph_canvas.prototype = {
-    element: function () {
+    element: function() {
       return this.e_canvas;
     },
 
-    set_size: function (w, h) {
+    set_size: function(w, h) {
       this.size.w = w;
       this.size.h = h;
       this.e_canvas.width = w;
       this.e_canvas.height = h;
     },
 
-    clear: function () {
+    clear: function() {
       this.canvas_ctx.clearRect(0, 0, this.size.w, this.size.h);
     },
 
-    draw_line: function (pout, pin, offset) {
+    draw_line: function(pout, pin, offset) {
       var ctx = this.canvas_ctx;
       ctx.strokeStyle = this.opts.line_color;
       ctx.lineWidth = this.opts.line_width;
@@ -2453,19 +2456,19 @@
       );
     },
 
-    copy_to: function (dest_canvas_ctx, callback) {
+    copy_to: function(dest_canvas_ctx, callback) {
       dest_canvas_ctx.drawImage(this.e_canvas, 0, 0);
       !!callback && callback();
     },
 
-    _bezier_to: function (ctx, x1, y1, x2, y2) {
+    _bezier_to: function(ctx, x1, y1, x2, y2) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.bezierCurveTo(x1 + ((x2 - x1) * 2) / 3, y1, x1, y2, x2, y2);
       ctx.stroke();
     },
 
-    _line_to: function (ctx, x1, y1, x2, y2) {
+    _line_to: function(ctx, x1, y1, x2, y2) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
@@ -2473,7 +2476,7 @@
     },
   };
 
-  jm.graph_svg = function (view) {
+  jm.graph_svg = function(view) {
     this.view = view;
     this.opts = view.opts;
     this.e_svg = jm.graph_svg.c("svg");
@@ -2481,23 +2484,23 @@
     this.lines = [];
   };
 
-  jm.graph_svg.c = function (tag) {
+  jm.graph_svg.c = function(tag) {
     return $d.createElementNS("http://www.w3.org/2000/svg", tag);
   };
 
   jm.graph_svg.prototype = {
-    element: function () {
+    element: function() {
       return this.e_svg;
     },
 
-    set_size: function (w, h) {
+    set_size: function(w, h) {
       this.size.w = w;
       this.size.h = h;
       this.e_svg.setAttribute("width", w);
       this.e_svg.setAttribute("height", h);
     },
 
-    clear: function () {
+    clear: function() {
       var len = this.lines.length;
       while (len--) {
         this.e_svg.removeChild(this.lines[len]);
@@ -2505,7 +2508,7 @@
       this.lines.length = 0;
     },
 
-    draw_line: function (pout, pin, offset) {
+    draw_line: function(pout, pin, offset) {
       var line = jm.graph_svg.c("path");
       line.setAttribute("stroke", this.opts.line_color);
       line.setAttribute("stroke-width", this.opts.line_width);
@@ -2521,9 +2524,9 @@
       );
     },
 
-    copy_to: function (dest_canvas_ctx, callback) {
+    copy_to: function(dest_canvas_ctx, callback) {
       var img = new Image();
-      img.onload = function () {
+      img.onload = function() {
         dest_canvas_ctx.drawImage(img, 0, 0);
         !!callback && callback();
       };
@@ -2532,7 +2535,7 @@
         btoa(new XMLSerializer().serializeToString(this.e_svg));
     },
 
-    _bezier_to: function (path, x1, y1, x2, y2) {
+    _bezier_to: function(path, x1, y1, x2, y2) {
       path.setAttribute(
         "d",
         "M" +
@@ -2554,13 +2557,13 @@
       );
     },
 
-    _line_to: function (path, x1, y1, x2, y2) {
+    _line_to: function(path, x1, y1, x2, y2) {
       path.setAttribute("d", "M " + x1 + " " + y1 + " L " + x2 + " " + y2);
     },
   };
 
   // view provider
-  jm.view_provider = function (jm, options) {
+  jm.view_provider = function(jm, options) {
     this.opts = options;
     this.jm = jm;
     this.layout = jm.layout;
@@ -2578,7 +2581,7 @@
   };
 
   jm.view_provider.prototype = {
-    init: function () {
+    init: function() {
       logger.debug("view.init");
 
       this.container = $i(this.opts.container)
@@ -2610,28 +2613,28 @@
       this.maxZoom = 2;
 
       var v = this;
-      jm.util.dom.add_event(this.e_editor, "keydown", function (e) {
+      jm.util.dom.add_event(this.e_editor, "keydown", function(e) {
         var evt = e || event;
         if (evt.keyCode == 13) {
           v.edit_node_end();
           evt.stopPropagation();
         }
       });
-      jm.util.dom.add_event(this.e_editor, "blur", function (e) {
+      jm.util.dom.add_event(this.e_editor, "blur", function(e) {
         v.edit_node_end();
       });
 
       this.container.appendChild(this.e_panel);
     },
 
-    add_event: function (obj, event_name, event_handle) {
-      jm.util.dom.add_event(this.e_nodes, event_name, function (e) {
+    add_event: function(obj, event_name, event_handle) {
+      jm.util.dom.add_event(this.e_nodes, event_name, function(e) {
         var evt = e || event;
         event_handle.call(obj, evt);
       });
     },
 
-    get_binded_nodeid: function (element) {
+    get_binded_nodeid: function(element) {
       if (element == null) {
         return null;
       }
@@ -2646,11 +2649,11 @@
       }
     },
 
-    is_expander: function (element) {
+    is_expander: function(element) {
       return element.tagName.toLowerCase() == "jmexpander";
     },
 
-    reset: function () {
+    reset: function() {
       logger.debug("view.reset");
       this.selected_node = null;
       this.clear_lines();
@@ -2658,7 +2661,7 @@
       this.reset_theme();
     },
 
-    reset_theme: function () {
+    reset_theme: function() {
       var theme_name = this.jm.options.theme;
       if (!!theme_name) {
         this.e_nodes.className = "theme-" + theme_name;
@@ -2667,19 +2670,19 @@
       }
     },
 
-    reset_custom_style: function () {
+    reset_custom_style: function() {
       var nodes = this.jm.mind.nodes;
       for (var nodeid in nodes) {
         this.reset_node_custom_style(nodes[nodeid]);
       }
     },
 
-    load: function () {
+    load: function() {
       logger.debug("view.load");
       this.init_nodes();
     },
 
-    expand_size: function () {
+    expand_size: function() {
       var min_size = this.layout.get_min_size();
       var min_width = min_size.w + this.opts.hmargin * 2;
       var min_height = min_size.h + this.opts.vmargin * 2;
@@ -2695,13 +2698,13 @@
       this.size.h = client_h;
     },
 
-    init_nodes_size: function (node) {
+    init_nodes_size: function(node) {
       var view_data = node._data.view;
       view_data.width = view_data.element.clientWidth;
       view_data.height = view_data.element.clientHeight;
     },
 
-    init_nodes: function () {
+    init_nodes: function() {
       var nodes = this.jm.mind.nodes;
       var doc_frag = $d.createDocumentFragment();
       for (var nodeid in nodes) {
@@ -2713,12 +2716,12 @@
       }
     },
 
-    add_node: function (node) {
+    add_node: function(node) {
       this.create_node_element(node, this.e_nodes);
       this.init_nodes_size(node);
     },
 
-    create_node_element: function (node, parent_node) {
+    create_node_element: function(node, parent_node) {
       var view_data = null;
       if ("view" in node._data) {
         view_data = node._data.view;
@@ -2753,7 +2756,7 @@
       view_data.element = d;
     },
 
-    remove_node: function (node) {
+    remove_node: function(node) {
       if (this.selected_node != null && this.selected_node.id == node.id) {
         this.selected_node = null;
       }
@@ -2776,7 +2779,7 @@
       }
     },
 
-    update_node: function (node) {
+    update_node: function(node) {
       var view_data = node._data.view;
       var element = view_data.element;
       if (!!node.topic) {
@@ -2790,7 +2793,7 @@
       view_data.height = element.clientHeight;
     },
 
-    select_node: function (node) {
+    select_node: function(node) {
       if (!!this.selected_node) {
         this.selected_node._data.view.element.className = this.selected_node._data.view.element.className.replace(
           /\s*selected\b/i,
@@ -2805,19 +2808,19 @@
       }
     },
 
-    select_clear: function () {
+    select_clear: function() {
       this.select_node(null);
     },
 
-    get_editing_node: function () {
+    get_editing_node: function() {
       return this.editing_node;
     },
 
-    is_editing: function () {
+    is_editing: function() {
       return !!this.editing_node;
     },
 
-    edit_node_begin: function (node) {
+    edit_node_begin: function(node) {
       if (!node.topic) {
         logger.warn("don't edit image nodes");
         return;
@@ -2843,7 +2846,7 @@
       this.e_editor.select();
     },
 
-    edit_node_end: function () {
+    edit_node_end: function() {
       if (this.editing_node != null) {
         var node = this.editing_node;
         this.editing_node = null;
@@ -2864,14 +2867,14 @@
       }
     },
 
-    get_view_offset: function () {
+    get_view_offset: function() {
       var bounds = this.layout.bounds;
       var _x = (this.size.w - bounds.e - bounds.w) / 2;
       var _y = this.size.h / 2;
       return { x: _x, y: _y };
     },
 
-    resize: function () {
+    resize: function() {
       this.graph.set_size(1, 1);
       this.e_nodes.style.width = "1px";
       this.e_nodes.style.height = "1px";
@@ -2880,7 +2883,7 @@
       this._show();
     },
 
-    _show: function () {
+    _show: function() {
       this.graph.set_size(this.size.w, this.size.h);
       this.e_nodes.style.width = this.size.w + "px";
       this.e_nodes.style.height = this.size.h + "px";
@@ -2890,15 +2893,15 @@
       this.jm.invoke_event_handle(jm.event_type.resize, { data: [] });
     },
 
-    zoomIn: function () {
+    zoomIn: function() {
       return this.setZoom(this.actualZoom + this.zoomStep);
     },
 
-    zoomOut: function () {
+    zoomOut: function() {
       return this.setZoom(this.actualZoom - this.zoomStep);
     },
 
-    setZoom: function (zoom) {
+    setZoom: function(zoom) {
       if (zoom < this.minZoom || zoom > this.maxZoom) {
         return false;
       }
@@ -2910,7 +2913,7 @@
       return true;
     },
 
-    _center_root: function () {
+    _center_root: function() {
       // center root node
       var outer_w = this.e_panel.clientWidth;
       var outer_h = this.e_panel.clientHeight;
@@ -2923,7 +2926,7 @@
       }
     },
 
-    show: function (keep_center) {
+    show: function(keep_center) {
       logger.debug("view.show");
       this.expand_size();
       this._show();
@@ -2932,12 +2935,12 @@
       }
     },
 
-    relayout: function () {
+    relayout: function() {
       this.expand_size();
       this._show();
     },
 
-    save_location: function (node) {
+    save_location: function(node) {
       var vd = node._data.view;
       vd._saved_location = {
         x: parseInt(vd.element.style.left) - this.e_panel.scrollLeft,
@@ -2945,7 +2948,7 @@
       };
     },
 
-    restore_location: function (node) {
+    restore_location: function(node) {
       var vd = node._data.view;
       this.e_panel.scrollLeft =
         parseInt(vd.element.style.left) - vd._saved_location.x;
@@ -2953,7 +2956,7 @@
         parseInt(vd.element.style.top) - vd._saved_location.y;
     },
 
-    clear_nodes: function () {
+    clear_nodes: function() {
       var mind = this.jm.mind;
       if (mind == null) {
         return;
@@ -2968,7 +2971,7 @@
       this.e_nodes.innerHTML = "";
     },
 
-    show_nodes: function () {
+    show_nodes: function() {
       var nodes = this.jm.mind.nodes;
       var node = null;
       var node_element = null;
@@ -3013,11 +3016,11 @@
       }
     },
 
-    reset_node_custom_style: function (node) {
+    reset_node_custom_style: function(node) {
       this._reset_node_custom_style(node._data.view.element, node.data);
     },
 
-    _reset_node_custom_style: function (node_element, node_data) {
+    _reset_node_custom_style: function(node_element, node_data) {
       if ("background-color" in node_data) {
         node_element.style.backgroundColor = node_data["background-color"];
       }
@@ -3048,7 +3051,7 @@
         ) {
           var img = new Image();
 
-          img.onload = function () {
+          img.onload = function() {
             var c = $c("canvas");
             c.width = node_element.clientWidth;
             c.height = node_element.clientHeight;
@@ -3080,17 +3083,17 @@
       }
     },
 
-    clear_node_custom_style: function (node) {
+    clear_node_custom_style: function(node) {
       var node_element = node._data.view.element;
       node_element.style.backgroundColor = "";
       node_element.style.color = "";
     },
 
-    clear_lines: function () {
+    clear_lines: function() {
       this.graph.clear();
     },
 
-    show_lines: function () {
+    show_lines: function() {
       this.clear_lines();
       var nodes = this.jm.mind.nodes;
       var node = null;
@@ -3113,7 +3116,7 @@
   };
 
   // shortcut provider
-  jm.shortcut_provider = function (jm, options) {
+  jm.shortcut_provider = function(jm, options) {
     this.jm = jm;
     this.opts = options;
     this.mapping = options.mapping;
@@ -3122,7 +3125,7 @@
   };
 
   jm.shortcut_provider.prototype = {
-    init: function () {
+    init: function() {
       jm.util.dom.add_event($d, "keydown", this.handler.bind(this));
 
       this.handles["addchild"] = this.handle_addchild;
@@ -3142,15 +3145,15 @@
       }
     },
 
-    enable_shortcut: function () {
+    enable_shortcut: function() {
       this.opts.enable = true;
     },
 
-    disable_shortcut: function () {
+    disable_shortcut: function() {
       this.opts.enable = false;
     },
 
-    handler: function (e) {
+    handler: function(e) {
       if (this.jm.view.is_editing()) {
         return;
       }
@@ -3169,7 +3172,7 @@
       }
     },
 
-    handle_addchild: function (_jm, e) {
+    handle_addchild: function(_jm, e) {
       var selected_node = _jm.get_selected_node();
       if (!!selected_node) {
         var nodeid = jm.util.uuid.newid();
@@ -3180,7 +3183,7 @@
         }
       }
     },
-    handle_addbrother: function (_jm, e) {
+    handle_addbrother: function(_jm, e) {
       var selected_node = _jm.get_selected_node();
       if (!!selected_node && !selected_node.isroot) {
         var nodeid = jm.util.uuid.newid();
@@ -3191,20 +3194,20 @@
         }
       }
     },
-    handle_editnode: function (_jm, e) {
+    handle_editnode: function(_jm, e) {
       var selected_node = _jm.get_selected_node();
       if (!!selected_node) {
         _jm.begin_edit(selected_node);
       }
     },
-    handle_delnode: function (_jm, e) {
+    handle_delnode: function(_jm, e) {
       var selected_node = _jm.get_selected_node();
       if (!!selected_node && !selected_node.isroot) {
         _jm.select_node(selected_node.parent);
         _jm.remove_node(selected_node);
       }
     },
-    handle_toggle: function (_jm, e) {
+    handle_toggle: function(_jm, e) {
       var evt = e || event;
       var selected_node = _jm.get_selected_node();
       if (!!selected_node) {
@@ -3213,7 +3216,7 @@
         evt.preventDefault();
       }
     },
-    handle_up: function (_jm, e) {
+    handle_up: function(_jm, e) {
       var evt = e || event;
       var selected_node = _jm.get_selected_node();
       if (!!selected_node) {
@@ -3232,7 +3235,7 @@
       }
     },
 
-    handle_down: function (_jm, e) {
+    handle_down: function(_jm, e) {
       var evt = e || event;
       var selected_node = _jm.get_selected_node();
       if (!!selected_node) {
@@ -3251,13 +3254,13 @@
       }
     },
 
-    handle_left: function (_jm, e) {
+    handle_left: function(_jm, e) {
       this._handle_direction(_jm, e, jm.direction.left);
     },
-    handle_right: function (_jm, e) {
+    handle_right: function(_jm, e) {
       this._handle_direction(_jm, e, jm.direction.right);
     },
-    _handle_direction: function (_jm, e, d) {
+    _handle_direction: function(_jm, e, d) {
       var evt = e || event;
       var selected_node = _jm.get_selected_node();
       var node = null;
@@ -3290,26 +3293,26 @@
   };
 
   // plugin
-  jm.plugin = function (name, init) {
+  jm.plugin = function(name, init) {
     this.name = name;
     this.init = init;
   };
 
   jm.plugins = [];
 
-  jm.register_plugin = function (plugin) {
+  jm.register_plugin = function(plugin) {
     if (plugin instanceof jm.plugin) {
       jm.plugins.push(plugin);
     }
   };
 
-  jm.init_plugins = function (sender) {
-    $w.setTimeout(function () {
+  jm.init_plugins = function(sender) {
+    $w.setTimeout(function() {
       jm._init_plugins(sender);
     }, 0);
   };
 
-  jm._init_plugins = function (sender) {
+  jm._init_plugins = function(sender) {
     var l = jm.plugins.length;
     var fn_init = null;
     for (var i = 0; i < l; i++) {
@@ -3321,7 +3324,7 @@
   };
 
   // quick way
-  jm.show = function (options, mind) {
+  jm.show = function(options, mind) {
     var _jm = new jm(options);
     _jm.show(mind);
     return _jm;
@@ -3332,7 +3335,7 @@
     module.exports = jm;
     $w[__name__] = jm;
   } else if (typeof define === "function" && (define.amd || define.cmd)) {
-    define(function () {
+    define(function() {
       return jm;
     });
   } else {

@@ -50,7 +50,7 @@
       :values="mind"
       :options="options"
       ref="jsMind"
-      height="600px"
+      height="1000px"
       width:='100%'
     ></js-mind>
   </div>
@@ -60,9 +60,11 @@
 import JsMind from "./index";
 import axios from "axios";
 
+var self;
 export default {
   data() {
     return {
+      rawDatas: [],
       theme_value: "",
       mind: {
         /* 元数据，定义思维导图的名称、作者、版本等信息 */
@@ -70,6 +72,24 @@ export default {
           name: "example",
           author: "906106844@qq.com",
           version: "0.2",
+        },
+        getTopic(node) {
+          let type =
+            node.topic.indexOf("%") > 0 ||
+            (node.topic.indexOf("率") > 0 && node.topic.indexOf("周转") == -1)
+              ? 1
+              : 0;
+          return `<div><span class="label">${node.topic.replace(
+            "(%)",
+            ""
+          )}</span><span class="value">${
+            (rawDatas[0][node.alias] &&
+              self &&
+              (type ? self.$fmtPercent : self.$fmtNumber)(
+                (type ? 100 : 1) * rawDatas[0][node.alias]
+              )) ||
+            ""
+          }</span></div>`;
         },
         /* 数据格式声明 */
         format: "node_array",
@@ -85,10 +105,15 @@ export default {
   },
   components: { JsMind },
   mounted() {
-    axios.get("/static/test.json").then((resp) => {
-      this.mind.data = this.mind.data.concat(resp.data);
-      this.jm = this.$refs.jsMind.jm;
-      this.jm.enable_edit();
+    self = this;
+    axios.get("/api/mind?code=sh600031").then((resp) => {
+      window.rawDatas = resp.data;
+
+      axios.get("/static/test.json").then((resp) => {
+        this.mind.data = this.mind.data.concat(resp.data);
+        this.jm = this.$refs.jsMind.jm;
+        //this.jm.enable_edit();
+      });
     });
   },
   methods: {

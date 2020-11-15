@@ -544,14 +544,15 @@ function genTree(conf) {
       .trim();
 
     let node = {};
-    node.id = node.topic = name;
+    node.id = ++id;
+    node.topic = name;
     node.parentid = pid;
     node.alias = alias;
     let childnodes = getchildnodes(node);
     nodes.push(node);
     nodes = nodes.concat(childnodes);
   }
-  return nodes;
+  return nodes.filter((e) => e.topic.match(itemRegex));
 }
 
 fs.writeFileSync(

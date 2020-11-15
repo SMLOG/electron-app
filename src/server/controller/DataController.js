@@ -30,6 +30,21 @@ module.exports = {
     let data = await Yj.findAll({ where: { code: code } });
     ctx.body = data;
   },
+  mind: async (ctx) => {
+    let code = ctx.query.code;
+    let rows = await db.query(
+      `select * from v_summary where code = :code order by reportdate desc`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          code: code,
+        },
+      }
+    );
+    ctx.body = rows;
+  },
   notices: async (ctx) => {
     let type_id = ctx.query.type_id;
     let p = ctx.query.p || 1;

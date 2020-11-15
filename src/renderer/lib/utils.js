@@ -1,3 +1,4 @@
+import _ from "lodash";
 export function loadScripts(scripts) {
   return scripts.reduce((currentPromise, scriptUrl) => {
     return currentPromise.then(() => {

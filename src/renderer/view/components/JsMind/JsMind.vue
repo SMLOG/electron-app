@@ -40,7 +40,10 @@ export default {
         container: "jsmind_container",
         editable: true, // 是否启用编辑
         theme: "primary", // 主题
-        mode: "full", // 显示模式
+        mode: "full", // 显示模式,
+        getTopic(node) {
+          return node.id + node.topic;
+        },
         support_html: true, // 是否支持节点里的HTML元素
         view: {
           engine: "canvas", // 思维导图各节点之间线条的绘制引擎

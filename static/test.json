@@ -1,0 +1,1447 @@
+[
+    {
+        "id": "root",
+        "isroot": true,
+        "topic": "财务分析"
+    },
+    {
+        "id": 1,
+        "topic": "财务结构",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 2,
+        "topic": "负债占资产比率(%)",
+        "parentid": 1,
+        "alias": "负债占资产比率"
+    },
+    {
+        "id": 3,
+        "topic": "负债 / 总资产",
+        "parentid": 2
+    },
+    {
+        "id": 4,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 3
+    },
+    {
+        "id": 6,
+        "alias": "负债",
+        "topic": "负债",
+        "parentid": 3
+    },
+    {
+        "id": 8,
+        "topic": "长期资金占重资产比率(%)",
+        "parentid": 1,
+        "alias": "长期资金占重资产比率"
+    },
+    {
+        "id": 9,
+        "topic": "偿债能力",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 10,
+        "topic": "流动比率(%)",
+        "parentid": 9,
+        "alias": "流动比率"
+    },
+    {
+        "id": 11,
+        "topic": "流动资产总额 / 流动负债总额",
+        "parentid": 10
+    },
+    {
+        "id": 12,
+        "alias": "流动负债总额",
+        "topic": "流动负债总额",
+        "parentid": 11
+    },
+    {
+        "id": 14,
+        "alias": "流动资产总额",
+        "topic": "流动资产总额",
+        "parentid": 11
+    },
+    {
+        "id": 16,
+        "topic": "速动比率(%)",
+        "parentid": 9,
+        "alias": "速动比率"
+    },
+    {
+        "id": 17,
+        "topic": "( 流动资产总额 - 存货 - 预付费用 ) / 流动负债总额",
+        "parentid": 16
+    },
+    {
+        "id": 18,
+        "alias": "流动负债总额",
+        "topic": "流动负债总额",
+        "parentid": 17
+    },
+    {
+        "id": 20,
+        "alias": "预付费用",
+        "topic": "预付费用",
+        "parentid": 17
+    },
+    {
+        "id": 22,
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 17
+    },
+    {
+        "id": 24,
+        "alias": "流动资产总额",
+        "topic": "流动资产总额",
+        "parentid": 17
+    },
+    {
+        "id": 26,
+        "topic": "利息保障倍数",
+        "parentid": 9,
+        "alias": "利息保障倍数"
+    },
+    {
+        "id": 27,
+        "topic": "营业净利 / 利息费用",
+        "parentid": 26
+    },
+    {
+        "id": 28,
+        "alias": "利息费用",
+        "topic": "利息费用",
+        "parentid": 27
+    },
+    {
+        "id": 30,
+        "alias": "营业净利",
+        "topic": "营业净利",
+        "parentid": 27
+    },
+    {
+        "id": 32,
+        "topic": "运营能力",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 33,
+        "topic": "应收款项周转率(次/年)",
+        "parentid": 32,
+        "alias": "应收款项周转率"
+    },
+    {
+        "id": 34,
+        "topic": "365 / 应收帐款周转天数",
+        "parentid": 33
+    },
+    {
+        "id": 35,
+        "alias": "应收帐款周转天数",
+        "topic": "应收帐款周转天数",
+        "parentid": 34
+    },
+    {
+        "id": 36,
+        "topic": "应收款项周转天数",
+        "parentid": 35
+    },
+    {
+        "id": 37,
+        "alias": "应收款项周转天数",
+        "topic": "应收款项周转天数",
+        "parentid": 35
+    },
+    {
+        "id": 38,
+        "topic": "平均应收账款 * 365 / 销售收入",
+        "parentid": 37
+    },
+    {
+        "id": 39,
+        "alias": "销售收入",
+        "topic": "销售收入",
+        "parentid": 38
+    },
+    {
+        "id": 41,
+        "alias": "平均应收账款",
+        "topic": "平均应收账款",
+        "parentid": 38
+    },
+    {
+        "id": 42,
+        "topic": "(期初应收账款 + 期末应收账款)/2",
+        "parentid": 41
+    },
+    {
+        "id": 43,
+        "alias": "期末应收账款",
+        "topic": "期末应收账款",
+        "parentid": 42
+    },
+    {
+        "id": 45,
+        "alias": "期初应收账款",
+        "topic": "期初应收账款",
+        "parentid": 42
+    },
+    {
+        "id": 47,
+        "topic": "应收款项周转天数(天)",
+        "parentid": 32,
+        "alias": "应收款项周转天数"
+    },
+    {
+        "id": 48,
+        "topic": "平均应收账款 * 365 / 销售收入",
+        "parentid": 47
+    },
+    {
+        "id": 49,
+        "alias": "销售收入",
+        "topic": "销售收入",
+        "parentid": 48
+    },
+    {
+        "id": 51,
+        "alias": "平均应收账款",
+        "topic": "平均应收账款",
+        "parentid": 48
+    },
+    {
+        "id": 52,
+        "topic": "(期初应收账款 + 期末应收账款)/2",
+        "parentid": 51
+    },
+    {
+        "id": 53,
+        "alias": "期末应收账款",
+        "topic": "期末应收账款",
+        "parentid": 52
+    },
+    {
+        "id": 55,
+        "alias": "期初应收账款",
+        "topic": "期初应收账款",
+        "parentid": 52
+    },
+    {
+        "id": 57,
+        "topic": "存货周转率(次/年)",
+        "parentid": 32,
+        "alias": "存货周转率"
+    },
+    {
+        "id": 58,
+        "topic": "货物销售成本 / 存货总额",
+        "parentid": 57
+    },
+    {
+        "id": 59,
+        "alias": "存货总额",
+        "topic": "存货总额",
+        "parentid": 58
+    },
+    {
+        "id": 60,
+        "topic": "平均存货总额",
+        "parentid": 59
+    },
+    {
+        "id": 61,
+        "alias": "平均存货总额",
+        "topic": "平均存货总额",
+        "parentid": 59
+    },
+    {
+        "id": 62,
+        "topic": "(期初存货总额 + 期末存货总额)/2",
+        "parentid": 61
+    },
+    {
+        "id": 63,
+        "alias": "期末存货总额",
+        "topic": "期末存货总额",
+        "parentid": 62
+    },
+    {
+        "id": 65,
+        "alias": "期初存货总额",
+        "topic": "期初存货总额",
+        "parentid": 62
+    },
+    {
+        "id": 67,
+        "alias": "货物销售成本",
+        "topic": "货物销售成本",
+        "parentid": 58
+    },
+    {
+        "id": 69,
+        "topic": "存货周转天数(天)",
+        "parentid": 32,
+        "alias": "存货周转天数"
+    },
+    {
+        "id": 70,
+        "topic": "365 / 存货周转率",
+        "parentid": 69
+    },
+    {
+        "id": 71,
+        "alias": "存货周转率",
+        "topic": "存货周转率",
+        "parentid": 70
+    },
+    {
+        "id": 72,
+        "topic": "货物销售成本 / 存货总额",
+        "parentid": 71
+    },
+    {
+        "id": 73,
+        "alias": "存货总额",
+        "topic": "存货总额",
+        "parentid": 72
+    },
+    {
+        "id": 74,
+        "topic": "平均存货总额",
+        "parentid": 73
+    },
+    {
+        "id": 75,
+        "alias": "平均存货总额",
+        "topic": "平均存货总额",
+        "parentid": 73
+    },
+    {
+        "id": 76,
+        "topic": "(期初存货总额 + 期末存货总额)/2",
+        "parentid": 75
+    },
+    {
+        "id": 77,
+        "alias": "期末存货总额",
+        "topic": "期末存货总额",
+        "parentid": 76
+    },
+    {
+        "id": 79,
+        "alias": "期初存货总额",
+        "topic": "期初存货总额",
+        "parentid": 76
+    },
+    {
+        "id": 81,
+        "alias": "货物销售成本",
+        "topic": "货物销售成本",
+        "parentid": 72
+    },
+    {
+        "id": 83,
+        "topic": "固定资产周转率(次/年)",
+        "parentid": 32,
+        "alias": "固定资产周转率"
+    },
+    {
+        "id": 84,
+        "topic": "完整生意周期(天)",
+        "parentid": 32,
+        "alias": "完整生意周期"
+    },
+    {
+        "id": 85,
+        "topic": "应付款项周转天数(天)",
+        "parentid": 32,
+        "alias": "应付款项周转天数"
+    },
+    {
+        "id": 86,
+        "topic": "期初期末应付账款平均值 * 360 / 主营业务成本",
+        "parentid": 85
+    },
+    {
+        "id": 87,
+        "alias": "主营业务成本",
+        "topic": "主营业务成本",
+        "parentid": 86
+    },
+    {
+        "id": 89,
+        "alias": "期初期末应付账款平均值",
+        "topic": "期初期末应付账款平均值",
+        "parentid": 86
+    },
+    {
+        "id": 90,
+        "topic": "(期初应付账款 + 期末应付账款)/2",
+        "parentid": 89
+    },
+    {
+        "id": 91,
+        "alias": "期末应付账款",
+        "topic": "期末应付账款",
+        "parentid": 90
+    },
+    {
+        "id": 93,
+        "alias": "期初应付账款",
+        "topic": "期初应付账款",
+        "parentid": 90
+    },
+    {
+        "id": 95,
+        "topic": "缺钱天数(天)",
+        "parentid": 32,
+        "alias": "缺钱的天数"
+    },
+    {
+        "id": 96,
+        "topic": "总资产周转率(次/年)",
+        "parentid": 32,
+        "alias": "资产周转率"
+    },
+    {
+        "id": 97,
+        "topic": "销售收入 / 平均总资产",
+        "parentid": 96
+    },
+    {
+        "id": 98,
+        "alias": "平均总资产",
+        "topic": "平均总资产",
+        "parentid": 97
+    },
+    {
+        "id": 99,
+        "topic": "(期初总资产 + 期末总资产)/2",
+        "parentid": 98
+    },
+    {
+        "id": 100,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 99
+    },
+    {
+        "id": 102,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 99
+    },
+    {
+        "id": 104,
+        "alias": "销售收入",
+        "topic": "销售收入",
+        "parentid": 97
+    },
+    {
+        "id": 106,
+        "topic": "盈利能力",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 107,
+        "topic": "ROA=资产收益率(%)",
+        "parentid": 106,
+        "alias": "资产回报率"
+    },
+    {
+        "id": 108,
+        "topic": "净收益 /   平均总资产",
+        "parentid": 107
+    },
+    {
+        "id": 109,
+        "alias": "平均总资产",
+        "topic": "平均总资产",
+        "parentid": 108
+    },
+    {
+        "id": 110,
+        "topic": "(期初总资产 + 期末总资产)/2",
+        "parentid": 109
+    },
+    {
+        "id": 111,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 110
+    },
+    {
+        "id": 113,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 110
+    },
+    {
+        "id": 115,
+        "alias": "净收益",
+        "topic": "净收益",
+        "parentid": 108
+    },
+    {
+        "id": 117,
+        "topic": "ROE=净资产收益率(%)",
+        "parentid": 106,
+        "alias": "净资产收益率"
+    },
+    {
+        "id": 118,
+        "topic": "净利率 * 总资产周转率 * 杠杆倍数",
+        "parentid": 117
+    },
+    {
+        "id": 119,
+        "alias": "杠杆倍数",
+        "topic": "杠杆倍数",
+        "parentid": 118
+    },
+    {
+        "id": 120,
+        "topic": "1/(1-资产负债率)",
+        "parentid": 119
+    },
+    {
+        "id": 121,
+        "alias": "资产负债率",
+        "topic": "资产负债率",
+        "parentid": 120
+    },
+    {
+        "id": 122,
+        "topic": "负债总额 / 期末总资产",
+        "parentid": 121
+    },
+    {
+        "id": 123,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 122
+    },
+    {
+        "id": 125,
+        "alias": "负债总额",
+        "topic": "负债总额",
+        "parentid": 122
+    },
+    {
+        "id": 127,
+        "alias": "总资产周转率",
+        "topic": "总资产周转率",
+        "parentid": 118
+    },
+    {
+        "id": 128,
+        "topic": "营业总收入 / (( 期初总资产 + 期末总资产) / 2)",
+        "parentid": 127
+    },
+    {
+        "id": 129,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 128
+    },
+    {
+        "id": 131,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 128
+    },
+    {
+        "id": 133,
+        "alias": "营业总收入",
+        "topic": "营业总收入",
+        "parentid": 128
+    },
+    {
+        "id": 135,
+        "alias": "净利率",
+        "topic": "净利率",
+        "parentid": 118
+    },
+    {
+        "id": 136,
+        "topic": "营业利润利率*总资产周转率",
+        "parentid": 135
+    },
+    {
+        "id": 137,
+        "alias": "总资产周转率",
+        "topic": "总资产周转率",
+        "parentid": 136
+    },
+    {
+        "id": 138,
+        "topic": "营业总收入 / (( 期初总资产 + 期末总资产) / 2)",
+        "parentid": 137
+    },
+    {
+        "id": 139,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 138
+    },
+    {
+        "id": 141,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 138
+    },
+    {
+        "id": 143,
+        "alias": "营业总收入",
+        "topic": "营业总收入",
+        "parentid": 138
+    },
+    {
+        "id": 145,
+        "alias": "营业利润利率",
+        "topic": "营业利润利率",
+        "parentid": 136
+    },
+    {
+        "id": 146,
+        "topic": "净利润/营业总收入",
+        "parentid": 145
+    },
+    {
+        "id": 147,
+        "alias": "营业总收入",
+        "topic": "营业总收入",
+        "parentid": 146
+    },
+    {
+        "id": 149,
+        "alias": "净利润",
+        "topic": "净利润",
+        "parentid": 146
+    },
+    {
+        "id": 151,
+        "topic": "ROIC=资本回报率(%)",
+        "parentid": 106,
+        "alias": "资本回报率"
+    },
+    {
+        "id": 152,
+        "topic": "税前纯益占实收资本(%)",
+        "parentid": 106,
+        "alias": "税前纯益占实收资本比率"
+    },
+    {
+        "id": 153,
+        "topic": "毛利率(%)",
+        "parentid": 106,
+        "alias": "毛利率"
+    },
+    {
+        "id": 154,
+        "topic": "毛利 / 营业收入",
+        "parentid": 153
+    },
+    {
+        "id": 155,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 154
+    },
+    {
+        "id": 157,
+        "alias": "毛利",
+        "topic": "毛利",
+        "parentid": 154
+    },
+    {
+        "id": 158,
+        "topic": "营业收入-营业支出",
+        "parentid": 157
+    },
+    {
+        "id": 159,
+        "alias": "营业支出",
+        "topic": "营业支出",
+        "parentid": 158
+    },
+    {
+        "id": 161,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 158
+    },
+    {
+        "id": 163,
+        "topic": "营业利润率(%)",
+        "parentid": 106,
+        "alias": "营业利润率"
+    },
+    {
+        "id": 164,
+        "topic": "营业利润 / 营业收入",
+        "parentid": 163
+    },
+    {
+        "id": 165,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 164
+    },
+    {
+        "id": 167,
+        "alias": "营业利润",
+        "topic": "营业利润",
+        "parentid": 164
+    },
+    {
+        "id": 169,
+        "topic": "净利率(%)",
+        "parentid": 106,
+        "alias": "净利率"
+    },
+    {
+        "id": 170,
+        "topic": "营业利润利率*总资产周转率",
+        "parentid": 169
+    },
+    {
+        "id": 171,
+        "alias": "总资产周转率",
+        "topic": "总资产周转率",
+        "parentid": 170
+    },
+    {
+        "id": 172,
+        "topic": "营业总收入 / (( 期初总资产 + 期末总资产) / 2)",
+        "parentid": 171
+    },
+    {
+        "id": 173,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 172
+    },
+    {
+        "id": 175,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 172
+    },
+    {
+        "id": 177,
+        "alias": "营业总收入",
+        "topic": "营业总收入",
+        "parentid": 172
+    },
+    {
+        "id": 179,
+        "alias": "营业利润利率",
+        "topic": "营业利润利率",
+        "parentid": 170
+    },
+    {
+        "id": 180,
+        "topic": "净利润/营业总收入",
+        "parentid": 179
+    },
+    {
+        "id": 181,
+        "alias": "营业总收入",
+        "topic": "营业总收入",
+        "parentid": 180
+    },
+    {
+        "id": 183,
+        "alias": "净利润",
+        "topic": "净利润",
+        "parentid": 180
+    },
+    {
+        "id": 185,
+        "topic": "营业费用率(%)",
+        "parentid": 106,
+        "alias": "营业费用率"
+    },
+    {
+        "id": 186,
+        "topic": "经营安全边际率(%)",
+        "parentid": 106,
+        "alias": "经营安全边际率"
+    },
+    {
+        "id": 187,
+        "topic": "营业利润率 / 毛利率",
+        "parentid": 186
+    },
+    {
+        "id": 188,
+        "alias": "毛利率",
+        "topic": "毛利率",
+        "parentid": 187
+    },
+    {
+        "id": 189,
+        "topic": "毛利 / 营业收入",
+        "parentid": 188
+    },
+    {
+        "id": 190,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 189
+    },
+    {
+        "id": 192,
+        "alias": "毛利",
+        "topic": "毛利",
+        "parentid": 189
+    },
+    {
+        "id": 193,
+        "topic": "营业收入-营业支出",
+        "parentid": 192
+    },
+    {
+        "id": 194,
+        "alias": "营业支出",
+        "topic": "营业支出",
+        "parentid": 193
+    },
+    {
+        "id": 196,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 193
+    },
+    {
+        "id": 198,
+        "alias": "营业利润率",
+        "topic": "营业利润率",
+        "parentid": 187
+    },
+    {
+        "id": 199,
+        "topic": "营业利润 / 营业收入",
+        "parentid": 198
+    },
+    {
+        "id": 200,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 199
+    },
+    {
+        "id": 202,
+        "alias": "营业利润",
+        "topic": "营业利润",
+        "parentid": 199
+    },
+    {
+        "id": 204,
+        "topic": "EPS=基本每股收益(元)",
+        "parentid": 106,
+        "alias": "基本每股收益"
+    },
+    {
+        "id": 206,
+        "topic": "成长能力",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 207,
+        "topic": "营收增长率(%)",
+        "parentid": 206,
+        "alias": "营收增长率"
+    },
+    {
+        "id": 208,
+        "topic": "(本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
+        "parentid": 207
+    },
+    {
+        "id": 209,
+        "alias": "上期主营业务收入",
+        "topic": "上期主营业务收入",
+        "parentid": 208
+    },
+    {
+        "id": 211,
+        "alias": "上期主要业务收入",
+        "topic": "上期主要业务收入",
+        "parentid": 208
+    },
+    {
+        "id": 213,
+        "alias": "本期主营业务收入",
+        "topic": "本期主营业务收入",
+        "parentid": 208
+    },
+    {
+        "id": 214,
+        "topic": "营业收入",
+        "parentid": 213
+    },
+    {
+        "id": 215,
+        "alias": "营业收入",
+        "topic": "营业收入",
+        "parentid": 213
+    },
+    {
+        "id": 217,
+        "topic": "营业利润增长率(%)",
+        "parentid": 206,
+        "alias": "营业利润增长率"
+    },
+    {
+        "id": 218,
+        "topic": "(本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
+        "parentid": 217
+    },
+    {
+        "id": 219,
+        "alias": "上年营业利润总额",
+        "topic": "上年营业利润总额",
+        "parentid": 218
+    },
+    {
+        "id": 221,
+        "alias": "上年营业利润总额",
+        "topic": "上年营业利润总额",
+        "parentid": 218
+    },
+    {
+        "id": 223,
+        "alias": "本年营业利润总额",
+        "topic": "本年营业利润总额",
+        "parentid": 218
+    },
+    {
+        "id": 225,
+        "topic": "净资本增长率(%)",
+        "parentid": 206,
+        "alias": "净资本增长率"
+    },
+    {
+        "id": 226,
+        "topic": "(期末净资产 - 期初净资产)/ 期初净资产",
+        "parentid": 225
+    },
+    {
+        "id": 227,
+        "alias": "期初净资产",
+        "topic": "期初净资产",
+        "parentid": 226
+    },
+    {
+        "id": 228,
+        "topic": "期初总资产-期初负债总额",
+        "parentid": 227
+    },
+    {
+        "id": 229,
+        "alias": "期初负债总额",
+        "topic": "期初负债总额",
+        "parentid": 228
+    },
+    {
+        "id": 231,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 228
+    },
+    {
+        "id": 233,
+        "alias": "期初净资产",
+        "topic": "期初净资产",
+        "parentid": 226
+    },
+    {
+        "id": 234,
+        "topic": "期初总资产-期初负债总额",
+        "parentid": 233
+    },
+    {
+        "id": 235,
+        "alias": "期初负债总额",
+        "topic": "期初负债总额",
+        "parentid": 234
+    },
+    {
+        "id": 237,
+        "alias": "期初总资产",
+        "topic": "期初总资产",
+        "parentid": 234
+    },
+    {
+        "id": 239,
+        "alias": "期末净资产",
+        "topic": "期末净资产",
+        "parentid": 226
+    },
+    {
+        "id": 240,
+        "topic": "期末总资产-负债总额",
+        "parentid": 239
+    },
+    {
+        "id": 241,
+        "alias": "负债总额",
+        "topic": "负债总额",
+        "parentid": 240
+    },
+    {
+        "id": 243,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 240
+    },
+    {
+        "id": 245,
+        "topic": "现金流量",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 246,
+        "topic": "现金流量比率(%)",
+        "parentid": 245,
+        "alias": "现金流量比率"
+    },
+    {
+        "id": 247,
+        "topic": "营业活动净现金流量 / 流动负债",
+        "parentid": 246
+    },
+    {
+        "id": 248,
+        "alias": "流动负债",
+        "topic": "流动负债",
+        "parentid": 247
+    },
+    {
+        "id": 249,
+        "topic": "流动负债总额",
+        "parentid": 248
+    },
+    {
+        "id": 250,
+        "alias": "流动负债总额",
+        "topic": "流动负债总额",
+        "parentid": 248
+    },
+    {
+        "id": 252,
+        "alias": "营业活动净现金流量",
+        "topic": "营业活动净现金流量",
+        "parentid": 247
+    },
+    {
+        "id": 254,
+        "topic": "现金流量允当比率(%)",
+        "parentid": 245,
+        "alias": "现金流量允当比率"
+    },
+    {
+        "id": 255,
+        "topic": "最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
+        "parentid": 254
+    },
+    {
+        "id": 256,
+        "alias": "五年内分红",
+        "topic": "五年内分红",
+        "parentid": 255
+    },
+    {
+        "id": 258,
+        "alias": "五年前期初存货",
+        "topic": "五年前期初存货",
+        "parentid": 255
+    },
+    {
+        "id": 260,
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 255
+    },
+    {
+        "id": 262,
+        "alias": "五年内购建",
+        "topic": "五年内购建",
+        "parentid": 255
+    },
+    {
+        "id": 264,
+        "alias": "最近5年度营业活动净现金流量",
+        "topic": "最近5年度营业活动净现金流量",
+        "parentid": 255
+    },
+    {
+        "id": 266,
+        "topic": "现金再投资比率(%)",
+        "parentid": 245,
+        "alias": "现金再投资比率"
+    },
+    {
+        "id": 267,
+        "topic": "(营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
+        "parentid": 266
+    },
+    {
+        "id": 268,
+        "alias": "流动负债",
+        "topic": "流动负债",
+        "parentid": 267
+    },
+    {
+        "id": 269,
+        "topic": "流动负债总额",
+        "parentid": 268
+    },
+    {
+        "id": 270,
+        "alias": "流动负债总额",
+        "topic": "流动负债总额",
+        "parentid": 268
+    },
+    {
+        "id": 272,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 267
+    },
+    {
+        "id": 274,
+        "alias": "筹资活动现金流出",
+        "topic": "筹资活动现金流出",
+        "parentid": 267
+    },
+    {
+        "id": 276,
+        "alias": "营业活动净现金流量",
+        "topic": "营业活动净现金流量",
+        "parentid": 267
+    },
+    {
+        "id": 278,
+        "topic": "资产",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 279,
+        "topic": "现金与约当现金(%)",
+        "parentid": 278,
+        "alias": "现金与约当现金占总资产比率"
+    },
+    {
+        "id": 280,
+        "topic": "(现金+约当现金) /总资产",
+        "parentid": 279
+    },
+    {
+        "id": 281,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 280
+    },
+    {
+        "id": 283,
+        "alias": "约当现金",
+        "topic": "约当现金",
+        "parentid": 280
+    },
+    {
+        "id": 284,
+        "topic": "有价证券",
+        "parentid": 283
+    },
+    {
+        "id": 285,
+        "alias": "有价证券",
+        "topic": "有价证券",
+        "parentid": 283
+    },
+    {
+        "id": 287,
+        "alias": "现金",
+        "topic": "现金",
+        "parentid": 280
+    },
+    {
+        "id": 288,
+        "topic": "货币资金",
+        "parentid": 287
+    },
+    {
+        "id": 289,
+        "alias": "货币资金",
+        "topic": "货币资金",
+        "parentid": 287
+    },
+    {
+        "id": 291,
+        "topic": "应收款项(%)",
+        "parentid": 278,
+        "alias": "应收款项占总资产比率"
+    },
+    {
+        "id": 292,
+        "topic": "应收款项 / 总资产",
+        "parentid": 291
+    },
+    {
+        "id": 293,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 292
+    },
+    {
+        "id": 295,
+        "alias": "应收款项",
+        "topic": "应收款项",
+        "parentid": 292
+    },
+    {
+        "id": 297,
+        "topic": "存货(%)",
+        "parentid": 278,
+        "alias": "存货占总资产比率"
+    },
+    {
+        "id": 298,
+        "topic": "存货 / 总资产",
+        "parentid": 297
+    },
+    {
+        "id": 299,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 298
+    },
+    {
+        "id": 301,
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 298
+    },
+    {
+        "id": 303,
+        "topic": "其他流动资产(%)",
+        "parentid": 278,
+        "alias": "其他流动资产占总资产比率"
+    },
+    {
+        "id": 304,
+        "topic": "其他流动资产 / 总资产",
+        "parentid": 303
+    },
+    {
+        "id": 305,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 304
+    },
+    {
+        "id": 307,
+        "alias": "其他流动资产",
+        "topic": "其他流动资产",
+        "parentid": 304
+    },
+    {
+        "id": 309,
+        "topic": "流动资产(%)",
+        "parentid": 278,
+        "alias": "流动资产占总资产比率"
+    },
+    {
+        "id": 310,
+        "topic": "流动资产 / 总资产",
+        "parentid": 309
+    },
+    {
+        "id": 311,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 310
+    },
+    {
+        "id": 313,
+        "alias": "流动资产",
+        "topic": "流动资产",
+        "parentid": 310
+    },
+    {
+        "id": 315,
+        "topic": "商誉(%)",
+        "parentid": 278,
+        "alias": "商誉比率"
+    },
+    {
+        "id": 316,
+        "topic": "商誉 / 总资产",
+        "parentid": 315
+    },
+    {
+        "id": 317,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 316
+    },
+    {
+        "id": 319,
+        "alias": "商誉",
+        "topic": "商誉",
+        "parentid": 316
+    },
+    {
+        "id": 321,
+        "topic": "非流动资产(%)",
+        "parentid": 278,
+        "alias": "非流动资产占总资产比率"
+    },
+    {
+        "id": 322,
+        "topic": "非流动资产 / 总资产",
+        "parentid": 321
+    },
+    {
+        "id": 323,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 322
+    },
+    {
+        "id": 325,
+        "alias": "非流动资产",
+        "topic": "非流动资产",
+        "parentid": 322
+    },
+    {
+        "id": 327,
+        "topic": "负债",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 328,
+        "topic": "应付款项(%)",
+        "parentid": 327,
+        "alias": "应付款项占总资产比率"
+    },
+    {
+        "id": 329,
+        "topic": "应付款项 / 总资产",
+        "parentid": 328
+    },
+    {
+        "id": 330,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 329
+    },
+    {
+        "id": 332,
+        "alias": "应付款项",
+        "topic": "应付款项",
+        "parentid": 329
+    },
+    {
+        "id": 334,
+        "topic": "流动负债(%)",
+        "parentid": 327,
+        "alias": "流动负债总资产比率"
+    },
+    {
+        "id": 335,
+        "topic": "流动负债 / 总资产",
+        "parentid": 334
+    },
+    {
+        "id": 336,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 335
+    },
+    {
+        "id": 338,
+        "alias": "流动负债",
+        "topic": "流动负债",
+        "parentid": 335
+    },
+    {
+        "id": 339,
+        "topic": "流动负债总额",
+        "parentid": 338
+    },
+    {
+        "id": 340,
+        "alias": "流动负债总额",
+        "topic": "流动负债总额",
+        "parentid": 338
+    },
+    {
+        "id": 342,
+        "topic": "非流动负债(%)",
+        "parentid": 327,
+        "alias": "非流动负债占总资产比率"
+    },
+    {
+        "id": 343,
+        "topic": "非流动负债 / 总资产",
+        "parentid": 342
+    },
+    {
+        "id": 344,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 343
+    },
+    {
+        "id": 346,
+        "alias": "非流动负债",
+        "topic": "非流动负债",
+        "parentid": 343
+    },
+    {
+        "id": 348,
+        "topic": "股权",
+        "direction": "right",
+        "parentid": "root"
+    },
+    {
+        "id": 349,
+        "topic": "股东权益(%)",
+        "parentid": 348,
+        "alias": "股东权益比率"
+    },
+    {
+        "id": 350,
+        "topic": "股东权益 / 总资产",
+        "parentid": 349
+    },
+    {
+        "id": 351,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 350
+    },
+    {
+        "id": 353,
+        "alias": "股东权益",
+        "topic": "股东权益",
+        "parentid": 350
+    }
+]

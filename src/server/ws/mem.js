@@ -44,7 +44,7 @@ export function initmem(io) {
       (async () => {
         console.error("initmem");
         // cats["自选"].items = await getMyList();
-        if (false)
+        if (true)
           cats[
             "自选"
           ].items = await db.query(

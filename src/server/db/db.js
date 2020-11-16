@@ -44,7 +44,8 @@ const sequelize = new Sequelize(dbName, user, password, {
     alter: true,
   });
   await sequelize.query("set global max_allowed_packet=1000*1024*1024");
-  await sequelize.query(`create
+  if (false)
+    await sequelize.query(`create
   or replace view gzview as
   select
       a.name,

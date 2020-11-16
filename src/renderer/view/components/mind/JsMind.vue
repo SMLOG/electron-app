@@ -4,14 +4,14 @@
       <div class="jsmind-inner">
         <canvas width="2092" height="4572"></canvas>
         <jmnodes>
-          <template v-for="node in value.data">
+          <template v-for="node in values.data">
             <jmnode :key="node.id" :nodeid="node.id">
               <div>
                 <span class="label">{{ node.topic.replace("(%)", "") }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
                 <peity
                   :type="'line'"
-                  :options="{ fill: ['red'] }"
+                  :options="{ fill: ['#c6d9fd'] }"
                   :data="getTrendDatas(node)"
                 ></peity>
               </div>
@@ -99,32 +99,32 @@ export default {
   },
   methods: {
     getTrendDatas(node) {
-      return this.value.rawDatas
+      return this.values.rawDatas
         .map((e) => e[node.alias])
         .filter((e, i) => i < 5)
         .reverse()
         .join(",");
     },
     getTopic(node) {
-      let rawDatas = this.value.rawDatas;
+      let rawDatas = this.values.rawDatas;
+      let selectIndex = this.values.selectIndex;
       let type =
         node.topic.indexOf("%") > 0 ||
         (node.topic.indexOf("率") > 0 && node.topic.indexOf("周转") == -1)
           ? 1
           : 0;
       return (
-        (rawDatas[0][node.alias] &&
+        (rawDatas[selectIndex][node.alias] &&
           (type ? this.$fmtPercent : this.$fmtNumber)(
-            (type ? 100 : 1) * rawDatas[0][node.alias]
+            (type ? 100 : 1) * rawDatas[selectIndex][node.alias]
           )) ||
         ""
       );
     },
     init() {
-      this.value = this.values;
-      console.log(this.value.data);
+      //this.value = this.values;
       const options = Object.assign(this.default_options, this.options);
-      if (this.value.data.length > 0) this.jm = jm.show(options, this.value);
+      if (this.values.data.length > 0) this.jm = jm.show(options, this.values);
     },
   },
 };

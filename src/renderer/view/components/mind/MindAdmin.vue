@@ -79,7 +79,7 @@ export default {
           setTimeout(() => {
             this.jm = this.$refs.jsMind.jm;
             $(window).resize(() => {
-              this.height = $(window).height();
+              this.height = $(window).height() - 35;
               this.jm.resize();
             });
           }, 1000);
@@ -97,6 +97,13 @@ export default {
 };
 </script>
 <style scoped>
+::-webkit-scrollbar {
+  width: auto !important;
+  height: auto !important;
+}
+body {
+  overflow: hidden;
+}
 ul.nav {
   list-style: none;
   margin: 0;

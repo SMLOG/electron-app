@@ -1321,7 +1321,7 @@ jm.prototype = {
     var element = e.target || event.srcElement;
     var nodeid = this.view.get_binded_nodeid(element);
     if (!!nodeid) {
-      if (element.tagName.toLowerCase() == "jmnode") {
+      if ($(element).hasClass("jmnode")) {
         this.select_node(nodeid);
       }
     } else {
@@ -2565,8 +2565,8 @@ jm.view_provider.prototype = {
       logger.error("the options.view.container was not be found in dom");
       return;
     }
-    this.e_panel = $(".jsmind-inner")[0] || $c("div");
-    this.e_nodes = $("jmnodes")[0]; //|| $c("jmnodes");
+    this.e_panel = $(".jsmind-inner", this.container)[0];
+    this.e_nodes = $(".jmnodes", this.container)[0]; //|| $c("jmnodes");
     this.e_editor = $c("input");
 
     this.graph =
@@ -2613,10 +2613,14 @@ jm.view_provider.prototype = {
       return null;
     }
     var tagName = element.tagName.toLowerCase();
-    if (tagName == "jmnodes" || tagName == "body" || tagName == "html") {
+    if (
+      $(element).hasClass("jmnodes") ||
+      tagName == "body" ||
+      tagName == "html"
+    ) {
       return null;
     }
-    if (tagName == "jmnode" || tagName == "jmexpander") {
+    if ($(element).hasClass("jmnode") || $(element).hasClass("jmexpander")) {
       return element.getAttribute("nodeid");
     } else {
       return this.get_binded_nodeid(element.parentElement);
@@ -2624,7 +2628,7 @@ jm.view_provider.prototype = {
   },
 
   is_expander: function(element) {
-    return element.tagName.toLowerCase() == "jmexpander";
+    return $(element).hasClass("jmexpander"); //element.tagName.toLowerCase() == "jmexpander";
   },
 
   reset: function() {
@@ -2638,9 +2642,9 @@ jm.view_provider.prototype = {
   reset_theme: function() {
     var theme_name = this.jm.options.theme;
     if (!!theme_name) {
-      this.e_nodes.className = "theme-" + theme_name;
+      this.e_nodes.className = "theme-" + theme_name + " jmnodes";
     } else {
-      this.e_nodes.className = "";
+      this.e_nodes.className = "jmnodes";
     }
   },
 
@@ -2680,11 +2684,11 @@ jm.view_provider.prototype = {
 
   init_nodes: function() {
     var nodes = this.jm.mind.nodes;
-    var doc_frag = $d.createDocumentFragment();
+    // var doc_frag = $d.createDocumentFragment();
     for (var nodeid in nodes) {
-      this.create_node_element(nodes[nodeid], doc_frag);
+      this.create_node_element(nodes[nodeid]);
     }
-    this.e_nodes.appendChild(doc_frag);
+    //this.e_nodes.appendChild(doc_frag);
     for (var nodeid in nodes) {
       this.init_nodes_size(nodes[nodeid]);
     }
@@ -2695,7 +2699,7 @@ jm.view_provider.prototype = {
     this.init_nodes_size(node);
   },
 
-  create_node_element: function(node, parent_node) {
+  create_node_element: function(node) {
     var view_data = null;
     if ("view" in node._data) {
       view_data = node._data.view;
@@ -2704,15 +2708,15 @@ jm.view_provider.prototype = {
       node._data.view = view_data;
     }
 
-    var d = $("jmnode[nodeid=" + node.id + "]")[0]; //|| $c("jmnode");
+    var d = $(".jmnode[nodeid=" + node.id + "]", this.container)[0];
     if (node.isroot) {
-      d.className = "root";
+      d.className = "root jmnode";
     } else {
-      var d_e = $("jmexpander[nodeid=" + node.id + "]")[0] || $c("jmexpander");
+      var d_e = $(".jmexpander[nodeid=" + node.id + "]", this.container)[0];
       $t(d_e, "-");
       d_e.setAttribute("nodeid", node.id);
       d_e.style.visibility = "hidden";
-      parent_node.appendChild(d_e);
+      //parent_node.appendChild(d_e);
       view_data.expander = d_e;
     }
     if (!!node.topic) {
@@ -2726,7 +2730,7 @@ jm.view_provider.prototype = {
     d.style.visibility = "hidden";
     this._reset_node_custom_style(d, node.data);
 
-    parent_node.appendChild(d);
+    //parent_node.appendChild(d);
     view_data.element = d;
   },
 

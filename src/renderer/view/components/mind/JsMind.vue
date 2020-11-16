@@ -3,11 +3,13 @@
     <div id="jsmind_container" ref="jsmind_container">
       <div class="jsmind-inner">
         <canvas width="2092" height="4572"></canvas>
-        <jmnodes>
+        <div class="jmnodes">
           <template v-for="node in values.data">
-            <jmnode :key="node.id" :nodeid="node.id">
+            <div class="jmnode" :key="node.id" :nodeid="node.id">
               <div>
-                <span class="label">{{ node.topic.replace("(%)", "") }}</span
+                <span class="label" :title="getTopicTitle(node)">{{
+                  getTopicTitle(node)
+                }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
                 <peity
                   :type="'line'"
@@ -15,14 +17,15 @@
                   :data="getTrendDatas(node)"
                 ></peity>
               </div>
-            </jmnode>
-            <jmexpander
+            </div>
+            <div
+              class="jmexpander"
               v-if="node.id != 'root'"
               :key="'e' + node.id"
               :nodeid="node.id"
-            ></jmexpander>
+            ></div>
           </template>
-        </jmnodes>
+        </div>
       </div>
     </div>
   </div>
@@ -105,6 +108,9 @@ export default {
         .reverse()
         .join(",");
     },
+    getTopicTitle(node) {
+      return node.topic.replace("(%)", "");
+    },
     getTopic(node) {
       let rawDatas = this.values.rawDatas;
       let selectIndex = this.values.selectIndex;
@@ -122,7 +128,6 @@ export default {
       );
     },
     init() {
-      //this.value = this.values;
       const options = Object.assign(this.default_options, this.options);
       if (this.values.data.length > 0) this.jm = jm.show(options, this.values);
     },

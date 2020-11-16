@@ -32,18 +32,34 @@ module.exports = {
   },
   mind: async (ctx) => {
     let code = ctx.query.code;
-    let rows = await db.query(
-      `select * from v_summary where code = :code order by reportdate desc`,
-      {
-        logging: console.log,
-        type: db.QueryTypes.SELECT,
-        raw: true,
-        replacements: {
-          code: code,
-        },
-      }
-    );
-    ctx.body = rows;
+    let ret = {};
+
+    let infos = await db.query(`select * from hq where code = :code`, {
+      logging: console.log,
+      type: db.QueryTypes.SELECT,
+      raw: true,
+      replacements: {
+        code: code,
+      },
+    });
+    if (infos.length == 1) {
+      let rows = await db.query(
+        `select * from v_summary where code = :code order by reportdate desc`,
+        {
+          logging: console.log,
+          type: db.QueryTypes.SELECT,
+          raw: true,
+          replacements: {
+            code: code,
+          },
+        }
+      );
+
+      ret.datas = rows;
+      ret.info = infos[0];
+    }
+
+    ctx.body = ret;
   },
   notices: async (ctx) => {
     let type_id = ctx.query.type_id;

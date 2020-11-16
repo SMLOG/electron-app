@@ -1,21 +1,23 @@
 <template>
   <div>
+    <div>
+      <div>
+        <ul class="nav">
+        <li  v-if="info" >
+          {{info.code}}{{info.name}}
+        </li>
+        <li v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
+        </ul>
+        </div>
+      
     <div id="jsmind_tools" class="jsmind-tools">
     <ul>
-        <li action="toggle" >
-          <button v-tooltip="{
-  content: 'hello',
-  placement: 'bottom-center',
-  classes: ['info'],
-  targetClasses: ['it-has-a-tooltip'],
-  
-}">Hover me</button>
-        </li>
         <li v-for="(row,i) in mind.rawDatas" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
    
     </ul>
 </div>
-    <js-mind
+    </div>
+    <js-mind style="margin-top: 35px;"
       v-if="mind.data.length>0"
       :values="mind"
       :options="options"
@@ -32,6 +34,7 @@ var self;
 export default {
   data() {
     return {
+      info: null,
       height: 1000,
       theme_value: "",
       mind: {
@@ -49,26 +52,72 @@ export default {
   components: { JsMind },
   mounted() {
     self = this;
-    this.$http.get("/api/mind?code=sh600031").then((resp) => {
-      this.mind.rawDatas.splice(0, -1, ...resp.data);
-      this.$http.get("/static/test.json").then((resp) => {
-        this.mind.data.splice(0, -1, ...resp.data);
-        setTimeout(() => {
-          this.jm = this.$refs.jsMind.jm;
-          $(window).resize(() => {
-            this.height = $(window).height();
-            this.jm.resize();
-          });
-        }, 1000);
+    this.$route.params.code = (this.$route.params.code || "").replace(
+      /[^\d]+/g,
+      ""
+    );
+    if (
+      !this.$route.params.code &&
+      !this.$route.params.code.match(/^[036]\d{5}$/)
+    ) {
+      alert("请输入代码参数或者检查代码参数格式是否正确？");
+      return;
+    }
+    this.$http
+      .get("/api/mind", {
+        params: {
+          code:
+            (this.$route.params.code[0] == "6" ? "sh" : "sz") +
+            this.$route.params.code,
+        },
+      })
+      .then((resp) => {
+        this.mind.rawDatas.splice(0, -1, ...resp.data.datas);
+        this.info = resp.data.info;
+        this.$http.get("/static/test.json").then((resp) => {
+          this.mind.data.splice(0, -1, ...resp.data);
+          setTimeout(() => {
+            this.jm = this.$refs.jsMind.jm;
+            $(window).resize(() => {
+              this.height = $(window).height();
+              this.jm.resize();
+            });
+          }, 1000);
+        });
       });
-    });
   },
-  methods: {},
+  methods: {
+    to(id) {
+      this.$el.querySelector(`#node${id}`).scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    },
+  },
 };
 </script>
 <style scoped>
+ul.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  z-index: 10000;
+  background: #ccc;
+}
+ul.nav li {
+  float: left;
+  display: inline-block;
+  line-height: 28px;
+  font-size: 14px;
+  margin: 0 3px;
+  padding: 3px;
+  background: #ccc;
+  cursor: pointer;
+}
 .jsmind-tools {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   top: 10px;
   right: 10px;
@@ -115,12 +164,15 @@ export default {
   color: red;
 }
 </style>
-<style scoped>
+<style >
 .tooltip {
-  display: block !important;
   z-index: 10000;
 }
 
+.tooltip {
+  position: fixed !important;
+  z-index: 10000;
+}
 .tooltip .tooltip-inner {
   background: black;
   color: white;

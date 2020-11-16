@@ -738,7 +738,7 @@ export const JOB_MAP = {
 
 var CronJob = require("cron").CronJob;
 const AsyncQueue = require("@wxaxiaoyao/async-queue");
-task(JOB_MAP, "行情");
+task(JOB_MAP, "业绩");
 if (false)
   (async () => {
     for (let k in JOB_MAP) {

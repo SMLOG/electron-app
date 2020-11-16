@@ -5,9 +5,14 @@
         <canvas></canvas>
         <div class="jmnodes">
           <template v-for="node in values.data">
-            <div class="jmnode" :key="node.id" :nodeid="node.id">
+            <div
+              class="jmnode"
+              :key="node.id"
+              :id="'node' + node.id"
+              :nodeid="node.id"
+            >
               <div>
-                <span class="label" :title="getTopicTitle(node)">{{
+                <span v-tooltip="getTopicTitle(node)" class="label">{{
                   getTopicTitle(node)
                 }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
@@ -60,7 +65,7 @@ export default {
       value: {},
       default_options: {
         container: "jsmind_container",
-        editable: true, // 是否启用编辑
+        editable: false, // 是否启用编辑
         theme: "primary", // 主题
         mode: "full", // 显示模式,
         getTopic(node) {
@@ -137,5 +142,10 @@ export default {
 <style scoped>
 #jsmind_container {
   height: 100%;
+}
+.jmnode {
+  font-size: 14px;
+  line-height: 24px;
+  padding: 0 3px;
 }
 </style>

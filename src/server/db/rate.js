@@ -1,7 +1,7 @@
 import _ from "lodash";
 import sqlFormatter from "sql-formatter";
 import fs from "fs";
-
+const { db } = require("./db");
 var conf = [
   [
     "财务结构",
@@ -170,27 +170,39 @@ var conf = [
     "现金流量比率(%)",
     "https://caibaoshuo.com/terms/000651/cashflow_ratio",
     "现金流量比率 = 营业活动净现金流量 / 流动负债",
+    `分子：营业活动现金流量表示的是一家公司从利润表上的净利扎扎实实的转化为公司的现金。
+    分母：流动负债”又叫“短期负债，是指将在1年(含1年)内需要偿还的债务。
+    所以，现金流量比率指标用于分析公司真正赚回来的现金是否足以偿还对外的短期负债。
+    因为公司最怕抽银根，所以短期负债一定要确认可以偿还。
+    现金流量比率>100%比较好，代表公司赚回来的现金比较多，对外负债比较少，公司赚回来的现金已经够偿还短期负债。`,
   ],
   [
     "",
     "现金流量允当比率(%)",
     "https://caibaoshuo.com/terms/000651/cashflow_adequacy_ratio",
     "现金流量允当比率 = 最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
+    `现金流量允当比率用来分析：公司最近五年赚的钱是否足够支撑最近五年公司成长所需。
+    在这个指标中，为什么要用5年的数据，因为基本上5年是一个经济周期。
+    现金流量允当比率 > 100%比较好，表示公司最近5个年度自己所赚的钱已经够用，不太需要看银行或股东的脸色`,
   ],
   [
     "",
     "现金再投资比率(%)",
     "https://caibaoshuo.com/terms/000651/cash_reinvestment_ratio",
     "现金再投资比率 = (营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
+    `现金再投资比率：用于分析公司靠自己日常营运实力赚来的钱（营业活动现金流量）扣除掉给股东现金股利，公司最后自己手上留下来的钱，用于再投资的能力。这个指标大于10%比较好。`,
   ],
 ];
 
 const conf2 = [
   [
     "资产",
-    "现金与约当现金(%)",
+    "现金占总资产比率(%)",
     "https://caibaoshuo.com/terms/000651/cash_ratio",
-    "现金与约当现金占总资产比率 = (现金+约当现金) /总资产",
+    "现金占总资产比率 = (现金+约当现金) /总资产",
+    `在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。
+    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。
+    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%`,
   ],
   [
     "",
@@ -252,6 +264,7 @@ const conf2 = [
     "https://caibaoshuo.com/terms/000651/total_equity_ratio",
     "股东权益比率 = 股东权益 / 总资产",
   ],
+  ["估值分析", "PE(动态)", "", "PE(动态) = 总市值/归母收益总额"],
 ];
 const conf3 = [
   ["", "期初现金", false],
@@ -363,6 +376,8 @@ typename=lr.typename
 营业活动现金流量=ll.NETOPERATECASHFLOW
 投资活动现金流量=ll.NETINVCASHFLOW
 融资活动现金流量=ll.NETFINACASHFLOW
+--其他
+归母收益总额=lr.PARENTCINCOME
 `
   .trim()
   .split(/\n/)
@@ -413,6 +428,7 @@ m2["五年前期初存货"] = `
            where z5.code=ll.code 
            and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
            ) `;
+m2["总市值"] = `(select zsz from hq where code =lr.code)`;
 m = _.assign(m, m2);
 
 const itemRegex = /([^\x00-\x7F]+\d*)+/g;
@@ -548,6 +564,7 @@ function genTree(conf) {
     node.topic = name;
     node.parentid = pid;
     node.alias = alias;
+    node.tip = row[4];
     let childnodes = getchildnodes(node);
     nodes.push(node);
     nodes = nodes.concat(childnodes);
@@ -571,14 +588,12 @@ function wrapFmt(arr, sql) {
 
   return `select ${wrapSelects} from (${sql}) w`;
 }
-console.log(
-  sqlFormatter.format(
-    `create or replace view v_summary as ` +
-      wrapFmt(
-        loopRun(m),
-        gensql(
-          loopRun(m),
-          `  
+let sql = sqlFormatter.format(
+  `create or replace view v_summary as ` +
+    (loopRun(m),
+    gensql(
+      loopRun(m),
+      `  
 lrb lr
 left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
 
@@ -597,7 +612,8 @@ and ll2.rreportdate=lr2.rreportdate and ll2.reporttype=lr2.reporttype
 
 where
 lr.reporttype = 1`
-        )
-      )
-  )
+    ))
 );
+
+console.log(sql);
+db.query(sql);

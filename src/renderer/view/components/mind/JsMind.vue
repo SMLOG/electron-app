@@ -1,8 +1,8 @@
 <template>
-  <div :key="refresh" :style="{ height }">
+  <div :style="{ height }">
     <div id="jsmind_container" ref="jsmind_container">
       <div class="jsmind-inner">
-        <canvas width="2092" height="4572"></canvas>
+        <canvas></canvas>
         <div class="jmnodes">
           <template v-for="node in values.data">
             <div class="jmnode" :key="node.id" :nodeid="node.id">
@@ -82,7 +82,7 @@ export default {
       },
     };
   },
-  updated() {
+  mount() {
     this.init();
   },
   watch: {

@@ -6,7 +6,7 @@
  *   https://github.com/hizzgdev/jsmind/
  */
 import $ from "jquery";
-("use strict");
+import _ from "lodash";
 // set 'jsMind' as the library name.
 // __name__ should be a const value, Never try to change it easily.
 var __name__ = "jsMind";
@@ -115,9 +115,7 @@ var jm = function(options) {
   jm.current = this;
 
   this.version = __version__;
-  var opts = {};
-  jm.util.json.merge(opts, DEFAULT_OPTIONS);
-  jm.util.json.merge(opts, options);
+  var opts = _.defaultsDeep({}, options, DEFAULT_OPTIONS);
 
   if (!opts.container) {
     logger.error("the options.container should not be null or empty.");
@@ -1240,26 +1238,9 @@ jm.prototype = {
     this.inited = true;
 
     var opts = this.options;
-
-    var opts_layout = {
-      mode: opts.mode,
-      hspace: opts.layout.hspace,
-      vspace: opts.layout.vspace,
-      pspace: opts.layout.pspace,
-    };
-    var opts_view = {
-      container: opts.container,
-      support_html: opts.support_html,
-      engine: opts.view.engine,
-      hmargin: opts.view.hmargin,
-      vmargin: opts.view.vmargin,
-      line_width: opts.view.line_width,
-      line_color: opts.view.line_color,
-    };
-    // create instance of function provider
     this.data = new jm.data_provider(this);
-    this.layout = new jm.layout_provider(this, opts_layout);
-    this.view = new jm.view_provider(this, opts_view);
+    this.layout = new jm.layout_provider(this, opts.layout);
+    this.view = new jm.view_provider(this, opts);
     this.shortcut = new jm.shortcut_provider(this, opts.shortcut);
 
     this.data.init();
@@ -2760,13 +2741,7 @@ jm.view_provider.prototype = {
   update_node: function(node) {
     var view_data = node._data.view;
     var element = view_data.element;
-    if (!!node.topic) {
-      if (this.opts.support_html) {
-        $h(element, node.topic);
-      } else {
-        $t(element, node.topic);
-      }
-    }
+
     view_data.width = element.clientWidth;
     view_data.height = element.clientHeight;
   },
@@ -2830,18 +2805,10 @@ jm.view_provider.prototype = {
       this.editing_node = null;
       var view_data = node._data.view;
       var element = view_data.element;
-      var topic = this.e_editor.value;
       element.style.zIndex = "auto";
       element.removeChild(this.e_editor);
-      if (jm.util.text.is_empty(topic) || node.topic === topic) {
-        if (this.opts.support_html) {
-          $h(element, node.topic);
-        } else {
-          $t(element, node.topic);
-        }
-      } else {
-        this.jm.update_node(node.id, topic);
-      }
+
+      //this.jm.update_node(node.id, topic);
     }
   },
 

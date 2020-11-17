@@ -159,7 +159,7 @@ async function getDbfx(code) {
 
 (async () => {
   //await getDbfx("sh600031");
-  let code = "sz000568";
+  let code = "sh600519";
   await getReportData("lrb", code);
   await getReportData("lrb", code, "年度");
   await getReportData("xjllb", code);

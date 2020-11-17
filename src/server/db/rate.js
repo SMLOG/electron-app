@@ -2,6 +2,8 @@ import _ from "lodash";
 import sqlFormatter from "sql-formatter";
 import fs from "fs";
 const { db } = require("./db");
+import { ifNoExistGenModel } from "./utils";
+
 var conf = [
   ["财务结构", "负债占资产比率(%)", "<0.6", "负债占资产比率 = 负债 / 总资产"],
   [
@@ -255,7 +257,7 @@ const conf2 = [
     "股东权益比率 = 股东权益 / 总资产",
   ],
   ["估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
-  ["", "PEG", "", "PEG = PE/100/((净利润-上期净利润)/上期净利润)"],
+  ["", "PEG", "", "PEG = PE/100/利润增长率"],
 ];
 const conf3 = [
   ["", "期初现金", false],
@@ -288,7 +290,7 @@ const conf3 = [
 
 conf = conf.concat(conf2);
 var m = conf.reduce((r, ar) => {
-  var a = ar[3].split(/=|=/);
+  var a = ar[3].split(/=/);
   var l = a[0].trim();
   var rr = a[1].trim();
   r[l] = rr;
@@ -318,6 +320,7 @@ typename=lr.typename
 利润总额=营业净利=营业利润=lr.SUMPROFIT
 营业利润利率=净利润/营业总收入
 毛利=营业收入-营业支出
+利润增长率=((净利润-上期净利润)/上期净利润)
 
 -- 资产负债表
 流动负债=流动负债总额
@@ -423,6 +426,28 @@ m2["五年前期初存货"] = `
 m2["总市值"] = `(select zsz from hq where code =lr.code)`;
 m = _.assign(m, m2);
 
+/*(async () => {
+  let rows = _.toPairs(m2).map((e) => {
+    return { code: e[0],type:'f',parent:'', val: e[1], enalbe: 1 };
+  });
+  rows.push(
+    [{code:'财务分析',parent:null,val:null,tip:'',score:10,cal_exp:''},
+    {code:'财务结构',parent:'财务分析',val:null,tip:'',score:10,cal_exp:''},
+    {code:'负债占资产比率',parent:'财务结构',val:'负债 / 总资产',tip:'',score:10,cal_exp:''}   
+  ]);
+  let model = await ifNoExistGenModel(
+    rows,
+    "formula",
+    {},
+    ["code"],
+    "formula",
+    {}
+  );
+  await model.bulkCreate(rows, {
+    updateOnDuplicate: Object.keys(rows[0]),
+    logging: false,
+  });
+})();*/
 const itemRegex = /([^\s\.\+\-\*\/\(\)\d]+\d*)+/g;
 function loopRun(map, arr, exist) {
   if (!map) return null;
@@ -430,14 +455,6 @@ function loopRun(map, arr, exist) {
   if (!exist) exist = {};
 
   if (arr.length == 0) {
-    /* let select = _.omit(
-      map,
-      _.toPairs(map)
-        .filter((e) => e[1].match(itemRegex))
-        .map((e) => e[0])
-    );*/
-
-    //包含换行符或者点
     let select = _.pick(
       map,
       _.toPairs(map)
@@ -531,6 +548,7 @@ function getchildnodes(node) {
     nodes.push(pnode);
     let matchs = !isFirstElement(content) && content.match(itemRegex);
     if (matchs) {
+      matchs = _.uniq(matchs);
       let i = matchs.length;
       while (i-- > 0) {
         let cnode = {};

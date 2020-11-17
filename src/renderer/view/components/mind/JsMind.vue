@@ -10,6 +10,7 @@
               :key="node.id"
               :id="'node' + node.id"
               :nodeid="node.id"
+              @click="selectnode(node)"
             >
               <div>
                 <span v-tooltip="getTopicTitle(node)" class="label">{{
@@ -41,6 +42,7 @@ import jm from "./jsmind.js";
 import "./jsmind.css";
 import "./jsmind.draggable.js";
 import "./jsmind.screenshot.js";
+let that;
 export default {
   props: {
     values: {
@@ -56,6 +58,7 @@ export default {
     },
   },
   mounted() {
+    that = this;
     this.init();
   },
   data() {
@@ -64,22 +67,20 @@ export default {
       refresh: 1,
       value: {},
       default_options: {
+        engine: "canvas",
+        hmargin: 30, // 思维导图距容器外框的最小水平距离
+        vmargin: 30, // 思维导图距容器外框的最小垂直距离
+        line_width: 1, // 思维导图线条的粗细
+        line_color: "#555", // 思维导图线条的颜色
         container: "jsmind_container",
         editable: false, // 是否启用编辑
         theme: "primary", // 主题
-        mode: "full", // 显示模式,
-        getTopic(node) {
-          return node.id + node.topic;
+        updateNode(node) {
+          that.values.data.filter((n) => node.id == n.id)[0].topic = node.topic;
         },
         support_html: true, // 是否支持节点里的HTML元素
-        view: {
-          engine: "canvas", // 思维导图各节点之间线条的绘制引擎
-          hmargin: 30, // 思维导图距容器外框的最小水平距离
-          vmargin: 30, // 思维导图距容器外框的最小垂直距离
-          line_width: 1, // 思维导图线条的粗细
-          line_color: "#555", // 思维导图线条的颜色
-        },
         layout: {
+          mode: "full",
           hspace: 10, // 节点之间的水平间距
           vspace: 10, // 节点之间的垂直间距
           pspace: 13, // 节点与连接线之间的水平间距（用于容纳节点收缩/展开控制器）
@@ -106,6 +107,9 @@ export default {
     },
   },
   methods: {
+    selectnode(node) {
+      this.jm.select_node(node.id);
+    },
     getTrendDatas(node) {
       return this.values.rawDatas
         .map((e) => e[node.alias])
@@ -135,6 +139,7 @@ export default {
     init() {
       const options = Object.assign(this.default_options, this.options);
       if (this.values.data.length > 0) this.jm = jm.show(options, this.values);
+      this.jmObj = jm;
     },
   },
 };

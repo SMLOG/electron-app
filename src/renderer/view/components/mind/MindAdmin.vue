@@ -4,8 +4,9 @@
       <div>
         <ul class="nav">
         <li  v-if="info" >
-          {{info.code}}{{info.name}}
+         <b>{{info.name}}</b><span>{{info.close}}</span><span>pe_ttm:{{info.pe_ttm}}</span>
         </li>
+        <li @click="add_node">add node</li>
         <li v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
         </ul>
         </div>
@@ -30,10 +31,13 @@
 <script>
 import $ from "jquery";
 import JsMind from "./index";
+import { batchUpdateHQ } from "@/lib/getTable";
+
 var self;
 export default {
   data() {
     return {
+      items: [],
       info: null,
       height: 1000,
       theme_value: "",
@@ -74,10 +78,12 @@ export default {
       .then((resp) => {
         this.mind.rawDatas.splice(0, -1, ...resp.data.datas);
         this.info = resp.data.info;
+        this.items.push(this.info);
         this.$http.get("/static/test.json").then((resp) => {
           this.mind.data.splice(0, -1, ...resp.data);
           setTimeout(() => {
             this.jm = this.$refs.jsMind.jm;
+            this.jmObj = this.$refs.jsMind.jmObj;
             $(window).resize(() => {
               this.height = $(window).height() - 35;
               this.jm.resize();
@@ -92,6 +98,28 @@ export default {
         behavior: "smooth",
         block: "center",
       });
+    },
+    add_node() {
+      var selected_node = this.jm.get_selected_node(); // as parent of new node
+      if (!selected_node) {
+        alert("please select a node first.");
+        return;
+      }
+
+      var nodeid = this.jmObj.util.uuid.newid();
+      var topic = "* Node_" + nodeid.substr(nodeid.length - 6) + " *";
+      this.jm.enable_edit();
+      this.mind.data.push({ id: nodeid, topic: topic });
+      setTimeout(() => {
+        var node = this.jm.add_node(selected_node, nodeid, topic);
+      }, 100);
+    },
+  },
+  sockets: {
+    hx(data) {
+      //console.log(data);
+      // this.$socket.emit("echo", data);
+      batchUpdateHQ(this.items, data);
     },
   },
 };

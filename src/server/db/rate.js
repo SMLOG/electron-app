@@ -3,28 +3,18 @@ import sqlFormatter from "sql-formatter";
 import fs from "fs";
 const { db } = require("./db");
 var conf = [
-  [
-    "财务结构",
-    "负债占资产比率(%)",
-    "https://caibaoshuo.com/terms/000651/debt_ratio",
-    "负债占资产比率 = 负债 / 总资产",
-  ],
+  ["财务结构", "负债占资产比率(%)", "<0.6", "负债占资产比率 = 负债 / 总资产"],
   [
     "",
     "长期资金占重资产比率(%)",
-    "https://caibaoshuo.com/terms/000651/longterm_ratio",
+    ">1",
     "长期资金占重资产比率 = (股东权益+其他长期负债) / (固定资产 + 在建工程)",
   ],
-  [
-    "偿债能力",
-    "流动比率(%)",
-    "https://caibaoshuo.com/terms/000651/current_ratio",
-    "流动比率 = 流动资产总额 / 流动负债总额",
-  ],
+  ["偿债能力", "流动比率(%)", ">3", "流动比率 = 流动资产总额 / 流动负债总额"],
   [
     "",
     "速动比率(%)",
-    "https://caibaoshuo.com/terms/000651/quick_ratio",
+    ">=1.5",
     "速动比率 = ( 流动资产总额 - 存货 - 预付费用 ) / 流动负债总额",
   ],
   [
@@ -264,7 +254,8 @@ const conf2 = [
     "https://caibaoshuo.com/terms/000651/total_equity_ratio",
     "股东权益比率 = 股东权益 / 总资产",
   ],
-  ["估值分析", "PE(动态)", "", "PE(动态) = 总市值/归母收益总额"],
+  ["估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
+  ["", "PEG", "", "PEG = PE/100/((净利润-上期净利润)/上期净利润)"],
 ];
 const conf3 = [
   ["", "期初现金", false],
@@ -318,6 +309,7 @@ typename=lr.typename
 营业收入 = 主营业务成本 = 销售收入=lr.OPERATEREVE
 营业支出 = 营业成本 = 货物销售成本=lr.OPERATEEXP
 净收益 = 净利润=lr.NETPROFIT
+上期净利润=lr2.NETPROFIT
 基本每股收益=lr.BASICEPS
 本期主营业务收入=营业收入
 上期主要业务收入=上期主营业务收入=lr2.OPERATEREVE
@@ -431,23 +423,31 @@ m2["五年前期初存货"] = `
 m2["总市值"] = `(select zsz from hq where code =lr.code)`;
 m = _.assign(m, m2);
 
-const itemRegex = /([^\x00-\x7F]+\d*)+/g;
+const itemRegex = /([^\s\.\+\-\*\/\(\)\d]+\d*)+/g;
 function loopRun(map, arr, exist) {
   if (!map) return null;
   if (!arr) arr = [];
-  if (!exist) exist = [];
+  if (!exist) exist = {};
 
   if (arr.length == 0) {
-    let select = _.omit(
+    /* let select = _.omit(
       map,
       _.toPairs(map)
         .filter((e) => e[1].match(itemRegex))
+        .map((e) => e[0])
+    );*/
+
+    //包含换行符或者点
+    let select = _.pick(
+      map,
+      _.toPairs(map)
+        .filter((e) => isFirstElement(e[1]))
         .map((e) => e[0])
     );
 
     arr.push(select);
     _.defaults(exist, select);
-    return loopRun(map, arr, exist);
+    return loopRun(_.omit(map, Object.keys(select)), arr, exist);
   } else {
     let select = _.toPairs(_.omit(map, Object.keys(exist))).filter((e) => {
       let matches = e[1].match(itemRegex);
@@ -483,8 +483,12 @@ function loopRun(map, arr, exist) {
     );
     arr.push(result);
     _.defaults(exist, result);
-    return loopRun(map, arr, exist);
+    return loopRun(_.omit(map, Object.keys(result)), arr, exist);
   }
+}
+
+function isFirstElement(content) {
+  return content.indexOf("\n") > -1 || content.match(/[a-z]+\d*\./i);
 }
 
 function gensql(arr, query, len) {
@@ -492,9 +496,13 @@ function gensql(arr, query, len) {
   let sql = _.toPairs(last)
     .map(
       (e) =>
-        `${e[1].replace(itemRegex, function(v) {
-          return `\`${v}\``;
-        })} "${e[0]}"`
+        `${
+          isFirstElement(e[1])
+            ? e[1]
+            : e[1].replace(itemRegex, function(v) {
+                return `\`${v}\``;
+              })
+        } "${e[0]}"`
     )
     .join(",\n");
   let id = arr.length;
@@ -521,7 +529,7 @@ function getchildnodes(node) {
     pnode.topic = content;
     pnode.parentid = node.id;
     nodes.push(pnode);
-    let matchs = content.match(itemRegex);
+    let matchs = !isFirstElement(content) && content.match(itemRegex);
     if (matchs) {
       let i = matchs.length;
       while (i-- > 0) {

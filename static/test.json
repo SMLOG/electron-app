@@ -28,10 +28,20 @@
         "parentid": 3
     },
     {
+        "id": 5,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 4
+    },
+    {
         "id": 6,
         "alias": "负债",
         "topic": "负债",
         "parentid": 3
+    },
+    {
+        "id": 7,
+        "topic": "z.SUMLIAB",
+        "parentid": 6
     },
     {
         "id": 8,
@@ -63,10 +73,20 @@
         "parentid": 11
     },
     {
+        "id": 13,
+        "topic": "z.SUMLLIAB",
+        "parentid": 12
+    },
+    {
         "id": 14,
         "alias": "流动资产总额",
         "topic": "流动资产总额",
         "parentid": 11
+    },
+    {
+        "id": 15,
+        "topic": "z.SUMLASSET",
+        "parentid": 14
     },
     {
         "id": 16,
@@ -86,10 +106,20 @@
         "parentid": 17
     },
     {
+        "id": 19,
+        "topic": "z.SUMLLIAB",
+        "parentid": 18
+    },
+    {
         "id": 20,
         "alias": "预付费用",
         "topic": "预付费用",
         "parentid": 17
+    },
+    {
+        "id": 21,
+        "topic": "z.ADVANCEPAY",
+        "parentid": 20
     },
     {
         "id": 22,
@@ -98,10 +128,20 @@
         "parentid": 17
     },
     {
+        "id": 23,
+        "topic": "z.INVENTORY",
+        "parentid": 22
+    },
+    {
         "id": 24,
         "alias": "流动资产总额",
         "topic": "流动资产总额",
         "parentid": 17
+    },
+    {
+        "id": 25,
+        "topic": "z.SUMLASSET",
+        "parentid": 24
     },
     {
         "id": 26,
@@ -121,10 +161,20 @@
         "parentid": 27
     },
     {
+        "id": 29,
+        "topic": "z.INTERESTPAY",
+        "parentid": 28
+    },
+    {
         "id": 30,
         "alias": "营业净利",
         "topic": "营业净利",
         "parentid": 27
+    },
+    {
+        "id": 31,
+        "topic": "lr.SUMPROFIT",
+        "parentid": 30
     },
     {
         "id": 32,
@@ -172,6 +222,11 @@
         "parentid": 38
     },
     {
+        "id": 40,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 39
+    },
+    {
         "id": 41,
         "alias": "平均应收账款",
         "topic": "平均应收账款",
@@ -189,10 +244,20 @@
         "parentid": 42
     },
     {
+        "id": 44,
+        "topic": "z.ACCOUNTBILLREC",
+        "parentid": 43
+    },
+    {
         "id": 45,
         "alias": "期初应收账款",
         "topic": "期初应收账款",
         "parentid": 42
+    },
+    {
+        "id": 46,
+        "topic": "z2.ACCOUNTBILLREC",
+        "parentid": 45
     },
     {
         "id": 47,
@@ -212,6 +277,11 @@
         "parentid": 48
     },
     {
+        "id": 50,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 49
+    },
+    {
         "id": 51,
         "alias": "平均应收账款",
         "topic": "平均应收账款",
@@ -229,10 +299,20 @@
         "parentid": 52
     },
     {
+        "id": 54,
+        "topic": "z.ACCOUNTBILLREC",
+        "parentid": 53
+    },
+    {
         "id": 55,
         "alias": "期初应收账款",
         "topic": "期初应收账款",
         "parentid": 52
+    },
+    {
+        "id": 56,
+        "topic": "z2.ACCOUNTBILLREC",
+        "parentid": 55
     },
     {
         "id": 57,
@@ -274,16 +354,31 @@
         "parentid": 62
     },
     {
+        "id": 64,
+        "topic": "z.INVENTORY",
+        "parentid": 63
+    },
+    {
         "id": 65,
         "alias": "期初存货总额",
         "topic": "期初存货总额",
         "parentid": 62
     },
     {
+        "id": 66,
+        "topic": "z2.INVENTORY",
+        "parentid": 65
+    },
+    {
         "id": 67,
         "alias": "货物销售成本",
         "topic": "货物销售成本",
         "parentid": 58
+    },
+    {
+        "id": 68,
+        "topic": "lr.OPERATEEXP",
+        "parentid": 67
     },
     {
         "id": 69,
@@ -336,16 +431,31 @@
         "parentid": 76
     },
     {
+        "id": 78,
+        "topic": "z.INVENTORY",
+        "parentid": 77
+    },
+    {
         "id": 79,
         "alias": "期初存货总额",
         "topic": "期初存货总额",
         "parentid": 76
     },
     {
+        "id": 80,
+        "topic": "z2.INVENTORY",
+        "parentid": 79
+    },
+    {
         "id": 81,
         "alias": "货物销售成本",
         "topic": "货物销售成本",
         "parentid": 72
+    },
+    {
+        "id": 82,
+        "topic": "lr.OPERATEEXP",
+        "parentid": 81
     },
     {
         "id": 83,
@@ -377,6 +487,11 @@
         "parentid": 86
     },
     {
+        "id": 88,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 87
+    },
+    {
         "id": 89,
         "alias": "期初期末应付账款平均值",
         "topic": "期初期末应付账款平均值",
@@ -394,10 +509,20 @@
         "parentid": 90
     },
     {
+        "id": 92,
+        "topic": "z.ACCOUNTBILLPAY",
+        "parentid": 91
+    },
+    {
         "id": 93,
         "alias": "期初应付账款",
         "topic": "期初应付账款",
         "parentid": 90
+    },
+    {
+        "id": 94,
+        "topic": "z2.ACCOUNTBILLPAY",
+        "parentid": 93
     },
     {
         "id": 95,
@@ -434,16 +559,31 @@
         "parentid": 99
     },
     {
+        "id": 101,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 100
+    },
+    {
         "id": 102,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 99
     },
     {
+        "id": 103,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 102
+    },
+    {
         "id": 104,
         "alias": "销售收入",
         "topic": "销售收入",
         "parentid": 97
+    },
+    {
+        "id": 105,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 104
     },
     {
         "id": 106,
@@ -480,16 +620,31 @@
         "parentid": 110
     },
     {
+        "id": 112,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 111
+    },
+    {
         "id": 113,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 110
     },
     {
+        "id": 114,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 113
+    },
+    {
         "id": 115,
         "alias": "净收益",
         "topic": "净收益",
         "parentid": 108
+    },
+    {
+        "id": 116,
+        "topic": "lr.NETPROFIT",
+        "parentid": 115
     },
     {
         "id": 117,
@@ -531,10 +686,20 @@
         "parentid": 122
     },
     {
+        "id": 124,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 123
+    },
+    {
         "id": 125,
         "alias": "负债总额",
         "topic": "负债总额",
         "parentid": 122
+    },
+    {
+        "id": 126,
+        "topic": "z.SUMLIAB",
+        "parentid": 125
     },
     {
         "id": 127,
@@ -554,16 +719,31 @@
         "parentid": 128
     },
     {
+        "id": 130,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 129
+    },
+    {
         "id": 131,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 128
     },
     {
+        "id": 132,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 131
+    },
+    {
         "id": 133,
         "alias": "营业总收入",
         "topic": "营业总收入",
         "parentid": 128
+    },
+    {
+        "id": 134,
+        "topic": "lr.TOTALOPERATEREVE",
+        "parentid": 133
     },
     {
         "id": 135,
@@ -594,16 +774,31 @@
         "parentid": 138
     },
     {
+        "id": 140,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 139
+    },
+    {
         "id": 141,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 138
     },
     {
+        "id": 142,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 141
+    },
+    {
         "id": 143,
         "alias": "营业总收入",
         "topic": "营业总收入",
         "parentid": 138
+    },
+    {
+        "id": 144,
+        "topic": "lr.TOTALOPERATEREVE",
+        "parentid": 143
     },
     {
         "id": 145,
@@ -623,10 +818,20 @@
         "parentid": 146
     },
     {
+        "id": 148,
+        "topic": "lr.TOTALOPERATEREVE",
+        "parentid": 147
+    },
+    {
         "id": 149,
         "alias": "净利润",
         "topic": "净利润",
         "parentid": 146
+    },
+    {
+        "id": 150,
+        "topic": "lr.NETPROFIT",
+        "parentid": 149
     },
     {
         "id": 151,
@@ -658,6 +863,11 @@
         "parentid": 154
     },
     {
+        "id": 156,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 155
+    },
+    {
         "id": 157,
         "alias": "毛利",
         "topic": "毛利",
@@ -675,10 +885,20 @@
         "parentid": 158
     },
     {
+        "id": 160,
+        "topic": "lr.OPERATEEXP",
+        "parentid": 159
+    },
+    {
         "id": 161,
         "alias": "营业收入",
         "topic": "营业收入",
         "parentid": 158
+    },
+    {
+        "id": 162,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 161
     },
     {
         "id": 163,
@@ -698,10 +918,20 @@
         "parentid": 164
     },
     {
+        "id": 166,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 165
+    },
+    {
         "id": 167,
         "alias": "营业利润",
         "topic": "营业利润",
         "parentid": 164
+    },
+    {
+        "id": 168,
+        "topic": "lr.SUMPROFIT",
+        "parentid": 167
     },
     {
         "id": 169,
@@ -732,16 +962,31 @@
         "parentid": 172
     },
     {
+        "id": 174,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 173
+    },
+    {
         "id": 175,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 172
     },
     {
+        "id": 176,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 175
+    },
+    {
         "id": 177,
         "alias": "营业总收入",
         "topic": "营业总收入",
         "parentid": 172
+    },
+    {
+        "id": 178,
+        "topic": "lr.TOTALOPERATEREVE",
+        "parentid": 177
     },
     {
         "id": 179,
@@ -761,10 +1006,20 @@
         "parentid": 180
     },
     {
+        "id": 182,
+        "topic": "lr.TOTALOPERATEREVE",
+        "parentid": 181
+    },
+    {
         "id": 183,
         "alias": "净利润",
         "topic": "净利润",
         "parentid": 180
+    },
+    {
+        "id": 184,
+        "topic": "lr.NETPROFIT",
+        "parentid": 183
     },
     {
         "id": 185,
@@ -801,6 +1056,11 @@
         "parentid": 189
     },
     {
+        "id": 191,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 190
+    },
+    {
         "id": 192,
         "alias": "毛利",
         "topic": "毛利",
@@ -818,10 +1078,20 @@
         "parentid": 193
     },
     {
+        "id": 195,
+        "topic": "lr.OPERATEEXP",
+        "parentid": 194
+    },
+    {
         "id": 196,
         "alias": "营业收入",
         "topic": "营业收入",
         "parentid": 193
+    },
+    {
+        "id": 197,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 196
     },
     {
         "id": 198,
@@ -841,16 +1111,31 @@
         "parentid": 199
     },
     {
+        "id": 201,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 200
+    },
+    {
         "id": 202,
         "alias": "营业利润",
         "topic": "营业利润",
         "parentid": 199
     },
     {
+        "id": 203,
+        "topic": "lr.SUMPROFIT",
+        "parentid": 202
+    },
+    {
         "id": 204,
         "topic": "EPS=基本每股收益(元)",
         "parentid": 106,
         "alias": "基本每股收益"
+    },
+    {
+        "id": 205,
+        "topic": "lr.BASICEPS",
+        "parentid": 204
     },
     {
         "id": 206,
@@ -876,10 +1161,20 @@
         "parentid": 208
     },
     {
+        "id": 210,
+        "topic": "lr2.OPERATEREVE",
+        "parentid": 209
+    },
+    {
         "id": 211,
         "alias": "上期主要业务收入",
         "topic": "上期主要业务收入",
         "parentid": 208
+    },
+    {
+        "id": 212,
+        "topic": "lr2.OPERATEREVE",
+        "parentid": 211
     },
     {
         "id": 213,
@@ -899,6 +1194,11 @@
         "parentid": 213
     },
     {
+        "id": 216,
+        "topic": "lr.OPERATEREVE",
+        "parentid": 215
+    },
+    {
         "id": 217,
         "topic": "营业利润增长率(%)",
         "parentid": 206,
@@ -916,16 +1216,31 @@
         "parentid": 218
     },
     {
+        "id": 220,
+        "topic": "lr2.OPERATEPROFIT",
+        "parentid": 219
+    },
+    {
         "id": 221,
         "alias": "上年营业利润总额",
         "topic": "上年营业利润总额",
         "parentid": 218
     },
     {
+        "id": 222,
+        "topic": "lr2.OPERATEPROFIT",
+        "parentid": 221
+    },
+    {
         "id": 223,
         "alias": "本年营业利润总额",
         "topic": "本年营业利润总额",
         "parentid": 218
+    },
+    {
+        "id": 224,
+        "topic": "lr.OPERATEPROFIT",
+        "parentid": 223
     },
     {
         "id": 225,
@@ -956,10 +1271,20 @@
         "parentid": 228
     },
     {
+        "id": 230,
+        "topic": "z2.SUMLIAB",
+        "parentid": 229
+    },
+    {
         "id": 231,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 228
+    },
+    {
+        "id": 232,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 231
     },
     {
         "id": 233,
@@ -979,10 +1304,20 @@
         "parentid": 234
     },
     {
+        "id": 236,
+        "topic": "z2.SUMLIAB",
+        "parentid": 235
+    },
+    {
         "id": 237,
         "alias": "期初总资产",
         "topic": "期初总资产",
         "parentid": 234
+    },
+    {
+        "id": 238,
+        "topic": "z2.SUMLIABSHEQUITY",
+        "parentid": 237
     },
     {
         "id": 239,
@@ -1002,10 +1337,20 @@
         "parentid": 240
     },
     {
+        "id": 242,
+        "topic": "z.SUMLIAB",
+        "parentid": 241
+    },
+    {
         "id": 243,
         "alias": "期末总资产",
         "topic": "期末总资产",
         "parentid": 240
+    },
+    {
+        "id": 244,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 243
     },
     {
         "id": 245,
@@ -1043,10 +1388,20 @@
         "parentid": 248
     },
     {
+        "id": 251,
+        "topic": "z.SUMLLIAB",
+        "parentid": 250
+    },
+    {
         "id": 252,
         "alias": "营业活动净现金流量",
         "topic": "营业活动净现金流量",
         "parentid": 247
+    },
+    {
+        "id": 253,
+        "topic": "ll.NETOPERATECASHFLOW",
+        "parentid": 252
     },
     {
         "id": 254,
@@ -1067,10 +1422,20 @@
         "parentid": 255
     },
     {
+        "id": 257,
+        "topic": "( select \n    sum(ifnull(l.DIVIPROFITORINTPAY,0) )\n     from xjllb l where \n      l.reporttype=1\n     and l.rreportdate<=ll.rreportdate\n     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n     )",
+        "parentid": 256
+    },
+    {
         "id": 258,
         "alias": "五年前期初存货",
         "topic": "五年前期初存货",
         "parentid": 255
+    },
+    {
+        "id": 259,
+        "topic": "\n           (select \n           z5.INVENTORY\n           from zcfzb z5 \n           where z5.code=ll.code \n           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           ) ",
+        "parentid": 258
     },
     {
         "id": 260,
@@ -1079,16 +1444,31 @@
         "parentid": 255
     },
     {
+        "id": 261,
+        "topic": "z.INVENTORY",
+        "parentid": 260
+    },
+    {
         "id": 262,
         "alias": "五年内购建",
         "topic": "五年内购建",
         "parentid": 255
     },
     {
+        "id": 263,
+        "topic": "( select \n        sum(ifnull(l.CASHEQUIENDING,0) )\n         from xjllb l where \n         l.code = ll.code \n         and l.reporttype=ll.reporttype\n         and l.rreportdate<=ll.rreportdate\n         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n         )",
+        "parentid": 262
+    },
+    {
         "id": 264,
         "alias": "最近5年度营业活动净现金流量",
         "topic": "最近5年度营业活动净现金流量",
         "parentid": 255
+    },
+    {
+        "id": 265,
+        "topic": "( select \n          sum(ifnull(l.CASHEQUIENDING,0) )\n           from xjllb l where \n           l.code = ll.code \n           and l.reporttype=ll.reporttype\n           and l.rreportdate<=ll.rreportdate\n           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           )",
+        "parentid": 264
     },
     {
         "id": 266,
@@ -1120,10 +1500,20 @@
         "parentid": 268
     },
     {
+        "id": 271,
+        "topic": "z.SUMLLIAB",
+        "parentid": 270
+    },
+    {
         "id": 272,
         "alias": "总资产",
         "topic": "总资产",
         "parentid": 267
+    },
+    {
+        "id": 273,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 272
     },
     {
         "id": 274,
@@ -1132,10 +1522,20 @@
         "parentid": 267
     },
     {
+        "id": 275,
+        "topic": "ll.SUMFINAFLOWOUT",
+        "parentid": 274
+    },
+    {
         "id": 276,
         "alias": "营业活动净现金流量",
         "topic": "营业活动净现金流量",
         "parentid": 267
+    },
+    {
+        "id": 277,
+        "topic": "ll.NETOPERATECASHFLOW",
+        "parentid": 276
     },
     {
         "id": 278,
@@ -1162,6 +1562,11 @@
         "parentid": 280
     },
     {
+        "id": 282,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 281
+    },
+    {
         "id": 283,
         "alias": "约当现金",
         "topic": "约当现金",
@@ -1177,6 +1582,11 @@
         "alias": "有价证券",
         "topic": "有价证券",
         "parentid": 283
+    },
+    {
+        "id": 286,
+        "topic": "z.FVALUEFASSET",
+        "parentid": 285
     },
     {
         "id": 287,
@@ -1196,6 +1606,11 @@
         "parentid": 287
     },
     {
+        "id": 290,
+        "topic": "z.MONETARYFUND",
+        "parentid": 289
+    },
+    {
         "id": 291,
         "topic": "应收款项(%)",
         "parentid": 278,
@@ -1213,10 +1628,20 @@
         "parentid": 292
     },
     {
+        "id": 294,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 293
+    },
+    {
         "id": 295,
         "alias": "应收款项",
         "topic": "应收款项",
         "parentid": 292
+    },
+    {
+        "id": 296,
+        "topic": "z.ACCOUNTBILLREC",
+        "parentid": 295
     },
     {
         "id": 297,
@@ -1236,10 +1661,20 @@
         "parentid": 298
     },
     {
+        "id": 300,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 299
+    },
+    {
         "id": 301,
         "alias": "存货",
         "topic": "存货",
         "parentid": 298
+    },
+    {
+        "id": 302,
+        "topic": "z.INVENTORY",
+        "parentid": 301
     },
     {
         "id": 303,
@@ -1259,10 +1694,20 @@
         "parentid": 304
     },
     {
+        "id": 306,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 305
+    },
+    {
         "id": 307,
         "alias": "其他流动资产",
         "topic": "其他流动资产",
         "parentid": 304
+    },
+    {
+        "id": 308,
+        "topic": "z.OTHERLASSET",
+        "parentid": 307
     },
     {
         "id": 309,
@@ -1282,10 +1727,20 @@
         "parentid": 310
     },
     {
+        "id": 312,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 311
+    },
+    {
         "id": 313,
         "alias": "流动资产",
         "topic": "流动资产",
         "parentid": 310
+    },
+    {
+        "id": 314,
+        "topic": "z.SUMLASSET",
+        "parentid": 313
     },
     {
         "id": 315,
@@ -1305,10 +1760,20 @@
         "parentid": 316
     },
     {
+        "id": 318,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 317
+    },
+    {
         "id": 319,
         "alias": "商誉",
         "topic": "商誉",
         "parentid": 316
+    },
+    {
+        "id": 320,
+        "topic": "z.GOODWILL",
+        "parentid": 319
     },
     {
         "id": 321,
@@ -1328,10 +1793,20 @@
         "parentid": 322
     },
     {
+        "id": 324,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 323
+    },
+    {
         "id": 325,
         "alias": "非流动资产",
         "topic": "非流动资产",
         "parentid": 322
+    },
+    {
+        "id": 326,
+        "topic": "z.SUMNONLASSET",
+        "parentid": 325
     },
     {
         "id": 327,
@@ -1357,10 +1832,20 @@
         "parentid": 329
     },
     {
+        "id": 331,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 330
+    },
+    {
         "id": 332,
         "alias": "应付款项",
         "topic": "应付款项",
         "parentid": 329
+    },
+    {
+        "id": 333,
+        "topic": "z.ACCOUNTBILLPAY",
+        "parentid": 332
     },
     {
         "id": 334,
@@ -1380,6 +1865,11 @@
         "parentid": 335
     },
     {
+        "id": 337,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 336
+    },
+    {
         "id": 338,
         "alias": "流动负债",
         "topic": "流动负债",
@@ -1395,6 +1885,11 @@
         "alias": "流动负债总额",
         "topic": "流动负债总额",
         "parentid": 338
+    },
+    {
+        "id": 341,
+        "topic": "z.SUMLLIAB",
+        "parentid": 340
     },
     {
         "id": 342,
@@ -1414,10 +1909,20 @@
         "parentid": 343
     },
     {
+        "id": 345,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 344
+    },
+    {
         "id": 346,
         "alias": "非流动负债",
         "topic": "非流动负债",
         "parentid": 343
+    },
+    {
+        "id": 347,
+        "topic": "z.SUMNONLLIAB",
+        "parentid": 346
     },
     {
         "id": 348,
@@ -1443,10 +1948,20 @@
         "parentid": 350
     },
     {
+        "id": 352,
+        "topic": "z.SUMLIABSHEQUITY",
+        "parentid": 351
+    },
+    {
         "id": 353,
         "alias": "股东权益",
         "topic": "股东权益",
         "parentid": 350
+    },
+    {
+        "id": 354,
+        "topic": "z.SUMSHEQUITY",
+        "parentid": 353
     },
     {
         "id": 355,
@@ -1456,7 +1971,7 @@
     },
     {
         "id": 356,
-        "topic": "PE(动态)",
+        "topic": "PE(TTM)",
         "parentid": 355,
         "alias": "PE"
     },
@@ -1472,9 +1987,96 @@
         "parentid": 357
     },
     {
+        "id": 359,
+        "topic": "lr.PARENTCINCOME",
+        "parentid": 358
+    },
+    {
         "id": 360,
         "alias": "总市值",
         "topic": "总市值",
         "parentid": 357
+    },
+    {
+        "id": 361,
+        "topic": "(select zsz from hq where code =lr.code)",
+        "parentid": 360
+    },
+    {
+        "id": 362,
+        "topic": "PEG",
+        "parentid": 355,
+        "alias": "PEG"
+    },
+    {
+        "id": 363,
+        "topic": "PE/100/((净利润-上期净利润)/上期净利润)",
+        "parentid": 362
+    },
+    {
+        "id": 364,
+        "alias": "上期净利润",
+        "topic": "上期净利润",
+        "parentid": 363
+    },
+    {
+        "id": 365,
+        "topic": "lr2.NETPROFIT",
+        "parentid": 364
+    },
+    {
+        "id": 366,
+        "alias": "上期净利润",
+        "topic": "上期净利润",
+        "parentid": 363
+    },
+    {
+        "id": 367,
+        "topic": "lr2.NETPROFIT",
+        "parentid": 366
+    },
+    {
+        "id": 368,
+        "alias": "净利润",
+        "topic": "净利润",
+        "parentid": 363
+    },
+    {
+        "id": 369,
+        "topic": "lr.NETPROFIT",
+        "parentid": 368
+    },
+    {
+        "id": 370,
+        "alias": "PE",
+        "topic": "PE",
+        "parentid": 363
+    },
+    {
+        "id": 371,
+        "topic": "总市值/归母收益总额",
+        "parentid": 370
+    },
+    {
+        "id": 372,
+        "alias": "归母收益总额",
+        "topic": "归母收益总额",
+        "parentid": 371
+    },
+    {
+        "id": 373,
+        "topic": "lr.PARENTCINCOME",
+        "parentid": 372
+    },
+    {
+        "id": 374,
+        "alias": "总市值",
+        "topic": "总市值",
+        "parentid": 371
+    },
+    {
+        "id": 375,
+        "topic": "(select zsz from hq where code =lr.code)",
+        "parentid": 374
     }
 ]

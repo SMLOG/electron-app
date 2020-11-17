@@ -543,7 +543,7 @@ function getchildnodes(node) {
     let content = mmap[node.alias];
     let pnode = {};
     pnode.id = ++id;
-    pnode.topic = content;
+    pnode.alias = pnode.topic = content;
     pnode.parentid = node.id;
     nodes.push(pnode);
     let matchs = !isFirstElement(content) && content.match(itemRegex);
@@ -552,11 +552,13 @@ function getchildnodes(node) {
       let i = matchs.length;
       while (i-- > 0) {
         let cnode = {};
-        cnode.id = ++id;
-        cnode.topic = cnode.alias = matchs[i];
-        if (pnode.topic == cnode.topic) cnode.parentid = node.id;
-        else cnode.parentid = pnode.id;
-        nodes.push(cnode);
+        if (pnode.topic == matchs[i]) cnode = pnode;
+        else {
+          cnode.id = ++id;
+          cnode.topic = cnode.alias = matchs[i];
+          cnode.parentid = pnode.id;
+          nodes.push(cnode);
+        }
         nodes = nodes.concat(getchildnodes(cnode));
       }
     }

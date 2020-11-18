@@ -22,7 +22,7 @@ export function loadScripts(scripts) {
   }, Promise.resolve());
 }
 export function fmtNumber(value) {
-  if (_.isNumber(value)) {
+  if (1 * value == value) {
     let abs = Math.abs(value);
     let r =
       abs > 10000000
@@ -35,7 +35,7 @@ export function fmtNumber(value) {
   return value;
 }
 export function fmtPercent(value) {
-  if (value) return parseFloat(value).toFixed(2) + "%";
+  if (1 * value == value) return parseFloat(value).toFixed(2) + "%";
   return value;
 }
 export async function fetchEval(urls, encode, callback) {

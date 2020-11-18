@@ -13,9 +13,15 @@
               @click="selectnode(node)"
             >
               <div>
-                <span v-tooltip="getTopicTitle(node)" class="label">{{
-                  getTopicTitle(node)
-                }}</span
+                <span
+                  :class="{
+                    good: getIndicator(node) === 1,
+                    bad: getIndicator(node) === 0,
+                  }"
+                  v-tooltip="getTopicTitle(node)"
+                  class="label"
+                >
+                  {{ getTopicTitle(node) }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
                 <peity
                   :type="'line'"
@@ -120,6 +126,14 @@ export default {
     getTopicTitle(node) {
       return node.topic.replace("(%)", "");
     },
+    getIndicator(node) {
+      let rawDatas = this.values.rawDatas;
+      let selectIndex = this.values.selectIndex;
+      if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
+        return rawDatas[selectIndex]["_" + node.alias];
+      }
+      return false;
+    },
     getTopic(node) {
       let rawDatas = this.values.rawDatas;
       let selectIndex = this.values.selectIndex;
@@ -152,5 +166,11 @@ export default {
   font-size: 14px;
   line-height: 24px;
   padding: 0 3px;
+}
+.good {
+  background: green;
+}
+.bad {
+  background: red;
 }
 </style>

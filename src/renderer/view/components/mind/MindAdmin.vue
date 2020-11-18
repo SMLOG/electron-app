@@ -3,8 +3,8 @@
     <div>
       <div>
         <ul class="nav">
-        <li  v-if="info" >
-         <b>{{info.name}}</b><span>{{info.close}}</span><span>pe_ttm:{{info.pe_ttm}}</span>
+        <li  v-if="info" class="info">
+         <span>{{info.name}}</span><span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span> <span>pe_ttm: {{info.pe_ttm}}</span>
         </li>
         <li @click="add_node">add node</li>
         <li v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
@@ -319,5 +319,14 @@ ul.nav li {
 
 .tooltip-arrow {
   border-color: blue;
+}
+.info span {
+  padding: 0 3px;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
 }
 </style>

@@ -1630,8 +1630,8 @@
     },
     {
         "id": 271,
-        "topic": "z.FVALUEFASSET",
-        "alias": "z.FVALUEFASSET",
+        "topic": "ifnull(z.FVALUEFASSET,0)",
+        "alias": "ifnull(z.FVALUEFASSET,0)",
         "parentid": 270
     },
     {
@@ -1828,8 +1828,8 @@
     },
     {
         "id": 304,
-        "topic": "z.GOODWILL",
-        "alias": "z.GOODWILL",
+        "topic": "ifnull(z.GOODWILL,0)",
+        "alias": "ifnull(z.GOODWILL,0)",
         "parentid": 303
     },
     {

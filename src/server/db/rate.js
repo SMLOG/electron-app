@@ -19,148 +19,108 @@ var conf = [
     ">=1.5",
     "速动比率 = ( 流动资产总额 - 存货 - 预付费用 ) / 流动负债总额",
   ],
-  [
-    "",
-    "利息保障倍数",
-    "https://caibaoshuo.com/terms/000651/interest_coverage",
-    "利息保障倍数 = 营业净利 / 利息费用",
-  ],
+  ["", "利息保障倍数", "", "利息保障倍数 = 营业净利 / 利息费用"],
   [
     "运营能力",
     "应收款项周转率(次/年)",
-    "https://caibaoshuo.com/terms/000651/receivable_turnover_ratio",
+    "",
     "应收款项周转率 = 365 / 应收帐款周转天数",
   ],
   [
     "",
     "应收款项周转天数(天)",
-    "https://caibaoshuo.com/terms/000651/receivable_turnover_date",
+    "",
     "应收款项周转天数 = 平均应收账款 * 365 / 销售收入",
   ],
-  [
-    "",
-    "存货周转率(次/年)",
-    "https://caibaoshuo.com/terms/000651/inventories_turnover_ratio",
-    "存货周转率 = 货物销售成本 / 存货总额",
-  ],
-  [
-    "",
-    "存货周转天数(天)",
-    "https://caibaoshuo.com/terms/000651/inventories_turnover_date",
-    "存货周转天数 = 365 / 存货周转率",
-  ],
+  ["", "存货周转率(次/年)", "", "存货周转率 = 货物销售成本 / 存货总额"],
+  ["", "存货周转天数(天)", "", "存货周转天数 = 365 / 存货周转率"],
   [
     "",
     "固定资产周转率(次/年)",
-    "https://caibaoshuo.com/terms/000651/fixed_assets_turnover_ratio",
+    "",
     "固定资产周转率 = 产品销售收入净额 / 固定资产平均净值",
   ],
   [
     "",
     "完整生意周期(天)",
-    "https://caibaoshuo.com/terms/000651/total_turnover_date",
+    "",
     "完整生意周期 = 存货在库天数(平均销货日数)+ 平均收现日数",
   ],
   [
     "",
     "应付款项周转天数(天)",
-    "https://caibaoshuo.com/terms/000651/ap_turnover_date",
+    "",
     "应付款项周转天数 = 期初期末应付账款平均值 * 360 / 主营业务成本",
   ],
   [
     "",
     "缺钱天数(天)",
-    "https://caibaoshuo.com/terms/000651/money_needed_date",
+    "",
     "缺钱的天数(现金转换周期) = 做生意的完整周期 - 应付帐款付款天数",
   ],
   [
     "",
     "总资产周转率(次/年)",
-    "https://caibaoshuo.com/terms/000651/t_assets_turnover_ratio",
+    "",
     "资产周转率   = 销售收入 / 平均总资产  \n   = 销售收入 / ((期初资产 + 期末资产)/2)",
   ],
   [
     "盈利能力",
     "ROA=资产收益率(%)",
-    "https://caibaoshuo.com/terms/000651/roa",
+    "",
     "资产回报率(%)   \n    = 净收益 /   平均总资产\n    \n\n    = 净收益 / ((期初资产 + 期末资产)/2)",
   ],
   [
     "",
     "ROE=净资产收益率(%)",
-    "https://caibaoshuo.com/terms/000651/roe",
+    "",
     "净资产收益率 (ROE%)=  净利率 * 总资产周转率 * 杠杆倍数",
   ],
   [
     "",
     "ROIC=资本回报率(%)",
-    "https://caibaoshuo.com/terms/000651/roic",
+    "",
     "资本回报率 (ROIC%)\n    \n    \n    = 息税前利润 EBIT x (1 - 税率) / 投入资本",
   ],
   [
     "",
     "税前纯益占实收资本(%)",
-    "https://caibaoshuo.com/terms/000651/pre_tax_net_income_ratio",
+    "",
     "税前纯益占实收资本比率\n    = 税前纯益 / 总股本\n    = (营业利润 + 营业外收入 - 营业外支出) / 总股本",
   ],
-  [
-    "",
-    "毛利率(%)",
-    "https://caibaoshuo.com/terms/000651/gross_margin_ratio",
-    "毛利率(%) = 毛利 / 营业收入",
-  ],
-  [
-    "",
-    "营业利润率(%)",
-    "https://caibaoshuo.com/terms/000651/operating_profit_ratio",
-    "营业利润率 = 营业利润 / 营业收入",
-  ],
-  [
-    "",
-    "净利率(%)",
-    "https://caibaoshuo.com/terms/000651/net_profit_ratio",
-    "净利率(%) = 净收入 / 收入",
-  ],
-  [
-    "",
-    "营业费用率(%)",
-    "https://caibaoshuo.com/terms/000651/scale_charges_ratio",
-    "营业费用率 = 营业费用 / 营业收入",
-  ],
-  [
-    "",
-    "经营安全边际率(%)",
-    "https://caibaoshuo.com/terms/000651/safety_ratio",
-    "经营安全边际率 = 营业利润率 / 毛利率",
-  ],
+  ["", "毛利率(%)", "", "毛利率(%) = 毛利 / 营业收入"],
+  ["", "营业利润率(%)", "", "营业利润率 = 营业利润 / 营业收入"],
+  ["", "净利率(%)", "", "净利率(%) = 净收入 / 收入"],
+  ["", "营业费用率(%)", "", "营业费用率 = 营业费用 / 营业收入"],
+  ["", "经营安全边际率(%)", "", "经营安全边际率 = 营业利润率 / 毛利率"],
   [
     "",
     "EPS=基本每股收益(元)",
-    "https://caibaoshuo.com/terms/000651/eps",
+    "",
     "基本每股收益(元) (EPS) = (净收入 - 优先股息) / 已发行股份基本平均数",
   ],
   [
     "成长能力",
     "营收增长率(%)",
-    "https://caibaoshuo.com/terms/000651/operating_revenue_growth",
+    ">0",
     "营收增长率 = (本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
   ],
   [
     "",
     "营业利润增长率(%)",
-    "https://caibaoshuo.com/terms/000651/operating_profit_growth",
+    ">0",
     "营业利润增长率 = (本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
   ],
   [
     "",
     "净资本增长率(%)",
-    "https://caibaoshuo.com/terms/000651/net_assets_growth",
+    "",
     "净资本增长率 =(期末净资产 - 期初净资产)/ 期初净资产",
   ],
   [
     "现金流量",
     "现金流量比率(%)",
-    "https://caibaoshuo.com/terms/000651/cashflow_ratio",
+    ">1",
     "现金流量比率 = 营业活动净现金流量 / 流动负债",
     `分子：营业活动现金流量表示的是一家公司从利润表上的净利扎扎实实的转化为公司的现金。
     分母：流动负债”又叫“短期负债，是指将在1年(含1年)内需要偿还的债务。
@@ -171,7 +131,7 @@ var conf = [
   [
     "",
     "现金流量允当比率(%)",
-    "https://caibaoshuo.com/terms/000651/cashflow_adequacy_ratio",
+    "",
     "现金流量允当比率 = 最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
     `现金流量允当比率用来分析：公司最近五年赚的钱是否足够支撑最近五年公司成长所需。
     在这个指标中，为什么要用5年的数据，因为基本上5年是一个经济周期。
@@ -180,7 +140,7 @@ var conf = [
   [
     "",
     "现金再投资比率(%)",
-    "https://caibaoshuo.com/terms/000651/cash_reinvestment_ratio",
+    "",
     "现金再投资比率 = (营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
     `现金再投资比率：用于分析公司靠自己日常营运实力赚来的钱（营业活动现金流量）扣除掉给股东现金股利，公司最后自己手上留下来的钱，用于再投资的能力。这个指标大于10%比较好。`,
   ],
@@ -190,116 +150,76 @@ const conf2 = [
   [
     "资产",
     "现金占总资产比率(%)",
-    "https://caibaoshuo.com/terms/000651/cash_ratio",
+    ">0.2",
     "现金占总资产比率 = (现金+约当现金) /总资产",
     `在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。
     现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。
     在现金流量指标中，现金占总资产比率所占的权重最高，达到70%`,
   ],
-  [
-    "",
-    "应收款项(%)",
-    "https://caibaoshuo.com/terms/000651/receiv_ratio",
-    "应收款项占总资产比率 = 应收款项 / 总资产",
-  ],
-  [
-    "",
-    "存货(%)",
-    "https://caibaoshuo.com/terms/000651/inventories_ratio",
-    "存货占总资产比率 = 存货 / 总资产",
-  ],
+  ["", "应收款项(%)", "", "应收款项占总资产比率 = 应收款项 / 总资产"],
+  ["", "存货(%)", "", "存货占总资产比率 = 存货 / 总资产"],
   [
     "",
     "其他流动资产(%)",
-    "https://caibaoshuo.com/terms/000651/other_current_assets_ratio",
+    "",
     "其他流动资产占总资产比率 = 其他流动资产 / 总资产",
   ],
-  [
-    "",
-    "流动资产(%)",
-    "https://caibaoshuo.com/terms/000651/tca_ratio",
-    "流动资产占总资产比率 = 流动资产 / 总资产",
-  ],
-  [
-    "",
-    "商誉(%)",
-    "https://caibaoshuo.com/terms/000651/goodwill_ratio",
-    "商誉比率 = 商誉 / 总资产",
-  ],
-  [
-    "",
-    "非流动资产(%)",
-    "https://caibaoshuo.com/terms/000651/tnca_ratio",
-    "非流动资产占总资产比率 = 非流动资产 / 总资产",
-  ],
-  [
-    "负债",
-    "应付款项(%)",
-    "https://caibaoshuo.com/terms/000651/ap_ratio",
-    "应付款项占总资产比率 = 应付款项 / 总资产",
-  ],
-  [
-    "",
-    "流动负债(%)",
-    "https://caibaoshuo.com/terms/000651/tcl_ratio",
-    "流动负债总资产比率 = 流动负债 / 总资产",
-  ],
-  [
-    "",
-    "非流动负债(%)",
-    "https://caibaoshuo.com/terms/000651/tncl_ratio",
-    "非流动负债占总资产比率 = 非流动负债 / 总资产",
-  ],
-  [
-    "股权",
-    "股东权益(%)",
-    "https://caibaoshuo.com/terms/000651/total_equity_ratio",
-    "股东权益比率 = 股东权益 / 总资产",
-  ],
+  ["", "流动资产(%)", "", "流动资产占总资产比率 = 流动资产 / 总资产"],
+  ["", "商誉(%)", "", "商誉比率 = 商誉 / 总资产"],
+  ["", "非流动资产(%)", "", "非流动资产占总资产比率 = 非流动资产 / 总资产"],
+  ["负债", "应付款项(%)", "", "应付款项占总资产比率 = 应付款项 / 总资产"],
+  ["", "流动负债(%)", "", "流动负债总资产比率 = 流动负债 / 总资产"],
+  ["", "非流动负债(%)", "", "非流动负债占总资产比率 = 非流动负债 / 总资产"],
+  ["股权", "股东权益(%)", "", "股东权益比率 = 股东权益 / 总资产"],
   ["估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
   ["", "PEG", "", "PEG = PE/100/利润增长率"],
 ];
 const conf3 = [
   ["", "期初现金", false],
-  [
-    "",
-    "+ 营业活动现金流量\n    \n    \n       (from 损益表)",
-    "https://caibaoshuo.com/terms/000651/ocf",
-    "",
-  ],
+  ["", "+ 营业活动现金流量\n    \n    \n       (from 损益表)", "", ""],
   [
     "",
     "+ 投资活动现金流量\n    \n    \n       (from 资产负债表左)",
-    "https://caibaoshuo.com/terms/000651/invest_cash_flow",
+    "",
     "投资活动现金流量 = 购置物业、厂房、设备 + 出售物业、厂房、设备 + 购买业务  + 出售业务 + 购买投资 + 出售投资 + 无形资产购销净额 + 已终止投资活动的现金 + 其他投资活动的现金",
   ],
   [
     "",
     "+ 融资活动现金流量\n    \n    \n       (from 资产负债表右)",
-    "https://caibaoshuo.com/terms/000651/finance_cash_flow",
+    "",
     "融资活动现金流量 = 股票净发行 + 债务净发行 + 优先股净发行 + 股息现金流 + 其他融资",
   ],
   ["", "期末现金", false],
   [
     "",
     "自由现金流(FCF)",
-    "https://caibaoshuo.com/terms/000651/free_cash_flow",
+    "",
     "自由现金流(FCF) = 营业活动现金流量(OCF) - 资本支出",
   ],
 ];
 
 conf = conf.concat(conf2);
-var m = conf.reduce((r, ar) => {
-  var a = ar[3].split(/=/);
-  var l = a[0].trim();
-  var rr = a[1].trim();
-  r[l] = rr;
-  return r;
-}, {});
+var m = conf.reduce((m, row) => {
+  var formulaContent = row[3].split(/=/);
+  var left = formulaContent[0]
+    .trim()
+    .replace(/\(.*?\)/g, "")
+    .trim();
+  var right = formulaContent[1].trim();
 
-m = _.mapKeys(m, (v, k) => {
-  return k.replace(/\(.*?\)/g, "").trim();
-});
+  m[left] = right;
+
+  if (row[2] && row[2].trim()) {
+    var indicator = `_${left}`;
+
+    m[indicator] = ((row[2].indexOf("_") == -1 ? "_" : "") + row[2]).replace(
+      /_/g,
+      left
+    );
+  }
+
+  return m;
+}, {});
 
 var m2 = `
 code=lr.code
@@ -330,12 +250,12 @@ typename=lr.typename
 流动资产=z.SUMLASSET
 非流动资产=z.SUMNONLASSET
 非流动负债=z.SUMNONLLIAB
-商誉=z.GOODWILL
+商誉=ifnull(z.GOODWILL,0)
 其他流动资产=z.OTHERLASSET
 应付款项=z.ACCOUNTBILLPAY
 应收款项=z.ACCOUNTBILLREC
 货币资金=z.MONETARYFUND
-有价证券=z.FVALUEFASSET
+有价证券=ifnull(z.FVALUEFASSET,0)
 现金=货币资金
 约当现金=有价证券
 流动资产总额=z.SUMLASSET
@@ -448,7 +368,7 @@ m = _.assign(m, m2);
     logging: false,
   });
 })();*/
-const itemRegex = /([^\s\.\+\-\*\/\(\)\d]+\d*)+/g;
+const itemRegex = /([^\s\.\+\-\*\/><=\(\)\d]+\d*)+/g;
 function loopRun(map, arr, exist) {
   if (!map) return null;
   if (!arr) arr = [];

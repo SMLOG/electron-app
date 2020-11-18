@@ -4,6 +4,8 @@
       <div>
         <ul class="nav">
         <li  v-if="info" class="info">
+          <font-awesome-icon :icon="['fas', 'info-circle']" />
+
          <span>{{info.name}}</span><span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span> <span>pe_ttm: {{info.pe_ttm}}</span>
         </li>
         <li @click="add_node">add node</li>

@@ -13,6 +13,11 @@
               @click="selectnode(node)"
             >
               <div>
+                <font-awesome-icon
+                  v-if="node.tip"
+                  v-tooltip="node.tip"
+                  :icon="['fas', 'info-circle']"
+                />
                 <span
                   :class="{
                     good: getIndicator(node) === 1,

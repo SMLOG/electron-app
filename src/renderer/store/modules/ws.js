@@ -1,4 +1,5 @@
 import storejs from "storejs";
+import { batchUpdateHQ } from "@/lib/getTable";
 
 const fileds_key = "fields_key";
 const filters_key = "filters_key";
@@ -16,6 +17,8 @@ const state = {
   filtersCount: [],
   countMap: [],
   wsfilters: {},
+  mylist: [],
+  hx: [],
 };
 const mutations = {
   [MUTATION_TYPE.SET_FIELDS](state, fields) {
@@ -35,6 +38,14 @@ const mutations = {
   },
   SOCKET_filters(state, data) {
     state.wsfilters = data;
+  },
+  SOCKET_mylist(state, data) {
+    state.mylist = data;
+  },
+  SOCKET_hx(state, data) {
+    state.hx = data;
+    batchUpdateHQ(state.mylist, data);
+    // commit("SOCKET_mylist", state.mylist);
   },
 };
 const actions = {

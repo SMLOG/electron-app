@@ -1,12 +1,25 @@
 <template>
   <div>
+      <search-panel></search-panel>
     <div>
       <div>
         <ul class="nav">
-        <li  v-if="info" class="info">
+        <li ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
+          <div v-if="info" style="display:inline-block;"  >
           <font-awesome-icon :icon="['fas', 'info-circle']" />
-
-         <span>{{info.name}}</span><span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span> <span>pe_ttm: {{info.pe_ttm}}</span>
+         <span>{{info.name}}</span>
+         <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
+         <span>pe_ttm: {{info.pe_ttm}}</span>
+          </div>
+          <ul class="mylist" v-show="showMylist">
+        <li class="info" v-for="info in mylist" :key="info.code">
+          <font-awesome-icon :icon="['fas', 'info-circle']" />
+          <router-link :to="{params:{code:info.code}}">
+         <span>{{info.name}}</span>
+          </router-link>
+         <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
+        </li>
+        </ul>
         </li>
         <li @click="add_node">add node</li>
         <li v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
@@ -31,14 +44,17 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
 import $ from "jquery";
 import JsMind from "./index";
 import { batchUpdateHQ } from "@/lib/getTable";
+import SearchPanel from "@/view/components/search-panel";
 
 var self;
 export default {
   data() {
     return {
+      showMylist: false,
       items: [],
       info: null,
       height: 1000,
@@ -55,46 +71,65 @@ export default {
       },
     };
   },
-  components: { JsMind },
+  components: { JsMind, SearchPanel },
   mounted() {
-    self = this;
-    this.$route.params.code = (this.$route.params.code || "").replace(
-      /[^\d]+/g,
-      ""
-    );
-    if (
-      !this.$route.params.code &&
-      !this.$route.params.code.match(/^[036]\d{5}$/)
-    ) {
-      alert("请输入代码参数或者检查代码参数格式是否正确？");
-      return;
-    }
-    this.$http
-      .get("/api/mind", {
-        params: {
-          code:
-            (this.$route.params.code[0] == "6" ? "sh" : "sz") +
-            this.$route.params.code,
-        },
-      })
-      .then((resp) => {
-        this.mind.rawDatas.splice(0, -1, ...resp.data.datas);
-        this.info = resp.data.info;
-        this.items.push(this.info);
-        this.$http.get("/static/test.json").then((resp) => {
-          this.mind.data.splice(0, -1, ...resp.data);
-          setTimeout(() => {
-            this.jm = this.$refs.jsMind.jm;
-            this.jmObj = this.$refs.jsMind.jmObj;
-            $(window).resize(() => {
-              this.height = $(window).height() - 35;
-              this.jm.resize();
-            });
-          }, 1000);
-        });
-      });
+    this.getDetail();
+  },
+  computed: {
+    ...mapState({ mylist: (state) => state.ws.mylist }),
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.code = this.$route.params.code;
+        this.getDetail();
+      },
+      deep: true,
+    },
   },
   methods: {
+    getDetail() {
+      self = this;
+      this.$route.params.code = (this.$route.params.code || "").replace(
+        /[^\d]+/g,
+        ""
+      );
+      if (
+        !this.$route.params.code &&
+        !this.$route.params.code.match(/^[036]\d{5}$/)
+      ) {
+        alert("请输入代码参数或者检查代码参数格式是否正确？");
+        return;
+      }
+      this.$http
+        .get("/api/mind", {
+          params: {
+            code:
+              (this.$route.params.code[0] == "6" ? "sh" : "sz") +
+              this.$route.params.code,
+          },
+        })
+        .then((resp) => {
+          this.mind.rawDatas.splice(
+            0,
+            this.mind.rawDatas.length,
+            ...resp.data.datas
+          );
+          this.info = resp.data.info;
+          this.items.push(this.info);
+          this.$http.get("/static/test.json").then((resp) => {
+            this.mind.data.splice(0, this.mind.data.length, ...resp.data);
+            setTimeout(() => {
+              this.jm = this.$refs.jsMind.jm;
+              this.jmObj = this.$refs.jsMind.jmObj;
+              $(window).resize(() => {
+                this.height = $(window).height() - 35;
+                this.jm.resize();
+              });
+            }, 1000);
+          });
+        });
+    },
     to(id) {
       this.$el.querySelector(`#node${id}`).scrollIntoView({
         behavior: "smooth",
@@ -115,13 +150,6 @@ export default {
       setTimeout(() => {
         var node = this.jm.add_node(selected_node, nodeid, topic);
       }, 100);
-    },
-  },
-  sockets: {
-    hx(data) {
-      //console.log(data);
-      // this.$socket.emit("echo", data);
-      batchUpdateHQ(this.items, data);
     },
   },
 };
@@ -330,5 +358,16 @@ ul.nav li {
 }
 .green {
   color: green;
+}
+.mylist {
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  margin-left: -8px;
+}
+ul.mylist li {
+  list-style: none;
+  display: block !important;
+  float: none !important;
 }
 </style>

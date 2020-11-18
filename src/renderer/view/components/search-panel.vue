@@ -1,14 +1,6 @@
 <template>
-  <div id="searchpane" :class="{'show':show}">
-    <!-- 组件不能写到template的根节点上，即每个组件只有一个根节点，这里的div就是这个template的根节点 -->
-    <!--  getindex是自定义事件 -->
+  <div id="searchpane" :class="{ show: show }">
     <div class="search-input">
-      <!-- $event是实参，表示event对象 -->
-      <!--
-                输入搜索内容即时搜索，所以有一个keyup事件。
-                按回车键有一个进入搜索内容页面，所以有一个keydown.enter事件
-                按上下键可以选择列表条目
-      -->
       <input
         type="text"
         v-model="keyword"
@@ -26,16 +18,16 @@
         <!-- transition-group也是vue2.0中的新特性,tag='ul'表示用ul包裹v-for出来的li -->
         <transition-group name="itemfade" tag="ul" mode="out-in" v-cloak>
           <li
-            v-for="(value,index) in myData"
-            :class="{selectback:index==now}"
+            v-for="(value, index) in myData"
+            :class="{ selectback: index == now }"
             class="search-select-option search-select-list"
             @mouseover="selectHover(index)"
             @click="selectClick(index)"
             :key="value.id"
           >
-            <span>{{value.oname}}</span>
-            <span>{{value.code}}</span>
-            <span>{{value.name}}</span>
+            <span>{{ value.oname }}</span>
+            <span>{{ value.code }}</span>
+            <span>{{ value.name }}</span>
           </li>
         </transition-group>
       </div>
@@ -49,7 +41,7 @@ import { loadScripts, parse, toFixed, toPercent } from "@/lib/utils";
 import store from "@/localdata";
 
 export default {
-  data: function() {
+  data: function () {
     return {
       myData: [], //用来接收ajax得到的数据
       keyword: "", //v-model绑定的输入框的value
@@ -59,22 +51,23 @@ export default {
       logoData: [
         {
           name: "360搜索",
-          searchSrc: "https://www.so.com/s?ie=utf-8&shb=1&src=360sou_newhome&q="
+          searchSrc:
+            "https://www.so.com/s?ie=utf-8&shb=1&src=360sou_newhome&q=",
         },
         {
           name: "百度搜索",
           searchSrc:
-            "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd="
+            "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=",
         },
         {
           name: "搜狗搜索",
-          searchSrc: "https://www.sogou.com/web?query="
-        }
-      ]
+          searchSrc: "https://www.sogou.com/web?query=",
+        },
+      ],
     };
   },
   mounted() {
-    document.addEventListener("keydown", e => {
+    document.addEventListener("keydown", (e) => {
       if (e.target && e.target.nodeName == "BODY") {
         let c = String.fromCharCode(e.keyCode).replace(/[^A-Za-z 0-9]/, "");
         if (c) {
@@ -127,23 +120,24 @@ export default {
               name: item[4],
               countryID: item[1],
               code: code,
-              orgCode: item[3]
+              orgCode: item[3],
             };
           })
-          .filter(e => e);
+          .filter((e) => e)
+          .filter((e) => e.code.match(/^(sh)|(sz)/g));
         if (options.length > 0)
           options.unshift({
             id: -1,
             oname: "选项",
             name: "名称",
-            code: "代码"
+            code: "代码",
           });
 
         this.myData = options;
       });
     },
     // &event是实参，表示event对象
-    get: function(ev) {
+    get: function (ev) {
       // 如果按得键是上或者下，就不进行ajax
       if (ev.keyCode == 38 || ev.keyCode == 40) {
         return;
@@ -160,7 +154,7 @@ export default {
           this.myData = res.data.s;
         });*/
     },
-    selectDown: function() {
+    selectDown: function () {
       this.now++;
       //到达最后一个时，再按下就回到第一个
       if (this.now == this.myData.length) {
@@ -168,7 +162,7 @@ export default {
       }
       // this.keyword = this.myData[this.now];
     },
-    selectUp: function() {
+    selectUp: function () {
       this.now--;
       //同上
       if (this.now == 0) {
@@ -176,10 +170,11 @@ export default {
       }
       // this.keyword = this.myData[this.now];
     },
-    search: function(selectItem, index) {
+    search: function (selectItem, index) {
       if (index != 0) {
         if (!selectItem && this.myData.length > 1) selectItem = this.myData[1];
-        this.$emit("select", selectItem);
+        //this.$emit("select", selectItem);
+        this.$socket.emit("addItem", selectItem);
       }
 
       this.myData = [];
@@ -188,23 +183,23 @@ export default {
       //打开对应的搜索界面
       // window.open(this.logoData[this.searchIndex].searchSrc + this.keyword);
     },
-    selectHover: function(index) {
+    selectHover: function (index) {
       this.now = index;
     },
-    selectClick: function(index) {
+    selectClick: function (index) {
       //this.keyword = this.myData[index];
       this.search(this.myData[index], index);
     },
-    clearInput: function() {
+    clearInput: function () {
       this.keyword = "";
       this.myData = [];
       this.show = false;
       this.$refs.input.blur();
     },
-    getIndex: function(index) {
+    getIndex: function (index) {
       this.searchIndex = index;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -318,7 +313,7 @@ input::-ms-clear {
   display: inline-block;
 }
 #searchpane.show {
-  z-index: 10000;
+  z-index: 100000;
 }
 #searchpane {
   position: fixed;

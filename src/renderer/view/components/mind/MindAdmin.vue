@@ -4,7 +4,7 @@
     <div>
       <div>
         <ul class="nav">
-        <li ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
+        <li class="navItem" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
           <div v-if="info" style="display:inline-block;"  >
           <font-awesome-icon :icon="['fas', 'info-circle']" />
          <span>{{info.name}}</span>
@@ -21,17 +21,21 @@
         </li>
         </ul>
         </li>
-        <li @click="add_node">add node</li>
-        <li v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
-        </ul>
-        </div>
-      
-    <div id="jsmind_tools" class="jsmind-tools">
+        <li class="navItem"  @click="add_node">add node</li>
+        <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
+        <li class="navItem"  style="float:right;">
+              <div id="jsmind_tools" class="jsmind-tools">
     <ul>
         <li v-for="(row,i) in mind.rawDatas" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
    
     </ul>
+  
 </div>
+        </li>
+        </ul>
+        </div>
+      
+
     </div>
     <js-mind style="margin-top: 35px;"
       v-if="mind.data.length>0"
@@ -55,6 +59,7 @@ export default {
   data() {
     return {
       showMylist: false,
+      selectIndex: 0,
       items: [],
       info: null,
       height: 1000,
@@ -170,8 +175,10 @@ ul.nav {
   top: 0;
   z-index: 10000;
   background: #ccc;
+  right: 0;
+  left: 0;
 }
-ul.nav li {
+.navItem {
   float: left;
   display: inline-block;
   line-height: 28px;
@@ -183,10 +190,8 @@ ul.nav li {
 }
 .jsmind-tools {
   position: fixed;
-  z-index: 100;
   top: 10px;
-  right: 10px;
-  border: solid 1px #fff;
+  right: -54px;
   background-color: #fff;
   border-radius: 5px;
   opacity: 0.3;
@@ -364,6 +369,7 @@ ul.nav li {
   margin: 0;
   position: fixed;
   margin-left: -8px;
+  background: #ccc;
 }
 ul.mylist li {
   list-style: none;

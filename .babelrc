@@ -9,6 +9,7 @@
         "paths": [
           { "rootPathPrefix": "#", "rootPathSuffix": "" },
           { "rootPathPrefix": "~", "rootPathSuffix": "src" },
+          { "rootPathPrefix": "!", "rootPathSuffix": "src/server" },
           {
             "rootPathPrefix": "chart",
             "rootPathSuffix": "src/renderer/view/components/h5/ec/webpack/modules/chart"

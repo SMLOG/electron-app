@@ -1,9 +1,8 @@
 import { fn, cacheObject } from "./lib/fn";
-import { CONFIG_DIR } from "./config";
 import fs from "fs";
 import { dataUtil } from "./util";
-import { userAgent } from "./config";
-import { axios } from "./axios";
+import { userAgent, CONFIG_DIR } from "!/config";
+import { axios } from "!/axios";
 import iconv from "iconv-lite";
 
 function JSONP(url, data, jsonp, cb) {

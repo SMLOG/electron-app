@@ -2,7 +2,6 @@ import _ from "lodash";
 import sqlFormatter from "sql-formatter";
 import fs from "fs";
 const { db } = require("./db");
-import { ifNoExistGenModel } from "./utils";
 
 var conf = [
   ["财务结构", "负债占资产比率(%)", "<0.6", "负债占资产比率 = 负债 / 总资产"],
@@ -171,7 +170,7 @@ const conf2 = [
   ["", "流动负债(%)", "", "流动负债总资产比率 = 流动负债 / 总资产"],
   ["", "非流动负债(%)", "", "非流动负债占总资产比率 = 非流动负债 / 总资产"],
   ["股权", "股东权益(%)", "", "股东权益比率 = 股东权益 / 总资产"],
-  ["估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
+  ["@估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
   ["", "PEG", "", "PEG = PE/100/利润增长率"],
 ];
 const conf3 = [
@@ -486,20 +485,28 @@ function getchildnodes(node) {
   return nodes;
 }
 let id = 0;
-function genTree(conf) {
-  let nodes = [{ id: "root", isroot: true, topic: "财务分析" }];
+function getTrees(conf) {
+  let trees = [];
+  let tree = [{ id: "root", isroot: true, topic: "财务分析" }];
+  trees.push(tree);
   let cat = "";
   let pid;
   for (let row of conf) {
     cat = row[0] || cat;
     if (row[0]) {
       pid = ++id;
-      let pnode = {};
-      pnode.id = pid;
-      pnode.topic = cat;
-      pnode.direction = "right";
-      pnode.parentid = "root";
-      nodes.push(pnode);
+      if (cat.startsWith("@")) {
+        let subroot = { id: pid, parentid: "root", topic: cat };
+        tree.push(subroot);
+        tree = [subroot];
+        trees.push(tree);
+      }
+      let catnode = {};
+      catnode.id = pid;
+      catnode.topic = cat;
+      catnode.direction = "right";
+      catnode.parentid = tree[0].id;
+      tree.push(catnode);
     }
     let name = row[1];
     let alias = row[3]
@@ -513,17 +520,22 @@ function genTree(conf) {
     node.parentid = pid;
     node.alias = alias;
     node.tip = row[4];
+
     let childnodes = getchildnodes(node);
-    nodes.push(node);
-    nodes = nodes.concat(childnodes);
+
+    tree.push(node);
+    tree.push(...childnodes);
   }
-  return nodes.filter((e) => e.topic.match(itemRegex));
+
+  return trees.map((e) => e.filter((e) => e.topic.match(itemRegex)));
 }
 
-fs.writeFileSync(
-  "/Users/alexwang/git/electron-suspension/static/test.json",
-  JSON.stringify(genTree(conf), null, 4)
-);
+getTrees(conf).map((tree) => {
+  fs.writeFileSync(
+    `/Users/alexwang/git/electron-suspension/static/${tree[0].id}.json`,
+    JSON.stringify(tree, null, 4)
+  );
+});
 
 function wrapFmt(arr, sql) {
   let cols = arr.reduce((arr, a) => {

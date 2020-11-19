@@ -127,7 +127,7 @@ export default {
           );
           this.info = resp.data.info;
           this.items.push(this.info);
-          this.$http.get("/static/test.json").then((resp) => {
+          this.$http.get("/static/root.json").then((resp) => {
             this.mind.data.splice(0, this.mind.data.length, ...resp.data);
             setTimeout(() => {
               this.jm = this.$refs.jsMind.jm;

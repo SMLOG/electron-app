@@ -81,7 +81,6 @@
     "moment": "^2.27.0",
     "mysql2": "^2.2.5",
     "node-echarts": "^1.1.4",
-    "node-jsonp": "^1.0.2",
     "promise-polyfill": "^8.1.3",
     "sequelize": "^6.3.5",
     "socket.io": "^2.3.0",

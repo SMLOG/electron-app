@@ -80,6 +80,11 @@ export default {
   mounted() {
     this.getDetail();
   },
+  sockets: {
+    hx(datas) {
+      batchUpdateHQ([this.info], datas);
+    },
+  },
   computed: {
     ...mapState({ mylist: (state) => state.ws.mylist }),
   },
@@ -368,7 +373,6 @@ ul.nav {
   padding: 0;
   margin: 0;
   position: fixed;
-  margin-left: -8px;
   background: #ccc;
 }
 ul.mylist li {

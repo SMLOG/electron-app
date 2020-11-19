@@ -1,9 +1,25 @@
-import JSONP from "node-jsonp";
-import axios from "axios";
 import { fn, cacheObject } from "./lib/fn";
 import { CONFIG_DIR } from "./config";
 import fs from "fs";
 import { dataUtil } from "./util";
+import { userAgent } from "./config";
+import { axios } from "./axios";
+import iconv from "iconv-lite";
+
+function JSONP(url, data, jsonp, cb) {
+  return axios
+    .get(url, {
+      responseType: "arraybuffer",
+      headers: { "User-Agent": userAgent },
+      params: data,
+    })
+    .then((resp) => {
+      let encode = resp.headers["content-type"].match(/charset=(.+)/)[1];
+      let str = iconv.decode(Buffer.from(resp.data), encode);
+      return JSON.parse(str.replace(jsonp, ""));
+    })
+    .then((res) => cb(res));
+}
 const KTYPE = {
   5: "M5",
   15: "M15",
@@ -673,7 +689,7 @@ export async function getList() {
       });
       return resolve(datalist);
     });
-  }).catch(function(error) {
+  }).catch(function (error) {
     console.log(error);
   });
 }
@@ -764,16 +780,16 @@ function kdjGold(item, kw) {
   return kw[i].KDJ_K > kw[i - 1].KDJ_K && kw[i - 2].KDJ_K > kw[i - 1].KDJ_K;
 }
 const techMap = {
-  MACD周: function({ item, kw }) {
+  MACD周: function ({ item, kw }) {
     return isMacdGolden(kw);
   },
-  KDJ周: function({ item, kw }) {
+  KDJ周: function ({ item, kw }) {
     return kdjGold(item, kw);
   },
-  换手率大1: function({ item, kd, kw, km }) {
+  换手率大1: function ({ item, kd, kw, km }) {
     return item.turnover >= 1;
   },
-  上5天: function({ item, kd, kw, km }) {
+  上5天: function ({ item, kd, kw, km }) {
     return item.close >= kd.Average5;
   },
 };
@@ -782,7 +798,7 @@ export const techMaplist = Object.keys(techMap);
 export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
-    filters[name] = function(items) {
+    filters[name] = function (items) {
       return items.filter((e) => e[`_${name}`]);
     };
   }
@@ -800,7 +816,7 @@ export async function callFun(item) {
 export class fnTechData extends fn {
   constructor([item]) {
     super(`${item.code}/tech2.json`);
-    this.get = async function() {
+    this.get = async function () {
       return await callFun(item);
     };
   }

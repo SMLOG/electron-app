@@ -496,17 +496,18 @@ function getTrees(conf) {
     if (row[0]) {
       pid = ++id;
       if (cat.startsWith("@")) {
-        let subroot = { id: pid, parentid: "root", topic: cat };
+        let subroot = { id: pid, parentid: "root", topic: cat, subTree: 1 };
         tree.push(subroot);
         tree = [subroot];
         trees.push(tree);
+      } else {
+        let catnode = {};
+        catnode.id = pid;
+        catnode.topic = cat;
+        catnode.direction = "right";
+        catnode.parentid = tree[0].id;
+        tree.push(catnode);
       }
-      let catnode = {};
-      catnode.id = pid;
-      catnode.topic = cat;
-      catnode.direction = "right";
-      catnode.parentid = tree[0].id;
-      tree.push(catnode);
     }
     let name = row[1];
     let alias = row[3]

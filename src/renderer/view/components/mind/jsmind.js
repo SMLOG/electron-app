@@ -1,21 +1,9 @@
-/*
- * Released under BSD License
- * Copyright (c) 2014-2016 hizzgdev@163.com
- *
- * Project Home:
- *   https://github.com/hizzgdev/jsmind/
- */
 import $ from "jquery";
 import _ from "lodash";
-// set 'jsMind' as the library name.
-// __name__ should be a const value, Never try to change it easily.
 var __name__ = "jsMind";
-// library version
 var __version__ = "0.4.6";
-// author
 var __author__ = "hizzgdev@163.com";
 
-// an noop function define
 var _noop = function() {};
 var logger =
   typeof console === "undefined"
@@ -45,14 +33,6 @@ var $t = function(n, t) {
   }
 };
 
-var $h = function(n, t) {
-  if (t instanceof HTMLElement) {
-    n.innerHTML = "";
-    n.appendChild(t);
-  } else {
-    n.innerHTML = t;
-  }
-};
 // detect isElement
 var $i = function(el) {
   return (
@@ -561,124 +541,6 @@ jm.mind.prototype = {
 };
 
 jm.format = {
-  node_tree: {
-    example: {
-      meta: {
-        name: __name__,
-        author: __author__,
-        version: __version__,
-      },
-      format: "node_tree",
-      data: { id: "root", topic: "jsMind Example" },
-    },
-    get_mind: function(source) {
-      var df = jm.format.node_tree;
-      var mind = new jm.mind();
-      mind.name = source.meta.name;
-      mind.author = source.meta.author;
-      mind.version = source.meta.version;
-      df._parse(mind, source.data);
-      return mind;
-    },
-    get_data: function(mind) {
-      var df = jm.format.node_tree;
-      var json = {};
-      json.meta = {
-        name: mind.name,
-        author: mind.author,
-        version: mind.version,
-      };
-      json.format = "node_tree";
-      json.data = df._buildnode(mind.root);
-      return json;
-    },
-
-    _parse: function(mind, node_root) {
-      var df = jm.format.node_tree;
-      var data = df._extract_data(node_root);
-      mind.set_root(node_root.id, node_root.topic, data);
-      if ("children" in node_root) {
-        var children = node_root.children;
-        for (var i = 0; i < children.length; i++) {
-          df._extract_subnode(mind, mind.root, children[i]);
-        }
-      }
-    },
-
-    _extract_data: function(node_json) {
-      var data = {};
-      for (var k in node_json) {
-        if (
-          k == "id" ||
-          k == "topic" ||
-          k == "children" ||
-          k == "direction" ||
-          k == "expanded"
-        ) {
-          continue;
-        }
-        data[k] = node_json[k];
-      }
-      return data;
-    },
-
-    _extract_subnode: function(mind, node_parent, node_json) {
-      var df = jm.format.node_tree;
-      var data = df._extract_data(node_json);
-      var d = null;
-      if (node_parent.isroot) {
-        d =
-          node_json.direction == "left"
-            ? jm.direction.left
-            : jm.direction.right;
-      }
-      var node = mind.add_node(
-        node_parent,
-        node_json.id,
-        node_json.topic,
-        data,
-        null,
-        d,
-        node_json.expanded
-      );
-      if ("children" in node_json) {
-        var children = node_json.children;
-        for (var i = 0; i < children.length; i++) {
-          df._extract_subnode(mind, node, children[i]);
-        }
-      }
-    },
-
-    _buildnode: function(node) {
-      var df = jm.format.node_tree;
-      if (!(node instanceof jm.node)) {
-        return;
-      }
-      var o = {
-        id: node.id,
-        topic: node.topic,
-        expanded: node.expanded,
-      };
-      if (!!node.parent && node.parent.isroot) {
-        o.direction = node.direction == jm.direction.left ? "left" : "right";
-      }
-      if (node.data != null) {
-        var node_data = node.data;
-        for (var k in node_data) {
-          o[k] = node_data[k];
-        }
-      }
-      var children = node.children;
-      if (children.length > 0) {
-        o.children = [];
-        for (var i = 0; i < children.length; i++) {
-          o.children.push(df._buildnode(children[i]));
-        }
-      }
-      return o;
-    },
-  },
-
   node_array: {
     example: {
       meta: {
@@ -687,7 +549,7 @@ jm.format = {
         version: __version__,
       },
       format: "node_array",
-      data: [{ id: "root", topic: "jsMind Example", isroot: true }],
+      data: [{ id: "root", topic: "jsMind Example" }],
     },
 
     get_mind: function(source) {
@@ -723,24 +585,18 @@ jm.format = {
       var root_id = df._extract_root(mind, narray);
       if (!!root_id) {
         df._extract_subnode(mind, root_id, narray);
-      } else {
-        logger.error("root node can not be found");
       }
     },
 
     _extract_root: function(mind, node_array) {
       var df = jm.format.node_array;
       var i = node_array.length;
-      while (i--) {
-        if ("isroot" in node_array[i] && node_array[i].isroot) {
-          var root_json = node_array[i];
-          var data = df._extract_data(root_json);
-          mind.set_root(root_json.id, root_json.topic, data);
-          node_array.splice(i, 1);
-          return root_json.id;
-        }
-      }
-      return null;
+
+      var root_json = node_array[i - 1];
+      var data = root_json;
+      mind.set_root(root_json.id, root_json.topic, data);
+      node_array.splice(i - 1, 1);
+      return root_json.id;
     },
 
     _extract_subnode: function(mind, parentid, node_array) {
@@ -752,7 +608,7 @@ jm.format = {
       while (i--) {
         node_json = node_array[i];
         if (node_json.parentid == parentid) {
-          data = df._extract_data(node_json);
+          data = node_json;
           var d = null;
           var node_direction = node_json.direction;
           if (!!node_direction) {
@@ -783,24 +639,6 @@ jm.format = {
         }
       }
       return extract_count;
-    },
-
-    _extract_data: function(node_json) {
-      var data = {};
-      for (var k in node_json) {
-        if (
-          k == "id" ||
-          k == "topic" ||
-          k == "parentid" ||
-          k == "isroot" ||
-          k == "direction" ||
-          k == "expanded"
-        ) {
-          continue;
-        }
-        data[k] = node_json[k];
-      }
-      return data;
     },
 
     _array: function(mind, node_array) {
@@ -838,193 +676,6 @@ jm.format = {
       for (var i = 0; i < ci; i++) {
         df._array_node(node.children[i], node_array);
       }
-    },
-  },
-
-  freemind: {
-    example: {
-      meta: {
-        name: __name__,
-        author: __author__,
-        version: __version__,
-      },
-      format: "freemind",
-      data:
-        '<map version="1.0.1"><node ID="root" TEXT="freemind Example"/></map>',
-    },
-    get_mind: function(source) {
-      var df = jm.format.freemind;
-      var mind = new jm.mind();
-      mind.name = source.meta.name;
-      mind.author = source.meta.author;
-      mind.version = source.meta.version;
-      var xml = source.data;
-      var xml_doc = df._parse_xml(xml);
-      var xml_root = df._find_root(xml_doc);
-      df._load_node(mind, null, xml_root);
-      return mind;
-    },
-
-    get_data: function(mind) {
-      var df = jm.format.freemind;
-      var json = {};
-      json.meta = {
-        name: mind.name,
-        author: mind.author,
-        version: mind.version,
-      };
-      json.format = "freemind";
-      var xmllines = [];
-      xmllines.push('<map version="1.0.1">');
-      df._buildmap(mind.root, xmllines);
-      xmllines.push("</map>");
-      json.data = xmllines.join(" ");
-      return json;
-    },
-
-    _parse_xml: function(xml) {
-      var xml_doc = null;
-      if (window.DOMParser) {
-        var parser = new DOMParser();
-        xml_doc = parser.parseFromString(xml, "text/xml");
-      } else {
-        // Internet Explorer
-        xml_doc = new ActiveXObject("Microsoft.XMLDOM");
-        xml_doc.async = false;
-        xml_doc.loadXML(xml);
-      }
-      return xml_doc;
-    },
-
-    _find_root: function(xml_doc) {
-      var nodes = xml_doc.childNodes;
-      var node = null;
-      var root = null;
-      var n = null;
-      for (var i = 0; i < nodes.length; i++) {
-        n = nodes[i];
-        if (n.nodeType == 1 && n.tagName == "map") {
-          node = n;
-          break;
-        }
-      }
-      if (!!node) {
-        var ns = node.childNodes;
-        node = null;
-        for (var i = 0; i < ns.length; i++) {
-          n = ns[i];
-          if (n.nodeType == 1 && n.tagName == "node") {
-            node = n;
-            break;
-          }
-        }
-      }
-      return node;
-    },
-
-    _load_node: function(mind, parent_id, xml_node) {
-      var df = jm.format.freemind;
-      var node_id = xml_node.getAttribute("ID");
-      var node_topic = xml_node.getAttribute("TEXT");
-      // look for richcontent
-      if (node_topic == null) {
-        var topic_children = xml_node.childNodes;
-        var topic_child = null;
-        for (var i = 0; i < topic_children.length; i++) {
-          topic_child = topic_children[i];
-          //logger.debug(topic_child.tagName);
-          if (
-            topic_child.nodeType == 1 &&
-            topic_child.tagName === "richcontent"
-          ) {
-            node_topic = topic_child.textContent;
-            break;
-          }
-        }
-      }
-      var node_data = df._load_attributes(xml_node);
-      var node_expanded =
-        "expanded" in node_data ? node_data.expanded == "true" : true;
-      delete node_data.expanded;
-
-      var node_position = xml_node.getAttribute("POSITION");
-      var node_direction = null;
-      if (!!node_position) {
-        node_direction =
-          node_position == "left" ? jm.direction.left : jm.direction.right;
-      }
-      //logger.debug(node_position +':'+ node_direction);
-      if (!!parent_id) {
-        mind.add_node(
-          parent_id,
-          node_id,
-          node_topic,
-          node_data,
-          null,
-          node_direction,
-          node_expanded
-        );
-      } else {
-        mind.set_root(node_id, node_topic, node_data);
-      }
-      var children = xml_node.childNodes;
-      var child = null;
-      for (var i = 0; i < children.length; i++) {
-        child = children[i];
-        if (child.nodeType == 1 && child.tagName == "node") {
-          df._load_node(mind, node_id, child);
-        }
-      }
-    },
-
-    _load_attributes: function(xml_node) {
-      var children = xml_node.childNodes;
-      var attr = null;
-      var attr_data = {};
-      for (var i = 0; i < children.length; i++) {
-        attr = children[i];
-        if (attr.nodeType == 1 && attr.tagName === "attribute") {
-          attr_data[attr.getAttribute("NAME")] = attr.getAttribute("VALUE");
-        }
-      }
-      return attr_data;
-    },
-
-    _buildmap: function(node, xmllines) {
-      var df = jm.format.freemind;
-      var pos = null;
-      if (!!node.parent && node.parent.isroot) {
-        pos = node.direction === jm.direction.left ? "left" : "right";
-      }
-      xmllines.push("<node");
-      xmllines.push('ID="' + node.id + '"');
-      if (!!pos) {
-        xmllines.push('POSITION="' + pos + '"');
-      }
-      xmllines.push('TEXT="' + node.topic + '">');
-
-      // store expanded status as an attribute
-      xmllines.push(
-        '<attribute NAME="expanded" VALUE="' + node.expanded + '"/>'
-      );
-
-      // for attributes
-      var node_data = node.data;
-      if (node_data != null) {
-        for (var k in node_data) {
-          xmllines.push(
-            '<attribute NAME="' + k + '" VALUE="' + node_data[k] + '"/>'
-          );
-        }
-      }
-
-      // for children
-      var children = node.children;
-      for (var i = 0; i < children.length; i++) {
-        df._buildmap(children[i], xmllines);
-      }
-
-      xmllines.push("</node>");
     },
   },
 };
@@ -1874,27 +1525,10 @@ jm.data_provider.prototype = {
   },
 
   load: function(mind_data) {
-    var df = null;
     var mind = null;
-    if (typeof mind_data === "object") {
-      if (!!mind_data.format) {
-        df = mind_data.format;
-      } else {
-        df = "node_tree";
-      }
-    } else {
-      df = "freemind";
-    }
 
-    if (df == "node_array") {
-      mind = jm.format.node_array.get_mind(mind_data);
-    } else if (df == "node_tree") {
-      mind = jm.format.node_tree.get_mind(mind_data);
-    } else if (df == "freemind") {
-      mind = jm.format.freemind.get_mind(mind_data);
-    } else {
-      logger.warn("unsupported format");
-    }
+    mind = jm.format.node_array.get_mind(mind_data);
+
     return mind;
   },
 
@@ -2555,31 +2189,10 @@ jm.view_provider.prototype = {
         ? new jm.graph_svg(this)
         : new jm.graph_canvas(this);
 
-    this.e_panel.className = "jsmind-inner";
-    this.e_panel.appendChild(this.graph.element());
-    this.e_panel.appendChild(this.e_nodes);
-
-    this.e_editor.className = "jsmind-editor";
-    this.e_editor.type = "text";
-
     this.actualZoom = 1;
     this.zoomStep = 0.1;
     this.minZoom = 0.5;
     this.maxZoom = 2;
-
-    var v = this;
-    jm.util.dom.add_event(this.e_editor, "keydown", function(e) {
-      var evt = e || event;
-      if (evt.keyCode == 13) {
-        v.edit_node_end();
-        evt.stopPropagation();
-      }
-    });
-    jm.util.dom.add_event(this.e_editor, "blur", function(e) {
-      v.edit_node_end();
-    });
-
-    this.container.appendChild(this.e_panel);
   },
 
   add_event: function(obj, event_name, event_handle) {
@@ -2616,7 +2229,6 @@ jm.view_provider.prototype = {
     logger.debug("view.reset");
     this.selected_node = null;
     this.clear_lines();
-    this.clear_nodes();
     this.reset_theme();
   },
 
@@ -2901,21 +2513,6 @@ jm.view_provider.prototype = {
       parseInt(vd.element.style.top) - vd._saved_location.y;
   },
 
-  clear_nodes: function() {
-    var mind = this.jm.mind;
-    if (mind == null) {
-      return;
-    }
-    var nodes = mind.nodes;
-    var node = null;
-    for (var nodeid in nodes) {
-      node = nodes[nodeid];
-      node._data.view.element = null;
-      node._data.view.expander = null;
-    }
-    //this.e_nodes.innerHTML = "";
-  },
-
   show_nodes: function() {
     var nodes = this.jm.mind.nodes;
     var node = null;
@@ -2944,19 +2541,19 @@ jm.view_provider.prototype = {
       node_element.style.top = _offset.y + p.y + "px";
       node_element.style.display = "";
       node_element.style.visibility = "visible";
-      if (!node.isroot && node.children.length > 0) {
-        expander_text = node.expanded ? "-" : "+";
-        p_expander = this.layout.get_expander_point(node);
-        expander.style.left = _offset.x + p_expander.x + "px";
-        expander.style.top = _offset.y + p_expander.y + "px";
-        expander.style.display = "";
-        expander.style.visibility = "visible";
-        $t(expander, expander_text);
-      }
-      // hide expander while all children have been removed
-      if (!node.isroot && node.children.length == 0) {
-        expander.style.display = "none";
-        expander.style.visibility = "hidden";
+      if (!node.isroot) {
+        if (node.children.length > 0 || node.topic.indexOf("@") == 0) {
+          expander_text = node.expanded ? "-" : "+";
+          p_expander = this.layout.get_expander_point(node);
+          expander.style.left = _offset.x + p_expander.x + "px";
+          expander.style.top = _offset.y + p_expander.y + "px";
+          expander.style.display = "";
+          expander.style.visibility = "visible";
+          $t(expander, expander_text);
+        } else {
+          expander.style.display = "none";
+          expander.style.visibility = "hidden";
+        }
       }
     }
   },

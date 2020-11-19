@@ -127,16 +127,31 @@ export default {
           );
           this.info = resp.data.info;
           this.items.push(this.info);
+          let datas = [];
           this.$http.get("/static/root.json").then((resp) => {
-            this.mind.data.splice(0, this.mind.data.length, ...resp.data);
-            setTimeout(() => {
-              this.jm = this.$refs.jsMind.jm;
-              this.jmObj = this.$refs.jsMind.jmObj;
-              $(window).resize(() => {
-                this.height = $(window).height() - 35;
-                this.jm.resize();
-              });
-            }, 1000);
+            datas.push(...resp.data);
+            (async () => {
+              let subTree = resp.data.filter(
+                (e) => e.parentid == "root" && e.subTree
+              );
+              for (let i = 0; i < subTree.length; i++) {
+                let nodes = await this.$http
+                  .get(`/static/${subTree[i].id}.json`)
+                  .then((r) => r.data);
+                console.log(nodes);
+                nodes.shift();
+                datas.push(...nodes);
+              }
+              this.mind.data.push(...datas);
+              setTimeout(() => {
+                this.jm = this.$refs.jsMind.jm;
+                this.jmObj = this.$refs.jsMind.jmObj;
+                $(window).resize(() => {
+                  this.height = $(window).height() - 35;
+                  this.jm.resize();
+                });
+              }, 1000);
+            })();
           });
         });
     },

@@ -9,6 +9,7 @@
               class="jmnode"
               :key="node.id"
               :id="'node' + node.id"
+              :parentid="node.parentid"
               :nodeid="node.id"
               @click="selectnode(node)"
             >

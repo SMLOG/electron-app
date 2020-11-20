@@ -10,6 +10,7 @@
          <span>{{info.name}}</span>
          <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
          <span>pe_ttm: {{info.pe_ttm}}</span>
+         <span>总市值: {{$fmtNumber(info.zsz)}}</span>
           </div>
           <ul class="mylist" v-show="showMylist">
         <li class="info" v-for="info in mylist" :key="info.code">
@@ -142,6 +143,7 @@ export default {
                 nodes.shift();
                 datas.push(...nodes);
               }
+              this.mind.data.length = 0;
               this.mind.data.push(...datas);
               setTimeout(() => {
                 this.jm = this.$refs.jsMind.jm;
@@ -150,7 +152,8 @@ export default {
                   this.height = $(window).height() - 35;
                   this.jm.resize();
                 });
-              }, 1000);
+                this.jm.resize();
+              }, 100);
             })();
           });
         });

@@ -11,6 +11,7 @@ const Dbfx = require("../db/model/Dbfx");
 const Yj = require("../db/model/Yj");
 const Notice = require("../db/model/Notice");
 const { db } = require("../db/db");
+const { getReportDatas } = require("!/db/reports");
 import _ from "lodash";
 
 module.exports = {
@@ -54,6 +55,20 @@ module.exports = {
           },
         }
       );
+      if (rows.length == 0) {
+        await getReportDatas(code);
+        rows = await db.query(
+          `select * from v_summary where code = :code order by reportdate desc`,
+          {
+            logging: console.log,
+            type: db.QueryTypes.SELECT,
+            raw: true,
+            replacements: {
+              code: code,
+            },
+          }
+        );
+      }
 
       ret.datas = rows;
       ret.info = infos[0];

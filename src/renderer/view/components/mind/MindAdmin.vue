@@ -27,7 +27,7 @@
         <li class="navItem"  style="float:right;">
           <div id="jsmind_tools" class="jsmind-tools">
             <ul  >
-                <li v-for="(row,i) in mind.rawDatas" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
+                <li v-for="(row,i) in mind.rawDatas[0]" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
             </ul>
           </div>
         </li>

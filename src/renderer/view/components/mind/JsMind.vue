@@ -11,6 +11,7 @@
               :id="'node' + node.id"
               :parentid="node.parentid"
               :nodeid="node.id"
+              :alias="node.alias"
               @click="selectnode(node)"
             >
               <div>
@@ -30,6 +31,7 @@
                   {{ getTopicTitle(node) }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
                 <peity
+                  v-if="isTrendNode(node)"
                   :type="'bar'"
                   :options="{ fill: ['#c6d9fd'] }"
                   :data="getTrendDatas(node)"
@@ -122,8 +124,19 @@ export default {
     selectnode(node) {
       this.jm.select_node(node.id);
     },
+    isTrendNode(node) {
+      let rawDatas = this.values.rawDatas[node.sourceId || 0];
+      return (
+        node.alias &&
+        rawDatas.length > 1 &&
+        rawDatas[0][node.alias] != undefined
+      );
+    },
+
     getTrendDatas(node) {
-      return this.values.rawDatas
+      let rawDatas = this.values.rawDatas[node.sourceId || 0];
+
+      return rawDatas
         .map((e) => e[node.alias])
         .filter((e, i) => i < 5)
         .reverse()
@@ -134,7 +147,7 @@ export default {
     },
     getIndicator(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
-      let selectIndex = this.values.selectIndex;
+      let selectIndex = this.values.rawDatas > 1 ? this.values.selectIndex : 0;
       if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
         return rawDatas[selectIndex]["_" + node.alias];
       }
@@ -148,12 +161,10 @@ export default {
         (node.topic.indexOf("率") > 0 && node.topic.indexOf("周转") == -1)
           ? 1
           : 0;
+      let value = rawDatas[rawDatas.length > 1 ? selectIndex : 0][node.alias];
       return (
-        (rawDatas[selectIndex][node.alias] &&
-          (type ? this.$fmtPercent : this.$fmtNumber)(
-            (type ? 100 : 1) * rawDatas[selectIndex][node.alias]
-          )) ||
-        ""
+        value &&
+        (type ? this.$fmtPercent : this.$fmtNumber)((type ? 100 : 1) * value)
       );
     },
     init() {

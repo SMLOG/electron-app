@@ -194,7 +194,7 @@ var m = indexItems.reduce((m, row) => {
   return m;
 }, {});
 
-var m2 = `
+var midItemMap = `
 code=lr.code
 reportdate=lr.rreportdate
 reporttype=lr.reporttype
@@ -278,14 +278,14 @@ typename=lr.typename
     return r;
   }, {});
 
-m2["五年内分红"] = `( select 
+midItemMap["五年内分红"] = `( select 
     sum(ifnull(l.DIVIPROFITORINTPAY,0) )
      from xjllb l where 
       l.reporttype=1
      and l.rreportdate<=ll.rreportdate
      and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
      )`;
-m2["五年内处置"] = `( select 
+midItemMap["五年内处置"] = `( select 
       sum(ifnull(l.DISPFILASSETREC,0) )
        from xjllb l where 
        l.code = ll.code 
@@ -293,7 +293,7 @@ m2["五年内处置"] = `( select
        and l.rreportdate<=ll.rreportdate
        and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
        )`;
-m2["五年内购建"] = `( select 
+midItemMap["五年内购建"] = `( select 
         sum(ifnull(l.CASHEQUIENDING,0) )
          from xjllb l where 
          l.code = ll.code 
@@ -301,7 +301,7 @@ m2["五年内购建"] = `( select
          and l.rreportdate<=ll.rreportdate
          and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
          )`;
-m2["最近5年度营业活动净现金流量"] = `( select 
+midItemMap["最近5年度营业活动净现金流量"] = `( select 
           sum(ifnull(l.CASHEQUIENDING,0) )
            from xjllb l where 
            l.code = ll.code 
@@ -309,15 +309,15 @@ m2["最近5年度营业活动净现金流量"] = `( select
            and l.rreportdate<=ll.rreportdate
            and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
            )`;
-m2["五年前期初存货"] = `
+midItemMap["五年前期初存货"] = `
            (select 
            z5.INVENTORY
            from zcfzb z5 
            where z5.code=ll.code 
            and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
            ) `;
-m2["总市值"] = `(select zsz from hq where code =lr.code)`;
-m = _.assign(m, m2);
+midItemMap["总市值"] = `(select zsz from hq where code =lr.code)`;
+m = _.assign(m, midItemMap);
 
 /*(async () => {
   let rows = _.toPairs(m2).map((e) => {

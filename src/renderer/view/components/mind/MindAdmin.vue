@@ -9,8 +9,7 @@
           <font-awesome-icon :icon="['fas', 'info-circle']" />
          <span>{{info.name}}</span>
          <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
-         <span>pe_ttm: {{info.pe_ttm}}</span>
-         <span>总市值: {{$fmtNumber(info.zsz)}}</span>
+
           </div>
           <ul class="mylist" v-show="showMylist">
         <li class="info" v-for="info in mylist" :key="info.code">
@@ -22,6 +21,10 @@
 
         </li>
         </ul>
+        </li>
+        <li class="navItem" >
+                   <span>pe_ttm: {{info.pe_ttm}}</span>
+         <span>总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
         <li class="navItem"  style="float:right;">

@@ -23,29 +23,28 @@
         </li>
         </ul>
         </li>
-        <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
+        <li class="navItem"  v-for="node in minds[0].data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
         <li class="navItem"  style="float:right;">
-              <div id="jsmind_tools" class="jsmind-tools">
-    <ul>
-        <li v-for="(row,i) in mind.rawDatas" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
-   
-    </ul>
-  
-</div>
+          <div id="jsmind_tools" class="jsmind-tools">
+            <ul  >
+                <li v-for="(row,i) in minds[0].rawDatas" :key="row.reportdate" :class="{cur:i==minds[0].selectIndex}" @click="minds[0].selectIndex=i">{{row.reportdate}}</li>
+            </ul>
+          </div>
         </li>
         </ul>
         </div>
-      
-
     </div>
+    <div v-for="mind in minds" :key="mind.name">
     <js-mind style="margin-top: 35px;"
       v-if="mind.data.length>0"
       :values="mind"
       :options="{}"
-      ref="jsMind"
+      :ref="'jsMind'+mind.name"
       :height="height+'px'"
       width:='100%'
     ></js-mind>
+    </div>
+
   </div>
 </template>
 <script>
@@ -64,11 +63,14 @@ export default {
       items: [],
       info: null,
       height: 1000,
-      mind: {
-        selectIndex: 0,
-        rawDatas: [],
-        data: [],
-      },
+      minds: [
+        {
+          name: "root",
+          selectIndex: 0,
+          rawDatas: [],
+          data: [],
+        },
+      ],
     };
   },
   components: { JsMind, SearchPanel },
@@ -115,41 +117,40 @@ export default {
           },
         })
         .then((resp) => {
-          this.mind.rawDatas.splice(
-            0,
-            this.mind.rawDatas.length,
-            ...resp.data.datas
-          );
-          this.info = resp.data.info;
-          this.items.push(this.info);
-          let datas = [];
-          this.$http.get("/static/root.json").then((resp) => {
-            datas.push(...resp.data);
-            (async () => {
-              let subTree = resp.data.filter(
-                (e) => e.parentid == "root" && e.subTree
-              );
-              for (let i = 0; i < subTree.length; i++) {
-                let nodes = await this.$http
-                  .get(`/static/${subTree[i].id}.json`)
-                  .then((r) => r.data);
-                console.log(nodes);
-                nodes.shift();
-                datas.push(...nodes);
-              }
-              this.mind.data.length = 0;
-              this.mind.data.push(...datas);
-              setTimeout(() => {
-                this.jm = this.$refs.jsMind.jm;
-                this.jmObj = this.$refs.jsMind.jmObj;
-                $(window).resize(() => {
-                  this.height = $(window).height() - 35;
+          for (let k = 0; k < this.minds.length; k++) {
+            let mind = this.minds[k];
+            mind.rawDatas.splice(0, mind.rawDatas.length, ...resp.data.datas);
+            this.info = resp.data.info;
+            this.items.push(this.info);
+            let datas = [];
+            this.$http.get(`/static/${mind.name}.json`).then((resp) => {
+              datas.push(...resp.data);
+              (async () => {
+                let subTree = resp.data.filter(
+                  (e) => e.parentid == "root" && e.subTree
+                );
+                for (let i = 0; i < subTree.length; i++) {
+                  let nodes = await this.$http
+                    .get(`/static/${subTree[i].id}.json`)
+                    .then((r) => r.data);
+                  console.log(nodes);
+                  nodes.shift();
+                  datas.push(...nodes);
+                }
+                mind.data.length = 0;
+                mind.data.push(...datas);
+                setTimeout(() => {
+                  this.jm = this.$refs.jsMind.jm;
+                  this.jmObj = this.$refs.jsMind.jmObj;
+                  $(window).resize(() => {
+                    this.height = $(window).height() - 35;
+                    this.jm.resize();
+                  });
                   this.jm.resize();
-                });
-                this.jm.resize();
-              }, 100);
-            })();
-          });
+                }, 100);
+              })();
+            });
+          }
         });
     },
     to(id) {
@@ -157,21 +158,6 @@ export default {
         behavior: "smooth",
         block: "center",
       });
-    },
-    add_node() {
-      var selected_node = this.jm.get_selected_node(); // as parent of new node
-      if (!selected_node) {
-        alert("please select a node first.");
-        return;
-      }
-
-      var nodeid = this.jmObj.util.uuid.newid();
-      var topic = "* Node_" + nodeid.substr(nodeid.length - 6) + " *";
-      this.jm.enable_edit();
-      this.mind.data.push({ id: nodeid, topic: topic });
-      setTimeout(() => {
-        var node = this.jm.add_node(selected_node, nodeid, topic);
-      }, 100);
     },
   },
 };

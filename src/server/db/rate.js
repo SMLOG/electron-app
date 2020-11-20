@@ -79,7 +79,7 @@ var indexItems = [
     "",
     "ROIC=资本回报率(%)",
     "",
-    "资本回报率 (ROIC%)\n    \n    \n    = 息税前利润 EBIT x (1 - 税率) / 投入资本",
+    "资本回报率 (ROIC%)\n    \n    \n    = 息税前利润 * (1 - 税率) / 投入资本",
   ],
   [
     "",
@@ -172,7 +172,7 @@ var indexItems = [
   ["", "PEG", "", "PEG = PE/100/利润增长率"],
 ];
 
-var m = indexItems.reduce((m, row) => {
+var itemMap = indexItems.reduce((m, row) => {
   var formulaContent = row[3].split(/=/);
   var left = formulaContent[0]
     .trim()
@@ -317,7 +317,7 @@ midItemMap["五年前期初存货"] = `
            and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
            ) `;
 midItemMap["总市值"] = `(select zsz from hq where code =lr.code)`;
-m = _.assign(m, midItemMap);
+_.assign(itemMap, midItemMap);
 
 /*(async () => {
   let rows = _.toPairs(m2).map((e) => {
@@ -342,7 +342,7 @@ m = _.assign(m, midItemMap);
   });
 })();*/
 const itemRegex = /([^\s\.\+\-\*\/><=\(\)\d]+\d*)+/g;
-function loopRun(map, arr, exist) {
+function toLevelItems(map, arr, exist) {
   if (!map) return null;
   if (!arr) arr = [];
   if (!exist) exist = {};
@@ -357,7 +357,7 @@ function loopRun(map, arr, exist) {
 
     arr.push(select);
     _.defaults(exist, select);
-    return loopRun(_.omit(map, Object.keys(select)), arr, exist);
+    return toLevelItems(_.omit(map, Object.keys(select)), arr, exist);
   } else {
     let select = _.toPairs(_.omit(map, Object.keys(exist))).filter((e) => {
       let matches = e[1].match(itemRegex);
@@ -393,7 +393,7 @@ function loopRun(map, arr, exist) {
     );
     arr.push(result);
     _.defaults(exist, result);
-    return loopRun(_.omit(map, Object.keys(result)), arr, exist);
+    return toLevelItems(_.omit(map, Object.keys(result)), arr, exist);
   }
 }
 
@@ -401,39 +401,12 @@ function isFirstElement(content) {
   return content.indexOf("\n") > -1 || content.match(/[a-z]+\d*\./i);
 }
 
-function gensql(arr, query, len) {
-  let last = arr.pop();
-  let sql = _.toPairs(last)
-    .map(
-      (e) =>
-        `${
-          isFirstElement(e[1])
-            ? e[1]
-            : e[1].replace(itemRegex, function(v) {
-                return `\`${v}\``;
-              })
-        } "${e[0]}"`
-    )
-    .join(",\n");
-  let id = arr.length;
-  if (arr.length == 0) {
-    return `select ${sql} from ${query}  `;
-  }
-  return `select t${id}.*,${sql} from (${gensql(
-    arr,
-    query,
-    len || arr.length
-  )}) t${id} `;
-}
-
-let mmap = loopRun(m).reduce((mmap, i) => {
-  return _.assign(mmap, i);
-}, {});
+let levelItemsMap = toLevelItems(itemMap);
 
 function getchildnodes(node) {
   let nodes = [];
-  if (mmap[node.alias]) {
-    let content = mmap[node.alias];
+  if (itemMap[node.alias]) {
+    let content = itemMap[node.alias];
     let pnode = {};
     pnode.id = ++id;
     pnode.alias = pnode.topic = content;
@@ -523,12 +496,38 @@ function wrapFmt(arr, sql) {
 
   return `select ${wrapSelects} from (${sql}) w`;
 }
+
+function genSQL(levelMapArr, fromSQL, len) {
+  let last = levelMapArr.pop();
+  let sql = _.toPairs(last)
+    .map(
+      (e) =>
+        `${
+          isFirstElement(e[1])
+            ? e[1]
+            : e[1].replace(itemRegex, function(v) {
+                return `\`${v}\``;
+              })
+        } "${e[0]}"`
+    )
+    .join(",\n");
+  let id = levelMapArr.length;
+  if (levelMapArr.length == 0) {
+    return `select ${sql}  ${fromSQL}  `;
+  }
+  return `select t${id}.*,${sql} from (${genSQL(
+    levelMapArr,
+    fromSQL,
+    len || levelMapArr.length
+  )}) t${id} `;
+}
 let sql = sqlFormatter.format(
   `create or replace view v_summary as ` +
-    (loopRun(m),
-    gensql(
-      loopRun(m),
+    (levelItemsMap,
+    genSQL(
+      levelItemsMap,
       `  
+      from 
 lrb lr
 left join lrb lr2 on lr2.code=lr.code and lr2.rreportdate=lr.preportdate and lr2.reporttype=lr.reporttype
 

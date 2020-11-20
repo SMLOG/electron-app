@@ -14,15 +14,15 @@
           </div>
           <ul class="mylist" v-show="showMylist">
         <li class="info" v-for="info in mylist" :key="info.code">
-          <font-awesome-icon :icon="['fas', 'info-circle']" />
+          <font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
           <router-link :to="{params:{code:info.code}}">
          <span>{{info.name}}</span>
           </router-link>
          <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
+
         </li>
         </ul>
         </li>
-        <li class="navItem"  @click="add_node">add node</li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
         <li class="navItem"  style="float:right;">
               <div id="jsmind_tools" class="jsmind-tools">

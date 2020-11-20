@@ -3,7 +3,7 @@ import sqlFormatter from "sql-formatter";
 import fs from "fs";
 const { db } = require("./db");
 
-var conf = [
+var indexItems = [
   ["财务结构", "负债占资产比率(%)", "<0.6", "负债占资产比率 = 负债 / 总资产"],
   [
     "",
@@ -143,9 +143,7 @@ var conf = [
     "现金再投资比率 = (营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
     `现金再投资比率：用于分析公司靠自己日常营运实力赚来的钱（营业活动现金流量）扣除掉给股东现金股利，公司最后自己手上留下来的钱，用于再投资的能力。这个指标大于10%比较好。`,
   ],
-];
 
-const conf2 = [
   [
     "资产",
     "现金占总资产比率(%)",
@@ -173,32 +171,8 @@ const conf2 = [
   ["@估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
   ["", "PEG", "", "PEG = PE/100/利润增长率"],
 ];
-const conf3 = [
-  ["", "期初现金", false],
-  ["", "+ 营业活动现金流量\n    \n    \n       (from 损益表)", "", ""],
-  [
-    "",
-    "+ 投资活动现金流量\n    \n    \n       (from 资产负债表左)",
-    "",
-    "投资活动现金流量 = 购置物业、厂房、设备 + 出售物业、厂房、设备 + 购买业务  + 出售业务 + 购买投资 + 出售投资 + 无形资产购销净额 + 已终止投资活动的现金 + 其他投资活动的现金",
-  ],
-  [
-    "",
-    "+ 融资活动现金流量\n    \n    \n       (from 资产负债表右)",
-    "",
-    "融资活动现金流量 = 股票净发行 + 债务净发行 + 优先股净发行 + 股息现金流 + 其他融资",
-  ],
-  ["", "期末现金", false],
-  [
-    "",
-    "自由现金流(FCF)",
-    "",
-    "自由现金流(FCF) = 营业活动现金流量(OCF) - 资本支出",
-  ],
-];
 
-conf = conf.concat(conf2);
-var m = conf.reduce((m, row) => {
+var m = indexItems.reduce((m, row) => {
   var formulaContent = row[3].split(/=/);
   var left = formulaContent[0]
     .trim()
@@ -531,7 +505,7 @@ function getTrees(conf) {
   return trees.map((e) => e.filter((e) => e.topic.match(itemRegex)));
 }
 
-getTrees(conf).map((tree) => {
+getTrees(indexItems).map((tree) => {
   fs.writeFileSync(
     `/Users/alexwang/git/electron-suspension/static/${tree[0].id}.json`,
     JSON.stringify(tree, null, 4)

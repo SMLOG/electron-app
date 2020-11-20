@@ -41,7 +41,7 @@
     <js-mind style="margin-top: 35px;"
       v-if="mind.data.length>0"
       :values="mind"
-      :options="options"
+      :options="{}"
       ref="jsMind"
       :height="height+'px'"
       width:='100%'
@@ -64,16 +64,10 @@ export default {
       items: [],
       info: null,
       height: 1000,
-      theme_value: "",
       mind: {
         selectIndex: 0,
         rawDatas: [],
-        meta: {},
-        format: "node_array",
         data: [],
-      },
-      options: {
-        mode: "side",
       },
     };
   },

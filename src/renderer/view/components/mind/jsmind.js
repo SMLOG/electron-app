@@ -555,10 +555,6 @@ jm.format = {
     get_mind: function(source) {
       var df = jm.format.node_array;
       var mind = new jm.mind();
-      mind.name = source.meta.name;
-      mind.author = source.meta.author;
-      mind.version = source.meta.version;
-      mind.getTopic = source.getTopic;
       df._parse(mind, source.data);
       return mind;
     },

@@ -31,7 +31,9 @@ module.exports = {
     let data = await Yj.findAll({ where: { code: code } });
     ctx.body = data;
   },
+
   mind: async (ctx) => {
+    let type = ctx.query.type;
     let code = ctx.query.code;
     let ret = {};
 
@@ -44,8 +46,9 @@ module.exports = {
       },
     });
     if (infos.length == 1) {
+      let view = type == "gz" ? "v_gz" : "v_summary";
       let rows = await db.query(
-        `select * from v_summary where code = :code order by reportdate desc`,
+        `select * from ${view} where code = :code order by reportdate desc`,
         {
           logging: console.log,
           type: db.QueryTypes.SELECT,
@@ -58,7 +61,7 @@ module.exports = {
       if (rows.length == 0) {
         await getReportDatas(code);
         rows = await db.query(
-          `select * from v_summary where code = :code order by reportdate desc`,
+          `select * from ${view} where code = :code order by reportdate desc`,
           {
             logging: console.log,
             type: db.QueryTypes.SELECT,

@@ -30,7 +30,7 @@
                   {{ getTopicTitle(node) }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
                 <peity
-                  :type="'line'"
+                  :type="'bar'"
                   :options="{ fill: ['#c6d9fd'] }"
                   :data="getTrendDatas(node)"
                 ></peity>
@@ -133,7 +133,7 @@ export default {
       return node.topic.replace("(%)", "");
     },
     getIndicator(node) {
-      let rawDatas = this.values.rawDatas;
+      let rawDatas = this.values.rawDatas[node.sourceId || 0];
       let selectIndex = this.values.selectIndex;
       if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
         return rawDatas[selectIndex]["_" + node.alias];
@@ -141,7 +141,7 @@ export default {
       return false;
     },
     getTopic(node) {
-      let rawDatas = this.values.rawDatas;
+      let rawDatas = this.values.rawDatas[node.sourceId || 0];
       let selectIndex = this.values.selectIndex;
       let type =
         node.topic.indexOf("%") > 0 ||

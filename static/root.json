@@ -2071,11 +2071,5 @@
         "topic": "z.SUMSHEQUITY",
         "alias": "z.SUMSHEQUITY",
         "parentid": 343
-    },
-    {
-        "id": 345,
-        "parentid": "root",
-        "topic": "@估值分析",
-        "subTree": 1
     }
 ]

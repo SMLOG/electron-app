@@ -23,18 +23,17 @@
         </li>
         </ul>
         </li>
-        <li class="navItem"  v-for="node in minds[0].data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
+        <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
         <li class="navItem"  style="float:right;">
           <div id="jsmind_tools" class="jsmind-tools">
             <ul  >
-                <li v-for="(row,i) in minds[0].rawDatas" :key="row.reportdate" :class="{cur:i==minds[0].selectIndex}" @click="minds[0].selectIndex=i">{{row.reportdate}}</li>
+                <li v-for="(row,i) in mind.rawDatas" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
             </ul>
           </div>
         </li>
         </ul>
         </div>
     </div>
-    <div v-for="mind in minds" :key="mind.name">
     <js-mind style="margin-top: 35px;"
       v-if="mind.data.length>0"
       :values="mind"
@@ -43,7 +42,6 @@
       :height="height+'px'"
       width:='100%'
     ></js-mind>
-    </div>
 
   </div>
 </template>
@@ -63,14 +61,11 @@ export default {
       items: [],
       info: null,
       height: 1000,
-      minds: [
-        {
-          name: "root",
-          selectIndex: 0,
-          rawDatas: [],
-          data: [],
-        },
-      ],
+      mind: {
+        selectIndex: 0,
+        rawDatas: [],
+        data: [],
+      },
     };
   },
   components: { JsMind, SearchPanel },
@@ -108,50 +103,51 @@ export default {
         alert("请输入代码参数或者检查代码参数格式是否正确？");
         return;
       }
-      this.$http
-        .get("/api/mind", {
-          params: {
-            code:
-              (this.$route.params.code[0] == "6" ? "sh" : "sz") +
-              this.$route.params.code,
-          },
-        })
-        .then((resp) => {
-          for (let k = 0; k < this.minds.length; k++) {
-            let mind = this.minds[k];
-            mind.rawDatas.splice(0, mind.rawDatas.length, ...resp.data.datas);
-            this.info = resp.data.info;
-            this.items.push(this.info);
-            let datas = [];
-            this.$http.get(`/static/${mind.name}.json`).then((resp) => {
-              datas.push(...resp.data);
-              (async () => {
-                let subTree = resp.data.filter(
-                  (e) => e.parentid == "root" && e.subTree
-                );
-                for (let i = 0; i < subTree.length; i++) {
-                  let nodes = await this.$http
-                    .get(`/static/${subTree[i].id}.json`)
-                    .then((r) => r.data);
-                  console.log(nodes);
-                  nodes.shift();
-                  datas.push(...nodes);
-                }
-                mind.data.length = 0;
-                mind.data.push(...datas);
-                setTimeout(() => {
-                  this.jm = this.$refs.jsMind.jm;
-                  this.jmObj = this.$refs.jsMind.jmObj;
-                  $(window).resize(() => {
-                    this.height = $(window).height() - 35;
-                    this.jm.resize();
-                  });
-                  this.jm.resize();
-                }, 100);
-              })();
-            });
-          }
-        });
+
+      (async () => {
+        let mind = this.mind;
+
+        let datas = [];
+        mind.rawDatas.length = 0;
+
+        for (let type of ["root", "gz"]) {
+          let resp = await this.$http.get("/api/mind", {
+            params: {
+              type: type,
+              code:
+                (this.$route.params.code[0] == "6" ? "sh" : "sz") +
+                this.$route.params.code,
+            },
+          });
+          mind.rawDatas.push(resp.data.datas);
+          if (resp.data.info) this.info = resp.data.info;
+
+          await this.$http.get(`/static/${type}.json`).then((resp) => {
+            if (type != "root") {
+              let offsetid = datas[datas.length - 1].id;
+              for (let n of resp.data) {
+                n.id += offsetid;
+                if (n.parentid == 0) n.parentid = "root";
+                else n.parentid += offsetid;
+                datas.push(n);
+                n.sourceId = mind.rawDatas.length - 1;
+              }
+            } else datas.push(...resp.data);
+          });
+        }
+
+        mind.data.length = 0;
+        mind.data.push(...datas);
+        setTimeout(() => {
+          this.jm = this.$refs.jsMind.jm;
+          this.jmObj = this.$refs.jsMind.jmObj;
+          $(window).resize(() => {
+            this.height = $(window).height() - 35;
+            this.jm.resize();
+          });
+          this.jm.resize();
+        }, 2000);
+      })();
     },
     to(id) {
       this.$el.querySelector(`#node${id}`).scrollIntoView({

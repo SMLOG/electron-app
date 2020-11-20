@@ -1629,81 +1629,82 @@
     },
     {
         "id": 271,
+        "topic": "现金占总资产比率(%)",
+        "parentid": 240,
+        "alias": "现金占总资产比率",
+        "tip": "在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。\n    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。\n    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%"
+    },
+    {
+        "id": 272,
+        "topic": "(现金+约当现金) /总资产",
+        "alias": "(现金+约当现金) /总资产",
+        "parentid": 271
+    },
+    {
+        "id": 273,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 272
+    },
+    {
+        "id": 274,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 273
+    },
+    {
+        "id": 275,
+        "alias": "约当现金",
+        "topic": "约当现金",
+        "parentid": 272
+    },
+    {
+        "id": 276,
+        "topic": "有价证券",
+        "alias": "有价证券",
+        "parentid": 275
+    },
+    {
+        "id": 277,
+        "topic": "ifnull(z.FVALUEFASSET,0)",
+        "alias": "ifnull(z.FVALUEFASSET,0)",
+        "parentid": 276
+    },
+    {
+        "id": 278,
+        "alias": "现金",
+        "topic": "现金",
+        "parentid": 272
+    },
+    {
+        "id": 279,
+        "topic": "货币资金",
+        "alias": "货币资金",
+        "parentid": 278
+    },
+    {
+        "id": 280,
+        "topic": "z.MONETARYFUND",
+        "alias": "z.MONETARYFUND",
+        "parentid": 279
+    },
+    {
+        "id": 281,
         "topic": "资产",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 272,
+        "id": 282,
         "topic": "现金占总资产比率(%)",
-        "parentid": 271,
+        "parentid": 281,
         "alias": "现金占总资产比率",
         "tip": "在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。\n    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。\n    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%"
     },
     {
-        "id": 273,
+        "id": 283,
         "topic": "(现金+约当现金) /总资产",
         "alias": "(现金+约当现金) /总资产",
-        "parentid": 272
-    },
-    {
-        "id": 274,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 273
-    },
-    {
-        "id": 275,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 274
-    },
-    {
-        "id": 276,
-        "alias": "约当现金",
-        "topic": "约当现金",
-        "parentid": 273
-    },
-    {
-        "id": 277,
-        "topic": "有价证券",
-        "alias": "有价证券",
-        "parentid": 276
-    },
-    {
-        "id": 278,
-        "topic": "ifnull(z.FVALUEFASSET,0)",
-        "alias": "ifnull(z.FVALUEFASSET,0)",
-        "parentid": 277
-    },
-    {
-        "id": 279,
-        "alias": "现金",
-        "topic": "现金",
-        "parentid": 273
-    },
-    {
-        "id": 280,
-        "topic": "货币资金",
-        "alias": "货币资金",
-        "parentid": 279
-    },
-    {
-        "id": 281,
-        "topic": "z.MONETARYFUND",
-        "alias": "z.MONETARYFUND",
-        "parentid": 280
-    },
-    {
-        "id": 282,
-        "topic": "应收款项(%)",
-        "parentid": 271,
-        "alias": "应收款项占总资产比率"
-    },
-    {
-        "id": 283,
-        "topic": "应收款项 / 总资产",
-        "alias": "应收款项 / 总资产",
         "parentid": 282
     },
     {
@@ -1720,356 +1721,416 @@
     },
     {
         "id": 286,
-        "alias": "应收款项",
-        "topic": "应收款项",
+        "alias": "约当现金",
+        "topic": "约当现金",
         "parentid": 283
     },
     {
         "id": 287,
-        "topic": "z.ACCOUNTBILLREC",
-        "alias": "z.ACCOUNTBILLREC",
+        "topic": "有价证券",
+        "alias": "有价证券",
         "parentid": 286
     },
     {
         "id": 288,
-        "topic": "存货(%)",
-        "parentid": 271,
-        "alias": "存货占总资产比率"
+        "topic": "ifnull(z.FVALUEFASSET,0)",
+        "alias": "ifnull(z.FVALUEFASSET,0)",
+        "parentid": 287
     },
     {
         "id": 289,
-        "topic": "存货 / 总资产",
-        "alias": "存货 / 总资产",
-        "parentid": 288
+        "alias": "现金",
+        "topic": "现金",
+        "parentid": 283
     },
     {
         "id": 290,
-        "alias": "总资产",
-        "topic": "总资产",
+        "topic": "货币资金",
+        "alias": "货币资金",
         "parentid": 289
     },
     {
         "id": 291,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z.MONETARYFUND",
+        "alias": "z.MONETARYFUND",
         "parentid": 290
     },
     {
         "id": 292,
-        "alias": "存货",
-        "topic": "存货",
-        "parentid": 289
+        "topic": "应收款项(%)",
+        "parentid": 281,
+        "alias": "应收款项占总资产比率"
     },
     {
         "id": 293,
-        "topic": "z.INVENTORY",
-        "alias": "z.INVENTORY",
+        "topic": "应收款项 / 总资产",
+        "alias": "应收款项 / 总资产",
         "parentid": 292
     },
     {
         "id": 294,
-        "topic": "其他流动资产(%)",
-        "parentid": 271,
-        "alias": "其他流动资产占总资产比率"
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 293
     },
     {
         "id": 295,
-        "topic": "其他流动资产 / 总资产",
-        "alias": "其他流动资产 / 总资产",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 294
     },
     {
         "id": 296,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 295
+        "alias": "应收款项",
+        "topic": "应收款项",
+        "parentid": 293
     },
     {
         "id": 297,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z.ACCOUNTBILLREC",
+        "alias": "z.ACCOUNTBILLREC",
         "parentid": 296
     },
     {
         "id": 298,
-        "alias": "其他流动资产",
-        "topic": "其他流动资产",
-        "parentid": 295
+        "topic": "存货(%)",
+        "parentid": 281,
+        "alias": "存货占总资产比率"
     },
     {
         "id": 299,
-        "topic": "z.OTHERLASSET",
-        "alias": "z.OTHERLASSET",
+        "topic": "存货 / 总资产",
+        "alias": "存货 / 总资产",
         "parentid": 298
     },
     {
         "id": 300,
-        "topic": "流动资产(%)",
-        "parentid": 271,
-        "alias": "流动资产占总资产比率"
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 299
     },
     {
         "id": 301,
-        "topic": "流动资产 / 总资产",
-        "alias": "流动资产 / 总资产",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 300
     },
     {
         "id": 302,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 301
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 299
     },
     {
         "id": 303,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z.INVENTORY",
+        "alias": "z.INVENTORY",
         "parentid": 302
     },
     {
         "id": 304,
-        "alias": "流动资产",
-        "topic": "流动资产",
-        "parentid": 301
+        "topic": "其他流动资产(%)",
+        "parentid": 281,
+        "alias": "其他流动资产占总资产比率"
     },
     {
         "id": 305,
-        "topic": "z.SUMLASSET",
-        "alias": "z.SUMLASSET",
+        "topic": "其他流动资产 / 总资产",
+        "alias": "其他流动资产 / 总资产",
         "parentid": 304
     },
     {
         "id": 306,
-        "topic": "商誉(%)",
-        "parentid": 271,
-        "alias": "商誉比率"
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 305
     },
     {
         "id": 307,
-        "topic": "商誉 / 总资产",
-        "alias": "商誉 / 总资产",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 306
     },
     {
         "id": 308,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 307
+        "alias": "其他流动资产",
+        "topic": "其他流动资产",
+        "parentid": 305
     },
     {
         "id": 309,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z.OTHERLASSET",
+        "alias": "z.OTHERLASSET",
         "parentid": 308
     },
     {
         "id": 310,
-        "alias": "商誉",
-        "topic": "商誉",
-        "parentid": 307
+        "topic": "流动资产(%)",
+        "parentid": 281,
+        "alias": "流动资产占总资产比率"
     },
     {
         "id": 311,
-        "topic": "ifnull(z.GOODWILL,0)",
-        "alias": "ifnull(z.GOODWILL,0)",
+        "topic": "流动资产 / 总资产",
+        "alias": "流动资产 / 总资产",
         "parentid": 310
     },
     {
         "id": 312,
-        "topic": "非流动资产(%)",
-        "parentid": 271,
-        "alias": "非流动资产占总资产比率"
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 311
     },
     {
         "id": 313,
-        "topic": "非流动资产 / 总资产",
-        "alias": "非流动资产 / 总资产",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 312
     },
     {
         "id": 314,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 313
+        "alias": "流动资产",
+        "topic": "流动资产",
+        "parentid": 311
     },
     {
         "id": 315,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z.SUMLASSET",
+        "alias": "z.SUMLASSET",
         "parentid": 314
     },
     {
         "id": 316,
-        "alias": "非流动资产",
-        "topic": "非流动资产",
-        "parentid": 313
+        "topic": "商誉(%)",
+        "parentid": 281,
+        "alias": "商誉比率"
     },
     {
         "id": 317,
-        "topic": "z.SUMNONLASSET",
-        "alias": "z.SUMNONLASSET",
+        "topic": "商誉 / 总资产",
+        "alias": "商誉 / 总资产",
         "parentid": 316
     },
     {
         "id": 318,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 317
+    },
+    {
+        "id": 319,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 318
+    },
+    {
+        "id": 320,
+        "alias": "商誉",
+        "topic": "商誉",
+        "parentid": 317
+    },
+    {
+        "id": 321,
+        "topic": "ifnull(z.GOODWILL,0)",
+        "alias": "ifnull(z.GOODWILL,0)",
+        "parentid": 320
+    },
+    {
+        "id": 322,
+        "topic": "非流动资产(%)",
+        "parentid": 281,
+        "alias": "非流动资产占总资产比率"
+    },
+    {
+        "id": 323,
+        "topic": "非流动资产 / 总资产",
+        "alias": "非流动资产 / 总资产",
+        "parentid": 322
+    },
+    {
+        "id": 324,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 323
+    },
+    {
+        "id": 325,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 324
+    },
+    {
+        "id": 326,
+        "alias": "非流动资产",
+        "topic": "非流动资产",
+        "parentid": 323
+    },
+    {
+        "id": 327,
+        "topic": "z.SUMNONLASSET",
+        "alias": "z.SUMNONLASSET",
+        "parentid": 326
+    },
+    {
+        "id": 328,
         "topic": "负债",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 319,
+        "id": 329,
         "topic": "应付款项(%)",
-        "parentid": 318,
+        "parentid": 328,
         "alias": "应付款项占总资产比率"
     },
     {
-        "id": 320,
+        "id": 330,
         "topic": "应付款项 / 总资产",
         "alias": "应付款项 / 总资产",
-        "parentid": 319
-    },
-    {
-        "id": 321,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 320
-    },
-    {
-        "id": 322,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 321
-    },
-    {
-        "id": 323,
-        "alias": "应付款项",
-        "topic": "应付款项",
-        "parentid": 320
-    },
-    {
-        "id": 324,
-        "topic": "z.ACCOUNTBILLPAY",
-        "alias": "z.ACCOUNTBILLPAY",
-        "parentid": 323
-    },
-    {
-        "id": 325,
-        "topic": "流动负债(%)",
-        "parentid": 318,
-        "alias": "流动负债总资产比率"
-    },
-    {
-        "id": 326,
-        "topic": "流动负债 / 总资产",
-        "alias": "流动负债 / 总资产",
-        "parentid": 325
-    },
-    {
-        "id": 327,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 326
-    },
-    {
-        "id": 328,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 327
-    },
-    {
-        "id": 329,
-        "alias": "流动负债",
-        "topic": "流动负债",
-        "parentid": 326
-    },
-    {
-        "id": 330,
-        "topic": "流动负债总额",
-        "alias": "流动负债总额",
         "parentid": 329
     },
     {
         "id": 331,
-        "topic": "z.SUMLLIAB",
-        "alias": "z.SUMLLIAB",
+        "alias": "总资产",
+        "topic": "总资产",
         "parentid": 330
     },
     {
         "id": 332,
-        "topic": "非流动负债(%)",
-        "parentid": 318,
-        "alias": "非流动负债占总资产比率"
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 331
     },
     {
         "id": 333,
-        "topic": "非流动负债 / 总资产",
-        "alias": "非流动负债 / 总资产",
-        "parentid": 332
+        "alias": "应付款项",
+        "topic": "应付款项",
+        "parentid": 330
     },
     {
         "id": 334,
-        "alias": "总资产",
-        "topic": "总资产",
+        "topic": "z.ACCOUNTBILLPAY",
+        "alias": "z.ACCOUNTBILLPAY",
         "parentid": 333
     },
     {
         "id": 335,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 334
+        "topic": "流动负债(%)",
+        "parentid": 328,
+        "alias": "流动负债总资产比率"
     },
     {
         "id": 336,
-        "alias": "非流动负债",
-        "topic": "非流动负债",
-        "parentid": 333
+        "topic": "流动负债 / 总资产",
+        "alias": "流动负债 / 总资产",
+        "parentid": 335
     },
     {
         "id": 337,
-        "topic": "z.SUMNONLLIAB",
-        "alias": "z.SUMNONLLIAB",
+        "alias": "总资产",
+        "topic": "总资产",
         "parentid": 336
     },
     {
         "id": 338,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 337
+    },
+    {
+        "id": 339,
+        "alias": "流动负债",
+        "topic": "流动负债",
+        "parentid": 336
+    },
+    {
+        "id": 340,
+        "topic": "流动负债总额",
+        "alias": "流动负债总额",
+        "parentid": 339
+    },
+    {
+        "id": 341,
+        "topic": "z.SUMLLIAB",
+        "alias": "z.SUMLLIAB",
+        "parentid": 340
+    },
+    {
+        "id": 342,
+        "topic": "非流动负债(%)",
+        "parentid": 328,
+        "alias": "非流动负债占总资产比率"
+    },
+    {
+        "id": 343,
+        "topic": "非流动负债 / 总资产",
+        "alias": "非流动负债 / 总资产",
+        "parentid": 342
+    },
+    {
+        "id": 344,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 343
+    },
+    {
+        "id": 345,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 344
+    },
+    {
+        "id": 346,
+        "alias": "非流动负债",
+        "topic": "非流动负债",
+        "parentid": 343
+    },
+    {
+        "id": 347,
+        "topic": "z.SUMNONLLIAB",
+        "alias": "z.SUMNONLLIAB",
+        "parentid": 346
+    },
+    {
+        "id": 348,
         "topic": "股权",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 339,
+        "id": 349,
         "topic": "股东权益(%)",
-        "parentid": 338,
+        "parentid": 348,
         "alias": "股东权益比率"
     },
     {
-        "id": 340,
+        "id": 350,
         "topic": "股东权益 / 总资产",
         "alias": "股东权益 / 总资产",
-        "parentid": 339
+        "parentid": 349
     },
     {
-        "id": 341,
+        "id": 351,
         "alias": "总资产",
         "topic": "总资产",
-        "parentid": 340
+        "parentid": 350
     },
     {
-        "id": 342,
+        "id": 352,
         "topic": "z.SUMLIABSHEQUITY",
         "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 341
+        "parentid": 351
     },
     {
-        "id": 343,
+        "id": 353,
         "alias": "股东权益",
         "topic": "股东权益",
-        "parentid": 340
+        "parentid": 350
     },
     {
-        "id": 344,
+        "id": 354,
         "topic": "z.SUMSHEQUITY",
         "alias": "z.SUMSHEQUITY",
-        "parentid": 343
+        "parentid": 353
     }
 ]

@@ -2431,9 +2431,12 @@ jm.view_provider.prototype = {
     this.graph.set_size(1, 1);
     this.e_nodes.style.width = "1px";
     this.e_nodes.style.height = "1px";
-
+    this.init_nodes();
+    this.jm.layout.layout();
+    this.jm.view.show(false);
     this.expand_size();
     this._show();
+    window.jm = this;
   },
 
   _show: function() {

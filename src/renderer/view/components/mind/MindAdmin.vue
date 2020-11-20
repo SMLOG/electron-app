@@ -22,7 +22,7 @@
         </li>
         </ul>
         </li>
-        <li class="navItem" >
+        <li class="navItem" v-if="info">
                    <span>pe_ttm: {{info.pe_ttm}}</span>
          <span>总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
@@ -41,7 +41,7 @@
       v-if="mind.data.length>0"
       :values="mind"
       :options="{}"
-      :ref="'jsMind'+mind.name"
+      ref="jsMind"
       :height="height+'px'"
       width:='100%'
     ></js-mind>
@@ -149,7 +149,7 @@ export default {
             this.jm.resize();
           });
           this.jm.resize();
-        }, 2000);
+        }, 10);
       })();
     },
     to(id) {

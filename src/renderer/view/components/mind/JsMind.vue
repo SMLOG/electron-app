@@ -126,6 +126,8 @@ export default {
     },
     isTrendNode(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
+      if (!rawDatas) return;
+
       return (
         node.alias &&
         rawDatas.length > 1 &&
@@ -135,7 +137,7 @@ export default {
 
     getTrendDatas(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
-
+      if (!rawDatas) return;
       return rawDatas
         .map((e) => e[node.alias])
         .filter((e, i) => i < 5)
@@ -147,6 +149,7 @@ export default {
     },
     getIndicator(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
+      if (!rawDatas) return;
       let selectIndex = this.values.rawDatas > 1 ? this.values.selectIndex : 0;
       if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
         return rawDatas[selectIndex]["_" + node.alias];
@@ -155,6 +158,7 @@ export default {
     },
     getTopic(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
+      if (!rawDatas) return;
       let selectIndex = this.values.selectIndex;
       let type =
         node.topic.indexOf("%") > 0 ||

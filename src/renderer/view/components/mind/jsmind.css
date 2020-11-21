@@ -391,3 +391,7 @@ canvas {
 }
 .jmnodes.theme-asbestos .jmexpander:hover {
 }
+
+.jmnodes.theme-primary .jmnode.curnode {
+  background: #f1c40f;
+}

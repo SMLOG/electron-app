@@ -63,6 +63,8 @@ export function initmem(io) {
     socket.on("addItem", (item) => {
       (async () => {
         if (cats["自选"].items.filter((e) => e.code == item.code).length == 0) {
+          My.create(item);
+
           cats["自选"].items.push(item);
           await attachExtractInfoToItems([item]);
           fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
@@ -71,7 +73,7 @@ export function initmem(io) {
           socket.emit("filtersCount", filtersCount);
           socket.emit("countMap", countMap);
           socket.emit("addItem", item);
-          My.create(item);
+          socket.emit("mylist", cats["自选"].items);
         }
       })();
     });

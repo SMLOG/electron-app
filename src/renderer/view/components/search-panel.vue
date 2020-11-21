@@ -173,8 +173,10 @@ export default {
     search: function (selectItem, index) {
       if (index != 0) {
         if (!selectItem && this.myData.length > 1) selectItem = this.myData[1];
-        //this.$emit("select", selectItem);
         this.$socket.emit("addItem", selectItem);
+        setTimeout(() => {
+          this.$emit("select", selectItem);
+        }, 500);
       }
 
       this.myData = [];

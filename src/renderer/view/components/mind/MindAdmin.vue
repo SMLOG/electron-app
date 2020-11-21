@@ -1,6 +1,6 @@
 <template>
   <div>
-      <search-panel></search-panel>
+      <search-panel @select="changeItem"></search-panel>
     <div>
       <div>
         <ul class="nav">
@@ -26,7 +26,9 @@
                    <span>pe_ttm: {{info.pe_ttm}}</span>
          <span>总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
-        <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id"><a @click="to(node.id)">{{node.topic}}</a></li>
+        <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id">
+          <a  @mouseover="viewNode(node.id)">{{node.topic}}</a>
+          </li>
         <li class="navItem"  style="float:right;">
           <div id="jsmind_tools" class="jsmind-tools">
             <ul  >
@@ -93,6 +95,9 @@ export default {
     },
   },
   methods: {
+    changeItem(item) {
+      this.$router.push({ params: { code: item.code } });
+    },
     getDetail() {
       self = this;
       this.$route.params.code = (this.$route.params.code || "").replace(
@@ -152,7 +157,9 @@ export default {
         }, 0);
       })();
     },
-    to(id) {
+    viewNode(id) {
+      $(".curnode").removeClass("curnode");
+      $(this.$el.querySelector(`#node${id}`)).addClass("curnode");
       this.$el.querySelector(`#node${id}`).scrollIntoView({
         behavior: "smooth",
         block: "center",

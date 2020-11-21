@@ -393,5 +393,5 @@ canvas {
 }
 
 .jmnodes.theme-primary .jmnode.curnode {
-  background: #f1c40f;
+  background: red;
 }

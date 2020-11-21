@@ -10,6 +10,7 @@ var indexItems = [
   ["", "P(PEG)", "", "P = 100*五年利润复合增长率*五年平均基本每股收益"],
   ["", "P(PEG3)", "", "P3 = 100*三年利润复合增长率*五年平均基本每股收益"],
   ["", "P(PEG10)", "", "P10 = 100*十年利润复合增长率*五年平均基本每股收益"],
+  ["", "EPS", "", "EPS=基本每股收益"],
 ];
 
 var itemMap = indexItems.reduce((m, row) => {
@@ -18,7 +19,8 @@ var itemMap = indexItems.reduce((m, row) => {
     .trim()
     .replace(/\(.*?\)/g, "")
     .trim();
-  var right = formulaContent[1].trim();
+  var right =
+    formulaContent.length > 1 ? formulaContent[1].trim() : formulaContent[0];
 
   m[left] = right;
 
@@ -37,6 +39,7 @@ var itemMap = indexItems.reduce((m, row) => {
 var midItemMap = `
 code=h.code
 reportdate=d.reportdate
+基本每股收益=lr.BASICEPS
 `
   .trim()
   .split(/\n/)
@@ -279,6 +282,7 @@ let sql = sqlFormatter.format(
         group by
           code
       ) as d  on d.code=h.code 
+      left join lrb lr on lr.code=h.code and lr.reporttype=1 and lr.reportdate = d.reportdate
       `
     ))
 );

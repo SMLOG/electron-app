@@ -8,6 +8,8 @@ const viewId = "gz";
 var indexItems = [
   ["估值分析", "PE(TTM)", "", "PE(TTM) = 总市值/归母收益总额"],
   ["", "P(PEG)", "", "P = 100*五年利润复合增长率*五年平均基本每股收益"],
+  ["", "P(PEG3)", "", "P3 = 100*三年利润复合增长率*五年平均基本每股收益"],
+  ["", "P(PEG10)", "", "P10 = 100*十年利润复合增长率*五年平均基本每股收益"],
 ];
 
 var itemMap = indexItems.reduce((m, row) => {
@@ -54,12 +56,20 @@ midItemMap["五年前利润"] = `(
     select netprofit from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
   )`;
 
+midItemMap["三年前利润"] = `(
+    select netprofit from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 3*4*3 MONTH),'%Y-%m-%d')
+  )`;
+midItemMap["十年前利润"] = `(
+    select netprofit from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 10*4*3 MONTH),'%Y-%m-%d')
+  )`;
 midItemMap["五年平均基本每股收益"] = `(
   select sum(BASICEPS)/5 from lrb l where l.code=h.code and l.reporttype=1 
   and l.reportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
   )`;
 
+midItemMap["三年利润复合增长率"] = `pow(今年利润/三年前利润,1/3)-1`;
 midItemMap["五年利润复合增长率"] = `pow(今年利润/五年前利润,1/5)-1`;
+midItemMap["十年利润复合增长率"] = `pow(今年利润/十年前利润,1/10)-1`;
 _.assign(itemMap, midItemMap);
 
 const itemRegex = /([^\s\.\+\-\*,\/><=\(\)\d]+\d*)+/g;

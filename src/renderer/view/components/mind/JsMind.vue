@@ -30,12 +30,13 @@
                 >
                   {{ getTopicTitle(node) }}</span
                 ><span class="value">{{ getTopic(node) }}</span>
-                <peity
-                  v-if="isTrendNode(node)"
-                  :type="'bar'"
-                  :options="{ fill: ['#c6d9fd'] }"
-                  :data="getTrendDatas(node)"
-                ></peity>
+                <span v-if="isTrendNode(node)"
+                  ><peity
+                    :type="'bar'"
+                    :options="{ fill: ['#c6d9fd'] }"
+                    :data="getTrendDatas(node)"
+                  ></peity>
+                </span>
               </div>
             </div>
             <div
@@ -131,7 +132,8 @@ export default {
       return (
         node.alias &&
         rawDatas.length > 1 &&
-        rawDatas[0][node.alias] != undefined
+        rawDatas[0][node.alias] != undefined &&
+        rawDatas[0][node.alias] != null
       );
     },
 

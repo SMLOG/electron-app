@@ -149,7 +149,7 @@ export default {
             this.jm.resize();
           });
           this.jm.resize();
-        }, 10);
+        }, 0);
       })();
     },
     to(id) {

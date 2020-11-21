@@ -1,6 +1,21 @@
 <template>
   <div>
       <search-panel @select="changeItem"></search-panel>
+
+            <WinWrap
+        :item="item"
+        :curComponent="curComponent"
+        v-if="showType == 'fin'"
+        @close="(showType = null), (item = null)"
+      />
+          <WinView
+      ref="webviewWrap"
+      v-show="showType == 'link' && item"
+      :item="item"
+      :link="link"
+      @close="(showType = null), (item = null)"
+      @updateLink="updateLink"
+    ></WinView>
     <div>
       <div>
         <ul class="nav">
@@ -17,8 +32,14 @@
           <router-link :to="{params:{code:info.code}}">
          <span>{{info.name}}</span>
           </router-link>
-         <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
-
+         <span    :class="{red:info.change>0,green:info.change<0}">
+           <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
+           {{info.close}}
+           </span>
+           <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
+           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}`)'>{{info.changeP}}%)</span>
+        </span>
+          <font-awesome-icon :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
         </li>
         </ul>
         </li>
@@ -56,14 +77,20 @@ import $ from "jquery";
 import JsMind from "./index";
 import { batchUpdateHQ } from "@/lib/getTable";
 import SearchPanel from "@/view/components/search-panel";
-
+import WinView from "@/view/components/WinView";
+import WinWrap from "@/view/components/WinWrap";
+import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 var self;
 export default {
   data() {
     return {
+      curComponent: null,
+      showFin: false,
+      item: null,
+      link: null,
+      showType: null,
       showMylist: false,
       selectIndex: 0,
-      items: [],
       info: null,
       height: 1000,
       mind: {
@@ -73,13 +100,13 @@ export default {
       },
     };
   },
-  components: { JsMind, SearchPanel },
+  components: { JsMind, SearchPanel, WinView, WinWrap, FinAnalyst2 },
   mounted() {
     this.getDetail();
   },
   sockets: {
     hx(datas) {
-      batchUpdateHQ([this.info], datas);
+      if (this.info) batchUpdateHQ([this.info], datas);
     },
   },
   computed: {
@@ -95,6 +122,28 @@ export default {
     },
   },
   methods: {
+    togglePop(item, comp, type) {
+      if (item == this.item && this.curComponent == comp) {
+        this.item = null;
+        this.showType = null;
+      } else {
+        this.showType = type;
+        this.curComponent = comp;
+        this.item = item;
+      }
+    },
+    updateLink(newlink) {
+      this.link = newlink;
+    },
+    openlink(item, event, link = `/static/tech.html?{{code}}&kd`) {
+      if (item == this.item && link == this.link) {
+        this.item = null;
+      } else {
+        this.item = item;
+        this.link = link;
+        this.showType = "link";
+      }
+    },
     changeItem(item) {
       this.$router.push({ params: { code: item.code } });
     },
@@ -154,7 +203,7 @@ export default {
             this.jm.resize();
           });
           this.jm.resize();
-        }, 0);
+        }, 1000);
       })();
     },
     viewNode(id) {
@@ -182,7 +231,7 @@ ul.nav {
   padding: 0;
   position: fixed;
   top: 0;
-  z-index: 10000;
+  z-index: 3;
   background: #ccc;
   right: 0;
   left: 0;
@@ -385,3 +434,5 @@ ul.mylist li {
   float: none !important;
 }
 </style>
+
+<style scoped src="../../home.css" />

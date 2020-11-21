@@ -46,9 +46,8 @@ module.exports = {
       },
     });
     if (infos.length == 1) {
-      let view = type == "gz" ? "v_gz" : "v_summary";
       let rows = await db.query(
-        `select * from ${view} where code = :code order by reportdate desc`,
+        `select * from v_${type} where code = :code order by reportdate desc`,
         {
           logging: console.log,
           type: db.QueryTypes.SELECT,

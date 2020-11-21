@@ -186,7 +186,8 @@ var itemMap = indexItems.reduce((m, row) => {
     .trim()
     .replace(/\(.*?\)/g, "")
     .trim();
-  var right = formulaContent[1].trim();
+  var right =
+    formulaContent.length > 1 ? formulaContent[1].trim() : formulaContent[0];
 
   m[left] = right;
 
@@ -222,6 +223,7 @@ typename=lr.typename
 营业利润利率=净利润/营业总收入
 毛利=营业收入-营业支出
 利润增长率=((净利润-上期净利润)/上期净利润)
+_基本每股收益= case when lr.BASICEPS>lr2.BASICEPS then 1 else 0 end
 
 -- 资产负债表
 流动负债=流动负债总额

@@ -1,14 +1,13 @@
 <template>
   <div>
       <search-panel @select="changeItem"></search-panel>
-
-            <WinWrap
+      <WinWrap
         :item="item"
         :curComponent="curComponent"
         v-if="showType == 'fin'"
         @close="(showType = null), (item = null)"
       />
-          <WinView
+      <WinView
       ref="webviewWrap"
       v-show="showType == 'link' && item"
       :item="item"

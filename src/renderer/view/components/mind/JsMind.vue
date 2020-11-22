@@ -175,7 +175,10 @@ export default {
     },
     init() {
       const options = Object.assign(this.default_options, this.options);
-      if (this.values.data.length > 0) this.jm = jm.show(options, this.values);
+      if (this.values.data.length > 0) {
+        this.jm = jm.show(options, this.values);
+        // this.jm.expand_to_depth(2);
+      }
       this.jmObj = jm;
     },
   },

@@ -48,7 +48,7 @@
          <span>总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id">
-          <a  @mouseover="viewNode(node.id)">{{node.topic}}</a>
+          <a  @mouseover="viewNode(node.id)" @click="toggleNode(node)">{{node.topic}}</a>
           </li>
         <li class="navItem"  style="float:right;">
           <div id="jsmind_tools" class="jsmind-tools">
@@ -122,6 +122,9 @@ export default {
     },
   },
   methods: {
+    toggleNode(node) {
+      // this.jm.toggle_node(node.id);
+    },
     togglePop(item, comp, type) {
       if (item == this.item && this.curComponent == comp) {
         this.item = null;

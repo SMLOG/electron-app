@@ -16,7 +16,6 @@ var logger =
       }
     : console;
 
-// shortcut of methods in dom
 var $d = document;
 var $w = window;
 var $g = function(id) {
@@ -73,27 +72,10 @@ var DEFAULT_OPTIONS = {
     enable_click_handle: true,
     enable_dblclick_handle: true,
   },
-  shortcut: {
-    enable: true,
-    handles: {},
-    mapping: {
-      addchild: 45, // Insert
-      addbrother: 13, // Enter
-      editnode: 113, // F2
-      delnode: 46, // Delete
-      toggle: 32, // Space
-      left: 37, // Left
-      up: 38, // Up
-      right: 39, // Right
-      down: 40, // Down
-    },
-  },
 };
 
 // core object
-var jm = function(options) {
-  jm.current = this;
-
+const JM = function(options) {
   this.version = __version__;
   var opts = _.defaultsDeep({}, options, DEFAULT_OPTIONS);
 
@@ -109,11 +91,11 @@ var jm = function(options) {
 };
 
 // ============= static object =============================================
-jm.direction = { left: -1, center: 0, right: 1 };
-jm.event_type = { show: 1, resize: 2, edit: 3, select: 4 };
-jm.key = { meta: 1 << 13, ctrl: 1 << 12, alt: 1 << 11, shift: 1 << 10 };
+JM.direction = { left: -1, center: 0, right: 1 };
+JM.event_type = { show: 1, resize: 2, edit: 3, select: 4 };
+JM.key = { meta: 1 << 13, ctrl: 1 << 12, alt: 1 << 11, shift: 1 << 10 };
 
-jm.node = function(
+JM.node = function(
   sId,
   iIndex,
   sTopic,
@@ -146,7 +128,7 @@ jm.node = function(
   this._data = {};
 };
 
-jm.node.compare = function(node1, node2) {
+JM.node.compare = function(node1, node2) {
   // '-1' is alwary the last
   var r = 0;
   var i1 = node1.index;
@@ -166,7 +148,7 @@ jm.node.compare = function(node1, node2) {
   return r;
 };
 
-jm.node.inherited = function(pnode, node) {
+JM.node.inherited = function(pnode, node) {
   if (!!pnode && !!node) {
     if (pnode.id === node.id) {
       return true;
@@ -186,7 +168,7 @@ jm.node.inherited = function(pnode, node) {
   return false;
 };
 
-jm.node.prototype = {
+JM.node.prototype = {
   get_location: function() {
     var vd = this._data.view;
     return {
@@ -203,7 +185,7 @@ jm.node.prototype = {
   },
 };
 
-jm.mind = function() {
+JM.mind = function() {
   this.name = null;
   this.author = null;
   this.version = null;
@@ -212,7 +194,7 @@ jm.mind = function() {
   this.nodes = {};
 };
 
-jm.mind.prototype = {
+JM.mind.prototype = {
   get_node: function(nodeid) {
     if (nodeid in this.nodes) {
       return this.nodes[nodeid];
@@ -224,7 +206,7 @@ jm.mind.prototype = {
 
   set_root: function(nodeid, topic, data) {
     if (this.root == null) {
-      this.root = new jm.node(nodeid, 0, topic, data, true);
+      this.root = new JM.node(nodeid, 0, topic, data, true);
       this._put_node(this.root);
     } else {
       logger.error("root node is already exist");
@@ -240,7 +222,7 @@ jm.mind.prototype = {
     direction,
     expanded
   ) {
-    if (!jm.util.is_node(parent_node)) {
+    if (!JM.util.is_node(parent_node)) {
       var the_parent_node = this.get_node(parent_node);
       if (!the_parent_node) {
         logger.error(
@@ -262,26 +244,26 @@ jm.mind.prototype = {
     var nodeindex = idx || -1;
     var node = null;
     if (parent_node.isroot) {
-      var d = jm.direction.right;
+      var d = JM.direction.right;
       if (isNaN(direction)) {
         var children = parent_node.children;
         var children_len = children.length;
         var r = 0;
         for (var i = 0; i < children_len; i++) {
-          if (children[i].direction === jm.direction.left) {
+          if (children[i].direction === JM.direction.left) {
             r--;
           } else {
             r++;
           }
         }
-        d = children_len > 1 && r > 0 ? jm.direction.left : jm.direction.right;
+        d = children_len > 1 && r > 0 ? JM.direction.left : JM.direction.right;
       } else {
         d =
-          direction != jm.direction.left
-            ? jm.direction.right
-            : jm.direction.left;
+          direction != JM.direction.left
+            ? JM.direction.right
+            : JM.direction.left;
       }
-      node = new jm.node(
+      node = new JM.node(
         nodeid,
         nodeindex,
         topic,
@@ -292,7 +274,7 @@ jm.mind.prototype = {
         expanded
       );
     } else {
-      node = new jm.node(
+      node = new JM.node(
         nodeid,
         nodeindex,
         topic,
@@ -316,7 +298,7 @@ jm.mind.prototype = {
   },
 
   insert_node_before: function(node_before, nodeid, topic, data) {
-    if (!jm.util.is_node(node_before)) {
+    if (!JM.util.is_node(node_before)) {
       var the_node_before = this.get_node(node_before);
       if (!the_node_before) {
         logger.error(
@@ -332,7 +314,7 @@ jm.mind.prototype = {
   },
 
   get_node_before: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -353,7 +335,7 @@ jm.mind.prototype = {
   },
 
   insert_node_after: function(node_after, nodeid, topic, data) {
-    if (!jm.util.is_node(node_after)) {
+    if (!JM.util.is_node(node_after)) {
       var the_node_after = this.get_node(node_before);
       if (!the_node_after) {
         logger.error("the node_after[id=" + node_after + "] can not be found.");
@@ -367,7 +349,7 @@ jm.mind.prototype = {
   },
 
   get_node_after: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -389,7 +371,7 @@ jm.mind.prototype = {
   },
 
   move_node: function(node, beforeid, parentid, direction) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -456,10 +438,10 @@ jm.mind.prototype = {
       }
 
       if (node.parent.isroot) {
-        if (direction == jm.direction.left) {
+        if (direction == JM.direction.left) {
           node.direction = direction;
         } else {
-          node.direction = jm.direction.right;
+          node.direction = JM.direction.right;
         }
       } else {
         node.direction = node.parent.direction;
@@ -471,7 +453,7 @@ jm.mind.prototype = {
   },
 
   remove_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -531,8 +513,8 @@ jm.mind.prototype = {
   },
 
   _reindex: function(node) {
-    if (node instanceof jm.node) {
-      node.children.sort(jm.node.compare);
+    if (node instanceof JM.node) {
+      node.children.sort(JM.node.compare);
       for (var i = 0; i < node.children.length; i++) {
         node.children[i].index = i + 1;
       }
@@ -540,7 +522,7 @@ jm.mind.prototype = {
   },
 };
 
-jm.format = {
+JM.format = {
   node_array: {
     example: {
       meta: {
@@ -553,14 +535,14 @@ jm.format = {
     },
 
     get_mind: function(source) {
-      var df = jm.format.node_array;
-      var mind = new jm.mind();
+      var df = JM.format.node_array;
+      var mind = new JM.mind();
       df._parse(mind, source.data);
       return mind;
     },
 
     get_data: function(mind) {
-      var df = jm.format.node_array;
+      var df = JM.format.node_array;
       var json = {};
       json.meta = {
         name: mind.name,
@@ -574,7 +556,7 @@ jm.format = {
     },
 
     _parse: function(mind, node_array) {
-      var df = jm.format.node_array;
+      var df = JM.format.node_array;
       var narray = node_array.slice(0);
       // reverse array for improving looping performance
       narray.reverse();
@@ -585,7 +567,7 @@ jm.format = {
     },
 
     _extract_root: function(mind, node_array) {
-      var df = jm.format.node_array;
+      var df = JM.format.node_array;
       var i = node_array.length;
 
       var root_json = node_array[i - 1];
@@ -596,7 +578,7 @@ jm.format = {
     },
 
     _extract_subnode: function(mind, parentid, node_array) {
-      var df = jm.format.node_array;
+      var df = JM.format.node_array;
       var i = node_array.length;
       var node_json = null;
       var data = null;
@@ -609,7 +591,7 @@ jm.format = {
           var node_direction = node_json.direction;
           if (!!node_direction) {
             d =
-              node_direction == "left" ? jm.direction.left : jm.direction.right;
+              node_direction == "left" ? JM.direction.left : JM.direction.right;
           }
           mind.add_node(
             parentid,
@@ -638,13 +620,13 @@ jm.format = {
     },
 
     _array: function(mind, node_array) {
-      var df = jm.format.node_array;
+      var df = JM.format.node_array;
       df._array_node(mind.root, node_array);
     },
 
     _array_node: function(node, node_array) {
-      var df = jm.format.node_array;
-      if (!(node instanceof jm.node)) {
+      var df = JM.format.node_array;
+      if (!(node instanceof JM.node)) {
         return;
       }
       var o = {
@@ -659,7 +641,7 @@ jm.format = {
         o.isroot = true;
       }
       if (!!node.parent && node.parent.isroot) {
-        o.direction = node.direction == jm.direction.left ? "left" : "right";
+        o.direction = node.direction == JM.direction.left ? "left" : "right";
       }
       if (node.data != null) {
         var node_data = node.data;
@@ -678,181 +660,18 @@ jm.format = {
 
 // ============= utility object =============================================
 
-jm.util = {
+JM.util = {
   is_node: function(node) {
-    return !!node && node instanceof jm.node;
-  },
-  ajax: {
-    _xhr: function() {
-      var xhr = null;
-      if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-      } else {
-        try {
-          xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e) {}
-      }
-      return xhr;
-    },
-    _eurl: function(url) {
-      return encodeURIComponent(url);
-    },
-    request: function(url, param, method, callback, fail_callback) {
-      var a = jm.util.ajax;
-      var p = null;
-      var tmp_param = [];
-      for (var k in param) {
-        tmp_param.push(a._eurl(k) + "=" + a._eurl(param[k]));
-      }
-      if (tmp_param.length > 0) {
-        p = tmp_param.join("&");
-      }
-      var xhr = a._xhr();
-      if (!xhr) {
-        return;
-      }
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-          if (xhr.status == 200 || xhr.status == 0) {
-            if (typeof callback === "function") {
-              var data = jm.util.json.string2json(xhr.responseText);
-              if (data != null) {
-                callback(data);
-              } else {
-                callback(xhr.responseText);
-              }
-            }
-          } else {
-            if (typeof fail_callback === "function") {
-              fail_callback(xhr);
-            } else {
-              logger.error("xhr request failed.", xhr);
-            }
-          }
-        }
-      };
-      method = method || "GET";
-      xhr.open(method, url, true);
-      xhr.setRequestHeader("If-Modified-Since", "0");
-      if (method == "POST") {
-        xhr.setRequestHeader(
-          "Content-Type",
-          "application/x-www-form-urlencoded;charset=utf-8"
-        );
-        xhr.send(p);
-      } else {
-        xhr.send();
-      }
-    },
-    get: function(url, callback) {
-      return jm.util.ajax.request(url, {}, "GET", callback);
-    },
-    post: function(url, param, callback) {
-      return jm.util.ajax.request(url, param, "POST", callback);
-    },
+    return !!node && node instanceof JM.node;
   },
 
   dom: {
-    //target,eventType,handler
     add_event: function(t, e, h) {
       if (!!t.addEventListener) {
         t.addEventListener(e, h, false);
       } else {
         t.attachEvent("on" + e, h);
       }
-    },
-  },
-
-  file: {
-    read: function(file_data, fn_callback) {
-      var reader = new FileReader();
-      reader.onload = function() {
-        if (typeof fn_callback === "function") {
-          fn_callback(this.result, file_data.name);
-        }
-      };
-      reader.readAsText(file_data);
-    },
-
-    save: function(file_data, type, name) {
-      var blob;
-      if (typeof $w.Blob === "function") {
-        blob = new Blob([file_data], { type: type });
-      } else {
-        var BlobBuilder =
-          $w.BlobBuilder ||
-          $w.MozBlobBuilder ||
-          $w.WebKitBlobBuilder ||
-          $w.MSBlobBuilder;
-        var bb = new BlobBuilder();
-        bb.append(file_data);
-        blob = bb.getBlob(type);
-      }
-      if (navigator.msSaveBlob) {
-        navigator.msSaveBlob(blob, name);
-      } else {
-        var URL = $w.URL || $w.webkitURL;
-        var bloburl = URL.createObjectURL(blob);
-        var anchor = $c("a");
-        if ("download" in anchor) {
-          anchor.style.visibility = "hidden";
-          anchor.href = bloburl;
-          anchor.download = name;
-          $d.body.appendChild(anchor);
-          var evt = $d.createEvent("MouseEvents");
-          evt.initEvent("click", true, true);
-          anchor.dispatchEvent(evt);
-          $d.body.removeChild(anchor);
-        } else {
-          location.href = bloburl;
-        }
-      }
-    },
-  },
-
-  json: {
-    json2string: function(json) {
-      if (!!JSON) {
-        try {
-          var json_str = JSON.stringify(json);
-          return json_str;
-        } catch (e) {
-          logger.warn(e);
-          logger.warn("can not convert to string");
-          return null;
-        }
-      }
-    },
-    string2json: function(json_str) {
-      if (!!JSON) {
-        try {
-          var json = JSON.parse(json_str);
-          return json;
-        } catch (e) {
-          logger.warn(e);
-          logger.warn("can not parse to json");
-          return null;
-        }
-      }
-    },
-    merge: function(b, a) {
-      for (var o in a) {
-        if (o in b) {
-          if (
-            typeof b[o] === "object" &&
-            Object.prototype.toString.call(b[o]).toLowerCase() ==
-              "[object object]" &&
-            !b[o].length
-          ) {
-            jm.util.json.merge(b[o], a[o]);
-          } else {
-            b[o] = a[o];
-          }
-        } else {
-          b[o] = a[o];
-        }
-      }
-      return b;
     },
   },
 
@@ -866,18 +685,9 @@ jm.util = {
       ).substr(2, 16);
     },
   },
-
-  text: {
-    is_empty: function(s) {
-      if (!s) {
-        return true;
-      }
-      return s.replace(/\s*/, "").length == 0;
-    },
-  },
 };
 
-jm.prototype = {
+JM.prototype = {
   init: function() {
     if (this.inited) {
       return;
@@ -885,19 +695,15 @@ jm.prototype = {
     this.inited = true;
 
     var opts = this.options;
-    this.data = new jm.data_provider(this);
-    this.layout = new jm.layout_provider(this, opts.layout);
-    this.view = new jm.view_provider(this, opts);
-    this.shortcut = new jm.shortcut_provider(this, opts.shortcut);
+    this.data = new JM.data_provider(this);
+    this.layout = new JM.layout_provider(this, opts.layout);
+    this.view = new JM.view_provider(this, opts);
 
     this.data.init();
     this.layout.init();
     this.view.init();
-    this.shortcut.init();
 
     this._event_bind();
-
-    jm.init_plugins(this);
   },
 
   enable_edit: function() {
@@ -985,7 +791,7 @@ jm.prototype = {
   },
 
   begin_edit: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1007,7 +813,7 @@ jm.prototype = {
   },
 
   toggle_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1026,7 +832,7 @@ jm.prototype = {
   },
 
   expand_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1045,7 +851,7 @@ jm.prototype = {
   },
 
   collapse_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1085,7 +891,7 @@ jm.prototype = {
   },
 
   _show: function(mind) {
-    var m = mind || jm.format.node_array.example;
+    var m = mind || JM.format.node_array.example;
 
     this.mind = this.data.load(m);
     if (!this.mind) {
@@ -1104,7 +910,7 @@ jm.prototype = {
     this.view.show(true);
     logger.debug("view.show ok");
 
-    this.invoke_event_handle(jm.event_type.show, { data: [mind] });
+    this.invoke_event_handle(JM.event_type.show, { data: [mind] });
   },
 
   show: function(mind) {
@@ -1142,7 +948,7 @@ jm.prototype = {
         this.view.show(false);
         this.view.reset_node_custom_style(node);
         this.expand_node(parent_node);
-        this.invoke_event_handle(jm.event_type.edit, {
+        this.invoke_event_handle(JM.event_type.edit, {
           evt: "add_node",
           data: [parent_node.id, nodeid, topic, data],
           node: nodeid,
@@ -1157,7 +963,7 @@ jm.prototype = {
 
   insert_node_before: function(node_before, nodeid, topic, data) {
     if (this.get_editable()) {
-      var beforeid = jm.util.is_node(node_before)
+      var beforeid = JM.util.is_node(node_before)
         ? node_before.id
         : node_before;
       var node = this.mind.insert_node_before(node_before, nodeid, topic, data);
@@ -1165,7 +971,7 @@ jm.prototype = {
         this.view.add_node(node);
         this.layout.layout();
         this.view.show(false);
-        this.invoke_event_handle(jm.event_type.edit, {
+        this.invoke_event_handle(JM.event_type.edit, {
           evt: "insert_node_before",
           data: [beforeid, nodeid, topic, data],
           node: nodeid,
@@ -1180,13 +986,13 @@ jm.prototype = {
 
   insert_node_after: function(node_after, nodeid, topic, data) {
     if (this.get_editable()) {
-      var afterid = jm.util.is_node(node_after) ? node_after.id : node_after;
+      var afterid = JM.util.is_node(node_after) ? node_after.id : node_after;
       var node = this.mind.insert_node_after(node_after, nodeid, topic, data);
       if (!!node) {
         this.view.add_node(node);
         this.layout.layout();
         this.view.show(false);
-        this.invoke_event_handle(jm.event_type.edit, {
+        this.invoke_event_handle(JM.event_type.edit, {
           evt: "insert_node_after",
           data: [afterid, nodeid, topic, data],
           node: nodeid,
@@ -1200,7 +1006,7 @@ jm.prototype = {
   },
 
   remove_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1223,7 +1029,7 @@ jm.prototype = {
       this.layout.layout();
       this.view.show(false);
       this.view.restore_location(parent_node);
-      this.invoke_event_handle(jm.event_type.edit, {
+      this.invoke_event_handle(JM.event_type.edit, {
         evt: "remove_node",
         data: [nodeid],
         node: parentid,
@@ -1237,7 +1043,7 @@ jm.prototype = {
 
   update_node: function(nodeid, topic) {
     if (this.get_editable()) {
-      if (jm.util.text.is_empty(topic)) {
+      if (JM.util.text.is_empty(topic)) {
         logger.warn("fail, topic can not be empty");
         return;
       }
@@ -1252,7 +1058,7 @@ jm.prototype = {
         this.view.update_node(node);
         this.layout.layout();
         this.view.show(false);
-        this.invoke_event_handle(jm.event_type.edit, {
+        this.invoke_event_handle(JM.event_type.edit, {
           evt: "update_node",
           data: [nodeid, topic],
           node: nodeid,
@@ -1271,7 +1077,7 @@ jm.prototype = {
         this.view.update_node(node);
         this.layout.layout();
         this.view.show(false);
-        this.invoke_event_handle(jm.event_type.edit, {
+        this.invoke_event_handle(JM.event_type.edit, {
           evt: "move_node",
           data: [nodeid, beforeid, parentid, direction],
           node: nodeid,
@@ -1284,7 +1090,7 @@ jm.prototype = {
   },
 
   select_node: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1320,7 +1126,7 @@ jm.prototype = {
   },
 
   find_node_before: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1353,7 +1159,7 @@ jm.prototype = {
   },
 
   find_node_after: function(node) {
-    if (!jm.util.is_node(node)) {
+    if (!JM.util.is_node(node)) {
       var the_node = this.get_node(node);
       if (!the_node) {
         logger.error("the node[id=" + node + "] can not be found.");
@@ -1507,11 +1313,11 @@ jm.prototype = {
 
 // ============= data provider =============================================
 
-jm.data_provider = function(jm) {
+JM.data_provider = function(jm) {
   this.jm = jm;
 };
 
-jm.data_provider.prototype = {
+JM.data_provider.prototype = {
   init: function() {
     logger.debug("data.init");
   },
@@ -1523,7 +1329,7 @@ jm.data_provider.prototype = {
   load: function(mind_data) {
     var mind = null;
 
-    mind = jm.format.node_array.get_mind(mind_data);
+    mind = JM.format.node_array.get_mind(mind_data);
 
     return mind;
   },
@@ -1531,11 +1337,7 @@ jm.data_provider.prototype = {
   get_data: function(data_format) {
     var data = null;
     if (data_format == "node_array") {
-      data = jm.format.node_array.get_data(this.jm.mind);
-    } else if (data_format == "node_tree") {
-      data = jm.format.node_tree.get_data(this.jm.mind);
-    } else if (data_format == "freemind") {
-      data = jm.format.freemind.get_data(this.jm.mind);
+      data = JM.format.node_array.get_data(this.jm.mind);
     } else {
       logger.error("unsupported " + data_format + " format");
     }
@@ -1545,7 +1347,7 @@ jm.data_provider.prototype = {
 
 // ============= layout provider ===========================================
 
-jm.layout_provider = function(jm, options) {
+JM.layout_provider = function(jm, options) {
   this.opts = options;
   this.jm = jm;
   this.isside = this.opts.mode == "side";
@@ -1554,7 +1356,7 @@ jm.layout_provider = function(jm, options) {
   this.cache_valid = false;
 };
 
-jm.layout_provider.prototype = {
+JM.layout_provider.prototype = {
   init: function() {
     logger.debug("layout.init");
   },
@@ -1584,34 +1386,24 @@ jm.layout_provider.prototype = {
     }
     var children = node.children;
     var children_count = children.length;
-    layout_data.direction = jm.direction.center;
+    layout_data.direction = JM.direction.center;
     layout_data.side_index = 0;
     if (this.isside) {
       var i = children_count;
       while (i--) {
-        this._layout_direction_side(children[i], jm.direction.right, i);
+        this._layout_direction_side(children[i], JM.direction.right, i);
       }
     } else {
       var i = children_count;
       var subnode = null;
       while (i--) {
         subnode = children[i];
-        if (subnode.direction == jm.direction.left) {
-          this._layout_direction_side(subnode, jm.direction.left, i);
+        if (subnode.direction == JM.direction.left) {
+          this._layout_direction_side(subnode, JM.direction.left, i);
         } else {
-          this._layout_direction_side(subnode, jm.direction.right, i);
+          this._layout_direction_side(subnode, JM.direction.right, i);
         }
       }
-      /*
-                var boundary = Math.ceil(children_count/2);
-                var i = children_count;
-                while(i--){
-                    if(i>=boundary){
-                        this._layout_direction_side(children[i],jm.direction.left, children_count-i-1);
-                    }else{
-                        this._layout_direction_side(children[i],jm.direction.right, i);
-                    }
-                }*/
     }
   },
 
@@ -1647,7 +1439,7 @@ jm.layout_provider.prototype = {
     var subnode = null;
     while (i--) {
       subnode = children[i];
-      if (subnode._data.layout.direction == jm.direction.right) {
+      if (subnode._data.layout.direction == JM.direction.right) {
         right_nodes.unshift(subnode);
       } else {
         left_nodes.unshift(subnode);
@@ -1827,7 +1619,7 @@ jm.layout_provider.prototype = {
   get_expander_point: function(node) {
     var p = this.get_node_point_out(node);
     var ex_p = {};
-    if (node._data.layout.direction == jm.direction.right) {
+    if (node._data.layout.direction == JM.direction.right) {
       ex_p.x = p.x - this.opts.pspace;
     } else {
       ex_p.x = p.x;
@@ -1951,7 +1743,7 @@ jm.layout_provider.prototype = {
           root_layout_data.left_nodes
         );
       } else {
-        if (node._data.layout.direction == jm.direction.right) {
+        if (node._data.layout.direction == JM.direction.right) {
           root_layout_data.outer_height_right = this._layout_offset_subnodes_height(
             root_layout_data.right_nodes
           );
@@ -2003,14 +1795,14 @@ jm.layout_provider.prototype = {
   },
 };
 
-jm.graph_canvas = function(view) {
+JM.graph_canvas = function(view) {
   this.opts = view.opts;
   this.e_canvas = $("canvas", this.container)[0] || $c("canvas");
   this.canvas_ctx = this.e_canvas.getContext("2d");
   this.size = { w: 0, h: 0 };
 };
 
-jm.graph_canvas.prototype = {
+JM.graph_canvas.prototype = {
   element: function() {
     return this.e_canvas;
   },
@@ -2061,19 +1853,19 @@ jm.graph_canvas.prototype = {
   },
 };
 
-jm.graph_svg = function(view) {
+JM.graph_svg = function(view) {
   this.view = view;
   this.opts = view.opts;
-  this.e_svg = jm.graph_svg.c("svg");
+  this.e_svg = JM.graph_svg.c("svg");
   this.size = { w: 0, h: 0 };
   this.lines = [];
 };
 
-jm.graph_svg.c = function(tag) {
+JM.graph_svg.c = function(tag) {
   return $d.createElementNS("http://www.w3.org/2000/svg", tag);
 };
 
-jm.graph_svg.prototype = {
+JM.graph_svg.prototype = {
   element: function() {
     return this.e_svg;
   },
@@ -2094,7 +1886,7 @@ jm.graph_svg.prototype = {
   },
 
   draw_line: function(pout, pin, offset) {
-    var line = jm.graph_svg.c("path");
+    var line = JM.graph_svg.c("path");
     line.setAttribute("stroke", this.opts.line_color);
     line.setAttribute("stroke-width", this.opts.line_width);
     line.setAttribute("fill", "transparent");
@@ -2148,7 +1940,7 @@ jm.graph_svg.prototype = {
 };
 
 // view provider
-jm.view_provider = function(jm, options) {
+JM.view_provider = function(jm, options) {
   this.opts = options;
   this.jm = jm;
   this.layout = jm.layout;
@@ -2165,7 +1957,7 @@ jm.view_provider = function(jm, options) {
   this.graph = null;
 };
 
-jm.view_provider.prototype = {
+JM.view_provider.prototype = {
   init: function() {
     logger.debug("view.init");
 
@@ -2182,8 +1974,8 @@ jm.view_provider.prototype = {
 
     this.graph =
       this.opts.engine.toLowerCase() === "svg"
-        ? new jm.graph_svg(this)
-        : new jm.graph_canvas(this);
+        ? new JM.graph_svg(this)
+        : new JM.graph_canvas(this);
 
     this.actualZoom = 1;
     this.zoomStep = 0.1;
@@ -2192,7 +1984,7 @@ jm.view_provider.prototype = {
   },
 
   add_event: function(obj, event_name, event_handle) {
-    jm.util.dom.add_event(this.e_nodes, event_name, function(e) {
+    JM.util.dom.add_event(this.e_nodes, event_name, function(e) {
       var evt = e || event;
       event_handle.call(obj, evt);
     });
@@ -2446,7 +2238,7 @@ jm.view_provider.prototype = {
     this.show_nodes();
     this.show_lines();
     //this.layout.cache_valid = true;
-    this.jm.invoke_event_handle(jm.event_type.resize, { data: [] });
+    this.jm.invoke_event_handle(JM.event_type.resize, { data: [] });
   },
 
   zoomIn: function() {
@@ -2655,219 +2447,10 @@ jm.view_provider.prototype = {
   },
 };
 
-// shortcut provider
-jm.shortcut_provider = function(jm, options) {
-  this.jm = jm;
-  this.opts = options;
-  this.mapping = options.mapping;
-  this.handles = options.handles;
-  this._mapping = {};
-};
-
-jm.shortcut_provider.prototype = {
-  init: function() {
-    jm.util.dom.add_event($d, "keydown", this.handler.bind(this));
-
-    this.handles["addchild"] = this.handle_addchild;
-    this.handles["addbrother"] = this.handle_addbrother;
-    this.handles["editnode"] = this.handle_editnode;
-    this.handles["delnode"] = this.handle_delnode;
-    this.handles["toggle"] = this.handle_toggle;
-    this.handles["up"] = this.handle_up;
-    this.handles["down"] = this.handle_down;
-    this.handles["left"] = this.handle_left;
-    this.handles["right"] = this.handle_right;
-
-    for (var handle in this.mapping) {
-      if (!!this.mapping[handle] && handle in this.handles) {
-        this._mapping[this.mapping[handle]] = this.handles[handle];
-      }
-    }
-  },
-
-  enable_shortcut: function() {
-    this.opts.enable = true;
-  },
-
-  disable_shortcut: function() {
-    this.opts.enable = false;
-  },
-
-  handler: function(e) {
-    if (this.jm.view.is_editing()) {
-      return;
-    }
-    var evt = e || event;
-    if (!this.opts.enable) {
-      return true;
-    }
-    var kc =
-      evt.keyCode +
-      (evt.metaKey << 13) +
-      (evt.ctrlKey << 12) +
-      (evt.altKey << 11) +
-      (evt.shiftKey << 10);
-    if (kc in this._mapping) {
-      this._mapping[kc].call(this, this.jm, e);
-    }
-  },
-
-  handle_addchild: function(_jm, e) {
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node) {
-      var nodeid = jm.util.uuid.newid();
-      var node = _jm.add_node(selected_node, nodeid, "New Node");
-      if (!!node) {
-        _jm.select_node(nodeid);
-        _jm.begin_edit(nodeid);
-      }
-    }
-  },
-  handle_addbrother: function(_jm, e) {
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node && !selected_node.isroot) {
-      var nodeid = jm.util.uuid.newid();
-      var node = _jm.insert_node_after(selected_node, nodeid, "New Node");
-      if (!!node) {
-        _jm.select_node(nodeid);
-        _jm.begin_edit(nodeid);
-      }
-    }
-  },
-  handle_editnode: function(_jm, e) {
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node) {
-      _jm.begin_edit(selected_node);
-    }
-  },
-  handle_delnode: function(_jm, e) {
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node && !selected_node.isroot) {
-      _jm.select_node(selected_node.parent);
-      _jm.remove_node(selected_node);
-    }
-  },
-  handle_toggle: function(_jm, e) {
-    var evt = e || event;
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node) {
-      _jm.toggle_node(selected_node.id);
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-  },
-  handle_up: function(_jm, e) {
-    var evt = e || event;
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node) {
-      var up_node = _jm.find_node_before(selected_node);
-      if (!up_node) {
-        var np = _jm.find_node_before(selected_node.parent);
-        if (!!np && np.children.length > 0) {
-          up_node = np.children[np.children.length - 1];
-        }
-      }
-      if (!!up_node) {
-        _jm.select_node(up_node);
-      }
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-  },
-
-  handle_down: function(_jm, e) {
-    var evt = e || event;
-    var selected_node = _jm.get_selected_node();
-    if (!!selected_node) {
-      var down_node = _jm.find_node_after(selected_node);
-      if (!down_node) {
-        var np = _jm.find_node_after(selected_node.parent);
-        if (!!np && np.children.length > 0) {
-          down_node = np.children[0];
-        }
-      }
-      if (!!down_node) {
-        _jm.select_node(down_node);
-      }
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-  },
-
-  handle_left: function(_jm, e) {
-    this._handle_direction(_jm, e, jm.direction.left);
-  },
-  handle_right: function(_jm, e) {
-    this._handle_direction(_jm, e, jm.direction.right);
-  },
-  _handle_direction: function(_jm, e, d) {
-    var evt = e || event;
-    var selected_node = _jm.get_selected_node();
-    var node = null;
-    if (!!selected_node) {
-      if (selected_node.isroot) {
-        var c = selected_node.children;
-        var children = [];
-        for (var i = 0; i < c.length; i++) {
-          if (c[i].direction === d) {
-            children.push(i);
-          }
-        }
-        node = c[children[Math.floor((children.length - 1) / 2)]];
-      } else if (selected_node.direction === d) {
-        var children = selected_node.children;
-        var childrencount = children.length;
-        if (childrencount > 0) {
-          node = children[Math.floor((childrencount - 1) / 2)];
-        }
-      } else {
-        node = selected_node.parent;
-      }
-      if (!!node) {
-        _jm.select_node(node);
-      }
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-  },
-};
-
-// plugin
-jm.plugin = function(name, init) {
-  this.name = name;
-  this.init = init;
-};
-
-jm.plugins = [];
-
-jm.register_plugin = function(plugin) {
-  if (plugin instanceof jm.plugin) {
-    jm.plugins.push(plugin);
-  }
-};
-
-jm.init_plugins = function(sender) {
-  $w.setTimeout(function() {
-    jm._init_plugins(sender);
-  }, 0);
-};
-
-jm._init_plugins = function(sender) {
-  var l = jm.plugins.length;
-  var fn_init = null;
-  for (var i = 0; i < l; i++) {
-    fn_init = jm.plugins[i].init;
-    if (typeof fn_init === "function") {
-      fn_init(sender);
-    }
-  }
-};
-
-// quick way
-jm.show = function(options, mind) {
-  var _jm = new jm(options);
+JM.show = function(options, mind) {
+  var _jm = new JM(options);
   _jm.show(mind);
   return _jm;
 };
 
-export default jm;
+export default JM;

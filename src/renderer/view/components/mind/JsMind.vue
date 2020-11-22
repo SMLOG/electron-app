@@ -178,6 +178,7 @@ export default {
       if (this.values.data.length > 0) {
         this.jm = jm.show(options, this.values);
         // this.jm.expand_to_depth(2);
+        window.jm2 = this.jm;
       }
       this.jmObj = jm;
     },

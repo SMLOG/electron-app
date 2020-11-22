@@ -98,7 +98,8 @@
         "id": 16,
         "topic": "流动比率(%)",
         "parentid": 15,
-        "alias": "流动比率"
+        "alias": "流动比率",
+        "tip": "这个数值越大越好！流动比率越大，证明公司可以拿来还的流动资产越多。因此，好的公司不仅能还，还可以还很多！让银行、供应商放心的在家睡大觉，不要担心他们的投资血本无归\n流动比率连续三年都大于300%最好。"
     },
     {
         "id": 17,
@@ -134,7 +135,8 @@
         "id": 22,
         "topic": "速动比率(%)",
         "parentid": 15,
-        "alias": "速动比率"
+        "alias": "速动比率",
+        "tip": "\n    在流动资产中，有一部分是不能马上变现的，例如存货与预付账款，所以在计算速动比率时，要减掉存货和预付账款。\n速动比率反映了公司的快速偿债能力"
     },
     {
         "id": 23,
@@ -1249,403 +1251,402 @@
     },
     {
         "id": 208,
+        "topic": "收益含金量(%)",
+        "parentid": 119,
+        "alias": "收益含金量"
+    },
+    {
+        "id": 209,
+        "topic": "营业活动现金流量/归属于母公司股东的净利润",
+        "alias": "营业活动现金流量/归属于母公司股东的净利润",
+        "parentid": 208
+    },
+    {
+        "id": 210,
+        "alias": "归属于母公司股东的净利润",
+        "topic": "归属于母公司股东的净利润",
+        "parentid": 209
+    },
+    {
+        "id": 211,
+        "topic": "lr.PARENTNETPROFIT",
+        "alias": "lr.PARENTNETPROFIT",
+        "parentid": 210
+    },
+    {
+        "id": 212,
+        "alias": "营业活动现金流量",
+        "topic": "营业活动现金流量",
+        "parentid": 209
+    },
+    {
+        "id": 213,
+        "topic": "ll.NETOPERATECASHFLOW",
+        "alias": "ll.NETOPERATECASHFLOW",
+        "parentid": 212
+    },
+    {
+        "id": 214,
         "topic": "EPS=基本每股收益(元)",
         "parentid": 119,
         "alias": "基本每股收益"
     },
     {
-        "id": 209,
+        "id": 215,
         "topic": "lr.BASICEPS",
         "alias": "lr.BASICEPS",
-        "parentid": 208
+        "parentid": 214
     },
     {
-        "id": 210,
+        "id": 216,
         "topic": "成长能力",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 211,
+        "id": 217,
         "topic": "营收增长率(%)",
-        "parentid": 210,
+        "parentid": 216,
         "alias": "营收增长率"
     },
     {
-        "id": 212,
+        "id": 218,
         "topic": "(本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
         "alias": "(本期主营业务收入 - 上期主要业务收入)/ 上期主营业务收入",
-        "parentid": 211
-    },
-    {
-        "id": 213,
-        "alias": "上期主营业务收入",
-        "topic": "上期主营业务收入",
-        "parentid": 212
-    },
-    {
-        "id": 214,
-        "topic": "lr2.OPERATEREVE",
-        "alias": "lr2.OPERATEREVE",
-        "parentid": 213
-    },
-    {
-        "id": 215,
-        "alias": "上期主要业务收入",
-        "topic": "上期主要业务收入",
-        "parentid": 212
-    },
-    {
-        "id": 216,
-        "topic": "lr2.OPERATEREVE",
-        "alias": "lr2.OPERATEREVE",
-        "parentid": 215
-    },
-    {
-        "id": 217,
-        "alias": "本期主营业务收入",
-        "topic": "本期主营业务收入",
-        "parentid": 212
-    },
-    {
-        "id": 218,
-        "topic": "营业收入",
-        "alias": "营业收入",
         "parentid": 217
     },
     {
         "id": 219,
-        "topic": "lr.OPERATEREVE",
-        "alias": "lr.OPERATEREVE",
+        "alias": "上期主营业务收入",
+        "topic": "上期主营业务收入",
         "parentid": 218
     },
     {
         "id": 220,
-        "topic": "营业利润增长率(%)",
-        "parentid": 210,
-        "alias": "营业利润增长率"
+        "topic": "lr2.OPERATEREVE",
+        "alias": "lr2.OPERATEREVE",
+        "parentid": 219
     },
     {
         "id": 221,
-        "topic": "(本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
-        "alias": "(本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
-        "parentid": 220
+        "alias": "上期主要业务收入",
+        "topic": "上期主要业务收入",
+        "parentid": 218
     },
     {
         "id": 222,
-        "alias": "上年营业利润总额",
-        "topic": "上年营业利润总额",
+        "topic": "lr2.OPERATEREVE",
+        "alias": "lr2.OPERATEREVE",
         "parentid": 221
     },
     {
         "id": 223,
-        "topic": "lr2.OPERATEPROFIT",
-        "alias": "lr2.OPERATEPROFIT",
-        "parentid": 222
+        "alias": "本期主营业务收入",
+        "topic": "本期主营业务收入",
+        "parentid": 218
     },
     {
         "id": 224,
-        "alias": "本年营业利润总额",
-        "topic": "本年营业利润总额",
-        "parentid": 221
+        "topic": "营业收入",
+        "alias": "营业收入",
+        "parentid": 223
     },
     {
         "id": 225,
-        "topic": "lr.OPERATEPROFIT",
-        "alias": "lr.OPERATEPROFIT",
+        "topic": "lr.OPERATEREVE",
+        "alias": "lr.OPERATEREVE",
         "parentid": 224
     },
     {
         "id": 226,
-        "topic": "净资本增长率(%)",
-        "parentid": 210,
-        "alias": "净资本增长率"
+        "topic": "营业利润增长率(%)",
+        "parentid": 216,
+        "alias": "营业利润增长率"
     },
     {
         "id": 227,
-        "topic": "(期末净资产 - 期初净资产)/ 期初净资产",
-        "alias": "(期末净资产 - 期初净资产)/ 期初净资产",
+        "topic": "(本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
+        "alias": "(本年营业利润总额 - 上年营业利润总额) / 上年营业利润总额",
         "parentid": 226
     },
     {
         "id": 228,
-        "alias": "期初净资产",
-        "topic": "期初净资产",
+        "alias": "上年营业利润总额",
+        "topic": "上年营业利润总额",
         "parentid": 227
     },
     {
         "id": 229,
-        "topic": "期初总资产-期初负债总额",
-        "alias": "期初总资产-期初负债总额",
+        "topic": "lr2.OPERATEPROFIT",
+        "alias": "lr2.OPERATEPROFIT",
         "parentid": 228
     },
     {
         "id": 230,
-        "alias": "期初负债总额",
-        "topic": "期初负债总额",
-        "parentid": 229
+        "alias": "本年营业利润总额",
+        "topic": "本年营业利润总额",
+        "parentid": 227
     },
     {
         "id": 231,
-        "topic": "z2.SUMLIAB",
-        "alias": "z2.SUMLIAB",
+        "topic": "lr.OPERATEPROFIT",
+        "alias": "lr.OPERATEPROFIT",
         "parentid": 230
     },
     {
         "id": 232,
-        "alias": "期初总资产",
-        "topic": "期初总资产",
-        "parentid": 229
+        "topic": "净资本增长率(%)",
+        "parentid": 216,
+        "alias": "净资本增长率"
     },
     {
         "id": 233,
-        "topic": "z2.SUMLIABSHEQUITY",
-        "alias": "z2.SUMLIABSHEQUITY",
+        "topic": "(期末净资产 - 期初净资产)/ 期初净资产",
+        "alias": "(期末净资产 - 期初净资产)/ 期初净资产",
         "parentid": 232
     },
     {
         "id": 234,
-        "alias": "期末净资产",
-        "topic": "期末净资产",
-        "parentid": 227
+        "alias": "期初净资产",
+        "topic": "期初净资产",
+        "parentid": 233
     },
     {
         "id": 235,
-        "topic": "期末总资产-负债总额",
-        "alias": "期末总资产-负债总额",
+        "topic": "期初总资产-期初负债总额",
+        "alias": "期初总资产-期初负债总额",
         "parentid": 234
     },
     {
         "id": 236,
-        "alias": "负债总额",
-        "topic": "负债总额",
+        "alias": "期初负债总额",
+        "topic": "期初负债总额",
         "parentid": 235
     },
     {
         "id": 237,
-        "topic": "z.SUMLIAB",
-        "alias": "z.SUMLIAB",
+        "topic": "z2.SUMLIAB",
+        "alias": "z2.SUMLIAB",
         "parentid": 236
     },
     {
         "id": 238,
-        "alias": "期末总资产",
-        "topic": "期末总资产",
+        "alias": "期初总资产",
+        "topic": "期初总资产",
         "parentid": 235
     },
     {
         "id": 239,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "z2.SUMLIABSHEQUITY",
+        "alias": "z2.SUMLIABSHEQUITY",
         "parentid": 238
     },
     {
         "id": 240,
+        "alias": "期末净资产",
+        "topic": "期末净资产",
+        "parentid": 233
+    },
+    {
+        "id": 241,
+        "topic": "期末总资产-负债总额",
+        "alias": "期末总资产-负债总额",
+        "parentid": 240
+    },
+    {
+        "id": 242,
+        "alias": "负债总额",
+        "topic": "负债总额",
+        "parentid": 241
+    },
+    {
+        "id": 243,
+        "topic": "z.SUMLIAB",
+        "alias": "z.SUMLIAB",
+        "parentid": 242
+    },
+    {
+        "id": 244,
+        "alias": "期末总资产",
+        "topic": "期末总资产",
+        "parentid": 241
+    },
+    {
+        "id": 245,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 244
+    },
+    {
+        "id": 246,
         "topic": "现金流量",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 241,
+        "id": 247,
         "topic": "现金流量比率(%)",
-        "parentid": 240,
+        "parentid": 246,
         "alias": "现金流量比率",
         "tip": "分子：营业活动现金流量表示的是一家公司从利润表上的净利扎扎实实的转化为公司的现金。\n    分母：流动负债”又叫“短期负债，是指将在1年(含1年)内需要偿还的债务。\n    所以，现金流量比率指标用于分析公司真正赚回来的现金是否足以偿还对外的短期负债。\n    因为公司最怕抽银根，所以短期负债一定要确认可以偿还。\n    现金流量比率>100%比较好，代表公司赚回来的现金比较多，对外负债比较少，公司赚回来的现金已经够偿还短期负债。"
     },
     {
-        "id": 242,
+        "id": 248,
         "topic": "营业活动净现金流量 / 流动负债",
         "alias": "营业活动净现金流量 / 流动负债",
-        "parentid": 241
-    },
-    {
-        "id": 243,
-        "alias": "流动负债",
-        "topic": "流动负债",
-        "parentid": 242
-    },
-    {
-        "id": 244,
-        "topic": "流动负债总额",
-        "alias": "流动负债总额",
-        "parentid": 243
-    },
-    {
-        "id": 245,
-        "topic": "z.SUMLLIAB",
-        "alias": "z.SUMLLIAB",
-        "parentid": 244
-    },
-    {
-        "id": 246,
-        "alias": "营业活动净现金流量",
-        "topic": "营业活动净现金流量",
-        "parentid": 242
-    },
-    {
-        "id": 247,
-        "topic": "ll.NETOPERATECASHFLOW",
-        "alias": "ll.NETOPERATECASHFLOW",
-        "parentid": 246
-    },
-    {
-        "id": 248,
-        "topic": "现金流量允当比率(%)",
-        "parentid": 240,
-        "alias": "现金流量允当比率",
-        "tip": "现金流量允当比率用来分析：公司最近五年赚的钱是否足够支撑最近五年公司成长所需。\n    在这个指标中，为什么要用5年的数据，因为基本上5年是一个经济周期。\n    现金流量允当比率 > 100%比较好，表示公司最近5个年度自己所赚的钱已经够用，不太需要看银行或股东的脸色"
+        "parentid": 247
     },
     {
         "id": 249,
-        "topic": "最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
-        "alias": "最近5年度营业活动净现金流量 / (五年内购建+ (存货-五年前期初存货)+ 五年内分红)",
+        "alias": "流动负债",
+        "topic": "流动负债",
         "parentid": 248
     },
     {
         "id": 250,
-        "alias": "五年内分红",
-        "topic": "五年内分红",
+        "topic": "流动负债总额",
+        "alias": "流动负债总额",
         "parentid": 249
     },
     {
         "id": 251,
-        "topic": "( select \n    sum(ifnull(l.DIVIPROFITORINTPAY,0) )\n     from xjllb l where \n      l.reporttype=1\n     and l.rreportdate<=ll.rreportdate\n     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n     )",
-        "alias": "( select \n    sum(ifnull(l.DIVIPROFITORINTPAY,0) )\n     from xjllb l where \n      l.reporttype=1\n     and l.rreportdate<=ll.rreportdate\n     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n     )",
+        "topic": "z.SUMLLIAB",
+        "alias": "z.SUMLLIAB",
         "parentid": 250
     },
     {
         "id": 252,
-        "alias": "五年前期初存货",
-        "topic": "五年前期初存货",
-        "parentid": 249
+        "alias": "营业活动净现金流量",
+        "topic": "营业活动净现金流量",
+        "parentid": 248
     },
     {
         "id": 253,
-        "topic": "\n           (select \n           z5.INVENTORY\n           from zcfzb z5 \n           where z5.code=ll.code \n           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           ) ",
-        "alias": "\n           (select \n           z5.INVENTORY\n           from zcfzb z5 \n           where z5.code=ll.code \n           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           ) ",
+        "topic": "ll.NETOPERATECASHFLOW",
+        "alias": "ll.NETOPERATECASHFLOW",
         "parentid": 252
     },
     {
         "id": 254,
-        "alias": "存货",
-        "topic": "存货",
-        "parentid": 249
+        "topic": "现金流量允当比率(%)",
+        "parentid": 246,
+        "alias": "现金流量允当比率",
+        "tip": "现金流量允当比率用来分析：公司最近五年赚的钱是否足够支撑最近五年公司成长所需。\n    在这个指标中，为什么要用5年的数据，因为基本上5年是一个经济周期。\n    现金流量允当比率 > 100%比较好，表示公司最近5个年度自己所赚的钱已经够用，不太需要看银行或股东的脸色"
     },
     {
         "id": 255,
-        "topic": "z.INVENTORY",
-        "alias": "z.INVENTORY",
+        "topic": "最近5年度营业活动净现金流量 / ((五年内购建-五年内处置)+ (存货-五年前期初存货)+ 五年内分红)",
+        "alias": "最近5年度营业活动净现金流量 / ((五年内购建-五年内处置)+ (存货-五年前期初存货)+ 五年内分红)",
         "parentid": 254
     },
     {
         "id": 256,
-        "alias": "五年内购建",
-        "topic": "五年内购建",
-        "parentid": 249
+        "alias": "五年内分红",
+        "topic": "五年内分红",
+        "parentid": 255
     },
     {
         "id": 257,
-        "topic": "( select \n        sum(ifnull(l.CASHEQUIENDING,0) )\n         from xjllb l where \n         l.code = ll.code \n         and l.reporttype=ll.reporttype\n         and l.rreportdate<=ll.rreportdate\n         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n         )",
-        "alias": "( select \n        sum(ifnull(l.CASHEQUIENDING,0) )\n         from xjllb l where \n         l.code = ll.code \n         and l.reporttype=ll.reporttype\n         and l.rreportdate<=ll.rreportdate\n         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n         )",
+        "topic": "( select \n    sum(ifnull(l.DIVIPROFITORINTPAY,0) )\n     from xjllb l where \n     l.code = ll.code \n     and l.reporttype=ll.reporttype\n     and l.rreportdate<=ll.rreportdate\n     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n     )",
+        "alias": "( select \n    sum(ifnull(l.DIVIPROFITORINTPAY,0) )\n     from xjllb l where \n     l.code = ll.code \n     and l.reporttype=ll.reporttype\n     and l.rreportdate<=ll.rreportdate\n     and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n     )",
         "parentid": 256
     },
     {
         "id": 258,
-        "alias": "最近5年度营业活动净现金流量",
-        "topic": "最近5年度营业活动净现金流量",
-        "parentid": 249
+        "alias": "五年前期初存货",
+        "topic": "五年前期初存货",
+        "parentid": 255
     },
     {
         "id": 259,
-        "topic": "( select \n          sum(ifnull(l.CASHEQUIENDING,0) )\n           from xjllb l where \n           l.code = ll.code \n           and l.reporttype=ll.reporttype\n           and l.rreportdate<=ll.rreportdate\n           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           )",
-        "alias": "( select \n          sum(ifnull(l.CASHEQUIENDING,0) )\n           from xjllb l where \n           l.code = ll.code \n           and l.reporttype=ll.reporttype\n           and l.rreportdate<=ll.rreportdate\n           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           )",
+        "topic": "\n           (select \n           z5.INVENTORY\n           from zcfzb z5 \n           where z5.code=ll.code \n           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           ) ",
+        "alias": "\n           (select \n           z5.INVENTORY\n           from zcfzb z5 \n           where z5.code=ll.code \n           and z5.REPORTDATE = DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           ) ",
         "parentid": 258
     },
     {
         "id": 260,
-        "topic": "现金再投资比率(%)",
-        "parentid": 240,
-        "alias": "现金再投资比率",
-        "tip": "现金再投资比率：用于分析公司靠自己日常营运实力赚来的钱（营业活动现金流量）扣除掉给股东现金股利，公司最后自己手上留下来的钱，用于再投资的能力。这个指标大于10%比较好。"
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 255
     },
     {
         "id": 261,
-        "topic": "(营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
-        "alias": "(营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
+        "topic": "z.INVENTORY",
+        "alias": "z.INVENTORY",
         "parentid": 260
     },
     {
         "id": 262,
-        "alias": "流动负债",
-        "topic": "流动负债",
-        "parentid": 261
+        "alias": "五年内处置",
+        "topic": "五年内处置",
+        "parentid": 255
     },
     {
         "id": 263,
-        "topic": "流动负债总额",
-        "alias": "流动负债总额",
+        "topic": "( select \n      sum(ifnull(l.DISPFILASSETREC,0) )\n       from xjllb l where \n       l.code = ll.code \n       and l.reporttype=ll.reporttype\n       and l.rreportdate<=ll.rreportdate\n       and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n       )",
+        "alias": "( select \n      sum(ifnull(l.DISPFILASSETREC,0) )\n       from xjllb l where \n       l.code = ll.code \n       and l.reporttype=ll.reporttype\n       and l.rreportdate<=ll.rreportdate\n       and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n       )",
         "parentid": 262
     },
     {
         "id": 264,
-        "topic": "z.SUMLLIAB",
-        "alias": "z.SUMLLIAB",
-        "parentid": 263
+        "alias": "五年内购建",
+        "topic": "五年内购建",
+        "parentid": 255
     },
     {
         "id": 265,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 261
+        "topic": "( select \n        sum(ifnull(l.BUYFILASSETPAY,0) )\n         from xjllb l where \n         l.code = ll.code \n         and l.reporttype=ll.reporttype\n         and l.rreportdate<=ll.rreportdate\n         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n         )",
+        "alias": "( select \n        sum(ifnull(l.BUYFILASSETPAY,0) )\n         from xjllb l where \n         l.code = ll.code \n         and l.reporttype=ll.reporttype\n         and l.rreportdate<=ll.rreportdate\n         and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n         )",
+        "parentid": 264
     },
     {
         "id": 266,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 265
+        "alias": "最近5年度营业活动净现金流量",
+        "topic": "最近5年度营业活动净现金流量",
+        "parentid": 255
     },
     {
         "id": 267,
-        "alias": "筹资活动现金流出",
-        "topic": "筹资活动现金流出",
-        "parentid": 261
+        "topic": "( select \n          sum(ifnull(l.CASHEQUIENDING,0) )\n           from xjllb l where \n           l.code = ll.code \n           and l.reporttype=ll.reporttype\n           and l.rreportdate<=ll.rreportdate\n           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           )",
+        "alias": "( select \n          sum(ifnull(l.CASHEQUIENDING,0) )\n           from xjllb l where \n           l.code = ll.code \n           and l.reporttype=ll.reporttype\n           and l.rreportdate<=ll.rreportdate\n           and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n           )",
+        "parentid": 266
     },
     {
         "id": 268,
-        "topic": "ll.SUMFINAFLOWOUT",
-        "alias": "ll.SUMFINAFLOWOUT",
-        "parentid": 267
+        "topic": "现金再投资比率(%)",
+        "parentid": 246,
+        "alias": "现金再投资比率",
+        "tip": "现金再投资比率：用于分析公司靠自己日常营运实力赚来的钱（营业活动现金流量）扣除掉给股东现金股利，公司最后自己手上留下来的钱，用于再投资的能力。这个指标大于10%比较好。"
     },
     {
         "id": 269,
-        "alias": "营业活动净现金流量",
-        "topic": "营业活动净现金流量",
-        "parentid": 261
+        "topic": "(营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
+        "alias": "(营业活动净现金流量 - 筹资活动现金流出) / (总资产 - 流动负债)",
+        "parentid": 268
     },
     {
         "id": 270,
-        "topic": "ll.NETOPERATECASHFLOW",
-        "alias": "ll.NETOPERATECASHFLOW",
+        "alias": "流动负债",
+        "topic": "流动负债",
         "parentid": 269
     },
     {
         "id": 271,
-        "topic": "现金占总资产比率(%)",
-        "parentid": 240,
-        "alias": "现金占总资产比率",
-        "tip": "在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。\n    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。\n    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%"
+        "topic": "流动负债总额",
+        "alias": "流动负债总额",
+        "parentid": 270
     },
     {
         "id": 272,
-        "topic": "(现金+约当现金) /总资产",
-        "alias": "(现金+约当现金) /总资产",
+        "topic": "z.SUMLLIAB",
+        "alias": "z.SUMLLIAB",
         "parentid": 271
     },
     {
         "id": 273,
         "alias": "总资产",
         "topic": "总资产",
-        "parentid": 272
+        "parentid": 269
     },
     {
         "id": 274,
@@ -1655,484 +1656,533 @@
     },
     {
         "id": 275,
-        "alias": "约当现金",
-        "topic": "约当现金",
-        "parentid": 272
+        "alias": "筹资活动现金流出",
+        "topic": "筹资活动现金流出",
+        "parentid": 269
     },
     {
         "id": 276,
-        "topic": "有价证券",
-        "alias": "有价证券",
+        "topic": "ll.SUMFINAFLOWOUT",
+        "alias": "ll.SUMFINAFLOWOUT",
         "parentid": 275
     },
     {
         "id": 277,
-        "topic": "ifnull(z.FVALUEFASSET,0)",
-        "alias": "ifnull(z.FVALUEFASSET,0)",
-        "parentid": 276
+        "alias": "营业活动净现金流量",
+        "topic": "营业活动净现金流量",
+        "parentid": 269
     },
     {
         "id": 278,
-        "alias": "现金",
-        "topic": "现金",
-        "parentid": 272
+        "topic": "ll.NETOPERATECASHFLOW",
+        "alias": "ll.NETOPERATECASHFLOW",
+        "parentid": 277
     },
     {
         "id": 279,
-        "topic": "货币资金",
-        "alias": "货币资金",
-        "parentid": 278
+        "topic": "现金占总资产比率(%)",
+        "parentid": 246,
+        "alias": "现金占总资产比率",
+        "tip": "在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。\n    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。\n    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%"
     },
     {
         "id": 280,
-        "topic": "z.MONETARYFUND",
-        "alias": "z.MONETARYFUND",
+        "topic": "(现金+约当现金) /总资产",
+        "alias": "(现金+约当现金) /总资产",
         "parentid": 279
     },
     {
         "id": 281,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 280
+    },
+    {
+        "id": 282,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 281
+    },
+    {
+        "id": 283,
+        "alias": "约当现金",
+        "topic": "约当现金",
+        "parentid": 280
+    },
+    {
+        "id": 284,
+        "topic": "有价证券",
+        "alias": "有价证券",
+        "parentid": 283
+    },
+    {
+        "id": 285,
+        "topic": "ifnull(z.FVALUEFASSET,0)",
+        "alias": "ifnull(z.FVALUEFASSET,0)",
+        "parentid": 284
+    },
+    {
+        "id": 286,
+        "alias": "现金",
+        "topic": "现金",
+        "parentid": 280
+    },
+    {
+        "id": 287,
+        "topic": "货币资金",
+        "alias": "货币资金",
+        "parentid": 286
+    },
+    {
+        "id": 288,
+        "topic": "z.MONETARYFUND",
+        "alias": "z.MONETARYFUND",
+        "parentid": 287
+    },
+    {
+        "id": 289,
         "topic": "资产",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 282,
+        "id": 290,
         "topic": "现金占总资产比率(%)",
-        "parentid": 281,
+        "parentid": 289,
         "alias": "现金占总资产比率",
         "tip": "在公司的总资产中，要保持有足够比例的现金。这样即使发生景气波动，也可以顺利度过。\n    现金占总资产比率指标，一般来说要在10%~25%之间，如果是烧钱的行业（资本密集型行业），要大于25%。\n    在现金流量指标中，现金占总资产比率所占的权重最高，达到70%"
     },
     {
-        "id": 283,
+        "id": 291,
         "topic": "(现金+约当现金) /总资产",
         "alias": "(现金+约当现金) /总资产",
-        "parentid": 282
-    },
-    {
-        "id": 284,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 283
-    },
-    {
-        "id": 285,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 284
-    },
-    {
-        "id": 286,
-        "alias": "约当现金",
-        "topic": "约当现金",
-        "parentid": 283
-    },
-    {
-        "id": 287,
-        "topic": "有价证券",
-        "alias": "有价证券",
-        "parentid": 286
-    },
-    {
-        "id": 288,
-        "topic": "ifnull(z.FVALUEFASSET,0)",
-        "alias": "ifnull(z.FVALUEFASSET,0)",
-        "parentid": 287
-    },
-    {
-        "id": 289,
-        "alias": "现金",
-        "topic": "现金",
-        "parentid": 283
-    },
-    {
-        "id": 290,
-        "topic": "货币资金",
-        "alias": "货币资金",
-        "parentid": 289
-    },
-    {
-        "id": 291,
-        "topic": "z.MONETARYFUND",
-        "alias": "z.MONETARYFUND",
         "parentid": 290
     },
     {
         "id": 292,
-        "topic": "应收款项(%)",
-        "parentid": 281,
-        "alias": "应收款项占总资产比率"
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 291
     },
     {
         "id": 293,
-        "topic": "应收款项 / 总资产",
-        "alias": "应收款项 / 总资产",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 292
     },
     {
         "id": 294,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 293
+        "alias": "约当现金",
+        "topic": "约当现金",
+        "parentid": 291
     },
     {
         "id": 295,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "有价证券",
+        "alias": "有价证券",
         "parentid": 294
     },
     {
         "id": 296,
-        "alias": "应收款项",
-        "topic": "应收款项",
-        "parentid": 293
+        "topic": "ifnull(z.FVALUEFASSET,0)",
+        "alias": "ifnull(z.FVALUEFASSET,0)",
+        "parentid": 295
     },
     {
         "id": 297,
-        "topic": "z.ACCOUNTBILLREC",
-        "alias": "z.ACCOUNTBILLREC",
-        "parentid": 296
+        "alias": "现金",
+        "topic": "现金",
+        "parentid": 291
     },
     {
         "id": 298,
-        "topic": "存货(%)",
-        "parentid": 281,
-        "alias": "存货占总资产比率"
+        "topic": "货币资金",
+        "alias": "货币资金",
+        "parentid": 297
     },
     {
         "id": 299,
-        "topic": "存货 / 总资产",
-        "alias": "存货 / 总资产",
+        "topic": "z.MONETARYFUND",
+        "alias": "z.MONETARYFUND",
         "parentid": 298
     },
     {
         "id": 300,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 299
+        "topic": "应收款项(%)",
+        "parentid": 289,
+        "alias": "应收款项占总资产比率"
     },
     {
         "id": 301,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "应收款项 / 总资产",
+        "alias": "应收款项 / 总资产",
         "parentid": 300
     },
     {
         "id": 302,
-        "alias": "存货",
-        "topic": "存货",
-        "parentid": 299
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 301
     },
     {
         "id": 303,
-        "topic": "z.INVENTORY",
-        "alias": "z.INVENTORY",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 302
     },
     {
         "id": 304,
-        "topic": "其他流动资产(%)",
-        "parentid": 281,
-        "alias": "其他流动资产占总资产比率"
+        "alias": "应收款项",
+        "topic": "应收款项",
+        "parentid": 301
     },
     {
         "id": 305,
-        "topic": "其他流动资产 / 总资产",
-        "alias": "其他流动资产 / 总资产",
+        "topic": "z.ACCOUNTBILLREC",
+        "alias": "z.ACCOUNTBILLREC",
         "parentid": 304
     },
     {
         "id": 306,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 305
+        "topic": "存货(%)",
+        "parentid": 289,
+        "alias": "存货占总资产比率"
     },
     {
         "id": 307,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "存货 / 总资产",
+        "alias": "存货 / 总资产",
         "parentid": 306
     },
     {
         "id": 308,
-        "alias": "其他流动资产",
-        "topic": "其他流动资产",
-        "parentid": 305
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 307
     },
     {
         "id": 309,
-        "topic": "z.OTHERLASSET",
-        "alias": "z.OTHERLASSET",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 308
     },
     {
         "id": 310,
-        "topic": "流动资产(%)",
-        "parentid": 281,
-        "alias": "流动资产占总资产比率"
+        "alias": "存货",
+        "topic": "存货",
+        "parentid": 307
     },
     {
         "id": 311,
-        "topic": "流动资产 / 总资产",
-        "alias": "流动资产 / 总资产",
+        "topic": "z.INVENTORY",
+        "alias": "z.INVENTORY",
         "parentid": 310
     },
     {
         "id": 312,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 311
+        "topic": "其他流动资产(%)",
+        "parentid": 289,
+        "alias": "其他流动资产占总资产比率"
     },
     {
         "id": 313,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "其他流动资产 / 总资产",
+        "alias": "其他流动资产 / 总资产",
         "parentid": 312
     },
     {
         "id": 314,
-        "alias": "流动资产",
-        "topic": "流动资产",
-        "parentid": 311
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 313
     },
     {
         "id": 315,
-        "topic": "z.SUMLASSET",
-        "alias": "z.SUMLASSET",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 314
     },
     {
         "id": 316,
-        "topic": "商誉(%)",
-        "parentid": 281,
-        "alias": "商誉比率",
-        "tip": "过高的商誉，说明公司用过高溢价收购资产，有掏空公司资产的嫌疑，和资产贬值的风险"
+        "alias": "其他流动资产",
+        "topic": "其他流动资产",
+        "parentid": 313
     },
     {
         "id": 317,
-        "topic": "商誉 / 总资产",
-        "alias": "商誉 / 总资产",
+        "topic": "z.OTHERLASSET",
+        "alias": "z.OTHERLASSET",
         "parentid": 316
     },
     {
         "id": 318,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 317
+        "topic": "流动资产(%)",
+        "parentid": 289,
+        "alias": "流动资产占总资产比率"
     },
     {
         "id": 319,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "流动资产 / 总资产",
+        "alias": "流动资产 / 总资产",
         "parentid": 318
     },
     {
         "id": 320,
-        "alias": "商誉",
-        "topic": "商誉",
-        "parentid": 317
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 319
     },
     {
         "id": 321,
-        "topic": "ifnull(z.GOODWILL,0)",
-        "alias": "ifnull(z.GOODWILL,0)",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 320
     },
     {
         "id": 322,
-        "topic": "非流动资产(%)",
-        "parentid": 281,
-        "alias": "非流动资产占总资产比率"
+        "alias": "流动资产",
+        "topic": "流动资产",
+        "parentid": 319
     },
     {
         "id": 323,
-        "topic": "非流动资产 / 总资产",
-        "alias": "非流动资产 / 总资产",
+        "topic": "z.SUMLASSET",
+        "alias": "z.SUMLASSET",
         "parentid": 322
     },
     {
         "id": 324,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 323
+        "topic": "商誉(%)",
+        "parentid": 289,
+        "alias": "商誉比率",
+        "tip": "过高的商誉，说明公司用过高溢价收购资产，有掏空公司资产的嫌疑，和资产贬值的风险"
     },
     {
         "id": 325,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "topic": "商誉 / 总资产",
+        "alias": "商誉 / 总资产",
         "parentid": 324
     },
     {
         "id": 326,
-        "alias": "非流动资产",
-        "topic": "非流动资产",
-        "parentid": 323
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 325
     },
     {
         "id": 327,
-        "topic": "z.SUMNONLASSET",
-        "alias": "z.SUMNONLASSET",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 326
     },
     {
         "id": 328,
+        "alias": "商誉",
+        "topic": "商誉",
+        "parentid": 325
+    },
+    {
+        "id": 329,
+        "topic": "ifnull(z.GOODWILL,0)",
+        "alias": "ifnull(z.GOODWILL,0)",
+        "parentid": 328
+    },
+    {
+        "id": 330,
+        "topic": "非流动资产(%)",
+        "parentid": 289,
+        "alias": "非流动资产占总资产比率"
+    },
+    {
+        "id": 331,
+        "topic": "非流动资产 / 总资产",
+        "alias": "非流动资产 / 总资产",
+        "parentid": 330
+    },
+    {
+        "id": 332,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 331
+    },
+    {
+        "id": 333,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 332
+    },
+    {
+        "id": 334,
+        "alias": "非流动资产",
+        "topic": "非流动资产",
+        "parentid": 331
+    },
+    {
+        "id": 335,
+        "topic": "z.SUMNONLASSET",
+        "alias": "z.SUMNONLASSET",
+        "parentid": 334
+    },
+    {
+        "id": 336,
         "topic": "负债",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 329,
+        "id": 337,
         "topic": "应付款项(%)",
-        "parentid": 328,
+        "parentid": 336,
         "alias": "应付款项占总资产比率"
     },
     {
-        "id": 330,
+        "id": 338,
         "topic": "应付款项 / 总资产",
         "alias": "应付款项 / 总资产",
-        "parentid": 329
-    },
-    {
-        "id": 331,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 330
-    },
-    {
-        "id": 332,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 331
-    },
-    {
-        "id": 333,
-        "alias": "应付款项",
-        "topic": "应付款项",
-        "parentid": 330
-    },
-    {
-        "id": 334,
-        "topic": "z.ACCOUNTBILLPAY",
-        "alias": "z.ACCOUNTBILLPAY",
-        "parentid": 333
-    },
-    {
-        "id": 335,
-        "topic": "流动负债(%)",
-        "parentid": 328,
-        "alias": "流动负债总资产比率"
-    },
-    {
-        "id": 336,
-        "topic": "流动负债 / 总资产",
-        "alias": "流动负债 / 总资产",
-        "parentid": 335
-    },
-    {
-        "id": 337,
-        "alias": "总资产",
-        "topic": "总资产",
-        "parentid": 336
-    },
-    {
-        "id": 338,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 337
     },
     {
         "id": 339,
-        "alias": "流动负债",
-        "topic": "流动负债",
-        "parentid": 336
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 338
     },
     {
         "id": 340,
-        "topic": "流动负债总额",
-        "alias": "流动负债总额",
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
         "parentid": 339
     },
     {
         "id": 341,
-        "topic": "z.SUMLLIAB",
-        "alias": "z.SUMLLIAB",
-        "parentid": 340
+        "alias": "应付款项",
+        "topic": "应付款项",
+        "parentid": 338
     },
     {
         "id": 342,
-        "topic": "非流动负债(%)",
-        "parentid": 328,
-        "alias": "非流动负债占总资产比率"
+        "topic": "z.ACCOUNTBILLPAY",
+        "alias": "z.ACCOUNTBILLPAY",
+        "parentid": 341
     },
     {
         "id": 343,
-        "topic": "非流动负债 / 总资产",
-        "alias": "非流动负债 / 总资产",
-        "parentid": 342
+        "topic": "流动负债(%)",
+        "parentid": 336,
+        "alias": "流动负债总资产比率"
     },
     {
         "id": 344,
-        "alias": "总资产",
-        "topic": "总资产",
+        "topic": "流动负债 / 总资产",
+        "alias": "流动负债 / 总资产",
         "parentid": 343
     },
     {
         "id": 345,
-        "topic": "z.SUMLIABSHEQUITY",
-        "alias": "z.SUMLIABSHEQUITY",
+        "alias": "总资产",
+        "topic": "总资产",
         "parentid": 344
     },
     {
         "id": 346,
-        "alias": "非流动负债",
-        "topic": "非流动负债",
-        "parentid": 343
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 345
     },
     {
         "id": 347,
-        "topic": "z.SUMNONLLIAB",
-        "alias": "z.SUMNONLLIAB",
-        "parentid": 346
+        "alias": "流动负债",
+        "topic": "流动负债",
+        "parentid": 344
     },
     {
         "id": 348,
+        "topic": "流动负债总额",
+        "alias": "流动负债总额",
+        "parentid": 347
+    },
+    {
+        "id": 349,
+        "topic": "z.SUMLLIAB",
+        "alias": "z.SUMLLIAB",
+        "parentid": 348
+    },
+    {
+        "id": 350,
+        "topic": "非流动负债(%)",
+        "parentid": 336,
+        "alias": "非流动负债占总资产比率"
+    },
+    {
+        "id": 351,
+        "topic": "非流动负债 / 总资产",
+        "alias": "非流动负债 / 总资产",
+        "parentid": 350
+    },
+    {
+        "id": 352,
+        "alias": "总资产",
+        "topic": "总资产",
+        "parentid": 351
+    },
+    {
+        "id": 353,
+        "topic": "z.SUMLIABSHEQUITY",
+        "alias": "z.SUMLIABSHEQUITY",
+        "parentid": 352
+    },
+    {
+        "id": 354,
+        "alias": "非流动负债",
+        "topic": "非流动负债",
+        "parentid": 351
+    },
+    {
+        "id": 355,
+        "topic": "z.SUMNONLLIAB",
+        "alias": "z.SUMNONLLIAB",
+        "parentid": 354
+    },
+    {
+        "id": 356,
         "topic": "股权",
         "direction": "right",
         "parentid": "root"
     },
     {
-        "id": 349,
+        "id": 357,
         "topic": "股东权益(%)",
-        "parentid": 348,
+        "parentid": 356,
         "alias": "股东权益比率"
     },
     {
-        "id": 350,
+        "id": 358,
         "topic": "股东权益 / 总资产",
         "alias": "股东权益 / 总资产",
-        "parentid": 349
+        "parentid": 357
     },
     {
-        "id": 351,
+        "id": 359,
         "alias": "总资产",
         "topic": "总资产",
-        "parentid": 350
+        "parentid": 358
     },
     {
-        "id": 352,
+        "id": 360,
         "topic": "z.SUMLIABSHEQUITY",
         "alias": "z.SUMLIABSHEQUITY",
-        "parentid": 351
+        "parentid": 359
     },
     {
-        "id": 353,
+        "id": 361,
         "alias": "股东权益",
         "topic": "股东权益",
-        "parentid": 350
+        "parentid": 358
     },
     {
-        "id": 354,
+        "id": 362,
         "topic": "z.SUMSHEQUITY",
         "alias": "z.SUMSHEQUITY",
-        "parentid": 353
+        "parentid": 361
     }
 ]

@@ -152,10 +152,15 @@ export default {
     getIndicator(node) {
       let rawDatas = this.values.rawDatas[node.sourceId || 0];
       if (!rawDatas) return;
-      let selectIndex = this.values.rawDatas > 1 ? this.values.selectIndex : 0;
-      if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
-        return rawDatas[selectIndex]["_" + node.alias];
+      try {
+        let selectIndex = rawDatas.length > 1 ? this.values.selectIndex : 0;
+        if (node.alias && "_" + node.alias in rawDatas[selectIndex]) {
+          return rawDatas[selectIndex]["_" + node.alias];
+        }
+      } catch (e) {
+        console.error(e);
       }
+
       return false;
     },
     getTopic(node) {

@@ -203,7 +203,7 @@ export default {
           this.jmObj = this.$refs.jsMind.jmObj;
           $(window).resize(() => {
             this.height = $(window).height() - 35;
-            this.jm.resize();
+            // this.jm.resize();
           });
           this.jm.resize();
         }, 1000);

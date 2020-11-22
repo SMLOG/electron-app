@@ -41,8 +41,8 @@
               <span>{{ item.hy }}</span>
               <span v-if="item.forecast">{{ item.forecast }}</span>
               <span>披露:{{ item.disclosure }}</span>
-              <span>流通/亿:{{ item["ltg"] }}</span>
-              <span>流/总:{{ item["lz"] }}</span>
+              <span>流通/亿:{{ $fmtNumber(item["ltg"]) }}</span>
+              <span>流/总:{{ $fmtNumber(item["lz"]) }}</span>
               <span>TTM:{{ item["pe_ttm"] }}</span>
               <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
               <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>

@@ -37,7 +37,7 @@
            {{info.close}}
            </span>
            <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
-           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}`)'>{{info.changeP}}%)</span>
+           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}}%)</span>
         </span>
           <font-awesome-icon :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
         </li>
@@ -195,7 +195,7 @@ export default {
             } else datas.push(...resp.data);
           });
         }
-
+        mind.selectIndex = 0;
         mind.data.length = 0;
         mind.data.push(...datas);
         setTimeout(() => {

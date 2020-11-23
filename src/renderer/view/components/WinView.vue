@@ -110,9 +110,9 @@ export default {
     drag(el) {
       let oDiv = $(el).parent()[0];
       let self = this;
-      document.onselectstart = function () {
+      /*document.onselectstart = function () {
         return false;
-      };
+      };*/
       el.onmousedown = function (e) {
         //鼠标按下，计算当前元素距离可视区的距离
         let disX = e.clientX - oDiv.offsetLeft;

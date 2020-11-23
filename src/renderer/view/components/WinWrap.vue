@@ -53,7 +53,7 @@
         <b>{{ item.name }}</b>
       </div>
     </div>
-    <div style="height: 100%; width: 100%; overflow: auto">
+    <div style="height: 100%; width: 100%; overflow: auto; margin-top: 3px">
       <keep-alive>
         <component v-bind:is="curComponent" :item="item"></component>
       </keep-alive>
@@ -75,9 +75,9 @@ export default {
   directives: {
     drag(el) {
       let self = this;
-      document.onselectstart = function () {
+      /*document.onselectstart = function () {
         return false;
-      };
+      };*/
       el.onmousedown = function (e) {
         //鼠标按下，计算当前元素距离可视区的距离
         let disX = e.clientX - $(el).parent()[0].offsetLeft;

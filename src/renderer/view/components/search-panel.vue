@@ -68,6 +68,7 @@ export default {
   },
   mounted() {
     document.addEventListener("keydown", (e) => {
+      if (e.altKey || e.shiftKey || e.ctrlKey || e.composed) return;
       if (e.target && e.target.nodeName == "BODY") {
         let c = String.fromCharCode(e.keyCode).replace(/[^A-Za-z 0-9]/, "");
         if (c) {
@@ -139,7 +140,13 @@ export default {
     // &event是实参，表示event对象
     get: function (ev) {
       // 如果按得键是上或者下，就不进行ajax
-      if (ev.keyCode == 38 || ev.keyCode == 40) {
+      if (
+        ev.keyCode == 38 ||
+        ev.keyCode == 40 ||
+        ev.altKey ||
+        ev.metaKey ||
+        ev.shiftKey
+      ) {
         return;
       }
       this.now = 1;

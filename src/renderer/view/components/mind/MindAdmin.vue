@@ -38,7 +38,7 @@
            <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
            <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}}%)</span>
         </span>
-          <font-awesome-icon :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
+          <font-awesome-icon pull="right" :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
         </li>
         </ul>
         </li>

@@ -1,5 +1,6 @@
 <template>
-  <div>
+    <div>
+      <div style="position:fixed;z-index:4;">
       <search-panel @select="changeItem"></search-panel>
       <WinWrap
         :item="item"
@@ -15,17 +16,23 @@
       @close="(showType = null), (item = null)"
       @updateLink="updateLink"
     ></WinView>
-    <div>
       <div>
         <ul class="nav">
-        <li class="navItem" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
+        <li class="navItem" style="margin-left: 0;padding-left: 0" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
           <div v-if="info" style="display:inline-block;"  >
           <font-awesome-icon :icon="['fas', 'info-circle']" />
          <span>{{info.name}}</span>
-         <span :class="{red:info.change>0,green:info.change<0}">{{info.close}}({{info.change}},{{info.changeP}}%)</span>
+            <span    :class="{red:info.change>0,green:info.change<0}">
+           <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
+           {{info.close}}
+           </span>
+           <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
+           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}}%)</span>
+          </span>
+
 
           </div>
-          <ul class="mylist" v-show="showMylist">
+        <ul class="mylist" v-show="showMylist">
         <li class="info" v-for="info in mylist" :key="info.code">
           <font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
           <router-link :to="{params:{code:info.code}}">
@@ -37,7 +44,7 @@
            </span>
            <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
            <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}}%)</span>
-        </span>
+          </span>
           <font-awesome-icon pull="right" :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
         </li>
         </ul>

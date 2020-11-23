@@ -68,7 +68,6 @@ export default {
   },
   mounted() {
     document.addEventListener("keydown", (e) => {
-      if (e.altKey || e.shiftKey || e.ctrlKey || e.composed) return;
       if (e.target && e.target.nodeName == "BODY") {
         let c = String.fromCharCode(e.keyCode).replace(/[^A-Za-z 0-9]/, "");
         if (c) {

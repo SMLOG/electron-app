@@ -131,6 +131,12 @@ var indexItems = [
   ],
   [
     "",
+    "营业活动净现金流量增长率(%)",
+    ">0",
+    "营业活动净现金流量增长率 = (营业活动净现金流量 - 营业活动净现金流量二) / 营业活动净现金流量二",
+  ],
+  [
+    "",
     "净资本增长率(%)",
     "",
     "净资本增长率 =(期末净资产 - 期初净资产)/ 期初净资产",
@@ -252,6 +258,7 @@ _基本每股收益= case when lr.BASICEPS>lr2.BASICEPS then 1 else 0 end
 -- 资产负债表
 流动负债=流动负债总额
 营业活动净现金流量=ll.NETOPERATECASHFLOW
+营业活动净现金流量二=ll2.NETOPERATECASHFLOW
 筹资活动现金流出=ll.SUMFINAFLOWOUT
 股东权益=z.SUMSHEQUITY
 流动资产=z.SUMLASSET

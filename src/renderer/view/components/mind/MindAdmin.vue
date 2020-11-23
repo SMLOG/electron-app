@@ -47,7 +47,7 @@
          <span>总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id">
-          <a  @mouseover="viewNode(node.id)" @click="toggleNode(node)">{{node.topic}}</a>
+          <a  @mouseover="viewNode(node)" @mouseout="viewNode(node,true)" @click="toggleNode(node)">{{node.topic}}</a>
           </li>
         <li class="navItem"  style="float:right;">
           <div id="jsmind_tools" class="jsmind-tools">
@@ -208,13 +208,19 @@ export default {
         }, 1000);
       })();
     },
-    viewNode(id) {
-      $(".curnode").removeClass("curnode");
-      $(this.$el.querySelector(`#node${id}`)).addClass("curnode");
-      this.$el.querySelector(`#node${id}`).scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+    viewNode(node, isLeave) {
+      if (!isLeave) {
+        node.timer = setTimeout(() => {
+          $(".curnode").removeClass("curnode");
+          $(this.$el.querySelector(`#node${node.id}`)).addClass("curnode");
+          this.$el.querySelector(`#node${node.id}`).scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 400);
+      } else {
+        window.clearTimeout(node.timer);
+      }
     },
   },
 };

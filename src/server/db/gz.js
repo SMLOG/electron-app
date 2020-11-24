@@ -10,6 +10,12 @@ var indexItems = [
   ["", "P(PEG3)", "", "P3 = 100*三年利润复合增长率*五年平均基本每股收益"],
   ["", "P(PEG10)", "", "P10 = 100*十年利润复合增长率*五年平均基本每股收益"],
   ["", "EPS", "", "EPS=基本每股收益"],
+  [
+    "",
+    "格雷厄姆估值",
+    "",
+    "格雷厄姆=(EPS*(8.5+2*十年利润复合增长率*100))/pow(1.12,5)",
+  ],
 ];
 
 var itemMap = indexItems.reduce((m, row) => {
@@ -39,6 +45,7 @@ var midItemMap = `
 code=h.code
 reportdate=d.reportdate
 基本每股收益=lr.BASICEPS
+折现率=0.12
 `
   .trim()
   .split(/\n/)

@@ -94,6 +94,7 @@ var indexItems = [
     "",
     "资本回报率 (ROIC%)\n    \n    \n    = 息税前利润 * (1 - 税率) / 投入资本",
   ],
+  ["", "ROIC(%)", "", "ROIC"],
   [
     "",
     "税前纯益占实收资本(%)",
@@ -243,6 +244,41 @@ typename=lr.typename
 营业收入 = 主营业务成本 = 销售收入=lr.OPERATEREVE
 营业支出 = 营业成本 = 货物销售成本=lr.OPERATEEXP
 净收益 = 净利润=lr.NETPROFIT
+税后利润=净利润
+财务费用=lr.FINANCEEXP
+净资产=期末净资产
+EBIT=息税前净利润
+--=营业收入-成本-销售费用-管理费用-研发费用
+息税前净利润 = 净利润 +利息费用
+营业收入=ifnull(lr.OPERATEREVE,0)
+营业成本=ifnull(lr.OPERATEEXP,0)
+成本=ifnull(lr.OPERATEEXP,0)
+销售费用=ifnull(lr.SALEEXP,0)
+管理费用=ifnull(lr.MANAGEEXP,0)
+研发费用=ifnull(lr.RDEXP,0)
+期初投资资本 = 期初股东权益 + 期初有息负债
+期初股东权益=ifnull(z2.SUMSHEQUITY,0)
+期初短期借款=ifnull(z2.STBORROW,0)
+期初长期借款=ifnull(z2.LTBORROW,0)
+期初应付债券=ifnull(z2.BONDPAY,0)
+期初一年内到期的非流动性负债=ifnull(z2.NONLLIABONEYEAR,0)
+期初长期融资租赁负债=ifnull(z2.DERIVEFLIAB,0)
+期初有息负债=期初短期借款+期初长期借款+期初应付债券+期初一年内到期的非流动性负债+期初长期融资租赁负债
+IC=负债和股东权益合计-(流动负债合计-短期借款)-商誉-货币资金
+ROIC=息税前净利润/期初投资资本
+NOPLAT=息前税后净营业利润
+所得税=lr.INCOMETAX
+负债和股东权益合计=z.SUMLIABSHEQUITY
+流动负债合计=z.SUMLLIAB
+短期借款=z.STBORROW
+商誉=z.GOODWILL
+货币资金=z.MONETARYFUND
+营业税金及附加=lr.OPERATETAX
+手续费及佣金支出=lr.COMMEXP
+税率=所得税/本年营业利润总额
+息税前利润=营业收入-营业成本-销售费用-管理费用-研发费用-营业税金及附加
+投入资本=期初投资资本
+
 上期净利润=lr2.NETPROFIT
 基本每股收益=lr.BASICEPS
 本期主营业务收入=营业收入
@@ -281,7 +317,7 @@ _基本每股收益= case when lr.BASICEPS>lr2.BASICEPS then 1 else 0 end
 期初负债总额=z2.SUMLIAB
 存货 = 期末存货总额=z.INVENTORY
 预付费用=z.ADVANCEPAY
-利息费用=z.INTERESTPAY
+利息费用=ifnull(z.INTERESTPAY,0)
 期初存货总额=z2.INVENTORY
 期初应付账款=z2.ACCOUNTBILLPAY
 期末应付账款=z.ACCOUNTBILLPAY

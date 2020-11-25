@@ -14,7 +14,13 @@ var indexItems = [
     "",
     "格雷厄姆估值",
     "",
-    "格雷厄姆=(EPS*(8.5+2*十年利润复合增长率*100))/pow(1.12,5)",
+    "格雷厄姆=(EPS*(8.5+2*三年营业利润复合增长率*100))/pow(1+折现率,5)",
+  ],
+  [
+    "",
+    "格雷厄姆估值二",
+    "",
+    "格雷厄姆估值二=(EPS*(8.5+2*十年利润复合增长率*100))/pow(1+折现率,5)",
   ],
 ];
 
@@ -45,7 +51,8 @@ var midItemMap = `
 code=h.code
 reportdate=d.reportdate
 基本每股收益=lr.BASICEPS
-折现率=0.12
+折现率=0.1
+营业利润=lr.OPERATEPROFIT
 `
   .trim()
   .split(/\n/)
@@ -60,6 +67,10 @@ reportdate=d.reportdate
 
 midItemMap["今年利润"] = `(
     select netprofit from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=d.reportdate
+  )`;
+
+midItemMap["三年前营业利润"] = `(
+    select OPERATEPROFIT from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 3*4*3 MONTH),'%Y-%m-%d')
   )`;
 midItemMap["五年前利润"] = `(
     select netprofit from lrb l where l.code=h.code and l.reporttype=1 and l.reportdate=DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
@@ -76,7 +87,7 @@ midItemMap["五年平均基本每股收益"] = `(
   and l.reportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(d.reportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
   )`;
 
-midItemMap["三年利润复合增长率"] = `pow(今年利润/三年前利润,1/3)-1`;
+midItemMap["三年营业利润复合增长率"] = `pow(营业利润/三年前营业利润,1/3)-1`;
 midItemMap["五年利润复合增长率"] = `pow(今年利润/五年前利润,1/5)-1`;
 midItemMap["十年利润复合增长率"] = `pow(今年利润/十年前利润,1/10)-1`;
 _.assign(itemMap, midItemMap);
@@ -141,7 +152,11 @@ function toLevelItems(map, arr, exist) {
 }
 
 function isFirstElement(content) {
-  return content.indexOf("\n") > -1 || content.match(/[a-z]+\d*\./i);
+  return (
+    content.indexOf("\n") > -1 ||
+    content.match(/[a-z]+\d*\./i) ||
+    content.trim().match(/^\d+\.?(\d+)?$/)
+  );
 }
 
 let levelItemsMap = toLevelItems(itemMap);

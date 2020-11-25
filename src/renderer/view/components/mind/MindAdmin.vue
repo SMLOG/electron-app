@@ -16,12 +16,14 @@
       @close="(showType = null), (item = null)"
       @updateLink="updateLink"
     ></WinView>
+    <Right :item="rightItem" />
+
       <div>
         <ul class="nav">
         <li class="navItem" style="margin-left: 0;padding-left: 0" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
           <div v-if="info" style="display:inline-block;"  >
           <font-awesome-icon :icon="['fas', 'info-circle']" />
-         <span>{{info.name}}</span>
+         <span   >{{info.name}}</span>
             <span    :class="{red:info.change>0,green:info.change<0}">
            <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
            {{info.close}}
@@ -38,7 +40,7 @@
           <router-link :to="{params:{code:info.code}}">
          <span>{{info.name}}</span>
           </router-link>
-         <span    :class="{red:info.change>0,green:info.change<0}">
+         <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
            <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
            {{info.close}}
            </span>
@@ -86,6 +88,8 @@ import SearchPanel from "@/view/components/search-panel";
 import WinView from "@/view/components/WinView";
 import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
+import Right from "@/view/components/Right";
+
 var self;
 export default {
   data() {
@@ -94,6 +98,7 @@ export default {
       showFin: false,
       item: null,
       link: null,
+      rightItem: false,
       showType: null,
       showMylist: false,
       selectIndex: 0,
@@ -106,7 +111,7 @@ export default {
       },
     };
   },
-  components: { JsMind, SearchPanel, WinView, WinWrap, FinAnalyst2 },
+  components: { JsMind, SearchPanel, WinView, WinWrap, FinAnalyst2, Right },
   mounted() {
     this.getDetail();
   },

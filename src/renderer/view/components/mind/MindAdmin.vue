@@ -52,8 +52,8 @@
         </ul>
         </li>
         <li class="navItem" v-if="info">
-                   <span>pe_ttm: {{info.pe_ttm}}</span>
-         <span>总市值: {{$fmtNumber(info.zsz)}}</span>
+                   <span @mouseover="autoScroll(1,-20)" @mouseout="autoScroll(0,0)">pe_ttm: {{info.pe_ttm}}</span>
+         <span @mouseover="autoScroll(1,20)" @mouseout="autoScroll(0,1)">总市值: {{$fmtNumber(info.zsz)}}</span>
         </li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id">
           <a  @mouseover="viewNode(node)" @mouseout="viewNode(node,true)" @click="toggleNode(node)">{{node.topic}}</a>
@@ -133,6 +133,17 @@ export default {
     },
   },
   methods: {
+    autoScroll(enable, type) {
+      clearInterval(this.stimer);
+      if (enable) {
+        this.stimer = setInterval(() => {
+          $(".jsmind-inner")[0].scroll(
+            0,
+            $(".jsmind-inner")[0].scrollTop + type
+          );
+        }, 100);
+      }
+    },
     toggleNode(node) {
       // this.jm.toggle_node(node.id);
     },

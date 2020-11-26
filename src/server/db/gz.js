@@ -51,7 +51,7 @@ code=h.code
 reportdate=d.reportdate
 基本每股收益=lr.BASICEPS
 EPS=基本每股收益
-折现率=0.1
+折现率=0.12
 营业利润=lr.OPERATEPROFIT
 `
   .trim()

@@ -68,6 +68,8 @@ export default {
   },
   mounted() {
     document.addEventListener("keydown", (e) => {
+      if (e.key == "Meta") return;
+      if (e.metaKey) return;
       if (e.target && e.target.nodeName == "BODY") {
         let c = String.fromCharCode(e.keyCode).replace(/[^A-Za-z 0-9]/, "");
         if (c) {

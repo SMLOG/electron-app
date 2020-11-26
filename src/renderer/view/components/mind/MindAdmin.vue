@@ -207,10 +207,17 @@ export default {
           await this.$http.get(`/static/${type}.json`).then((resp) => {
             if (type != "root") {
               let offsetid = datas[datas.length - 1].id;
+              let subParentId;
               for (let n of resp.data) {
-                n.id += offsetid;
-                if (n.parentid == 0) n.parentid = "root";
-                else n.parentid += offsetid;
+                if (n.parentid == 0) {
+                  n.parentid = "root";
+                  subParentId = n.id;
+                  n.id = type;
+                } else {
+                  n.id += offsetid;
+                  if (n.parentid == subParentId) n.parentid = type;
+                  else n.parentid += offsetid;
+                }
                 datas.push(n);
                 n.sourceId = mind.rawDatas.length - 1;
               }

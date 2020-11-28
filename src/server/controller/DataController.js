@@ -37,6 +37,7 @@ module.exports = {
     let code = ctx.query.code;
     let ret = {};
 
+    let view = `v_${type}`;
     let infos = await db.query(`select * from hq where code = :code`, {
       logging: console.log,
       type: db.QueryTypes.SELECT,
@@ -57,6 +58,7 @@ module.exports = {
           },
         }
       );
+
       if (rows.length == 0) {
         await getReportDatas(code);
         rows = await db.query(

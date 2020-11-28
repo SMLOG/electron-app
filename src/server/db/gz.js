@@ -244,7 +244,7 @@ function getTrees(conf) {
 
 getTrees(indexItems).map((tree) => {
   fs.writeFileSync(
-    `/Users/alexwang/git/electron-suspension/static/${viewId}.json`,
+    `${__dirname}/../../../static/${viewId}.json`,
     JSON.stringify(tree, null, 4)
   );
 });

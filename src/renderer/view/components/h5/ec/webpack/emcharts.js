@@ -4,8 +4,8 @@
 
 require("./modules/chart/common/console");
 // console.info(111)
-//require("promise-polyfill");
-require("./node_modules/promise-polyfill/dist/polyfill.js");
+require("promise-polyfill");
+//require("./node_modules/promise-polyfill/dist/polyfill.js");
 // console.info(222)
 require("./modules/polyfill");
 

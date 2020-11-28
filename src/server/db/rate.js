@@ -555,7 +555,7 @@ function getTrees(conf) {
 
 getTrees(indexItems).map((tree) => {
   fs.writeFileSync(
-    `/Users/alexwang/git/electron-suspension/static/${tree[0].id}.json`,
+    `${__dirname}/../../../static/${tree[0].id}.json`,
     JSON.stringify(tree, null, 4)
   );
 });

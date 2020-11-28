@@ -98,7 +98,7 @@ export function genModel(
     module.exports = ${cls};
     `;
   //console.log(content);
-  let file = `/Users/alexwang/git/electron-suspension/src/server/db/model/${cls}.js`;
+  let file = `${__dirname}/../db/model/${cls}.js`;
   console.log(file);
   fs.writeFileSync(file, content);
   return cls;

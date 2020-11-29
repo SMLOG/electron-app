@@ -29,9 +29,8 @@ httpclient.interceptors.request.use(function(config) {
   config.clearCancelToken = () => clearTimeout(token);
   return config;
 });
-httpclient.interceptors.response.use(undefined, function axiosRetryInterceptor(
-  err
-) {
+
+function axiosRetryInterceptor2(err) {
   var config = err.config;
   console.error(err);
   // If config does not exist or the retry option is not set, reject
@@ -60,6 +59,46 @@ httpclient.interceptors.response.use(undefined, function axiosRetryInterceptor(
   return backoff.then(function() {
     return httpclient(config);
   });
-});
+}
+
+function axiosRetryInterceptor(err) {
+  var message, config;
+  console.error(err);
+  if (axiosa.isCancel(err)) {
+    message = err.message.message;
+    config = err.message.config;
+  } else {
+    message = err.message;
+    config = err.config;
+  }
+  config.clearCancelToken();
+  // If config does not exist or the retry option is not set, reject
+  if (!config || !config.retry) return Promise.reject(new Error(message));
+  // Set the variable for keeping track of the retry count
+  config.__retryCount = config.__retryCount || 0;
+  // Check if we've maxed out the total number of retries
+  if (config.__retryCount >= config.retry) {
+    // Reject with the error
+    return Promise.reject(new Error(message));
+  }
+  // Increase the retry count
+  config.__retryCount += 1;
+  // Create new promise to handle exponential backoff
+  var backoff = new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve();
+    }, config.retryDelay || 1);
+  });
+  // Return the promise in which recalls axios to retry the request
+  return backoff.then(function() {
+    console.log(`请求失败，重试中：${config.url}`);
+    return httpclient(config);
+  });
+}
+
+httpclient.interceptors.response.use(function(response) {
+  response.config.clearCancelToken();
+  return response;
+}, axiosRetryInterceptor);
 
 export { httpclient as axios };

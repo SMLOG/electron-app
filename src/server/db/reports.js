@@ -1,7 +1,7 @@
 const Zyzb = require("./model/Zyzb");
 const Dbfx = require("./model/Dbfx");
 
-import axios from "axios";
+import { axios } from "!/axios";
 import moment from "moment";
 import _ from "lodash";
 import { ifNoExistGenModel, codeField } from "./utils";
@@ -45,7 +45,10 @@ async function getReportData(tab, code, typename = "单季") {
     console.log(url);
     let rows;
     try {
+      console.log("begin...", url);
+
       rows = await axios.get(url, {}).then((resp) => resp.data);
+      console.log("end...", url);
     } catch (e) {
       console.error(e);
       process.exit(1);
@@ -57,6 +60,7 @@ async function getReportData(tab, code, typename = "单季") {
       "YYYY-MM-DD"
     );
     if (endDate == dates[dates.length - 1]) break;
+    // await sleep(3000);
   }
 
   allrows = allrows.map((e) =>
@@ -174,7 +178,7 @@ export async function getReportDatas(code) {
     }
   } while (loop);
 }
-if (false)
+if (true)
   (async () => {
-    await getReportDatas("sz300015");
+    await getReportDatas("sz000876");
   })();

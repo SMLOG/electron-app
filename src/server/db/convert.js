@@ -1,7 +1,14 @@
-import axios from "axios";
 import _ from "lodash";
 import { genModel } from "./utils";
+import fs from "fs";
+import { userAgent, CONFIG_DIR } from "!/config";
+import { axios } from "!/axios";
 async function getcolumDisplayMap() {
+  let cachefile = `${__dirname}/columDisplayMap.json`;
+  if (fs.existsSync(cachefile)) {
+    return JSON.parse(fs.readFileSync(cachefile));
+  }
+
   const bburls = {
     qs:
       "http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code=sh600999",
@@ -100,6 +107,8 @@ async function getcolumDisplayMap() {
     dbfx: dbfx,
   });
   //console.log(res);
+
+  fs.writeFileSync(cachefile, JSON.stringify(res, null, 4));
   return res;
 }
 async function getSampDatas() {

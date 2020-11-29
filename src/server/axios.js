@@ -1,15 +1,37 @@
 import axiosa from "axios";
+import { userAgent, CONFIG_DIR } from "!/config";
 
-export const axios = axiosa.create({
+const httpclient = axiosa.create({
   timeout: 15000,
-  retry: 5,
-  retryDelay: 30000,
+  retry: 2,
+  retryDelay: 10000,
 });
-//设置全局的请求次数，请求的间隙
-axios.defaults.retry = 5;
-axios.defaults.retryDelay = 30000;
-axios.defaults.timeout = 15000;
-axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
+httpclient.defaults.retry = 5;
+httpclient.defaults.retryDelay = 15000;
+httpclient.defaults.timeout = 15000;
+
+httpclient.interceptors.request.use((config) => {
+  if (!config.headers["User-Agent"])
+    config.headers = {
+      "User-Agent": userAgent,
+    };
+  return config;
+});
+
+httpclient.interceptors.request.use(function(config) {
+  const CancelToken = axiosa.CancelToken;
+  const source = CancelToken.source();
+  let token = setTimeout(
+    () => source.cancel({ message: "Timeout", config: config }),
+    config.timeout
+  );
+  config.cancelToken = source.token;
+  config.clearCancelToken = () => clearTimeout(token);
+  return config;
+});
+httpclient.interceptors.response.use(undefined, function axiosRetryInterceptor(
+  err
+) {
   var config = err.config;
   console.error(err);
   // If config does not exist or the retry option is not set, reject
@@ -36,6 +58,8 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
 
   // Return the promise in which recalls axios to retry the request
   return backoff.then(function() {
-    return axios(config);
+    return httpclient(config);
   });
 });
+
+export { httpclient as axios };

@@ -180,5 +180,5 @@ export async function getReportDatas(code) {
 }
 if (true)
   (async () => {
-    await getReportDatas("sz000876");
+    //await getReportDatas("sz000876");
   })();

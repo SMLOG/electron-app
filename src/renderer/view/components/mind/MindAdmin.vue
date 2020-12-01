@@ -135,12 +135,21 @@ export default {
   },
   methods: {
     download(info) {
-      window.open(
+      let src =
         "http://localhost:8080/excel?code=" +
-          info.code +
-          "&name=" +
-          encodeURIComponent(info.name)
-      );
+        info.code +
+        "&name=" +
+        encodeURIComponent(info.name);
+      var eleLink = document.createElement("a");
+      eleLink.href = src;
+      eleLink.download = name;
+      eleLink.style.display = "none";
+      eleLink.href = src;
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      document.body.removeChild(eleLink);
+
+      // window.open(src);
     },
     autoScroll(enable, type) {
       clearInterval(this.stimer);

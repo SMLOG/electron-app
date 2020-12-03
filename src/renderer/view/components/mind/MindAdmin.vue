@@ -34,23 +34,29 @@
 
 
           </div>
-        <ul class="mylist" v-show="showMylist">
-        <li class="info" v-for="info in mylist" :key="info.code">
-          <font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
+          <div class="mylist" v-show="showMylist" style="width:auto;top:30px;bottom:0;overflow:auto;">
+          <table >
+            <tr class="info" v-for="info in mylist" :key="info.code">
+              <td>          <font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
           <router-link :to="{params:{code:info.code}}">
          <span>{{info.name}}</span>
           </router-link>
-         <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
+                </td> <td>
+                           <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
            <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
            {{info.close}}
            </span>
            <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
            <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
           </span>
-          <font-awesome-icon  :icon="['fas', 'arrow-circle-down']" @click="download(info)"/>
-          <font-awesome-icon  :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
-        </li>
-        </ul>
+                  </td> <td>          <font-awesome-icon  :icon="['fas', 'arrow-circle-down']" @click="download(info)"/>
+          <font-awesome-icon  :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/></td>
+          <td>{{info.mid}}</td>
+            </tr>
+          </table>
+
+          </div>
+  
         </li>
         <li class="navItem" v-if="info">
                    <span @mouseover="autoScroll(1,-20)" @mouseout="autoScroll(0,0)">pe_ttm: {{info.pe_ttm}}</span>

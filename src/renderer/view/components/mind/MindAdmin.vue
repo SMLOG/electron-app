@@ -37,21 +37,21 @@
           <div class="mylist" v-show="showMylist" style="width:auto;top:30px;bottom:0;overflow:auto;">
           <table >
             <tr class="info" v-for="info in mylist" :key="info.code">
-              <td>          <font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
-          <router-link :to="{params:{code:info.code}}">
-         <span>{{info.name}}</span>
-          </router-link>
-                </td> <td>
-                           <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
-           <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
-           {{info.close}}
-           </span>
-           <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
-           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
-          </span>
-                  </td> <td>          <font-awesome-icon  :icon="['fas', 'arrow-circle-down']" @click="download(info)"/>
-          <font-awesome-icon  :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/></td>
-          <td>{{info.mid}}</td>
+              <td><font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
+                <router-link :to="{params:{code:info.code}}"><span>{{info.name}}</span></router-link>
+              </td>
+              <td>
+                <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
+                        <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">{{info.close}}</span>
+                        <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
+                        <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
+                </span>
+              </td>
+              <td>
+                <font-awesome-icon  :icon="['fas', 'arrow-circle-down']" @click="download(info)"/>
+                <font-awesome-icon  :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
+              </td>
+              <td>{{info.mid}}</td>
             </tr>
           </table>
 

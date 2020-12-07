@@ -13,7 +13,7 @@
       "group": "test",
       "database": "test",
       "username": "root",
-      "password": "password"
+      "password": ""
     }
   ]
 }

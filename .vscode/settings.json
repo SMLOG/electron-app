@@ -8,12 +8,26 @@
       "previewLimit": 50,
       "server": "localhost",
       "port": 3306,
+      "askForPassword": true,
       "driver": "MySQL",
-      "name": "test",
-      "group": "test",
+      "name": "test2",
+      "group": "test2",
+      "database": "test",
+      "username": "root"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MariaDB",
+      "name": "t",
+      "group": "t",
       "database": "test",
       "username": "root",
-      "password": ""
+      "password": "password"
     }
   ]
 }

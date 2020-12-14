@@ -1,23 +1,6 @@
 <template>
     <div>
       <div style="position:fixed;z-index:4;">
-      <search-panel @select="changeItem"></search-panel>
-      <WinWrap
-        :item="item"
-        :curComponent="curComponent"
-        v-if="showType == 'fin'"
-        @close="(showType = null), (item = null)"
-      />
-      <WinView
-      ref="webviewWrap"
-      v-show="showType == 'link' && item"
-      :item="item"
-      :link="link"
-      @close="(showType = null), (item = null)"
-      @updateLink="updateLink"
-    ></WinView>
-    <Right :item="rightItem" />
-
       <div>
         <ul class="nav">
         <li class="navItem" style="margin-left: 0;padding-left: 0" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
@@ -25,37 +8,16 @@
           <font-awesome-icon :icon="['fas', 'info-circle']" />
          <span   >{{info.name}}</span>
             <span    :class="{red:info.change>0,green:info.change<0}">
-           <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
+           <span @click="$openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
            {{info.close}}
            </span>
            <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
-           <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
+           <span @click='$openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
           </span>
 
 
           </div>
-          <div class="mylist" v-show="showMylist" style="width:auto;top:30px;bottom:0;overflow:auto;">
-          <table >
-            <tr class="info" v-for="info in mylist" :key="info.code">
-              <td><font-awesome-icon :icon="['fas', 'trash']" size="xs" @click="$socket.emit('removeItem', info);"/>
-                <router-link :to="{params:{code:info.code}}"><span>{{info.name}}</span></router-link>
-              </td>
-              <td>
-                <span  @mouseover="rightItem=info" @mouseout="rightItem=false"   :class="{red:info.change>0,green:info.change<0}">
-                        <span @click="openlink(info,$event,`/static/tech.html?{{code}}&kd`)">{{info.close}}</span>
-                        <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
-                        <span @click='openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
-                </span>
-              </td>
-              <td>
-                <font-awesome-icon  :icon="['fas', 'arrow-circle-down']" @click="download(info)"/>
-                <font-awesome-icon  :icon="['fas', 'info-circle']" @click="togglePop(info, 'ChartIndex', 'fin')"/>
-              </td>
-              <td>{{info.mid}}</td>
-            </tr>
-          </table>
-
-          </div>
+        <my-min-list :style="{width:showMylist?'auto':'10px'}" @mouseover="showMylist=true" />
   
         </li>
         <li class="navItem" v-if="info">
@@ -96,6 +58,7 @@ import WinView from "@/view/components/WinView";
 import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
+import MyMinList from "./MyMinList.vue";
 
 var self;
 export default {
@@ -118,7 +81,15 @@ export default {
       },
     };
   },
-  components: { JsMind, SearchPanel, WinView, WinWrap, FinAnalyst2, Right },
+  components: {
+    JsMind,
+    SearchPanel,
+    WinView,
+    WinWrap,
+    FinAnalyst2,
+    Right,
+    MyMinList,
+  },
   mounted() {
     this.getDetail();
   },
@@ -133,30 +104,13 @@ export default {
   watch: {
     $route: {
       handler() {
-        this.code = this.$route.params.code;
+        this.code = this.$route.query.code;
         this.getDetail();
       },
       deep: true,
     },
   },
   methods: {
-    download(info) {
-      let src =
-        "http://localhost:8080/excel?code=" +
-        info.code +
-        "&name=" +
-        encodeURIComponent(info.name);
-      var eleLink = document.createElement("a");
-      eleLink.href = src;
-      eleLink.download = name;
-      eleLink.style.display = "none";
-      eleLink.href = src;
-      document.body.appendChild(eleLink);
-      eleLink.click();
-      document.body.removeChild(eleLink);
-
-      // window.open(src);
-    },
     autoScroll(enable, type) {
       clearInterval(this.stimer);
       if (enable) {
@@ -168,43 +122,16 @@ export default {
         }, 100);
       }
     },
-    toggleNode(node) {
-      // this.jm.toggle_node(node.id);
-    },
-    togglePop(item, comp, type) {
-      if (item == this.item && this.curComponent == comp) {
-        this.item = null;
-        this.showType = null;
-      } else {
-        this.showType = type;
-        this.curComponent = comp;
-        this.item = item;
-      }
-    },
-    updateLink(newlink) {
-      this.link = newlink;
-    },
-    openlink(item, event, link = `/static/tech.html?{{code}}&kd`) {
-      if (item == this.item && link == this.link) {
-        this.item = null;
-      } else {
-        this.item = item;
-        this.link = link;
-        this.showType = "link";
-      }
-    },
-    changeItem(item) {
-      this.$router.push({ params: { code: item.code } });
-    },
+
     getDetail() {
       self = this;
-      this.$route.params.code = (this.$route.params.code || "").replace(
+      this.$route.query.code = (this.$route.query.code || "").replace(
         /[^\d]+/g,
         ""
       );
       if (
-        !this.$route.params.code &&
-        !this.$route.params.code.match(/^[036]\d{5}$/)
+        !this.$route.query.code &&
+        !this.$route.query.code.match(/^[036]\d{5}$/)
       ) {
         alert("请输入代码参数或者检查代码参数格式是否正确？");
         return;
@@ -221,8 +148,8 @@ export default {
             params: {
               type: type,
               code:
-                (this.$route.params.code[0] == "6" ? "sh" : "sz") +
-                this.$route.params.code,
+                (this.$route.query.code[0] == "6" ? "sh" : "sz") +
+                this.$route.query.code,
             },
           });
           mind.rawDatas.push(resp.data.datas);
@@ -280,10 +207,6 @@ export default {
 };
 </script>
 <style scoped>
-::-webkit-scrollbar {
-  width: auto !important;
-  height: auto !important;
-}
 body {
   overflow: hidden;
 }

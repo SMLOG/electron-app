@@ -19,6 +19,11 @@ const state = {
   wsfilters: {},
   mylist: [],
   hx: [],
+  curItem: {},
+  curComponent: "",
+  showType: "",
+  rightItem: false,
+  link: null,
 };
 const mutations = {
   [MUTATION_TYPE.SET_FIELDS](state, fields) {
@@ -47,8 +52,21 @@ const mutations = {
     batchUpdateHQ(state.mylist, data);
     // commit("SOCKET_mylist", state.mylist);
   },
+
+  setCurItem(state, data) {
+    Object.assign(state, data);
+  },
+  setRightItem(state, data) {
+    Object.assign(state, data);
+  },
 };
 const actions = {
+  setRightItem: function({ state, commit }, data) {
+    commit("setRightItem", data);
+  },
+  setCurItem: function({ state, commit }, data) {
+    commit("setCurItem", data);
+  },
   showSuspension: function({ state, commit }) {
     let status = true;
     storejs.set("showSuspension", status);

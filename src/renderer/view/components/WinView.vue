@@ -97,7 +97,7 @@ export default {
     return {
       fullFigure: false,
       src: "about:_blank",
-      chartop: 500,
+      chartop: 200,
     };
   },
   props: {
@@ -149,24 +149,10 @@ export default {
   mounted() {},
   watch: {
     item(n, o) {
-      if (n != null && o == null) {
+      if (n != null && (o == null || o.code == null)) {
         this.chartop =
           Math.min(getCookie("charTop", 0.6), 0.9) * $(window).height();
       }
-      /*if (n && o) {
-        setTimeout(() => {
-          let link = this.$el
-            .querySelector("iframe")
-            .contentWindow.location.href.replace(
-              new RegExp("^" + location.origin),
-              ""
-            )
-            .replace(new RegExp(o.code, "gi"), "{{code}}");
-          if (link != this.link) {
-            this.openlink(n, link);
-          }
-        }, 100);
-      }*/
       this.openlink(n, this.link);
     },
     link(n, o) {
@@ -239,5 +225,17 @@ tr,
 td {
   padding: 0;
   margin: 0;
+}
+.webview {
+  position: fixed;
+  width: 1200px;
+  right: 0;
+  bottom: 0;
+  top: 60%;
+  z-index: 4;
+  transition: top 0.5s;
+  -webkit-transition: top 0.5s; /* Safari */
+  transition: left 0.5s;
+  -webkit-transition: left 0.5s; /* Safari */
 }
 </style>

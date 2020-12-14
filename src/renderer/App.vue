@@ -1,12 +1,67 @@
 <template>
   <div id="app">
+    <div id="wigi2" style="position: fixed; z-index: 4">
+      <search-panel @select="changeItem"></search-panel>
+    </div>
+    <div id="wigi" style="position: fixed; z-index: 5">
+      <WinView
+        ref="webviewWrap"
+        v-show="showType == 'link' && item"
+        :item="item"
+        :link="link"
+        @close="clickClosed"
+        @updateLink="updateLink"
+      ></WinView>
+      <WinWrap
+        :item="item"
+        :curComponent="curComponent"
+        v-if="showType == 'fin'"
+        @close="clickClosed"
+      />
+      <Right :item="rightItem" />
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+import SearchPanel from "@/view/components/search-panel";
+import WinView from "@/view/components/WinView";
+import WinWrap from "@/view/components/WinWrap";
+import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
+import Right from "@/view/components/Right";
 export default {
-  name: "Test"
+  name: "Test",
+  components: { SearchPanel, WinView, WinWrap, FinAnalyst2, Right },
+
+  computed: {
+    ...mapState({
+      curComponent: (state) => state.ws.curComponent,
+      showType: (state) => state.ws.showType,
+      rightItem: (state) => state.ws.rightItem,
+      link: (state) => state.ws.link,
+      item: (state) => state.ws.curItem,
+    }),
+  },
+  methods: {
+    updateLink(newlink) {},
+    changeItem(item) {
+      this.$router.push({ query: { code: item.code } });
+      this.$store.commit("ws/setCurItem", {
+        ...this.$store.state.ws,
+        curItem: item,
+      });
+    },
+    clickClosed() {
+      this.$store.commit("ws/setCurItem", {
+        ...this.$store.state.ws,
+        showType: null,
+        curItem: null,
+        curComponent: null,
+      });
+    },
+  },
 };
 </script>
 

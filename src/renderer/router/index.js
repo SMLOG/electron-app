@@ -16,7 +16,7 @@ export default new Router({
       component: () => import("@/view/components/tools/DCF"),
     },
     {
-      path: "/mind/:code",
+      path: "/mind",
       component: () => import("@/view/components/mind/MindAdmin"),
     },
     {

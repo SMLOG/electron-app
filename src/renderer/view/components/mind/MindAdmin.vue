@@ -17,7 +17,7 @@
 
 
           </div>
-        <my-min-list :style="{width:showMylist?'auto':'10px'}" @mouseover="showMylist=true" />
+        <my-min-list :style="{width:showMylist?'auto':'10px'}" @mouseover="showMylist=true" @mouseout="showMyList=false"/>
   
         </li>
         <li class="navItem" v-if="info">
@@ -233,7 +233,7 @@ ul.nav {
 }
 .jsmind-tools {
   position: fixed;
-  top: 10px;
+  top: 20px;
   right: -54px;
   background-color: #fff;
   border-radius: 5px;

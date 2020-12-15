@@ -1,89 +1,164 @@
 <template>
   <div class="mylist" style="width: auto; top: 30px; bottom: 0; overflow: auto">
-    <table>
-      <tr>
-        <th>名称({{ mylist.length }})</th>
-        <th></th>
-        <th></th>
-        <th>行业</th>
-        <th>PE(TTM)</th>
-        <th>总市值</th>
-        <th></th>
-      </tr>
-      <tr class="info" v-for="(info, i) in mylist" :key="info.code">
-        <td>
-          {{ i + 1 }}
-          <font-awesome-icon
-            :icon="['fas', 'trash']"
-            size="xs"
-            @click="$socket.emit('removeItem', info)"
-          />
-          <router-link :to="{ query: { code: info.code } }"
-            ><span>{{ info.name }}</span></router-link
-          >
-        </td>
-        <td>
-          <span
-            @mouseover="rightItem = info"
-            @mouseout="rightItem = false"
-            :class="{ red: info.change > 0, green: info.change < 0 }"
-          >
-            <span
-              @click="$openlink(info, $event, `/static/tech.html?{{code}}&kd`)"
-              >{{ info.close }}</span
+    <Setting />
+    <div class="list" style="">
+      <table>
+        <thead>
+          <tr>
+            <th>名称({{ mylist.length }})</th>
+            <th>Now</th>
+            <th
+              v-for="col in headers"
+              :key="col.prop"
+              :class="{
+                ascending: sortby === col.prop && !descending,
+                descending: sortby === col.prop && descending,
+              }"
             >
-            <span @click="$togglePop(info, 'FinAnalyst2', 'fin')"
-              >({{ info.change }}</span
-            >,
-            <span
-              @click="
-                $openlink(
-                  info,
-                  $event,
-                  `https://caibaoshuo.com/companies/${info.code.replace(
-                    /[a-z]+/g,
-                    ''
-                  )}/financials`
-                )
-              "
-              >{{ info.changeP }})</span
+              <span @click="sort(col.prop)">{{ col.label }}</span>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <draggable
+          v-model="mylist"
+          handle=".info"
+          @update="dragEnd"
+          tag="tbody"
+        >
+          <tr class="info" v-for="(info, i) in filteredItems" :key="info.code">
+            <td>
+              {{ i + 1 }}
+              <font-awesome-icon
+                :icon="['fas', 'trash']"
+                size="xs"
+                @click="$socket.emit('removeItem', info)"
+              />
+              <router-link :to="{ query: { code: info.code } }"
+                ><span>{{ info.name }}</span></router-link
+              >
+            </td>
+            <td>
+              <span
+                @mouseover="rightItem = info"
+                @mouseout="rightItem = false"
+                :class="{ red: info.change > 0, green: info.change < 0 }"
+              >
+                <span
+                  @click="
+                    $openlink(info, $event, `/static/tech.html?{{code}}&kd`)
+                  "
+                  >{{ info.close }}</span
+                >
+                <span @click="$togglePop(info, 'FinAnalyst2', 'fin')"
+                  >({{ info.change }}</span
+                >,
+                <span
+                  @click="
+                    $openlink(
+                      info,
+                      $event,
+                      `https://caibaoshuo.com/companies/${info.code.replace(
+                        /[a-z]+/g,
+                        ''
+                      )}/financials`
+                    )
+                  "
+                  >{{ info.changeP }})</span
+                >
+              </span>
+            </td>
+
+            <td
+              v-for="col in headers"
+              :key="col.prop"
+              :class="getclass(col, info, info[col.prop])"
+              :title="col.title && col.title(info)"
+              @click="col.click && col.click(info, $event, $openlink, getThis)"
             >
-          </span>
-        </td>
-        <td>
-          <font-awesome-icon
-            :icon="['fas', 'arrow-circle-down']"
-            @click="download(info)"
-          />
-          <font-awesome-icon
-            :icon="['fas', 'info-circle']"
-            @click="$togglePop(info, 'ChartIndex', 'fin')"
-          />
-        </td>
-        <td>{{ info.hy }}</td>
-        <td>{{ info.pe_ttm }}</td>
-        <td>{{ $fmtNumber(info.zsz) }}</td>
-        <td>{{ info.mid }}</td>
-      </tr>
-    </table>
+              {{ col.fmt ? col.fmt(info[col.prop], info) : info[col.prop] }}
+            </td>
+            <td>
+              <font-awesome-icon
+                :icon="['fas', 'arrow-circle-down']"
+                @click="download(info)"
+              />
+              <font-awesome-icon
+                :icon="['fas', 'info-circle']"
+                @click="$togglePop(info, 'ChartIndex', 'fin')"
+              />
+            </td>
+          </tr>
+        </draggable>
+      </table>
+    </div>
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import $ from "jquery";
 import { batchUpdateHQ } from "@/lib/getTable";
+import draggable from "vuedraggable";
+import { getCheckFields } from "@/view/headers";
+import Setting from "@/view/components/setting";
 
 var self;
 export default {
   data() {
-    return {};
+    return {
+      headers: getCheckFields(),
+      sortby: "",
+      mylist: [],
+    };
   },
-
+  watch: {
+    fields: {
+      deep: true,
+      handler(newValue, oldValue) {
+        this.headers = getCheckFields();
+      },
+    },
+  },
+  components: { draggable, Setting },
+  sockets: {
+    mylist(data) {
+      this.mylist.length = 0;
+      this.mylist.push(...data);
+    },
+    hx(data) {
+      //console.log(data);
+      // this.$socket.emit("echo", data);
+      batchUpdateHQ(this.mylist, data);
+    },
+  },
   computed: {
-    ...mapState({ mylist: (state) => state.ws.mylist }),
+    filteredItems: function () {
+      return this.mylist;
+    },
+    ...mapGetters("ws", ["fields", "curFilterIds"]),
+    //...mapState({ mylist: (state) => state.ws.mylist }),
   },
 
   methods: {
+    getThis(cb) {
+      if (cb) {
+        cb(this);
+      }
+    },
+    getclass(col, item, value) {
+      let cls = {};
+      col.class && (cls = col.class(item, value));
+      if (col.click) {
+        if (!cls) cls = {};
+        cls["link"] = true;
+      }
+      return cls;
+    },
+    dragEnd(e) {
+      e.preventDefault();
+
+      this.$socket.emit("updateItems", this.mylist);
+    },
     download(info) {
       let src =
         "http://localhost:8080/excel?code=" +

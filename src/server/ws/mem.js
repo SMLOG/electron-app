@@ -45,7 +45,7 @@ export function initmem(io) {
         console.error("initmem");
         // cats["自选"].items = await getMyList();
         cats["自选"].items = await db.query(
-          `select e.* ,h.* from my a left join hq h on a.code = h.code left join excel_gz e on e.code=a.code `,
+          `select e.* ,h.* from my a left join hq h on a.code = h.code left join excel_gz e on e.code=a.code order by a.my_id asc`,
           {
             type: db.QueryTypes.SELECT,
           }

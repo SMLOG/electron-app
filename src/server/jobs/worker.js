@@ -717,7 +717,7 @@ export const JOB_MAP = {
     tableName: "hq",
     pks: ["code"],
     minTime: 30000000,
-    enable: true,
+    enable: false,
     get: async function(options) {
       let rows = await getList();
 
@@ -738,7 +738,7 @@ export const JOB_MAP = {
 
 //var CronJob = require("cron").CronJob;
 //const AsyncQueue = require("@wxaxiaoyao/async-queue");
-//task(JOB_MAP, "业绩");
+//task(JOB_MAP, "行情");
 if (false)
   (async () => {
     for (let k in JOB_MAP) {

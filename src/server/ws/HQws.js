@@ -1,12 +1,24 @@
 import { getList } from "../TechMan";
 import { getFilterList } from "../criteria";
+import { JOB_MAP } from "!/jobs/worker";
+import { task } from "!/jobs/jobIndex";
 
+import { db } from "!/db/db";
 import { attachExtractInfoToItems } from "../helper";
 import axios from "axios";
 import { CONFIG_DIR } from "../config";
 import fs from "fs";
+let timer = 0;
+export async function hx(fromdb = false) {
+  console.log("hx timer:", timer);
+  if (timer++ % 60 == 0 || fromdb) {
+    await task(JOB_MAP, "行情");
 
-export async function hx() {
+    return await db.query(`select * from hq`, {
+      type: db.QueryTypes.SELECT,
+    });
+  }
+
   return await getList();
 }
 let file = `${CONFIG_DIR}/my.json`;
@@ -20,8 +32,8 @@ export async function getMyList() {
   return list;
 }
 export async function getSeaList() {
-  let list = await getList();
-  await attachExtractInfoToItems(list);
+  let list = await hx(true);
+
   list = await getFilterList(list);
   console.info("getSeaList:", list.length);
   return list;

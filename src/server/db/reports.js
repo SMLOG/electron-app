@@ -55,11 +55,15 @@ async function getReportData(tab, code, typename = "单季") {
     }
     //console.log(JSON.parse(result)[0]);
     rows = JSON.parse(rows);
-    allrows = allrows.concat(rows);
+    if (rows) allrows = allrows.concat(rows);
+    if (allrows[allrows.length - 1] == null) {
+      console.error("null");
+    }
     endDate = moment(new Date(allrows[allrows.length - 1].REPORTDATE)).format(
       "YYYY-MM-DD"
     );
-    if (endDate == dates[dates.length - 1]) break;
+    console.log(endDate);
+    if (endDate == dates[dates.length - 1] || !rows) break;
     // await sleep(3000);
   }
 

@@ -35,7 +35,7 @@ export function fmtNumber(value) {
   return value;
 }
 export function fmtPercent(value) {
-  if (1 * value == value) return parseFloat(value).toFixed(2) + "%";
+  if (1 * value == value) return parseFloat(100 * value).toFixed(2) + "%";
   return value;
 }
 export async function fetchEval(urls, encode, callback) {

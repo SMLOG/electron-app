@@ -45,7 +45,12 @@ export function initmem(io) {
         console.error("initmem");
         // cats["自选"].items = await getMyList();
         cats["自选"].items = await db.query(
-          `select e.* ,h.* from my a left join hq h on a.code = h.code left join excel_gz e on e.code=a.code order by a.my_id asc`,
+          `select e.*,t2.* ,h.* from my a 
+          left join hq h on a.code = h.code 
+          left join excel_gz e on e.code=a.code 
+          left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
+          on t2.code=a.code and t2.rk=1
+          order by a.my_id asc`,
           {
             type: db.QueryTypes.SELECT,
           }

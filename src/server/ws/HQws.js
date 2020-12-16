@@ -43,6 +43,8 @@ export async function getSeaList() {
     }
   );
   list = await getFilterList(list);
+  await attachExtractInfoToItems(list);
+
   console.info("getSeaList:", list.length);
   return list;
 }

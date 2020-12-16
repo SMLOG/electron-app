@@ -119,109 +119,21 @@ export let headers = [
 
   {
     label: "净利率",
-    prop: "净利率(%)",
+    prop: "净利率",
     type: "number",
-    fmt: (e, item) => {
-      if (window["zyzb_" + item.code]) {
-        let data = window["zyzb_" + item.code];
-        return (item["净利率(%)"] = parseFloat(
-          data["净利率(%)"][data["reportDate"][1]]
-        ));
-      }
-    },
+    fmt: fmtPercent,
   },
   {
     label: "毛利率",
-    prop: "毛利率(%)",
+    prop: "毛利率",
     type: "number",
     fmt: fmtPercent,
-  },
-  {
-    label: "资产负债率",
-    prop: "资产负债率(%)",
-    type: "number",
-    fmt: fmtPercent,
-  },
-  {
-    label: "分",
-    prop: "score",
-    type: "number",
-    fmt: (e, item) => e,
-    title: (item) => item.score_desc,
-  },
-
-  {
-    label: "TRADE_MARKET_CODE",
-    prop: "TRADE_MARKET_CODE",
-  },
-  {
-    label: "TRADE_MARKET",
-    prop: "TRADE_MARKET",
-  },
-  {
-    label: "SECURITY_TYPE_CODE",
-    prop: "SECURITY_TYPE_CODE",
-  },
-  {
-    label: "SECURITY_TYPE",
-    prop: "SECURITY_TYPE",
-  },
-  {
-    label: "公告日期",
-    prop: "UPDATE_DATE",
-    click: (item, event, openlink) => {
-      openlink(
-        item,
-        event,
-        `https://caibaoshuo.com/companies/${item.code.replace(/[a-z]+/g, "")}`
-      );
-    },
-  },
-  {
-    label: "REPORTDATE",
-    prop: "REPORTDATE",
-    click: (item, event, openlink, getThis) => {
-      if (getThis) {
-        getThis((self) => {
-          if (self.yjitems[item.code]) self.yjitems[item.code] = null;
-          else
-            axios
-              .get("/api/yjlist", { params: { code: item.code } })
-              .then((resp) => {
-                //self.yjitems[item.code] = resp.data;
-                self.$set(self.yjitems, item.code, resp.data);
-                //console.error(self.yjitems);
-              });
-        });
-      }
-    },
-  },
-  {
-    label: "股收益",
-    prop: "BASIC_EPS",
-    fmt: fmtNumber,
-  },
-  {
-    label: "扣非每股",
-    prop: "DEDUCT_BASIC_EPS",
-    fmt: function(e) {
-      return e == null ? "--" : e.toFixed(2);
-    },
-  },
-  {
-    label: "营收",
-    prop: "TOTAL_OPERATE_INCOME",
-    fmt: fmtNumber,
-  },
-  {
-    label: "净利润",
-    prop: "PARENT_NETPROFIT",
-    fmt: fmtNumber,
   },
   {
     label: "ROE",
     prop: "扣非ROE",
     fmt: fmtPercent,
+
     click: (item, event, openlink) => {
       openlink(
         item,
@@ -233,105 +145,6 @@ export let headers = [
           )}.html`
       );
     },
-  },
-  {
-    label: "营收同比",
-    prop: "YSTZ",
-    fmt: fmtPercent,
-  },
-  {
-    label: "净利同比",
-    prop: "SJLTZ",
-    fmt: fmtPercent,
-    click: (item, event, openlink, getThis) => {
-      if (getThis) {
-        getThis((self) => {
-          self.togglePop(item, "FinAnalyst2", "fin");
-        });
-      }
-      //openlink(item, event, url);
-    },
-  },
-  {
-    label: "每股净资产",
-    prop: "BPS",
-    fmt: fmtNumber,
-  },
-  {
-    label: "每股现金流量",
-    prop: "MGJYXJJE",
-    fmt: fmtNumber,
-    click: (item, event, openlink) => {
-      let url = `/proxy/http://f10.eastmoney.com/NewFinanceAnalysis/Index?type=web&code={{code}}#zyzb-0`;
-      openlink(item, event, url);
-    },
-  },
-  {
-    label: "销售毛利率",
-    prop: "XSMLL",
-    fmt: fmtPercent,
-  },
-  {
-    label: "季度环比增长",
-    prop: "YSHZ",
-    fmt: fmtPercent,
-  },
-  {
-    label: "季度环比增长",
-    prop: "SJLHZ",
-    fmt: fmtPercent,
-  },
-  {
-    label: "利润分配",
-    prop: "ASSIGNDSCRPT",
-  },
-  {
-    label: "PAYYEAR",
-    prop: "PAYYEAR",
-  },
-  {
-    label: "所属行业",
-    prop: "PUBLISHNAME",
-  },
-  {
-    label: "ZXGXL",
-    prop: "ZXGXL",
-  },
-  {
-    label: "NOTICE_DATE",
-    prop: "NOTICE_DATE",
-  },
-  {
-    label: "ORG_CODE",
-    prop: "ORG_CODE",
-  },
-  {
-    label: "TRADE_MARKET_ZJG",
-    prop: "TRADE_MARKET_ZJG",
-  },
-  {
-    label: "ISNEW",
-    prop: "ISNEW",
-  },
-  {
-    label: "QDATE",
-    prop: "QDATE",
-  },
-  {
-    label: "DATATYPE",
-    prop: "DATATYPE",
-  },
-  {
-    label: "DATAYEAR",
-    prop: "DATAYEAR",
-  },
-  {
-    label: "DATEMMDD",
-    prop: "DATEMMDD",
-  },
-  {
-    label: "EITIME",
-    prop: "EITIME",
   },
 ];
 

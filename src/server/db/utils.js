@@ -6,7 +6,7 @@ export function genModel(
   rows,
   tab,
   displayFieldMap = {},
-  u,
+  ukeys,
   comment = "",
   fieldDef,
   deftype
@@ -76,7 +76,7 @@ export function genModel(
       }
     }
 
-    if (u.indexOf(field) > -1) f["unique"] = "index_unique";
+    if (ukeys.indexOf(field) > -1) f["unique"] = "index_unique";
 
     f["field"] = field;
   }

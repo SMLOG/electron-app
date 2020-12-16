@@ -1333,10 +1333,12 @@ const { Model, DataTypes } = require("sequelize");
     },
     "RREPORTDATE": {
         "type": DataTypes.STRING(10),
+        "unique": "index_unique",
         "field": "RREPORTDATE"
     },
     "PREPORTDATE": {
         "type": DataTypes.STRING(10),
+        "unique": "index_unique",
         "field": "PREPORTDATE"
     }
 }

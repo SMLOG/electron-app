@@ -32,8 +32,16 @@ export async function getMyList() {
   return list;
 }
 export async function getSeaList() {
-  let list = await hx(true);
-
+  //let list = await hx(true);
+  let list = await db.query(
+    `select * from hq 
+    left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
+    on t2.code=hq.code and t2.rk=1
+    where pe_ttm>0 and pe_ttm<50 and close>5 and t2.扣非ROE>0.1`,
+    {
+      type: db.QueryTypes.SELECT,
+    }
+  );
   list = await getFilterList(list);
   console.info("getSeaList:", list.length);
   return list;

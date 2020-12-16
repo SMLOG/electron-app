@@ -4,9 +4,12 @@ import { getReportDatas } from "./reports";
 
 (async () => {
   console.log(My);
-  let items = await db.query(`select * from hq where pe_ttm>0 and pe_ttm<50`, {
-    type: db.QueryTypes.SELECT,
-  });
+  let items = await db.query(
+    `select * from hq where pe_ttm>0 and pe_ttm<50 and close>5 and  firstday is not null and firstday <=20210101`,
+    {
+      type: db.QueryTypes.SELECT,
+    }
+  );
   console.log(items);
 
   for (let item of items) {

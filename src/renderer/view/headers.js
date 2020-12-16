@@ -220,7 +220,7 @@ export let headers = [
   },
   {
     label: "ROE",
-    prop: "WEIGHTAVG_ROE",
+    prop: "扣非ROE",
     fmt: fmtPercent,
     click: (item, event, openlink) => {
       openlink(

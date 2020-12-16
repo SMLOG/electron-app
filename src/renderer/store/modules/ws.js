@@ -49,7 +49,7 @@ const mutations = {
   },
   SOCKET_hx(state, data) {
     state.hx = data;
-    batchUpdateHQ(state.mylist, data);
+    //batchUpdateHQ(state.mylist, data);
     // commit("SOCKET_mylist", state.mylist);
   },
 

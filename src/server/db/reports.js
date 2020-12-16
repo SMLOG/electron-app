@@ -111,7 +111,14 @@ async function getReportData(tab, code, typename = "单季") {
     allrows,
     tab,
     fieldMap,
-    ["code", "REPORT_DATE", "REPORTDATE", "REPORTTYPE"],
+    [
+      "code",
+      "REPORT_DATE",
+      "REPORTDATE",
+      "REPORTTYPE",
+      "RREPORTDATE",
+      "PREPORTDATE",
+    ],
     tab,
     {},
     "DOUBLE"

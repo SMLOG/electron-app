@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Setting />
+
     <div id="wigi2" style="position: fixed; z-index: 4">
       <search-panel @select="changeItem"></search-panel>
     </div>
@@ -31,10 +33,13 @@ import WinView from "@/view/components/WinView";
 import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
-export default {
-  name: "Test",
-  components: { SearchPanel, WinView, WinWrap, FinAnalyst2, Right },
+import Setting from "@/view/components/setting";
 
+export default {
+  components: { SearchPanel, WinView, WinWrap, FinAnalyst2, Right, Setting },
+  mounted() {
+    window.app = this;
+  },
   computed: {
     ...mapState({
       curComponent: (state) => state.ws.curComponent,

@@ -1,6 +1,5 @@
 <template>
   <div class="mylist" style="width: auto; top: 30px; bottom: 0; overflow: auto">
-    <Setting />
     <div class="list" style="">
       <table>
         <thead>
@@ -100,7 +99,6 @@ import $ from "jquery";
 import { batchUpdateHQ } from "@/lib/getTable";
 import draggable from "vuedraggable";
 import { getCheckFields } from "@/view/headers";
-import Setting from "@/view/components/setting";
 
 var self;
 export default {
@@ -119,7 +117,7 @@ export default {
       },
     },
   },
-  components: { draggable, Setting },
+  components: { draggable },
   sockets: {
     mylist(data) {
       this.mylist.length = 0;

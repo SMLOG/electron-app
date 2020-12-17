@@ -17,17 +17,18 @@ export default {
       event,
       link = `/static/tech.html?{{code}}&kd`
     ) {
-      let _item = this.$store.state.ws.curItem;
-      let _link = this.$store.state.ws.link;
-      let _showType = this.$store.state.ws.showType;
+      let _this = window.app;
+      let _item = _this.$store.state.ws.curItem;
+      let _link = _this.$store.state.ws.link;
+      let _showType = _this.$store.state.ws.showType;
       if (_item && item.code == _item.code && link == _link) {
-        this.$store.commit("ws/setCurItem", {
+        _this.$store.commit("ws/setCurItem", {
           curItem: null,
           link: _link,
           showType: _showType,
         });
       } else {
-        this.$store.commit("ws/setCurItem", {
+        _this.$store.commit("ws/setCurItem", {
           curItem: item,
           link: link,
           showType: "link",
@@ -57,6 +58,12 @@ export default {
     };
     Vue.prototype.$rightItem = function(rightItem) {
       this.$store.commit("ws/setRightItem", { rightItem });
+    };
+    Vue.prototype.$getThis = function(cb) {
+      if (cb) {
+        cb(this);
+      }
+      return this;
     };
   },
 };

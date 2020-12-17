@@ -33,8 +33,8 @@ export let headers = [
         click: true,
       };
     },
-    click: (item, event, openlink) => {
-      openlink(item, event, "/static/tech.html?{{code}}&t1");
+    click: (item, event) => {
+      window.app.$openlink(item, event, "/static/tech.html?{{code}}&t1");
     },
   },
   {

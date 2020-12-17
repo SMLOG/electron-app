@@ -17,9 +17,6 @@
           >显示</a
         >
       </context-menu>
-      <Setting />
-      <search-panel @select="addItem"></search-panel>
-      <Right :item="rightItem" />
       <Posts :item="showMsgItem" />
       <Title
         :item="titleItem"
@@ -42,12 +39,6 @@
           background: white;
         "
       />
-      <WinWrap
-        :item="item"
-        :curComponent="curComponent"
-        v-if="showType == 'fin'"
-        @close="(showType = null), (item = null)"
-      />
     </div>
     <div id="menuWrap">
       <ul id="top">
@@ -61,7 +52,7 @@
         </li>
       </ul>
       <FilterCtrl2 :src="curSrc" />
-      <MyIndex :openlink="openlink" />
+      <MyIndex :openlink="$openlink" />
     </div>
     <div style="clear: both" id="tbl">
       <table>
@@ -134,7 +125,7 @@
                     <span :class="{ sz: item.mk == 'sz' }">
                       <a
                         @click="
-                          openlink(
+                          $openlink(
                             item,
                             $event,
                             `/static/tech.html?{{code}}&kd`
@@ -159,7 +150,7 @@
                 :key="col.prop"
                 :class="getclass(col, item, item[col.prop])"
                 :title="col.title && col.title(item)"
-                @click="col.click && col.click(item, $event, openlink, getThis)"
+                @click="col.click && col.click(item, $event)"
                 @mouseover="cellOver($event, item, ci)"
                 @mouseout="cellOut($event, item, ci)"
               >
@@ -180,9 +171,7 @@
                 :key="col.prop"
                 :class="getclass(col, item2, item2[col.prop])"
                 :title="col.title && col.title(item2)"
-                @click="
-                  col.click && col.click(item2, $event, openlink, getThis)
-                "
+                @click="col.click && col.click(item2, $event, $openlink)"
               >
                 {{
                   col.fmt ? col.fmt(item2[col.prop], item2) : item2[col.prop]
@@ -193,21 +182,11 @@
         </draggable>
       </table>
     </div>
-    <WinView
-      ref="webviewWrap"
-      v-show="showType == 'link' && item"
-      :item="item"
-      :link="link"
-      @close="(showType = null), (item = null)"
-      @updateLink="updateLink"
-    ></WinView>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import SearchPanel from "@/view/components/search-panel";
-import Setting from "@/view/components/setting";
 import { getCheckFields } from "./headers";
 import { batchUpdateHQ } from "@/lib/getTable";
 import FilterCtrl2 from "@/view/components/FilterCtrl2";
@@ -254,7 +233,6 @@ export default {
       sortby: "",
       link: "about:blank",
       item: null,
-      rightItem: false,
       showMsgItem: false,
       openCode: null,
       showType: null,
@@ -270,8 +248,6 @@ export default {
   },
 
   components: {
-    SearchPanel,
-    Setting,
     FilterCtrl2,
     draggable,
     WinView,
@@ -380,11 +356,7 @@ export default {
     updateLink(newlink) {
       this.link = newlink;
     },
-    getThis(cb) {
-      if (cb) {
-        cb(this);
-      }
-    },
+
     selectItem(item) {
       if (item == this.item) this.item = null;
       else this.item = item;
@@ -409,15 +381,6 @@ export default {
       this.$socket.emit("updateItems", this.cats["自选"].items);
     },
 
-    openlink(item, event, link = `/static/tech.html?{{code}}&kd`) {
-      if (item == this.item && link == this.link) {
-        this.item = null;
-      } else {
-        this.item = item;
-        this.link = link;
-        this.showType = "link";
-      }
-    },
     getclass(col, item, value) {
       let cls = {};
       col.class && (cls = col.class(item, value));
@@ -429,11 +392,11 @@ export default {
     },
     cellOver(event, item, i) {
       if (i == 0) {
-        this.rightItem = item;
+        this.$rightItem(item);
       }
     },
     cellOut(event, item, i) {
-      if (i == 0) this.rightItem = false;
+      if (i == 0) this.$rightItem(false);
     },
     getfilterItems: function () {
       let items = this.curItems;

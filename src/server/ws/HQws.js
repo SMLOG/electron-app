@@ -51,6 +51,7 @@ export async function getSeaList() {
       type: db.QueryTypes.SELECT,
     }
   );
+  //收入现金含量
   //list = await getFilterList(list);
   await attachExtractInfoToItems(list);
 

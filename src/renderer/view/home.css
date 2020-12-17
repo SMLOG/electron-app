@@ -386,3 +386,6 @@ ul.filterp {
   border: 1px solid red;
   width: 100%;
 }
+.bad {
+  background-color: #d44d44 !important;
+}

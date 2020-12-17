@@ -1,25 +1,7 @@
-import {
-  getLastReportDate,
-  dateFormat,
-  fmtNumber,
-  fmtPercent,
-} from "../lib/utils";
+import { fmtNumber, fmtPercent } from "../lib/utils";
 import { getFields } from "../store/modules/suspension";
 import _ from "lodash";
-import axios from "axios";
-const reportDate = getLastReportDate();
 
-function getReportSub(item) {
-  if (item["业绩_QDATE"])
-    return item["业绩_QDATE"].indexOf("Q1") > -1
-      ? 1
-      : item["业绩_QDATE"].indexOf("Q2") > -1
-      ? 2
-      : item["业绩_QDATE"].indexOf("Q3") > -1
-      ? 3
-      : 4;
-  return "";
-}
 export let headers = [
   {
     label: "Now",
@@ -134,6 +116,11 @@ export let headers = [
     prop: "营收增长率",
     type: "number",
     fmt: fmtPercent,
+    class: (item, val) => {
+      return {
+        bad: val < 0,
+      };
+    },
   },
   {
     label: "ROE",

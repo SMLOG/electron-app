@@ -98,6 +98,12 @@ var indexItems = [
   ],
   [
     "",
+    "收入现金含量(%)",
+    ">0.95",
+    "收入现金含量 = 最近5年度利润/最近5年度营业活动净现金流量",
+  ],
+  [
+    "",
     "EPS=基本每股收益(元)",
     "",
     "基本每股收益(元) (EPS) = (净收入 - 优先股息) / 已发行股份基本平均数",
@@ -379,6 +385,14 @@ midItemMap["最近5年度营业活动净现金流量"] = `( select
            and l.rreportdate<=ll.rreportdate
            and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
            )`;
+midItemMap["最近5年度利润"] = `( select 
+            sum(ifnull(l.PARENTNETPROFIT,0) )
+             from lrb l where 
+             l.code = ll.code 
+             and l.reporttype=ll.reporttype
+             and l.rreportdate<=ll.rreportdate
+             and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')
+             )`;
 midItemMap["五年前期初存货"] = `
            (select 
            z5.INVENTORY

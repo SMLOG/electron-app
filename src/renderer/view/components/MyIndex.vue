@@ -1,10 +1,15 @@
 <template>
-  <ul style="float:left">
-    <li v-for="zi in zsItems" :code="zi.code" :key="zi.code" @click="openlink(zi, $event)">
+  <ul style="float: left">
+    <li
+      v-for="zi in zsItems"
+      :code="zi.code"
+      :key="zi.code"
+      @click="$openlink(zi, $event)"
+    >
       {{ zi.name }}
-      <em
-        :class="{ up: zi.change > 0, down: zi.change < 0 }"
-      >{{ zi.close }}({{ zi.changeP }})</em>
+      <em :class="{ up: zi.change > 0, down: zi.change < 0 }"
+        >{{ zi.close }}({{ zi.changeP }})</em
+      >
     </li>
   </ul>
 </template>
@@ -16,7 +21,6 @@ import { syncZsItems } from "@/lib/getTable";
 import { timeout } from "@/lib/utils";
 
 export default {
-  name: "myIndex",
   data: function () {
     return {
       zsItems: [
@@ -39,9 +43,6 @@ export default {
     })();
   },
 
-  props: {
-    openlink: Function,
-  },
   methods: {},
   computed: {},
   watch: {},

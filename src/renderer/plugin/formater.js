@@ -59,6 +59,13 @@ export default {
     Vue.prototype.$rightItem = function(rightItem) {
       this.$store.commit("ws/setRightItem", { rightItem });
     };
+    Vue.prototype.$showComments = function(showMsgItem) {
+      this.$store.commit("ws/setCurItem", {
+        ...this.$store.state.ws,
+        showMsgItem: showMsgItem,
+      });
+    };
+
     Vue.prototype.$getThis = function(cb) {
       if (cb) {
         cb(this);

@@ -55,6 +55,9 @@ export function initmem(io) {
             type: db.QueryTypes.SELECT,
           }
         );
+
+        await attachExtractInfoToItems(cats["自选"].items);
+
         socket.emit("mylist", cats["自选"].items);
         socket.emit("filters", Object.keys(filters));
         updateFiltersCount();
@@ -118,7 +121,21 @@ export function initmem(io) {
 
   setInterval(() => {
     console.log("setinterval:" + new Date());
-  }, 30000);
+  }, 60000);
+
+  async () => {
+    for (; true; ) {
+      await sleep(600000);
+      await attachExtractInfoToItems(cats["自选"].items);
+      await attachExtractInfoToItems(cats["海选"].items);
+      updateFiltersCount();
+
+      io.emit("filtersCount", filtersCount);
+      io.emit("countMap", countMap);
+      io.emit("mylist", cats["自选"].items);
+      io.emit("sealist", cats["海选"].items);
+    }
+  };
   (async () => {
     for (; true; ) {
       if (cats["海选"].items.length == 0) {
@@ -137,7 +154,7 @@ export function initmem(io) {
       } else {
         return;
       }
-      sleep(350000);
+      await sleep(350000);
     }
   })();
   (async () => {

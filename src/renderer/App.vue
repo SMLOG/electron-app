@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Setting />
+    <Posts :item="showMsgItem" />
 
     <div id="wigi2" style="position: fixed; z-index: 4">
       <search-panel @select="changeItem"></search-panel>
@@ -34,9 +35,18 @@ import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
 import Setting from "@/view/components/setting";
+import Posts from "@/view/components/Posts";
 
 export default {
-  components: { SearchPanel, WinView, WinWrap, FinAnalyst2, Right, Setting },
+  components: {
+    SearchPanel,
+    WinView,
+    WinWrap,
+    Posts,
+    FinAnalyst2,
+    Right,
+    Setting,
+  },
   mounted() {
     window.app = this;
   },
@@ -47,6 +57,7 @@ export default {
       rightItem: (state) => state.ws.rightItem,
       link: (state) => state.ws.link,
       item: (state) => state.ws.curItem,
+      showMsgItem: (state) => state.ws.showMsgItem,
     }),
   },
   methods: {

@@ -24,6 +24,7 @@ const state = {
   showType: "",
   rightItem: false,
   link: null,
+  showMsgItem: false,
 };
 const mutations = {
   [MUTATION_TYPE.SET_FIELDS](state, fields) {

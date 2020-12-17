@@ -130,6 +130,12 @@ export let headers = [
     fmt: fmtPercent,
   },
   {
+    label: "营收增长率",
+    prop: "营收增长率",
+    type: "number",
+    fmt: fmtPercent,
+  },
+  {
     label: "ROE",
     prop: "扣非ROE",
     fmt: fmtPercent,

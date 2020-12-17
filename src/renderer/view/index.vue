@@ -8,22 +8,8 @@
         @update:show="(show) => (contextMenuVisible = show)"
       >
         <a href="javascript:;" @click.stop="toTop()">置顶</a>
-        <a
-          href="javascript:;"
-          @click.stop="doTitleSummary(contentMenuTargetItem)"
-          >总结</a
-        >
-        <a href="javascript:;" @click.stop="doTitleItem(contentMenuTargetItem)"
-          >显示</a
-        >
       </context-menu>
-      <Posts :item="showMsgItem" />
-      <Title
-        :item="titleItem"
-        :comp="'Summary'"
-        @mouseenter.native="enterTitle()"
-        @close="titleItem = null"
-      />
+
       <HQ
         :item="item"
         v-show="showType == 'hq'"
@@ -52,7 +38,7 @@
         </li>
       </ul>
       <FilterCtrl2 :src="curSrc" />
-      <MyIndex :openlink="$openlink" />
+      <MyIndex />
     </div>
     <div style="clear: both" id="tbl">
       <table>
@@ -99,7 +85,7 @@
                     <a
                       class="post_bt"
                       :name="item.code"
-                      @click="showComments(item)"
+                      @click="$showComments(item)"
                       >{{ index + 1 }}</a
                     >
                   </span>
@@ -197,7 +183,6 @@ import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Chart from "@/view/components/h5/Chart";
 
 import Right from "@/view/components/Right";
-import Posts from "@/view/components/Posts";
 import MyIndex from "@/view/components/MyIndex";
 import HQ from "@/view/components/hq/HQ";
 import Title from "@/view/components/title/Title";
@@ -224,19 +209,15 @@ export default {
           items: [],
         },
       },
-      curComponent: null,
-      showFin: false,
+
       curSrc: "自选",
       techMaplist: [],
       headers: getCheckFields(),
       descending: true,
       sortby: "",
-      link: "about:blank",
       item: null,
-      showMsgItem: false,
       openCode: null,
       showType: null,
-      titleItem: null,
     };
   },
   mounted() {
@@ -250,14 +231,8 @@ export default {
   components: {
     FilterCtrl2,
     draggable,
-    WinView,
-    Right,
-    Posts,
     MyIndex,
-    FinAnalyst2,
     HQ,
-    Chart,
-    WinWrap,
     Title,
     ContextMenu,
   },
@@ -270,9 +245,7 @@ export default {
       console.log("ws disconnect");
       this.$socket.emit("connect", 1);
     },
-    addItem(data) {
-      this.cats["自选"].items.push(data);
-    },
+
     removeItem(item) {
       let items = this.cats["自选"].items;
       items.splice(
@@ -330,41 +303,12 @@ export default {
       }
       this.contextMenuVisible = false;
     },
-    togglePop(item, comp, type) {
-      if (item == this.item && this.curComponent == comp) {
-        this.item = null;
-        this.showType = null;
-      } else {
-        this.showType = type;
-        this.curComponent = comp;
-        this.item = item;
-      }
-    },
-    doTitleItem(item) {
-      this.titleItem = item;
-      this.contextMenuVisible = false;
-    },
-    doTitleSummary(item) {
-      this.titleItem = item;
-      this.contextMenuVisible = false;
-    },
-
-    enterTitle() {
-      clearTimeout(unTitlteTimer);
-      console.error(unTitlteTimer);
-    },
-    updateLink(newlink) {
-      this.link = newlink;
-    },
 
     selectItem(item) {
       if (item == this.item) this.item = null;
       else this.item = item;
     },
-    showComments(item) {
-      if (item == this.showMsgItem) this.showMsgItem = null;
-      else this.showMsgItem = item;
-    },
+
     addItem(item) {
       this.$socket.emit("addItem", item);
       this.openCode = item.code;
@@ -404,10 +348,16 @@ export default {
       if (!this.curFilterIds) return items;
       let filters = this.curFilterIds.split("+");
       let ret = [];
-      for (let f of filters) {
-        for (let item of items) {
-          if (item["_" + f]) ret.push(item);
+
+      for (let item of items) {
+        let y = true;
+        for (let f of filters) {
+          if (!item["_" + f]) {
+            y = false;
+            break;
+          }
         }
+        y && ret.push(item);
       }
 
       return ret;

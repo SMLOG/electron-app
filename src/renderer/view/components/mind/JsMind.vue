@@ -173,10 +173,7 @@ export default {
           ? 1
           : 0;
       let value = rawDatas[rawDatas.length > 1 ? selectIndex : 0][node.alias];
-      return (
-        value &&
-        (type ? this.$fmtPercent : this.$fmtNumber)((type ? 100 : 1) * value)
-      );
+      return value && (type ? this.$fmtPercent : this.$fmtNumber)(value);
     },
     init() {
       const options = Object.assign(this.default_options, this.options);

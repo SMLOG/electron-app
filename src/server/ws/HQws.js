@@ -4,7 +4,7 @@ import { JOB_MAP } from "!/jobs/worker";
 import { task } from "!/jobs/jobIndex";
 
 import { db } from "!/db/db";
-import { attachExtractInfoToItems } from "../helper";
+import { attachExtractInfoToItems } from "!/helper";
 import axios from "axios";
 import { CONFIG_DIR } from "../config";
 import fs from "fs";
@@ -42,7 +42,7 @@ export async function getSeaList() {
       type: db.QueryTypes.SELECT,
     }
   );
-  list = await getFilterList(list);
+  //list = await getFilterList(list);
   await attachExtractInfoToItems(list);
 
   console.info("getSeaList:", list.length);

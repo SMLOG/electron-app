@@ -40,8 +40,8 @@
             </td>
             <td>
               <span
-                @mouseover="rightItem = info"
-                @mouseout="rightItem = false"
+                @mouseover="$rightItem(info)"
+                @mouseout="$rightItem(false)"
                 :class="{ red: info.change > 0, green: info.change < 0 }"
               >
                 <span

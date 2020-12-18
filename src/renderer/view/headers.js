@@ -4,22 +4,6 @@ import _ from "lodash";
 
 export let headers = [
   {
-    label: "Now",
-    prop: "now",
-    type: "number",
-    fmt: (e, item) => (e ? `${e}(${item.changeP})` : "--"),
-    class: (item) => {
-      return {
-        up: item.change > 0,
-        down: item.change < 0,
-        click: true,
-      };
-    },
-    click: (item, event) => {
-      window.app.$openlink(item, event, "/static/tech.html?{{code}}&t1");
-    },
-  },
-  {
     label: "行业",
     prop: "hy",
     filterable: true,

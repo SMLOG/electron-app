@@ -37,7 +37,7 @@ Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
 
 Vue.use(
   new VueSocketIO({
-    debug: true,
+    debug: false,
     connection: "/socket.io",
     vuex: {
       store,

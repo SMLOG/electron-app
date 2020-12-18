@@ -9,22 +9,6 @@
       >
         <a href="javascript:;" @click.stop="toTop()">置顶</a>
       </context-menu>
-
-      <HQ
-        :item="item"
-        v-show="showType == 'hq'"
-        style="
-          top: 0;
-          bottom: 0;
-          right: 0;
-          z-index: 4;
-          width: 1000px;
-          position: fixed;
-          overflow: scroll;
-          border: 1px solid #95bad0;
-          background: white;
-        "
-      />
     </div>
     <div id="menuWrap">
       <ul id="top">
@@ -52,7 +36,7 @@
                 <span>Name</span>
               </div>
             </th>
-
+            <th>Now</th>
             <th
               v-for="col in headers"
               :key="col.prop"
@@ -76,11 +60,10 @@
               :id="'r' + item.code"
               class="item"
               :key="item.code"
-              :class="{ openlink: openCode === item.code }"
               @contextmenu="contentMenuTargetItem = item"
             >
               <td class="firstCol">
-                <div class="first" V-tooltip="item.code">
+                <div class="first" v-tooltip="item.code">
                   <span>
                     <a
                       class="post_bt"
@@ -120,17 +103,44 @@
                         :id="item.code"
                         >{{ item.name }}</a
                       >
-                      <b
-                        :class="{ up: item.lb > 1, down: item.lb < 1 }"
-                        @click="selectItem(item)"
-                      >
+                      <b :class="{ up: item.lb > 1, down: item.lb < 1 }">
                         {{ item.lb }}
                       </b>
                     </span>
                   </div>
                 </div>
               </td>
-
+              <td class="link">
+                <span
+                  @mouseover="$rightItem(item)"
+                  @mouseout="$rightItem(false)"
+                  :class="{ red: item.change > 0, green: item.change < 0 }"
+                >
+                  <span
+                    @click="
+                      $openlink(item, $event, `/static/tech.html?{{code}}&kd`)
+                    "
+                    >{{ item.close }}</span
+                  >(
+                  <span @click="$togglePop(item, 'FinAnalyst2', 'fin')">{{
+                    item.change
+                  }}</span
+                  >,
+                  <span
+                    @click="
+                      $openlink(
+                        item,
+                        $event,
+                        `https://caibaoshuo.com/companies/${item.code.replace(
+                          /[a-z]+/g,
+                          ''
+                        )}/financials`
+                      )
+                    "
+                    >{{ item.changeP }}</span
+                  >)
+                </span>
+              </td>
               <td
                 v-for="(col, ci) in headers"
                 :key="col.prop"
@@ -141,27 +151,6 @@
                 @mouseout="cellOut($event, item, ci)"
               >
                 {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
-              </td>
-            </tr>
-            <tr
-              v-for="item2 in yjitems[item.code] || []"
-              :id="'r' + item2.yj_id"
-              class="item"
-              :key="item.code + item2.yj_id"
-              v-if="item.REPORTDATE != item2.REPORTDATE"
-            >
-              <td class="firstCol"></td>
-
-              <td
-                v-for="col in headers"
-                :key="col.prop"
-                :class="getclass(col, item2, item2[col.prop])"
-                :title="col.title && col.title(item2)"
-                @click="col.click && col.click(item2, $event, $openlink)"
-              >
-                {{
-                  col.fmt ? col.fmt(item2[col.prop], item2) : item2[col.prop]
-                }}
               </td>
             </tr>
           </template>
@@ -177,28 +166,20 @@ import { getCheckFields } from "./headers";
 import { batchUpdateHQ } from "@/lib/getTable";
 import FilterCtrl2 from "@/view/components/FilterCtrl2";
 import draggable from "vuedraggable";
-import WinView from "@/view/components/WinView";
-import WinWrap from "@/view/components/WinWrap";
-import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
-import Chart from "@/view/components/h5/Chart";
 
-import Right from "@/view/components/Right";
 import MyIndex from "@/view/components/MyIndex";
-import HQ from "@/view/components/hq/HQ";
-import Title from "@/view/components/title/Title";
 import ContextMenu from "@/view/components/ContextMenu";
+import MyMinList from "@/view/components/MyMinList.vue";
 
 import axios from "axios";
 import $ from "jquery";
 window.$ = $;
-let unTitlteTimer = 0;
 export default {
   data: function () {
     return {
       contextMenuTarget: document.body,
       contentMenuTargetItem: null,
       contextMenuVisible: false,
-      yjitems: {},
       cats: {
         海选: {
           is_search: true,
@@ -215,34 +196,19 @@ export default {
       headers: getCheckFields(),
       descending: true,
       sortby: "",
-      item: null,
-      openCode: null,
-      showType: null,
     };
   },
-  mounted() {
-    document.addEventListener("keyup", (e) => {
-      if (e.keyCode == 27) {
-        this.showType = null;
-      }
-    });
-  },
+  mounted() {},
 
   components: {
     FilterCtrl2,
     draggable,
     MyIndex,
-    HQ,
-    Title,
     ContextMenu,
+    MyMinList,
   },
-  filters: {},
   sockets: {
-    connect(data) {
-      console.log("ws connect");
-    },
     disconnect() {
-      console.log("ws disconnect");
       this.$socket.emit("connect", 1);
     },
 
@@ -268,8 +234,6 @@ export default {
       this.cats["海选"].items = data;
     },
     hx(data) {
-      //console.log(data);
-      // this.$socket.emit("echo", data);
       batchUpdateHQ(this.curItems, data);
     },
   },
@@ -304,14 +268,8 @@ export default {
       this.contextMenuVisible = false;
     },
 
-    selectItem(item) {
-      if (item == this.item) this.item = null;
-      else this.item = item;
-    },
-
     addItem(item) {
       this.$socket.emit("addItem", item);
-      this.openCode = item.code;
     },
     removeItem(item) {
       console.log("remove", item.code);

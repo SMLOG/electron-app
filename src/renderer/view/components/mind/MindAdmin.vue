@@ -58,7 +58,7 @@ import WinView from "@/view/components/WinView";
 import WinWrap from "@/view/components/WinWrap";
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import Right from "@/view/components/Right";
-import MyMinList from "./MyMinList.vue";
+import MyMinList from "@/view/components/MyMinList.vue";
 
 var self;
 export default {

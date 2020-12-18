@@ -107,6 +107,13 @@ export let headers = [
     },
   },
   {
+    label: "EPS",
+    prop: "基本每股收益",
+    type: "number",
+    fmt: fmtNumber,
+  },
+
+  {
     label: "ROE",
     prop: "扣非ROE",
     fmt: fmtPercent,

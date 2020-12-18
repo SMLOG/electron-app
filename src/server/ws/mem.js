@@ -8,6 +8,7 @@ import My from "../db/model/My";
 import { db } from "../db/db";
 import _ from "lodash";
 import fs from "fs";
+import { upDateTechDatas } from "./TechDatas";
 const sleep = (t) => new Promise((res, rej) => setTimeout(res, t));
 
 export async function timeout(afn, timeout, def) {
@@ -44,19 +45,9 @@ export function initmem(io) {
       (async () => {
         console.error("initmem");
         // cats["自选"].items = await getMyList();
-        cats["自选"].items = await db.query(
-          `select e.*,t2.* ,h.* from my a 
-          left join hq h on a.code = h.code 
-          left join excel_gz e on e.code=a.code 
-          left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
-          on t2.code=a.code and t2.rk=1
-          order by a.my_id asc`,
-          {
-            type: db.QueryTypes.SELECT,
-          }
-        );
+        cats["自选"].items = await getMyList();
 
-        await attachExtractInfoToItems(cats["自选"].items);
+        // await attachExtractInfoToItems(cats["自选"].items);
 
         socket.emit("mylist", cats["自选"].items);
         socket.emit("filters", Object.keys(filters));
@@ -74,7 +65,7 @@ export function initmem(io) {
           My.create(item);
 
           cats["自选"].items.push(item);
-          await attachExtractInfoToItems([item]);
+          // await attachExtractInfoToItems([item]);
           fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
           toFiltersCount(item, "自选", "+");
           // socket.emit("mylist", cats["自选"].items);
@@ -121,13 +112,14 @@ export function initmem(io) {
 
   setInterval(() => {
     console.log("setinterval:" + new Date());
-  }, 60000);
+    upDateTechDatas();
+  }, 600000);
 
   async () => {
     for (; true; ) {
       await sleep(600000);
-      await attachExtractInfoToItems(cats["自选"].items);
-      await attachExtractInfoToItems(cats["海选"].items);
+      //await attachExtractInfoToItems(cats["自选"].items);
+      //await attachExtractInfoToItems(cats["海选"].items);
       updateFiltersCount();
 
       io.emit("filtersCount", filtersCount);

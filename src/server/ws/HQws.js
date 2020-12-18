@@ -23,34 +23,38 @@ export async function hx(fromdb = false) {
 }
 let file = `${CONFIG_DIR}/my.json`;
 export async function getMyList() {
-  let list = [];
-
-  if (fs.existsSync(file)) {
-    list = JSON.parse(fs.readFileSync(file));
-    await attachExtractInfoToItems(list);
-  }
-  return list;
-}
-export async function getSeaList() {
-  //let list = await hx(true);
-  let list = await db.query(
-    `select * from hq 
+  return await db.query(
+    `select e.*,t2.* ,h.* ,tech.* from my a 
+    left join hq h on a.code = h.code 
+    left join excel_gz e on e.code=a.code 
     left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
-    on t2.code=hq.code and t2.rk=1
-    where 
-    zsz>10000000000 
-    and pe_ttm>0 
-    and pe_ttm<55 
-    and close>5 
-    and t2.毛利率>=0.25
-    and t2.净利率>=0.06
-    and t2.扣非ROE>0.15
-    and t2.杠杆倍数<1.6
-    and t2.流动比率>1.5`,
+    on t2.code=a.code and t2.rk=1
+    left join tech on tech.code = h.code 
+    order by a.my_id asc`,
     {
       type: db.QueryTypes.SELECT,
     }
   );
+}
+export const SEA_SQL = `select * from hq 
+left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
+on t2.code=hq.code and t2.rk=1
+left join tech on tech.code = hq.code 
+where 
+zsz>10000000000 
+and pe_ttm>0 
+and pe_ttm<55 
+and close>5 
+and t2.毛利率>=0.25
+and t2.净利率>=0.06
+and t2.扣非ROE>0.15
+and t2.杠杆倍数<1.6
+and t2.流动比率>1.5`;
+export async function getSeaList() {
+  //let list = await hx(true);
+  let list = await db.query(SEA_SQL, {
+    type: db.QueryTypes.SELECT,
+  });
   //收入现金含量
   //list = await getFilterList(list);
   await attachExtractInfoToItems(list);

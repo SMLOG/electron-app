@@ -60,12 +60,14 @@ export function genModel(
       if (sampleRow[field]) {
         let len = sampleRow[field].length;
         if (
-          sampleRow[field] * 1 == sampleRow[field] &&
+          sampleRow[field] * 1 === sampleRow[field] &&
           !field.toLowerCase().endsWith("code")
         )
           f["type"] = "DataTypes.DOUBLE";
         else if (_.isDate(sampleRow[field])) {
           f["type"] = `DataTypes.DATE`;
+        } else if (typeof sampleRow[field] === "boolean") {
+          f["type"] = `DataTypes.BOOLEAN`;
         } else if (sampleRow[field] && len > 500) {
           f["type"] = `DataTypes.TEXT`;
         } else

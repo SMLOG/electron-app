@@ -4,7 +4,7 @@ const Dbfx = require("./model/Dbfx");
 import { axios } from "!/axios";
 import moment from "moment";
 import _ from "lodash";
-import { ifNoExistGenModel, codeField } from "./utils";
+import { ifNoExistGenModel } from "./utils";
 import { getFieldsMap } from "./convert";
 
 async function getReportData(tab, code, typename = "单季") {

@@ -5,7 +5,8 @@ import { getReportDatas } from "./reports";
 (async () => {
   console.log(My);
   let items = await db.query(
-    `select * from hq where pe_ttm>0 and pe_ttm<60 and close>5 and  firstday is not null and firstday <=20190101
+    `select * from hq where pe_ttm>0 and pe_ttm<60 and close>5 
+    and  firstday is not null and firstday <=20190101
     and not exists( select 1 from lrb lr where lr.code=hq.code)
     `,
     {

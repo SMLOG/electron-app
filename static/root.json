@@ -1840,8 +1840,8 @@
     },
     {
         "id": 306,
-        "topic": "( select \n            sum(ifnull(l.PARENTNETPROFIT,0) )\n             from lrb l where \n             l.code = ll.code \n             and l.reporttype=ll.reporttype\n             and l.rreportdate<=ll.rreportdate\n             and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n             )",
-        "alias": "( select \n            sum(ifnull(l.PARENTNETPROFIT,0) )\n             from lrb l where \n             l.code = ll.code \n             and l.reporttype=ll.reporttype\n             and l.rreportdate<=ll.rreportdate\n             and l.rreportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n             )",
+        "topic": "( \n            select \n            sum(ifnull(l5.PARENTNETPROFIT,0) )\n             from lrb l5 where \n             l5.code = ll.code \n             and l5.reporttype=ll.reporttype\n             and l5.reportdate<=ll.rreportdate\n             and l5.reportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n             )",
+        "alias": "( \n            select \n            sum(ifnull(l5.PARENTNETPROFIT,0) )\n             from lrb l5 where \n             l5.code = ll.code \n             and l5.reporttype=ll.reporttype\n             and l5.reportdate<=ll.rreportdate\n             and l5.reportdate>DATE_FORMAT(DATE_SUB(STR_TO_DATE(ll.rreportdate,'%Y-%m-%d'),INTERVAL 5*4*3 MONTH),'%Y-%m-%d')\n             )",
         "parentid": 305
     },
     {

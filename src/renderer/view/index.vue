@@ -63,7 +63,7 @@
               @contextmenu="contentMenuTargetItem = item"
             >
               <td class="firstCol">
-                <div class="first" v-tooltip="item.code">
+                <div class="first">
                   <span>
                     <a
                       class="post_bt"
@@ -73,10 +73,12 @@
                     >
                   </span>
 
-                  <span>
-                    <a class="action" @click="removeItem(item)">x</a>
+                  <span v-if="curSrc == '自选'">
+                    <a class="action" @click="$socket.emit('removeItem', item)"
+                      >x</a
+                    >
                   </span>
-                  <span>
+                  <span v-if="curSrc != '自选'">
                     <input
                       type="checkbox"
                       v-model="item.isFocus"
@@ -84,10 +86,9 @@
                     />
                   </span>
                   <div
-                    v-tooltip="item.code"
-                    style="display: inline-block"
+                    :title="item.code"
+                    style="display: inline-block; cursor: pointer"
                     :class="{
-                      link: true,
                       blink: item._S,
                     }"
                   >
@@ -110,7 +111,7 @@
                   </div>
                 </div>
               </td>
-              <td class="link">
+              <td style="cursor: pointer">
                 <span
                   @mouseover="$rightItem(item)"
                   @mouseout="$rightItem(false)"
@@ -211,15 +212,6 @@ export default {
     disconnect() {
       this.$socket.emit("connect", 1);
     },
-
-    removeItem(item) {
-      let items = this.cats["自选"].items;
-      items.splice(
-        items.findIndex((i) => (i.code = item.code)),
-        1
-      );
-    },
-
     reconnect(data) {},
     indMap(data) {
       window.indMap = data;
@@ -271,10 +263,7 @@ export default {
     addItem(item) {
       this.$socket.emit("addItem", item);
     },
-    removeItem(item) {
-      console.log("remove", item.code);
-      this.$socket.emit("removeItem", item);
-    },
+
     saveItem(item) {
       if (item.isFocus) this.addItem(item);
     },

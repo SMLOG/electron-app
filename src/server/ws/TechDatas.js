@@ -3,7 +3,7 @@ import { ifNoExistGenModel } from "!/db/utils";
 import { callFun, techMaplist } from "!/TechMan";
 import { getMyList, getSeaList } from "./HQws";
 
-(async () => {
+export async function upDateTechDatas() {
   let sampleRow = techMaplist.reduce((r, it) => {
     r["_" + it] = true;
     return r;
@@ -43,4 +43,4 @@ import { getMyList, getSeaList } from "./HQws";
       });
     }
   }
-})();
+}

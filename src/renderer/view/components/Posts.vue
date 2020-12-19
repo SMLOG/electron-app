@@ -3,11 +3,28 @@
     id="posts"
     ref="m_posts"
     v-show="item && m_posts_item"
-    style="position: fixed;top: 35px;right:0;left: 200px;bottom: 0px;background: #eee;z-index: 1000;overflow:auto;padding-top:25px;"
+    style="
+      position: fixed;
+      top: 35px;
+      right: 0;
+      left: 200px;
+      bottom: 0px;
+      background: #eee;
+      z-index: 1000;
+      overflow: auto;
+      padding-top: 25px;
+    "
   >
     <div
       v-if="item"
-      style="color:#FFF;font-weight:bold;background:#666;top:35;position:fixed;top:25px;"
+      style="
+        color: #fff;
+        font-weight: bold;
+        background: #666;
+        top: 35;
+        position: fixed;
+        top: 25px;
+      "
     >
       {{ item.name }}({{ item.code }})
     </div>
@@ -59,7 +76,7 @@ function getPosts(id, type = 1) {
     data: Object.keys(data)
       .map((k) => `${k}=${encodeURIComponent(data[k])}`)
       .join("&"),
-  }).then(function(response) {
+  }).then(function (response) {
     return response.data;
   });
 }
@@ -67,7 +84,7 @@ function getPosts(id, type = 1) {
 window.getPosts = getPosts;
 export default {
   name: "Posts",
-  data: function() {
+  data: function () {
     return { m_posts_item: null, m_posts: [] };
   },
 
@@ -93,16 +110,18 @@ export default {
         }
       }
     });
-
+    /*
     window.addEventListener("click", (e) => {
       if (
+        this.$refs &&
         this.$refs.m_posts &&
         !this.$refs.m_posts.contains(e.target) &&
+        e.target.className &&
         e.target.className.indexOf("post_bt") == -1
       ) {
         this.m_posts_item = null;
       }
-    });
+    });*/
   },
 
   props: ["item"],
@@ -191,11 +210,11 @@ export default {
       var c,
         p = {
           successCall: null,
-          success: function(e) {
+          success: function (e) {
             return (p.successCall = e), p;
           },
           errorCall: null,
-          error: function(e) {
+          error: function (e) {
             return (p.errorCall = e), p;
           },
           request: null,
@@ -213,7 +232,7 @@ export default {
               (c.withCredentials = !0),
               c.setRequestHeader("Content-Type", a),
               c.send(l)),
-          (c.onreadystatechange = function() {
+          (c.onreadystatechange = function () {
             if (4 == c.readyState)
               if (200 == c.status) {
                 var e = c.responseText;

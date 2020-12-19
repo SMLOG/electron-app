@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       name: "notice",
-      component: () => import("@/view/components/Notice"),
+      component: () => import("@/view/components/tech/leline"),
     },
     {
       path: "/tools/dcf",

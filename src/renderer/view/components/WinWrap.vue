@@ -63,6 +63,8 @@
 <script>
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import ChartIndex from "@/view/components/h5/ChartIndex";
+import leline from "@/view/components/tech/leline";
+
 export default {
   data() {
     return { chartop: 45 };
@@ -107,6 +109,7 @@ export default {
   components: {
     FinAnalyst2,
     ChartIndex,
+    leline,
   },
 
   methods: {},

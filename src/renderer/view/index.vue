@@ -104,7 +104,10 @@
                         :id="item.code"
                         >{{ item.name }}</a
                       >
-                      <b :class="{ up: item.lb > 1, down: item.lb < 1 }">
+                      <b
+                        @click="$togglePop(item, 'leline', 'fin')"
+                        :class="{ up: item.lb > 1, down: item.lb < 1 }"
+                      >
                         {{ item.lb }}
                       </b>
                     </span>

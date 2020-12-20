@@ -10,9 +10,10 @@
           >{{ $fmtNumber(priceTL) }}</b
         ></span
       >
-      <span class="red">1SD:{{ $fmtNumber(sdu1) }}</span>
+      <span>SD:{{ $fmtNumber(sdu1 - priceTL) }}</span>
+      <span class="red">+1SD:{{ $fmtNumber(sdu1) }}</span>
 
-      <span class="red">2SD:{{ $fmtNumber(sdu2) }}</span>
+      <span class="red">+2SD:{{ $fmtNumber(sdu2) }}</span>
     </div>
 
     <div class="notation-container">

@@ -1,13 +1,9 @@
 import { getList } from "../TechMan";
-import { getFilterList } from "../criteria";
 import { JOB_MAP } from "!/jobs/worker";
 import { task } from "!/jobs/jobIndex";
 
 import { db } from "!/db/db";
-import { attachExtractInfoToItems } from "!/helper";
 import axios from "axios";
-import { CONFIG_DIR } from "../config";
-import fs from "fs";
 let timer = 0;
 export async function hx(fromdb = false) {
   console.log("hx timer:", timer);
@@ -21,7 +17,6 @@ export async function hx(fromdb = false) {
 
   return await getList();
 }
-let file = `${CONFIG_DIR}/my.json`;
 export async function getMyList() {
   return await db.query(
     `select e.*,t2.* ,h.* ,tech.* from my a 
@@ -57,7 +52,7 @@ export async function getSeaList() {
   });
   //收入现金含量
   //list = await getFilterList(list);
-  await attachExtractInfoToItems(list);
+  //  await attachExtractInfoToItems(list);
 
   console.info("getSeaList:", list.length);
   return list;

@@ -64,8 +64,16 @@ async function getLeline5Result(code) {
   console.log("TL-SD：", priceTL - SD);
   console.log("TL-2SD：", priceTL - 2 * SD);
   console.log("SD:", SD);
+  return {
+    TL: priceTL,
+    SD,
+    intercept: regressionModel.intercept,
+    slope: regressionModel.slope,
+    fx: regressionModel.toString(3),
+  };
 }
 
 (async () => {
-  await getLeline5Result("sz002458");
+  let r = await getLeline5Result("sz002458");
+  console.log(r);
 })();

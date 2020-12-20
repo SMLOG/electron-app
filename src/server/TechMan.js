@@ -688,7 +688,7 @@ export async function getList() {
       });
       return resolve(datalist);
     });
-  }).catch(function (error) {
+  }).catch(function(error) {
     console.log(error);
   });
 }
@@ -738,14 +738,14 @@ export async function getDayWeekTechDatas(item) {
       .get(
         `http://${Math.floor(
           99 * Math.random() + 1
-        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=101&fqt=1&end=20500101&lmt=900&_=${+new Date()}`
       )
       .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
     let wData = await axios
       .get(
         `http://${Math.floor(
           99 * Math.random() + 1
-        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=102&fqt=1&end=20500101&lmt=120&_=${+new Date()}`
+        )}.push2his.eastmoney.com/api/qt/stock/kline/get?cb=cb&secid=${code}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&klt=102&fqt=1&end=20500101&lmt=180&_=${+new Date()}`
       )
       .then((resp) => eval("function cb(d){ return d;};" + resp.data + ";"));
 
@@ -779,16 +779,16 @@ function kdjGold(item, kw) {
   return kw[i].KDJ_K > kw[i - 1].KDJ_K && kw[i - 2].KDJ_K > kw[i - 1].KDJ_K;
 }
 const techMap = {
-  MACD周: function ({ item, kw }) {
+  MACD周: function({ item, kw }) {
     return isMacdGolden(kw);
   },
-  KDJ周: function ({ item, kw }) {
+  KDJ周: function({ item, kw }) {
     return kdjGold(item, kw);
   },
-  换手率大1: function ({ item, kd, kw, km }) {
+  换手率大1: function({ item, kd, kw, km }) {
     return item.turnover >= 1;
   },
-  上5天: function ({ item, kd, kw, km }) {
+  上5天: function({ item, kd, kw, km }) {
     return item.close >= kd.Average5;
   },
 };
@@ -797,7 +797,7 @@ export const techMaplist = Object.keys(techMap);
 export function buildFilters() {
   let filters = {};
   for (let name in techMap) {
-    filters[name] = function (items) {
+    filters[name] = function(items) {
       return items.filter((e) => e[`_${name}`]);
     };
   }
@@ -815,7 +815,7 @@ export async function callFun(item) {
 export class fnTechData extends fn {
   constructor([item]) {
     super(`${item.code}/tech2.json`);
-    this.get = async function () {
+    this.get = async function() {
       return await callFun(item);
     };
   }

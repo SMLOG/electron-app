@@ -1,7 +1,18 @@
 <template>
   <div>
     <div>
-      {{ item.name }}五线谱趋势 <span>当前:{{ $fmtNumber(priceTL) }}</span>
+      {{ item.name }}五线谱趋势
+      <span class="green">-2SD:{{ $fmtNumber(sdd2) }}</span>
+      <span class="green">-1SD:{{ $fmtNumber(sdd1) }}</span>
+      <span
+        >当前TL:<b
+          :class="{ green: item.close < priceTL, red: item.close > priceTL }"
+          >{{ $fmtNumber(priceTL) }}</b
+        ></span
+      >
+      <span class="red">1SD:{{ $fmtNumber(sdu1) }}</span>
+
+      <span class="red">2SD:{{ $fmtNumber(sdu2) }}</span>
     </div>
 
     <div class="notation-container">
@@ -35,7 +46,13 @@ import Highcharts from "highcharts/highstock";
   });
 export default {
   data: function () {
-    return { priceTL: 0 };
+    return {
+      sdd2: 0,
+      sdd1: 0,
+      priceTL: 0,
+      sdu1: 0,
+      sdu2: 0,
+    };
   },
   components: {},
   mounted() {
@@ -232,6 +249,10 @@ export default {
             });
             var names = ["TL", "+1SD", "+2SD", "-1SD", "-2SD", "股价"];
             _this.priceTL = t.tr[t.tr.length - 1];
+            _this.sdd2 = t.tr_minus_2_std[t.tr.length - 1];
+            _this.sdd1 = t.tr_minus_1_std[t.tr.length - 1];
+            _this.sdu1 = t.tr_plus_1_std[t.tr.length - 1];
+            _this.sdu2 = t.tr_plus_2_std[t.tr.length - 1];
             var arr = [];
             names.map(function (t, n) {
               arr.push({

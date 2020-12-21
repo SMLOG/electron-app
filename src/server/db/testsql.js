@@ -1,6 +1,7 @@
 import My from "./model/My";
 import { db } from "./db";
 import { getReportDatas } from "./reports";
+import { ifNoExistGenModel } from "!/db/utils";
 
 (async () => {
   console.log(My);
@@ -13,9 +14,34 @@ import { getReportDatas } from "./reports";
       type: db.QueryTypes.SELECT,
     }
   );
-  console.log(items);
+  // console.log(items);
 
   for (let item of items) {
     await getReportDatas(item.code);
   }
+
+  let list = await db.query(
+    `select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rank_id from v_root t`,
+    {
+      logging: console.log,
+      type: db.QueryTypes.SELECT,
+      raw: true,
+    }
+  );
+  console.log(list.length);
+  let model = await ifNoExistGenModel(
+    [list[0]],
+    "t_v_root",
+    {},
+    ["code", "rank_id"],
+    "t_v_root",
+    {},
+    "DOUBLE"
+  );
+
+  await model.bulkCreate(list, {
+    updateOnDuplicate: Object.keys(list[0]),
+    //  logging: true,
+  });
+  console.log("done");
 })();

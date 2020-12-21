@@ -22,18 +22,19 @@ export async function getMyList() {
     `select e.*,t2.* ,h.* ,tech.* from my a 
     left join hq h on a.code = h.code 
     left join excel_gz e on e.code=a.code 
-    left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
-    on t2.code=a.code and t2.rk=1
+    left join t_v_root t2 
+    on t2.code=a.code and t2.rank_id=1
     left join tech on tech.code = h.code 
     order by a.my_id asc`,
     {
       type: db.QueryTypes.SELECT,
+      logging: console.log,
     }
   );
 }
 export const SEA_SQL = `select * from hq 
-left join (select t.*,rank() OVER(PARTITION by code order by reportdate desc) as rk from v_root t ) t2 
-on t2.code=hq.code and t2.rk=1
+left join t_v_root t2 
+on t2.code=hq.code and t2.rank_id=1
 left join tech on tech.code = hq.code 
 where 
 zsz>10000000000 

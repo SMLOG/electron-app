@@ -2,7 +2,7 @@
   <div class="main" style="margin-top: 33px">
     <div id="divBody">
       <div class="subnav tip-nav">
-        <div style="float: left; margin-left: 10px">
+        <div v-if="false" style="float: left; margin-left: 10px">
           <span @click="$emit('close')">x</span>
           <b>{{ item.name }}</b>
         </div>
@@ -58,6 +58,7 @@ import Bonus from "./Bonus";
 import Radar from "./Radar";
 import Shareholder from "./Shareholder";
 import leline from "@/view/components/tech/leline";
+import MindAdmin from "@/view/components/mind/MindAdmin";
 
 import { mapState, mapGetters } from "vuex";
 
@@ -81,6 +82,7 @@ export default {
           { name: "现金流量表", cp: "Balance" },
           { name: "百分比", cp: "Percent" },
           { name: "雷达图", cp: "Radar" },
+          { name: "思维导图", cp: "MindAdmin" },
         ],
         经营分析: [
           { name: "主营范围", cp: "BusinessAnalysis" },
@@ -107,6 +109,7 @@ export default {
     Shareholder,
     Radar,
     leline,
+    MindAdmin,
   },
 
   methods: {
@@ -166,10 +169,8 @@ export default {
 .groups {
   overflow: hidden;
   height: 100%;
-  background: #fff;
-  display: inline-block;
+  background: #eee;
   text-align: left;
-  margin-left: 10px;
   padding: 0 5px;
 }
 .groups > div {

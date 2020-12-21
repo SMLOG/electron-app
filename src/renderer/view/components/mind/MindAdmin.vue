@@ -1,43 +1,21 @@
 <template>
     <div>
-      <div style="position:fixed;z-index:4;">
+      <div >
       <div>
         <ul class="nav">
-        <li class="navItem" style="margin-left: 0;padding-left: 0" ref="mylist" @mouseover="showMylist=true" @mouseout="showMylist=false">
-          <div v-if="info" style="display:inline-block;"  >
-          <font-awesome-icon :icon="['fas', 'info-circle']" />
-         <span   >{{info.name}}</span>
-            <span    :class="{red:info.change>0,green:info.change<0}">
-           <span @click="$openlink(info,$event,`/static/tech.html?{{code}}&kd`)">
-           {{info.close}}
-           </span>
-           <span @click='togglePop(info, "FinAnalyst2", "fin");'>({{info.change}}</span>,
-           <span @click='$openlink(info,$event,`https://caibaoshuo.com/companies/${info.code.replace(/[a-z]+/g, "")}/financials`)'>{{info.changeP}})</span>
-          </span>
 
-
-          </div>
-        <my-min-list :style="{width:showMylist?'auto':'10px'}" @mouseover="showMylist=true" @mouseout="showMyList=false"/>
-  
-        </li>
-        <li class="navItem" v-if="info">
-                   <span @mouseover="autoScroll(1,-20)" @mouseout="autoScroll(0,0)">pe_ttm: {{info.pe_ttm}}</span>
-         <span @mouseover="autoScroll(1,20)" @mouseout="autoScroll(0,1)">总市值: {{$fmtNumber(info.zsz)}}</span>
-        </li>
         <li class="navItem"  v-for="node in mind.data.filter(e=>e.parentid=='root')" :key="node.id">
           <a  @mouseover="viewNode(node)" @mouseout="viewNode(node,true)" @click="toggleNode(node)">{{node.topic}}</a>
           </li>
-        <li class="navItem"  style="float:right;">
+        </ul>
           <div id="jsmind_tools" class="jsmind-tools">
             <ul  >
                 <li v-for="(row,i) in mind.rawDatas[0]" :key="row.reportdate" :class="{cur:i==mind.selectIndex}" @click="mind.selectIndex=i">{{row.reportdate}}</li>
             </ul>
           </div>
-        </li>
-        </ul>
         </div>
     </div>
-    <js-mind style="margin-top: 35px;"
+    <js-mind 
       v-if="mind.data.length>0"
       :values="mind"
       :options="{}"
@@ -64,14 +42,6 @@ var self;
 export default {
   data() {
     return {
-      curComponent: null,
-      showFin: false,
-      item: null,
-      link: null,
-      rightItem: false,
-      showType: null,
-      showMylist: false,
-      selectIndex: 0,
       info: null,
       height: 1000,
       mind: {
@@ -80,6 +50,10 @@ export default {
         data: [],
       },
     };
+  },
+  props: {
+    item: Object,
+    name: String,
   },
   components: {
     JsMind,
@@ -91,6 +65,7 @@ export default {
     MyMinList,
   },
   mounted() {
+    this.code = this.item && this.item.code;
     this.getDetail();
   },
   sockets: {
@@ -102,13 +77,17 @@ export default {
     ...mapState({ mylist: (state) => state.ws.mylist }),
   },
   watch: {
-    $route: {
+    item(n, o) {
+      this.code = item.code;
+      this.getDetail();
+    },
+    /* $route: {
       handler() {
         this.code = this.$route.query.code;
         this.getDetail();
       },
       deep: true,
-    },
+    },*/
   },
   methods: {
     autoScroll(enable, type) {
@@ -125,17 +104,7 @@ export default {
 
     getDetail() {
       self = this;
-      this.$route.query.code = (this.$route.query.code || "").replace(
-        /[^\d]+/g,
-        ""
-      );
-      if (
-        !this.$route.query.code &&
-        !this.$route.query.code.match(/^[036]\d{5}$/)
-      ) {
-        alert("请输入代码参数或者检查代码参数格式是否正确？");
-        return;
-      }
+      this.code = this.code || this.$route.query.code || "";
 
       (async () => {
         let mind = this.mind;
@@ -147,9 +116,7 @@ export default {
           let resp = await this.$http.get("/api/mind", {
             params: {
               type: type,
-              code:
-                (this.$route.query.code[0] == "6" ? "sh" : "sz") +
-                this.$route.query.code,
+              code: this.code,
             },
           });
           mind.rawDatas.push(resp.data.datas);
@@ -211,11 +178,10 @@ body {
   overflow: hidden;
 }
 ul.nav {
+  position: absolute;
   list-style: none;
   margin: 0;
   padding: 0;
-  position: fixed;
-  top: 0;
   z-index: 3;
   background: #ccc;
   right: 0;
@@ -232,9 +198,9 @@ ul.nav {
   cursor: pointer;
 }
 .jsmind-tools {
-  position: fixed;
-  top: 20px;
-  right: -54px;
+  position: absolute;
+  right: 0;
+  z-index: 3;
   background-color: #fff;
   border-radius: 5px;
   opacity: 0.3;

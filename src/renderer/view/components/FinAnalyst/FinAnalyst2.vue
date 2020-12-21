@@ -21,8 +21,11 @@
             <template v-for="(tab, i) in tabs">
               <a
                 :key="i"
-                @click="(selectGroup = group), (selectIndex = i)"
-                :class="{ current: group == selectGroup && i == selectIndex }"
+                @click="
+                  selectGroup = group;
+                  changeCurComp(tab);
+                "
+                :class="{ current: tab.name == curComponentName }"
                 >{{ tab.name }}</a
               >
               <samp v-if="i < tabs.length - 1" :key="'0_' + i">|</samp>
@@ -33,8 +36,8 @@
       <div v-if="item && item.code">
         <keep-alive>
           <component
-            :key="tabGroups[selectGroup][selectIndex].name"
-            v-bind:is="tabGroups[selectGroup][selectIndex].cp"
+            :key="curComponent"
+            v-bind:is="curComponent"
             :name="tabGroups[selectGroup][selectIndex].name"
             :item="item"
           ></component>
@@ -52,7 +55,11 @@ import Percent from "./Percent";
 import BusinessAnalysis from "./BusinessAnalysis";
 import Dashboard from "./Dashboard";
 import Bonus from "./Bonus";
+import Radar from "./Radar";
 import Shareholder from "./Shareholder";
+import leline from "@/view/components/tech/leline";
+
+import { mapState, mapGetters } from "vuex";
 
 import $ from "jquery";
 window.$ = $;
@@ -64,6 +71,7 @@ export default {
       over: 0,
       selectIndex: 0,
       selectGroup: "财务分析",
+      curComponent: "Main",
       tabGroups: {
         财务分析: [
           { name: "主要指标", cp: "Main" },
@@ -72,6 +80,7 @@ export default {
           { name: "利润表", cp: "Balance" },
           { name: "现金流量表", cp: "Balance" },
           { name: "百分比", cp: "Percent" },
+          { name: "雷达图", cp: "Radar" },
         ],
         经营分析: [
           { name: "主营范围", cp: "BusinessAnalysis" },
@@ -79,6 +88,7 @@ export default {
           { name: "分红融资", cp: "Bonus" },
           { name: "股东", cp: "Shareholder" },
         ],
+        技术分析: [{ name: "五线谱", cp: "leline" }],
       },
     };
   },
@@ -95,6 +105,8 @@ export default {
     Dashboard,
     Bonus,
     Shareholder,
+    Radar,
+    leline,
   },
 
   methods: {
@@ -103,10 +115,44 @@ export default {
       // let el = this.$el.querySelector("#" + selector);
       // el && this.$el.scrollTo(0, el.offsetTop - $(".subnav").outerHeight());
     },
+    updateCurComponent(n) {
+      if (n) {
+        for (let tab in this.tabGroups) {
+          for (let i = 0; i < this.tabGroups[tab].length; i++) {
+            if (this.tabGroups[tab][i].name == n) {
+              this.selectGroup = tab;
+              this.selectIndex = i;
+              this.curComponent = this.tabGroups[tab][i].cp;
+              return;
+            }
+          }
+        }
+      }
+    },
+
+    changeCurComp(tab) {
+      this.$store.commit("ws/setCurItem", {
+        ...this.$store.state.ws,
+        curComponentName: tab.name,
+      });
+    },
   },
 
   mounted() {
     //this.item.code = this.$route.params.code || "SH600332";
+    this.updateCurComponent(this.curComponentName);
+  },
+  computed: {
+    ...mapState({
+      curComponentName: (state) => state.ws.curComponentName,
+    }),
+  },
+  watch: {
+    selectGroup(o, n) {},
+    selectIndex(o, n) {},
+    curComponentName(n, o) {
+      this.updateCurComponent(n);
+    },
   },
 };
 </script>
@@ -123,6 +169,8 @@ export default {
   background: #fff;
   display: inline-block;
   text-align: left;
+  margin-left: 10px;
+  padding: 0 5px;
 }
 .groups > div {
   display: none;
@@ -136,7 +184,5 @@ export default {
 .over .curGroup + div {
   display: block;
 }
-</style>
-<style lang="less">
 </style>
 

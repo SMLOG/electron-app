@@ -100,6 +100,7 @@ routerHome.get("proxy/(.*?)", async (ctx) => {
         if (err) {
           return reject(err);
         }
+        console.log(JSON.stringify(resp.headers));
         ctx.set("Content-Type", resp.headers["content-type"]);
         ctx.body =
           (resp.headers["content-type"].indexOf("text/html") > -1 &&

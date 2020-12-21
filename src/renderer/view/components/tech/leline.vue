@@ -2,8 +2,7 @@
   <div>
     <div>
       {{ item.name }}五线谱趋势
-      <span class="green">-2SD:{{ $fmtNumber(sdd2) }}</span>
-      <span class="green">-1SD:{{ $fmtNumber(sdd1) }}</span>
+
       <span
         >当前TL:<b
           :class="{ green: item.close < priceTL, red: item.close > priceTL }"
@@ -11,9 +10,54 @@
         ></span
       >
       <span>SD:{{ $fmtNumber(sdu1 - priceTL) }}</span>
-      <span class="red">+1SD:{{ $fmtNumber(sdu1) }}</span>
-
-      <span class="red">+2SD:{{ $fmtNumber(sdu2) }}</span>
+    </div>
+    <div>
+      <table>
+        <tr>
+          <th>价格</th>
+          <td>
+            <span class="green">-2SD:{{ $fmtNumber(sdd2) }}</span>
+          </td>
+          <td>
+            <span class="green">-1SD:{{ $fmtNumber(sdd1) }}</span>
+          </td>
+          <td>
+            <span>TL:{{ $fmtNumber(priceTL) }}</span>
+          </td>
+          <td>
+            <span class="red">+1SD:{{ $fmtNumber(sdu1) }}</span>
+          </td>
+          <td>
+            <span class="red">+2SD:{{ $fmtNumber(sdu2) }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th>PE(TTM)</th>
+          <td>
+            <span class="green">{{
+              $fmtNumber((sdd2 / item.close) * item.pe_ttm)
+            }}</span>
+          </td>
+          <td>
+            <span class="green">{{
+              $fmtNumber((sdd1 / item.close) * item.pe_ttm)
+            }}</span>
+          </td>
+          <td>
+            <span>{{ $fmtNumber((priceTL / item.close) * item.pe_ttm) }}</span>
+          </td>
+          <td>
+            <span class="red">{{
+              $fmtNumber((sdu1 / item.close) * item.pe_ttm)
+            }}</span>
+          </td>
+          <td>
+            <span class="red">{{
+              $fmtNumber((sdu2 / item.close) * item.pe_ttm)
+            }}</span>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="notation-container">

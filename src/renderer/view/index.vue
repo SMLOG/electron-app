@@ -105,7 +105,7 @@
                         >{{ item.name }}</a
                       >
                       <b
-                        @click="$togglePop(item, 'leline', 'fin')"
+                        @click="$togglePop(item, '五线谱', 'fin')"
                         :class="{ up: item.lb > 1, down: item.lb < 1 }"
                       >
                         {{ item.lb }}
@@ -126,7 +126,7 @@
                     "
                     >{{ item.close }}</span
                   >(
-                  <span @click="$togglePop(item, 'FinAnalyst2', 'fin')">{{
+                  <span @click="$togglePop(item, '主要指标', 'fin')">{{
                     item.change
                   }}</span
                   >,

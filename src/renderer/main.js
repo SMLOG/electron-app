@@ -34,7 +34,13 @@ library.add(fas, far, fab);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("font-awesome-layers", FontAwesomeLayers);
 Vue.component("font-awesome-layers-text", FontAwesomeLayersText);
-
+import echarts from "echarts";
+import "echarts/lib/chart/bar";
+import "echarts/lib/chart/line";
+import "echarts/lib/component/tooltip";
+import "echarts/lib/component/toolbox";
+import "echarts/lib/component/title";
+Vue.prototype.$echarts = echarts;
 Vue.use(
   new VueSocketIO({
     debug: false,

@@ -110,18 +110,16 @@ export default {
         }
       }
     });
-    /*
+    let self = this;
     window.addEventListener("click", (e) => {
       if (
-        this.$refs &&
-        this.$refs.m_posts &&
-        !this.$refs.m_posts.contains(e.target) &&
-        e.target.className &&
+        self.$refs.m_posts &&
+        !self.$refs.m_posts.contains(e.target) &&
         e.target.className.indexOf("post_bt") == -1
       ) {
-        this.m_posts_item = null;
+        self.m_posts_item = null;
       }
-    });*/
+    });
   },
 
   props: ["item"],

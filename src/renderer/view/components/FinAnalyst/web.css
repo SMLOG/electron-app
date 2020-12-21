@@ -151,7 +151,7 @@ td {
   position: fixed;
   background-color: #fff;
   z-index: 60000;
-  margin-top:-33px;
+  margin-top: -33px;
 }
 /*content*/
 .subnav {
@@ -159,9 +159,8 @@ td {
   color: #000000;
   font-size: 14px;
   line-height: 33px;
-  text-align: center;
   width: 998px;
-  border: 1px solid #95bad0;
+  border-bottom: 1px solid #95bad0;
   background-color: #fff;
   z-index: 60000;
 }

@@ -54,16 +54,13 @@
       </div>
     </div>
     <div style="height: 100%; width: 100%; overflow: auto; margin-top: 3px">
-      <keep-alive>
-        <component v-bind:is="curComponent" :item="item"></component>
-      </keep-alive>
+      <FinAnalyst2 :item="item"> </FinAnalyst2>
     </div>
   </div>
 </template>
 <script>
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import ChartIndex from "@/view/components/h5/ChartIndex";
-import leline from "@/view/components/tech/leline";
 
 export default {
   data() {
@@ -109,7 +106,6 @@ export default {
   components: {
     FinAnalyst2,
     ChartIndex,
-    leline,
   },
 
   methods: {},

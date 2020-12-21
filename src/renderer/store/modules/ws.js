@@ -21,6 +21,7 @@ const state = {
   hx: [],
   curItem: {},
   curComponent: "",
+  curComponentName: "",
   showType: "",
   rightItem: false,
   link: null,

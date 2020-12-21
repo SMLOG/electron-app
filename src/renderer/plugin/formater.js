@@ -36,12 +36,12 @@ export default {
       }
     };
 
-    Vue.prototype.$togglePop = function(item, comp, type) {
+    Vue.prototype.$togglePop = function(item, compName, type) {
       let _item = this.$store.state.ws.curItem;
       let _link = this.$store.state.ws.link;
       let _showType = this.$store.state.ws.showType;
-      let _curComponent = this.$store.state.ws.curComponent;
-      if (_item && item.code == _item.code && _curComponent == comp) {
+      let _curComponentName = this.$store.state.ws.curComponentName;
+      if (_item && item.code == _item.code && _curComponentName == compName) {
         this.$store.commit("ws/setCurItem", {
           ...this.$store.state.ws,
           curItem: null,
@@ -52,7 +52,7 @@ export default {
           ...this.$store.state.ws,
           curItem: item,
           showType: type,
-          curComponent: comp,
+          curComponentName: compName,
         });
       }
     };

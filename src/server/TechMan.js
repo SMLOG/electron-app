@@ -766,7 +766,8 @@ function isMacdGolden(techData) {
   let i = techData.length - 1;
   let bar0 = techData[i].MACD_DIF - techData[i].MACD_DEA;
   let bar1 = techData[i - 1].MACD_DIF - techData[i - 1].MACD_DEA;
-  if (bar0 >= 0 && bar0 > bar1 && bar1 <= 0) return true;
+  let bar2 = techData[i - 2].MACD_DIF - techData[i - 2].MACD_DEA;
+  if (bar0 >= 0 && bar0 > bar1 && bar2 <= 0) return true;
   return false;
 }
 function kdjGold(item, kw) {

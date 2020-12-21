@@ -19,7 +19,7 @@ export async function hx(fromdb = false) {
 }
 export async function getMyList() {
   return await db.query(
-    `select e.*,t2.* ,h.* ,tech.* from my a 
+    `select e.*,t2.* ,h.* ,tech.*,a.code from my a 
     left join hq h on a.code = h.code 
     left join excel_gz e on e.code=a.code 
     left join t_v_root t2 
@@ -32,7 +32,7 @@ export async function getMyList() {
     }
   );
 }
-export const SEA_SQL = `select * from hq 
+export const SEA_SQL = `select *,hq.code from hq 
 left join t_v_root t2 
 on t2.code=hq.code and t2.rank_id=1
 left join tech on tech.code = hq.code 

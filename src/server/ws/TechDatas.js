@@ -24,8 +24,10 @@ export async function upDateTechDatas() {
   all.push(...(await getSeaList()));
 
   for (let item of all) {
+    if (!item.code) continue;
+
     let techs = await db.query(
-      `select code from tech where code = :code and  date_add(utime, interval + 10 minute) < now()`,
+      `select code from tech where code = :code and  date_add(utime, interval + 10 minute) > now()`,
       {
         type: db.QueryTypes.SELECT,
         replacements: {
@@ -44,3 +46,9 @@ export async function upDateTechDatas() {
     }
   }
 }
+
+(async () => {
+  // let r = await callFun({ code: "sh603369" });
+  //console.log(r);
+  await upDateTechDatas();
+})();

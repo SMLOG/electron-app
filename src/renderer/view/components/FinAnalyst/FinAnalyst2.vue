@@ -169,7 +169,7 @@ export default {
 .groups {
   overflow: hidden;
   height: 100%;
-  background: #eee;
+  background: rgba(240, 240, 240, 0.9);
   text-align: left;
   padding: 0 5px;
 }

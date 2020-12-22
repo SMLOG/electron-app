@@ -201,7 +201,7 @@ ul.nav {
 }
 .jsmind-tools {
   position: absolute;
-  right: 0;
+  right: -80px;
   z-index: 3;
   background-color: #fff;
   border-radius: 5px;
@@ -209,6 +209,7 @@ ul.nav {
 }
 .jsmind-tools:hover {
   opacity: 1;
+  right: 0px;
 }
 .jsmind-tools-active {
   border-color: gray;

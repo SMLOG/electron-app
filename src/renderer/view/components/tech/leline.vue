@@ -11,6 +11,7 @@
       >
       <span>SD:{{ $fmtNumber(sdu1 - priceTL) }}</span>
     </div>
+
     <div>
       <table>
         <tr>
@@ -334,4 +335,25 @@ export default {
   },
 };
 </script>
+<style scoped>
+.strip {
+  position: relative;
+  -webkit-box-flex: 5;
+  -ms-flex: 5;
+  flex: 5;
+  margin-top: 0.25rem;
+  height: 10px;
+  color: #666;
+  background-color: #333;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(green),
+    color-stop(#ff0),
+    to(red)
+  );
+  background: linear-gradient(90deg, green, #ff0, red);
+}
+</style>
 

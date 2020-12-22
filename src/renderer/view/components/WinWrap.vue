@@ -43,7 +43,7 @@
           padding-left: 3px;
           top: 0px;
           padding-right: 3px;
-          left: -1.2em;
+          left: -23px;
           z-index: 1;
           width: 1em;
           background: white;

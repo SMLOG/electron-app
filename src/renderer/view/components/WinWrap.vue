@@ -11,6 +11,7 @@
       width: 1000px;
     "
     :style="{ top: chartop + 'px' }"
+    v-if="item"
   >
     <div id="dragBar" ref="dragBar" v-drag draggable="false">
       <i

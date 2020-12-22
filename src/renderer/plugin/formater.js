@@ -36,6 +36,12 @@ export default {
       }
     };
 
+    Vue.prototype.$curItem = function(item) {
+      this.$store.commit("ws/setCurItem", {
+        ...this.$store.state.ws,
+        curItem: item,
+      });
+    };
     Vue.prototype.$togglePop = function(item, compName, type) {
       let _item = this.$store.state.ws.curItem;
       let _link = this.$store.state.ws.link;

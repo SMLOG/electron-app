@@ -78,8 +78,10 @@ export default {
   },
   watch: {
     item(n, o) {
-      this.code = item.code;
-      this.getDetail();
+      if (n) {
+        this.code = n.code;
+        this.getDetail();
+      }
     },
     /* $route: {
       handler() {

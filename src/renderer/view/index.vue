@@ -105,7 +105,7 @@
                         >{{ item.name }}</a
                       >
                       <b
-                        @click="$togglePop(item, '五线谱', 'fin')"
+                        @click="$curItem(item)"
                         :class="{ up: item.lb > 1, down: item.lb < 1 }"
                       >
                         {{ item.lb }}

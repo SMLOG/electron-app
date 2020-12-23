@@ -9,13 +9,28 @@ import _ from "lodash";
 import fs from "fs";
 import { upDateTechDatas } from "./TechDatas";
 const sleep = (t) => new Promise((res, rej) => setTimeout(res, t));
+function batchUpdate(src, values) {
+  if (!src || !src.length) return;
+  let cache = {};
+  for (let i = 0; i < values.length; i++) {
+    let item = values[i];
 
+    cache[item.code] = item;
+  }
+  for (let i = 0; i < src.length; i++) {
+    let item = src[i];
+
+    if (cache[item.code]) {
+      Object.assign(item, cache[item.code]);
+    }
+  }
+}
 export async function timeout(afn, timeout, def) {
   return Promise.race([afn, sleep(timeout).then((r) => def)]);
 }
 const myfile = `${CONFIG_DIR}/my.json`;
 let indMap = {};
-export const filters = buildFilters();
+export const factors = buildFilters();
 export const cats = {
   海选: {
     items: [],
@@ -49,7 +64,7 @@ export function initmem(io) {
         // await attachExtractInfoToItems(cats["自选"].items);
 
         socket.emit("mylist", cats["自选"].items);
-        socket.emit("filters", Object.keys(filters));
+        socket.emit("filters", Object.keys(factors));
         updateFiltersCount();
         socket.emit("sealist", cats["海选"].items);
         socket.emit("countMap", countMap);
@@ -112,7 +127,11 @@ export function initmem(io) {
   setInterval(() => {
     console.log("setinterval:" + new Date());
     (async () => {
-      io.emit("techdatas", await upDateTechDatas());
+      let datas = await upDateTechDatas();
+
+      batchUpdate([...cats["海选"].items, ...cats["自选"].items], datas);
+      updateFiltersCount();
+      io.emit("techdatas", datas);
     })();
   }, 600000);
 
@@ -172,7 +191,7 @@ export function initmem(io) {
 }
 export const filtersCount = [];
 {
-  const keys = Object.keys(filters);
+  const keys = Object.keys(factors);
   const ckeys = Object.keys(cats);
 
   for (let k = 0; k < keys.length; k++) {
@@ -183,11 +202,11 @@ export const filtersCount = [];
   console.error(filtersCount);
 }
 export function toFiltersCount(item, src, type = "+") {
-  const keys = Object.keys(filters);
+  const keys = Object.keys(factors);
 
   for (let i = 0; i < keys.length; i++) {
     let it = filtersCount[i];
-    let fc = filters[it.name];
+    let fc = factors[it.name];
     it[src] += fc([item]) ? (type == "+" ? 1 : -1) : 0;
   }
 }
@@ -195,12 +214,12 @@ export let countMap = {};
 let filterIdListFile = `${CONFIG_DIR}/filter-id-list.json`;
 
 export function updateFiltersCount() {
-  const keys = Object.keys(filters);
+  const keys = Object.keys(factors);
   const akeys = Object.keys(cats);
 
   for (let i = 0; i < keys.length; i++) {
     let it = filtersCount[i];
-    let fc = filters[it.name];
+    let fc = factors[it.name];
     for (let j of akeys) {
       let items = cats[j].items;
       items = fc(items);
@@ -215,7 +234,7 @@ export function updateFiltersCount() {
     e,
     e
       .split("+")
-      .map((t) => filters[t])
+      .map((t) => factors[t])
       .filter((e) => e),
   ]);
   let ret = fcs.map((e) => {

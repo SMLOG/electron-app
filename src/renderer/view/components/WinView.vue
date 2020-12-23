@@ -77,15 +77,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import Calendar from "@/view/components/calendar";
 import { setCookie, getCookie } from "@/lib/utils";
-
-import store from "@/localdata";
-import draggable from "vuedraggable";
-import { initwebview } from "@/lib/webview";
-import { filters, getCheckFilters, afilters } from "@/lib/filters";
-import { callFun } from "@/lib/tech-manager";
-import moment from "moment";
 
 import _ from "lodash";
 
@@ -141,10 +133,7 @@ export default {
       };
     },
   },
-  components: {
-    Calendar,
-  },
-  mounted() {},
+
   watch: {
     item(n, o) {
       if (n != null && (o == null || o.code == null)) {

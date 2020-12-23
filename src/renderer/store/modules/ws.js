@@ -53,19 +53,7 @@ const mutations = {
   SOCKET_filters(state, data) {
     state.wsfilters = data;
   },
-  SOCKET_mylist(state, data) {
-    state.cats["自选"] = data;
-  },
-  SOCKET_sealist(state, data) {
-    state.cats["海选"] = data;
-  },
-  SOCKET_hx(state, data) {
-    batchUpdateHQ(...state.cats["自选"], ...state.cats["海选"], data);
-    // commit("SOCKET_mylist", state.mylist);
-  },
-  SOCKET_techdatas(state, data) {
-    batchUpdateHQ(...state.cats["自选"], ...state.cats["海选"], data);
-  },
+
   setCurItem(state, data) {
     Object.assign(state, data);
   },

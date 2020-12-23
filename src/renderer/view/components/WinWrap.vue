@@ -12,6 +12,7 @@
     "
     :style="{ top: chartop + 'px' }"
     v-if="item"
+    v-resize
   >
     <div id="dragBar" ref="dragBar" v-drag draggable="false">
       <i
@@ -62,6 +63,8 @@
 <script>
 import FinAnalyst2 from "@/view/components/FinAnalyst/FinAnalyst2";
 import ChartIndex from "@/view/components/h5/ChartIndex";
+import VueDragResize from "vue-drag-resize";
+import resize from "vue-resize-directive";
 
 export default {
   data() {
@@ -73,6 +76,8 @@ export default {
     curComponent: String,
   },
   directives: {
+    resize,
+
     drag(el) {
       let self = this;
       /*document.onselectstart = function () {
@@ -107,6 +112,7 @@ export default {
   components: {
     FinAnalyst2,
     ChartIndex,
+    VueDragResize,
   },
 
   methods: {},

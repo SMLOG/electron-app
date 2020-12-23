@@ -1,4 +1,3 @@
-import { fn, cacheObject } from "./lib/fn";
 import fs from "fs";
 import { dataUtil } from "./util";
 import { userAgent, CONFIG_DIR } from "!/config";
@@ -790,7 +789,10 @@ const techMap = {
     return item.turnover >= 1;
   },
   上5周均线: function({ item, kd, kw, km }) {
-    return item.close >= kw[kw.length - 1].Average5;
+    return (
+      kw[kw.length - 2].close < kw[kw.length - 2].Average5 &&
+      item.close >= kw[kw.length - 1].Average5
+    );
   },
 };
 export const techMaplist = Object.keys(techMap);
@@ -812,12 +814,4 @@ export async function callFun(item) {
     item[`_${name}`] = techMap[name](techDatas);
   }
   return item;
-}
-export class fnTechData extends fn {
-  constructor([item]) {
-    super(`${item.code}/tech2.json`);
-    this.get = async function() {
-      return await callFun(item);
-    };
-  }
 }

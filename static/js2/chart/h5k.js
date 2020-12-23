@@ -277,12 +277,12 @@ xh5_define(
                   viewState.dataLength = a.length;
                   var o = viewState.start,
                     s = viewState.end;
-                  if (isNaN(o) || isNaN(s))
-                    (s = _.get("b")),
-                      (o = _.get("v")),
-                      (viewState.start = o),
-                      (viewState.end = s);
-                  else {
+                  if (isNaN(o) || isNaN(s)) {
+                    s = _.get("b");
+                    o = _.get("v");
+                    viewState.start = o;
+                    viewState.end = s;
+                  } else {
                     if (n && s + 1 >= a.length) {
                       var r = a.length - s;
                       (viewState.end = s = a.length),

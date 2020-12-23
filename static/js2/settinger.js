@@ -27,15 +27,15 @@ xh5_define("cfgs.settinger", [], function() {
         indicator_reorder: !0,
         indicator_cvs_title: !1,
         indicator_reheight: !1,
-        centerZoom: !0
+        centerZoom: !0,
       }),
       (this.PARAM = {
-        K_CL_NUM: 260,
+        K_CL_NUM: 120,
         updateRate: 5,
         T_RATE: 120,
         minCandleNum: 240,
         maxCandleNum: 0 / 0,
-        defaultCandleNum: 240,
+        defaultCandleNum: 120,
         zoomUnit: 90,
         zoomLimit: 10,
         zoomArea: 0.15,
@@ -49,7 +49,7 @@ xh5_define("cfgs.settinger", [], function() {
           return this._hd;
         },
         isFlash: !1,
-        LOGO_ID: "KKE_sina_finance_logo"
+        LOGO_ID: "KKE_sina_finance_logo",
       }),
       (this.DIMENSION = {
         extend_draw: !1,
@@ -95,11 +95,11 @@ xh5_define("cfgs.settinger", [], function() {
         },
         getStageH: function() {
           return this._h;
-        }
+        },
       }),
       (this.STYLE = {
         FONT_SIZE: 12,
-        FONT_FAMILY: "helvetica,arial,sans-serif"
+        FONT_FAMILY: "helvetica,arial,sans-serif",
       }),
       (this.COLOR = {
         BG: "#fff",
@@ -141,7 +141,7 @@ xh5_define("cfgs.settinger", [], function() {
         K_PCT: "#ccc",
         BTN_ARR: ["#2b9dfc", "#fff"],
         TIP_ARR: ["#000", "#fff", null, !1, null],
-        LOGO: "#ccc"
+        LOGO: "#ccc",
       }),
       (this.datas = {
         s: "sh000001",
@@ -150,7 +150,7 @@ xh5_define("cfgs.settinger", [], function() {
         t: "",
         isT: !1,
         scaleType: "price",
-        candle: "solid"
+        candle: "solid",
       });
   }
   var t = {
@@ -288,12 +288,12 @@ xh5_define("cfgs.settinger", [], function() {
             t.baseid = e;
         }
         return t;
-      }
+      },
     },
     e: {
       K_DATA_LOADED: "kDataLoaded",
       T_DATA_LOADED: "tDataLoaded",
-      I_EVT: "iEvent"
+      I_EVT: "iEvent",
     },
     nohtml5info:
       "\u68c0\u6d4b\u5230\u60a8\u7684\u6d4f\u89c8\u5668\u8fc7\u65e7\u4e14\u4e0d\u652f\u6301HTML 5\uff0c\u5f53\u524d\u4ee5\u517c\u5bb9\u6a21\u5f0f\u8fd0\u884c\u3002<br/>\u4e3a\u83b7\u5f97\u66f4\u597d\u7684\u4f53\u9a8c\u53ca\u5b8c\u5584\u7684\u529f\u80fd\uff0c\u5efa\u8bae\u4f7f\u7528<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/40975.html' target='_blank'>\u8c37\u6b4cChrome</a>\u6d4f\u89c8\u5668\uff0c\u6216\u5347\u7ea7\u5230\u60a8\u6d4f\u89c8\u5668\u7684<a style='color:#fff;text-decoration:underline;' href='http://down.tech.sina.com.cn/content/58979.html' target='_blank'>\u6700\u65b0\u7248\u672c</a>\u3002",
@@ -305,7 +305,7 @@ xh5_define("cfgs.settinger", [], function() {
     notlisted: "\u672a\u4e0a\u5e02",
     delisted: "\u9000\u5e02",
     nodata: "\u672a\u52a0\u8f7d\u5230\u6709\u6548\u6570\u636e",
-    noredata: "\u90e8\u5206\u8bc1\u5238\u65e0\u590d\u6743\u6570\u636e"
+    noredata: "\u90e8\u5206\u8bc1\u5238\u65e0\u590d\u6743\u6570\u636e",
   };
   return new (function() {
     this.VER = "2.0.31";

@@ -210,7 +210,7 @@ var __isKCB = /^sh688\d{3}|sh689\d{3}$/.test(paperCode);
           dim: {
             H_T_G: 120,
           },
-          candlenum: 240,
+          candlenum: 120,
         },
         tInitParam: {
           rate: 20,

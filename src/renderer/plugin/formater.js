@@ -37,10 +37,19 @@ export default {
     };
 
     Vue.prototype.$curItem = function(item) {
-      this.$store.commit("ws/setCurItem", {
-        ...this.$store.state.ws,
-        curItem: item,
-      });
+      let _item = this.$store.state.ws.curItem;
+
+      if (_item && item.code == _item.code) {
+        this.$store.commit("ws/setCurItem", {
+          ...this.$store.state.ws,
+          curItem: null,
+        });
+      } else {
+        this.$store.commit("ws/setCurItem", {
+          ...this.$store.state.ws,
+          curItem: item,
+        });
+      }
     };
     Vue.prototype.$togglePop = function(item, compName, type) {
       let _item = this.$store.state.ws.curItem;

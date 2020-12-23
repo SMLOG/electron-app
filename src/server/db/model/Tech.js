@@ -21,9 +21,9 @@ const { Model, DataTypes } = require("sequelize");
         "type": DataTypes.BOOLEAN,
         "field": "_换手率大1"
     },
-    "_上5天": {
+    "_上5周均线": {
         "type": DataTypes.BOOLEAN,
-        "field": "_上5天"
+        "field": "_上5周均线"
     },
     "code": {
         "type": DataTypes.STRING(10),

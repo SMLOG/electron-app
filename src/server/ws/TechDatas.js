@@ -3,7 +3,7 @@ import { ifNoExistGenModel } from "!/db/utils";
 import { callFun, techMaplist } from "!/TechMan";
 import { getMyList, getSeaList } from "./HQws";
 
-export async function upDateTechDatas() {
+export async function upDateTechDatas(force = false) {
   let sampleRow = techMaplist.reduce((r, it) => {
     r["_" + it] = true;
     return r;
@@ -35,7 +35,7 @@ export async function upDateTechDatas() {
         },
       }
     );
-    if (techs.length == 0) {
+    if (force || techs.length == 0) {
       let r = await callFun(item);
       r.utime = new Date();
       console.log(r);
@@ -50,5 +50,5 @@ export async function upDateTechDatas() {
 (async () => {
   // let r = await callFun({ code: "sh603369" });
   //console.log(r);
-  await upDateTechDatas();
+  await upDateTechDatas(true);
 })();

@@ -35,7 +35,7 @@ xh5_define("cfgs.settinger", [], function() {
         T_RATE: 120,
         minCandleNum: 25,
         maxCandleNum: 0 / 0,
-        defaultCandleNum: 480,
+        defaultCandleNum: 120,
         zoomUnit: 90,
         zoomLimit: 10,
         zoomArea: 0.15,

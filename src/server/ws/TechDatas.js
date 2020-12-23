@@ -23,6 +23,7 @@ export async function upDateTechDatas(force = false) {
   let all = await getMyList();
   all.push(...(await getSeaList()));
 
+  let updatedList = [];
   for (let item of all) {
     if (!item.code) continue;
 
@@ -43,7 +44,9 @@ export async function upDateTechDatas(force = false) {
         updateOnDuplicate: Object.keys(r),
         logging: true,
       });
+      updatedList.push(r);
     }
+    return updatedList;
   }
 }
 

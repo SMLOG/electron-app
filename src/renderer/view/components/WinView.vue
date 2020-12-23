@@ -88,8 +88,6 @@ import { callFun } from "@/lib/tech-manager";
 import moment from "moment";
 
 import _ from "lodash";
-import $ from "jquery";
-window.$ = $;
 
 export default {
   name: "WinView",

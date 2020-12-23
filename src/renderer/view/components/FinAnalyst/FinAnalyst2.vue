@@ -62,9 +62,6 @@ import MindAdmin from "@/view/components/mind/MindAdmin";
 
 import { mapState, mapGetters } from "vuex";
 
-import $ from "jquery";
-window.$ = $;
-
 export default {
   name: "FinAnalyst2",
   data() {

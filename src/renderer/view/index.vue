@@ -173,11 +173,7 @@ import draggable from "vuedraggable";
 
 import MyIndex from "@/view/components/MyIndex";
 import ContextMenu from "@/view/components/ContextMenu";
-import MyMinList from "@/view/components/MyMinList.vue";
 
-import axios from "axios";
-import $ from "jquery";
-window.$ = $;
 export default {
   data: function () {
     return {
@@ -209,7 +205,6 @@ export default {
     draggable,
     MyIndex,
     ContextMenu,
-    MyMinList,
   },
   sockets: {
     disconnect() {
@@ -230,6 +225,12 @@ export default {
     },
     hx(data) {
       batchUpdateHQ(this.curItems, data);
+    },
+    techdatas(datas) {
+      batchUpdateHQ(
+        [...this.cats["自选"].items, ...this.cats["海选"].items],
+        datas
+      );
     },
   },
 

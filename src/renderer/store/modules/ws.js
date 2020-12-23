@@ -17,7 +17,6 @@ const state = {
   filtersCount: [],
   countMap: [],
   wsfilters: {},
-  mylist: [],
   hx: [],
   curItem: {},
   curComponent: "",
@@ -26,6 +25,14 @@ const state = {
   rightItem: false,
   link: null,
   showMsgItem: false,
+  cats: {
+    海选: {
+      items: [],
+    },
+    自选: {
+      items: [],
+    },
+  },
 };
 const mutations = {
   [MUTATION_TYPE.SET_FIELDS](state, fields) {
@@ -47,14 +54,18 @@ const mutations = {
     state.wsfilters = data;
   },
   SOCKET_mylist(state, data) {
-    state.mylist = data;
+    state.cats["自选"] = data;
+  },
+  SOCKET_sealist(state, data) {
+    state.cats["海选"] = data;
   },
   SOCKET_hx(state, data) {
-    state.hx = data;
-    //batchUpdateHQ(state.mylist, data);
+    batchUpdateHQ(...state.cats["自选"], ...state.cats["海选"], data);
     // commit("SOCKET_mylist", state.mylist);
   },
-
+  SOCKET_techdatas(state, data) {
+    batchUpdateHQ(...state.cats["自选"], ...state.cats["海选"], data);
+  },
   setCurItem(state, data) {
     Object.assign(state, data);
   },

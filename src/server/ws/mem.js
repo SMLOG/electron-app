@@ -1,6 +1,5 @@
 import { getMyList, getSeaList } from "./HQws";
 import { CONFIG_DIR } from "../config";
-import { attachExtractInfoToItems } from "../helper";
 import { buildFilters } from "../TechMan";
 import { inds, hx } from "./HQws";
 import { emitter } from "../jobs/jobIndex";
@@ -112,14 +111,14 @@ export function initmem(io) {
 
   setInterval(() => {
     console.log("setinterval:" + new Date());
-    upDateTechDatas();
+    (async () => {
+      io.emit("techdatas", await upDateTechDatas());
+    })();
   }, 600000);
 
   async () => {
     for (; true; ) {
       await sleep(600000);
-      //await attachExtractInfoToItems(cats["自选"].items);
-      //await attachExtractInfoToItems(cats["海选"].items);
       updateFiltersCount();
 
       io.emit("filtersCount", filtersCount);
@@ -238,10 +237,4 @@ function calRes(fnArr, items, index) {
 
   let f = fnArr[index];
   return calRes(fnArr, f(items), ++index);
-}
-function removeAbandon(id) {
-  return id
-    .split("+")
-    .filter((t) => filters[t])
-    .join("+");
 }

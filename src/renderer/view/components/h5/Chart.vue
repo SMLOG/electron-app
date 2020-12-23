@@ -117,8 +117,6 @@ var chartmanager = require("./h5c/em-chartmanager");
 var utils = require("./h5c/em-utils");
 var cookie = utils.cookie;
 import _ from "lodash";
-import $ from "jquery";
-window.$ = $;
 
 export default {
   components: { Head, Right },

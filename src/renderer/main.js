@@ -18,7 +18,8 @@ Vue.component("peity", Peity);
 Vue.config.productionTip = false;
 
 Vue.use(formater); // 添加
-
+import $ from "jquery";
+window.$ = $;
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
@@ -43,7 +44,7 @@ import "echarts/lib/component/title";
 Vue.prototype.$echarts = echarts;
 Vue.use(
   new VueSocketIO({
-    debug: false,
+    debug: true,
     connection: "/socket.io",
     vuex: {
       store,

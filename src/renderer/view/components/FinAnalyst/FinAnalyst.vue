@@ -128,9 +128,7 @@ import Main from "./Main";
 import DuPont from "./DuPont";
 import Balance from "./Balance";
 import Percent from "./Percent";
-import $ from "jquery";
 import Radar from "./Radar.vue";
-window.$ = $;
 
 export default {
   name: "FinAnalyst",

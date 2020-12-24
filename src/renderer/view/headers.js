@@ -114,8 +114,9 @@ export let headers = [
   },
 
   {
+    cp: "Field",
     label: "ROE",
-    prop: "扣非ROE",
+    prop: "近3年净资产收益率",
     fmt: fmtPercent,
 
     click: (item, event, openlink) => {

@@ -19,12 +19,14 @@ export async function hx(fromdb = false) {
 }
 export async function getMyList() {
   return await db.query(
-    `select e.*,t2.* ,h.* ,tech.*,a.code from my a 
+    `select e.*,t2.* ,h.* ,tech.*,uu.*,a.code from my a 
     left join hq h on a.code = h.code 
     left join excel_gz e on e.code=a.code 
     left join t_v_root t2 
     on t2.code=a.code and t2.rank_id=1
     left join tech on tech.code = h.code 
+    left join (select u.code as scode ,group_concat(u.\`净资产收益率\` order by u.rank_id desc)  as "近3年净资产收益率" from t_v_root u where u.rank_id<4 group by u.code) uu
+    on a.code = uu.scode
     order by a.my_id asc`,
     {
       type: db.QueryTypes.SELECT,
@@ -36,6 +38,8 @@ export const SEA_SQL = `select *,hq.code from hq
 left join t_v_root t2 
 on t2.code=hq.code and t2.rank_id=1
 left join tech on tech.code = hq.code 
+left join (select u.code as scode ,group_concat(u.\`净资产收益率\` order by u.rank_id desc)  as "近3年净资产收益率" from t_v_root u where u.rank_id<4 group by u.code) uu
+on hq.code = uu.scode
 where 
 zsz>10000000000 
 and pe_ttm>0 

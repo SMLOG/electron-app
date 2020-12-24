@@ -145,6 +145,7 @@
                   >)
                 </span>
               </td>
+
               <td
                 v-for="(col, ci) in headers"
                 :key="col.prop"
@@ -154,7 +155,19 @@
                 @mouseover="cellOver($event, item, ci)"
                 @mouseout="cellOut($event, item, ci)"
               >
-                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+                <div v-if="col && col.cp">
+                  <keep-alive>
+                    <component
+                      :key="col.cp"
+                      v-bind:is="col.cp"
+                      :col="col"
+                      :item="item"
+                    ></component>
+                  </keep-alive>
+                </div>
+                <div v-else>
+                  {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+                </div>
               </td>
             </tr>
           </template>
@@ -173,6 +186,7 @@ import draggable from "vuedraggable";
 
 import MyIndex from "@/view/components/MyIndex";
 import ContextMenu from "@/view/components/ContextMenu";
+import Field from "@/view/components/Field";
 
 export default {
   data: function () {
@@ -205,6 +219,7 @@ export default {
     draggable,
     MyIndex,
     ContextMenu,
+    Field,
   },
   sockets: {
     disconnect() {

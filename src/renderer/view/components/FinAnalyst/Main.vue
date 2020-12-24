@@ -9,18 +9,7 @@
       v-if="selectZb"
       class="content"
       style="text-align: center"
-    >
-      <div v-if="false" class="pic tips-border" style="height: 247px">
-        <v-chart
-          id="zyzbChart"
-          :options="chartOptions"
-          style="width: 960px; height: 247px"
-        />
-      </div>
-      <div class="tips-explain">
-        注：点击表格内的指标名称可切换图片查看该指标的历史趋势
-      </div>
-    </div>
+    ></div>
     <div class="tab" style="margin-top: 10px">
       <ul id="zyzbTab">
         <li
@@ -70,9 +59,13 @@
                 <td class="tips-fieldname-Left">
                   <span :title="zb.length > 2 ? zb[2] : ''">{{ zb[0] }}</span>
                   <peity
-                    :type="'bar'"
+                    type="bar"
                     :data="
                       zyzb
+                        .filter(
+                          (e) =>
+                            e.date.substring(5) == zyzb[0].date.substring(5)
+                        )
                         .map((e) => e[zb[1]])
                         .reverse()
                         .toString()

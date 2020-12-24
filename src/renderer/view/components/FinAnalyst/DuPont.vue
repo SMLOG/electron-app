@@ -38,22 +38,9 @@
           <div class="tab">
             <ul id="DBFX_ul">
               <li
-                v-for="(value, i) in dbfx.bgq"
-                :key="i"
-                data-mark="bgq"
-                :data-index="i"
-                v-show="tabIndex == 0"
-                @click="selectDate = value.date"
-                :class="{ current: selectDate == value.date }"
-              >
-                {{ value.date }}
-              </li>
-              <li
-                v-for="(value, i) in dbfx.nd"
-                :key="dbfx.bgq.length + i"
-                data-mark="nd"
-                :data-index="dbfx.bgq.length + i"
-                v-show="tabIndex == 1"
+                v-for="(value, i) in arrValues"
+                :key="arrValues.length + i"
+                :data-index="arrValues.length + i"
                 @click="selectDate = value.date"
                 :class="{ current: selectDate == value.date }"
               >
@@ -64,7 +51,7 @@
         </div>
         <div class="canvas">
           <div
-            v-for="(value, i) in dbfx.bgq"
+            v-for="(value, i) in arrValues"
             @click="selectDate = value.date"
             v-show="selectDate == value.date"
             :key="i"
@@ -73,7 +60,7 @@
           >
             <div class="db_01">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'jzcsyl')"></peity>
+                <peity type="bar" :data="getDatas('jzcsyl')"></peity>
                 {{ value.jzcsyl }}
               </p>
               <samp class="tips-unit">单位:元</samp>
@@ -81,308 +68,215 @@
 
             <div class="db_02">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zzcjll')"></peity
+                <peity type="bar" :data="getDatas('zzcjll')"></peity
                 >{{ value.zzcjll }}
               </p>
               <p class="db_data02">
-                <peity
-                  type="bar"
-                  :data="getDatas(dbfx.bgq, 'gsmgsgddjlr')"
-                ></peity
+                <peity type="bar" :data="getDatas('gsmgsgddjlr')"></peity
                 >{{ value.gsmgsgddjlr }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'qycs')"></peity
+                <peity type="bar" :data="getDatas('qycs')"></peity
                 >{{ value.qycs }}
               </p>
             </div>
             <div class="db_03">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yyjlrl')"></peity
+                <peity type="bar" :data="getDatas('yyjlrl')"></peity
                 >{{ value.yyjlrl }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zzczzl')"></peity
+                <peity type="bar" :data="getDatas('zzczzl')"></peity
                 >{{ value.zzczzl }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zcfzl')"></peity
+                <peity type="bar" :data="getDatas('zcfzl')"></peity
                 >{{ value.zcfzl }}
               </p>
             </div>
             <div class="db_04">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'jlr')"></peity
+                <peity type="bar" :data="getDatas('jlr')"></peity
                 >{{ value.jlr }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yysr')"></peity
+                <peity type="bar" :data="getDatas('yysr')"></peity
                 >{{ value.yysr }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yysr')"></peity
+                <peity type="bar" :data="getDatas('yysr')"></peity
                 >{{ value.yysr }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zcze')"></peity
+                <peity type="bar" :data="getDatas('zcze')"></peity
                 >{{ value.zcze }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'fzze')"></peity
+                <peity type="bar" :data="getDatas('fzze')"></peity
                 >{{ value.fzze }}
               </p>
               <p class="db_data06">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zcze')"></peity
+                <peity type="bar" :data="getDatas('zcze')"></peity
                 >{{ value.zcze }}
               </p>
             </div>
             <div class="db_05">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'srze')"></peity
+                <peity type="bar" :data="getDatas('srze')"></peity
                 >{{ value.srze }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'cbze')"></peity
+                <peity type="bar" :data="getDatas('cbze')"></peity
                 >{{ value.cbze }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'ldzc')"></peity
+                <peity type="bar" :data="getDatas('ldzc')"></peity
                 >{{ value.ldzc }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'fldzc')"></peity
+                <peity type="bar" :data="getDatas('fldzc')"></peity
                 >{{ value.fldzc }}
               </p>
             </div>
             <div class="db_06">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yysr')"></peity
+                <peity type="bar" :data="getDatas('yysr')"></peity
                 >{{ value.yysr }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yycb')"></peity
+                <peity type="bar" :data="getDatas('yycb')"></peity
                 >{{ value.yycb }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'qjfy')"></peity
+                <peity type="bar" :data="getDatas('qjfy')"></peity
                 >{{ value.qjfy }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'hbzj')"></peity
+                <peity type="bar" :data="getDatas('hbzj')"></peity
                 >{{ value.hbzj }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'kgcsjrzc')"></peity
+                <peity type="bar" :data="getDatas('kgcsjrzc')"></peity
                 >{{ value.kgcsjrzc }}
               </p>
               <p class="db_data06">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'wxzc')"></peity
+                <peity type="bar" :data="getDatas('wxzc')"></peity
                 >{{ value.wxzc }}
               </p>
             </div>
             <div class="db_07">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'gyjzbdsy')"></peity
+                <peity type="bar" :data="getDatas('gyjzbdsy')"></peity
                 >{{ value.gyjzbdsy }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yysjjfj')"></peity
+                <peity type="bar" :data="getDatas('yysjjfj')"></peity
                 >{{ value.yysjjfj }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'jyxjrzc')"></peity
+                <peity type="bar" :data="getDatas('jyxjrzc')"></peity
                 >{{ value.jyxjrzc }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'cyzdqtz')"></peity
+                <peity type="bar" :data="getDatas('cyzdqtz')"></peity
                 >{{ value.cyzdqtz }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'kfzc')"></peity
+                <peity type="bar" :data="getDatas('kfzc')"></peity
                 >{{ value.kfzc }}
               </p>
             </div>
             <div class="db_08">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yywsr')"></peity
+                <peity type="bar" :data="getDatas('yywsr')"></peity
                 >{{ value.yywsr }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'sdsfy')"></peity
+                <peity type="bar" :data="getDatas('sdsfy')"></peity
                 >{{ value.sdsfy }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'cwfy')"></peity
+                <peity type="bar" :data="getDatas('cwfy')"></peity
                 >{{ value.cwfy }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yszk')"></peity
+                <peity type="bar" :data="getDatas('yszk')"></peity
                 >{{ value.yszk }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'cqgqtz')"></peity
+                <peity type="bar" :data="getDatas('cqgqtz')"></peity
                 >{{ value.cqgqtz }}
               </p>
               <p class="db_data06">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'sy')"></peity
-                >{{ value.sy }}
+                <peity type="bar" :data="getDatas('sy')"></peity>{{ value.sy }}
               </p>
             </div>
             <div class="db_09">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'tzsy')"></peity
+                <peity type="bar" :data="getDatas('tzsy')"></peity
                 >{{ value.tzsy }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zcjzss')"></peity
+                <peity type="bar" :data="getDatas('zcjzss')"></peity
                 >{{ value.zcjzss }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'xsfy')"></peity
+                <peity type="bar" :data="getDatas('xsfy')"></peity
                 >{{ value.xsfy }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yfzk')"></peity
+                <peity type="bar" :data="getDatas('yfzk')"></peity
                 >{{ value.yfzk }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'tzxfdc')"></peity
+                <peity type="bar" :data="getDatas('tzxfdc')"></peity
                 >{{ value.tzxfdc }}
               </p>
               <p class="db_data06">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'cqdtfy')"></peity
+                <peity type="bar" :data="getDatas('cqdtfy')"></peity
                 >{{ value.cqdtfy }}
               </p>
             </div>
             <div class="db_10">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'yywzc')"></peity
+                <peity type="bar" :data="getDatas('yywzc')"></peity
                 >{{ value.yywzc }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'glfy')"></peity
+                <peity type="bar" :data="getDatas('glfy')"></peity
                 >{{ value.glfy }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'qtysk')"></peity
+                <peity type="bar" :data="getDatas('qtysk')"></peity
                 >{{ value.qtysk }}
               </p>
               <p class="db_data04">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'gdzc')"></peity
+                <peity type="bar" :data="getDatas('gdzc')"></peity
                 >{{ value.gdzc }}
               </p>
               <p class="db_data05">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'dysdszc')"></peity
+                <peity type="bar" :data="getDatas('dysdszc')"></peity
                 >{{ value.dysdszc }}
               </p>
             </div>
             <div class="db_11">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'ch')"></peity
-                >{{ value.ch }}
+                <peity type="bar" :data="getDatas('ch')"></peity>{{ value.ch }}
               </p>
               <p class="db_data02">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'zjgc')"></peity
+                <peity type="bar" :data="getDatas('zjgc')"></peity
                 >{{ value.zjgc }}
               </p>
               <p class="db_data03">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'qtfldzc')"></peity
+                <peity type="bar" :data="getDatas('qtfldzc')"></peity
                 >{{ value.qtfldzc }}
               </p>
             </div>
             <div class="db_12">
               <p class="db_data01">
-                <peity type="bar" :data="getDatas(dbfx.bgq, 'qtldzc')"></peity
+                <peity type="bar" :data="getDatas('qtldzc')"></peity
                 >{{ value.qtldzc }}
               </p>
-            </div>
-            <div class="tips-note2">
-              注：以上数据优先摘录上市公司定期报告中公布的数据，若报告期中没公布此项数据，则通过计算得出此项数据
-            </div>
-          </div>
-          <div
-            v-for="(value, i) in dbfx.nd"
-            :key="i + dbfx.bgq.length"
-            data-mark="detail"
-            :class="['canvas_nd_' + i]"
-            @click="selectDate = value.date"
-            v-show="selectDate == value.date"
-          >
-            <div class="db_01">
-              <p class="db_data01">
-                {{ value.jzcsyl }}
-              </p>
-              <samp class="tips-unit">单位:元</samp>
-            </div>
-            <div class="db_02">
-              <p class="db_data01">{{ value.zzcjll }}</p>
-              <p class="db_data02">{{ value.gsmgsgddjlr }}</p>
-              <p class="db_data03">{{ value.qycs }}</p>
-            </div>
-            <div class="db_03">
-              <p class="db_data01">{{ value.yyjlrl }}</p>
-              <p class="db_data02">{{ value.zzczzl }}</p>
-              <p class="db_data03">{{ value.zcfzl }}</p>
-            </div>
-            <div class="db_04">
-              <p class="db_data01">{{ value.jlr }}</p>
-              <p class="db_data02">{{ value.yysr }}</p>
-              <p class="db_data03">{{ value.yysr }}</p>
-              <p class="db_data04">{{ value.zcze }}</p>
-              <p class="db_data05">{{ value.fzze }}</p>
-              <p class="db_data06">{{ value.zcze }}</p>
-            </div>
-            <div class="db_05">
-              <p class="db_data01">{{ value.srze }}</p>
-              <p class="db_data02">{{ value.cbze }}</p>
-              <p class="db_data03">{{ value.ldzc }}</p>
-              <p class="db_data04">{{ value.fldzc }}</p>
-            </div>
-            <div class="db_06">
-              <p class="db_data01">{{ value.yysr }}</p>
-              <p class="db_data02">{{ value.yycb }}</p>
-              <p class="db_data03">{{ value.qjfy }}</p>
-              <p class="db_data04">{{ value.hbzj }}</p>
-              <p class="db_data05">{{ value.kgcsjrzc }}</p>
-              <p class="db_data06">{{ value.wxzc }}</p>
-            </div>
-            <div class="db_07">
-              <p class="db_data01">{{ value.gyjzbdsy }}</p>
-              <p class="db_data02">{{ value.yysjjfj }}</p>
-              <p class="db_data03">{{ value.jyxjrzc }}</p>
-              <p class="db_data04">{{ value.cyzdqtz }}</p>
-              <p class="db_data05">{{ value.kfzc }}</p>
-            </div>
-            <div class="db_08">
-              <p class="db_data01">{{ value.yywsr }}</p>
-              <p class="db_data02">{{ value.sdsfy }}</p>
-              <p class="db_data03">{{ value.cwfy }}</p>
-              <p class="db_data04">{{ value.yszk }}</p>
-              <p class="db_data05">{{ value.cqgqtz }}</p>
-              <p class="db_data06">{{ value.sy }}</p>
-            </div>
-            <div class="db_09">
-              <p class="db_data01">{{ value.tzsy }}</p>
-              <p class="db_data02">{{ value.zcjzss }}</p>
-              <p class="db_data03">{{ value.xsfy }}</p>
-              <p class="db_data04">{{ value.yfzk }}</p>
-              <p class="db_data05">{{ value.tzxfdc }}</p>
-              <p class="db_data06">{{ value.cqdtfy }}</p>
-            </div>
-            <div class="db_10">
-              <p class="db_data01">{{ value.yywzc }}</p>
-              <p class="db_data02">{{ value.glfy }}</p>
-              <p class="db_data03">{{ value.qtysk }}</p>
-              <p class="db_data04">{{ value.gdzc }}</p>
-              <p class="db_data05">{{ value.dysdszc }}</p>
-            </div>
-            <div class="db_11">
-              <p class="db_data01">{{ value.ch }}</p>
-              <p class="db_data02">{{ value.zjgc }}</p>
-              <p class="db_data03">{{ value.qtfldzc }}</p>
-            </div>
-            <div class="db_12">
-              <p class="db_data01">{{ value.qtldzc }}</p>
             </div>
             <div class="tips-note2">
               注：以上数据优先摘录上市公司定期报告中公布的数据，若报告期中没公布此项数据，则通过计算得出此项数据
@@ -425,9 +319,10 @@ export default {
   },
 
   methods: {
-    getDatas(src, prop) {
-      return src
-        .filter((e) => src[0].date.substring(5) == e.date.substring(5))
+    getDatas(prop) {
+      let arr = this.arrValues;
+      return arr
+        .filter((e) => arr[0].date.substring(5) == e.date.substring(5))
         .map((e) => e[prop])
         .reverse()
         .toString();
@@ -441,9 +336,18 @@ export default {
         .then((resp) => resp.data)
         .then((result) => {
           this.dbfx = result;
-          this.tabIndex = 0;
-          this.selectDate = result.bgq[0].date;
+          if (this.selectDate == null) {
+            this.selectDate = this.arrValues[0].date;
+          }
         });
+    },
+  },
+  computed: {
+    type() {
+      return this.tabIndex == 0 ? "bgq" : "nd";
+    },
+    arrValues() {
+      return this.dbfx[this.tabIndex == 0 ? "bgq" : "nd"];
     },
   },
 
@@ -451,20 +355,11 @@ export default {
     this.loadData();
   },
   watch: {
-    selectZb(n, o) {
-      let data = this.zyzb.map((e) => e[n[1]]);
-      this.chartOptions.title.text = n[0];
-      this.chartOptions.xAxis.data = this.zyzb
-        .map((e) => e.date.substr(2, 8))
-        .reverse();
-      if (data[0].indexOf("亿")) {
-        data = data.map((e) => e.replace(/[^\d.-]/g, ""));
-        this.chartOptions.title.text = n[0].replace("元", "亿元");
-      }
-      this.chartOptions.series[0].data = data.reverse();
-    },
     item(n, o) {
       this.loadData();
+    },
+    tabIndex(n, o) {
+      if (this.arrValues) this.selectDate = this.arrValues[0].date;
     },
   },
 };

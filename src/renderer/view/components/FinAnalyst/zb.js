@@ -2535,7 +2535,7 @@ export const map = {
   ],
 };
 export const zbMapList = {
-  每股指标: [
+  /* 每股指标: [
     ["基本每股收益(元)", "jbmgsy"],
     ["扣非每股收益(元)", "kfmgsy"],
     ["稀释每股收益(元)", "xsmgsy"],
@@ -2543,7 +2543,7 @@ export const zbMapList = {
     ["每股公积金(元)", "mggjj"],
     ["每股未分配利润(元)", "mgwfply"],
     ["每股经营现金流(元)", "mgjyxjl"],
-  ],
+  ],*/
   成长能力指标: [
     ["营业总收入(元)", "yyzsr"],
     ["毛利润(元)", "mlr", "毛利润=营业收入-营业成本"],

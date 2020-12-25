@@ -1,4 +1,3 @@
-import fs from "fs";
 import moment from "moment";
 import _ from "lodash";
 import { getList } from "../TechMan";
@@ -414,7 +413,11 @@ export const JOB_MAP = {
     tableName: "yyplrq",
     enable: true,
     getOptions: defGetOptions,
-
+    fieldDefitions: {
+      RESIDUAL_DAYS: "STRING",
+      SECOND_CHANGE_DATE: "STRING",
+      THIRD_CHANGE_DATE: "STRING",
+    },
     keymap: {
       SECURITY_CODE: "代码",
       SECURITY_NAME_ABBR: "名称",
@@ -738,7 +741,7 @@ export const JOB_MAP = {
 
 //var CronJob = require("cron").CronJob;
 //const AsyncQueue = require("@wxaxiaoyao/async-queue");
-//task(JOB_MAP, "行情");
+task(JOB_MAP, "预约披露日期列表");
 if (false)
   (async () => {
     for (let k in JOB_MAP) {

@@ -3,12 +3,20 @@ import { db } from "./db";
 import { getReportDatas } from "./reports";
 import { ifNoExistGenModel } from "!/db/utils";
 
-(async () => {
+async function updateReportDatas() {
   console.log(My);
   let items = await db.query(
-    `select * from hq where pe_ttm>0 and pe_ttm<60 and close>5 
-    and  firstday is not null and firstday <=20190101
-    and not exists( select 1 from lrb lr where lr.code=hq.code)
+    `
+    select hq.code from ( select code from hq where pe_ttm>0 and pe_ttm<60 and close>5 
+      and firstday is not null and firstday <=20190101
+      union all select code from my
+      ) hq,
+      (select code, max(report_date) report_date from yyplrq yy where ACTUAL_PUBLISH_DATE is not null group by code) md
+      where hq.code = md.code  and not exists( 
+      select 1 from lrb lr where 
+      lr.code=hq.code
+      and lr.reportdate = md.report_date
+      )
     `,
     {
       type: db.QueryTypes.SELECT,
@@ -44,4 +52,5 @@ import { ifNoExistGenModel } from "!/db/utils";
     //  logging: true,
   });
   console.log("done");
-})();
+}
+updateReportDatas();

@@ -9,7 +9,7 @@ export default new Router({
     {
       path: "/",
       name: "notice",
-      component: () => import("@/view/components/Finanalyst/Radar"),
+      component: () => import("@/view/components/Notice"),
     },
     {
       path: "/tools/dcf",

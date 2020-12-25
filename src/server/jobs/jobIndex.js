@@ -4,7 +4,7 @@ import moment from "moment";
 import { ifNoExistGenModel } from "../db/utils";
 import Job from "../db/model/Job";
 import { userAgent } from "../config";
-import { httpclient } from "../axios";
+import { axios } from "../axios";
 const Urls = require("../db/model/Urls");
 
 const events = require("events");
@@ -63,7 +63,7 @@ async function getData(options, taskName) {
 
       console.log(url);
 
-      let d = await httpclient
+      let d = await axios
         .get(url, {
           responseType: "arraybuffer",
           headers: { "User-Agent": userAgent },

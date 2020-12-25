@@ -794,6 +794,18 @@ const techMap = {
       item.close >= kw[kw.length - 1].Average5
     );
   },
+  B: function({ item, kd, kw, km }) {
+    return (
+      item.high > kd[kd.length - 1].Average20 &&
+      kd[kd.length - 2].close < kd[kd.length - 2].Average20
+    );
+  },
+  S: function({ item, kd, kw, km }) {
+    return (
+      item.close < kd[kd.length - 1].Average10 &&
+      kd[kd.length - 2].close > kd[kd.length - 2].Average20
+    );
+  },
 };
 export const techMaplist = Object.keys(techMap);
 

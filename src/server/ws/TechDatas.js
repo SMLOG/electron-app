@@ -25,6 +25,7 @@ export async function upDateTechDatas(force = false) {
 
   let updatedList = [];
   for (let item of all) {
+    console.log(item);
     if (!item.code) continue;
 
     let techs = await db.query(
@@ -42,16 +43,17 @@ export async function upDateTechDatas(force = false) {
       console.log(r);
       await model.bulkCreate([r], {
         updateOnDuplicate: Object.keys(r),
-        logging: true,
+        logging: console.log,
       });
       updatedList.push(r);
     }
-    return updatedList;
   }
+  return updatedList;
 }
 
 (async () => {
   // let r = await callFun({ code: "sh603369" });
   //console.log(r);
   await upDateTechDatas(true);
+  console.log("done");
 })();

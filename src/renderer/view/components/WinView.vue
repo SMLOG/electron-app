@@ -121,7 +121,6 @@ export default {
         document.onmouseup = function (e) {
           document.onmousemove = null;
           document.onmouseup = null;
-          $("#top").css("margin-bottom", $(oDiv).outerHeight());
           setCookie(
             "charTop",
             ($(window).outerHeight() - $(oDiv).outerHeight()) /

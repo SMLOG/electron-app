@@ -802,8 +802,8 @@ const techMap = {
   },
   S: function({ item, kd, kw, km }) {
     return (
-      item.close < kd[kd.length - 1].Average10 &&
-      kd[kd.length - 2].close > kd[kd.length - 2].Average20
+      item.close < kd[kd.length - 1].Average5 &&
+      kd[kd.length - 2].close > kd[kd.length - 2].Average5
     );
   },
 };

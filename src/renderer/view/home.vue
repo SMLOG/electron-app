@@ -17,12 +17,16 @@
           </Sea>
         </ul>
         <FilterCtrl :filtersCount="filtersCount" :src="selectFilter" />
-        <div style="float:left">
-          <span v-for="zi in zsItems" :key="zi.code" @click="openlink(zi, $event)">
+        <div style="float: left">
+          <span
+            v-for="zi in zsItems"
+            :key="zi.code"
+            @click="openlink(zi, $event)"
+          >
             {{ zi.name }}
-            <em
-              :class="{ up: zi.change > 0, down: zi.change < 0 }"
-            >{{ zi.close }}({{ zi.changeP }})</em>
+            <em :class="{ up: zi.change > 0, down: zi.change < 0 }"
+              >{{ zi.close }}({{ zi.changeP }})</em
+            >
           </span>
         </div>
       </div>
@@ -54,7 +58,13 @@
                   <span @click="showFilterable(col.prop)">#</span>
                   <div
                     v-if="col.filterable && filterables && show_filter_prop"
-                    style="position: fixed;color: blue;margin: 5px;padding: 5px;background: white;"
+                    style="
+                      position: fixed;
+                      color: blue;
+                      margin: 5px;
+                      padding: 5px;
+                      background: white;
+                    "
                   >
                     <ul class="filterp">
                       <li
@@ -81,7 +91,9 @@
             >
               <th :colspan="head.length + 4">
                 <div id="detail" ref="detail">
-                  <span v-if="selectItem.tables && selectItem.tables.length > 0">
+                  <span
+                    v-if="selectItem.tables && selectItem.tables.length > 0"
+                  >
                     <div v-for="t in selectItem.tables" :key="t.str">
                       {{ selectItem.name }}
                       <span v-html="t.str"></span>
@@ -107,13 +119,18 @@
                       :name="item.code"
                       @dblclick="toTop($event, item)"
                       @click="showComments(item)"
-                    >{{ index + 1 }}</a>
+                      >{{ index + 1 }}</a
+                    >
                   </span>
                   <span>
                     <a class="action" @click="delItem(item)">x</a>
                   </span>
                   <span>
-                    <input type="checkbox" v-model="item.isFocus" @change="saveDatas(item)" />
+                    <input
+                      type="checkbox"
+                      v-model="item.isFocus"
+                      @change="saveDatas(item)"
+                    />
                   </span>
                   <div
                     :title="item.code"
@@ -132,9 +149,7 @@
                       <a :id="item.code">
                         {{ item.name }}
                         <b :class="{ up: item.lb > 1, down: item.lb < 1 }">
-                          {{
-                          item.lb
-                          }}
+                          {{ item.lb }}
                         </b>
                       </a>
                     </span>
@@ -150,21 +165,49 @@
                 @click="col.click && col.click(item, $event, openlink)"
                 @mouseover="cellOver($event, item, ci)"
                 @mouseout="cellOut($event, item, ci)"
-              >{{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}</td>
+              >
+                {{ col.fmt ? col.fmt(item[col.prop], item) : item[col.prop] }}
+              </td>
             </tr>
           </draggable>
         </table>
       </div>
     </div>
-    <div id="webviewWrap" ref="webviewWrap" class="webview" :class="{ fullFigure: fullFigure }">
+    <div
+      id="webviewWrap"
+      ref="webviewWrap"
+      class="webview"
+      :class="{ fullFigure: fullFigure }"
+    >
       <div id="dragBar" ref="dragBar" v-drag draggable="false">
         <i
           @click="closeview()"
-          style="position: relative;top: -10px;cursor: pointer;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-left: none;border-right: none;height: 1px;width: 30px;display: inline-block;font-size: 1px;"
+          style="
+            position: relative;
+            top: -10px;
+            cursor: pointer;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-left: none;
+            border-right: none;
+            height: 1px;
+            width: 30px;
+            display: inline-block;
+            font-size: 1px;
+          "
         ></i>
-        <i v-if="false" class="arrow down" style="position:relative;top:-10px;cursor:pointer;"></i>
+        <i
+          v-if="false"
+          class="arrow down"
+          style="position: relative; top: -10px; cursor: pointer"
+        ></i>
       </div>
-      <WinView :item="item" :link="link" v-show="item" @dBclick="fullFigure = !fullFigure"></WinView>
+      <WinView
+        :item="item"
+        :link="link"
+        v-show="item"
+        @dBclick="fullFigure = !fullFigure"
+      ></WinView>
     </div>
     <Posts :item="showMsgItem" />
   </div>
@@ -266,7 +309,6 @@ export default {
         document.onmouseup = function (e) {
           document.onmousemove = null;
           document.onmouseup = null;
-          $("#top").css("margin-bottom", $(oDiv).outerHeight());
           setCookie(
             "charTop",
             ($(window).outerHeight() - $(oDiv).outerHeight()) /

@@ -88,9 +88,6 @@
                   <div
                     :title="item.code"
                     style="display: inline-block; cursor: pointer"
-                    :class="{
-                      blink: item._S,
-                    }"
                   >
                     <span :class="{ sz: item.mk == 'sz' }">
                       <a
@@ -102,6 +99,10 @@
                           )
                         "
                         :id="item.code"
+                        :class="{
+                          _S: item._S,
+                          _B: item._B,
+                        }"
                         >{{ item.name }}</a
                       >
                       <b
@@ -474,5 +475,11 @@ body {
   visibility: visible;
   opacity: 1;
   transition: opacity 0.15s;
+}
+._S {
+  background: green;
+}
+._B {
+  background: red;
 }
 </style>

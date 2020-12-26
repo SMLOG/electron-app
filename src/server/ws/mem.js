@@ -133,7 +133,7 @@ export function initmem(io) {
       updateFiltersCount();
       io.emit("techdatas", datas);
     })();
-  }, 600000);
+  }, 1000 * 60 * 5);
 
   async () => {
     for (; true; ) {

@@ -25,11 +25,10 @@ export async function upDateTechDatas(force = false) {
 
   let updatedList = [];
   for (let item of all) {
-    console.log(item);
     if (!item.code) continue;
 
     let techs = await db.query(
-      `select code from tech where code = :code and  date_add(utime, interval + 10 minute) > now()`,
+      `select code from tech where code = :code and  date_add(utime, interval + 5 minute) > now()`,
       {
         type: db.QueryTypes.SELECT,
         replacements: {

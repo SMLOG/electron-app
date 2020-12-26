@@ -25,6 +25,10 @@ const { Model, DataTypes } = require("sequelize");
         "type": DataTypes.BOOLEAN,
         "field": "_上5周均线"
     },
+    "_20天线": {
+        "type": DataTypes.BOOLEAN,
+        "field": "_20天线"
+    },
     "_B": {
         "type": DataTypes.BOOLEAN,
         "field": "_B"

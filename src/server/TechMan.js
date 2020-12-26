@@ -794,6 +794,9 @@ const techMap = {
       item.close >= kw[kw.length - 1].Average5
     );
   },
+  "20天线": function({ item, kd, kw, km }) {
+    return item.close > kd[kd.length - 1].Average20;
+  },
   B: function({ item, kd, kw, km }) {
     return (
       item.high > kd[kd.length - 1].Average20 &&

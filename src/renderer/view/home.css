@@ -63,85 +63,6 @@ table {
   z-index: 1;
 }
 
-table th,
-table td {
-  font-size: 12px;
-  text-align: left;
-  border: none;
-  padding: 5px;
-}
-table th:not(:first-of-type) {
-  border-left: 0;
-}
-table td {
-  border-top: 0;
-}
-table td:not(:first-of-type) {
-  border-left: 0;
-}
-table th {
-  background: #666;
-  color: white;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
-}
-table tr:nth-of-type(even) td {
-  background: whitesmoke;
-}
-table tr:nth-of-type(odd) td {
-  background: white;
-}
-table tr:hover td {
-  background: #e3e3e3;
-}
-table th {
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 150ms;
-  user-select: none;
-}
-table th:before {
-  content: "";
-  display: inline-block;
-  color: rgba(255, 255, 255, 0.4);
-  transition: color 300ms, -webkit-transform 300ms;
-  transition: transform 300ms, color 300ms;
-  transition: transform 300ms, color 300ms, -webkit-transform 300ms;
-  position: absolute;
-  font-size: 18px;
-  left: 4px;
-  top: calc(50% - 9px);
-}
-table .ascending:before {
-  /*-webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);*/
-  color: white;
-}
-table .descending:before {
-  /*-webkit-transform: rotate(90deg);
-  transform: rotate(90deg);*/
-  color: white;
-}
-table .ascending::before {
-  content: "↑";
-  margin-left: -5px;
-  font-size: 12px;
-}
-table td {
-  word-break: keep-all;
-  white-space: nowrap;
-}
-table th {
-  word-break: keep-all;
-  white-space: nowrap;
-}
-table .descending:before {
-  content: "↓";
-  margin-left: -5px;
-  font-size: 12px;
-}
-
 .filters {
   margin: 0;
   padding: 0;
@@ -389,3 +310,4 @@ ul.filterp {
 .bad {
   background-color: #d44d44 !important;
 }
+@import url("table.css");

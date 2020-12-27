@@ -3,7 +3,7 @@ import localStore from "../localdata";
 const myDB = {
   name: "local",
   version: 1,
-  db: null
+  db: null,
 };
 const cacheObj = {};
 window.cacheObj = cacheObj;
@@ -29,25 +29,6 @@ function openDB(name, version) {
       console.log("DB version changed to " + version);
     };
     window.request = request;
-  });
-}
-function add2Cache(item) {
-  return new Promise((resolve, reject) => {
-    var request = myDB.db.transaction(cacheName, "readwrite");
-    var store = request.objectStore(cacheName);
-    console.log("add2Cache");
-    console.log(item);
-
-    store.add(item);
-    request.onsuccess = function(event) {
-      console.log("数据写入成功");
-      resolve();
-    };
-
-    request.onerror = function(event) {
-      console.log("数据写入失败");
-      reject();
-    };
   });
 }
 

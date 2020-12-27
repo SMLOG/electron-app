@@ -7,8 +7,7 @@ async function updateReportDatas() {
   console.log(My);
   let items = await db.query(
     `
-    select hq.code from ( select code from hq where pe_ttm>0 and pe_ttm<60 and close>5 
-      and firstday is not null and firstday <=20190101
+    select hq.code from ( select code from hq where pe_ttm is not null
       union all select code from my
       ) hq,
       (select code, max(report_date) report_date from yyplrq yy where ACTUAL_PUBLISH_DATE is not null group by code) md

@@ -31,7 +31,42 @@ module.exports = {
     let data = await Yj.findAll({ where: { code: code } });
     ctx.body = data;
   },
+  industry: async (ctx) => {
+    let code = ctx.query.code;
 
+    let items = await db.query(
+      `select
+      hq.name 名称,
+      hq.close 股价,
+      hq.zsz 总市值,
+      hq.pe_ttm,
+    hq.hy,
+    t.扣非ROE as 非ROE率,
+    t.权益乘数 as 杠杆率,
+    t.净利率,
+    t.资产周转率
+from
+    hq h2,
+    hq
+    left join t_v_root t on t.code = hq.code
+    and t.rank_id = 1
+where
+    hq.hy = h2.hy and hq.pe_ttm is not null and h2.code=:code
+order by
+    hq.hy,
+    t.扣非ROE desc`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          code: code,
+        },
+      }
+    );
+
+    ctx.body = items;
+  },
   mind: async (ctx) => {
     let type = ctx.query.type;
     let code = ctx.query.code;

@@ -56,6 +56,7 @@ import BusinessAnalysis from "./BusinessAnalysis";
 import Dashboard from "./Dashboard";
 import Bonus from "./Bonus";
 import Radar from "./Radar";
+import Industry from "./Industry";
 import Shareholder from "./Shareholder";
 import leline from "@/view/components/tech/leline";
 import MindAdmin from "@/view/components/mind/MindAdmin";
@@ -80,6 +81,7 @@ export default {
           { name: "百分比", cp: "Percent" },
           { name: "雷达图", cp: "Radar" },
           { name: "思维导图", cp: "MindAdmin" },
+          { name: "行业", cp: "Industry" },
         ],
         经营分析: [
           { name: "主营范围", cp: "BusinessAnalysis" },
@@ -107,6 +109,7 @@ export default {
     Radar,
     leline,
     MindAdmin,
+    Industry,
   },
 
   methods: {

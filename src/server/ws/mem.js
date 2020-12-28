@@ -97,7 +97,6 @@ export function initmem(io) {
         fs.writeFileSync(myfile, JSON.stringify(cats["自选"].items));
         await My.destroy({ where: {}, truncate: true });
         items = items.map((e) => ((e.id = null), e));
-        console.log(items);
         await My.bulkCreate(items);
       })();
     });
@@ -133,7 +132,7 @@ export function initmem(io) {
       updateFiltersCount();
       io.emit("techdatas", datas);
     })();
-  }, 1000 * 60 * 5);
+  }, 1000 * 60 * 10);
 
   async () => {
     for (; true; ) {

@@ -798,6 +798,9 @@ const techMap = {
     return item.close > kd[kd.length - 1].Average20;
   },
   B: function({ item, kd, kw, km }) {
+    item.Average20 = kd[kd.length - 1].Average20;
+    item.Average10 = kd[kd.length - 1].Average10;
+    item.Average5 = kd[kd.length - 1].Average5;
     return (
       item.high > kd[kd.length - 1].Average20 &&
       kd[kd.length - 2].close < kd[kd.length - 2].Average20
@@ -828,5 +831,5 @@ export async function callFun(item) {
     techDatas.item = item;
     item[`_${name}`] = techMap[name](techDatas);
   }
-  return item;
+  return [item, techDatas];
 }

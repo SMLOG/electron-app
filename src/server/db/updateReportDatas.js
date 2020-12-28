@@ -19,6 +19,7 @@ async function updateReportDatas() {
     `,
     {
       type: db.QueryTypes.SELECT,
+      logging: false,
     }
   );
   // console.log(items);

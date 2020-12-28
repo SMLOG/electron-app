@@ -37,12 +37,12 @@ export async function upDateTechDatas(force = false) {
       }
     );
     if (force || techs.length == 0) {
-      let r = await callFun(item);
+      let [r, techDetails] = await callFun(item);
       r.utime = new Date();
-      console.log(r);
+      // console.log(r);
       await model.bulkCreate([r], {
         updateOnDuplicate: Object.keys(r),
-        logging: console.log,
+        logging: false,
       });
       updatedList.push(r);
     }

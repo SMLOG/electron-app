@@ -30,7 +30,7 @@ export async function getMyList() {
     order by a.my_id asc`,
     {
       type: db.QueryTypes.SELECT,
-      logging: console.log,
+      logging: false,
     }
   );
 }
@@ -54,6 +54,7 @@ export async function getSeaList() {
   //let list = await hx(true);
   let list = await db.query(SEA_SQL, {
     type: db.QueryTypes.SELECT,
+    logging: false,
   });
   //收入现金含量
   //list = await getFilterList(list);

@@ -376,6 +376,7 @@ export default {
 }
 </style>
 <style scoped src="./home.css" />
+<style scoped src="./table.css" />
 
 <style scoped>
 body {

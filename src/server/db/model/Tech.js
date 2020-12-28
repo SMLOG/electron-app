@@ -42,6 +42,10 @@ const { Model, DataTypes } = require("sequelize");
         "unique": "index_unique",
         "field": "code"
     },
+    "score": {
+        "type": DataTypes.DOUBLE,
+        "field": "score"
+    },
     "utime": {
         "type": DataTypes.DATE,
         "field": "utime"

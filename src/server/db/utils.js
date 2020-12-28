@@ -57,7 +57,7 @@ export function genModel(
     } else {
       if (sampleRow[field] == null && !f["type"])
         console.error(`field ${field} is null`);
-      if (sampleRow[field]) {
+      if (sampleRow[field] != null) {
         let len = sampleRow[field].length;
         if (
           sampleRow[field] * 1 === sampleRow[field] &&

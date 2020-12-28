@@ -131,6 +131,11 @@ export let headers = [
       );
     },
   },
+  {
+    label: "分数",
+    prop: "score",
+    type: "number",
+  },
 ];
 
 export function getCheckFields(onlyCheck = true) {

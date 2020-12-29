@@ -22,7 +22,14 @@ export async function upDateTechDatas(force = false) {
   );
 
   let techDetailModel = await ifNoExistGenModel(
-    [{ code: "code", name: "name", display: "display", score: 1 }],
+    [
+      {
+        code: "code",
+        name: "KD 昨日放量 今日高开低走KD 昨日放量 今日高开低走",
+        display: "display",
+        score: 1,
+      },
+    ],
     "tech_detail",
     {},
     ["code", "name"],
@@ -51,25 +58,23 @@ export async function upDateTechDatas(force = false) {
       let [r, techDetails] = await callFun(item);
       r.utime = new Date();
       // console.log(r);
-      let score = 0;
       let kd = techDetails.kd;
       let kw = techDetails.kw;
       let details = [];
       let detail = { code: item.code, name: "", display: "", score: 0 };
 
-      {
+      if (true) {
         let i = kd.length - 1;
-        let bar0 = kd[i].MACD_DIF - kd[i].MACD_DEA;
-        let bar1 = kd[i - 1].MACD_DIF - kd[i - 1].MACD_DEA;
-        let bar2 = kd[i - 2].MACD_DIF - kd[i - 2].MACD_DEA;
+        let bar0 = 2 * (kd[i].MACD_DIF - kd[i].MACD_DEA);
+        let bar1 = 2 * (kd[i - 1].MACD_DIF - kd[i - 1].MACD_DEA);
+        let bar2 = 2 * (kd[i - 2].MACD_DIF - kd[i - 2].MACD_DEA);
         detail.name = "KD MACD";
-        if (bar0 > bar1 && bar1 >= bar2) detail.score = 1;
+        if (bar0 > -0.2 && bar0 > bar1 && bar1 >= bar2) detail.score = 1;
         else detail.score = -1;
 
         details.push(Object.assign({}, detail));
 
-        if (kd[i].KDJ_K > kd[i - 1].KDJ_K && kd[i - 2].KDJ_K > kd[i - 1].KDJ_K)
-          detail.score = 1;
+        if (kd[i].KDJ_K > kd[i - 1].KDJ_K) detail.score = 1;
         else detail.score = -1;
         detail.name = "KD KDJ";
         details.push(Object.assign({}, detail));
@@ -97,27 +102,58 @@ export async function upDateTechDatas(force = false) {
         detail.name = "KD 上升途放量下跌可能性大";
         details.push(Object.assign({}, detail));
 
-        //下跌放量
-        if (item.close < item.open && item.volume >= 2 * kd[i - 1].volume5)
+        //放量上涨
+        if (item.close > item.open && item.volume >= 1.5 * kd[i - 1].volume5)
           detail.score = 1;
         else detail.score = 0;
 
-        detail.name = "KD 下跌放量";
+        detail.name = "KD 放量上涨";
+        detail.display = "";
+        details.push(Object.assign({}, detail));
+
+        //放量下跌
+        if (item.close < item.open && item.volume >= 2 * kd[i - 1].volume5)
+          detail.score = -1;
+        else detail.score = 0;
+
+        detail.name = "KD 放量下跌";
+        details.push(Object.assign({}, detail));
+
+        //昨日放量 今日高开低走
+        if (
+          item.close < item.open &&
+          kd[i - 1].volume > 1.5 * kd[i - 1].volume5
+        )
+          detail.score = -1;
+        else detail.score = 0;
+
+        detail.name = "KD 昨日放量 今日高开低走";
+        details.push(Object.assign({}, detail));
+
+        //昨日放量 今日微涨
+        if (
+          item.close > item.open &&
+          item.close > kd[i - 1].close &&
+          kd[i - 1].volume > 1.5 * kd[i - 1].volume5
+        )
+          detail.score = 1;
+        else detail.score = 0;
+
+        detail.name = "KD 昨日放量 今日微涨";
         details.push(Object.assign({}, detail));
       }
-      {
-        let i = kw.length - 1;
-        let bar0 = kw[i].MACD_DIF - kd[i].MACD_DEA;
-        let bar1 = kw[i - 1].MACD_DIF - kw[i - 1].MACD_DEA;
-        let bar2 = kw[i - 2].MACD_DIF - kw[i - 2].MACD_DEA;
-        if (bar0 > bar1 && bar1 >= bar2) detail.score = 1;
+      if (true) {
+        let j = kw.length - 1;
+        let wbar0 = 2 * (kw[j].MACD_DIF - kw[j].MACD_DEA);
+        let wbar1 = 2 * (kw[j - 1].MACD_DIF - kw[j - 1].MACD_DEA);
+        let wbar2 = 2 * (kw[j - 2].MACD_DIF - kw[j - 2].MACD_DEA);
+        if (wbar0 > -0.2 && wbar0 > wbar1 && wbar1 >= wbar2) detail.score = 1;
         else detail.score = -1;
 
         detail.name = "KW MACD";
         details.push(Object.assign({}, detail));
 
-        if (kw[i].KDJ_K > kw[i - 1].KDJ_K && kw[i - 2].KDJ_K > kw[i - 1].KDJ_K)
-          detail.score = 1;
+        if (kw[j].KDJ_K > kw[j - 1].KDJ_K) detail.score = 1;
         else detail.score = -1;
         detail.name = "KW KDJ";
         details.push(Object.assign({}, detail));

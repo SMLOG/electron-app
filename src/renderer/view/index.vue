@@ -188,6 +188,7 @@ import draggable from "vuedraggable";
 import MyIndex from "@/view/components/MyIndex";
 import ContextMenu from "@/view/components/ContextMenu";
 import Field from "@/view/components/Field";
+import FieldTip from "@/view/components/FieldTip";
 
 export default {
   data: function () {
@@ -221,6 +222,7 @@ export default {
     MyIndex,
     ContextMenu,
     Field,
+    FieldTip,
   },
   sockets: {
     disconnect() {

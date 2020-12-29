@@ -31,6 +31,21 @@ module.exports = {
     let data = await Yj.findAll({ where: { code: code } });
     ctx.body = data;
   },
+
+  scoreDetails: async (ctx) => {
+    let code = ctx.query.code;
+
+    let items = await db.query(`select * from tech_detail where code=:code`, {
+      logging: console.log,
+      type: db.QueryTypes.SELECT,
+      raw: true,
+      replacements: {
+        code: code,
+      },
+    });
+
+    ctx.body = items;
+  },
   industry: async (ctx) => {
     let code = ctx.query.code;
 

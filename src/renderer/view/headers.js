@@ -132,6 +132,7 @@ export let headers = [
     },
   },
   {
+    cp: "FieldTip",
     label: "分数",
     prop: "score",
     type: "number",

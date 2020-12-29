@@ -801,10 +801,7 @@ const techMap = {
     item.Average20 = kd[kd.length - 1].Average20;
     item.Average10 = kd[kd.length - 1].Average10;
     item.Average5 = kd[kd.length - 1].Average5;
-    return (
-      item.high > kd[kd.length - 1].Average20 &&
-      kd[kd.length - 2].close < kd[kd.length - 2].Average20
-    );
+    return item.high > kd[kd.length - 1].Average20 && item.close > item.open;
   },
   S: function({ item, kd, kw, km }) {
     return (

@@ -63,7 +63,7 @@ export async function upDateTechDatas(force = false) {
       let details = [];
       let detail = { code: item.code, name: "", display: "", score: 0 };
 
-      if (true) {
+      if (false) {
         let i = kd.length - 1;
         let bar0 = 2 * (kd[i].MACD_DIF - kd[i].MACD_DEA);
         let bar1 = 2 * (kd[i - 1].MACD_DIF - kd[i - 1].MACD_DEA);
@@ -73,6 +73,46 @@ export async function upDateTechDatas(force = false) {
         else detail.score = -1;
 
         details.push(Object.assign({}, detail));
+        //大涨
+        if ((item.close - item.preclose) / item.preclose > 0.02) {
+          if (item.lb < 0.8) {
+            //缩量
+            detail.score = 1;
+            detail.name = "KD 大涨缩量 分歧小 up";
+            details.push(Object.assign({}, detail));
+          } else if (item.lb > 1.5) {
+            //放量
+            detail.score = -1;
+            detail.name = "KD 大涨放量 分歧大 可能回跌";
+            details.push(Object.assign({}, detail));
+          } else {
+            //放量
+            detail.score = 1;
+            detail.name = "KD 大涨缓量 分歧小 可能小涨";
+            details.push(Object.assign({}, detail));
+          }
+        }
+
+        //大跌
+        else if ((item.close - item.preclose) / item.preclose < -0.02) {
+          if (item.lb < 0.8) {
+            //缩量
+            detail.score = -1;
+            detail.name = "KD 大涨缩量 分歧小 down";
+            details.push(Object.assign({}, detail));
+          } else if (item.lb > 1.5) {
+            //放量
+            detail.score = 1;
+            detail.name = "KD 大涨放量 分歧大 可能回涨";
+            details.push(Object.assign({}, detail));
+          } else {
+            //缓量
+            detail.score = -1;
+            detail.name = "KD 大涨缓量 分歧小 可能阴跌";
+            details.push(Object.assign({}, detail));
+          }
+        } else {
+        }
 
         if (kd[i].KDJ_K > kd[i - 1].KDJ_K) detail.score = 1;
         else detail.score = -1;
@@ -147,8 +187,10 @@ export async function upDateTechDatas(force = false) {
         let wbar0 = 2 * (kw[j].MACD_DIF - kw[j].MACD_DEA);
         let wbar1 = 2 * (kw[j - 1].MACD_DIF - kw[j - 1].MACD_DEA);
         let wbar2 = 2 * (kw[j - 2].MACD_DIF - kw[j - 2].MACD_DEA);
-        if (wbar0 > -0.2 && wbar0 > wbar1 && wbar1 >= wbar2) detail.score = 1;
-        else detail.score = -1;
+        if (wbar0 > wbar1) {
+          detail.score = 1;
+          if (wbar0 > -0.2 && wbar0 < 0.2) detail.score = 2;
+        } else detail.score = -1;
 
         detail.name = "KW MACD";
         details.push(Object.assign({}, detail));

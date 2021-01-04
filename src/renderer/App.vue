@@ -3,7 +3,7 @@
     <Setting />
     <Posts :item="showMsgItem" />
 
-    <div id="wigi2" style="position: fixed; z-index: 4">
+    <div id="wigi2" style="position: fixed; z-index: 504">
       <search-panel @select="changeItem"></search-panel>
     </div>
     <div id="wigi" style="position: fixed; z-index: 5">

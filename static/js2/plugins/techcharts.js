@@ -4165,11 +4165,11 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         this.selfArr[A] = { wvad: p[A], wvadma: v[A] };
     };
   }
-  function Y(i, a) {
+  function VOLUME(i, a) {
     (this.storageVer = "v3"),
       r.call(this, i, a, { nu: !0 }),
       (this.name = "VOLUME"),
-      (this.alias = "\u6210\u4ea4");
+      (this.alias = "成交");
     var s = this,
       e = "volume",
       h = "MA",
@@ -4741,7 +4741,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
         TZY: $,
         TZYS: z,
         VR: W,
-        VOLUME: Y,
+        VOLUME: VOLUME,
         WR: K,
         WVAD: G,
         TOR: B,
@@ -6436,7 +6436,7 @@ xh5_define("plugins.techcharts", ["utils.util", "utils.painter"], function(
     t.fInherit(W, r),
     t.fInherit(K, r),
     t.fInherit(G, r),
-    t.fInherit(Y, r),
+    t.fInherit(VOLUME, r),
     t.fInherit(q, r);
   var yt = (function() {
     var i = function(t) {

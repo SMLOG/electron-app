@@ -199,6 +199,45 @@ export async function upDateTechDatas(force = false) {
         else detail.score = -1;
         detail.name = "KW KDJ";
         details.push(Object.assign({}, detail));
+
+        if (
+          kw[j].close < kw[j].open &&
+          item.close < kw[j].Average5 &&
+          kw[j].volume >= 2 * kw[j].volume5
+        )
+          detail.score = 1;
+        else detail.score = 0;
+
+        detail.name = "KW 放量下跌";
+        details.push(Object.assign({}, detail));
+
+        let maxHigh20W = Math.max.apply(
+          null,
+          kw.slice(-20).map((e) => e.high)
+        );
+        let low20W = Math.min.apply(
+          null,
+          kw.slice(-20).map((e) => e.low)
+        );
+        if (item.close >= maxHigh20W && kw[j].volume >= 2 * kw[j].volume5)
+          detail.score = -2;
+        else detail.score = 0;
+
+        detail.name = "KW 股价20周最高放量,下跌调整可能性大";
+        details.push(Object.assign({}, detail));
+
+        if (item.close <= low20W && kw[j].volume <= 0.5 * kw[j].volume5)
+          detail.score = 2;
+        else detail.score = 0;
+
+        detail.name = "KW 股价20周最低缩量,调整结束可能性大";
+        details.push(Object.assign({}, detail));
+
+        let score = details.reduce((t, d) => t + d.score, 0);
+        console.log(
+          `${item.name} 20周 最低：${low20W}  最高:${maxHigh20W} 现价:${item.close} 分数：${score}`
+        );
+        r.score = score;
       }
       r.score = details.reduce((t, d) => t + d.score, 0);
       //console.log(r);
@@ -228,5 +267,5 @@ export async function upDateTechDatas(force = false) {
   // let r = await callFun({ code: "sh603369" });
   //console.log(r);
   await upDateTechDatas(true);
-  console.log("done");
+  console.log("===========done=============");
 })();

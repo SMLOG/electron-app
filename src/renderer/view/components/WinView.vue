@@ -46,7 +46,9 @@
               <span>TTM:{{ item["pe_ttm"] }}</span>
               <span>PEG:{{ item["PEG"] && item["PEG"].toFixed(2) }}</span>
               <span>同比:{{ item["tbzz"] && item["tbzz"].toFixed(2) }}</span>
-              <span>换手率:{{ item["turnover"] }}%</span>
+              <span :class="{ up: item.turnover > 1, down: item.turnover < 1 }"
+                >换手率:{{ item["turnover"] }}%</span
+              >
               <span :class="{ up: item.lb > 1, down: item.lb < 1 }"
                 >量比:{{ item["lb"] }}</span
               >

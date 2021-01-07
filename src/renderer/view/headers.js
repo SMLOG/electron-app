@@ -107,6 +107,18 @@ export let headers = [
     },
   },
   {
+    label: "杠杆",
+    prop: "杠杆倍数",
+    type: "number",
+    fmt: fmtPercent,
+    class: (item, val) => {
+      return {
+        bad: val >= 2,
+      };
+    },
+  },
+
+  {
     label: "EPS",
     prop: "基本每股收益",
     type: "number",

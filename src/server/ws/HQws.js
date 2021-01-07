@@ -48,7 +48,7 @@ and close>5
 and t2.毛利率>=0.25
 and t2.净利率>=0.06
 and t2.扣非ROE>0.15
-and t2.杠杆倍数<1.6
+and t2.杠杆倍数<2
 and t2.流动比率>1.5`;
 export async function getSeaList() {
   //let list = await hx(true);

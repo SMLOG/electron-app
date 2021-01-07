@@ -36,13 +36,13 @@
         </div>
 
         <div class="c2">
-          <span>总市值:{{ item.zsz }}</span>
-          <span>流值:{{ item.lz }}</span>
+          <span>总市值:{{ $fmtNumber(item.zsz) }}</span>
+          <span>流值:{{ $fmtNumber(item.lz) }}</span>
         </div>
 
         <div class="c2">
-          <span>总量:{{ (item.volume / 10000 / 100).toFixed(2) }}万手</span>
-          <span>总额:{{ (item.amount / 100000000).toFixed(2) }}亿</span>
+          <span>总量:{{ $fmtNumber(item.volume, 0) }}手</span>
+          <span>总额:{{ $fmtNumber(item.amount) }}</span>
         </div>
         <div class="sepb c2" :class="upDown(wc(item))">
           <span>委比:{{ item | wb }}</span>
@@ -54,19 +54,19 @@
         </div>
       </li>
 
-      <li style="color:red" class="seperate">
+      <li style="color: red" class="seperate">
         <span>7% - {{ (item.preClose * 1.07) | fmtValue }}</span>
         <span>5% - {{ (item.preClose * 1.05) | fmtValue }}</span>
         <span>3% - {{ (item.preClose * 1.03) | fmtValue }}</span>
       </li>
 
-      <li style="color:green">
+      <li style="color: green">
         <span>7% - {{ (item.preClose * 0.93) | fmtValue }}</span>
         <span>5% - {{ (item.preClose * 0.95) | fmtValue }}</span>
         <span>3% - {{ (item.preClose * 0.97) | fmtValue }}</span>
       </li>
       <li>
-        <table style="width:100%;" class="seperate">
+        <table style="width: 100%" class="seperate">
           <tr
             class="price"
             v-for="(price, index) in item.bsPrices"

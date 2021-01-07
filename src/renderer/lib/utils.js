@@ -21,15 +21,15 @@ export function loadScripts(scripts) {
     });
   }, Promise.resolve());
 }
-export function fmtNumber(value) {
+export function fmtNumber(value, scale = 2) {
   if (1 * value == value) {
     let abs = Math.abs(value);
     let r =
       abs > 10000000
-        ? (value / 100000000).toFixed(2) + "亿"
+        ? (value / 100000000).toFixed(scale) + "亿"
         : abs > 10000
-        ? (value / 10000).toFixed(2) + "万"
-        : value.toFixed(2);
+        ? (value / 10000).toFixed(scale) + "万"
+        : value.toFixed(scale);
     return r;
   }
   return value;

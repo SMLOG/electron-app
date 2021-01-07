@@ -6,8 +6,8 @@ import {
 } from "../lib/utils";
 export default {
   install(Vue, options) {
-    Vue.prototype.$fmtNumber = function(value) {
-      return fmtNumber(value);
+    Vue.prototype.$fmtNumber = function(value, scale) {
+      return fmtNumber(value, scale);
     };
     Vue.prototype.$fmtPercent = function(value) {
       return fmtPercent(value);

@@ -63,52 +63,45 @@ export async function upDateTechDatas(force = false) {
       let details = [];
       let detail = { code: item.code, name: "", display: "", score: 0 };
 
-      if (false) {
+      if (true) {
         let i = kd.length - 1;
-        let bar0 = 2 * (kd[i].MACD_DIF - kd[i].MACD_DEA);
-        let bar1 = 2 * (kd[i - 1].MACD_DIF - kd[i - 1].MACD_DEA);
-        let bar2 = 2 * (kd[i - 2].MACD_DIF - kd[i - 2].MACD_DEA);
-        detail.name = "KD MACD";
-        if (bar0 > -0.2 && bar0 > bar1 && bar1 >= bar2) detail.score = 1;
-        else detail.score = -1;
 
-        details.push(Object.assign({}, detail));
         //大涨
-        if ((item.close - item.preclose) / item.preclose > 0.02) {
-          if (item.lb < 0.8) {
+        if ((item.close - item.preclose) / item.preclose > 0.03) {
+          if (item.lb < 0.8 && item.close >= kd[i - 1].high) {
             //缩量
             detail.score = 1;
-            detail.name = "KD 大涨缩量 分歧小 up";
+            detail.name = "KD 涨大于3%缩量 分歧小 上涨概率大";
             details.push(Object.assign({}, detail));
           } else if (item.lb > 1.5) {
             //放量
             detail.score = -1;
-            detail.name = "KD 大涨放量 分歧大 可能回跌";
+            detail.name = "KD 涨大于3%放量 分歧大 可能回跌";
             details.push(Object.assign({}, detail));
           } else {
             //放量
             detail.score = 1;
-            detail.name = "KD 大涨缓量 分歧小 可能小涨";
+            detail.name = "KD 涨大于3%缓量 分歧小 可能小涨";
             details.push(Object.assign({}, detail));
           }
         }
 
         //大跌
-        else if ((item.close - item.preclose) / item.preclose < -0.02) {
+        else if ((item.close - item.preclose) / item.preclose < -0.03) {
           if (item.lb < 0.8) {
             //缩量
             detail.score = -1;
-            detail.name = "KD 大涨缩量 分歧小 down";
+            detail.name = "KD 大跌缩量 分歧小  继续下跌";
             details.push(Object.assign({}, detail));
           } else if (item.lb > 1.5) {
             //放量
             detail.score = 1;
-            detail.name = "KD 大涨放量 分歧大 可能回涨";
+            detail.name = "KD 大跌放量 分歧大 可能回涨";
             details.push(Object.assign({}, detail));
           } else {
             //缓量
             detail.score = -1;
-            detail.name = "KD 大涨缓量 分歧小 可能阴跌";
+            detail.name = "KD 大跌缓量 分歧小 可能阴跌";
             details.push(Object.assign({}, detail));
           }
         } else {
@@ -133,53 +126,6 @@ export async function upDateTechDatas(force = false) {
         if (item.close >= kd[i].Average20) detail.score = 1;
         else detail.score = -1;
         detail.name = "KD MA20";
-        details.push(Object.assign({}, detail));
-
-        //上升途放量下跌可能性大
-        if (item.close > kd[i].Average60 && item.volume > 2 * kd[i].volume5)
-          detail.score = -2;
-        else detail.score = 0;
-        detail.name = "KD 上升途放量下跌可能性大";
-        details.push(Object.assign({}, detail));
-
-        //放量上涨
-        if (item.close > item.open && item.volume >= 1.5 * kd[i - 1].volume5)
-          detail.score = 1;
-        else detail.score = 0;
-
-        detail.name = "KD 放量上涨";
-        detail.display = "";
-        details.push(Object.assign({}, detail));
-
-        //放量下跌
-        if (item.close < item.open && item.volume >= 2 * kd[i - 1].volume5)
-          detail.score = -1;
-        else detail.score = 0;
-
-        detail.name = "KD 放量下跌";
-        details.push(Object.assign({}, detail));
-
-        //昨日放量 今日高开低走
-        if (
-          item.close < item.open &&
-          kd[i - 1].volume > 1.5 * kd[i - 1].volume5
-        )
-          detail.score = -1;
-        else detail.score = 0;
-
-        detail.name = "KD 昨日放量 今日高开低走";
-        details.push(Object.assign({}, detail));
-
-        //昨日放量 今日微涨
-        if (
-          item.close > item.open &&
-          item.close > kd[i - 1].close &&
-          kd[i - 1].volume > 1.5 * kd[i - 1].volume5
-        )
-          detail.score = 1;
-        else detail.score = 0;
-
-        detail.name = "KD 昨日放量 今日微涨";
         details.push(Object.assign({}, detail));
       }
       if (true) {
@@ -262,7 +208,31 @@ export async function upDateTechDatas(force = false) {
   }
   return updatedList;
 }
+/**
+ 缩量上涨还将上涨， 
+ 1、缩量下跌还将下跌， 
+ 2、放量上涨必将回落； 
+ 3、放量下跌必将反弹； 
+ 4、缩量不跌，筑底成功； 
+ 5、放量不涨，头部将现； 
+ 6、量大成头，量小成底； 
+ 7、无量顶下跌，后市必将大涨； 
+ 8、放量顶下跌，后市调整漫长。 
+ 9、后量超前量，股价也跟上。
+ 不冲高不卖，不跳水不买，横盘不交易。
+ 2、买阴不买阳，卖阳不卖阴，逆市而动，方为英雄
+3、高低盘整，再等一等
+4、高位横盘再冲高，抓住时机赶紧抛；低位横盘又新低，全仓买进好时机。
+5、未曾下手先认错，宁可买少勿买多
+6、套牢补仓求保本，奢求盈利乃为贪
+7、一推二荐就不涨，只好往下再震仓
+8、绿荫丛中一线红，抓紧买入莫放松
+9、下跌趋缓，反弹亦缓；下跌加速，反弹亦速
+10、平静水面一波高，当心后面大波涛
+11、底部长阳第一次，坚决持股到收市
+12、一根巨阳头顶光，尾市抢盘我清仓
 
+ */
 (async () => {
   // let r = await callFun({ code: "sh603369" });
   //console.log(r);

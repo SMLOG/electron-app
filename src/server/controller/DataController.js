@@ -35,14 +35,17 @@ module.exports = {
   scoreDetails: async (ctx) => {
     let code = ctx.query.code;
 
-    let items = await db.query(`select * from tech_detail where code=:code`, {
-      logging: console.log,
-      type: db.QueryTypes.SELECT,
-      raw: true,
-      replacements: {
-        code: code,
-      },
-    });
+    let items = await db.query(
+      `select * from tech_detail where code=:code and score<>0`,
+      {
+        logging: console.log,
+        type: db.QueryTypes.SELECT,
+        raw: true,
+        replacements: {
+          code: code,
+        },
+      }
+    );
 
     ctx.body = items;
   },
